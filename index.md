@@ -1,37 +1,40 @@
-## Welcome to GitHub Pages
+---
+layout: default
+---
 
-You can use the [editor on GitHub](https://github.com/benzAI-team/BenzAI/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+# BenzAI software
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+BenzAI is an open-source software for chemists that addresses several questions about benzenoids using artificial intelligence techniques.
+It allows notably for:
+* generating benzenoid structures on the basis of several criteria (number of hexagons/carbon atoms/hydrogen atoms, structural properties, presence or absence of one or more patterns, etc.),
+* analyzing their  electronic structure,
+* providing infrared spectra stored in an external database.  
+[More details](details)
 
-### Markdown
+These problems are modeled and solved thanks to constraint programming and, in particular, by using [Choco Solver](https://www.cosling.com/fr/choco-solver).
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+# Download links 
 
-```markdown
-Syntax highlighted code block
+* [Source code](https://github.com/benzAI-team/BenzAI)
+* [Release](https://github.com/benzAI-team/BenzAI/releases)
 
-# Header 1
-## Header 2
-### Header 3
+# Bibliography
+* Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet. [Using Constraint Programming to Generate Benzenoid Structures in Theoretical Chemistry](https://hal.archives-ouvertes.fr/hal-02931934/).   
+  In _Proceedings of the 26th International Conference on Principles and Practice of Constraint Programming (CP)_, pages 690-706, 2020.
+* Y. Carissan, C. Dim, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet. [Computing the Local Aromaticity of Benzenoids Thanks to Constraint Programming](https://hal-amu.archives-ouvertes.fr/hal-02931928).  
+  In _Proceedings of the 26th International Conference on Principles and Practice of Constraint Programming (CP)_, pages 673-689, 2020.
+* Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet. [Exhaustive Generation of Benzenoid Structures Sharing Common Patterns](https://hal-amu.archives-ouvertes.fr/hal-03402690). 
+  In _Proceedings of the 27th International Conference on Principles and Practice of Constraint Programming (CP)_, pages 19:1-19:18, 2021.
 
-- Bulleted
-- List
+[BibTeX file](biblio.bib)
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
+# BenzAI team
+* Adrien VARET
+* [Yannick CARISSAN](https://ism2.univ-amu.fr/fr/annuaire/ctom/carissanyannick)
+* [Denis HAGEBAUM-REIGNER](https://ism2.univ-amu.fr/fr/annuaire/ctom/hagebaum-reignierdenis)
+* Nicolas PRCOVIC
+* [Cyril TERRIOUX](https://pageperso.lis-lab.fr/cyril.terrioux/en/index.html)
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/benzAI-team/BenzAI/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+# Contact
+* firstname.name@univ-amu.fr
