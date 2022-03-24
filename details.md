@@ -12,7 +12,7 @@ A collection is a set of benzenoid structures. A collection can be defined:
 * by importing one or several structures from files or from our database,
 * by an automatic generation using constraints.
 
-The user can define as many collections as they wish.
+The user can define as many collections as they wishes.
 Benzenoid structures can be added, deleted or moved from a collection to another at the user's convenience.
 
 An example of a collection:
