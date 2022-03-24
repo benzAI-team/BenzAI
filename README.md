@@ -43,9 +43,9 @@ BenzAI can be run by executing the following command (assuming that the filename
 BenzAI relies on several third-party open-source libraries, each being licensed under its own license (see the [https://github.com/benzAI-team/BenzAI/blob/main/3rd-party-licenses.md](https://github.com/benzAI-team/BenzAI/blob/main/3rd-party-licenses.md) files for more details).
 
 * [Choco Solver](https://github.com/chocoteam/choco-solver)
-* gson
-* JAMA: A Java Matrix Package
-* JavaFX 
-* mysql-connector-java
+* [gson](https://github.com/google/gson/)
+* [JAMA: A Java Matrix Package](https://math.nist.gov/javanumerics/jama/)
+* [JavaFX](https://openjfx.io/)
+* [mysql-connector-java](https://github.com/mysql/mysql-connector-j)
 
 Icons come from [https://www.flaticon.com/authors/surang](https://www.flaticon.com/authors/surang).
