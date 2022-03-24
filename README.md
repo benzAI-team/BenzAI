@@ -22,15 +22,15 @@ BenzAI has the following requirements:
 
 ## Building instructions
 You can produce an executable jar thanks to Maven (available from [https://maven.apache.org](https://maven.apache.org) or from your favorite package manager). 
-1. Download the sources of BenzAI or clone the repository, for example, by executing the following command:  
+First, download the sources of BenzAI or clone the repository, for example, by executing the following command:  
 
     git clone https://github.com/benzAI-team/BenzAI.git
     
-2. From the source directory, execute the following command:  
+Then, from the source directory, execute the following command:  
 
     mvn clean package
     
-3. The generated jar is located in the target directory.	
+The generated jar is located in the target directory.	
 
 ## Running BenzAI
 BenzAI can be run by executing the following command (assuming that the filename of the jar is BenzAI.jar):  
