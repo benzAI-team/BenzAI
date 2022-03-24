@@ -5,7 +5,7 @@ It allows notably for:
 * generating benzenoid structures on the basis of several criteria (number of hexagons/carbon atoms/hydrogen atoms, structural properties, presence or absence of one or more patterns, etc.),
 * analyzing their electronic structure,
 * providing infrared spectra stored in an external database.  
-[More details](details)
+[More details](https://benzai-team.github.io/BenzAI/details)
 
 These problems are modeled and solved thanks to constraint programming and, in particular, by using [Choco Solver](https://www.cosling.com/fr/choco-solver).
 
