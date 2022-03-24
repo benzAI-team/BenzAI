@@ -1,8 +1,3 @@
----
-layout: default
----
-
-
 # License overview of included third party libraries
 
 The BenzAI software is licensed under the terms of the [GPL v3](https://github.com/benzAI-team/BenzAI/blob/main/LICENSE).
