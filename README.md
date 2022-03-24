@@ -20,8 +20,6 @@ BenzAI has the following requirements:
 * Java 11
 * Maven 3.6 or later (if you want to build BenzAI from sources)
 
-## Download sources
-
 ## Building instructions
 You can produce an executable jar thanks to Maven (available from [https://maven.apache.org](https://maven.apache.org) or from your favorite package manager). 
 1. Download the sources of BenzAI or clone the repository, for example, by executing the following command:  
