@@ -17,8 +17,8 @@ BenzAI is licensed under the terms of the [GPL v3](https://github.com/benzAI-tea
 As your convenience, you can download an executable jar (from our [release](https://github.com/benzAI-team/BenzAI/releases) repository) or the [source code](https://github.com/benzAI-team/BenzAI).
 
 BenzAI has the following requirements:
-* Java 11
-* Maven 3.6 or later (if you want to build BenzAI from sources)
+* Java 11 or later
+* Maven 3.6 or later[^1] (if you want to build BenzAI from sources)
 
 ## Building instructions
 You can produce an executable jar thanks to Maven (available from [https://maven.apache.org](https://maven.apache.org) or from your favorite package manager). 
@@ -49,3 +49,5 @@ BenzAI relies on several third-party open-source libraries, each being licensed 
 * [mysql-connector-java](https://github.com/mysql/mysql-connector-j)
 
 Icons come from [https://www.flaticon.com/authors/surang](https://www.flaticon.com/authors/surang).
+
+[^1]: The latest versions of Java (16 or later) requires at least the version 3.8 of Maven.
