@@ -43,7 +43,7 @@ public class Post {
 				response.append(responseLine.trim());
 			}
 
-			System.out.println(response.toString());
+			// System.out.println(response.toString());
 
 			if (!response.toString().equals("[]")) {
 
@@ -87,7 +87,7 @@ public class Post {
 		}
 
 		if (isDatabaseConnected) {
-			System.out.println("Connection to database established");
+			// System.out.println("Connection to database established");
 			return true;
 		}
 

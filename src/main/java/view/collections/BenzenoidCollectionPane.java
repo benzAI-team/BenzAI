@@ -296,7 +296,6 @@ public class BenzenoidCollectionPane extends Tab {
 
 	private void initializeOnClose() {
 		this.setOnClosed(e -> {
-			System.out.println("onClosed() activé");
 			if (parent.getBenzenoidSetPanes().size() > 2) {
 				parent.remove(this);
 			}
@@ -321,7 +320,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 	public void refresh() {
 
-		System.out.println("refresh() !");
+		// System.out.println("refresh() !");
 
 		gridPane = new GridPane();
 
@@ -482,8 +481,6 @@ public class BenzenoidCollectionPane extends Tab {
 								}
 
 								else {
-
-									System.out.println("On recalcule pas !");
 
 									Group benzenoidDrawRBO = rboGroups.get(i);
 
@@ -664,11 +661,11 @@ public class BenzenoidCollectionPane extends Tab {
 		StringBuilder collectionProperties = new StringBuilder();
 		collectionProperties.append(molecules.size() + " benzenoid");
 		if (molecules.size() > 1)
-      collectionProperties.append("s");
-      
+			collectionProperties.append("s");
+
 		collectionProperties.append(", " + selectedBenzenoidPanes.size() + " selected benzenoid");
-    if (selectedBenzenoidPanes.size() > 1)
-      collectionProperties.append("s");
+		if (selectedBenzenoidPanes.size() > 1)
+			collectionProperties.append("s");
 
 		int nbClassic = 0;
 		int nbRe = 0;
@@ -702,31 +699,30 @@ public class BenzenoidCollectionPane extends Tab {
 
 		if (nbClassic > 0) {
 			collectionProperties.append(", " + nbClassic + " normal view");
-      if (nbClassic > 1)
-        collectionProperties.append("s");
-    }
+			if (nbClassic > 1)
+				collectionProperties.append("s");
+		}
 
 		if (nbRe > 0) {
 			collectionProperties.append(", " + nbRe + " RE view");
-      if (nbRe > 1)
-        collectionProperties.append("s");
-      collectionProperties.append("\t");
-    }
+			if (nbRe > 1)
+				collectionProperties.append("s");
+			collectionProperties.append("\t");
+		}
 
 		if (nbClar > 0) {
 			collectionProperties.append(", " + nbClar + " Clar cover view");
-      if (nbClar > 1)
-        collectionProperties.append("s");
-      collectionProperties.append("\t");
-    }
+			if (nbClar > 1)
+				collectionProperties.append("s");
+			collectionProperties.append("\t");
+		}
 
-		if (nbRBO > 0)
-    {
+		if (nbRBO > 0) {
 			collectionProperties.append(", " + nbRBO + "RBO view");
-      if (nbRBO > 1)
-        collectionProperties.append("s");
-      collectionProperties.append("\t");
-    }
+			if (nbRBO > 1)
+				collectionProperties.append("s");
+			collectionProperties.append("\t");
+		}
 
 		parent.setCollectionPropertiesText(collectionProperties.toString());
 	}
@@ -744,8 +740,6 @@ public class BenzenoidCollectionPane extends Tab {
 	}
 
 	public void removeBenzenoidPanes(ArrayList<BenzenoidPane> benzenoidPanesRemove) {
-
-		System.out.println("removeBenzenoidPanes(): " + selectedBenzenoidPanes.size() + " selections");
 
 		ArrayList<Molecule> moleculesToRemove = new ArrayList<>();
 		ArrayList<BenzenoidPane> panesToRemove = new ArrayList<>();
@@ -795,8 +789,6 @@ public class BenzenoidCollectionPane extends Tab {
 	public void removeBenzenoidPane(BenzenoidPane benzenoidPane) {
 		benzenoidPanes.remove(benzenoidPane);
 		selectedBenzenoidPanes.remove(benzenoidPane);
-
-		System.out.println("molecules.size() = " + molecules.size());
 
 		Molecule molecule = molecules.get(benzenoidPane.getIndex());
 		molecules.remove(benzenoidPane.getIndex());

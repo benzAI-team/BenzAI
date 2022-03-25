@@ -160,7 +160,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		originBenzenoidCollectionPane = getSelectedTab();
 		this.copiedBenzenoidPanes.clear();
 		this.copiedBenzenoidPanes.addAll(copiedBenzenoidPanes);
-		System.out.println(copiedBenzenoidPanes.size() + " benzenoid(s) copied");
+		// System.out.println(copiedBenzenoidPanes.size() + " benzenoid(s) copied");
+		log(copiedBenzenoidPanes.size() + " benzenoid(s) copied", true);
 	}
 
 	public void addBenzenoidSetPane(BenzenoidCollectionPane benzenoidSetPane) {
@@ -178,7 +179,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		refresh();
 
-		System.out.println("Adding new collection: " + benzenoidSetPane.getName());
+		log("Adding new collection: " + benzenoidSetPane.getName(), true);
 	}
 
 	private void initializeMenu() {
@@ -429,7 +430,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
 
 			if (newTab.equals(addTab) && !removingLock) {
-				System.out.println("Clicked on addTab");
+				// System.out.println("Clicked on addTab");
 				BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, benzenoidSetPanes.size(),
 						"Collection #" + benzenoidSetPanes.size());
 
@@ -445,7 +446,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		tabPane.setOnKeyPressed(e -> {
 
-			System.out.println("tabPane.keyPress() (l. 283)");
+			// System.out.println("tabPane.keyPress() (l. 283)");
 
 			if (e.getCode() == KeyCode.CONTROL || e.getCode() == KeyCode.COMMAND)
 				flagCtrl = true;
@@ -465,7 +466,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			if (flagCtrl && flagC) {
 				BenzenoidCollectionPane curentPane = getSelectedTab();
 				curentPane.copy();
-				System.out.println("CTRL + C: " + copiedBenzenoidPanes.size() + " copied");
+				log("CTRL + C: " + copiedBenzenoidPanes.size() + " copied", true);
 			}
 
 			if (flagCtrl && flagV)
@@ -518,8 +519,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void remove(BenzenoidCollectionPane pane) {
 		removingLock = true;
 		benzenoidSetPanes.remove(pane);
-
-		System.out.println("remove() : " + benzenoidSetPanes.size() + " panes restants");
 
 		for (int i = 0; i < benzenoidSetPanes.size(); i++)
 			benzenoidSetPanes.get(i).setIndex(i);
@@ -697,7 +696,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			BenzenoidCollectionPane curentPane = getSelectedTab();
 			for (BenzenoidPane pane : curentPane.getSelectedBenzenoidPanes()) {
 				Molecule molecule = curentPane.getMolecule(pane.getIndex());
-				System.out.println(molecule.getNicsResult());
+				// System.out.println(molecule.getNicsResult());
 			}
 		});
 
@@ -753,9 +752,9 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	public void move(BenzenoidCollectionPane setPaneOrigin, BenzenoidCollectionPane setPaneDestination) {
 
-		System.out.println("begin move() : origin.benzenoidPanes.size() = " + setPaneOrigin.getBenzenoidPanes().size());
-		System.out.println(
-				"begin move() : destination.benzenoidPanes.size() = " + setPaneDestination.getBenzenoidPanes().size());
+//		System.out.println("begin move() : origin.benzenoidPanes.size() = " + setPaneOrigin.getBenzenoidPanes().size());
+//		System.out.println(
+//				"begin move() : destination.benzenoidPanes.size() = " + setPaneDestination.getBenzenoidPanes().size());
 
 		ArrayList<BenzenoidPane> benzenoidPanesMoved = new ArrayList<>();
 		ArrayList<Molecule> moleculesMoved = new ArrayList<>();
@@ -775,7 +774,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		setPaneOrigin.removeBenzenoidPanes(benzenoidPanesMoved);
 		setPaneOrigin.refresh();
 
-		System.out.println(moleculesMoved.size() + " molecules moved");
+		log(moleculesMoved.size() + " molecules moved", true);
 
 		for (int i = 0; i < moleculesMoved.size(); i++) {
 			setPaneDestination.addBenzenoid(moleculesMoved.get(i), displayTypesMoved.get(i));
@@ -783,9 +782,9 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		setPaneDestination.refresh();
 
-		System.out.println("end move() : origin.benzenoidPanes.size() = " + setPaneOrigin.getBenzenoidPanes().size());
-		System.out.println(
-				"end move() : destination.benzenoidPanes.size() = " + setPaneDestination.getBenzenoidPanes().size());
+//		System.out.println("end move() : origin.benzenoidPanes.size() = " + setPaneOrigin.getBenzenoidPanes().size());
+//		System.out.println(
+//				"end move() : destination.benzenoidPanes.size() = " + setPaneDestination.getBenzenoidPanes().size());
 	}
 
 	public BenzenoidCollectionPane getSelectedTab() {
@@ -845,7 +844,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 						indexLin = 0;
 						int size = panes.size();
 
-						System.out.println("Computing resonance energy of " + size + " benzenoids.");
+						// System.out.println("Computing resonance energy of " + size + " benzenoids.");
 						log("RE Lin (" + size + " benzenoids)", true);
 
 						for (BenzenoidPane benzenoidPane : panes) {
@@ -854,7 +853,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								molecule.getAromaticity();
 								benzenoidSetPane.addBenzenoid(molecule, DisplayType.RE_LIN);
 								indexLin++;
-								System.out.println(indexLin + " / " + size);
+								// System.out.println(indexLin + " / " + size);
 
 								Platform.runLater(new Runnable() {
 									@Override
@@ -968,7 +967,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 						indexClar = 0;
 						int size = panes.size();
 
-						System.out.println("Computing Clar Cover of " + size + "benzenoids");
+						// System.out.println("Computing Clar Cover of " + size + "benzenoids");
 						log("Clar Cover (" + size + "benzenoids)", true);
 
 						for (BenzenoidPane benzenoidPane : panes) {
@@ -983,7 +982,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 									benzenoidSetPane.addBenzenoid(molecule, DisplayType.CLAR_COVER);
 								}
 								indexClar++;
-								System.out.println(indexClar + " / " + size);
+								// System.out.println(indexClar + " / " + size);
 
 								Platform.runLater(new Runnable() {
 									@Override
@@ -1078,7 +1077,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 						indexRBO = 0;
 						int size = panes.size();
 
-						System.out.println("Computing Clar Cover of " + size + "benzenoids");
+						// System.out.println("Computing Clar Cover of " + size + "benzenoids");
 						log("Clar cover (" + size + " benzenoids)", true);
 
 						for (BenzenoidPane benzenoidPane : panes) {
@@ -1088,7 +1087,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								molecule.setRBOGroup(new RBOGroup(manager, molecule));
 								benzenoidSetPane.addBenzenoid(molecule, DisplayType.RBO);
 								indexRBO++;
-								System.out.println(indexRBO + " / " + size);
+								// System.out.println(indexRBO + " / " + size);
 
 								Platform.runLater(new Runnable() {
 									@Override
@@ -1385,7 +1384,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	public void importCollection(File directory) {
 
-		System.out.println("import collection");
+		// System.out.println("import collection");
+		log("Importing collection: " + directory.getAbsolutePath(), true);
 
 		boolean ok = true;
 
@@ -1459,7 +1459,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 					Molecule molecule = curentPane
 							.getMolecule(curentPane.getSelectedBenzenoidPanes().get(i).getIndex());
-					
+
 					File file = new File(directoryPath + "/molecule_" + i + ".cml");
 					try {
 						ComConverter.generateComFile(molecule, file, 0, ComType.ER, file.getName());
@@ -1647,7 +1647,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 							if (!molecule.databaseChecked()) {
 								if (molecule.getNicsResult() != null) {
-									System.out.println(molecule);
+									// System.out.println(molecule);
 
 									Platform.runLater(new Runnable() {
 										@Override
@@ -1695,15 +1695,15 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 				switch (newValue) {
 				case FAILED:
-					System.out.println("failed");
+					// System.out.println("failed");
 					break;
 
 				case CANCELLED:
-					System.out.println("canceled");
+					// System.out.println("canceled");
 					break;
 
 				case SUCCEEDED:
-					System.out.println("succeeded");
+					// System.out.println("succeeded");
 					unselectAll();
 					break;
 				}
@@ -1743,7 +1743,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 							if (!molecule.databaseChecked()) {
 								if (molecule.getNicsResult() != null) {
-									System.out.println(molecule);
+									// System.out.println(molecule);
 
 									Platform.runLater(new Runnable() {
 										@Override
@@ -1791,15 +1791,15 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 				switch (newValue) {
 				case FAILED:
-					System.out.println("failed");
+					// System.out.println("failed");
 					break;
 
 				case CANCELLED:
-					System.out.println("canceled");
+					// System.out.println("canceled");
 					break;
 
 				case SUCCEEDED:
-					System.out.println("succeeded");
+					// System.out.println("succeeded");
 					unselectAll();
 					displayIRSpectra(panes, curentPane);
 					break;
@@ -1841,7 +1841,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			String key = entry.getKey();
 			ArrayList<Molecule> moleculesClasses = entry.getValue();
 
-			System.out.println("Treating " + key);
+			// System.out.println("Treating " + key);
+			log("Treating " + key, true);
 
 			ArrayList<ResultLogFile> classResults = new ArrayList<>();
 			HashMap<String, Double> finalEnergies = new HashMap<>();
