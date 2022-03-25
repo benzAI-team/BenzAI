@@ -90,6 +90,15 @@ public class CoronoidModule2 extends Module {
 					holesEdges[v][u] = x;
 
 					generalModel.getProblem().edgeChanneling(holes, x, u, v).post();
+
+					BoolVar xu = holesVertices[u];
+					BoolVar xv = holesVertices[v];
+
+					BoolVar[] varClause = new BoolVar[] { xu, xv, x };
+					IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+							new IntIterableRangeSet(0), new IntIterableRangeSet(1) };
+
+					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 				}
 			}
 
@@ -207,7 +216,8 @@ public class CoronoidModule2 extends Module {
 
 	@Override
 	public void addWatchedVariables() {
-
+		generalModel.addWatchedVariable(nbConnectedComponents);
+		generalModel.addWatchedVariable(holesVertices);
 	}
 
 	@Override
@@ -316,6 +326,8 @@ public class CoronoidModule2 extends Module {
 
 		for (int i = 0; i < generalModel.getNbHexagonsCoronenoid(); i++) {
 
+			// A least one
+
 			IntVar[] varClause = new IntVar[2];
 			IntIterableRangeSet[] valClause = new IntIterableRangeSet[2];
 
@@ -325,6 +337,8 @@ public class CoronoidModule2 extends Module {
 			valClause[1] = new IntIterableRangeSet(1);
 
 			generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
+
+			// A most one
 
 			varClause = new IntVar[2];
 			valClause = new IntIterableRangeSet[2];
@@ -354,6 +368,15 @@ public class CoronoidModule2 extends Module {
 			generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 
 		}
+	}
+
+	private void postEdgesConstraints() {
+
+//		int diameter = generalModel.getDiameter();
+//		
+//		for (int i = 0 ; i < diameter ; i ++) {
+//			for (int j = 0 ; j < diameter ; j ++)
+//		}
 
 	}
 }
