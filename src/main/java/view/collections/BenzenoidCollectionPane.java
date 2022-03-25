@@ -662,8 +662,13 @@ public class BenzenoidCollectionPane extends Tab {
 	public void refreshCollectionProperties() {
 
 		StringBuilder collectionProperties = new StringBuilder();
-		collectionProperties.append(molecules.size() + " benzenoids");
-		collectionProperties.append(", " + selectedBenzenoidPanes.size() + " selected benzenoids");
+		collectionProperties.append(molecules.size() + " benzenoid");
+		if (molecules.size() > 1)
+      collectionProperties.append("s");
+      
+		collectionProperties.append(", " + selectedBenzenoidPanes.size() + " selected benzenoid");
+    if (selectedBenzenoidPanes.size() > 1)
+      collectionProperties.append("s");
 
 		int nbClassic = 0;
 		int nbRe = 0;
@@ -695,17 +700,33 @@ public class BenzenoidCollectionPane extends Tab {
 			}
 		}
 
-		if (nbClassic > 0)
-			collectionProperties.append(", " + nbClassic + " normal views");
+		if (nbClassic > 0) {
+			collectionProperties.append(", " + nbClassic + " normal view");
+      if (nbClassic > 1)
+        collectionProperties.append("s");
+    }
 
-		if (nbRe > 0)
-			collectionProperties.append(", " + nbRe + " RE views\t");
+		if (nbRe > 0) {
+			collectionProperties.append(", " + nbRe + " RE view");
+      if (nbRe > 1)
+        collectionProperties.append("s");
+      collectionProperties.append("\t");
+    }
 
-		if (nbClar > 0)
-			collectionProperties.append(", " + nbClar + " Clar cover views\t");
+		if (nbClar > 0) {
+			collectionProperties.append(", " + nbClar + " Clar cover view");
+      if (nbClar > 1)
+        collectionProperties.append("s");
+      collectionProperties.append("\t");
+    }
 
 		if (nbRBO > 0)
-			collectionProperties.append(", " + nbRBO + "RBO views\t");
+    {
+			collectionProperties.append(", " + nbRBO + "RBO view");
+      if (nbRBO > 1)
+        collectionProperties.append("s");
+      collectionProperties.append("\t");
+    }
 
 		parent.setCollectionPropertiesText(collectionProperties.toString());
 	}
