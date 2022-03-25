@@ -1,0 +1,1801 @@
+package molecules;
+
+import static java.lang.ProcessBuilder.Redirect.appendTo;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
+
+import classifier.Irregularity;
+import generator.GeneralModel;
+import generator.GeneratorCriterion;
+import generator.GeneratorCriterion.Operator;
+import generator.GeneratorCriterion.Subject;
+import generator.ResultSolver;
+import generator.fragments.Fragment;
+import http.Post;
+import molecules.sort.MoleculeComparator;
+import molecules.sort.NbHexagonsComparator;
+import solution.BenzenoidSolution;
+import solution.ClarCoverSolution;
+import solution.GraphConversion;
+import solveur.Aromaticity;
+import solveur.ClarCoverSolver;
+import solveur.KekuleStructureSolver;
+import solveur.LinAlgorithm;
+import solveur.RBOSolver;
+import solveur.LinAlgorithm.PerfectMatchingType;
+import spectrums.ResultLogFile;
+import sql.SelectQueryContent;
+import utils.Couple;
+import utils.Interval;
+import utils.RelativeMatrix;
+import view.groups.ClarCoverGroup;
+import view.groups.RBOGroup;
+
+public class Molecule implements Comparable<Molecule> {
+
+	private MoleculeComparator comparator;
+
+	private RelativeMatrix nodesMem; // DEBUG
+
+	private int nbNodes, nbEdges, nbHexagons, nbStraightEdges, maxIndex;
+	private ArrayList<ArrayList<Integer>> edgeMatrix;
+	private int[][] adjacencyMatrix;
+	private ArrayList<String> edgesString;
+	private ArrayList<String> hexagonsString;
+	private Node[] nodesRefs;
+	private RelativeMatrix coords;
+	private int[][] hexagons;
+	private int[][] dualGraph;
+	private int[] degrees;
+
+	private Irregularity irregularity;
+
+	private ArrayList<ArrayList<Integer>> hexagonsVertices;
+
+	private int nbHydrogens;
+
+	private String name;
+
+	private String description;
+
+	private ArrayList<Integer> verticesSolutions;
+
+	private Couple<Integer, Integer>[] hexagonsCoords;
+
+	private double nbKekuleStructures = -1;
+	private Aromaticity aromaticity;
+
+	private ClarCoverSolution clarCoverSolution;
+	private ClarCoverGroup clarCoverGroup;
+
+	private RBO RBO;
+	private RBOGroup rboGroup;
+
+	private ArrayList<String> names;
+
+	private ResultLogFile nicsResult;
+	private boolean databaseChecked;
+
+	/**
+	 * Constructors
+	 */
+
+	public Molecule(int nbNodes, int nbEdges, int nbHexagons, int[][] hexagons, Node[] nodesRefs,
+			int[][] adjacencyMatrix, RelativeMatrix coords) {
+
+		comparator = new NbHexagonsComparator();
+
+		this.nbNodes = nbNodes;
+		this.nbEdges = nbEdges;
+		this.nbHexagons = nbHexagons;
+		this.hexagons = hexagons;
+		this.nodesRefs = nodesRefs;
+		this.adjacencyMatrix = adjacencyMatrix;
+		this.coords = coords;
+
+		hexagonsString = new ArrayList<>();
+
+		for (int[] hexagon : hexagons) {
+
+			StringBuilder builder = new StringBuilder();
+
+			builder.append("h ");
+
+			for (int u : hexagon) {
+				Node node = nodesRefs[u];
+				builder.append(node.getX() + "_" + node.getY() + " ");
+			}
+
+			hexagonsString.add(builder.toString());
+		}
+
+		initHexagons();
+		computeDualGraph();
+		computeDegrees();
+		buildHexagonsCoords2();
+	}
+
+	public Molecule(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeMatrix,
+			int[][] adjacencyMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
+			RelativeMatrix coords) {
+
+		this.nbNodes = nbNodes;
+		this.nbEdges = nbEdges;
+		this.nbHexagons = nbHexagons;
+		this.edgeMatrix = edgeMatrix;
+		this.adjacencyMatrix = adjacencyMatrix;
+		this.edgesString = edgesString;
+		this.hexagonsString = hexagonsString;
+		this.nodesRefs = nodesRefs;
+		this.coords = coords;
+
+		hexagons = new int[nbHexagons][6];
+		initHexagons();
+
+		computeDualGraph();
+		computeDegrees();
+		buildHexagonsCoords2();
+	}
+
+	public Molecule(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeMatrix,
+			int[][] adjacencyMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
+			RelativeMatrix coords, RelativeMatrix nodesMem, int maxIndex) {
+
+		this.nbNodes = nbNodes;
+		this.nbEdges = nbEdges;
+		this.nbHexagons = nbHexagons;
+		this.edgeMatrix = edgeMatrix;
+		this.adjacencyMatrix = adjacencyMatrix;
+		this.edgesString = edgesString;
+		this.hexagonsString = hexagonsString;
+		this.nodesRefs = nodesRefs;
+		this.coords = coords;
+		this.nodesMem = nodesMem;
+		this.maxIndex = maxIndex;
+
+		hexagons = new int[nbHexagons][6];
+		initHexagons();
+
+		nbStraightEdges = 0;
+
+		for (int i = 0; i < adjacencyMatrix.length; i++) {
+			for (int j = (i + 1); j < adjacencyMatrix[i].length; j++) {
+				if (adjacencyMatrix[i][j] == 1) {
+					Node u1 = nodesRefs[i];
+					Node u2 = nodesRefs[j];
+
+					if (u1.getX() == u2.getX())
+						nbStraightEdges++;
+				}
+			}
+		}
+
+		computeDualGraph();
+		computeDegrees();
+		buildHexagonsCoords2();
+	}
+
+	/**
+	 * Getters and setters
+	 */
+
+	public int[][] getDualGraph() {
+		return dualGraph;
+	}
+
+	public int getNbNodes() {
+		return nbNodes;
+	}
+
+	public int getNbEdges() {
+		return nbEdges;
+	}
+
+	public int getNbHexagons() {
+		return nbHexagons;
+	}
+
+	public int getMaxIndex() {
+		return maxIndex;
+	}
+
+	public ArrayList<ArrayList<Integer>> getEdgeMatrix() {
+		return edgeMatrix;
+	}
+
+	public int[][] getAdjacencyMatrix() {
+		return adjacencyMatrix;
+	}
+
+	public ArrayList<String> getEdgesString() {
+		return edgesString;
+	}
+
+	public ArrayList<String> getHexagonsString() {
+		return hexagonsString;
+	}
+
+	public Node getNodeRef(int index) {
+		return nodesRefs[index];
+	}
+
+	public RelativeMatrix getCoords() {
+		return coords;
+	}
+
+	public Node[] getNodesRefs() {
+		return nodesRefs;
+	}
+
+	public ArrayList<ArrayList<Integer>> getHexagonsVertices() {
+		return hexagonsVertices;
+	}
+
+	public int getNbStraightEdges() {
+		return nbStraightEdges;
+	}
+
+	public int[][] getHexagons() {
+		return hexagons;
+	}
+
+	public int degree(int u) {
+		return degrees[u];
+	}
+
+	/**
+	 * Class's methods
+	 */
+
+	public SimpleGraph<Integer, DefaultEdge> getCarbonGraph() {
+		return GraphConversion.buildCarbonGraph(this);
+	}
+
+	public SimpleGraph<Integer, DefaultEdge> getHexagonGraph() {
+		return GraphConversion.buildHexagonGraph(this);
+	}
+
+	private void computeDegrees() {
+
+		degrees = new int[nbNodes];
+
+		for (int i = 0; i < nbNodes; i++) {
+
+			int degree = 0;
+			for (int j = 0; j < nbNodes; j++) {
+
+				if (adjacencyMatrix[i][j] == 1)
+					degree++;
+			}
+
+			degrees[i] = degree;
+		}
+	}
+
+	private void computeDualGraph() {
+
+		dualGraph = new int[nbHexagons][6];
+
+		for (int i = 0; i < nbHexagons; i++)
+			for (int j = 0; j < 6; j++)
+				dualGraph[i][j] = -1;
+
+		ArrayList<Integer> candidats = new ArrayList<Integer>();
+		candidats.add(0);
+
+		int index = 0;
+
+		while (index < nbHexagons) {
+
+			int candidat = candidats.get(index);
+			int[] candidatHexagon = hexagons[candidat];
+
+			for (int i = 0; i < candidatHexagon.length; i++) {
+
+				int u = candidatHexagon[i];
+				int v = candidatHexagon[(i + 1) % 6];
+
+				System.out.print("");
+
+				for (int j = 0; j < nbHexagons; j++) {
+					if (j != candidat) { // j != i avant
+
+						int contains = 0;
+						for (int k = 0; k < 6; k++) {
+							if (hexagons[j][k] == u || hexagons[j][k] == v)
+								contains++;
+						}
+
+						if (contains == 2) {
+
+							dualGraph[candidat][i] = j;
+
+							if (!candidats.contains(j))
+								candidats.add(j);
+
+							break;
+						}
+					}
+				}
+
+			}
+			index++;
+		}
+	}
+
+	public void exportToGraphviz(String outputFileName) {
+		// COMPIL: dot -Kfdp -n -Tpng -o test.png test
+		try {
+			BufferedWriter w = new BufferedWriter(new FileWriter(new File(outputFileName)));
+
+			w.write("graph{" + "\n");
+
+			for (int i = 1; i <= nodesRefs.length; i++) {
+				w.write("\t" + i + " [pos=\"" + nodesRefs[(i - 1)].getX() + "," + nodesRefs[(i - 1)].getY() + "!\"]"
+						+ "\n");
+			}
+
+			w.write("\n");
+
+			for (int i = 0; i < adjacencyMatrix.length; i++) {
+				for (int j = i + 1; j < adjacencyMatrix[i].length; j++) {
+
+					if (adjacencyMatrix[i][j] != 0)
+						w.write("\t" + (i) + " -- " + (j) + "\n");
+
+				}
+			}
+
+			w.write("}");
+
+			w.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public RelativeMatrix getNodesMem() {
+		return nodesMem;
+	}
+
+	private int findHexagon(int u, int v) {
+
+		for (int i = 0; i < nbHexagons; i++) {
+			int[] hexagon = hexagons[i];
+
+			if (hexagon[4] == u && hexagon[5] == v)
+				return i;
+		}
+
+		return -1;
+
+	}
+
+	private ArrayList<Integer> findHexagons(int hexagon, Interval interval) {
+
+		ArrayList<Integer> hexagons = new ArrayList<Integer>();
+		int size = interval.size() / 2;
+
+		hexagons.add(hexagon);
+
+		int newHexagon = hexagon;
+
+		for (int i = 0; i < size; i++) {
+
+			newHexagon = dualGraph[newHexagon][1];
+			hexagons.add(newHexagon);
+		}
+
+		return hexagons;
+
+	}
+
+	public ArrayList<Integer> getAllHexagonsOfIntervals(ArrayList<Interval> intervals) {
+
+		ArrayList<Integer> hexagons = new ArrayList<Integer>();
+
+		for (Interval interval : intervals) {
+
+			int hexagon = findHexagon(interval.x1(), interval.y1());
+			hexagons.addAll(findHexagons(hexagon, interval));
+		}
+
+		return hexagons;
+	}
+
+	public void initHexagons() {
+
+		hexagonsVertices = new ArrayList<ArrayList<Integer>>();
+
+		for (int i = 0; i < nbNodes; i++)
+			hexagonsVertices.add(new ArrayList<Integer>());
+
+		for (int i = 0; i < nbHexagons; i++) {
+			String hexagon = hexagonsString.get(i);
+			String[] sHexagon = hexagon.split(" ");
+
+			for (int j = 1; j < sHexagon.length; j++) {
+				String[] sVertex = sHexagon[j].split(Pattern.quote("_"));
+				int x = Integer.parseInt(sVertex[0]);
+				int y = Integer.parseInt(sVertex[1]);
+				hexagons[i][j - 1] = coords.get(x, y);
+				hexagonsVertices.get(coords.get(x, y)).add(i);
+			}
+		}
+	}
+
+	public int getNbHydrogens() {
+
+		if (nbHydrogens == 0) {
+
+			for (int i = 0; i < nbNodes; i++) {
+
+				int degree = 0;
+				for (int j = 0; j < nbNodes; j++) {
+
+					if (adjacencyMatrix[i][j] == 1)
+						degree++;
+				}
+
+				if (degree == 2)
+					nbHydrogens++;
+			}
+		}
+
+		return nbHydrogens;
+	}
+
+	public ArrayList<ArrayList<Integer>> getOrbits(String nautyDirectory) throws IOException {
+
+		String tmpFilename = nautyDirectory + "/" + "tmp_nauty";
+		String outputFilename = nautyDirectory + "/" + "output";
+
+		System.out.println("tmpFilename : " + tmpFilename);
+		System.out.println("outputFilename : " + outputFilename);
+		System.out.println("");
+
+		exportToNautyScript(tmpFilename);
+
+		System.out.println("running : " + nautyDirectory + "/nauty26r12/dreadnaut");
+
+		ProcessBuilder pb = new ProcessBuilder(nautyDirectory + "/nauty26r12/dreadnaut");
+		pb.redirectInput(new File(tmpFilename));
+		pb.redirectOutput(appendTo(new File(outputFilename)));
+		Process p = pb.start();
+
+		while (p.isAlive()) {
+		}
+
+		BufferedReader r = new BufferedReader(new FileReader(new File(outputFilename)));
+		StringBuilder output = new StringBuilder();
+		String line = null;
+		boolean add = false;
+
+		while ((line = r.readLine()) != null) {
+			String[] splittedLine = line.split(" ");
+			if (add)
+				output.append(line);
+			else if (splittedLine.length > 0 && splittedLine[0].equals("cpu"))
+				add = true;
+		}
+
+		r.close();
+
+		String orbitsStr = output.toString().trim().replaceAll(" +", " ");
+
+		System.out.println("orbitsStr : " + orbitsStr);
+
+		ProcessBuilder rm = new ProcessBuilder("rm", tmpFilename, outputFilename);
+		Process prm = rm.start();
+
+		while (prm.isAlive()) {
+		}
+
+		ArrayList<ArrayList<Integer>> orbits = new ArrayList<ArrayList<Integer>>();
+		String[] splittedOrbits = orbitsStr.split(Pattern.quote("; "));
+
+		for (int i = 0; i < splittedOrbits.length; i++) {
+
+			String orbitStr;
+			if (i < splittedOrbits.length - 1)
+				orbitStr = splittedOrbits[i];
+			else
+				orbitStr = splittedOrbits[i].substring(0, splittedOrbits[i].length() - 1);
+
+			String[] splittedOrbit = orbitStr.split(" ");
+
+			ArrayList<Integer> orbit = new ArrayList<Integer>();
+
+			if (splittedOrbit.length == 1)
+				orbit.add(Integer.parseInt(splittedOrbit[0]));
+			else {
+				for (int j = 0; j < splittedOrbit.length - 1; j++) {
+					String[] testSplit = splittedOrbit[j].split(Pattern.quote(":"));
+
+					if (testSplit.length == 1) {
+						orbit.add(Integer.parseInt(splittedOrbit[j]));
+					}
+
+					else {
+						for (int k = Integer.parseInt(testSplit[0]); k <= Integer.parseInt(testSplit[1]); k++)
+							orbit.add(k);
+					}
+				}
+			}
+
+			orbits.add(orbit);
+
+		}
+
+		return orbits;
+	}
+
+	public void exportToNautyScript(String outputFilename) throws IOException {
+
+		BufferedWriter w = new BufferedWriter(new FileWriter(new File(outputFilename)));
+
+		w.write("n = " + nbHexagons + "\n");
+		w.write("g" + "\n");
+
+		ArrayList<ArrayList<Integer>> neighbors = new ArrayList<ArrayList<Integer>>();
+
+		for (int i = 0; i < dualGraph.length; i++)
+			neighbors.add(new ArrayList<Integer>());
+
+		for (int i = 0; i < dualGraph.length; i++) {
+			for (int j = 0; j < dualGraph[i].length; j++) {
+				int v = dualGraph[i][j];
+				if (v != -1) {
+					if (!neighbors.get(v).contains(i))
+						neighbors.get(i).add(v);
+				}
+			}
+		}
+
+		for (int i = 0; i < dualGraph.length; i++) {
+			w.write(i + " : ");
+			for (Integer u : neighbors.get(i)) {
+				w.write(u + " ");
+			}
+			w.write(";\n");
+		}
+
+		w.write("x\n");
+		w.write("o\n");
+
+		w.close();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String toString() {
+
+		if (name == null) {
+
+			int nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
+
+			if (nbHexagons % 2 == 1)
+				nbCrowns--;
+
+			int diameter = (2 * nbCrowns) - 1;
+
+			int[][] coordsMatrix = new int[diameter][diameter];
+
+			/*
+			 * Building coords matrix
+			 */
+
+			for (int i = 0; i < diameter; i++) {
+				for (int j = 0; j < diameter; j++) {
+					coordsMatrix[i][j] = -1;
+				}
+			}
+
+			for (int i = 0; i < diameter; i++)
+				for (int j = 0; j < diameter; j++)
+					coordsMatrix[i][j] = -1;
+
+			int index = 0;
+			int m = (diameter - 1) / 2;
+
+			int shift = diameter - nbCrowns;
+
+			for (int i = 0; i < m; i++) {
+
+				for (int j = 0; j < diameter - shift; j++) {
+					coordsMatrix[i][j] = index;
+					index++;
+				}
+
+				for (int j = diameter - shift; j < diameter; j++)
+					index++;
+
+				shift--;
+			}
+
+			for (int j = 0; j < diameter; j++) {
+				coordsMatrix[m][j] = index;
+				index++;
+			}
+
+			shift = 1;
+
+			for (int i = m + 1; i < diameter; i++) {
+
+				for (int j = 0; j < shift; j++)
+					index++;
+
+				for (int j = shift; j < diameter; j++) {
+					coordsMatrix[i][j] = index;
+					index++;
+				}
+
+				shift++;
+			}
+
+			Couple<Integer, Integer>[] hexagons = new Couple[nbHexagons];
+
+			ArrayList<Integer> candidats = new ArrayList<Integer>();
+			candidats.add(0);
+
+			hexagons[0] = new Couple<Integer, Integer>(0, 0);
+
+			int[] checkedHexagons = new int[nbHexagons];
+			checkedHexagons[0] = 1;
+
+			while (candidats.size() > 0) {
+
+				int candidat = candidats.get(0);
+
+				int x1 = hexagons[candidat].getX();
+				int y1 = hexagons[candidat].getY();
+
+				for (int i = 0; i < 6; i++) {
+
+					int neighbor = dualGraph[candidat][i];
+
+					if (neighbor != -1) {
+						if (checkedHexagons[neighbor] == 0) {
+
+							int x2, y2;
+
+							if (i == 0) {
+								x2 = x1;
+								y2 = y1 - 1;
+							}
+
+							else if (i == 1) {
+								x2 = x1 + 1;
+								y2 = y1;
+							}
+
+							else if (i == 2) {
+								x2 = x1 + 1;
+								y2 = y1 + 1;
+							}
+
+							else if (i == 3) {
+								x2 = x1;
+								y2 = y1 + 1;
+							}
+
+							else if (i == 4) {
+								x2 = x1 - 1;
+								y2 = y1;
+							}
+
+							else {
+								x2 = x1 - 1;
+								y2 = y1 - 1;
+							}
+
+							hexagons[neighbor] = new Couple<Integer, Integer>(x2, y2);
+							candidats.add(neighbor);
+							checkedHexagons[neighbor] = 1;
+						}
+					}
+				}
+
+				candidats.remove(candidats.get(0));
+			}
+
+			/*
+			 * Trouver une mani�re de le faire rentrer dans le coron�no�de
+			 */
+
+			StringBuilder code = new StringBuilder();
+
+			for (int i = 0; i < diameter; i++) {
+				for (int j = 0; j < diameter; j++) {
+
+					int h = coordsMatrix[i][j];
+
+					if (h != -1) {
+
+						boolean ok = true;
+
+						Couple<Integer, Integer>[] newHexagons = new Couple[hexagons.length];
+
+						for (int k = 0; k < hexagons.length; k++) {
+
+							Couple<Integer, Integer> hexagon = hexagons[k];
+
+							int xh = hexagon.getY() + i;
+							int yh = hexagon.getX() + j;
+
+							if (xh >= 0 && xh < diameter && yh >= 0 && yh < diameter && coordsMatrix[xh][yh] != -1) {
+								newHexagons[k] = new Couple<>(xh, yh);
+							}
+
+							else {
+								ok = false;
+								break;
+							}
+						}
+
+						if (ok) {
+
+							for (int k = 0; k < newHexagons.length; k++) {
+								code.append(coordsMatrix[newHexagons[k].getX()][newHexagons[k].getY()]);
+
+								if (k < newHexagons.length - 1)
+									code.append("-");
+							}
+
+							name = code.toString();
+							return code.toString();
+
+						}
+
+					}
+				}
+			}
+
+			name = null;
+			return null;
+		}
+
+		else
+			return name;
+	}
+
+	public void exportToCML(File file) {
+
+	}
+
+	public void exportToGraphFile(File file) throws IOException {
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+		writer.write("p DIMACS " + nbNodes + " " + nbEdges + " " + nbHexagons + "\n");
+
+		for (int i = 0; i < nbNodes; i++) {
+			for (int j = (i + 1); j < nbNodes; j++) {
+				if (adjacencyMatrix[i][j] == 1) {
+
+					Node u = nodesRefs[i];
+					Node v = nodesRefs[j];
+
+					writer.write("e " + u.getX() + "_" + u.getY() + " " + v.getX() + "_" + v.getY() + "\n");
+				}
+			}
+		}
+
+		for (int i = 0; i < nbHexagons; i++) {
+
+			int[] hexagon = hexagons[i];
+			writer.write("h ");
+
+			for (int j = 0; j < 6; j++) {
+
+				Node u = nodesRefs[hexagon[j]];
+				writer.write(u.getX() + "_" + u.getY() + " ");
+			}
+
+			writer.write("\n");
+		}
+
+		writer.close();
+	}
+
+	public void exportProperties(File file) throws IOException {
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+		writer.write("molecule_name\t" + description + "\n");
+		writer.write("nb_carbons\t" + nbNodes + "\n");
+		writer.write("nb_hydrogens\t" + this.getNbHydrogens() + "\n");
+		writer.write("nb_hexagons\t" + nbHexagons + "\n");
+
+		String nbKekuleStructures = Double.toString(getNbKekuleStructures()).split(Pattern.quote("."))[0];
+
+		writer.write(
+				new String(new String("nb_kekule_structures\t" + nbKekuleStructures).getBytes(), StandardCharsets.UTF_8)
+						+ "\n");
+
+		getIrregularity();
+		writer.write("XI\t" + irregularity.getXI() + "\n");
+		writer.write("#solo\t" + irregularity.getGroup(0) + "\n");
+		writer.write("#duo\t" + irregularity.getGroup(1) + "\n");
+		writer.write("#trio\t" + irregularity.getGroup(2) + "\n");
+		writer.write("#quatuors\t" + irregularity.getGroup(3) + "\n");
+
+		if (aromaticity != null) {
+			for (int i = 0; i < aromaticity.getLocalAromaticity().length; i++)
+				writer.write("E(H_" + i + ")\t" + aromaticity.getLocalAromaticity()[i] + "\n");
+		}
+
+		writer.close();
+
+	}
+
+	public BenzenoidSolution buildBenzenoidSolution() {
+
+		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
+		criterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
+
+		String name = toString();
+
+		String[] split = name.split(Pattern.quote("-"));
+
+		GeneralModel model = new GeneralModel(criterions, criterions, null);
+
+		for (String s : split) {
+
+			int u = Integer.parseInt(s);
+			model.getProblem().arithm(model.getVG()[u], "=", 1).post();
+		}
+
+		ResultSolver result = model.solve();
+
+		return result.getSolutions().get(0);
+	}
+
+	public void setVerticesSolutions(ArrayList<Integer> verticesSolutions) {
+		this.verticesSolutions = verticesSolutions;
+	}
+
+	public ArrayList<Integer> getVerticesSolutions() {
+		return verticesSolutions;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void buildHexagonsCoords() {
+
+		hexagonsCoords = new Couple[nbHexagons];
+
+		int[] checkedHexagons = new int[nbHexagons];
+		checkedHexagons[0] = 1;
+
+		ArrayList<Integer> candidats = new ArrayList<>();
+		candidats.add(0);
+
+		hexagonsCoords[0] = new Couple(0, 0);
+
+		while (candidats.size() > 0) {
+
+			int candidat = candidats.get(0);
+
+			for (int i = 0; i < 6; i++) {
+				int neighbor = dualGraph[candidat][i];
+				if (neighbor != -1 && checkedHexagons[neighbor] == 0) {
+
+					checkedHexagons[neighbor] = 1;
+
+					int x = hexagonsCoords[candidat].getX();
+					int y = hexagonsCoords[candidat].getY();
+
+					int x2, y2;
+
+					if (i == 0) {
+						x2 = x;
+						y2 = x - 1;
+					}
+
+					else if (i == 1) {
+						x2 = x + 1;
+						y2 = y;
+					}
+
+					else if (i == 2) {
+						x2 = x + 1;
+						y2 = y + 1;
+					}
+
+					else if (i == 3) {
+						x2 = x;
+						y2 = y + 1;
+					}
+
+					else if (i == 4) {
+						x2 = x - 1;
+						y2 = y;
+					}
+
+					else {
+						x2 = x - 1;
+						y2 = y - 1;
+					}
+
+					hexagonsCoords[neighbor] = new Couple<>(x2, y2);
+					candidats.add(neighbor);
+				}
+			}
+
+			candidats.remove(candidats.get(0));
+		}
+	}
+
+	public Couple<Integer, Integer>[] getHexagonsCoords() {
+		return hexagonsCoords;
+	}
+
+	public int[] getDegrees() {
+		return degrees;
+	}
+
+	public static Irregularity computeParameterOfIrregularity(Molecule molecule) {
+
+		if (molecule.getNbHexagons() == 1)
+			return null;
+
+		int[] N = new int[4];
+		int[] checkedNodes = new int[molecule.getNbNodes()];
+
+		ArrayList<Integer> V = new ArrayList<Integer>();
+
+		for (int u = 0; u < molecule.getNbNodes(); u++) {
+			int degree = molecule.degree(u);
+			if (degree == 2 && !V.contains(u)) {
+				V.add(u);
+				checkedNodes[u] = 0;
+			}
+
+			else if (degree != 2)
+				checkedNodes[u] = -1;
+		}
+
+		ArrayList<Integer> candidats = new ArrayList<Integer>();
+
+		while (true) {
+
+			int firstVertice = -1;
+			for (Integer u : V) {
+				if (checkedNodes[u] == 0) {
+					firstVertice = u;
+					break;
+				}
+			}
+
+			if (firstVertice == -1)
+				break;
+
+			candidats.add(firstVertice);
+			checkedNodes[firstVertice] = 1;
+
+			int nbNeighbors = 1;
+
+			while (candidats.size() > 0) {
+
+				int candidat = candidats.get(0);
+
+				for (int i = 0; i < molecule.getNbNodes(); i++) {
+					if (molecule.getAdjacencyMatrix()[candidat][i] == 1 && checkedNodes[i] == 0) {
+
+						checkedNodes[i] = 1;
+						nbNeighbors++;
+						candidats.add(i);
+					}
+				}
+
+				candidats.remove(candidats.get(0));
+			}
+
+			N[nbNeighbors - 1] += nbNeighbors;
+		}
+
+		double XI = ((double) N[2] + (double) N[3]) / ((double) N[0] + (double) N[1] + (double) N[2] + (double) N[3]);
+		return new Irregularity(N, XI);
+	}
+
+	public Irregularity getIrregularity() {
+
+		if (irregularity == null)
+			irregularity = Molecule.computeParameterOfIrregularity(this);
+
+		return irregularity;
+	}
+
+	public Aromaticity getAromaticity() {
+
+//		System.out.println("GETAROMATICITY() !!!!");
+//
+//		if (aromaticity == null) {
+//			System.out.println("calcul aromaticit�");
+//			try {
+//				aromaticity = LinAlgorithm.solve(this, PerfectMatchingType.DET);
+//				aromaticity.normalize(getNbKekuleStructures());
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return aromaticity;
+
+		try {
+			aromaticity = LinAlgorithm.solve(this, PerfectMatchingType.DET);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		aromaticity.normalize(getNbKekuleStructures());
+		return aromaticity;
+	}
+
+	public double getNbKekuleStructures() {
+
+		if (nbKekuleStructures == -1) {
+			int[] disabledVertices = new int[getNbNodes()];
+			int[] degrees = getDegrees();
+
+			SubGraph subGraph = new SubGraph(getAdjacencyMatrix(), disabledVertices, degrees, PerfectMatchingType.DET);
+
+			nbKekuleStructures = subGraph.getNbPerfectMatchings();
+		}
+
+		return nbKekuleStructures;
+	}
+
+	public void normalizeAromaticity() {
+		if (aromaticity == null)
+			aromaticity = getAromaticity();
+
+	}
+
+	public boolean isAromaticitySet() {
+		return aromaticity != null;
+	}
+
+	public boolean edgeExists(int i, int j) {
+		return adjacencyMatrix[i][j] == 1;
+	}
+
+	public ArrayList<Couple<Integer, Integer>> getBoundsInvolved(int carbon) {
+
+		ArrayList<Couple<Integer, Integer>> bounds = new ArrayList<>();
+
+		for (int i = 0; i < nbNodes; i++) {
+			if (edgeExists(carbon, i))
+				bounds.add(new Couple<>(carbon, i));
+		}
+
+		return bounds;
+
+	}
+
+	public ArrayList<Integer> getHexagonsInvolved(int carbon) {
+
+		ArrayList<Integer> hexagons = new ArrayList<>();
+
+		for (int i = 0; i < nbHexagons; i++) {
+			int[] hexagon = getHexagons()[i];
+			for (Integer u : hexagon) {
+				if (u == carbon) {
+					hexagons.add(i);
+					break;
+				}
+			}
+		}
+
+		return hexagons;
+	}
+
+	public ArrayList<Integer> getHexagonsInvolved(int carbon1, int carbon2) {
+
+		ArrayList<Integer> hexagons = new ArrayList<>();
+
+		for (int i = 0; i < nbHexagons; i++) {
+
+			int[] hexagon = getHexagons()[i];
+			boolean containsCarbon1 = false;
+			boolean containsCarbon2 = false;
+
+			for (Integer u : hexagon) {
+				if (u == carbon1)
+					containsCarbon1 = true;
+				if (u == carbon2)
+					containsCarbon2 = true;
+
+				if (containsCarbon1 && containsCarbon2)
+					hexagons.add(i);
+			}
+
+		}
+
+		return hexagons;
+
+	}
+
+	public int[] getHexagon(int hexagon) {
+		return hexagons[hexagon];
+	}
+
+	@SuppressWarnings("unused")
+	public RBO getRBO() {
+
+		if (RBO != null)
+			return RBO;
+		
+		RBO = RBOSolver.RBO(this);
+		return RBO;
+		
+//		if (RBO != null)
+//			return RBO;
+//
+//		RBO = new double[nbHexagons];
+//
+//		ArrayList<ClarCoverSolution> clarCoversSolution = ClarCoverSolver.solve(this);
+//		ArrayList<ClarCoverSolution> kekuleStructuresSolutions = KekuleStructureSolver.solve(this);
+//
+//		double[][] doubleBondsStats = new double[nbNodes][nbNodes];
+//
+//		if (kekuleStructuresSolutions.size() > 0) {
+//
+//			for (ClarCoverSolution kekuleStructureSolution : kekuleStructuresSolutions) {
+//
+//				for (int i = 0; i < nbNodes; i++) {
+//					for (int j = (i + 1); j < nbNodes; j++) {
+//						if (kekuleStructureSolution.isDoubleBond(i, j)) {
+//							doubleBondsStats[i][j] += 1.0;
+//							doubleBondsStats[j][i] += 1.0;
+//						}
+//					}
+//				}
+//			}
+//
+//			for (int i = 0; i < nbNodes; i++) {
+//				for (int j = (i + 1); j < nbNodes; j++) {
+//					if (edgeExists(i, j)) {
+//
+//						double value = (doubleBondsStats[i][j] / (double) kekuleStructuresSolutions.size()) * 100.0;
+//						doubleBondsStats[i][j] = value;
+//						doubleBondsStats[j][i] = value;
+//						System.out.print("");
+//					}
+//				}
+//			}
+//
+//			for (int i = 0; i < nbHexagons; i++) {
+//
+//				int[] hexagon = hexagons[i];
+//				double avg = 0.0;
+//
+//				for (int j = 0; j < 6; j++) {
+//
+//					int u = hexagon[j];
+//					int v = hexagon[(j + 1) % 6];
+//
+//					avg += doubleBondsStats[u][v];
+//				}
+//
+//				avg = avg / 100.0;
+//				RBO[i] = avg;
+//			}
+//		}
+//
+//		return RBO;
+	}
+
+	public void setComparator(MoleculeComparator comparator) {
+		this.comparator = comparator;
+	}
+
+	@Override
+	public int compareTo(Molecule arg0) {
+		return comparator.compare(this, arg0);
+	}
+
+	public void setClarCoverSolution(ClarCoverSolution clarCoverSolution) {
+		this.clarCoverSolution = clarCoverSolution;
+		clarCoverGroup = new ClarCoverGroup(this, clarCoverSolution);
+	}
+
+	public ClarCoverSolution getClarCoverSolution() {
+		return clarCoverSolution;
+	}
+
+	public ClarCoverGroup getClarCoverGroup() {
+		return clarCoverGroup;
+	}
+
+	public RBOGroup getRBOGroup() {
+		return rboGroup;
+	}
+
+	public void setRBOGroup(RBOGroup rboGroup) {
+		this.rboGroup = rboGroup;
+	}
+
+	private int[][] buildCoordsMatrix(int nbCrowns, int diameter) {
+
+		int[][] coordsMatrix = new int[diameter][diameter];
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+				coordsMatrix[i][j] = -1;
+			}
+		}
+
+		int index = 0;
+		int m = (diameter - 1) / 2;
+
+		int shift = diameter - nbCrowns;
+
+		for (int i = 0; i < m; i++) {
+
+			for (int j = 0; j < diameter - shift; j++) {
+				coordsMatrix[i][j] = index;
+				index++;
+			}
+
+			for (int j = diameter - shift; j < diameter; j++)
+				index++;
+
+			shift--;
+		}
+
+		for (int j = 0; j < diameter; j++) {
+			coordsMatrix[m][j] = index;
+			index++;
+		}
+
+		shift = 1;
+
+		for (int i = m + 1; i < diameter; i++) {
+
+			for (int j = 0; j < shift; j++)
+				index++;
+
+			for (int j = shift; j < diameter; j++) {
+				coordsMatrix[i][j] = index;
+				index++;
+			}
+
+			shift++;
+		}
+
+		return coordsMatrix;
+	}
+
+	private boolean touchBorder(int xShift, int yShift, ArrayList<Integer> topBorder, ArrayList<Integer> leftBorder,
+			int[][] coordsMatrix) {
+
+		boolean topContains = false;
+		boolean leftContains = false;
+
+		for (int i = 0; i < nbHexagons; i++) {
+			Couple<Integer, Integer> coord = hexagonsCoords[i];
+
+			int x = coord.getX() + xShift;
+			int y = coord.getY() + yShift;
+
+			if (x >= 0 && x < coordsMatrix.length && y >= 0 && y < coordsMatrix.length) {
+
+				if (topBorder.contains(coordsMatrix[x][y]))
+					topContains = true;
+
+				if (leftBorder.contains(coordsMatrix[x][y]))
+					leftContains = true;
+
+				if (topContains && leftContains)
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean touchBorder(ArrayList<Integer> hexagons, ArrayList<Integer> topBorder,
+			ArrayList<Integer> leftBorder) {
+
+		boolean touchTop = false;
+		boolean touchLeft = false;
+
+		for (Integer hexagon : hexagons) {
+			if (topBorder.contains(hexagon))
+				touchTop = true;
+			if (leftBorder.contains(hexagon))
+				touchLeft = true;
+		}
+
+		return touchTop && touchLeft;
+	}
+
+	public boolean areNeighbors(int hexagon1, int hexagon2) {
+
+		for (int i = 0; i < 6; i++) {
+			if (dualGraph[hexagon1][i] == hexagon2)
+				return true;
+		}
+
+		return false;
+	}
+
+	public Fragment convertToPattern(int xShift, int yShift) {
+
+		@SuppressWarnings("unchecked")
+		Couple<Integer, Integer>[] shiftCoords = new Couple[nbHexagons];
+		int nbNodes = nbHexagons;
+
+		for (int i = 0; i < nbHexagons; i++)
+			// shiftCoords[i] = new Couple<>(hexagonsCoords[i].getY() + 0,
+			// hexagonsCoords[i].getX() + 0);
+			shiftCoords[i] = new Couple<>(hexagonsCoords[i].getX() + xShift, hexagonsCoords[i].getY() + yShift);
+
+		/*
+		 * Nodes
+		 */
+
+		Node[] nodes = new Node[nbHexagons];
+
+		for (int i = 0; i < nbHexagons; i++) {
+			Couple<Integer, Integer> couple = shiftCoords[i];
+			// nodes[i] = new Node(couple.getY(), couple.getX(), i);
+			nodes[i] = new Node(couple.getX(), couple.getY(), i);
+		}
+
+		/*
+		 * Matrix
+		 */
+
+		int[][] matrix = new int[nbHexagons][nbHexagons];
+		int[][] neighbors = new int[nbHexagons][6];
+
+		for (int i = 0; i < nbHexagons; i++)
+			for (int j = 0; j < 6; j++)
+				neighbors[i][j] = -1;
+
+		for (int i = 0; i < nbHexagons; i++) {
+
+			Node n1 = nodes[i];
+
+			for (int j = (i + 1); j < nbHexagons; j++) {
+
+				Node n2 = nodes[j];
+
+				if (areNeighbors(i, j)) {
+
+					// Setting matrix
+					matrix[i][j] = 1;
+					matrix[j][i] = 1;
+
+					// Setting neighbors
+					int x1 = n1.getX();
+					int y1 = n1.getY();
+					int x2 = n2.getX();
+					int y2 = n2.getY();
+
+					if (x2 == x1 && y2 == y1 - 1) {
+						neighbors[i][0] = j;
+						neighbors[j][3] = i;
+					}
+
+					else if (x2 == x1 + 1 && y2 == y1) {
+						neighbors[i][1] = j;
+						neighbors[j][4] = i;
+					}
+
+					else if (x2 == x1 + 1 && y2 == y1 + 1) {
+						neighbors[i][2] = j;
+						neighbors[j][5] = i;
+					}
+
+					else if (x2 == x1 && y2 == y1 + 1) {
+						neighbors[i][3] = j;
+						neighbors[j][0] = i;
+					}
+
+					else if (x2 == x1 - 1 && y2 == y1) {
+						neighbors[i][4] = j;
+						neighbors[j][1] = i;
+					}
+
+					else if (x2 == x1 - 1 && y2 == y1 - 1) {
+						neighbors[i][5] = j;
+						neighbors[j][2] = i;
+					}
+				}
+
+			}
+		}
+
+		/*
+		 * Label
+		 */
+
+		int[] labels = new int[nbHexagons];
+
+		for (int i = 0; i < nbNodes; i++)
+			labels[i] = 2;
+
+		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
+	}
+
+	public ArrayList<String> translations(Fragment pattern, int diameter, int[][] coordsMatrix,
+			ArrayList<Integer> topBorder, ArrayList<Integer> leftBorder) {
+
+		ArrayList<String> names = new ArrayList<>();
+
+		int xShiftMax = Math.max(Math.abs(pattern.xMax() - pattern.xMin()), diameter);
+		int yShiftMax = Math.max(Math.abs(pattern.yMax() - pattern.yMin()), diameter);
+
+		for (int xShift = 0; xShift < xShiftMax; xShift++) {
+			for (int yShift = 0; yShift < yShiftMax; yShift++) {
+
+				Node[] initialCoords = pattern.getNodesRefs();
+				Node[] shiftedCoords = new Node[initialCoords.length];
+
+				boolean ok = true;
+
+				for (int i = 0; i < shiftedCoords.length; i++) {
+					Node node = initialCoords[i];
+					// if (node != null) {
+					Node newNode = new Node(node.getX() + xShift, node.getY() + yShift, i);
+					shiftedCoords[i] = newNode;
+
+					int x = newNode.getX();
+					int y = newNode.getY();
+
+					if (x < 0 || x >= diameter || y < 0 || y >= diameter || coordsMatrix[x][y] == -1) {
+						ok = false;
+						break;
+					}
+					// }
+				}
+
+				if (ok) {
+//					StringBuilder name = new StringBuilder();
+//					for (int i = 0; i < shiftedCoords.length; i++) {
+//						Node node = shiftedCoords[i];
+//						int hexagon = coordsMatrix[node.getX()][node.getY()];
+//						name.append(hexagon);
+//						if (i < shiftedCoords.length - 1)
+//							name.append("-");
+//					}
+//					names.add(name.toString());
+
+					ArrayList<Integer> hexagons = new ArrayList<>();
+					for (int i = 0; i < shiftedCoords.length; i++) {
+						Node node = shiftedCoords[i];
+						int hexagon = coordsMatrix[node.getX()][node.getY()];
+						hexagons.add(hexagon);
+					}
+
+					if (touchBorder(hexagons, topBorder, leftBorder)) {
+						Collections.sort(hexagons);
+						StringBuilder name = new StringBuilder();
+						for (int i = 0; i < hexagons.size(); i++) {
+							name.append(hexagons.get(i));
+							if (i < hexagons.size() - 1)
+								name.append("-");
+						}
+						names.add(name.toString());
+					}
+
+				}
+			}
+		}
+
+		return names;
+	}
+
+	public ArrayList<String> getNames() {
+
+		if (names != null)
+			return names;
+
+		/*
+		 * Creating coronenoid matrix
+		 */
+
+		names = new ArrayList<>();
+
+		int nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
+
+		if (nbHexagons % 2 == 1)
+			nbCrowns--;
+
+		int diameter = (2 * nbCrowns) - 1;
+
+		int[][] coordsMatrix = buildCoordsMatrix(nbCrowns, diameter);
+
+		ArrayList<Integer> topBorder = new ArrayList<>();
+		ArrayList<Integer> leftBorder = new ArrayList<>();
+
+		for (int i = 0; i < diameter; i++) {
+			if (coordsMatrix[0][i] != -1)
+				topBorder.add(coordsMatrix[0][i]);
+		}
+
+		for (int i = 0; i < diameter; i++) {
+
+			int j = 0;
+			while (coordsMatrix[i][j] == -1)
+				j++;
+
+			leftBorder.add(coordsMatrix[i][j]);
+		}
+
+		int xShift = -1;
+		int yShift = -1;
+
+		boolean touchBorder = false;
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+				if (touchBorder(i, j, topBorder, leftBorder, coordsMatrix)) {
+					touchBorder = true;
+					xShift = i;
+					yShift = j;
+					break;
+				}
+			}
+			if (touchBorder)
+				break;
+		}
+
+		Fragment pattern = convertToPattern(xShift, yShift);
+		ArrayList<Fragment> rotations = pattern.computeRotations();
+
+		for (Fragment f : rotations) {
+			ArrayList<String> rotationsNames = translations(f, diameter, coordsMatrix, topBorder, leftBorder);
+			for (String name : rotationsNames) {
+				if (!names.contains(name))
+					names.add(name);
+			}
+		}
+
+		// for (String name : names)
+		// System.out.println(name);
+
+		return names;
+	}
+
+	private void buildHexagonsCoords2() {
+		int[][] dualGraph = this.getDualGraph();
+
+		int[] checkedHexagons = new int[this.getNbHexagons()];
+
+		ArrayList<Integer> candidates = new ArrayList<Integer>();
+		candidates.add(0);
+
+		hexagonsCoords = new Couple[nbHexagons];
+
+		checkedHexagons[0] = 1;
+		hexagonsCoords[0] = new Couple<Integer, Integer>(0, 0);
+
+		// centersCoords[0] = new Couple<Double, Double>(40.0, 40.0);
+
+		while (candidates.size() > 0) {
+
+			int candidate = candidates.get(0);
+
+			for (int i = 0; i < 6; i++) {
+
+				int n = dualGraph[candidate][i];
+				if (n != -1) {
+					if (checkedHexagons[n] == 0) {
+
+						int x = hexagonsCoords[candidate].getX();
+						int y = hexagonsCoords[candidate].getY();
+
+						// double xCenter = centersCoords[candidate].getX();
+						// double yCenter = centersCoords[candidate].getY();
+
+						if (i == 0) {
+
+							x += 0;
+							y += -1;
+
+							// xCenter += 26.0;
+							// yCenter -= 43.5;
+						}
+
+						else if (i == 1) {
+
+							x += 1;
+							y += 0;
+
+							// xCenter += 52.0;
+							// yCenter += 0.0;
+						}
+
+						else if (i == 2) {
+
+							x += 1;
+							y += 1;
+
+							// xCenter += 26.0;
+							// yCenter += 43.5;
+						}
+
+						else if (i == 3) {
+
+							x += 0;
+							y += 1;
+
+							// xCenter -= 26.0;
+							// yCenter += 43.5;
+						}
+
+						else if (i == 4) {
+
+							x += -1;
+							y += 0;
+
+							// xCenter -= 52.0;
+							// yCenter += 0.0;
+						}
+
+						else if (i == 5) {
+
+							x += -1;
+							y += -1;
+
+							// xCenter -= 26.0;
+							// yCenter -= 43.5;
+						}
+
+						checkedHexagons[n] = 1;
+						hexagonsCoords[n] = new Couple<Integer, Integer>(x, y);
+						// centersCoords[n] = new Couple<Double, Double>(xCenter, yCenter);
+						candidates.add(n);
+					}
+				}
+			}
+
+			candidates.remove(candidates.get(0));
+		}
+
+	}
+
+	// "{\"name\": \"1-11-20-27-28-29-30-39\"}";
+	@SuppressWarnings("rawtypes")
+	public ResultLogFile getNicsResult() {
+
+		if (nicsResult != null || databaseChecked)
+			return nicsResult;
+
+		if (!Post.isDatabaseConnected)
+			return null;
+
+		databaseChecked = true;
+
+		String name = getNames().get(0);
+		String url = "https://benzenoids.lis-lab.fr/find_name/";
+		String json = "{\"name\": \"" + name + "\"}";
+
+		try {
+			List<Map> results = Post.post(url, json);
+
+			if (results.size() > 0) {
+				SelectQueryContent content = SelectQueryContent.buildQueryContent(results.get(0));
+				nicsResult = content.buildResultLogFile();
+				System.out.println(nicsResult);
+				return nicsResult;
+			}
+
+		} catch (Exception e) {
+			System.out.println("Connection to database failed");
+			return null;
+		}
+
+		return null;
+	}
+
+	public boolean inDatabase() {
+
+		String name = getNames().get(0);
+		String url = "https://benzenoids.lis-lab.fr/find_id/";
+		String json = "{\"name\": \"" + name + "\"}";
+
+		try {
+			List<Map> results = Post.post(url, json);
+
+			if (results.size() > 0) {
+				return true;
+			}
+
+		} catch (Exception e) {
+			System.out.println("Connection to database failed");
+			return false;
+		}
+
+		return false;
+
+	}
+
+	public void setNicsResult(ResultLogFile nicsResult) {
+		this.nicsResult = nicsResult;
+		databaseChecked = true;
+	}
+
+	public boolean databaseChecked() {
+		return databaseChecked;
+	}
+
+	public static ArrayList<Molecule> union(ArrayList<Molecule> molecules1, ArrayList<Molecule> molecules2) {
+
+		ArrayList<Molecule> molecules = new ArrayList<>();
+
+		for (Molecule molecule : molecules1) {
+			if (!molecules.contains(molecule))
+				molecules.add(molecule);
+		}
+
+		for (Molecule molecule : molecules2) {
+			if (!molecules.contains(molecule))
+				molecules.add(molecule);
+		}
+
+		return molecules;
+	}
+
+	public static ArrayList<Molecule> intersection(ArrayList<Molecule> molecules1, ArrayList<Molecule> molecules2) {
+
+		ArrayList<Molecule> molecules = new ArrayList<>();
+
+		for (Molecule molecule : molecules1) {
+			if (molecules2.contains(molecule))
+				molecules.add(molecule);
+		}
+
+		return molecules;
+	}
+
+	public static ArrayList<Molecule> diff(ArrayList<Molecule> molecules1, ArrayList<Molecule> molecules2) {
+
+		ArrayList<Molecule> molecules = new ArrayList<>();
+
+		for (Molecule molecule : molecules1) {
+			if (!molecules2.contains(molecule))
+				molecules.add(molecule);
+		}
+
+		return molecules;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		Molecule molecule = (Molecule) obj;
+
+		for (String name : molecule.getNames()) {
+			if (this.getNames().contains(name))
+				return true;
+		}
+
+		return false;
+	}
+
+}
