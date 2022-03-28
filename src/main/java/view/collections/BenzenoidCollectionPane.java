@@ -106,6 +106,12 @@ public class BenzenoidCollectionPane extends Tab {
 
 		initializeOnClose();
 
+		this.setOnCloseRequest(e -> {
+			System.out.println("Fermeture " + getName());
+			// ~ if (parent.getBenzenoidSetPanes().size() > 2)
+			parent.remove(this);
+		});
+
 		lock = false;
 
 		propertiesLabel = new Label("Benzenoid's properties");
@@ -295,11 +301,13 @@ public class BenzenoidCollectionPane extends Tab {
 	}
 
 	private void initializeOnClose() {
-		this.setOnClosed(e -> {
-			if (parent.getBenzenoidSetPanes().size() > 2) {
-				parent.remove(this);
-			}
-		});
+		// ~ System.out.println ("Activation on Close "+ name);
+		// ~ this.setOnClosed(e -> {
+		// ~ System.out.println("onClosed() activé " + name);
+		// ~ if (parent.getBenzenoidSetPanes().size() > 1) {
+		// ~ parent.remove(this);
+		// ~ }
+		// ~ });
 	}
 
 	public void addSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
@@ -320,7 +328,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 	public void refresh() {
 
-		// System.out.println("refresh() !");
+		System.out.println("refresh() 2 !");
 
 		gridPane = new GridPane();
 
@@ -481,6 +489,8 @@ public class BenzenoidCollectionPane extends Tab {
 								}
 
 								else {
+
+									System.out.println("On recalcule pas !");
 
 									Group benzenoidDrawRBO = rboGroups.get(i);
 
@@ -741,6 +751,8 @@ public class BenzenoidCollectionPane extends Tab {
 
 	public void removeBenzenoidPanes(ArrayList<BenzenoidPane> benzenoidPanesRemove) {
 
+		System.out.println("removeBenzenoidPanes(): " + selectedBenzenoidPanes.size() + " selections");
+
 		ArrayList<Molecule> moleculesToRemove = new ArrayList<>();
 		ArrayList<BenzenoidPane> panesToRemove = new ArrayList<>();
 		ArrayList<Group> rboGroupsToRemove = new ArrayList<>();
@@ -789,6 +801,8 @@ public class BenzenoidCollectionPane extends Tab {
 	public void removeBenzenoidPane(BenzenoidPane benzenoidPane) {
 		benzenoidPanes.remove(benzenoidPane);
 		selectedBenzenoidPanes.remove(benzenoidPane);
+
+		System.out.println("molecules.size() = " + molecules.size());
 
 		Molecule molecule = molecules.get(benzenoidPane.getIndex());
 		molecules.remove(benzenoidPane.getIndex());

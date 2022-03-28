@@ -319,10 +319,10 @@ public class BenzenoidPane extends BorderPane {
 
 			builder.append(molecule.getNbNodes() + " carbons\n");
 			builder.append(molecule.getNbHydrogens() + " hydrogens\n");
-      if (molecule.getNbHexagons() == 1)
-        builder.append(molecule.getNbHexagons() + " hexagon\n");
-      else
-        builder.append(molecule.getNbHexagons() + " hexagons\n");
+			if (molecule.getNbHexagons() == 1)
+				builder.append(molecule.getNbHexagons() + " hexagon\n");
+			else
+				builder.append(molecule.getNbHexagons() + " hexagons\n");
 
 			// String nbKekuleStructures =
 			// Double.toString(molecule.getNbKekuleStructures()).split(Pattern.quote("."))[0];
@@ -337,10 +337,12 @@ public class BenzenoidPane extends BorderPane {
 				nbKekuleStructures = kekuleStr;
 			}
 
-      if (molecule.getNbKekuleStructures() > 1.0)
-        builder.append(new String(new String(nbKekuleStructures + " Kekulé structures").getBytes(),StandardCharsets.UTF_8) + "\n");
-      else
-        builder.append(new String(new String(nbKekuleStructures + " Kekulé structure").getBytes(),StandardCharsets.UTF_8) + "\n");
+			if (molecule.getNbKekuleStructures() > 1.0)
+				builder.append(new String(new String(nbKekuleStructures + " Kekulé structures").getBytes(),
+						StandardCharsets.UTF_8) + "\n");
+			else
+				builder.append(new String(new String(nbKekuleStructures + " Kekulé structure").getBytes(),
+						StandardCharsets.UTF_8) + "\n");
 
 			Irregularity irregularity = molecule.getIrregularity();
 
