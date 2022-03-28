@@ -31,43 +31,43 @@ public class SymmetriesCriterion extends FilteringCriterion {
 
 		criterions.add(hexagonCriterion);
 
-		if (symmetry.equals("Mirror symmetry"))
+		if (symmetry.equals("C_2v(a) \"face-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.SYMM_MIRROR, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 60°"))
+		else if (symmetry.equals("C_6h \"(face)-60-rotation\""))
 			criterions.add(new GeneratorCriterion(Subject.SYMM_ROT_60, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 120°"))
+		else if (symmetry.equals("C_3h(i) \"face-120-rotation\""))
 			criterions.add(new GeneratorCriterion(Subject.SYMM_ROT_120, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 180°"))
+		else if (symmetry.equals("C_2h(i) \"vertex_180-rotation\""))
 			criterions.add(new GeneratorCriterion(Subject.SYMM_ROT_180, Operator.NONE, ""));
 
-		else if (symmetry.equals("Vertical symmetry"))
+		else if (symmetry.equals("C_2v(b) \"edge-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.SYMM_VERTICAL, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 120° (vertex)"))
+		else if (symmetry.equals("C_3h(ii) \"vertex-120-rotation\""))
 			criterions.add(new GeneratorCriterion(Subject.SYMM_ROT_120_V, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 180° (edges)"))
+		else if (symmetry.equals("C_2h(ii) \"edge-180-rotation\""))
 			criterions.add(new GeneratorCriterion(Subject.SYMM_ROT_180_E, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 60° + Mirror"))
+		else if (symmetry.equals("D_6h \"(vertex)-60-rotation+(edge)-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.SYMM_ROT_60, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 120° (V) + Mirror"))
+		else if (symmetry.equals("D_3h(ii) \"vertex-120-rotation+(edge)-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.ROT_120_VERTEX_MIRROR, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 120° + Mirror (H)"))
+		else if (symmetry.equals("D_3h(ia) \"face-120-rotation+face-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.ROT_120_MIRROR_H, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 120° + Mirror (E)"))
+		else if (symmetry.equals("D_3h(ib) \"face-120-rotation+edge-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.ROT_120_MIRROR_E, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 180° + Mirror (E)"))
+		else if (symmetry.equals("D_2h(ii) \"edge-180-rotation+edge-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.ROT_180_EDGE_MIRROR, Operator.NONE, ""));
 
-		else if (symmetry.equals("Rotation of 180° + Mirror"))
+		else if (symmetry.equals("D_2h(i) \"face-180-rotation+edge-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.ROT_180_MIRROR, Operator.NONE, ""));
 
 		HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = GeneratorPane.buildCriterionsMap(criterions);

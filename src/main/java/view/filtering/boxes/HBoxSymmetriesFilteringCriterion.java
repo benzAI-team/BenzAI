@@ -38,20 +38,20 @@ public class HBoxSymmetriesFilteringCriterion extends HBoxFilteringCriterion {
 
 		symmetriesChoiceBox = new ChoiceBox<>();
 
-		symmetriesChoiceBox.getItems().add("Mirror symmetry");
-		symmetriesChoiceBox.getItems().add("Rotation of 60°");
-		symmetriesChoiceBox.getItems().add("Rotation of 120°");
-		symmetriesChoiceBox.getItems().add("Rotation of 180°");
-		symmetriesChoiceBox.getItems().add("Vertical symmetry");
-		symmetriesChoiceBox.getItems().add("Rotation of 120° (vertex)");
-		symmetriesChoiceBox.getItems().add("Rotation of 180° (edges)");
+		symmetriesChoiceBox.getItems().add("C_2v(a) \"face-mirror\"");
+		symmetriesChoiceBox.getItems().add("C_6h \"(face)-60-rotation\"");
+		symmetriesChoiceBox.getItems().add("C_3h(i) \"face-120-rotation\"");
+		symmetriesChoiceBox.getItems().add("C_2h(i) \"vertex_180-rotation\"");
+		symmetriesChoiceBox.getItems().add("C_2v(b) \"edge-mirror\"");
+		symmetriesChoiceBox.getItems().add("C_3h(ii) \"vertex-120-rotation\"");
+		symmetriesChoiceBox.getItems().add("C_2h(ii) \"edge-180-rotation\"");
 
-		symmetriesChoiceBox.getItems().add("Rotation of 60° + Mirror");
-		symmetriesChoiceBox.getItems().add("Rotation of 120° (V) + Mirror");
-		symmetriesChoiceBox.getItems().add("Rotation of 120° + Mirror (H)");
-		symmetriesChoiceBox.getItems().add("Rotation of 120° + Mirror (E)");
-		symmetriesChoiceBox.getItems().add("Rotation of 180° + Mirror (E)");
-		symmetriesChoiceBox.getItems().add("Rotation of 180° + Mirror");
+		symmetriesChoiceBox.getItems().add("D_6h \"(vertex)-60-rotation+(edge)-mirror\"");
+		symmetriesChoiceBox.getItems().add("D_3h(ii) \"vertex-120-rotation+(edge)-mirror\"");
+		symmetriesChoiceBox.getItems().add("D_3h(ia) \"face-120-rotation+face-mirror\"");
+		symmetriesChoiceBox.getItems().add("D_3h(ib) \"face-120-rotation+edge-mirror\"");
+		symmetriesChoiceBox.getItems().add("D_2h(ii) \"edge-180-rotation+edge-mirror\"");
+		symmetriesChoiceBox.getItems().add("D_2h(i) \"face-180-rotation+edge-mirror\"");
 
 		symmetriesChoiceBox.getSelectionModel().selectFirst();
 
