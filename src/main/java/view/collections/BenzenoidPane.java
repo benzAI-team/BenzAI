@@ -31,7 +31,7 @@ import solveur.Aromaticity.RIType;
 import spectrums.ResultLogFile;
 import view.groups.AromaticityGroup;
 
-public class BenzenoidPane extends BorderPane {
+public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPane> {
 
 	private BenzenoidCollectionPane benzenoidSetPane;
 
@@ -497,5 +497,15 @@ public class BenzenoidPane extends BorderPane {
 
 	public Molecule getMolecule() {
 		return benzenoidSetPane.getMolecule(index);
+	}
+
+	@Override
+	public int compareTo(BenzenoidPane o) {
+		if (index < o.getIndex())
+			return -1;
+		else if (index == o.getIndex())
+			return 0;
+		else
+			return 1;
 	}
 }

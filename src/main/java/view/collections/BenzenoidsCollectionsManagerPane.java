@@ -3,6 +3,7 @@ package view.collections;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -804,13 +805,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	public void move(BenzenoidCollectionPane setPaneOrigin, BenzenoidCollectionPane setPaneDestination) {
 
-		System.out.println("begin move() : origin.benzenoidPanes.size() = " + setPaneOrigin.getBenzenoidPanes().size());
-		System.out.println(
-				"begin move() : destination.benzenoidPanes.size() = " + setPaneDestination.getBenzenoidPanes().size());
-
 		ArrayList<BenzenoidPane> benzenoidPanesMoved = new ArrayList<>();
 		ArrayList<Molecule> moleculesMoved = new ArrayList<>();
 		ArrayList<DisplayType> displayTypesMoved = new ArrayList<>();
+
+		Collections.sort(setPaneOrigin.getSelectedBenzenoidPanes());
 
 		for (int i = 0; i < setPaneOrigin.getSelectedBenzenoidPanes().size(); i++) {
 
@@ -850,6 +849,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void paste() {
 
 		BenzenoidCollectionPane destinationPane = getSelectedTab();
+
+		Collections.sort(copiedBenzenoidPanes);
 
 		for (BenzenoidPane pane : copiedBenzenoidPanes) {
 

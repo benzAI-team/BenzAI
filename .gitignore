@@ -4,3 +4,6 @@
 .settings/*
 dependency-reduced-pom.xml
 config
+bin/*
+.gitignore
+*.graph_coord
