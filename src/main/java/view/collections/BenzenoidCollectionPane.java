@@ -104,11 +104,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 	private void initialize() {
 
-		initializeOnClose();
-
 		this.setOnCloseRequest(e -> {
-			System.out.println("Fermeture " + getName());
-			// ~ if (parent.getBenzenoidSetPanes().size() > 2)
 			parent.remove(this);
 		});
 
@@ -300,15 +296,6 @@ public class BenzenoidCollectionPane extends Tab {
 		rboGroups.add(null);
 	}
 
-	private void initializeOnClose() {
-		// ~ System.out.println ("Activation on Close "+ name);
-		// ~ this.setOnClosed(e -> {
-		// ~ System.out.println("onClosed() activé " + name);
-		// ~ if (parent.getBenzenoidSetPanes().size() > 1) {
-		// ~ parent.remove(this);
-		// ~ }
-		// ~ });
-	}
 
 	public void addSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
 		selectedBenzenoidPanes.add(benzenoidPane);
