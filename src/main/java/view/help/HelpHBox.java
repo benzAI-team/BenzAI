@@ -78,20 +78,16 @@ public class HelpHBox extends HBox {
 
 		HelpHBox inputBox = new HelpHBox("How to fill a collection", helpPane);
 
-		File fileGenerator = getFile("generator.txt");
-		SubHelpHBox generatorBox = new SubHelpHBox("Generating benzenoids", fileGenerator, helpPane);
+		SubHelpHBox generatorBox = new SubHelpHBox("Generating benzenoids", "generator.txt", helpPane);
 		inputBox.addSubBox(generatorBox);
 
-		File fileDraw = getFile("draw.txt");
-		SubHelpHBox drawBox = new SubHelpHBox("Drawing benzenoids", fileDraw, helpPane);
+		SubHelpHBox drawBox = new SubHelpHBox("Drawing benzenoids", "draw.txt", helpPane);
 		inputBox.addSubBox(drawBox);
 
-		File fileDatabase = getFile("database.txt");
-		SubHelpHBox databaseBox = new SubHelpHBox("Fetching benzenoids from database", fileDatabase, helpPane);
+		SubHelpHBox databaseBox = new SubHelpHBox("Fetching benzenoids from database", "database.txt", helpPane);
 		inputBox.addSubBox(databaseBox);
 
-		File fileImport = getFile("import.txt");
-		SubHelpHBox importBox = new SubHelpHBox("Import benzenoid file", fileImport, helpPane);
+		SubHelpHBox importBox = new SubHelpHBox("Import benzenoid file", "import.txt", helpPane);
 		inputBox.addSubBox(importBox);
 
 		boxes.add(inputBox);

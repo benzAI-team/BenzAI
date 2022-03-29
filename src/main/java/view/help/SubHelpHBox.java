@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -15,13 +17,13 @@ public class SubHelpHBox extends HBox {
 	private HelpPane parent;
 
 	private String name;
-	private File textFile;
+	private String filename;
 	private String text;
 
-	public SubHelpHBox(String name, File textFile, HelpPane parent) {
+	public SubHelpHBox(String name, String filename, HelpPane parent) {
 		super(1.0);
 		this.name = name;
-		this.textFile = textFile;
+		this.filename = filename;
 		this.parent = parent;
 
 		initialize();
@@ -46,7 +48,9 @@ public class SubHelpHBox extends HBox {
 		StringBuilder builder = new StringBuilder();
 
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(textFile));
+      System.out.println("File "+filename);
+      InputStream in = getClass().getResourceAsStream("/resources/doc/"+filename);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
 
 			while ((line = reader.readLine()) != null) {
