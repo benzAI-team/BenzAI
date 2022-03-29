@@ -248,6 +248,9 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	public void addBenzenoidSetPane(BenzenoidCollectionPane benzenoidSetPane) {
 
+//		String name = benzenoidSetPane.getName();
+//		for (BenzenoidCollectionPane)
+
 		String consoleContent = "";
 		if (benzenoidSetPanes.size() > 0)
 			consoleContent = benzenoidSetPanes.get(0).getConsole().getText();

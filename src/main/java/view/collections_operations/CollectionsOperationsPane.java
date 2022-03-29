@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -26,7 +27,15 @@ public class CollectionsOperationsPane extends GridPane {
 	private ChoiceBox<String> collectionBox1;
 	private ChoiceBox<String> collectionBox2;
 	private ChoiceBox<String> operatorBox;
-	private HBox box;
+
+	private TextField collectionName;
+
+	private HBox operationBox;
+	private HBox boxCollectionName;
+
+	private Label labelCollectionName;
+
+	private Button applyButton;
 
 	public CollectionsOperationsPane(BenzenoidApplication application) {
 		super();
@@ -58,12 +67,20 @@ public class CollectionsOperationsPane extends GridPane {
 			collectionBox2.getItems().add(collectionPane.getName());
 		}
 
-		box = new HBox(3.0);
-		box.getChildren().addAll(collectionBox1, operatorBox, collectionBox2);
+		labelCollectionName = new Label("New collection's name: ");
+		collectionName = new TextField();
 
-		this.add(box, 0, 1);
+		operationBox = new HBox(5.0);
+		operationBox.getChildren().addAll(new Label("Collection #1: "), collectionBox1, new Label("Operation: "), operatorBox,
+				new Label("Collection #2: "), collectionBox2);
 
-		Button applyButton = new Button("Apply");
+		boxCollectionName = new HBox(5.0);
+		boxCollectionName.getChildren().addAll(labelCollectionName, collectionName);
+
+		this.add(operationBox, 0, 1);
+		this.add(boxCollectionName, 0, 2);
+
+		applyButton = new Button("Apply");
 
 		applyButton.setOnAction(e -> {
 
@@ -95,7 +112,12 @@ public class CollectionsOperationsPane extends GridPane {
 
 				BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
 
-				String name = pane1.getName() + "_" + operatorBox.getValue() + "_" + pane2.getName();
+				String name;
+
+				if (!collectionName.getText().equals(""))
+					name = collectionName.getText();
+				else
+					name = pane1.getName() + "_" + operatorBox.getValue() + "_" + pane2.getName();
 
 				BenzenoidCollectionPane newCollectionPane = new BenzenoidCollectionPane(managerPane,
 						managerPane.getNbCollectionPanes(), name);
@@ -118,7 +140,7 @@ public class CollectionsOperationsPane extends GridPane {
 				Utils.alert("Error !");
 		});
 
-		this.add(applyButton, 0, 2);
+		this.add(applyButton, 0, 3);
 	}
 
 	public void refreshBoxes() {
@@ -128,6 +150,8 @@ public class CollectionsOperationsPane extends GridPane {
 		collectionBox1 = new ChoiceBox<>();
 		collectionBox2 = new ChoiceBox<>();
 
+		this.getChildren().remove(operationBox);
+
 		for (int i = 0; i < application.getBenzenoidCollectionsPane().getBenzenoidSetPanes().size() - 1; i++) {
 			BenzenoidCollectionPane collectionPane = application.getBenzenoidCollectionsPane().getBenzenoidSetPanes()
 					.get(i);
@@ -135,9 +159,10 @@ public class CollectionsOperationsPane extends GridPane {
 			collectionBox2.getItems().add(collectionPane.getName());
 		}
 
-		box = new HBox(3.0);
-		box.getChildren().addAll(collectionBox1, operatorBox, collectionBox2);
+		operationBox = new HBox(5.0);
+		operationBox.getChildren().addAll(new Label("Collection #1: "), collectionBox1, new Label("Operation: "), operatorBox,
+				new Label("Collection #2: "), collectionBox2);
 
-		this.add(box, 0, 1);
+		this.add(operationBox, 0, 1);
 	}
 }
