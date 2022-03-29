@@ -244,6 +244,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 			}
 		});
+
+		tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+			getSelectedTab().refreshCollectionProperties();
+		});
 	}
 
 	public void addBenzenoidSetPane(BenzenoidCollectionPane benzenoidSetPane) {
