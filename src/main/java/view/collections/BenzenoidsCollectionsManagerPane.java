@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+
 import application.ApplicationMode;
 import application.BenzenoidApplication;
 import classifier.Irregularity;
@@ -32,12 +33,16 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import molecules.Molecule;
 import molecules.sort.IrregularityComparator;
 import molecules.sort.MoleculeComparator;
@@ -183,51 +188,57 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		// creates the tab pane
 		tabPane = new TabPane();
 
-		tabPane.setOnKeyPressed(e -> {
-
-			System.out.println("tabPane.keyPress() (l. 283)");
-
-			if (e.getCode() == KeyCode.CONTROL || e.getCode() == KeyCode.COMMAND)
-				flagCtrl = true;
-
-			if (e.getCode() == KeyCode.A)
-				flagA = true;
-
-			if (e.getCode() == KeyCode.C)
-				flagC = true;
-
-			if (e.getCode() == KeyCode.V)
-				flagV = true;
-
-			if (flagCtrl && flagA && !selectAll)
-				selectAll();
-
-			if (flagCtrl && flagC) {
-				BenzenoidCollectionPane curentPane = getSelectedTab();
-				curentPane.copy();
-				System.out.println("CTRL + C: " + copiedBenzenoidPanes.size() + " copied");
-			}
-
-			if (flagCtrl && flagV)
-				paste();
-
-		});
-
-		tabPane.setOnKeyReleased(e -> {
-
-			if (e.getCode() == KeyCode.CONTROL)
-				flagCtrl = false;
-
-			if (e.getCode() == KeyCode.A)
-				flagA = false;
-
-			if (e.getCode() == KeyCode.C)
-				flagC = false;
-
-			if (e.getCode() == KeyCode.V)
-				flagV = false;
-		});
-
+    // definition of the key combination
+    KeyCombination C_a = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
+    KeyCombination C_c = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+    KeyCombination C_v = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+    KeyCombination C_w = new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN);
+    KeyCombination C_pdown = new KeyCodeCombination(KeyCode.PAGE_DOWN, KeyCombination.CONTROL_DOWN);
+    KeyCombination C_pup = new KeyCodeCombination(KeyCode.PAGE_UP, KeyCombination.CONTROL_DOWN);
+    
+    // treatment of the pressed key(s)
+    tabPane.addEventFilter(KeyEvent.KEY_PRESSED, evt -> {
+      if (C_a.match(evt)) { // selects all benzenoids
+        selectAll();
+        evt.consume();
+      } 
+      else
+        if (C_c.match(evt)) { // copies the selected benzenoids
+          BenzenoidCollectionPane curentPane = getSelectedTab();
+          curentPane.copy();
+          evt.consume();
+        } 
+      else
+        if (C_v.match(evt)) { // pastes the copied benzenoids
+          paste();
+          evt.consume();
+        } 
+      else
+        if (C_w.match(evt)) { // closes the current tab
+          remove(benzenoidSetPanes.get(tabPane.getSelectionModel().getSelectedIndex()));
+          tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedItem());
+          
+          evt.consume();
+        } 
+      else
+        if (C_pdown.match(evt)) { // moves to the previous tab but skips the add
+          if (tabPane.getSelectionModel().getSelectedIndex() == benzenoidSetPanes.size()-2)
+          {
+            tabPane.getSelectionModel().select(0);
+            evt.consume();
+          }
+        } 
+      else
+        if (C_pup.match(evt)) { // moves to the next tab but skips the add tab
+          if (tabPane.getSelectionModel().getSelectedIndex() == 0)
+          {
+            tabPane.getSelectionModel().select(benzenoidSetPanes.size()-2);
+            evt.consume();
+          }
+        } 
+    });
+    
+    
 		tabPane.setOnMouseClicked(e -> {
 
 			if (e.getButton() == MouseButton.PRIMARY) {
