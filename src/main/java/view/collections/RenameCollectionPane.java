@@ -1,5 +1,6 @@
 package view.collections;
 
+import java.util.Iterator;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -54,8 +55,13 @@ public class RenameCollectionPane extends GridPane {
 
 			String name = fieldCollectionName.getText();
 
-			if (!name.equals("")) {
-				parent.renameCurentTab(name);
+			if ((!name.equals("")) && (!name.equals("+"))) {
+        Iterator<BenzenoidCollectionPane> iter = parent.getBenzenoidSetPanes().iterator();
+        while ((iter.hasNext()) && (!iter.next().getName().equals(name))) {
+        }
+
+        if (! iter.hasNext())
+          parent.renameCurentTab(name);
 			}
 
 			Stage stage = (Stage) this.getScene().getWindow();
