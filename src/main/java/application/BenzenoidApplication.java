@@ -12,6 +12,10 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
@@ -176,13 +180,14 @@ public class BenzenoidApplication extends Application {
 		final Menu collectionsMenu = new Menu();
 
 		Label collectionsLabel = new Label("Collections");
+    
 		collectionsLabel.setOnMouseClicked(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
 
 		collectionsMenu.setGraphic(collectionsLabel);
 
-		final Menu inputMenu = new Menu("Input");
+		final Menu inputMenu = new Menu("_Input");
 
 		MenuItem generatorMenu = new MenuItem("Generator");
 		MenuItem databaseMenu = new MenuItem("Database");
@@ -233,7 +238,7 @@ public class BenzenoidApplication extends Application {
 			switchMode(ApplicationMode.DATABASE);
 		});
 
-		Menu preferencesMenu = new Menu("Preferences");
+		Menu preferencesMenu = new Menu("P_references");
 		Menu aromaticityDisplayMenu = new Menu("Resonance energy display");
 		CheckMenuItem localColorScaleItem = new CheckMenuItem("Local color scale");
 		CheckMenuItem globalColorScaleItem = new CheckMenuItem("Global color scale");
@@ -328,7 +333,7 @@ public class BenzenoidApplication extends Application {
 		 * Active tasks
 		 */
 
-		tasksMenu = new Menu("Active tasks");
+		tasksMenu = new Menu("_Active tasks");
 
 		/*
 		 * Debug
@@ -365,7 +370,7 @@ public class BenzenoidApplication extends Application {
 		inputMenu.getItems().add(importMenu);
 		inputMenu.getItems().add(operationsMenu);
 
-		Menu helpMenu = new Menu("Help");
+		Menu helpMenu = new Menu("_Help");
 
 		MenuItem helpItem = new MenuItem("Help content");
 		MenuItem aboutItem = new MenuItem("About BenzAI");
