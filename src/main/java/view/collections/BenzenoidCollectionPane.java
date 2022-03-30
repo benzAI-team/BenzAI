@@ -51,7 +51,6 @@ public class BenzenoidCollectionPane extends Tab {
 	private BenzenoidsCollectionsManagerPane parent;
 
 	private int index;
-	private String name;
 
 	private GridPane gridPane;
 
@@ -98,7 +97,6 @@ public class BenzenoidCollectionPane extends Tab {
 		super(name);
 		this.index = index;
 		this.parent = parent;
-		this.name = name;
 		initialize();
 	}
 
@@ -310,7 +308,7 @@ public class BenzenoidCollectionPane extends Tab {
 	}
 
 	public String getName() {
-		return name;
+		return this.getText();
 	}
 
 	public void refresh() {
@@ -807,7 +805,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 	@Override
 	public String toString() {
-		return "BenzenoidSetPane::" + name;
+		return "BenzenoidSetPane::" + getName();
 	}
 
 	public void copy() {
