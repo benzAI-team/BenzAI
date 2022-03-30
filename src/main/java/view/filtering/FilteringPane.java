@@ -111,8 +111,13 @@ public class FilteringPane extends ScrollPane {
 		filterButton = new Button("Filter");
 
 		filterButton.setOnAction(e -> {
-			ArrayList<FilteringCriterion> criterions = getCriterions();
-			filter(criterions);
+			try {
+				ArrayList<FilteringCriterion> criterions = getCriterions();
+				filter(criterions);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				System.out.print("");
+			}
 		});
 	}
 

@@ -93,9 +93,9 @@ public class HBoxPatternFilteringCriterion extends HBoxFilteringCriterion {
 		Image imageAddButton;
 
 		if (Utils.onWindows())
-			imageAddButton = new Image("graphics\\icon-edit.png");
+			imageAddButton = new Image("/resources/graphics\\icon-edit.png");
 		else
-			imageAddButton = new Image("graphics/icon-edit.png");
+			imageAddButton = new Image("/resources/graphics/icon-edit.png");
 
 		ImageView view = new ImageView(imageAddButton);
 		editButton.setPadding(new Insets(0));

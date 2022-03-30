@@ -2,11 +2,11 @@ package modules;
 
 import java.util.ArrayList;
 
+import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
 import generator.fragments.Fragment;
-import generator.fragments.FragmentOccurences;
 import molecules.Molecule;
 import molecules.Node;
 
@@ -56,57 +56,28 @@ public class BenzenoidModule extends Module {
 		}
 
 		ArrayList<Fragment> rotations = pattern.computeRotations();
+		ArrayList<Integer[]> translations = new ArrayList<>();
 
-		// boolean ok = true;
-
-		FragmentOccurences occurences = new FragmentOccurences();
-
-		for (Fragment f : rotations) {
-			occurences.addAll(
-					generalModel.computeTranslationsBorders(f.getNodesRefs(), f.getNeighborGraph(), occurences, false));
-		}
+		for (Fragment f : rotations)
+			translations.addAll(translations(f));
 
 		ArrayList<Integer[]> occurencesConstraints = new ArrayList<>();
 
-		int indexOccurence = -1;
-		Integer[] occurenceValid = null;
-		for (Integer[] occurence : occurences.getOccurences()) {
+		Constraint[] or = new Constraint[translations.size()];
 
-			if (!occurencesConstraints.contains(occurence))
-				occurencesConstraints.add(occurence);
- 
-			boolean contains = false;
-			for (int i = 0; i < occurence.length; i++) {
-				if (occurence[i] == 0) {
-					indexOccurence = i;
-					occurenceValid = occurence;
-					contains = true;
-					break;
-				}
+		for (int i = 0; i < translations.size(); i++) {
+
+			Integer[] translation = translations.get(i);
+			IntVar[] variables = new IntVar[translation.length];
+
+			for (int j = 0; j < translation.length; j++) {
+				variables[j] = generalModel.getWatchedGraphVertices()[translation[j]];
 			}
-			if (contains)
-				break;
+
+			or[i] = generalModel.getProblem().sum(variables, "=", variables.length);
 		}
 
-//		Constraint[] constraints = new Constraint[occurences.size()];
-//		for (int i = 0; i < occurences.size(); i++) {
-//			Integer[] occurence = occurences.getOccurences().get(i);
-//			IntVar[] variables = new IntVar[occurence.length];
-//			for (int j = 0; j < variables.length; j++) {
-//				variables[j] = generalModel.getVG()[occurence[j]];
-//			}
-//			constraints[i] = generalModel.getProblem().sum(variables, "=", molecule.getNbHexagons());
-//		}
-//		generalModel.getProblem().or(constraints).post();
-
-		Integer[] occurence = occurences.getOccurences().get(0);
-		IntVar[] variables = new IntVar[occurence.length];
-
-		for (int i = 0; i < variables.length; i++) {
-			variables[i] = generalModel.getVG()[occurence[i]];
-		}
-
-		generalModel.getProblem().sum(variables, "=", molecule.getNbHexagons()).post();
+		generalModel.getProblem().or(or).post();
 	}
 
 	@Override
@@ -124,53 +95,57 @@ public class BenzenoidModule extends Module {
 		// DO_NOTHING
 	}
 
-	private ArrayList<ArrayList<Integer>> translations(Fragment pattern, int diameter, int[][] coordsMatrix,
-			ArrayList<Integer> topBorder, ArrayList<Integer> leftBorder) {
+	private ArrayList<Integer[]> translations(Fragment pattern) {
 
-		ArrayList<ArrayList<Integer>> translations = new ArrayList<>();
+		ArrayList<Integer[]> translations = new ArrayList<>();
 
-		ArrayList<String> names = new ArrayList<>();
+		int diameter = generalModel.getDiameter();
+		int[][] coordsMatrix = generalModel.getCoordsMatrix();
 
-		int xShiftMax = Math.max(Math.abs(pattern.xMax() - pattern.xMin()), diameter);
-		int yShiftMax = Math.max(Math.abs(pattern.yMax() - pattern.yMin()), diameter);
+		int xMin = Integer.MAX_VALUE;
+		int yMin = Integer.MAX_VALUE;
 
-		for (int xShift = 0; xShift < xShiftMax; xShift++) {
-			for (int yShift = 0; yShift < yShiftMax; yShift++) {
+		for (Node node : pattern.getNodesRefs()) {
+			if (node.getX() < xMin)
+				xMin = node.getX();
+			if (node.getY() < yMin)
+				yMin = node.getY();
+		}
 
-				Node[] initialCoords = pattern.getNodesRefs();
-				Node[] shiftedCoords = new Node[initialCoords.length];
+		xMin = Math.abs(xMin);
+		yMin = Math.abs(yMin);
 
-				boolean ok = true;
+		for (int xShift = xMin; xShift < diameter + xMin; xShift++) {
+			for (int yShift = yMin; yShift < diameter + yMin; yShift++) {
 
-				for (int i = 0; i < shiftedCoords.length; i++) {
-					Node node = initialCoords[i];
+				Integer[] translation = new Integer[pattern.getNbNodes()];
+				boolean embedded = true;
 
-					Node newNode = new Node(node.getX() + xShift, node.getY() + yShift, i);
-					shiftedCoords[i] = newNode;
+				int i = 0;
+				for (Node node : pattern.getNodesRefs()) {
 
-					int x = newNode.getX();
-					int y = newNode.getY();
+					int x = node.getX() + xShift;
+					int y = node.getY() + yShift;
 
-					if (x < 0 || x >= diameter || y < 0 || y >= diameter || coordsMatrix[x][y] == -1) {
-						ok = false;
+					if (x >= diameter || y >= diameter) {
+						embedded = false;
 						break;
 					}
-				}
 
-				if (ok) {
-					ArrayList<Integer> hexagons = new ArrayList<>();
-					for (int i = 0; i < shiftedCoords.length; i++) {
-						Node node = shiftedCoords[i];
-						int hexagon = coordsMatrix[node.getX()][node.getY()];
-						hexagons.add(hexagon);
+					else if (coordsMatrix[x][y] == -1) {
+						embedded = false;
+						break;
 					}
 
-					translations.add(hexagons);
+					int hexagonIndex = coordsMatrix[x][y];
+					translation[i] = hexagonIndex;
 
-//					if (touchBorder(hexagons, topBorder, leftBorder)) {
-//						
-//					}
+					i++;
 				}
+
+				if (embedded)
+					translations.add(translation);
+
 			}
 		}
 

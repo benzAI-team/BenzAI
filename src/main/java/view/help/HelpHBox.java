@@ -1,6 +1,5 @@
 package view.help;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import javafx.scene.control.Label;
@@ -61,11 +60,6 @@ public class HelpHBox extends HBox {
 
 	public boolean isOpen() {
 		return open;
-	}
-
-	private static File getFile(String filename) {
-		File file = new File("/resources/doc/" + filename);
-		return file;
 	}
 
 	public static ArrayList<HelpHBox> buildBoxes(HelpPane helpPane) {
