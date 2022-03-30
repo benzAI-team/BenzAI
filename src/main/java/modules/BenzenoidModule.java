@@ -61,8 +61,6 @@ public class BenzenoidModule extends Module {
 		for (Fragment f : rotations)
 			translations.addAll(translations(f));
 
-		ArrayList<Integer[]> occurencesConstraints = new ArrayList<>();
-
 		Constraint[] or = new Constraint[translations.size()];
 
 		for (int i = 0; i < translations.size(); i++) {
@@ -77,7 +75,10 @@ public class BenzenoidModule extends Module {
 			or[i] = generalModel.getProblem().sum(variables, "=", variables.length);
 		}
 
-		generalModel.getProblem().or(or).post();
+		if (or.length == 0)
+			generalModel.getProblem().sum(generalModel.getChanneling(), "=", 0).post();
+		else
+			generalModel.getProblem().or(or).post();
 	}
 
 	@Override

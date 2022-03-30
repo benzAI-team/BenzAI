@@ -144,29 +144,6 @@ public class ModelBuilder {
 					new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.LEQ, Integer.toString(upperBoundHexagons)));
 		}
 
-//		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONENOID)) {
-//			int nbMaxHexagons = 0;
-//
-//			for (GeneratorCriterion criterion : map.get("hexagons")) {
-//
-//				Operator operator = criterion.getOperator();
-//				if (operator == Operator.EQ || operator == Operator.LT || operator == Operator.LEQ) {
-//					int value = Integer.parseInt(criterion.getValue());
-//					if (value > nbMaxHexagons)
-//						nbMaxHexagons = value;
-//				}
-//			}
-//
-//			int nbMaxCrowns = (int) Math.floor((((double) ((double) nbMaxHexagons + 1)) / 2.0) + 1.0);
-//
-//			if (nbMaxHexagons % 2 == 1)
-//				nbMaxCrowns--;
-//
-//			models.add(new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns));
-//		}
-//
-//		else 
-
 		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONENOID)) {
 
 			int nbMaxCrowns = getNbCrownsMax(upperBoundHexagons);
@@ -220,7 +197,13 @@ public class ModelBuilder {
 			}
 		}
 
-		else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL)) {
+//		else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
+//			
+//			
+//		}
+
+		else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL)
+				|| GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
 
 			int nbMaxHexagons = 0;
 
