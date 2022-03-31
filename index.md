@@ -17,7 +17,7 @@ These problems are modeled and solved thanks to constraint programming and, in p
 
 * [Source code](https://github.com/benzAI-team/BenzAI)
 * [Release](https://github.com/benzAI-team/BenzAI/releases)
-* An [archive](benzenoids.zip) containing some well-known benzenoids in our graph file format.
+* An [archive](benzenoids.zip) containing some well-known benzenoids in our [graph file format](graph_format).
 
 # Bibliography
 * Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet.  
