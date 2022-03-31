@@ -33,6 +33,7 @@ import sql.BenzenoidCriterion;
 import sql.SelectQueryContent;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane.DisplayType;
+import view.collections.BenzenoidsCollectionsManagerPane;
 import view.database.boxes.HBoxDatabaseCriterion;
 import view.database.boxes.HBoxDefaultDatabaseCriterion;
 
@@ -181,7 +182,9 @@ public class DatabasePane extends ScrollPane {
 	}
 
 	private void updateGUI() {
-		application.getBenzenoidCollectionsPane().getSelectedTab().refresh();
+		BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
+		managerPane.log("-> " + managerPane.getSelectedTab().getName(), false);
+		managerPane.getSelectedTab().refresh();
 		application.switchMode(ApplicationMode.COLLECTIONS);
 	}
 
@@ -192,6 +195,12 @@ public class DatabasePane extends ScrollPane {
 
 			ArrayList<BenzenoidCriterion> criterions = getCriterions();
 
+			BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
+			
+			managerPane.log("Requesting database", true);
+			for (BenzenoidCriterion criterion : criterions)
+				managerPane.log(criterion.toString(), false);
+			
 			String jsonInputString = buildJsonInputString(criterions);
 			List<Map> results = Post.post("https://benzenoids.lis-lab.fr/find_ir/", jsonInputString);
 
