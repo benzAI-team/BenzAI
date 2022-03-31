@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import application.ApplicationMode;
 import application.BenzenoidApplication;
 import generator.fragments.FragmentResolutionInformations;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
@@ -50,6 +51,9 @@ public class FilteringPane extends ScrollPane {
 
 	private Label titleLabel;
 
+	private int lineConsole;
+	private int indexFiltering;
+	
 	public FilteringPane(BenzenoidApplication application) {
 		this.application = application;
 		initialize();
@@ -187,6 +191,12 @@ public class FilteringPane extends ScrollPane {
 		BenzenoidCollectionPane newCollectionPane = new BenzenoidCollectionPane(managerPane,
 				managerPane.getNbCollectionPanes(), collectionPane.getName() + "(filter)");
 
+		managerPane.log("Filtering collection: " + collectionPane.getName(), true);
+		for (FilteringCriterion criterion : criterions) 
+			managerPane.log(criterion.toString(), false);
+		
+		
+		int size = collectionPane.getMolecules().size();
 		
 		final Service<Void> calculateService = new Service<Void>() {
 
@@ -199,6 +209,8 @@ public class FilteringPane extends ScrollPane {
 						
 						for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
 
+							indexFiltering = i;
+							
 							Molecule molecule = collectionPane.getMolecules().get(i);
 							if (FilteringCriterion.checksCriterions(molecule, criterions)) {
 
@@ -206,6 +218,17 @@ public class FilteringPane extends ScrollPane {
 								newCollectionPane.addBenzenoid(molecule, displayType);
 							}
 
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									if (indexFiltering == 1) {
+										managerPane.log((indexFiltering+1) + " / " + size , false);
+										lineConsole = collectionPane.getConsole().getNbLines() - 1;
+									} else
+										managerPane.changeLineConsole((indexFiltering+1) + " / " + size, lineConsole);
+								}
+							});
+							
 						}
 
 						return null;
@@ -257,31 +280,6 @@ public class FilteringPane extends ScrollPane {
 		
 		calculateService.start();
 		
-//		for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
-//
-//			Molecule molecule = collectionPane.getMolecules().get(i);
-//			if (FilteringCriterion.checksCriterions(molecule, criterions)) {
-//
-//				DisplayType displayType = collectionPane.getDisplayType(i);
-//				newCollectionPane.addBenzenoid(molecule, displayType);
-//			}
-//
-//		}
-
-//		newCollectionPane.refresh();
-//
-//		managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
-//		managerPane.addBenzenoidSetPane(newCollectionPane);
-//		managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
-//
-//		application.getBenzenoidCollectionsPane().log("Filtering collection " + collectionPane.getName(), true);
-//		for (FilteringCriterion criterion : criterions) {
-//			application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
-//		}
-//		application.getBenzenoidCollectionsPane().log("-> " + newCollectionPane.getName(), false);
-//		application.getBenzenoidCollectionsPane().log("", false);
-//
-//		application.switchMode(ApplicationMode.COLLECTIONS);
 	}
 
 	private ArrayList<Integer> containsInvalidCriterion() {

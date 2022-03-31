@@ -83,17 +83,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	private ContextMenu contextMenu;
 
-	private boolean flagCtrl;
-	private boolean flagA;
-	private boolean flagC;
-	private boolean flagV;
 	private boolean selectAll;
 
 	private BenzenoidPane hoveringPane;
 	private BenzenoidCollectionPane addTab;
 	private MenuBar menuBar;
-	private boolean removingLock;
-
 	private Parameter parameter;
 
 	private TextArea collectionPropertiesArea;
@@ -129,10 +123,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	public BenzenoidsCollectionsManagerPane(BenzenoidApplication parent) {
 
-		flagCtrl = false;
-		flagA = false;
-		flagC = false;
-		flagV = false;
 		selectAll = false;
 
 		this.application = parent;
@@ -149,8 +139,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		initializeMenu();
 		initializeContextMenu();
-
-		removingLock = false;
 
 		copiedBenzenoidPanes = new ArrayList<>();
 		benzenoidSetPanes = new ArrayList<>();
@@ -558,7 +546,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 
 	public void remove(BenzenoidCollectionPane pane) {
-		removingLock = true;
 		benzenoidSetPanes.remove(pane);
 
 		System.out.println("remove() : " + benzenoidSetPanes.size() + " panes restants");
