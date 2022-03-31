@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import application.ApplicationMode;
 import application.BenzenoidApplication;
 import generator.fragments.FragmentResolutionInformations;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker.State;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -111,13 +116,8 @@ public class FilteringPane extends ScrollPane {
 		filterButton = new Button("Filter");
 
 		filterButton.setOnAction(e -> {
-			try {
-				ArrayList<FilteringCriterion> criterions = getCriterions();
-				filter(criterions);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				System.out.print("");
-			}
+			ArrayList<FilteringCriterion> criterions = getCriterions();
+			filter(criterions);
 		});
 	}
 
@@ -187,31 +187,101 @@ public class FilteringPane extends ScrollPane {
 		BenzenoidCollectionPane newCollectionPane = new BenzenoidCollectionPane(managerPane,
 				managerPane.getNbCollectionPanes(), collectionPane.getName() + "(filter)");
 
-		for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
+		
+		final Service<Void> calculateService = new Service<Void>() {
 
-			Molecule molecule = collectionPane.getMolecules().get(i);
-			if (FilteringCriterion.checksCriterions(molecule, criterions)) {
+			@Override
+			protected Task<Void> createTask() {
+				return new Task<Void>() {
 
-				DisplayType displayType = collectionPane.getDisplayType(i);
-				newCollectionPane.addBenzenoid(molecule, displayType);
+					@Override
+					protected Void call() throws Exception {
+						
+						for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
+
+							Molecule molecule = collectionPane.getMolecules().get(i);
+							if (FilteringCriterion.checksCriterions(molecule, criterions)) {
+
+								DisplayType displayType = collectionPane.getDisplayType(i);
+								newCollectionPane.addBenzenoid(molecule, displayType);
+							}
+
+						}
+
+						return null;
+					}
+				};
+			}
+		};
+		
+		calculateService.stateProperty().addListener(new ChangeListener<State>() {
+
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+
+				switch (newValue) {
+				case FAILED:
+					
+					Utils.alert("Filtering failed.");
+					break;
+				case CANCELLED:
+					
+					Utils.alert("Filtering canceled");
+					break;
+				case SUCCEEDED:
+					
+					newCollectionPane.refresh();
+
+					managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
+					managerPane.addBenzenoidSetPane(newCollectionPane);
+					managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
+
+					application.getBenzenoidCollectionsPane().log("Filtering collection " + collectionPane.getName(), true);
+					for (FilteringCriterion criterion : criterions) {
+						application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
+					}
+					application.getBenzenoidCollectionsPane().log("-> " + newCollectionPane.getName(), false);
+					application.getBenzenoidCollectionsPane().log("", false);
+
+					application.switchMode(ApplicationMode.COLLECTIONS);
+
+					break;
+
+				default:
+					break;
+				}
+
 			}
 
-		}
+		});
+		
+		calculateService.start();
+		
+//		for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
+//
+//			Molecule molecule = collectionPane.getMolecules().get(i);
+//			if (FilteringCriterion.checksCriterions(molecule, criterions)) {
+//
+//				DisplayType displayType = collectionPane.getDisplayType(i);
+//				newCollectionPane.addBenzenoid(molecule, displayType);
+//			}
+//
+//		}
 
-		newCollectionPane.refresh();
-
-		managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
-		managerPane.addBenzenoidSetPane(newCollectionPane);
-		managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
-
-		application.getBenzenoidCollectionsPane().log("Filtering collection " + collectionPane.getName(), true);
-		for (FilteringCriterion criterion : criterions) {
-			application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
-		}
-		application.getBenzenoidCollectionsPane().log("-> " + newCollectionPane.getName(), false);
-		application.getBenzenoidCollectionsPane().log("", false);
-
-		application.switchMode(ApplicationMode.COLLECTIONS);
+//		newCollectionPane.refresh();
+//
+//		managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
+//		managerPane.addBenzenoidSetPane(newCollectionPane);
+//		managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
+//
+//		application.getBenzenoidCollectionsPane().log("Filtering collection " + collectionPane.getName(), true);
+//		for (FilteringCriterion criterion : criterions) {
+//			application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
+//		}
+//		application.getBenzenoidCollectionsPane().log("-> " + newCollectionPane.getName(), false);
+//		application.getBenzenoidCollectionsPane().log("", false);
+//
+//		application.switchMode(ApplicationMode.COLLECTIONS);
 	}
 
 	private ArrayList<Integer> containsInvalidCriterion() {
