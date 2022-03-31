@@ -17,14 +17,17 @@ These problems are modeled and solved thanks to constraint programming and, in p
 
 * [Source code](https://github.com/benzAI-team/BenzAI)
 * [Release](https://github.com/benzAI-team/BenzAI/releases)
-* [An archive containing some well-known benzenoids in our graph file format](benzenoids.zip).
+* An [archive](benzenoids.zip) containing some well-known benzenoids in our graph file format.
 
 # Bibliography
-* Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet. [Using Constraint Programming to Generate Benzenoid Structures in Theoretical Chemistry](https://hal.archives-ouvertes.fr/hal-02931934/).   
+* Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet.  
+  [Using Constraint Programming to Generate Benzenoid Structures in Theoretical Chemistry](https://hal.archives-ouvertes.fr/hal-02931934/).   
   In _Proceedings of the 26th International Conference on Principles and Practice of Constraint Programming (CP)_, pages 690-706, 2020.
-* Y. Carissan, C. Dim, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet. [Computing the Local Aromaticity of Benzenoids Thanks to Constraint Programming](https://hal-amu.archives-ouvertes.fr/hal-02931928).  
+* Y. Carissan, C. Dim, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet.  
+  [Computing the Local Aromaticity of Benzenoids Thanks to Constraint Programming](https://hal-amu.archives-ouvertes.fr/hal-02931928).  
   In _Proceedings of the 26th International Conference on Principles and Practice of Constraint Programming (CP)_, pages 673-689, 2020.
-* Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet. [Exhaustive Generation of Benzenoid Structures Sharing Common Patterns](https://hal-amu.archives-ouvertes.fr/hal-03402690). 
+* Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet.  
+  [Exhaustive Generation of Benzenoid Structures Sharing Common Patterns](https://hal-amu.archives-ouvertes.fr/hal-03402690).  
   In _Proceedings of the 27th International Conference on Principles and Practice of Constraint Programming (CP)_, pages 19:1-19:18, 2021.
 
 [BibTeX file](biblio.bib)
