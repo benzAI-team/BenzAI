@@ -77,6 +77,8 @@ public class GeneratorPane extends ScrollPane {
 
 	private ImageView warningIcon;
 
+	private ArrayList<Molecule> generatedMolecules;
+
 	/*
 	 * Solver informations
 	 */
@@ -381,11 +383,11 @@ public class GeneratorPane extends ScrollPane {
 	}
 
 	private ArrayList<Molecule> buildMolecules(ResultSolver resultSolver, int beginIndex) {
-		
+
 		int index = beginIndex;
-		
+
 		ArrayList<Molecule> molecules = new ArrayList<>();
-		
+
 		for (int i = 0; i < resultSolver.size(); i++) {
 
 			Molecule molecule = null;
@@ -401,8 +403,7 @@ public class GeneratorPane extends ScrollPane {
 
 				graphBuilder.buildGraphFile();
 
-				GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename,
-						graphCoordFilename);
+				GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
 				graphCoordBuilder.convertInstance();
 
 				molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
@@ -423,18 +424,18 @@ public class GeneratorPane extends ScrollPane {
 					b.append(lines[j] + "\n");
 
 				molecule.setDescription(b.toString());
-				
+
 				molecules.add(molecule);
-				
+
 				index++;
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
-		
+
 		return molecules;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	private void generateBenzenoids() {
 
@@ -466,8 +467,8 @@ public class GeneratorPane extends ScrollPane {
 
 		application.addTask("Benzenoid generation");
 
-		ArrayList<Molecule> generatedMolecules = new ArrayList<>();
-		
+		generatedMolecules = new ArrayList<>();
+
 		final Service<Void> calculateService = new Service<Void>() {
 
 			@Override
@@ -476,19 +477,19 @@ public class GeneratorPane extends ScrollPane {
 
 					@Override
 					protected Void call() throws Exception {
-						
+
 						for (GeneralModel model : models) {
 							curentModel = model;
-							
+
 							model.applyNoGoods(generatedMolecules);
-							
+
 							curentModel.solve();
-							
-							generatedMolecules.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
-							
+
+							generatedMolecules
+									.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
+
 						}
 
-						
 						System.out.println("Fin génération");
 
 						return null;
@@ -647,64 +648,67 @@ public class GeneratorPane extends ScrollPane {
 
 			int index = 1;
 
-			if (curentModel.getResultSolver().size() > 0) {
-				for (int i = 0; i < resultSolver.size(); i++) {
-
-					Molecule molecule = null;
-					ArrayList<Integer> verticesSolution = resultSolver.getVerticesSolution(i);
-
-					try {
-
-						String graphFilename = "tmp.graph";
-						String graphCoordFilename = "tmp.graph_coord";
-
-						GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
-								resultSolver.getCrown(i));
-
-						graphBuilder.buildGraphFile();
-
-						GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename,
-								graphCoordFilename);
-						graphCoordBuilder.convertInstance();
-
-						molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
-
-						File file = new File("tmp.graph");
-						file.delete();
-
-						file = new File("tmp.graph_coord");
-						file.delete();
-
-						molecule.setVerticesSolutions(verticesSolution);
-
-						String[] lines = resultSolver.getDescriptions().get(i).split("\n");
-						StringBuilder b = new StringBuilder();
-
-						b.append("solution_" + index + "\n");
-						for (int j = 1; j < lines.length; j++)
-							b.append(lines[j] + "\n");
-
-						molecule.setDescription(/* resultSolver.getDescriptions().get(i) */ b.toString());
-						index++;
-
-						selectedCollectionTab.addBenzenoid(molecule, DisplayType.BASIC);
-
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-
-				selectedCollectionTab.refresh();
-
-				buttonsBox.getChildren().clear();
-				buttonsBox.getChildren().addAll(addButton, generateButton);
-				application.switchMode(ApplicationMode.COLLECTIONS);
+			for (Molecule molecule : generatedMolecules) {
+				selectedCollectionTab.addBenzenoid(molecule, DisplayType.BASIC);
 			}
 
-			else {
-				isRunning = false;
-				Utils.alert("No benzenoid found");
-			}
+//			if (curentModel.getResultSolver().size() > 0) {
+//				for (int i = 0; i < resultSolver.size(); i++) {
+//
+//					Molecule molecule = null;
+//					ArrayList<Integer> verticesSolution = resultSolver.getVerticesSolution(i);
+//
+//					try {
+//
+//						String graphFilename = "tmp.graph";
+//						String graphCoordFilename = "tmp.graph_coord";
+//
+//						GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
+//								resultSolver.getCrown(i));
+//
+//						graphBuilder.buildGraphFile();
+//
+//						GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename,
+//								graphCoordFilename);
+//						graphCoordBuilder.convertInstance();
+//
+//						molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
+//
+//						File file = new File("tmp.graph");
+//						file.delete();
+//
+//						file = new File("tmp.graph_coord");
+//						file.delete();
+//
+//						molecule.setVerticesSolutions(verticesSolution);
+//
+//						String[] lines = resultSolver.getDescriptions().get(i).split("\n");
+//						StringBuilder b = new StringBuilder();
+//
+//						b.append("solution_" + index + "\n");
+//						for (int j = 1; j < lines.length; j++)
+//							b.append(lines[j] + "\n");
+//
+//						molecule.setDescription(b.toString());
+//						index++;
+//
+//						selectedCollectionTab.addBenzenoid(molecule, DisplayType.BASIC);
+//
+//					} catch (IOException e1) {
+//						e1.printStackTrace();
+//					}
+//				}
+
+			selectedCollectionTab.refresh();
+
+			buttonsBox.getChildren().clear();
+			buttonsBox.getChildren().addAll(addButton, generateButton);
+			application.switchMode(ApplicationMode.COLLECTIONS);
+		}
+
+		else {
+			isRunning = false;
+			Utils.alert("No benzenoid found");
 		}
 	}
 
