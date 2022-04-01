@@ -108,30 +108,39 @@ public class ModelBuilder {
 		int nbMaxLines = 0;
 		int nbMaxColumns = 0;
 
-		Operator operatorNbLines = null;
-		Operator operatorNbColumns = null;
+		ArrayList<GeneratorCriterion> criterionsLines = new ArrayList<>();
+		ArrayList<GeneratorCriterion> criterionsColumns = new ArrayList<>();
 
 		for (GeneratorCriterion criterion : map.get("rectangle")) {
 
 			Operator operator = criterion.getOperator();
 			Subject subject = criterion.getSubject();
 
-			if (subject == Subject.RECT_NB_LINES
-					&& (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT)) {
+			if (subject == Subject.RECT_NB_LINES) {
 
-				int value = Integer.parseInt(criterion.getValue());
+				criterionsLines.add(criterion);
 
-				if (value > nbMaxLines)
-					nbMaxLines = value;
+				if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
+
+					int value = Integer.parseInt(criterion.getValue());
+
+					if (value > nbMaxLines)
+						nbMaxLines = value;
+				}
 			}
 
-			if (subject == Subject.RECT_NB_COLUMNS
-					&& (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT)) {
+			if (subject == Subject.RECT_NB_COLUMNS) {
 
-				int value = Integer.parseInt(criterion.getValue());
+				criterionsColumns.add(criterion);
 
-				if (value > nbMaxColumns)
-					nbMaxColumns = value;
+				if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
+
+					int value = Integer.parseInt(criterion.getValue());
+
+					if (value > nbMaxColumns)
+						nbMaxColumns = value;
+
+				}
 			}
 		}
 
@@ -140,6 +149,14 @@ public class ModelBuilder {
 			if (bound < upperBoundHexagons) {
 				upperBoundHexagons = bound;
 			}
+		}
+
+		if (nbMaxLines < nbMaxColumns) {
+			for (GeneratorCriterion cri : criterionsLines)
+				cri.setSubject(Subject.RECT_NB_COLUMNS);
+			for (GeneratorCriterion cri : criterionsColumns)
+				cri.setSubject(Subject.RECT_NB_LINES);
+
 		}
 
 		if (map.get("hexagons").size() == 0) {

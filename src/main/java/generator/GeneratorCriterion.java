@@ -36,6 +36,10 @@ public class GeneratorCriterion {
 		return operator;
 	}
 
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
+
 	public String getOperatorString() {
 		switch (operator) {
 

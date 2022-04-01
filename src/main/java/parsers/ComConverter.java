@@ -78,8 +78,6 @@ public class ComConverter {
 		if (u.getX() == 1 && u.getY() == 2 && v.getX() == 2 && v.getY() == 4)
 			System.out.print("");
 
-		
-		
 		if (u.getX() == v.getX() && Math.abs(u.getY() - v.getY()) == 1)
 			return true;
 
@@ -90,46 +88,42 @@ public class ComConverter {
 		else if ((u.getX() == v.getX() - 1 && u.getY() == v.getY() + 1)
 				|| (u.getX() == v.getX() + 1 && u.getY() == v.getY() - 1))
 			return true;
-		
-		
+
 		boolean validHexaConfig = false;
-		
+
 		ArrayList<Integer> hexagonsU = getHexagons(molecule, u.getIndex());
 		ArrayList<Integer> hexagonsV = getHexagons(molecule, v.getIndex());
-		
+
 		for (int h1 : hexagonsU) {
-			
+
 			Couple<Integer, Integer> uCoords = molecule.getHexagonsCoords()[h1];
-			
+
 			for (int h2 : hexagonsV) {
-			
+
 				Couple<Integer, Integer> vCoords = molecule.getHexagonsCoords()[h2];
-				
+
 				if (Math.abs(uCoords.getX() - vCoords.getX()) == 2 && Math.abs(uCoords.getX() - vCoords.getY()) == 2) {
-					//System.out.println(h1 + " & " + h2);
+					// System.out.println(h1 + " & " + h2);
 					validHexaConfig = true;
 				}
 			}
 		}
-		
-/*
-		else if ( (Math.abs(u.getX() - v.getX()) == 1 && Math.abs(u.getY() - v.getY()) == 2) || 
-				  (Math.abs(u.getX() - v.getX()) == 2 && u.getY() == v.getY())) {
-			
-			System.out.println(u + " & " + v);
-			return true;
-		}
-*/
 
-		if (
-			(validHexaConfig && u.getX() == v.getX() + 1 && u.getY() == v.getY() - 2) ||
-			(validHexaConfig && u.getX() == v.getX() - 1 && u.getY() == v.getY() - 2) 
-		) {
-			
-			//System.out.println(u + " & " + v);
+		/*
+		 * else if ( (Math.abs(u.getX() - v.getX()) == 1 && Math.abs(u.getY() -
+		 * v.getY()) == 2) || (Math.abs(u.getX() - v.getX()) == 2 && u.getY() ==
+		 * v.getY())) {
+		 * 
+		 * System.out.println(u + " & " + v); return true; }
+		 */
+
+		if ((validHexaConfig && u.getX() == v.getX() + 1 && u.getY() == v.getY() - 2)
+				|| (validHexaConfig && u.getX() == v.getX() - 1 && u.getY() == v.getY() - 2)) {
+
+			// System.out.println(u + " & " + v);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -186,21 +180,21 @@ public class ComConverter {
 	}
 
 	private static ArrayList<Integer> getHexagons(Molecule molecule, int node) {
-		
+
 		ArrayList<Integer> hexagons = new ArrayList<Integer>();
-		
-		for (int i = 0 ; i < molecule.getNbHexagons() ; i++) {
-			
-			for (int j = 0 ; j < 6 ; j++) {
-				
-				if (molecule.getHexagons()[i][j] == node) 
+
+		for (int i = 0; i < molecule.getNbHexagons(); i++) {
+
+			for (int j = 0; j < 6; j++) {
+
+				if (molecule.getHexagons()[i][j] == node)
 					hexagons.add(i);
 			}
 		}
-		
+
 		return hexagons;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "unused" })
 	public static void generateComFile(Molecule molecule, File file, int nbElectronsDiff, ComType type, String title)
 			throws IOException {
@@ -378,6 +372,7 @@ public class ComConverter {
 
 			if (treatedCarbons[u] == 0) {
 
+				// treatedCarbons[u] = 1;
 				int carbonPair = isInvalid(invalidsCarbons, u);
 
 				// Si le carbone n'est pas probl�matique
@@ -451,11 +446,10 @@ public class ComConverter {
 					hydrogens.add(new Triplet<>(xv, yv, 0.0));
 				}
 
-				
 				/*
 				 * TODO: modifier ces valeurs
 				 */
-				
+
 				// Si le carbone est "invalide" , (u et carbonPair sont trop proches)
 				else {
 
@@ -610,62 +604,68 @@ public class ComConverter {
 			break;
 		}
 
-		for (Triplet<Double, Double, Double> carbon : carbons)
-			writer.write(" C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n");
+		String s = "";
 
-		for (Triplet<Double, Double, Double> hydrogen : hydrogens)
+		for (Triplet<Double, Double, Double> carbon : carbons) {
+			writer.write(" C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n");
+			s += " C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n";
+		}
+
+		for (Triplet<Double, Double, Double> hydrogen : hydrogens) {
 			writer.write(" H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n");
+			s += " H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n";
+		}
 
 		writer.write("\n");
 
 		writer.close();
 	}
-	
+
 	private static void displayUsage() {
 		System.out.println("USAGE : java -jar ComConverter.jar ${list_file} ${nbElectronsDiff} ${type}");
 	}
-	
+
 	public static void generateAll(File file, int nbElectronsDiff, ComType type) throws IOException {
-		
+
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line;
-		
-		while((line = reader.readLine()) != null) {
-			
+
+		while ((line = reader.readLine()) != null) {
+
 			String titleTmp = line.split(Pattern.quote("."))[0];
-			String [] split = titleTmp.split(Pattern.quote("/"));
+			String[] split = titleTmp.split(Pattern.quote("/"));
 			String title = split[split.length - 1];
-			
+
 			System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-			
-			Molecule molecule = GraphParser.parseUndirectedGraph(line, null, false);			
-			System.out.println(line.split(Pattern.quote("."))[0] + ".com generated");	
-			generateComFile(molecule, new File(line.split(Pattern.quote("."))[0] + ".com"), nbElectronsDiff, type, title/*line.split(Pattern.quote("."))[0]*/);
+
+			Molecule molecule = GraphParser.parseUndirectedGraph(line, null, false);
+			System.out.println(line.split(Pattern.quote("."))[0] + ".com generated");
+			generateComFile(molecule, new File(line.split(Pattern.quote("."))[0] + ".com"), nbElectronsDiff, type,
+					title/* line.split(Pattern.quote("."))[0] */);
 		}
-		
-		
+
 		reader.close();
 	}
-	
-	public static void main(String [] args) throws IOException {
-		
+
+	public static void main(String[] args) throws IOException {
+
 		if (args.length != 3) {
 			displayUsage();
 			System.exit(1);
 		}
-		
+
 		File listFile = new File(args[0]);
-		
+
 		int nbElectronsDiff = Integer.parseInt(args[1]);
-		
+
 		ComType type;
-		
+
 		if (args[2].equals("1"))
 			type = ComType.ER;
-		
-		else 
+
+		else
 			type = ComType.IR;
-		
+
 		generateAll(listFile, nbElectronsDiff, type);
 	}
 }
