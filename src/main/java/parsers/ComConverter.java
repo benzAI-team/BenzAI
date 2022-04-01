@@ -127,7 +127,8 @@ public class ComConverter {
 		return false;
 	}
 
-	public static ArrayList<Couple<Integer, Integer>> checkGeometry(Molecule molecule) throws IOException {
+	public static ArrayList<Couple<Integer, Integer>> checkGeometry(Molecule molecule,
+			ArrayList<Integer> carbonsWithHydrogens) throws IOException {
 
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<Couple<Integer, Integer>>();
 
@@ -154,7 +155,8 @@ public class ComConverter {
 
 						}
 
-						if (!alreadyExists && !areOnSameHexagon(molecule, i, j)) {
+						if (!alreadyExists && !areOnSameHexagon(molecule, i, j) && carbonsWithHydrogens.contains(i)
+								&& carbonsWithHydrogens.contains(j)) {
 							invalidsCarbons.add(new Couple<Integer, Integer>(i, j));
 						}
 					}
@@ -364,7 +366,7 @@ public class ComConverter {
 		ArrayList<Triplet<Double, Double, Double>> hydrogens = new ArrayList<Triplet<Double, Double, Double>>();
 
 		ArrayList<Integer> carbonsWithHydrogens = getCarbonsWithHydrogens(molecule);
-		ArrayList<Couple<Integer, Integer>> invalidsCarbons = checkGeometry(molecule);
+		ArrayList<Couple<Integer, Integer>> invalidsCarbons = checkGeometry(molecule, carbonsWithHydrogens);
 
 		int[] treatedCarbons = new int[molecule.getNbNodes()];
 
@@ -372,7 +374,6 @@ public class ComConverter {
 
 			if (treatedCarbons[u] == 0) {
 
-				// treatedCarbons[u] = 1;
 				int carbonPair = isInvalid(invalidsCarbons, u);
 
 				// Si le carbone n'est pas probl�matique
