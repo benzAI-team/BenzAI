@@ -124,8 +124,6 @@ public class GeneralModel {
 
 	ArrayList<BenzenoidSolution> benzenoidSolutions = new ArrayList<>();
 
-	private ArrayList<Fragment> previousNoGoodsFragment = new ArrayList<>();
-
 	private ArrayList<Fragment> nogoodsFragments = new ArrayList<>();
 	private ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
 
@@ -390,10 +388,6 @@ public class GeneralModel {
 	 * Getters & Setters
 	 */
 
-//	public void setSolveSmallestCoronenoids(boolean solveSmallestCoronenoids) {
-//		this.solveSmallerCoronenoids = solveSmallestCoronenoids;
-//	}
-
 	public GeneralModelMode getMode() {
 		return mode;
 	}
@@ -638,8 +632,6 @@ public class GeneralModel {
 
 		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
 	}
-
-	
 
 	public ResultSolver solve() {
 
@@ -1925,10 +1917,6 @@ public class GeneralModel {
 		this.patternsInformations = patternsInformations;
 	}
 
-	public void setPreviousNogoodsFragments(ArrayList<Fragment> previousNoGoodsFragments) {
-		this.previousNoGoodsFragment = previousNoGoodsFragments;
-	}
-
 	public void setApplySymmetriesConstraints(boolean applySymmetriesConstraints) {
 		this.applySymmetriesConstraints = applySymmetriesConstraints;
 	}
@@ -2076,11 +2064,11 @@ public class GeneralModel {
 	}
 
 	public void applyNoGoods(ArrayList<Molecule> molecules) {
-		
+
 		for (Molecule molecule : molecules) {
-			
+
 			Fragment pattern = molecule.convertToPattern(0, 0);
-			
+
 			nogoodsFragments.add(pattern);
 
 			ArrayList<Fragment> rotations = pattern.computeRotations();
@@ -2142,11 +2130,11 @@ public class GeneralModel {
 					}
 				}
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	@Override
 	public String toString() {
 		return hexagonsCriterions.toString();

@@ -108,6 +108,9 @@ public class ModelBuilder {
 		int nbMaxLines = 0;
 		int nbMaxColumns = 0;
 
+		Operator operatorNbLines = null;
+		Operator operatorNbColumns = null;
+
 		for (GeneratorCriterion criterion : map.get("rectangle")) {
 
 			Operator operator = criterion.getOperator();

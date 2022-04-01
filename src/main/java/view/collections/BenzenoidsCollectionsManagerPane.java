@@ -1483,7 +1483,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					Molecule molecule = curentPane
 							.getMolecule(curentPane.getSelectedBenzenoidPanes().get(i).getIndex());
 
-					File file = new File(directoryPath + "/molecule_" + i + ".cml");
+					File file = new File(directoryPath + "/molecule_" + i + ".com");
 					try {
 						ComConverter.generateComFile(molecule, file, 0, ComType.ER, file.getName());
 					} catch (IOException e) {

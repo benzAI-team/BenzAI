@@ -177,10 +177,14 @@ public class RectangleModule extends Module {
 
 		generalModel.getProblem().times(xH, xW, generalModel.getNbVerticesVar()).post(); // x * a = z
 
+		System.out.println(generalModel.getProblem());
+
 	}
 
 	@Override
 	public void addWatchedVariables() {
+//		generalModel.addWatchedVariable(generalModel.getChanneling());
+//		generalModel.addWatchedVariable(rotation);
 		generalModel.addWatchedVariable(xW);
 		generalModel.addWatchedVariable(xH);
 	}
@@ -242,8 +246,6 @@ public class RectangleModule extends Module {
 			lines.add(line);
 		}
 
-		// System.out.println("");
-
 		L1 = new BoolVar[diameter][];
 
 		for (int i = 0; i < lines.size(); i++) {
@@ -264,8 +266,6 @@ public class RectangleModule extends Module {
 			L1[i] = line;
 
 		}
-
-		// System.out.println("");
 	}
 
 	private void buildLines2() {
