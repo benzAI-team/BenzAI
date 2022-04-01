@@ -585,12 +585,9 @@ public class GeneratorPane extends ScrollPane {
 						if (!curentModel.isPaused()) {
 							buttonsBox.getChildren().clear();
 							buttonsBox.getChildren().addAll(addButton, generateButton);
-							// buildBenzenoidPanesThread();
 							buildBenzenoidPanes();
 						}
 					}
-
-					// buildBenzenoidPanesThread();
 
 					break;
 
@@ -646,58 +643,9 @@ public class GeneratorPane extends ScrollPane {
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);
 
-			int index = 1;
-
 			for (Molecule molecule : generatedMolecules) {
 				selectedCollectionTab.addBenzenoid(molecule, DisplayType.BASIC);
 			}
-
-//			if (curentModel.getResultSolver().size() > 0) {
-//				for (int i = 0; i < resultSolver.size(); i++) {
-//
-//					Molecule molecule = null;
-//					ArrayList<Integer> verticesSolution = resultSolver.getVerticesSolution(i);
-//
-//					try {
-//
-//						String graphFilename = "tmp.graph";
-//						String graphCoordFilename = "tmp.graph_coord";
-//
-//						GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
-//								resultSolver.getCrown(i));
-//
-//						graphBuilder.buildGraphFile();
-//
-//						GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename,
-//								graphCoordFilename);
-//						graphCoordBuilder.convertInstance();
-//
-//						molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
-//
-//						File file = new File("tmp.graph");
-//						file.delete();
-//
-//						file = new File("tmp.graph_coord");
-//						file.delete();
-//
-//						molecule.setVerticesSolutions(verticesSolution);
-//
-//						String[] lines = resultSolver.getDescriptions().get(i).split("\n");
-//						StringBuilder b = new StringBuilder();
-//
-//						b.append("solution_" + index + "\n");
-//						for (int j = 1; j < lines.length; j++)
-//							b.append(lines[j] + "\n");
-//
-//						molecule.setDescription(b.toString());
-//						index++;
-//
-//						selectedCollectionTab.addBenzenoid(molecule, DisplayType.BASIC);
-//
-//					} catch (IOException e1) {
-//						e1.printStackTrace();
-//					}
-//				}
 
 			selectedCollectionTab.refresh();
 

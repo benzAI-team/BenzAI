@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
 import application.ApplicationMode;
 import application.BenzenoidApplication;
 import classifier.Irregularity;
@@ -42,7 +41,6 @@ import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import molecules.Molecule;
 import molecules.sort.IrregularityComparator;
 import molecules.sort.MoleculeComparator;
@@ -152,7 +150,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		addTab.setOnSelectionChanged(e -> {
 			if (addTab.isSelected()) {
-				BenzenoidCollectionPane benzenoidSetPane2 = new BenzenoidCollectionPane(this, benzenoidSetPanes.size(),getNextCollectionPaneLabel());
+				BenzenoidCollectionPane benzenoidSetPane2 = new BenzenoidCollectionPane(this, benzenoidSetPanes.size(),
+						getNextCollectionPaneLabel());
 
 				addBenzenoidSetPane(benzenoidSetPane2);
 				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
@@ -175,87 +174,69 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		// creates the tab pane
 		tabPane = new TabPane();
 
-    // definition of the key combination
-    KeyCombination Ctrl_a = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
-    KeyCombination Ctrl_c = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-    KeyCombination Ctrl_n = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
-    KeyCombination Ctrl_v = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
-    KeyCombination Ctrl_w = new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN);
-    KeyCombination Ctrl_pagedown = new KeyCodeCombination(KeyCode.PAGE_DOWN, KeyCombination.CONTROL_DOWN);
-    KeyCombination Ctrl_pageup = new KeyCodeCombination(KeyCode.PAGE_UP, KeyCombination.CONTROL_DOWN);
-    KeyCombination Alt_c = new KeyCodeCombination(KeyCode.C, KeyCombination.ALT_DOWN);
-    KeyCombination Alt_t = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN);
-    KeyCombination Left = new KeyCodeCombination(KeyCode.LEFT);
-    KeyCombination Right = new KeyCodeCombination(KeyCode.RIGHT);
-    KeyCombination Down = new KeyCodeCombination(KeyCode.DOWN);
-    KeyCombination Up = new KeyCodeCombination(KeyCode.UP);
-    KeyCombination End = new KeyCodeCombination(KeyCode.END);
-    
-    // treatment of the pressed key(s)
-    tabPane.addEventFilter(KeyEvent.KEY_PRESSED, evt -> {
-      if (Ctrl_a.match(evt)) { // selects all benzenoids
-        selectAll();
-        evt.consume();
-      } 
-      else
-        if (Ctrl_c.match(evt)) { // copies the selected benzenoids
-          BenzenoidCollectionPane curentPane = getSelectedTab();
-          curentPane.copy();
-          evt.consume();
-        } 
-      else
-        if (Ctrl_v.match(evt)) { // pastes the copied benzenoids
-          paste();
-          evt.consume();
-        } 
-      else
-        if (Ctrl_w.match(evt)) { // closes the current tab
-          remove(benzenoidSetPanes.get(tabPane.getSelectionModel().getSelectedIndex()));
-          tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedItem());
-          
-          evt.consume();
-        } 
-      else
-        if ((Ctrl_pagedown.match(evt)) || (Right.match(evt) || (Down.match(evt)))) { // moves to the next tab but skips the add
-          if (tabPane.getSelectionModel().getSelectedIndex() == benzenoidSetPanes.size()-2)
-          {
-            tabPane.getSelectionModel().select(0);
-            evt.consume();
-          }
-        } 
-      else
-        if ((Ctrl_pageup.match(evt)) || (Left.match(evt) || (Up.match(evt)))) { // moves to the previous tab but skips the add tab
-          if (tabPane.getSelectionModel().getSelectedIndex() == 0)
-          {
-            tabPane.getSelectionModel().select(benzenoidSetPanes.size()-2);
-            evt.consume();
-          }
-        } 
-      else
-        if (End.match(evt)) { // moves to the last tab (i.e. the tab before the add tab)
-          tabPane.getSelectionModel().select(benzenoidSetPanes.size()-2);
-          evt.consume();
-        } 
-      else
-        if (Ctrl_n.match(evt)) { // adds a new tab
-          BenzenoidCollectionPane benzenoidSetPane2 = new BenzenoidCollectionPane(this, benzenoidSetPanes.size(), getNextCollectionPaneLabel());
-          addBenzenoidSetPane(benzenoidSetPane2);
-          tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-          evt.consume();
-        } 
-      else
-        if (Alt_c.match(evt)) { // runs the collection windows
-          application.switchMode(ApplicationMode.COLLECTIONS);
-          evt.consume();
-        } 
-      else
-        if (Alt_t.match(evt)) { // runs the filter windows
-          application.switchMode(ApplicationMode.FILTER);
-          evt.consume();
-        } 
-    });
-    
-    
+		// definition of the key combination
+		KeyCombination Ctrl_a = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
+		KeyCombination Ctrl_c = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+		KeyCombination Ctrl_n = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+		KeyCombination Ctrl_v = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+		KeyCombination Ctrl_w = new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN);
+		KeyCombination Ctrl_pagedown = new KeyCodeCombination(KeyCode.PAGE_DOWN, KeyCombination.CONTROL_DOWN);
+		KeyCombination Ctrl_pageup = new KeyCodeCombination(KeyCode.PAGE_UP, KeyCombination.CONTROL_DOWN);
+		KeyCombination Alt_c = new KeyCodeCombination(KeyCode.C, KeyCombination.ALT_DOWN);
+		KeyCombination Alt_t = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN);
+		KeyCombination Left = new KeyCodeCombination(KeyCode.LEFT);
+		KeyCombination Right = new KeyCodeCombination(KeyCode.RIGHT);
+		KeyCombination Down = new KeyCodeCombination(KeyCode.DOWN);
+		KeyCombination Up = new KeyCodeCombination(KeyCode.UP);
+		KeyCombination End = new KeyCodeCombination(KeyCode.END);
+
+		// treatment of the pressed key(s)
+		tabPane.addEventFilter(KeyEvent.KEY_PRESSED, evt -> {
+			if (Ctrl_a.match(evt)) { // selects all benzenoids
+				selectAll();
+				evt.consume();
+			} else if (Ctrl_c.match(evt)) { // copies the selected benzenoids
+				BenzenoidCollectionPane curentPane = getSelectedTab();
+				curentPane.copy();
+				evt.consume();
+			} else if (Ctrl_v.match(evt)) { // pastes the copied benzenoids
+				paste();
+				evt.consume();
+			} else if (Ctrl_w.match(evt)) { // closes the current tab
+				remove(benzenoidSetPanes.get(tabPane.getSelectionModel().getSelectedIndex()));
+				tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedItem());
+
+				evt.consume();
+			} else if ((Ctrl_pagedown.match(evt)) || (Right.match(evt) || (Down.match(evt)))) { // moves to the next tab
+																								// but skips the add
+				if (tabPane.getSelectionModel().getSelectedIndex() == benzenoidSetPanes.size() - 2) {
+					tabPane.getSelectionModel().select(0);
+					evt.consume();
+				}
+			} else if ((Ctrl_pageup.match(evt)) || (Left.match(evt) || (Up.match(evt)))) { // moves to the previous tab
+																							// but skips the add tab
+				if (tabPane.getSelectionModel().getSelectedIndex() == 0) {
+					tabPane.getSelectionModel().select(benzenoidSetPanes.size() - 2);
+					evt.consume();
+				}
+			} else if (End.match(evt)) { // moves to the last tab (i.e. the tab before the add tab)
+				tabPane.getSelectionModel().select(benzenoidSetPanes.size() - 2);
+				evt.consume();
+			} else if (Ctrl_n.match(evt)) { // adds a new tab
+				BenzenoidCollectionPane benzenoidSetPane2 = new BenzenoidCollectionPane(this, benzenoidSetPanes.size(),
+						getNextCollectionPaneLabel());
+				addBenzenoidSetPane(benzenoidSetPane2);
+				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+				evt.consume();
+			} else if (Alt_c.match(evt)) { // runs the collection windows
+				application.switchMode(ApplicationMode.COLLECTIONS);
+				evt.consume();
+			} else if (Alt_t.match(evt)) { // runs the filter windows
+				application.switchMode(ApplicationMode.FILTER);
+				evt.consume();
+			}
+		});
+
 		tabPane.setOnMouseClicked(e -> {
 
 			if (e.getButton() == MouseButton.PRIMARY) {
@@ -412,8 +393,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		Menu filterMenu = new Menu();
 		Label filterLabel = new Label("Filter");
-    
-    filterMenu.setGraphic(filterLabel);
+
+		filterMenu.setGraphic(filterLabel);
 
 		filterLabel.setOnMouseClicked(e -> {
 			application.switchMode(ApplicationMode.FILTER);
@@ -543,7 +524,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		this.setTop(menuBar);
 
 	}
-
 
 	public void remove(BenzenoidCollectionPane pane) {
 		benzenoidSetPanes.remove(pane);
@@ -1442,7 +1422,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 			for (int i = 0; i < listOfFiles.length; i++) {
 				File file = listOfFiles[i];
-				if (file.isFile() && file.getName().endsWith(".graph_coord")) {
+				if (file.isFile() && file.getName().contains(".graph")) {
 					Molecule molecule = GraphParser.parseUndirectedGraph(file);
 					molecule.setDescription(file.getName());
 					collectionPane.addBenzenoid(molecule, DisplayType.BASIC);
