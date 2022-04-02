@@ -499,6 +499,10 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		return benzenoidSetPane.getMolecule(index);
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public int compareTo(BenzenoidPane o) {
 		if (index < o.getIndex())

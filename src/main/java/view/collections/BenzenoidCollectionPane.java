@@ -294,7 +294,6 @@ public class BenzenoidCollectionPane extends Tab {
 		rboGroups.add(null);
 	}
 
-
 	public void addSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
 		selectedBenzenoidPanes.add(benzenoidPane);
 	}
@@ -931,6 +930,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 	public void export(File directory) {
 
+		int index = 0;
 		for (int i = 0; i < molecules.size(); i++) {
 
 			Molecule molecule = molecules.get(i);
@@ -942,7 +942,18 @@ public class BenzenoidCollectionPane extends Tab {
 			else
 				separator = "/";
 
-			File file = new File(directory.getAbsolutePath() + separator + "molecule_" + (i + 1) + ".graph_coord");
+			String filename;
+			if (!benzenoidPanes.get(i).getName().equals(""))
+				filename = benzenoidPanes.get(i).getName().split("\n")[0];
+			else {
+				filename = "unknown_molecule_" + index;
+				index++;
+			}
+
+			if (!filename.endsWith(".graph"))
+				filename += ".graph";
+
+			File file = new File(directory.getAbsolutePath() + separator + filename);
 			try {
 				molecule.exportToGraphFile(file);
 			} catch (IOException e) {
