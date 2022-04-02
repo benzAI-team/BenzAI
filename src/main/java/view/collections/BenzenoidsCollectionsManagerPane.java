@@ -1527,15 +1527,28 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 				String directoryPath = directory.getAbsolutePath();
 
+				int index = 0;
+
 				for (int i = 0; i < curentPane.getSelectedBenzenoidPanes().size(); i++) {
 
 					Molecule molecule = curentPane
 							.getMolecule(curentPane.getSelectedBenzenoidPanes().get(i).getIndex());
-					File file = new File(directoryPath + "/molecule_" + i + ".cml");
+
+					String filename;
+
+					if (!curentPane.getSelectedBenzenoidPanes().get(i).getName().equals(""))
+						filename = curentPane.getSelectedBenzenoidPanes().get(i).getName().split("\n")[0] + ".cml";
+					else {
+						filename = "unknown_molecule_" + index + ".cml";
+						index++;
+					}
+
+					filename = filename.replace(".graph", "");
+
+					File file = new File(directoryPath + "/" + filename);
 					try {
 						CMLConverter.generateCmlFile(molecule, file);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
