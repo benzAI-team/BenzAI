@@ -223,7 +223,8 @@ public class ModelBuilder {
 //		}
 
 		else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL)
-				|| GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
+				|| GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)
+				|| GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180)) {
 
 			int nbMaxHexagons = 0;
 
