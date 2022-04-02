@@ -1478,12 +1478,25 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 				String directoryPath = directory.getAbsolutePath();
 
+				int index = 0;
+
 				for (int i = 0; i < curentPane.getSelectedBenzenoidPanes().size(); i++) {
 
 					Molecule molecule = curentPane
 							.getMolecule(curentPane.getSelectedBenzenoidPanes().get(i).getIndex());
 
-					File file = new File(directoryPath + "/molecule_" + i + ".com");
+					String fileName;
+
+					if (!curentPane.getSelectedBenzenoidPanes().get(i).getName().equals(""))
+						fileName = curentPane.getSelectedBenzenoidPanes().get(i).getName().split("\n")[0] + ".com";
+					else {
+						fileName = "unknown_molecule_" + index + ".com";
+						index++;
+					}
+
+					fileName = fileName.replace(".graph", "");
+
+					File file = new File(directoryPath + "/" + fileName);
 					try {
 						ComConverter.generateComFile(molecule, file, 0, ComType.ER, file.getName());
 					} catch (IOException e) {
