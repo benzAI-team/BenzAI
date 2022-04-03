@@ -217,14 +217,12 @@ public class ModelBuilder {
 			}
 		}
 
-//		else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
-//			
-//			
-//		}
-
 		else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL)
 				|| GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)
-				|| GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180)) {
+				|| GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180)
+				|| GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180_E)
+				|| GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_EDGE_MIRROR)
+				|| GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_MIRROR)) {
 
 			int nbMaxHexagons = 0;
 
