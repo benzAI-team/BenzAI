@@ -18,9 +18,7 @@ For rotational symmetries, the rotational center is the center of the benzenoid 
 Regarding the mirror axis, the axis necessarily passes through the center of the benzenoid structure.
 Moreover, there exist two cases:
 * The axis passes through some carbon atoms and is parallel to some edges,
-* The axis does not pass through any carbon atoms and is perpendicular to some edges,
-
-For some benzenoids (e.g. the coronenoids), all these symmetries hold.
+* The axis does not pass through any carbon atoms and is perpendicular to some edges.
 
 In the following examples, the rotational center and/or the mirror axis to which each symmetry is related are depicted in red.
 
