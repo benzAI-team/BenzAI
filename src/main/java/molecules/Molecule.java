@@ -32,11 +32,9 @@ import solution.BenzenoidSolution;
 import solution.ClarCoverSolution;
 import solution.GraphConversion;
 import solveur.Aromaticity;
-import solveur.ClarCoverSolver;
-import solveur.KekuleStructureSolver;
 import solveur.LinAlgorithm;
-import solveur.RBOSolver;
 import solveur.LinAlgorithm.PerfectMatchingType;
+import solveur.RBOSolver;
 import spectrums.ResultLogFile;
 import sql.SelectQueryContent;
 import utils.Couple;
@@ -89,6 +87,8 @@ public class Molecule implements Comparable<Molecule> {
 
 	private ResultLogFile nicsResult;
 	private boolean databaseChecked;
+
+	private int nbCrowns = -1;
 
 	/**
 	 * Constructors
@@ -1147,10 +1147,10 @@ public class Molecule implements Comparable<Molecule> {
 
 		if (RBO != null)
 			return RBO;
-		
+
 		RBO = RBOSolver.RBO(this);
 		return RBO;
-		
+
 //		if (RBO != null)
 //			return RBO;
 //
@@ -1783,6 +1783,14 @@ public class Molecule implements Comparable<Molecule> {
 		}
 
 		return molecules;
+	}
+
+	public void setNbCrowns(int nbCrowns) {
+		this.nbCrowns = nbCrowns;
+	}
+
+	public int getNbCrowns() {
+		return nbCrowns;
 	}
 
 	@Override

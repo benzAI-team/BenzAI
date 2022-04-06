@@ -425,6 +425,8 @@ public class GeneratorPane extends ScrollPane {
 
 				molecule.setDescription(b.toString());
 
+				molecule.setNbCrowns(resultSolver.getNbCrowns().get(i));
+
 				molecules.add(molecule);
 
 				index++;
