@@ -216,8 +216,7 @@ public class CoronoidModule2 extends Module {
 
 	@Override
 	public void addWatchedVariables() {
-		generalModel.addWatchedVariable(nbConnectedComponents);
-		generalModel.addWatchedVariable(holesVertices);
+		
 	}
 
 	@Override
@@ -368,15 +367,5 @@ public class CoronoidModule2 extends Module {
 			generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 
 		}
-	}
-
-	private void postEdgesConstraints() {
-
-//		int diameter = generalModel.getDiameter();
-//		
-//		for (int i = 0 ; i < diameter ; i ++) {
-//			for (int j = 0 ; j < diameter ; j ++)
-//		}
-
 	}
 }

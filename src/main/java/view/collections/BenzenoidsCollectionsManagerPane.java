@@ -164,10 +164,13 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	}
 
 	public void copy(ArrayList<BenzenoidPane> copiedBenzenoidPanes) {
+
 		originBenzenoidCollectionPane = getSelectedTab();
 		this.copiedBenzenoidPanes.clear();
 		this.copiedBenzenoidPanes.addAll(copiedBenzenoidPanes);
-		System.out.println(copiedBenzenoidPanes.size() + " benzenoid(s) copied");
+
+		log("Copying " + copiedBenzenoidPanes.size() + " benzenoid(s) from " + originBenzenoidCollectionPane.getName(),
+				true);
 	}
 
 	private void createTabPane() {
@@ -486,6 +489,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		itemDelete.setOnAction(e -> {
 			BenzenoidCollectionPane curentPane = getSelectedTab();
 			curentPane.removeBenzenoidPanes(curentPane.getSelectedBenzenoidPanes());
+			log("Deleting " + curentPane.getSelectedBenzenoidPanes().size() + " benzenoid(s) from " + curentPane.getName(), true);
 		});
 
 		itemCopy.setOnAction(e -> {
@@ -796,7 +800,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		setPaneOrigin.removeBenzenoidPanes(benzenoidPanesMoved);
 		setPaneOrigin.refresh();
 
-		System.out.println(moleculesMoved.size() + " molecules moved");
+		log("Moving " + benzenoidPanesMoved.size() + " benzenoid(s) from " + setPaneOrigin.getName() + " to " + setPaneDestination.getName(), true);
 
 		for (int i = 0; i < moleculesMoved.size(); i++) {
 			setPaneDestination.addBenzenoid(moleculesMoved.get(i), displayTypesMoved.get(i));
@@ -833,6 +837,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			destinationPane.addBenzenoid(molecule, displayType);
 		}
 
+		log("Pasting " + copiedBenzenoidPanes.size() + " benzenoid(s) in " + destinationPane.getName(), true);
+		
 		destinationPane.refresh();
 	}
 
