@@ -56,12 +56,9 @@ public class RenameCollectionPane extends GridPane {
 			String name = fieldCollectionName.getText();
 
 			if ((!name.equals("")) && (!name.equals("+"))) {
-        Iterator<BenzenoidCollectionPane> iter = parent.getBenzenoidSetPanes().iterator();
-        while ((iter.hasNext()) && (!iter.next().getName().equals(name))) {
-        }
-
-        if (! iter.hasNext())
-          parent.renameCurentTab(name);
+        if (parent.isCollectionPaneLabel(name))
+          Utils.alert("This name is already used!");
+        else parent.renameCurentTab(name);
 			}
 
 			Stage stage = (Stage) this.getScene().getWindow();
