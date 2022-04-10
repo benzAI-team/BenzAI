@@ -189,7 +189,7 @@ public class FilteringPane extends ScrollPane {
 				.get(index);
 
 		BenzenoidCollectionPane newCollectionPane = new BenzenoidCollectionPane(managerPane,
-				managerPane.getNbCollectionPanes(), collectionPane.getName() + "(filter)");
+				managerPane.getNbCollectionPanes(), managerPane.getNextCollectionPaneLabel(collectionPane.getName() + "(filter)"));
 
 		managerPane.log("Filtering collection: " + collectionPane.getName(), true);
 		for (FilteringCriterion criterion : criterions) 
