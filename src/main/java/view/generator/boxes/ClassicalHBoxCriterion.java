@@ -14,46 +14,49 @@ public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
 
 	protected ChoiceBox<String> operatorChoiceBox;
 	protected TextField fieldValue;
-	
+
 	@Override
 	protected void checkValidity() {
-		
-		if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
+
+		if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			valid = false;
 			this.getChildren().remove(warningIcon);
 			this.getChildren().remove(deleteButton);
 			this.getChildren().addAll(warningIcon, deleteButton);
 		}
-		
+
 		else {
 			valid = true;
 			this.getChildren().remove(warningIcon);
 			this.getChildren().remove(deleteButton);
 			this.getChildren().add(deleteButton);
 		}
+
+		if (valid)
+			parent.refreshValidity();
 	}
 
 	@Override
 	protected void initialize() {
-		
+
 		valid = false;
-		
+
 		operatorChoiceBox = new ChoiceBox<String>();
 		operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=");
 		fieldValue = new TextField();
-		
+
 		operatorChoiceBox.getSelectionModel().select(2);
-		
+
 		fieldValue.setOnKeyReleased(e -> {
 			checkValidity();
 		});
-	
+
 		operatorChoiceBox.setOnAction(e -> {
 			checkValidity();
 		});
-		
+
 		this.getChildren().addAll(operatorChoiceBox, fieldValue, warningIcon, deleteButton);
-		
+
 	}
-	
+
 }

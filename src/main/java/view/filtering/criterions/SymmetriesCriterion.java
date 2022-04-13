@@ -53,7 +53,7 @@ public class SymmetriesCriterion extends FilteringCriterion {
 			criterions.add(new GeneratorCriterion(Subject.SYMM_ROT_180_E, Operator.NONE, ""));
 
 		else if (symmetry.equals("D_6h \"(vertex)-60-rotation+(edge)-mirror\""))
-			criterions.add(new GeneratorCriterion(Subject.SYMM_ROT_60, Operator.NONE, ""));
+			criterions.add(new GeneratorCriterion(Subject.ROT_60_MIRROR, Operator.NONE, ""));
 
 		else if (symmetry.equals("D_3h(ii) \"vertex-120-rotation+(edge)-mirror\""))
 			criterions.add(new GeneratorCriterion(Subject.ROT_120_VERTEX_MIRROR, Operator.NONE, ""));

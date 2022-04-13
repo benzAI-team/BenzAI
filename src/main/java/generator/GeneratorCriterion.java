@@ -120,6 +120,10 @@ public class GeneratorCriterion {
 		return false;
 	}
 
+	public boolean isUpperBound() {
+		return operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT;
+	}
+
 	@Override
 	public String toString() {
 		return subject.toString() + " " + getOperatorString() + " " + value;

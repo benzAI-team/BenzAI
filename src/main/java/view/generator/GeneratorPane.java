@@ -708,23 +708,65 @@ public class GeneratorPane extends ScrollPane {
 
 	public void refreshValidity() {
 
-		boolean valid1 = false;
+		ArrayList<GeneratorCriterion> criterions = buildCriterions();
+		boolean valid = false;
 
-		for (int i = 0; i < nbCriterions; i++) {
+		boolean lines = false;
+		boolean columns = false;
 
-			HBoxCriterion box = hBoxesCriterions.get(i);
+		for (int i = 0; i < criterions.size(); i++) {
 
-			if ((box instanceof HBoxNbHexagonsCriterion || box instanceof HBoxNbCarbonsCriterion
-					|| box instanceof HBoxNbHydrogensCriterion)) {
+			GeneratorCriterion criterion = criterions.get(i);
 
-				valid1 = true;
+			Subject subject = criterion.getSubject();
+
+			if ((subject == Subject.NB_HEXAGONS || subject == Subject.NB_CARBONS || subject == Subject.NB_HYDROGENS)
+					&& criterion.isUpperBound()) {
+				valid = true;
+				break;
+			}
+
+			if (subject == Subject.RECT_NB_LINES && criterion.isUpperBound()) {
+				lines = true;
+				if (lines && columns) {
+					valid = true;
+					break;
+				}
+			}
+
+			if (subject == Subject.RECT_NB_COLUMNS && criterion.isUpperBound()) {
+				columns = true;
+				if (lines && columns) {
+					valid = true;
+					break;
+				}
 			}
 		}
 
-		if (valid1)
+		buttonsBox.getChildren().remove(warningIcon);
+
+		if (valid)
 			buttonsBox.getChildren().remove(warningIcon);
 		else
 			buttonsBox.getChildren().add(warningIcon);
+
+//		boolean valid1 = false;
+//
+//		for (int i = 0; i < nbCriterions; i++) {
+//
+//			HBoxCriterion box = hBoxesCriterions.get(i);
+//
+//			if ((box instanceof HBoxNbHexagonsCriterion || box instanceof HBoxNbCarbonsCriterion
+//					|| box instanceof HBoxNbHydrogensCriterion)) {
+//
+//				valid1 = true;
+//			}
+//		}
+//
+//		if (valid1)
+//			buttonsBox.getChildren().remove(warningIcon);
+//		else
+//			buttonsBox.getChildren().add(warningIcon);
 	}
 
 	public ArrayList<HBoxCriterion> getHBoxesCriterions() {
