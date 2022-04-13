@@ -79,6 +79,8 @@ public class GeneratorPane extends ScrollPane {
 
 	private ArrayList<Molecule> generatedMolecules;
 
+	private boolean valid;
+
 	/*
 	 * Solver informations
 	 */
@@ -441,105 +443,112 @@ public class GeneratorPane extends ScrollPane {
 	@SuppressWarnings("rawtypes")
 	private void generateBenzenoids() {
 
-		ArrayList<GeneratorCriterion> criterions = buildCriterions();
-		HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = buildCriterionsMap(criterions);
+		if (valid) {
 
-		application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
-		for (GeneratorCriterion criterion : criterions) {
-			application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
-		}
+			ArrayList<GeneratorCriterion> criterions = buildCriterions();
+			HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = buildCriterionsMap(criterions);
 
-		selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
+			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
+			for (GeneratorCriterion criterion : criterions) {
+				application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
+			}
 
-		buttonsBox.getChildren().clear();
-		buttonsBox.getChildren().addAll(loadIcon, pauseButton, stopButton);
+			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
 
-		Iterator it = criterionsMap.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			System.out.println(pair.getKey() + " = " + pair.getValue().toString());
-		}
+			buttonsBox.getChildren().clear();
+			buttonsBox.getChildren().addAll(loadIcon, pauseButton, stopButton);
 
-		try {
-			models = ModelBuilder.buildModel(criterions, criterionsMap, fragmentsInformations);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		isRunning = true;
+			Iterator it = criterionsMap.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry pair = (Map.Entry) it.next();
+				System.out.println(pair.getKey() + " = " + pair.getValue().toString());
+			}
 
-		application.addTask("Benzenoid generation");
+			try {
+				models = ModelBuilder.buildModel(criterions, criterionsMap, fragmentsInformations);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			isRunning = true;
 
-		generatedMolecules = new ArrayList<>();
+			application.addTask("Benzenoid generation");
 
-		final Service<Void> calculateService = new Service<Void>() {
+			generatedMolecules = new ArrayList<>();
 
-			@Override
-			protected Task<Void> createTask() {
-				return new Task<Void>() {
+			final Service<Void> calculateService = new Service<Void>() {
 
-					@Override
-					protected Void call() throws Exception {
+				@Override
+				protected Task<Void> createTask() {
+					return new Task<Void>() {
 
-						for (GeneralModel model : models) {
-							curentModel = model;
+						@Override
+						protected Void call() throws Exception {
 
-							model.applyNoGoods(generatedMolecules);
+							for (GeneralModel model : models) {
+								curentModel = model;
 
-							curentModel.solve();
+								model.applyNoGoods(generatedMolecules);
 
-							generatedMolecules
-									.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
+								curentModel.solve();
 
+								generatedMolecules
+										.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
+
+							}
+
+							System.out.println("Fin génération");
+
+							return null;
+						}
+					};
+				}
+			};
+
+			calculateService.stateProperty().addListener(new ChangeListener<State>() {
+
+				@Override
+				public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+
+					switch (newValue) {
+					case FAILED:
+						isRunning = false;
+						Utils.alert("Generation failed.");
+						break;
+					case CANCELLED:
+						isRunning = false;
+						Utils.alert("Generation canceled");
+						break;
+					case SUCCEEDED:
+						isRunning = false;
+						if (!curentModel.isPaused()) {
+							buttonsBox.getChildren().clear();
+							buttonsBox.getChildren().addAll(addButton, generateButton);
+							buildBenzenoidPanesThread();
+							application.removeTask("Benzenoid generation");
 						}
 
-						System.out.println("Fin génération");
+						else {
+							buttonsBox.getChildren().clear();
+							buttonsBox.getChildren().addAll(resumeButton, stopButton);
+						}
 
-						return null;
-					}
-				};
-			}
-		};
+						break;
 
-		calculateService.stateProperty().addListener(new ChangeListener<State>() {
-
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-
-				switch (newValue) {
-				case FAILED:
-					isRunning = false;
-					Utils.alert("Generation failed.");
-					break;
-				case CANCELLED:
-					isRunning = false;
-					Utils.alert("Generation canceled");
-					break;
-				case SUCCEEDED:
-					isRunning = false;
-					if (!curentModel.isPaused()) {
-						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(addButton, generateButton);
-						buildBenzenoidPanesThread();
-						application.removeTask("Benzenoid generation");
+					default:
+						break;
 					}
 
-					else {
-						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(resumeButton, stopButton);
-					}
-
-					break;
-
-				default:
-					break;
 				}
 
-			}
+			});
 
-		});
+			calculateService.start();
+		}
 
-		calculateService.start();
-
+		else {
+			Utils.alert(
+					"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required");
+		}
 	}
 
 	private void resumeGeneration() {
@@ -709,7 +718,7 @@ public class GeneratorPane extends ScrollPane {
 	public void refreshValidity() {
 
 		ArrayList<GeneratorCriterion> criterions = buildCriterions();
-		boolean valid = false;
+		valid = false;
 
 		boolean lines = false;
 		boolean columns = false;
@@ -750,23 +759,6 @@ public class GeneratorPane extends ScrollPane {
 		else
 			buttonsBox.getChildren().add(warningIcon);
 
-//		boolean valid1 = false;
-//
-//		for (int i = 0; i < nbCriterions; i++) {
-//
-//			HBoxCriterion box = hBoxesCriterions.get(i);
-//
-//			if ((box instanceof HBoxNbHexagonsCriterion || box instanceof HBoxNbCarbonsCriterion
-//					|| box instanceof HBoxNbHydrogensCriterion)) {
-//
-//				valid1 = true;
-//			}
-//		}
-//
-//		if (valid1)
-//			buttonsBox.getChildren().remove(warningIcon);
-//		else
-//			buttonsBox.getChildren().add(warningIcon);
 	}
 
 	public ArrayList<HBoxCriterion> getHBoxesCriterions() {
