@@ -220,8 +220,8 @@ public class GeneratorPane extends ScrollPane {
 
 		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
 		warningIcon.resize(30, 30);
-		Tooltip.install(warningIcon,
-				new Tooltip("A criterion limiting the number of hexagons/carbons/hydrogens is required"));
+		Tooltip.install(warningIcon, new Tooltip(
+				"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required"));
 
 		checkConfiguration();
 

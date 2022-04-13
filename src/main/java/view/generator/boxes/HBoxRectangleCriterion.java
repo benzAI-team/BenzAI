@@ -111,10 +111,12 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 
 		nbLinesChoiceBox.setOnAction(e -> {
 			checkValidity();
+			parent.refreshValidity();
 		});
 
 		nbLinesTextField.setOnKeyReleased(e -> {
 			checkValidity();
+			parent.refreshValidity();
 		});
 
 		hBoxNbLines = new HBox(5.0);
@@ -128,10 +130,12 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 
 		nbColumnsChoiceBox.setOnAction(e -> {
 			checkValidity();
+			parent.refreshValidity();
 		});
 
 		nbColumnsTextField.setOnKeyReleased(e -> {
 			checkValidity();
+			parent.refreshValidity();
 		});
 
 		hBoxNbColumns = new HBox(5.0);
