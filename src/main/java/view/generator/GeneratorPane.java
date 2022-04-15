@@ -223,7 +223,7 @@ public class GeneratorPane extends ScrollPane {
 		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
 		warningIcon.resize(30, 30);
 		Tooltip.install(warningIcon, new Tooltip(
-				"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required"));
+				"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required. Moreover, all the criterions must be valid"));
 
 		checkConfiguration();
 
@@ -303,8 +303,13 @@ public class GeneratorPane extends ScrollPane {
 
 		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
 
-		for (HBoxCriterion box : hBoxesCriterions)
+		for (HBoxCriterion box : hBoxesCriterions) {
+
+			if (!box.isValid())
+				return null;
+
 			criterions.addAll(box.buildCriterions());
+		}
 
 		return criterions;
 	}
@@ -720,45 +725,48 @@ public class GeneratorPane extends ScrollPane {
 		ArrayList<GeneratorCriterion> criterions = buildCriterions();
 		valid = false;
 
-		boolean lines = false;
-		boolean columns = false;
+		if (criterions != null) {
 
-		for (int i = 0; i < criterions.size(); i++) {
+			boolean lines = false;
+			boolean columns = false;
 
-			GeneratorCriterion criterion = criterions.get(i);
+			for (int i = 0; i < criterions.size(); i++) {
 
-			Subject subject = criterion.getSubject();
+				GeneratorCriterion criterion = criterions.get(i);
 
-			if ((subject == Subject.NB_HEXAGONS || subject == Subject.NB_CARBONS || subject == Subject.NB_HYDROGENS
-					|| subject == Subject.RHOMBUS_DIMENSION) && criterion.isUpperBound()) {
-				valid = true;
-				break;
-			}
+				Subject subject = criterion.getSubject();
 
-			if (subject == Subject.RECT_NB_LINES && criterion.isUpperBound()) {
-				lines = true;
-				if (lines && columns) {
+				if ((subject == Subject.NB_HEXAGONS || subject == Subject.NB_CARBONS || subject == Subject.NB_HYDROGENS
+						|| subject == Subject.RHOMBUS_DIMENSION) && criterion.isUpperBound()) {
 					valid = true;
 					break;
 				}
-			}
 
-			if (subject == Subject.RECT_NB_COLUMNS && criterion.isUpperBound()) {
-				columns = true;
-				if (lines && columns) {
-					valid = true;
-					break;
+				if (subject == Subject.RECT_NB_LINES && criterion.isUpperBound()) {
+					lines = true;
+					if (lines && columns) {
+						valid = true;
+						break;
+					}
+				}
+
+				if (subject == Subject.RECT_NB_COLUMNS && criterion.isUpperBound()) {
+					columns = true;
+					if (lines && columns) {
+						valid = true;
+						break;
+					}
 				}
 			}
-		}
 
-		buttonsBox.getChildren().remove(warningIcon);
-
-		if (valid)
 			buttonsBox.getChildren().remove(warningIcon);
-		else
-			buttonsBox.getChildren().add(warningIcon);
 
+			if (valid)
+				buttonsBox.getChildren().remove(warningIcon);
+			else
+				buttonsBox.getChildren().add(warningIcon);
+
+		}
 	}
 
 	public ArrayList<HBoxCriterion> getHBoxesCriterions() {
