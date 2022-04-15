@@ -63,12 +63,14 @@ public class HBoxRhombusCriterion extends HBoxCriterion {
 
 		dimensionChoiceBox.setOnAction(e -> {
 			checkValidity();
+			parent.refreshValidity();
 		});
 
 		dimensionTextField = new TextField();
 
 		dimensionTextField.setOnKeyReleased(e -> {
 			checkValidity();
+			parent.refreshValidity();
 		});
 
 		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, warningIcon, deleteButton);

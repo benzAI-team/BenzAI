@@ -23,6 +23,7 @@ import modules.RhombusModule;
 import modules.SingleFragment1Module;
 import modules.SymmetriesModule;
 import solving_modes.SymmetryType;
+import utils.Utils;
 
 public class ModelBuilder {
 
@@ -32,7 +33,8 @@ public class ModelBuilder {
 		ArrayList<GeneralModel> models = new ArrayList<>();
 
 		if (map.get("hexagons").size() == 0 && map.get("carbons").size() == 0 && map.get("hydrogens").size() == 0
-				&& map.get("coronenoid").size() == 0 && map.get("rectangle").size() == 0)
+				&& map.get("coronenoid").size() == 0 && map.get("rectangle").size() == 0
+				&& map.get("rhombus").size() == 0)
 			return null;
 
 		int upperBoundHexagons = Integer.MAX_VALUE;
@@ -157,6 +159,22 @@ public class ModelBuilder {
 			for (GeneratorCriterion cri : criterionsColumns)
 				cri.setSubject(Subject.RECT_NB_LINES);
 
+		}
+
+		for (GeneratorCriterion criterion : map.get("rhombus")) {
+
+			Subject subject = criterion.getSubject();
+			String value = criterion.getValue();
+
+			if (subject == Subject.RHOMBUS_DIMENSION && Utils.isNumber(value) && criterion.isUpperBound()) {
+
+				int intVal = Integer.parseInt(value);
+				int bound = intVal * intVal;
+
+				if (bound < upperBoundHexagons) {
+					upperBoundHexagons = bound;
+				}
+			}
 		}
 
 		if (map.get("hexagons").size() == 0) {

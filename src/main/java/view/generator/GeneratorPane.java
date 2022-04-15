@@ -729,8 +729,8 @@ public class GeneratorPane extends ScrollPane {
 
 			Subject subject = criterion.getSubject();
 
-			if ((subject == Subject.NB_HEXAGONS || subject == Subject.NB_CARBONS || subject == Subject.NB_HYDROGENS)
-					&& criterion.isUpperBound()) {
+			if ((subject == Subject.NB_HEXAGONS || subject == Subject.NB_CARBONS || subject == Subject.NB_HYDROGENS
+					|| subject == Subject.RHOMBUS_DIMENSION) && criterion.isUpperBound()) {
 				valid = true;
 				break;
 			}
