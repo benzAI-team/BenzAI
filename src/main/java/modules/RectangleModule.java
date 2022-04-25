@@ -2,6 +2,7 @@ package modules;
 
 import java.util.ArrayList;
 
+import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
@@ -23,14 +24,13 @@ public class RectangleModule extends Module {
 
 	private BoolVar zero = generalModel.getProblem().boolVar(false);
 
-	private BoolVar[][] C1;
 	private BoolVar[][] L1;
-
-	private BoolVar[][] C2;
-	private BoolVar[][] L2;
+	private BoolVar[][] C1;
+	private BoolVar[][] D1;
 
 	private IntVar[] lSum;
 	private IntVar[] cSum;
+	private IntVar[] dSum;
 
 	protected IntVar xH;
 	protected IntVar xW;
@@ -50,20 +50,22 @@ public class RectangleModule extends Module {
 
 		rotation = generalModel.getProblem().boolVar("rot");
 
-		buildLines1();
-		buildColumns1();
-
-		buildLines2();
-		buildColumns2();
+		buildD1();
+		buildC1();
+		buildL1();
 
 		lSum = new IntVar[generalModel.getDiameter()];
 		cSum = new IntVar[generalModel.getDiameter()];
+		dSum = new IntVar[generalModel.getDiameter()];
 
 		for (int i = 0; i < lSum.length; i++)
 			lSum[i] = generalModel.getProblem().intVar("sumL" + i, 0, generalModel.getDiameter());
 
 		for (int i = 0; i < cSum.length; i++)
 			cSum[i] = generalModel.getProblem().intVar("sumC" + i, 0, generalModel.getDiameter());
+
+		for (int i = 0; i < dSum.length; i++)
+			dSum[i] = generalModel.getProblem().intVar("sumD" + i, 0, generalModel.getDiameter());
 
 		/*
 		 * taille de la solution
@@ -101,36 +103,62 @@ public class RectangleModule extends Module {
 		 * Connecting L/C to LSum/CSum
 		 */
 
+//		for (int i = 0; i < lSum.length; i++) {
+//
+//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
+//					generalModel.getProblem().sum(D1[i], "=", lSum[i]));
+//
+//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
+//					generalModel.getProblem().sum(L1[i], "=", lSum[i]));
+//
+//		}
+//
+//		for (int i = 0; i < cSum.length; i++) {
+//
+//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
+//					generalModel.getProblem().sum(C1[i], "=", cSum[i]));
+//
+//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
+//					generalModel.getProblem().sum(C2[i], "=", cSum[i]));
+//		}
+
 		for (int i = 0; i < lSum.length; i++) {
 
-			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
-					generalModel.getProblem().sum(L1[i], "=", lSum[i]));
-
-			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
-					generalModel.getProblem().sum(L2[i], "=", lSum[i]));
-
-		}
-
-		for (int i = 0; i < cSum.length; i++) {
-
-			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
-					generalModel.getProblem().sum(C1[i], "=", cSum[i]));
-
-			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
-					generalModel.getProblem().sum(C2[i], "=", cSum[i]));
+			generalModel.getProblem().sum(L1[i], "=", lSum[i]).post();
+			generalModel.getProblem().sum(C1[i], "=", cSum[i]).post();
+			generalModel.getProblem().sum(D1[i], "=", dSum[i]).post();
 		}
 
 		/*
 		 * if a line (resp. a column) exists, then its size has to be xH (resp xW).
 		 */
 
-		for (int i = 0; i < lSum.length; i++)
-			generalModel.getProblem().or(generalModel.getProblem().arithm(lSum[i], "=", 0),
-					generalModel.getProblem().arithm(lSum[i], "=", xW)).post();
+//		for (int i = 0; i < lSum.length; i++)
+//			generalModel.getProblem().or(generalModel.getProblem().arithm(lSum[i], "=", 0),
+//					generalModel.getProblem().arithm(lSum[i], "=", xW)).post();
+//
+//		for (int i = 0; i < cSum.length; i++)
+//			generalModel.getProblem().or(generalModel.getProblem().arithm(cSum[i], "=", 0),
+//					generalModel.getProblem().arithm(cSum[i], "=", xH)).post();
 
-		for (int i = 0; i < cSum.length; i++)
-			generalModel.getProblem().or(generalModel.getProblem().arithm(cSum[i], "=", 0),
-					generalModel.getProblem().arithm(cSum[i], "=", xH)).post();
+		for (int i = 0; i < lSum.length; i++) {
+
+			Constraint lxW = generalModel.getProblem().or(generalModel.getProblem().arithm(lSum[i], "=", 0),
+					generalModel.getProblem().arithm(lSum[i], "=", xW));
+			Constraint cxH = generalModel.getProblem().or(generalModel.getProblem().arithm(cSum[i], "=", 0),
+					generalModel.getProblem().arithm(cSum[i], "=", xH));
+			Constraint cxW = generalModel.getProblem().or(generalModel.getProblem().arithm(cSum[i], "=", 0),
+					generalModel.getProblem().arithm(cSum[i], "=", xW));
+			Constraint dxH = generalModel.getProblem().or(generalModel.getProblem().arithm(dSum[i], "=", 0),
+					generalModel.getProblem().arithm(dSum[i], "=", xH));
+
+			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1), lxW);
+			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1), cxH);
+
+			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0), cxW);
+			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0), dxH);
+
+		}
 
 		/*
 		 * Contiguous lines and columns
@@ -140,17 +168,21 @@ public class RectangleModule extends Module {
 
 		for (int i = 0; i < generalModel.getDiameter(); i++) {
 
-			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
-					generalModel.getProblem().regular(L1[i], automaton));
+//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
+//					generalModel.getProblem().regular(D1[i], automaton));
+//
+//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
+//					generalModel.getProblem().regular(L1[i], automaton));
+//
+//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
+//					generalModel.getProblem().regular(C1[i], automaton));
+//
+//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
+//					generalModel.getProblem().regular(C2[i], automaton));
 
-			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
-					generalModel.getProblem().regular(L2[i], automaton));
-
-			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
-					generalModel.getProblem().regular(C1[i], automaton));
-
-			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
-					generalModel.getProblem().regular(C2[i], automaton));
+			generalModel.getProblem().regular(L1[i], automaton).post();
+			generalModel.getProblem().regular(C1[i], automaton).post();
+			generalModel.getProblem().regular(D1[i], automaton).post();
 
 		}
 
@@ -189,7 +221,7 @@ public class RectangleModule extends Module {
 		generalModel.addWatchedVariable(xH);
 	}
 
-	private void buildLines1() {
+	private void buildD1() {
 
 		int diameter = generalModel.getDiameter();
 		int nbCrowns = generalModel.getNbCrowns();
@@ -246,7 +278,7 @@ public class RectangleModule extends Module {
 			lines.add(line);
 		}
 
-		L1 = new BoolVar[diameter][];
+		D1 = new BoolVar[diameter][];
 
 		for (int i = 0; i < lines.size(); i++) {
 
@@ -263,12 +295,12 @@ public class RectangleModule extends Module {
 
 			}
 
-			L1[i] = line;
+			D1[i] = line;
 
 		}
 	}
 
-	private void buildLines2() {
+	private void buildL1() {
 
 		int diameter = generalModel.getDiameter();
 		int[][] coordsMatrix = generalModel.getCoordsMatrix();
@@ -287,24 +319,24 @@ public class RectangleModule extends Module {
 			}
 		}
 
-		L2 = new BoolVar[lines.length][];
+		L1 = new BoolVar[lines.length][];
 
 		for (int i = 0; i < lines.length; i++) {
 
 			int[] line = lines[i];
-			L2[i] = new BoolVar[line.length];
+			L1[i] = new BoolVar[line.length];
 
 			for (int j = 0; j < line.length; j++)
 				if (line[j] != -1)
-					L2[i][j] = generalModel.getWatchedGraphVertices()[line[j]];
+					L1[i][j] = generalModel.getWatchedGraphVertices()[line[j]];
 				else
-					L2[i][j] = zero;
+					L1[i][j] = zero;
 
 		}
 
 	}
 
-	private void buildColumns1() {
+	private void buildC1() {
 
 		int diameter = generalModel.getDiameter();
 		int[][] coordsMatrix = generalModel.getCoordsMatrix();
@@ -326,29 +358,6 @@ public class RectangleModule extends Module {
 			C1[column] = c;
 		}
 
-	}
-
-	private void buildColumns2() {
-
-		int diameter = generalModel.getDiameter();
-		int[][] coordsMatrix = generalModel.getCoordsMatrix();
-
-		C2 = new BoolVar[diameter][diameter];
-
-		for (int column = 0; column < diameter; column++) {
-
-			BoolVar[] c = new BoolVar[diameter];
-
-			for (int line = 0; line < diameter; line++) {
-
-				if (coordsMatrix[line][column] != -1)
-					c[line] = generalModel.getWatchedGraphVertices()[coordsMatrix[line][column]];
-				else
-					c[line] = zero;
-			}
-
-			C2[column] = c;
-		}
 	}
 
 	@Override
