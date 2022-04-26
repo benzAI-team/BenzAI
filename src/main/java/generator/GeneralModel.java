@@ -201,6 +201,9 @@ public class GeneralModel {
 
 		diameter = (2 * nbCrowns) - 1;
 
+		if (GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
+			applySymmetriesConstraints = false;
+
 		initialize();
 	}
 

@@ -103,25 +103,6 @@ public class RectangleModule extends Module {
 		 * Connecting L/C to LSum/CSum
 		 */
 
-//		for (int i = 0; i < lSum.length; i++) {
-//
-//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
-//					generalModel.getProblem().sum(D1[i], "=", lSum[i]));
-//
-//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
-//					generalModel.getProblem().sum(L1[i], "=", lSum[i]));
-//
-//		}
-//
-//		for (int i = 0; i < cSum.length; i++) {
-//
-//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
-//					generalModel.getProblem().sum(C1[i], "=", cSum[i]));
-//
-//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
-//					generalModel.getProblem().sum(C2[i], "=", cSum[i]));
-//		}
-
 		for (int i = 0; i < lSum.length; i++) {
 
 			generalModel.getProblem().sum(L1[i], "=", lSum[i]).post();
@@ -132,14 +113,6 @@ public class RectangleModule extends Module {
 		/*
 		 * if a line (resp. a column) exists, then its size has to be xH (resp xW).
 		 */
-
-//		for (int i = 0; i < lSum.length; i++)
-//			generalModel.getProblem().or(generalModel.getProblem().arithm(lSum[i], "=", 0),
-//					generalModel.getProblem().arithm(lSum[i], "=", xW)).post();
-//
-//		for (int i = 0; i < cSum.length; i++)
-//			generalModel.getProblem().or(generalModel.getProblem().arithm(cSum[i], "=", 0),
-//					generalModel.getProblem().arithm(cSum[i], "=", xH)).post();
 
 		for (int i = 0; i < lSum.length; i++) {
 
@@ -167,18 +140,6 @@ public class RectangleModule extends Module {
 		FiniteAutomaton automaton = buildAutomaton();
 
 		for (int i = 0; i < generalModel.getDiameter(); i++) {
-
-//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
-//					generalModel.getProblem().regular(D1[i], automaton));
-//
-//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
-//					generalModel.getProblem().regular(L1[i], automaton));
-//
-//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 0),
-//					generalModel.getProblem().regular(C1[i], automaton));
-//
-//			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(rotation, "=", 1),
-//					generalModel.getProblem().regular(C2[i], automaton));
 
 			generalModel.getProblem().regular(L1[i], automaton).post();
 			generalModel.getProblem().regular(C1[i], automaton).post();
@@ -317,6 +278,8 @@ public class RectangleModule extends Module {
 				line[index] = coordsMatrix[y][x];
 				index++;
 			}
+
+			System.out.print("");
 		}
 
 		L1 = new BoolVar[lines.length][];
@@ -332,7 +295,11 @@ public class RectangleModule extends Module {
 				else
 					L1[i][j] = zero;
 
+			System.out.print("");
+
 		}
+
+		System.out.print("");
 
 	}
 
