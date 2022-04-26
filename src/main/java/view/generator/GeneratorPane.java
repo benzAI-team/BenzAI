@@ -354,7 +354,7 @@ public class GeneratorPane extends ScrollPane {
 					|| subject == Subject.N3 || subject == Subject.N4)
 				map.get("irregularity").add(criterion);
 
-			else if (subject == Subject.RECT_NB_LINES || subject == Subject.RECT_NB_COLUMNS)
+			else if (subject == Subject.RECT_HEIGHT || subject == Subject.RECT_WIDTH)
 				map.get("rectangle").add(criterion);
 
 			else if (subject == Subject.RHOMBUS || subject == Subject.RHOMBUS_DIMENSION)
@@ -742,7 +742,7 @@ public class GeneratorPane extends ScrollPane {
 					break;
 				}
 
-				if (subject == Subject.RECT_NB_LINES && criterion.isUpperBound()) {
+				if (subject == Subject.RECT_HEIGHT && criterion.isUpperBound()) {
 					lines = true;
 					if (lines && columns) {
 						valid = true;
@@ -750,7 +750,7 @@ public class GeneratorPane extends ScrollPane {
 					}
 				}
 
-				if (subject == Subject.RECT_NB_COLUMNS && criterion.isUpperBound()) {
+				if (subject == Subject.RECT_WIDTH && criterion.isUpperBound()) {
 					columns = true;
 					if (lines && columns) {
 						valid = true;
