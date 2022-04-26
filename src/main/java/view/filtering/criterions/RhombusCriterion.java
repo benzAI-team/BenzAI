@@ -40,7 +40,7 @@ public class RhombusCriterion extends FilteringCriterion {
 
 		if (operatorDimension != null && dimension > 0) {
 			Operator operator = GeneratorCriterion.getOperator(operatorDimension);
-			criterions.add(new GeneratorCriterion(Subject.RECT_NB_LINES, operator, Integer.toString(dimension)));
+			criterions.add(new GeneratorCriterion(Subject.RECT_HEIGHT, operator, Integer.toString(dimension)));
 		}
 
 		HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = GeneratorPane.buildCriterionsMap(criterions);

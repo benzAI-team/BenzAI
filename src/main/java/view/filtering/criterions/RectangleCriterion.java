@@ -15,22 +15,22 @@ import view.generator.GeneratorPane;
 
 public class RectangleCriterion extends FilteringCriterion {
 
-	private String operatorNbLines;
-	private int nbLines;
+	private String operatorHeight;
+	private int height;
 
-	private String operatorNbColumns;
-	private int nbColumns;
+	private String operatorWidth;
+	private int width;
 
 	public RectangleCriterion() {
 		super();
 	}
 
-	public RectangleCriterion(String operatorNbLines, int nbLines, String operatorNbColumns, int nbColumns) {
+	public RectangleCriterion(String operatorHeight, int height, String operatorWidth, int width) {
 		super();
-		this.operatorNbLines = operatorNbLines;
-		this.nbLines = nbLines;
-		this.operatorNbColumns = operatorNbColumns;
-		this.nbColumns = nbColumns;
+		this.operatorHeight = operatorHeight;
+		this.height = height;
+		this.operatorWidth = operatorWidth;
+		this.width = width;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class RectangleCriterion extends FilteringCriterion {
 
 		ResultSolver resultSolver = null;
 
-		if (operatorNbLines == null && operatorNbColumns == null) {
+		if (operatorHeight == null && operatorWidth == null) {
 
 			ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
 			GeneratorCriterion hexagonCriterion = new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ,
@@ -66,14 +66,14 @@ public class RectangleCriterion extends FilteringCriterion {
 			criterions.add(hexagonCriterion);
 			criterions.add(new GeneratorCriterion(Subject.RECTANGLE, Operator.NONE, ""));
 
-			if (operatorNbLines != null && nbLines > 0) {
-				Operator operator = GeneratorCriterion.getOperator(operatorNbLines);
-				criterions.add(new GeneratorCriterion(Subject.RECT_NB_LINES, operator, Integer.toString(nbLines)));
+			if (operatorHeight != null && height > 0) {
+				Operator operator = GeneratorCriterion.getOperator(operatorHeight);
+				criterions.add(new GeneratorCriterion(Subject.RECT_HEIGHT, operator, Integer.toString(height)));
 			}
 
-			if (operatorNbColumns != null && nbColumns > 0) {
-				Operator operator = GeneratorCriterion.getOperator(operatorNbColumns);
-				criterions.add(new GeneratorCriterion(Subject.RECT_NB_COLUMNS, operator, Integer.toString(nbColumns)));
+			if (operatorWidth != null && width > 0) {
+				Operator operator = GeneratorCriterion.getOperator(operatorWidth);
+				criterions.add(new GeneratorCriterion(Subject.RECT_WIDTH, operator, Integer.toString(width)));
 			}
 
 			HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = GeneratorPane.buildCriterionsMap(criterions);
