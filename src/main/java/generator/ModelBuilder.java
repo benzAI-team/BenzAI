@@ -107,59 +107,59 @@ public class ModelBuilder {
 			}
 		}
 
-		int nbMaxLines = 0;
-		int nbMaxColumns = 0;
+		int nbMaxHeight = 0;
+		int nbMaxWidth = 0;
 
-		ArrayList<GeneratorCriterion> criterionsLines = new ArrayList<>();
-		ArrayList<GeneratorCriterion> criterionsColumns = new ArrayList<>();
+		ArrayList<GeneratorCriterion> criterionsHeight = new ArrayList<>();
+		ArrayList<GeneratorCriterion> criterionsWidth = new ArrayList<>();
 
 		for (GeneratorCriterion criterion : map.get("rectangle")) {
 
 			Operator operator = criterion.getOperator();
 			Subject subject = criterion.getSubject();
 
-			if (subject == Subject.RECT_NB_LINES) {
+			if (subject == Subject.RECT_HEIGHT) {
 
-				criterionsLines.add(criterion);
+				criterionsHeight.add(criterion);
 
 				if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
 
 					int value = Integer.parseInt(criterion.getValue());
 
-					if (value > nbMaxLines)
-						nbMaxLines = value;
+					if (value > nbMaxHeight)
+						nbMaxHeight = value;
 				}
 			}
 
-			if (subject == Subject.RECT_NB_COLUMNS) {
+			if (subject == Subject.RECT_WIDTH) {
 
-				criterionsColumns.add(criterion);
+				criterionsWidth.add(criterion);
 
 				if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
 
 					int value = Integer.parseInt(criterion.getValue());
 
-					if (value > nbMaxColumns)
-						nbMaxColumns = value;
+					if (value > nbMaxWidth)
+						nbMaxWidth = value;
 
 				}
 			}
 		}
 
-		if (nbMaxLines > 0 && nbMaxColumns > 0) {
-			int bound = nbMaxLines * nbMaxColumns;
+		if (nbMaxHeight > 0 && nbMaxWidth > 0) {
+			int bound = nbMaxHeight * nbMaxWidth;
 			if (bound < upperBoundHexagons) {
 				upperBoundHexagons = bound;
 			}
 		}
 
-		if (nbMaxLines < nbMaxColumns) {
-			for (GeneratorCriterion cri : criterionsLines)
-				cri.setSubject(Subject.RECT_NB_COLUMNS);
-			for (GeneratorCriterion cri : criterionsColumns)
-				cri.setSubject(Subject.RECT_NB_LINES);
+		//~ if (nbMaxHeight < nbMaxWidth) {
+			//~ for (GeneratorCriterion cri : criterionsHeight)
+				//~ cri.setSubject(Subject.RECT_WIDTH);
+			//~ for (GeneratorCriterion cri : criterionsWidth)
+				//~ cri.setSubject(Subject.RECT_HEIGHT);
 
-		}
+		//~ }
 
 		for (GeneratorCriterion criterion : map.get("rhombus")) {
 
@@ -687,7 +687,7 @@ public class ModelBuilder {
 					|| subject == Subject.N3 || subject == Subject.N4)
 				map.get("irregularity").add(criterion);
 
-			else if (subject == Subject.RECT_NB_LINES || subject == Subject.RECT_NB_COLUMNS)
+			else if (subject == Subject.RECT_HEIGHT || subject == Subject.RECT_WIDTH)
 				map.get("rectangle").add(criterion);
 
 			else if (subject == Subject.SYMM_MIRROR || subject == Subject.SYMM_ROT_60 || subject == Subject.SYMM_ROT_120
