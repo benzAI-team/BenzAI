@@ -25,7 +25,7 @@ public class RhombusModule extends RectangleModule {
 			}
 		}
 
-		generalModel.getProblem().arithm(rotation, "=", 1).post();
+		//~ generalModel.getProblem().arithm(rotation, "=", 1).post();
 		generalModel.getProblem().arithm(xH, "=", xW).post();
 	}
 }
