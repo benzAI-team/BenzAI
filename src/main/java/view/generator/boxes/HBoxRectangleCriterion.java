@@ -18,14 +18,14 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 
 	private GridPane gridPane;
 
-	protected ChoiceBox<String> nbLinesChoiceBox;
-	protected TextField nbLinesTextField;
+	protected ChoiceBox<String> heightChoiceBox;
+	protected TextField heightTextField;
 
-	protected ChoiceBox<String> nbColumnsChoiceBox;
-	protected TextField nbColumnsTextField;
+	protected ChoiceBox<String> widthChoiceBox;
+	protected TextField widthTextField;
 
-	private HBox hBoxNbLines;
-	private HBox hBoxNbColumns;
+	private HBox hBoxHeight;
+	private HBox hBoxWidth;
 
 	protected boolean valid1;
 	protected boolean valid2;
@@ -37,30 +37,30 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 	@Override
 	protected void checkValidity() {
 
-		String nbLinesChoice = nbLinesChoiceBox.getValue();
-		String nbColumnsChoice = nbColumnsChoiceBox.getValue();
+		String heightChoice = heightChoiceBox.getValue();
+		String widthChoice = widthChoiceBox.getValue();
 
 		/*
 		 * Nb Lines
 		 */
 
-		hBoxNbLines.getChildren().remove(nbLinesTextField);
-		hBoxNbLines.getChildren().remove(warningIcon);
-		hBoxNbLines.getChildren().remove(deleteButton);
+		hBoxHeight.getChildren().remove(heightTextField);
+		hBoxHeight.getChildren().remove(warningIcon);
+		hBoxHeight.getChildren().remove(deleteButton);
 
-		if (nbLinesChoice != null && nbLinesChoice.equals("Unspecified"))
+		if (heightChoice != null && heightChoice.equals("Unspecified"))
 			valid1 = true;
 
 		else {
 
-			if (nbLinesChoice == null || !Utils.isNumber(nbLinesTextField.getText())) {
+			if (heightChoice == null || !Utils.isNumber(heightTextField.getText())) {
 				valid1 = false;
-				hBoxNbLines.getChildren().addAll(nbLinesTextField);
+				hBoxHeight.getChildren().addAll(heightTextField);
 			}
 
 			else {
 				valid1 = true;
-				hBoxNbLines.getChildren().addAll(nbLinesTextField);
+				hBoxHeight.getChildren().addAll(heightTextField);
 			}
 		}
 
@@ -68,32 +68,32 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 		 * Nb Columns
 		 */
 
-		hBoxNbColumns.getChildren().remove(nbColumnsTextField);
-		hBoxNbColumns.getChildren().remove(warningIcon);
-		hBoxNbColumns.getChildren().remove(deleteButton);
+		hBoxWidth.getChildren().remove(widthTextField);
+		hBoxWidth.getChildren().remove(warningIcon);
+		hBoxWidth.getChildren().remove(deleteButton);
 
-		if (nbColumnsChoice != null && nbColumnsChoice.equals("Unspecified"))
+		if (widthChoice != null && widthChoice.equals("Unspecified"))
 			valid2 = true;
 
 		else {
 
-			if (nbColumnsChoice == null || !Utils.isNumber(nbColumnsTextField.getText())) {
+			if (widthChoice == null || !Utils.isNumber(widthTextField.getText())) {
 				valid2 = false;
-				hBoxNbColumns.getChildren().addAll(nbColumnsTextField);
+				hBoxWidth.getChildren().addAll(widthTextField);
 			}
 
 			else {
 				valid2 = true;
-				hBoxNbColumns.getChildren().addAll(nbColumnsTextField);
+				hBoxWidth.getChildren().addAll(widthTextField);
 			}
 		}
 
 		valid = valid1 && valid2;
 
 		if (!valid)
-			hBoxNbLines.getChildren().add(warningIcon);
+			hBoxHeight.getChildren().add(warningIcon);
 
-		hBoxNbLines.getChildren().add(deleteButton);
+		hBoxHeight.getChildren().add(deleteButton);
 	}
 
 	@Override
@@ -102,49 +102,49 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 		valid1 = false;
 		valid2 = false;
 
-		Label nbLinesLabel = new Label("Number of lines:   ");
-		nbLinesChoiceBox = new ChoiceBox<>();
-		nbLinesChoiceBox.getItems().addAll("Unspecified", "<=", "<", "=", ">", ">=");
-		nbLinesChoiceBox.getSelectionModel().selectFirst();
+		Label heightLabel = new Label("Height:   ");
+		heightChoiceBox = new ChoiceBox<>();
+		heightChoiceBox.getItems().addAll("Unspecified", "<=", "<", "=", ">", ">=");
+		heightChoiceBox.getSelectionModel().selectFirst();
 
-		nbLinesTextField = new TextField();
+		heightTextField = new TextField();
 
-		nbLinesChoiceBox.setOnAction(e -> {
+		heightChoiceBox.setOnAction(e -> {
 			checkValidity();
 			parent.refreshValidity();
 		});
 
-		nbLinesTextField.setOnKeyReleased(e -> {
+		heightTextField.setOnKeyReleased(e -> {
 			checkValidity();
 			parent.refreshValidity();
 		});
 
-		hBoxNbLines = new HBox(5.0);
-		hBoxNbLines.getChildren().addAll(nbLinesLabel, nbLinesChoiceBox, nbLinesTextField, warningIcon, deleteButton);
+		hBoxHeight = new HBox(5.0);
+		hBoxHeight.getChildren().addAll(heightLabel, heightChoiceBox, heightTextField, warningIcon, deleteButton);
 
-		Label nbColumnsLabel = new Label("Number of columns: ");
-		nbColumnsChoiceBox = new ChoiceBox<>();
-		nbColumnsChoiceBox.getItems().addAll("Unspecified", "<=", "<", "=", ">", ">=");
-		nbColumnsChoiceBox.getSelectionModel().selectFirst();
-		nbColumnsTextField = new TextField();
+		Label widthLabel = new Label("Width: ");
+		widthChoiceBox = new ChoiceBox<>();
+		widthChoiceBox.getItems().addAll("Unspecified", "<=", "<", "=", ">", ">=");
+		widthChoiceBox.getSelectionModel().selectFirst();
+		widthTextField = new TextField();
 
-		nbColumnsChoiceBox.setOnAction(e -> {
+		widthChoiceBox.setOnAction(e -> {
 			checkValidity();
 			parent.refreshValidity();
 		});
 
-		nbColumnsTextField.setOnKeyReleased(e -> {
+		widthTextField.setOnKeyReleased(e -> {
 			checkValidity();
 			parent.refreshValidity();
 		});
 
-		hBoxNbColumns = new HBox(5.0);
-		hBoxNbColumns.getChildren().addAll(nbColumnsLabel, nbColumnsChoiceBox, nbColumnsTextField);
+		hBoxWidth = new HBox(5.0);
+		hBoxWidth.getChildren().addAll(widthLabel, widthChoiceBox, widthTextField);
 
 		gridPane = new GridPane();
 
-		gridPane.add(hBoxNbLines, 0, 0);
-		gridPane.add(hBoxNbColumns, 0, 1);
+		gridPane.add(hBoxHeight, 0, 0);
+		gridPane.add(hBoxWidth, 0, 1);
 
 		checkValidity();
 		this.getChildren().add(gridPane);
@@ -159,13 +159,13 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 
 			criterions.add(new GeneratorCriterion(Subject.RECTANGLE, Operator.NONE, ""));
 
-			if (!nbLinesChoiceBox.getValue().equals("Unspecified"))
-				criterions.add(new GeneratorCriterion(Subject.RECT_NB_LINES,
-						GeneratorCriterion.getOperator(nbLinesChoiceBox.getValue()), nbLinesTextField.getText()));
+			if (!heightChoiceBox.getValue().equals("Unspecified"))
+				criterions.add(new GeneratorCriterion(Subject.RECT_HEIGHT,
+						GeneratorCriterion.getOperator(heightChoiceBox.getValue()), heightTextField.getText()));
 
-			if (!nbColumnsChoiceBox.getValue().equals("Unspecified"))
-				criterions.add(new GeneratorCriterion(Subject.RECT_NB_COLUMNS,
-						GeneratorCriterion.getOperator(nbColumnsChoiceBox.getValue()), nbColumnsTextField.getText()));
+			if (!widthChoiceBox.getValue().equals("Unspecified"))
+				criterions.add(new GeneratorCriterion(Subject.RECT_WIDTH,
+						GeneratorCriterion.getOperator(widthChoiceBox.getValue()), widthTextField.getText()));
 		}
 
 		return criterions;
