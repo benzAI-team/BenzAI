@@ -141,7 +141,7 @@ public class GenerateBenzenoid {
 					|| subject == Subject.N3 || subject == Subject.N4)
 				map.get("irregularity").add(criterion);
 
-			else if (subject == Subject.RECT_NB_LINES || subject == Subject.RECT_NB_COLUMNS)
+			else if (subject == Subject.RECT_HEIGHT || subject == Subject.RECT_WIDTH)
 				map.get("rectangle").add(criterion);
 
 			else if (subject == Subject.RHOMBUS)
