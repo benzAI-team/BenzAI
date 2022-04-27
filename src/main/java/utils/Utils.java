@@ -124,6 +124,14 @@ public class Utils {
 		return false;
 	}
 
+	public static boolean contains(int[] T, int v) {
+		for (Integer s : T)
+			if (s.equals(v))
+				return true;
+
+		return false;
+	}
+
 	public static boolean contains(String[] T, String v) {
 		for (String s : T)
 			if (s.equals(v))

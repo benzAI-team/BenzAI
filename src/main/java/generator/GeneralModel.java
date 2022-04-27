@@ -90,6 +90,8 @@ public class GeneralModel {
 
 	Model chocoModel = new Model("Benzenoides");
 
+	private Node[] nodesRefs;
+
 	private int[][] coordsMatrix;
 	private int[] hexagonsCorrespondances;
 	private int[] correspondancesHexagons;
@@ -300,6 +302,8 @@ public class GeneralModel {
 		initializeMatrix();
 		initializeVariables();
 		initializeConstraints();
+		buildNodesRefs();
+		System.out.print("");
 	}
 
 	private void initializeMatrix() {
@@ -697,9 +701,6 @@ public class GeneralModel {
 				FragmentOccurences occurences = new FragmentOccurences();
 
 				BoolVar reified = nbHexagonsReifies[fragment.getNbNodes()];
-
-//				ArrayList<Integer[]> tr = verticalTranslations(fragment);
-//				ArrayList<Integer[]> tr2 = horizontalTranslations(fragment);
 
 				if (reified == null) {
 					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();
@@ -2270,50 +2271,54 @@ public class GeneralModel {
 
 	private ArrayList<Integer[]> verticalTranslations(Fragment pattern) {
 
+		ArrayList<Fragment> rotations = pattern.computeRotations();
+
 		ArrayList<Integer[]> translations = new ArrayList<>();
 
-		int yMin = Integer.MAX_VALUE;
+		for (Fragment f : rotations) {
 
-		for (Node node : pattern.getNodesRefs()) {
+			int yMin = Integer.MAX_VALUE;
 
-			if (node.getY() < yMin)
-				yMin = node.getY();
-		}
+			for (Node node : f.getNodesRefs()) {
 
-		yMin = Math.abs(yMin);
-
-		for (int yShift = -yMin; yShift < diameter + yMin; yShift++) {
-
-			Integer[] translation = new Integer[pattern.getNbNodes()];
-			boolean embedded = true;
-
-			int i = 0;
-			for (Node node : pattern.getNodesRefs()) {
-
-				int y = node.getX();
-				int x = node.getY() + yShift;
-
-				if (x >= diameter || y >= diameter) {
-					embedded = false;
-					break;
-				}
-
-				else if (coordsMatrix[x][y] == -1) {
-					embedded = false;
-					break;
-				}
-
-				int hexagonIndex = coordsMatrix[x][y];
-				translation[i] = hexagonIndex;
-
-				i++;
+				if (node.getY() < yMin)
+					yMin = node.getY();
 			}
 
-			if (embedded)
-				translations.add(translation);
+			yMin = Math.abs(yMin);
 
+			for (int yShift = -yMin; yShift < diameter + yMin; yShift++) {
+
+				Integer[] translation = new Integer[f.getNbNodes()];
+				boolean embedded = true;
+
+				int i = 0;
+				for (Node node : f.getNodesRefs()) {
+
+					int y = node.getX();
+					int x = node.getY() + yShift;
+
+					if (x >= diameter || y >= diameter || x < 0 || y < 0) {
+						embedded = false;
+						break;
+					}
+
+					else if (coordsMatrix[x][y] == -1) {
+						embedded = false;
+						break;
+					}
+
+					int hexagonIndex = coordsMatrix[x][y];
+					translation[i] = hexagonIndex;
+
+					i++;
+				}
+
+				if (embedded)
+					translations.add(translation);
+
+			}
 		}
-
 		return translations;
 	}
 
@@ -2376,6 +2381,21 @@ public class GeneralModel {
 			}
 		}
 		return translations;
+	}
+
+	private void buildNodesRefs() {
+		nodesRefs = new Node[nbHexagonsCoronenoid];
+
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+				if (coordsMatrix[i][j] != -1) {
+					int index = correspondancesHexagons[coordsMatrix[i][j]];
+					nodesRefs[index] = new Node(i, j, index);
+					index++;
+				}
+			}
+		}
+
 	}
 
 	@Override
