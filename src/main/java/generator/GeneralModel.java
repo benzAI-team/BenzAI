@@ -2322,16 +2322,24 @@ public class GeneralModel {
 		ArrayList<Integer[]> translations = new ArrayList<>();
 
 		int xMin = Integer.MAX_VALUE;
+		int yMin = Integer.MAX_VALUE;
 
 		for (Node node : pattern.getNodesRefs()) {
 
 			if (node.getX() < xMin)
 				xMin = node.getY();
+
+			if (node.getY() < yMin)
+				yMin = node.getY();
+
 		}
 
 		xMin = Math.abs(xMin);
+		yMin = Math.abs(yMin);
 
-		for (int xShift = -xMin; xShift < diameter + xMin; xShift++) {
+		int max = Math.max(xMin, yMin);
+
+		for (int xShift = -max; xShift < diameter + max; xShift++) {
 
 			Integer[] translation = new Integer[pattern.getNbNodes()];
 			boolean embedded = true;
@@ -2340,7 +2348,7 @@ public class GeneralModel {
 			for (Node node : pattern.getNodesRefs()) {
 
 				int y = node.getX() + xShift;
-				int x = node.getY();
+				int x = node.getY() + xShift;
 
 				if (x >= diameter || y >= diameter) {
 					embedded = false;
