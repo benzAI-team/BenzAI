@@ -2319,58 +2319,62 @@ public class GeneralModel {
 
 	private ArrayList<Integer[]> horizontalTranslations(Fragment pattern) {
 
+		ArrayList<Fragment> rotations = pattern.computeRotations();
+
 		ArrayList<Integer[]> translations = new ArrayList<>();
 
-		int xMin = Integer.MAX_VALUE;
-		int yMin = Integer.MAX_VALUE;
+		for (Fragment f : rotations) {
 
-		for (Node node : pattern.getNodesRefs()) {
+			int xMin = Integer.MAX_VALUE;
+			int yMin = Integer.MAX_VALUE;
 
-			if (node.getX() < xMin)
-				xMin = node.getY();
+			for (Node node : f.getNodesRefs()) {
 
-			if (node.getY() < yMin)
-				yMin = node.getY();
+				if (node.getX() < xMin)
+					xMin = node.getY();
 
-		}
+				if (node.getY() < yMin)
+					yMin = node.getY();
 
-		xMin = Math.abs(xMin);
-		yMin = Math.abs(yMin);
-
-		int max = Math.max(xMin, yMin);
-
-		for (int xShift = -max; xShift < diameter + max; xShift++) {
-
-			Integer[] translation = new Integer[pattern.getNbNodes()];
-			boolean embedded = true;
-
-			int i = 0;
-			for (Node node : pattern.getNodesRefs()) {
-
-				int y = node.getX() + xShift;
-				int x = node.getY() + xShift;
-
-				if (x >= diameter || y >= diameter) {
-					embedded = false;
-					break;
-				}
-
-				else if (coordsMatrix[x][y] == -1) {
-					embedded = false;
-					break;
-				}
-
-				int hexagonIndex = coordsMatrix[x][y];
-				translation[i] = hexagonIndex;
-
-				i++;
 			}
 
-			if (embedded)
-				translations.add(translation);
+			xMin = Math.abs(xMin);
+			yMin = Math.abs(yMin);
 
+			int max = Math.max(xMin, yMin);
+
+			for (int xShift = -max; xShift < diameter + max; xShift++) {
+
+				Integer[] translation = new Integer[f.getNbNodes()];
+				boolean embedded = true;
+
+				int i = 0;
+				for (Node node : f.getNodesRefs()) {
+
+					int y = node.getX() + xShift;
+					int x = node.getY() + xShift;
+
+					if (x >= diameter || y >= diameter || x < 0 || y < 0) {
+						embedded = false;
+						break;
+					}
+
+					else if (coordsMatrix[x][y] == -1) {
+						embedded = false;
+						break;
+					}
+
+					int hexagonIndex = coordsMatrix[x][y];
+					translation[i] = hexagonIndex;
+
+					i++;
+				}
+
+				if (embedded)
+					translations.add(translation);
+
+			}
 		}
-
 		return translations;
 	}
 
