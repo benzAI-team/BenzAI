@@ -373,6 +373,9 @@ public class GeneralModel {
 			module.changeWatchedGraphVertices();
 		}
 
+		if (GeneratorCriterion.containsSymmetry(criterions))
+			applyBorderConstraints = false;
+
 		if (applyBorderConstraints)
 			ConstraintBuilder.postBordersConstraints(this);
 
