@@ -177,17 +177,62 @@ public class BenzenoidApplication extends Application {
 	 */
 	private MenuBar buildMenuBar(BorderPane rootPane) {
 
-		final Menu collectionsMenu = new Menu();
+		MenuBar menuBar = new MenuBar();
+		menuBar.getMenus().addAll(collectionsMenu(), inputMenu(), preferencesMenu(), tasksMenu(), helpMenu());
+    
+		return menuBar;
+	}
 
-		Label collectionsLabel = new Label("Collections");
+	/***
+	 * set the primary stage title, width, length, ...
+	 * 
+	 * @param primaryStage
+	 */
+	private void initPrimaryStageProperties(Stage primaryStage) {
+		primaryStage.setTitle("BenzAI");
+
+		primaryStage.setWidth(configuration.getWidth());
+		primaryStage.setHeight(configuration.getHeight());
+
+		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+			if (configuration.remembersSize()) {
+				configuration.setWidth(newVal.doubleValue());
+				configuration.save();
+			}
+		});
+
+		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
+			if (configuration.remembersSize()) {
+				configuration.setHeight(newVal.doubleValue());
+				configuration.save();
+			}
+		});
+
+		primaryStage.centerOnScreen();
+
+		primaryStage.getIcons().add(new Image("/resources/graphics/icon-benzene.png"));
+
+	}
+
+  private Menu collectionsMenu() {
+    // defines the menu item related to the collections
+ 		final Menu collectionsMenu = new Menu();
+
+    
+   	Label collectionsLabel = new Label("Collections");
     
 		collectionsLabel.setOnMouseClicked(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
 
 		collectionsMenu.setGraphic(collectionsLabel);
+    
+    return collectionsMenu;
+  }
 
-		final Menu inputMenu = new Menu("_Input");
+  private Menu inputMenu() {
+    // defines the menu item related to the input
+    final Menu inputMenu = new Menu("_Input");
 
 		MenuItem generatorMenu = new MenuItem("Generator");
 		MenuItem databaseMenu = new MenuItem("Database");
@@ -218,7 +263,7 @@ public class BenzenoidApplication extends Application {
 			}
 
 		});
-
+    
 		MenuItem importCollectionItem = new MenuItem("Import collection");
 
 		importCollectionItem.setOnAction(e -> {
@@ -234,11 +279,41 @@ public class BenzenoidApplication extends Application {
 
 		importMenu.getItems().addAll(importBenzenoidItem, importCollectionItem);
 
-		databaseMenu.setOnAction(e -> {
+
+ 		databaseMenu.setOnAction(e -> {
 			switchMode(ApplicationMode.DATABASE);
 		});
 
-		Menu preferencesMenu = new Menu("P_references");
+		generatorMenu.setOnAction(e -> {
+			switchMode(ApplicationMode.GENERATOR);
+		});
+
+		drawMenu.setOnAction(e -> {
+			((DrawBenzenoidPane) drawPane).refreshMenuBar();
+			switchMode(ApplicationMode.DRAW);
+		});
+
+		MenuItem operationsMenu = new MenuItem("Operations on collections");
+
+		operationsMenu.setOnAction(e -> {
+			// ((CollectionsOperationsPane) operationPane).refreshBoxes();
+			switchMode(ApplicationMode.COLLECTIONS_OPERATIONS);
+		});
+
+		inputMenu.getItems().add(generatorMenu);
+		inputMenu.getItems().add(databaseMenu);
+		inputMenu.getItems().add(drawMenu);
+		inputMenu.getItems().add(importMenu);
+		inputMenu.getItems().add(operationsMenu);
+    
+    return inputMenu;
+  }
+
+
+  private Menu preferencesMenu (){
+    // defines the menu item related to the preferences
+    
+    Menu preferencesMenu = new Menu("P_references");
 		Menu aromaticityDisplayMenu = new Menu("Resonance energy display");
 		CheckMenuItem localColorScaleItem = new CheckMenuItem("Local color scale");
 		CheckMenuItem globalColorScaleItem = new CheckMenuItem("Global color scale");
@@ -328,49 +403,22 @@ public class BenzenoidApplication extends Application {
 		});
 
 		windowMenu.getItems().add(rememberResizeItem);
+    
+    return preferencesMenu;
+  }
+  
 
-		/*
-		 * Active tasks
-		 */
+  private Menu tasksMenu (){
+    // defines the menu item related to the active tasks
 
 		tasksMenu = new Menu("_Active tasks");
+    return tasksMenu;
+  }
 
-		/*
-		 * Debug
-		 */
-
-		Menu fill1Item = new Menu();
-
-		Label labelFill1 = new Label("Fill (debug)");
-		labelFill1.setOnMouseClicked(e -> {
-			// Trash.generate5HCriterion(getBenzenoidCollectionsPane());
-		});
-
-		fill1Item.setGraphic(labelFill1);
-
-		generatorMenu.setOnAction(e -> {
-			switchMode(ApplicationMode.GENERATOR);
-		});
-
-		drawMenu.setOnAction(e -> {
-			((DrawBenzenoidPane) drawPane).refreshMenuBar();
-			switchMode(ApplicationMode.DRAW);
-		});
-
-		MenuItem operationsMenu = new MenuItem("Operations on collections");
-
-		operationsMenu.setOnAction(e -> {
-			// ((CollectionsOperationsPane) operationPane).refreshBoxes();
-			switchMode(ApplicationMode.COLLECTIONS_OPERATIONS);
-		});
-
-		inputMenu.getItems().add(generatorMenu);
-		inputMenu.getItems().add(databaseMenu);
-		inputMenu.getItems().add(drawMenu);
-		inputMenu.getItems().add(importMenu);
-		inputMenu.getItems().add(operationsMenu);
-
-		Menu helpMenu = new Menu("_Help");
+  private Menu helpMenu (){
+    // defines the menu item related to the help
+    
+    Menu helpMenu = new Menu("_Help");
 
 		MenuItem helpItem = new MenuItem("Help content");
 		MenuItem aboutItem = new MenuItem("About BenzAI");
@@ -392,42 +440,23 @@ public class BenzenoidApplication extends Application {
 		});
 
 		helpMenu.getItems().addAll(helpItem, aboutItem);
+    
+    return helpMenu;
+  }
+  
+  private Menu debugMenu (){
+    // defines the menu item related to the help
+		Menu fill1Item = new Menu();
 
-		MenuBar menuBar = new MenuBar();
-		menuBar.getMenus().addAll(collectionsMenu, inputMenu, preferencesMenu, tasksMenu, helpMenu);
-		return menuBar;
-	}
-
-	/***
-	 * set the primary stage title, width, length, ...
-	 * 
-	 * @param primaryStage
-	 */
-	private void initPrimaryStageProperties(Stage primaryStage) {
-		primaryStage.setTitle("BenzAI");
-
-		primaryStage.setWidth(configuration.getWidth());
-		primaryStage.setHeight(configuration.getHeight());
-
-		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			if (configuration.remembersSize()) {
-				configuration.setWidth(newVal.doubleValue());
-				configuration.save();
-			}
+		Label labelFill1 = new Label("Fill (debug)");
+		labelFill1.setOnMouseClicked(e -> {
+			// Trash.generate5HCriterion(getBenzenoidCollectionsPane());
 		});
 
-		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
-			if (configuration.remembersSize()) {
-				configuration.setHeight(newVal.doubleValue());
-				configuration.save();
-			}
-		});
-
-		primaryStage.centerOnScreen();
-
-		primaryStage.getIcons().add(new Image("/resources/graphics/icon-benzene.png"));
-
-	}
+		fill1Item.setGraphic(labelFill1);
+    
+    return fill1Item;
+  }
 
 	public void switchMode(ApplicationMode mode) {
 
