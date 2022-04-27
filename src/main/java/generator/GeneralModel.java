@@ -696,6 +696,8 @@ public class GeneralModel {
 
 			BoolVar reified = nbHexagonsReifies[fragment.getNbNodes()];
 
+			ArrayList<Integer[]> tr = verticalTranslations(fragment);
+
 			if (reified == null) {
 				BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();
 				nbHexagonsReifies[fragment.getNbNodes()] = newVariable;
@@ -2139,6 +2141,55 @@ public class GeneralModel {
 
 		}
 
+	}
+
+	private ArrayList<Integer[]> verticalTranslations(Fragment pattern) {
+
+		ArrayList<Integer[]> translations = new ArrayList<>();
+
+		int yMin = Integer.MAX_VALUE;
+
+		for (Node node : pattern.getNodesRefs()) {
+
+			if (node.getY() < yMin)
+				yMin = node.getY();
+		}
+
+		yMin = Math.abs(yMin);
+
+		for (int yShift = -yMin; yShift < diameter + yMin; yShift++) {
+
+			Integer[] translation = new Integer[pattern.getNbNodes()];
+			boolean embedded = true;
+
+			int i = 0;
+			for (Node node : pattern.getNodesRefs()) {
+
+				int y = node.getX();
+				int x = node.getY() + yShift;
+
+				if (x >= diameter || y >= diameter) {
+					embedded = false;
+					break;
+				}
+
+				else if (coordsMatrix[x][y] == -1) {
+					embedded = false;
+					break;
+				}
+
+				int hexagonIndex = coordsMatrix[x][y];
+				translation[i] = hexagonIndex;
+
+				i++;
+			}
+
+			if (embedded)
+				translations.add(translation);
+
+		}
+
+		return translations;
 	}
 
 	@Override
