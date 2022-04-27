@@ -5,12 +5,49 @@ import java.util.List;
 public class GeneratorCriterion {
 
 	public enum Subject {
-		NB_HEXAGONS, NB_CARBONS, NB_HYDROGENS, DIAMETER, RECT_HEIGHT, RECT_WIDTH, CORONOID, CATACONDENSED,
-		SYMM_MIRROR, SYMM_ROT_60, SYMM_ROT_120, SYMM_ROT_180, SYMM_VERTICAL, SYMM_ROT_120_V, SYMM_ROT_180_E, XI, N0, N1,
-		N2, N3, N4, VIEW_IRREG, RECTANGLE, SINGLE_PATTERN, MULTIPLE_PATTERNS, FORBIDDEN_PATTERN, OCCURENCE_PATTERN,
-		CORONOID_2, NB_HOLES, ROT_60_MIRROR, ROT_120_MIRROR_H, ROT_120_MIRROR_E, ROT_120_VERTEX_MIRROR,
-		ROT_180_EDGE_MIRROR, ROT_180_MIRROR, MIRROR_H, MIRROR_E, RHOMBUS, TIMEOUT, NB_SOLUTIONS, RHOMBUS_DIMENSION,
-		CORONENOID, NB_CROWNS
+		NB_HEXAGONS, NB_CARBONS, NB_HYDROGENS, DIAMETER, RECT_HEIGHT, RECT_WIDTH, CORONOID, CATACONDENSED, SYMM_MIRROR,
+		SYMM_ROT_60, SYMM_ROT_120, SYMM_ROT_180, SYMM_VERTICAL, SYMM_ROT_120_V, SYMM_ROT_180_E, XI, N0, N1, N2, N3, N4,
+		VIEW_IRREG, RECTANGLE, SINGLE_PATTERN, MULTIPLE_PATTERNS, FORBIDDEN_PATTERN, OCCURENCE_PATTERN, CORONOID_2,
+		NB_HOLES, ROT_60_MIRROR, ROT_120_MIRROR_H, ROT_120_MIRROR_E, ROT_120_VERTEX_MIRROR, ROT_180_EDGE_MIRROR,
+		ROT_180_MIRROR, MIRROR_H, MIRROR_E, RHOMBUS, TIMEOUT, NB_SOLUTIONS, RHOMBUS_DIMENSION, CORONENOID, NB_CROWNS
+	}
+
+	public static boolean containsSymmetry(List<GeneratorCriterion> criterions) {
+
+		for (GeneratorCriterion criterion : criterions) {
+
+			Subject subject = criterion.getSubject();
+
+			if (subject == Subject.SYMM_MIRROR || subject == Subject.SYMM_ROT_60 || subject == Subject.SYMM_ROT_120
+					|| subject == Subject.SYMM_ROT_180 || subject == Subject.SYMM_VERTICAL
+					|| subject == Subject.SYMM_ROT_120_V || subject == Subject.SYMM_ROT_180_E
+					|| subject == Subject.ROT_60_MIRROR || subject == Subject.ROT_120_MIRROR_H
+					|| subject == Subject.ROT_120_MIRROR_E || subject == Subject.ROT_120_VERTEX_MIRROR
+					|| subject == Subject.ROT_180_EDGE_MIRROR || subject == Subject.ROT_180_MIRROR
+			/* || subject == Subject.MIRROR_H || subject == Subject.MIRROR_E */)
+
+				return true;
+		}
+
+		return false;
+	}
+
+	public static boolean containsRotation(List<GeneratorCriterion> criterions) {
+
+		for (GeneratorCriterion criterion : criterions) {
+
+			Subject subject = criterion.getSubject();
+
+			if (subject == Subject.SYMM_ROT_60 || subject == Subject.SYMM_ROT_120 || subject == Subject.SYMM_ROT_180
+					|| subject == Subject.SYMM_ROT_120_V || subject == Subject.SYMM_ROT_180_E
+					|| subject == Subject.ROT_60_MIRROR || subject == Subject.ROT_120_MIRROR_H
+					|| subject == Subject.ROT_120_MIRROR_E || subject == Subject.ROT_120_VERTEX_MIRROR
+					|| subject == Subject.ROT_180_EDGE_MIRROR || subject == Subject.ROT_180_MIRROR)
+
+				return true;
+		}
+
+		return false;
 	}
 
 	public enum Operator {
