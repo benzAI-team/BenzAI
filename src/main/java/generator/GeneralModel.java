@@ -687,69 +687,193 @@ public class GeneralModel {
 				}
 			}
 
-			Fragment fragment = convertToFragment();
-			nogoodsFragments.add(fragment);
+			if (!GeneratorCriterion.containsSymmetry(criterions)) {
 
-			ArrayList<Fragment> rotations = fragment.computeRotations();
+				Fragment fragment = convertToFragment();
+				nogoodsFragments.add(fragment);
 
-			FragmentOccurences occurences = new FragmentOccurences();
+				ArrayList<Fragment> rotations = fragment.computeRotations();
 
-			BoolVar reified = nbHexagonsReifies[fragment.getNbNodes()];
+				FragmentOccurences occurences = new FragmentOccurences();
 
-			ArrayList<Integer[]> tr = verticalTranslations(fragment);
-			ArrayList<Integer[]> tr2 = horizontalTranslations(fragment);
+				BoolVar reified = nbHexagonsReifies[fragment.getNbNodes()];
 
-			if (reified == null) {
-				BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();
-				nbHexagonsReifies[fragment.getNbNodes()] = newVariable;
-				reified = newVariable;
+//				ArrayList<Integer[]> tr = verticalTranslations(fragment);
+//				ArrayList<Integer[]> tr2 = horizontalTranslations(fragment);
+
+				if (reified == null) {
+					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();
+					nbHexagonsReifies[fragment.getNbNodes()] = newVariable;
+					reified = newVariable;
+				}
+
+				for (Fragment f : rotations)
+					occurences.addAll(
+							computeTranslationsBorders(f.getNodesRefs(), f.getNeighborGraph(), occurences, false));
+
+				for (Integer[] occurence : occurences.getOccurences()) {
+
+					ArrayList<Integer> nogood = new ArrayList<>();
+
+					if (occurence.length > 1) {
+
+						BoolVar[] varClause = new BoolVar[occurence.length + 1];
+						IntIterableRangeSet[] valClause = new IntIterableRangeSet[occurence.length + 1];
+
+						for (int i = 0; i < occurence.length; i++) {
+
+							varClause[i] = watchedBenzenoidVertices[occurence[i]];
+							valClause[i] = new IntIterableRangeSet(0);
+
+							nogood.add(occurence[i]);
+						}
+
+						varClause[varClause.length - 1] = reified;
+						valClause[valClause.length - 1] = new IntIterableRangeSet(0);
+
+						if (!nogoods.contains(nogood)) {
+							chocoModel.getClauseConstraint().addClause(varClause, valClause);
+							nogoods.add(nogood);
+						}
+					}
+
+					else if (occurence.length == 1) {
+
+						nogood.add(occurence[0]);
+						nogood.add(occurence[0]);
+
+						BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[occurence[0]], reified };
+
+						IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+								new IntIterableRangeSet(0) };
+
+						if (!nogoods.contains(nogood)) {
+							chocoModel.getClauseConstraint().addClause(varClause, valClause);
+							nogoods.add(nogood);
+						}
+					}
+				}
+
 			}
 
-			for (Fragment f : rotations)
-				occurences
-						.addAll(computeTranslationsBorders(f.getNodesRefs(), f.getNeighborGraph(), occurences, false));
+			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
 
-			for (Integer[] occurence : occurences.getOccurences()) {
+				Fragment fragment = convertToFragment();
+				nogoodsFragments.add(fragment);
 
-				ArrayList<Integer> nogood = new ArrayList<>();
+				ArrayList<Integer[]> translations = horizontalTranslations(fragment);
 
-				if (occurence.length > 1) {
+				BoolVar reified = nbHexagonsReifies[fragment.getNbNodes()];
 
-					BoolVar[] varClause = new BoolVar[occurence.length + 1];
-					IntIterableRangeSet[] valClause = new IntIterableRangeSet[occurence.length + 1];
+				if (reified == null) {
+					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();
+					nbHexagonsReifies[fragment.getNbNodes()] = newVariable;
+					reified = newVariable;
+				}
 
-					for (int i = 0; i < occurence.length; i++) {
+				for (Integer[] translation : translations) {
 
-						varClause[i] = watchedBenzenoidVertices[occurence[i]];
-						valClause[i] = new IntIterableRangeSet(0);
+					ArrayList<Integer> nogood = new ArrayList<>();
 
-						nogood.add(occurence[i]);
+					if (translation.length > 1) {
+
+						BoolVar[] varClause = new BoolVar[translation.length + 1];
+						IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.length + 1];
+
+						for (int i = 0; i < translation.length; i++) {
+
+							varClause[i] = watchedBenzenoidVertices[translation[i]];
+							valClause[i] = new IntIterableRangeSet(0);
+
+							nogood.add(translation[i]);
+						}
+
+						varClause[varClause.length - 1] = reified;
+						valClause[valClause.length - 1] = new IntIterableRangeSet(0);
+
+						if (!nogoods.contains(nogood)) {
+							chocoModel.getClauseConstraint().addClause(varClause, valClause);
+							nogoods.add(nogood);
+						}
 					}
 
-					varClause[varClause.length - 1] = reified;
-					valClause[valClause.length - 1] = new IntIterableRangeSet(0);
+					else if (translation.length == 1) {
 
-					if (!nogoods.contains(nogood)) {
-						chocoModel.getClauseConstraint().addClause(varClause, valClause);
-						nogoods.add(nogood);
+						nogood.add(translation[0]);
+						nogood.add(translation[0]);
+
+						BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[translation[0]], reified };
+
+						IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+								new IntIterableRangeSet(0) };
+
+						if (!nogoods.contains(nogood)) {
+							chocoModel.getClauseConstraint().addClause(varClause, valClause);
+							nogoods.add(nogood);
+						}
 					}
 				}
 
-				else if (occurence.length == 1) {
+			}
 
-					nogood.add(occurence[0]);
-					nogood.add(occurence[0]);
+			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL)) {
 
-					BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[occurence[0]], reified };
+				Fragment fragment = convertToFragment();
+				nogoodsFragments.add(fragment);
 
-					IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
-							new IntIterableRangeSet(0) };
+				ArrayList<Integer[]> translations = verticalTranslations(fragment);
 
-					if (!nogoods.contains(nogood)) {
-						chocoModel.getClauseConstraint().addClause(varClause, valClause);
-						nogoods.add(nogood);
+				BoolVar reified = nbHexagonsReifies[fragment.getNbNodes()];
+
+				if (reified == null) {
+					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();
+					nbHexagonsReifies[fragment.getNbNodes()] = newVariable;
+					reified = newVariable;
+				}
+
+				for (Integer[] translation : translations) {
+
+					ArrayList<Integer> nogood = new ArrayList<>();
+
+					if (translation.length > 1) {
+
+						BoolVar[] varClause = new BoolVar[translation.length + 1];
+						IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.length + 1];
+
+						for (int i = 0; i < translation.length; i++) {
+
+							varClause[i] = watchedBenzenoidVertices[translation[i]];
+							valClause[i] = new IntIterableRangeSet(0);
+
+							nogood.add(translation[i]);
+						}
+
+						varClause[varClause.length - 1] = reified;
+						valClause[valClause.length - 1] = new IntIterableRangeSet(0);
+
+						if (!nogoods.contains(nogood)) {
+							chocoModel.getClauseConstraint().addClause(varClause, valClause);
+							nogoods.add(nogood);
+						}
+					}
+
+					else if (translation.length == 1) {
+
+						nogood.add(translation[0]);
+						nogood.add(translation[0]);
+
+						BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[translation[0]], reified };
+
+						IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+								new IntIterableRangeSet(0) };
+
+						if (!nogoods.contains(nogood)) {
+							chocoModel.getClauseConstraint().addClause(varClause, valClause);
+							nogoods.add(nogood);
+						}
 					}
 				}
+
 			}
 
 			BenzenoidSolution solution = new BenzenoidSolution(watchedGUB, nbCrowns,
