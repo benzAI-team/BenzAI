@@ -759,19 +759,17 @@ public class GeneralModel {
 
 			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
 
-				
 				ArrayList<Integer> vertices = new ArrayList<>();
-				for (int i = 0 ; i < channeling.length ; i++)
+				for (int i = 0; i < channeling.length; i++)
 					if (channeling[i].getValue() == 1)
 						vertices.add(i);
 
-				
 				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
-				
+
 				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, vertices);
-				
+
 				ArrayList<ArrayList<Integer>> translations = solution.translationsFaceMirror();
-				
+
 				BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
 
 				if (reified == null) {
@@ -827,34 +825,43 @@ public class GeneralModel {
 
 			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL)) {
 
-				Fragment fragment = convertToFragment();
-				nogoodsFragments.add(fragment);
+				ArrayList<Integer> vertices = new ArrayList<>();
+				for (int i = 0; i < channeling.length; i++)
+					if (channeling[i].getValue() == 1)
+						vertices.add(i);
 
-				ArrayList<Integer[]> translations = verticalTranslations(fragment);
+				if (vertices.toString().contains("[0, 1, 2, 3, 4, 5, 6, 12, 13, 20]"))
+					System.out.print("");
 
-				BoolVar reified = nbHexagonsReifies[fragment.getNbNodes()];
+				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
+
+				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, vertices);
+
+				ArrayList<ArrayList<Integer>> translations = solution.translationsEdgeMirror();
+
+				BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
 
 				if (reified == null) {
-					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();
-					nbHexagonsReifies[fragment.getNbNodes()] = newVariable;
+					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", solution.getNbNodes()).reify();
+					nbHexagonsReifies[solution.getNbNodes()] = newVariable;
 					reified = newVariable;
 				}
 
-				for (Integer[] translation : translations) {
+				for (ArrayList<Integer> translation : translations) {
 
 					ArrayList<Integer> nogood = new ArrayList<>();
 
-					if (translation.length > 1) {
+					if (translation.size() > 1) {
 
-						BoolVar[] varClause = new BoolVar[translation.length + 1];
-						IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.length + 1];
+						BoolVar[] varClause = new BoolVar[translation.size() + 1];
+						IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.size() + 1];
 
-						for (int i = 0; i < translation.length; i++) {
+						for (int i = 0; i < translation.size(); i++) {
 
-							varClause[i] = watchedBenzenoidVertices[translation[i]];
+							varClause[i] = channeling[translation.get(i)];
 							valClause[i] = new IntIterableRangeSet(0);
 
-							nogood.add(translation[i]);
+							nogood.add(translation.get(i));
 						}
 
 						varClause[varClause.length - 1] = reified;
@@ -866,12 +873,12 @@ public class GeneralModel {
 						}
 					}
 
-					else if (translation.length == 1) {
+					else if (translation.size() == 1) {
 
-						nogood.add(translation[0]);
-						nogood.add(translation[0]);
+						nogood.add(translation.get(0));
+						nogood.add(translation.get(0));
 
-						BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[translation[0]], reified };
+						BoolVar[] varClause = new BoolVar[] { channeling[translation.get(0)], reified };
 
 						IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 								new IntIterableRangeSet(0) };
@@ -2275,120 +2282,6 @@ public class GeneralModel {
 
 		}
 
-	}
-
-	private ArrayList<Integer[]> verticalTranslations(Fragment pattern) {
-
-		ArrayList<Fragment> rotations = pattern.computeRotations();
-
-		ArrayList<Integer[]> translations = new ArrayList<>();
-
-		for (Fragment f : rotations) {
-
-			int yMin = Integer.MAX_VALUE;
-
-			for (Node node : f.getNodesRefs()) {
-
-				if (node.getY() < yMin)
-					yMin = node.getY();
-			}
-
-			yMin = Math.abs(yMin);
-
-			for (int yShift = -yMin; yShift < diameter + yMin; yShift++) {
-
-				Integer[] translation = new Integer[f.getNbNodes()];
-				boolean embedded = true;
-
-				int i = 0;
-				for (Node node : f.getNodesRefs()) {
-
-					int y = node.getX();
-					int x = node.getY() + yShift;
-
-					if (x >= diameter || y >= diameter || x < 0 || y < 0) {
-						embedded = false;
-						break;
-					}
-
-					else if (coordsMatrix[x][y] == -1) {
-						embedded = false;
-						break;
-					}
-
-					int hexagonIndex = coordsMatrix[x][y];
-					translation[i] = hexagonIndex;
-
-					i++;
-				}
-
-				if (embedded)
-					translations.add(translation);
-
-			}
-		}
-		return translations;
-	}
-
-	private ArrayList<Integer[]> horizontalTranslations(Fragment pattern) {
-
-		ArrayList<Fragment> rotations = pattern.computeRotations();
-
-		ArrayList<Integer[]> translations = new ArrayList<>();
-
-		for (Fragment f : rotations) {
-
-			int xMin = Integer.MAX_VALUE;
-			int yMin = Integer.MAX_VALUE;
-
-			for (Node node : f.getNodesRefs()) {
-
-				if (node.getX() < xMin)
-					xMin = node.getY();
-
-				if (node.getY() < yMin)
-					yMin = node.getY();
-
-			}
-
-			xMin = Math.abs(xMin);
-			yMin = Math.abs(yMin);
-
-			int max = Math.max(xMin, yMin);
-
-			for (int xShift = -max; xShift < diameter + max; xShift++) {
-
-				Integer[] translation = new Integer[f.getNbNodes()];
-				boolean embedded = true;
-
-				int i = 0;
-				for (Node node : f.getNodesRefs()) {
-
-					int y = node.getX() + xShift;
-					int x = node.getY() + xShift;
-
-					if (x >= diameter || y >= diameter || x < 0 || y < 0) {
-						embedded = false;
-						break;
-					}
-
-					else if (coordsMatrix[x][y] == -1) {
-						embedded = false;
-						break;
-					}
-
-					int hexagonIndex = coordsMatrix[x][y];
-					translation[i] = hexagonIndex;
-
-					i++;
-				}
-
-				if (embedded)
-					translations.add(translation);
-
-			}
-		}
-		return translations;
 	}
 
 	private void buildNodesRefs() {

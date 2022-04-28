@@ -255,6 +255,8 @@ public class ModelBuilder {
 			}
 
 			int nbMaxCrowns = (int) Math.floor((((double) ((double) nbMaxHexagons + 1)) / 2.0) + 1.0);
+			if (nbMaxHexagons % 2 == 1)
+				nbMaxCrowns--;
 
 //			for (int i = 2; i <= nbMaxCrowns; i++) {
 //				models.add(new GeneralModel(map.get("hexagons"), criterions, map, i));
