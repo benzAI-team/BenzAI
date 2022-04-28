@@ -762,9 +762,21 @@ public class GeneralModel {
 				Fragment fragment = convertToFragment();
 				nogoodsFragments.add(fragment);
 
-				ArrayList<Integer[]> translations = horizontalTranslations(fragment);
+				//ArrayList<Integer[]> translations = horizontalTranslations(fragment);
 
-				BoolVar reified = nbHexagonsReifies[fragment.getNbNodes()];
+				ArrayList<Integer> vertices = new ArrayList<>();
+				for (int i = 0 ; i < channeling.length ; i++)
+					if (channeling[i].getValue() == 1)
+						vertices.add(i);
+				Integer [] verticesArray = Utils.toArray(vertices);
+				
+				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
+				
+				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, verticesArray);
+				
+				ArrayList<Integer[]> translations = solution.translationsFaceMirror();
+				
+				BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
 
 				if (reified == null) {
 					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();

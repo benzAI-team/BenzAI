@@ -7,19 +7,23 @@ import molecules.Node;
 
 public class Solution {
 
-	private int[] vertices;
+	private Integer[] vertices;
+	private int [] correspondancesHexagons;
 	private int[][] coordsMatrixCoronenoid;
+	private int coronenoidCenter;
 	private Node[] coronenoidNodes;
 
-	public Solution(Node[] coronenoidNodes, int[][] coordsMatrixCoronenoid, int[] vertices) {
+	public Solution(Node[] coronenoidNodes, int [] correspondancesHexagons, int[][] coordsMatrixCoronenoid, int coronenoidCenter, Integer[] vertices) {
 		this.coronenoidNodes = coronenoidNodes;
+		this.correspondancesHexagons = correspondancesHexagons;
 		this.coordsMatrixCoronenoid = coordsMatrixCoronenoid;
+		this.coronenoidCenter = coronenoidCenter;
 		this.vertices = vertices;
 	}
 
 	
 	
-	public int [] getVertices() {
+	public Integer [] getVertices() {
 		return vertices;
 	}
 	
@@ -35,11 +39,13 @@ public class Solution {
 		return coronenoidNodes[index];
 	}
 	
+	public int getNbNodes() {
+		return vertices.length;
+	}
+	
 	public int [] rotation180() {
 		
-		int diameter = coordsMatrixCoronenoid.length;
-		int centerIndex = coordsMatrixCoronenoid[(diameter - 1) / 2][(diameter - 1) / 2];
-		Node center = getCoronenoidNode(centerIndex);
+		Node center = getCoronenoidNode(coronenoidCenter);
 		
 		int xc = center.getX();
 		int yc = center.getX();
@@ -58,7 +64,7 @@ public class Solution {
 			int x2 = xc + xd;
 			int y2 = yc + yd;
 			
-			int image = coordsMatrixCoronenoid[x2][y2];
+			int image = correspondancesHexagons[coordsMatrixCoronenoid[x2][y2]];
 			rotation[i] = image;
 		}
 		
@@ -67,8 +73,7 @@ public class Solution {
 	
 	public ArrayList<Integer[]> translationsFaceMirror() {
 		
-		int diameter = coordsMatrixCoronenoid.length;
-		
+		int diameter = coordsMatrixCoronenoid.length;		
 		ArrayList<Integer[]> translations = new ArrayList<>();
 		
 		int [] rotation = rotation180();
@@ -101,7 +106,7 @@ public class Solution {
 				}
 				
 				else
-					translation1[i] = coordsMatrixCoronenoid[x1][y1];
+					translation1[i] = correspondancesHexagons[coordsMatrixCoronenoid[x1][y1]];
 				
 				if (!(x2 >= 0 && x2 < diameter && y2 >= 0 && y2 < diameter)) {
 					embedded2 = false;
@@ -109,7 +114,7 @@ public class Solution {
 				}
 				
 				else
-					translation2[i] = coordsMatrixCoronenoid[x2][y2];
+					translation2[i] = correspondancesHexagons[coordsMatrixCoronenoid[x2][y2]];
 				
 			}
 			
@@ -121,5 +126,64 @@ public class Solution {
 		}
 		
 		return translations;
+	}
+	
+	public ArrayList<Integer[]> translationsEdgeMirror() {
+		
+		int diameter = coordsMatrixCoronenoid.length;		
+		ArrayList<Integer[]> translations = new ArrayList<>();
+		
+		int [] rotation = rotation180();
+		
+		for (int shift = -1 * diameter ; shift <= diameter ; shift++) {
+			if (shift % 2 == 0) {
+			
+				Integer[] translation1 = new Integer[vertices.length];
+				Integer [] translation2 = new Integer[vertices.length];
+				
+				boolean embedded1 = true;
+				boolean embedded2 = true;
+				
+				for (int i = 0 ; i < vertices.length ; i++) {
+					
+					int vertexIndex1 = vertices[i];
+					int vertexIndex2 = rotation[i];
+					
+					Node n1 = coronenoidNodes[vertexIndex1];
+					Node n2 = coronenoidNodes[vertexIndex2];
+
+					int x1 = n1.getX() + shift;
+					int y1 = n1.getY() + shift / 2;
+					
+					int x2 = n2.getX() + shift;
+					int y2 = n2.getX() + shift / 2;
+					
+					if (!(x1 >= 0 && x1 < diameter && y1 >= 0 && y1 < diameter)) {
+						embedded1 = false;
+						break;
+					}
+					
+					else
+						translation1[i] = correspondancesHexagons[coordsMatrixCoronenoid[x1][y1]];
+					
+					if (!(x2 >= 0 && x2 < diameter && y2 >= 0 && y2 < diameter)) {
+						embedded2 = false;
+						break;
+					}
+					
+					else
+						translation2[i] = correspondancesHexagons[coordsMatrixCoronenoid[x2][y2]];
+				}
+				
+				if (embedded1)
+					translations.add(translation1);
+				
+				if (embedded2)
+					translations.add(translation2);
+				
+			}
+		}
+		
+		return translations;	
 	}
 }

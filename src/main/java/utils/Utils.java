@@ -10,6 +10,15 @@ import solveur.LinAlgorithm;
 
 public class Utils {
 
+	public static Integer [] toArray(ArrayList<Integer> list) {
+		Integer [] array = new Integer[list.size()];
+		
+		for (int i = 0 ; i < list.size() ; i++)
+			array[i] = list.get(i);
+		
+		return array;
+	}
+	
 	public static void showAlertWithoutHeaderText(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Information");
