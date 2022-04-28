@@ -205,9 +205,11 @@ public class ModelBuilder {
 
 			int nbMaxCrowns = (upperBoundHexagons + 10) / 6;
 
-			for (int i = 2; i <= nbMaxCrowns; i++) {
-				models.add(new GeneralModel(map.get("hexagons"), criterions, map, i));
-			}
+//			for (int i = 2; i <= nbMaxCrowns; i++) {
+//				models.add(new GeneralModel(map.get("hexagons"), criterions, map, i));
+//			}
+
+			models.add(new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns));
 		}
 
 		else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120)
@@ -230,9 +232,11 @@ public class ModelBuilder {
 
 			int nbMaxCrowns = (upperBoundHexagons + 4) / 3;
 
-			for (int i = 2; i <= nbMaxCrowns; i++) {
-				models.add(new GeneralModel(map.get("hexagons"), criterions, map, i));
-			}
+//			for (int i = 2; i <= nbMaxCrowns; i++) {
+//				models.add(new GeneralModel(map.get("hexagons"), criterions, map, i));
+//			}
+//			
+			models.add(new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns));
 		}
 
 		else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL)
