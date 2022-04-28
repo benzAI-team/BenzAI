@@ -117,7 +117,7 @@ public class Solution {
 				Node n2 = coronenoidNodes[vertexIndex2];
 			
 				int x2 = n2.getX() + shift;
-				int y2 = n2.getX() + shift;
+				int y2 = n2.getY() + shift;
 		
 				if (!(x2 >= 0 && x2 < diameter && y2 >= 0 && y2 < diameter)) {
 					embedded2 = false;

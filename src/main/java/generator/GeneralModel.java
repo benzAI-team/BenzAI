@@ -795,7 +795,7 @@ public class GeneralModel {
 
 						for (int i = 0; i < translation.size(); i++) {
 
-							varClause[i] = watchedBenzenoidVertices[translation.get(i)];
+							varClause[i] = channeling[translation.get(i)];
 							valClause[i] = new IntIterableRangeSet(0);
 
 							nogood.add(translation.get(i));
@@ -815,7 +815,7 @@ public class GeneralModel {
 						nogood.add(translation.get(0));
 						nogood.add(translation.get(0));
 
-						BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[translation.get(0)], reified };
+						BoolVar[] varClause = new BoolVar[] { channeling[translation.get(0)], reified };
 
 						IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 								new IntIterableRangeSet(0) };
