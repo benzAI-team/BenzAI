@@ -768,13 +768,13 @@ public class GeneralModel {
 				for (int i = 0 ; i < channeling.length ; i++)
 					if (channeling[i].getValue() == 1)
 						vertices.add(i);
-				Integer [] verticesArray = Utils.toArray(vertices);
+
 				
 				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
 				
-				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, verticesArray);
+				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, vertices);
 				
-				ArrayList<Integer[]> translations = solution.translationsFaceMirror();
+				ArrayList<ArrayList<Integer>> translations = solution.translationsFaceMirror();
 				
 				BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
 
@@ -784,21 +784,21 @@ public class GeneralModel {
 					reified = newVariable;
 				}
 
-				for (Integer[] translation : translations) {
+				for (ArrayList<Integer> translation : translations) {
 
 					ArrayList<Integer> nogood = new ArrayList<>();
 
-					if (translation.length > 1) {
+					if (translation.size() > 1) {
 
-						BoolVar[] varClause = new BoolVar[translation.length + 1];
-						IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.length + 1];
+						BoolVar[] varClause = new BoolVar[translation.size() + 1];
+						IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.size() + 1];
 
-						for (int i = 0; i < translation.length; i++) {
+						for (int i = 0; i < translation.size(); i++) {
 
-							varClause[i] = watchedBenzenoidVertices[translation[i]];
+							varClause[i] = watchedBenzenoidVertices[translation.get(i)];
 							valClause[i] = new IntIterableRangeSet(0);
 
-							nogood.add(translation[i]);
+							nogood.add(translation.get(i));
 						}
 
 						varClause[varClause.length - 1] = reified;
@@ -810,12 +810,12 @@ public class GeneralModel {
 						}
 					}
 
-					else if (translation.length == 1) {
+					else if (translation.size() == 1) {
 
-						nogood.add(translation[0]);
-						nogood.add(translation[0]);
+						nogood.add(translation.get(0));
+						nogood.add(translation.get(0));
 
-						BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[translation[0]], reified };
+						BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[translation.get(0)], reified };
 
 						IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 								new IntIterableRangeSet(0) };
