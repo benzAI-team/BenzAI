@@ -759,11 +759,7 @@ public class GeneralModel {
 
 			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
 
-				Fragment fragment = convertToFragment();
-				nogoodsFragments.add(fragment);
-
-				//ArrayList<Integer[]> translations = horizontalTranslations(fragment);
-
+				
 				ArrayList<Integer> vertices = new ArrayList<>();
 				for (int i = 0 ; i < channeling.length ; i++)
 					if (channeling[i].getValue() == 1)
@@ -779,8 +775,8 @@ public class GeneralModel {
 				BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
 
 				if (reified == null) {
-					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", fragment.getNbNodes()).reify();
-					nbHexagonsReifies[fragment.getNbNodes()] = newVariable;
+					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", solution.getNbNodes()).reify();
+					nbHexagonsReifies[solution.getNbNodes()] = newVariable;
 					reified = newVariable;
 				}
 
