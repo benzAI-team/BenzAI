@@ -770,7 +770,7 @@ public class GeneralModel {
 				
 				ArrayList<ArrayList<Integer>> translations;
 				
-				if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
+				if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR) || GeneratorCriterion.containsSubject(criterions,  Subject.SYMM_VERTICAL)) {
 				
 					if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) 
 						translations = solution.translationsFaceMirror();
@@ -828,6 +828,50 @@ public class GeneralModel {
 							}
 						}
 					}
+				}
+				
+				else {
+					
+					if (GeneratorCriterion.containsSubject(criterions, Subject.SINGLE_PATTERN)) {
+						
+						BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
+
+						if (reified == null) {
+							BoolVar newVariable = chocoModel.arithm(nbVertices, "=", solution.getNbNodes()).reify();
+							nbHexagonsReifies[solution.getNbNodes()] = newVariable;
+							reified = newVariable;
+						}
+						
+						ArrayList<Integer> ng = new ArrayList<>();
+						
+						ArrayList<Integer> v = new ArrayList<>();
+						for (int i = 0; i < channeling.length; i++)
+							if (channeling[i].getValue() == 1)
+								v.add(i);
+						
+						if (v.size() > 1) {
+							BoolVar[] varClause = new BoolVar[v.size() + 1];
+							IntIterableRangeSet[] valClause = new IntIterableRangeSet[v.size() + 1];
+
+							for (int i = 0; i < v.size(); i++) {
+
+								varClause[i] = channeling[v.get(i)];
+								valClause[i] = new IntIterableRangeSet(0);
+
+								ng.add(v.get(i));
+							}
+
+							varClause[varClause.length - 1] = reified;
+							valClause[valClause.length - 1] = new IntIterableRangeSet(0);
+
+							if (!nogoods.contains(ng)) {
+								chocoModel.getClauseConstraint().addClause(varClause, valClause);
+								nogoods.add(ng);
+							}
+						}
+						
+					}
+					
 				}
 			}
 
@@ -2237,9 +2281,23 @@ public class GeneralModel {
 		}
 
 	}
-
+	
+	public ArrayList<ArrayList<Integer>> getNoGoods() {
+		return nogoods;
+	}
+	
+	public BoolVar getNbHexagonsReified(int index) {
+		return nbHexagonsReifies[index];
+	}
+	
+	public void setNbHexagonsReified(int index, BoolVar value) {
+		nbHexagonsReifies[index] = value;
+	}
+	
 	@Override
 	public String toString() {
 		return hexagonsCriterions.toString();
 	}
+	
+	
 }
