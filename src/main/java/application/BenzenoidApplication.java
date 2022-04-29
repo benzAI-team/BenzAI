@@ -3,7 +3,16 @@ package application;
 import java.io.File;
 import java.util.ArrayList;
 
+import molecules.sort.IrregularityComparator;
+import molecules.sort.MoleculeComparator;
+import molecules.sort.NbCarbonsComparator;
+import molecules.sort.NbHexagonsComparator;
+import molecules.sort.NbHydrogensComparator;
+import molecules.sort.NbKekuleStructuresComparator;
+
+
 import http.Post;
+import javafx.scene.robot.Robot;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
@@ -29,6 +38,7 @@ import view.catalog.CatalogPane;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.RenameCollectionPane;
 import view.collections.IRSpectraParameterPane;
 import view.collections_operations.CollectionsOperationsPane;
 import view.database.DatabasePane;
@@ -178,7 +188,11 @@ public class BenzenoidApplication extends Application {
 	private MenuBar buildMenuBar(BorderPane rootPane) {
 
 		MenuBar menuBar = new MenuBar();
+<<<<<<< HEAD
+		menuBar.getMenus().addAll(fileMenu(), collectionsMenu(), inputMenu(), sortMenu(), filterMenu(), computationsMenu(), preferencesMenu(), tasksMenu(), helpMenu());
+=======
 		menuBar.getMenus().addAll(collectionsMenu(), inputMenu(), preferencesMenu(), tasksMenu(), helpMenu());
+>>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
     
 		return menuBar;
 	}
@@ -200,6 +214,77 @@ public class BenzenoidApplication extends Application {
 				configuration.save();
 			}
 		});
+<<<<<<< HEAD
+
+		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
+			if (configuration.remembersSize()) {
+				configuration.setHeight(newVal.doubleValue());
+				configuration.save();
+			}
+		});
+
+		primaryStage.centerOnScreen();
+
+		primaryStage.getIcons().add(new Image("/resources/graphics/icon-benzene.png"));
+
+	}
+
+
+  private Menu fileMenu() {
+    // defines the menu item related to the file management
+		Menu fileMenu = new Menu("_File");
+		Menu exportBenzenoidMenu = new Menu("Export benzenoid(s)");
+		MenuItem exportGraph = new MenuItem(".graph");
+		MenuItem exportPng = new MenuItem(".png");
+		MenuItem exportCml = new MenuItem(".cml");
+		MenuItem exportCom = new MenuItem(".com");
+
+		MenuItem exportCollection = new MenuItem("Export collection");
+		MenuItem importCollection = new MenuItem("Import collection");
+
+		fileMenu.getItems().addAll(exportBenzenoidMenu, exportCollection, importCollection);
+		exportBenzenoidMenu.getItems().addAll(exportGraph, exportPng, exportCml, exportCom);
+
+    fileMenu.setOnShowing(e -> {
+			switchMode(ApplicationMode.COLLECTIONS);
+		});
+
+
+		exportGraph.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).exportGraph();
+		});
+
+		exportPng.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).exportPng();
+		});
+
+		exportCml.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).exportCML();
+		});
+
+		exportCom.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).exportCOM();
+		});
+
+		importCollection.setOnAction(e -> {
+			DirectoryChooser directoryChooser = new DirectoryChooser();
+			File directory = directoryChooser.showDialog(getStage());
+
+			if (directory != null) {
+				((BenzenoidsCollectionsManagerPane) collectionsPane).importCollection(directory);
+			}
+		});
+
+		exportCollection.setOnAction(e -> {
+			DirectoryChooser directoryChooser = new DirectoryChooser();
+			File directory = directoryChooser.showDialog(getStage());
+
+			if (directory != null) {
+				BenzenoidCollectionPane currentPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
+				currentPane.export(directory);
+			}
+		});
+=======
 
 		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
 			if (configuration.remembersSize()) {
@@ -220,11 +305,88 @@ public class BenzenoidApplication extends Application {
 
     
    	Label collectionsLabel = new Label("Collections");
+>>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
     
-		collectionsLabel.setOnMouseClicked(e -> {
+    return fileMenu;
+  }
+
+  private Menu collectionsMenu() {
+    // defines the menu item related to the collections
+ 		final Menu collectionsMenu = new Menu("_Collections");
+
+  
+    collectionsMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
+  
+    
+    
+		MenuItem itemRename = new MenuItem("Rename collection");
+		MenuItem itemDelete = new MenuItem("Delete benzenoid(s)");
+		MenuItem itemCopy = new MenuItem("Copy benzenoid(s)");
+		MenuItem itemPaste = new MenuItem("Paste benzenoid(s)");
+		MenuItem itemSelect = new MenuItem("Select all");
+		MenuItem unselectAllItem = new MenuItem("Unselect all");
+    MenuItem operationsMenu = new MenuItem("Operations on collections");
 
+		operationsMenu.setOnAction(e -> {
+			switchMode(ApplicationMode.COLLECTIONS_OPERATIONS);
+		});
+    
+		itemPaste.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).paste();
+		});
+
+		itemSelect.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).selectAll();
+		});
+    
+    unselectAllItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).unselectAll();
+		});
+
+		itemRename.setOnAction(e -> {
+			RenameCollectionPane root;
+			root = new RenameCollectionPane((BenzenoidsCollectionsManagerPane) collectionsPane);
+			Stage stage = new Stage();
+			stage.setTitle("Rename collection");
+
+			stage.setResizable(false);
+
+			stage.getIcons().add(new Image("/resources/graphics/icon-benzene.png"));
+
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add("/resources/style/application.css");
+
+			stage.setScene(scene);
+			stage.show();
+		});
+
+<<<<<<< HEAD
+		itemDelete.setOnAction(e -> {
+			BenzenoidCollectionPane currentPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
+			currentPane.removeBenzenoidPanes(currentPane.getSelectedBenzenoidPanes());
+			((BenzenoidsCollectionsManagerPane) collectionsPane).log("Deleting " + currentPane.getSelectedBenzenoidPanes().size() + " benzenoid(s) from " + currentPane.getName(), true);
+		});
+
+		itemCopy.setOnAction(e -> {
+			BenzenoidCollectionPane originBenzenoidCollectionPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
+			originBenzenoidCollectionPane.copy();
+		});
+
+		collectionsMenu.getItems().addAll(itemRename, itemDelete, itemCopy, itemPaste, itemSelect, ((BenzenoidsCollectionsManagerPane) collectionsPane).initializeMoveMenuItem(),operationsMenu);
+    
+    return collectionsMenu;
+  }
+
+  private Menu inputMenu() {
+    // defines the menu item related to the input
+    final Menu inputMenu = new Menu("_Input");
+
+    inputMenu.setOnShowing(e -> {
+			switchMode(ApplicationMode.COLLECTIONS);
+		});
+=======
 		collectionsMenu.setGraphic(collectionsLabel);
     
     return collectionsMenu;
@@ -233,6 +395,7 @@ public class BenzenoidApplication extends Application {
   private Menu inputMenu() {
     // defines the menu item related to the input
     final Menu inputMenu = new Menu("_Input");
+>>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
 
 		MenuItem generatorMenu = new MenuItem("Generator");
 		MenuItem databaseMenu = new MenuItem("Database");
@@ -252,8 +415,7 @@ public class BenzenoidApplication extends Application {
 					Molecule molecule = GraphParser.parseUndirectedGraph(file);
 					molecule.setDescription(file.getName());
 
-					BenzenoidCollectionPane benzenoidCollectionPane = ((BenzenoidsCollectionsManagerPane) collectionsPane)
-							.getSelectedTab();
+					BenzenoidCollectionPane benzenoidCollectionPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
 
 					benzenoidCollectionPane.addBenzenoid(molecule, DisplayType.BASIC);
 					benzenoidCollectionPane.refresh();
@@ -293,22 +455,191 @@ public class BenzenoidApplication extends Application {
 			switchMode(ApplicationMode.DRAW);
 		});
 
+<<<<<<< HEAD
+=======
 		MenuItem operationsMenu = new MenuItem("Operations on collections");
 
 		operationsMenu.setOnAction(e -> {
 			// ((CollectionsOperationsPane) operationPane).refreshBoxes();
 			switchMode(ApplicationMode.COLLECTIONS_OPERATIONS);
 		});
+>>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
 
 		inputMenu.getItems().add(generatorMenu);
 		inputMenu.getItems().add(databaseMenu);
 		inputMenu.getItems().add(drawMenu);
 		inputMenu.getItems().add(importMenu);
+<<<<<<< HEAD
+=======
 		inputMenu.getItems().add(operationsMenu);
+>>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
     
     return inputMenu;
   }
 
+<<<<<<< HEAD
+  private Menu sortMenu() {
+    // defines the menu item related to the sort of collections
+
+		Menu sortMenu = new Menu("_Sort");
+		Menu nbCarbonsItem = new Menu("Number of carbons");
+		Menu nbHydrogensItem = new Menu("Number of hydrogens");
+		Menu nbHexagonsItem = new Menu("Number of hexagons");
+		Menu nbKekuleStructuresItem = new Menu("Number of Kekulé structures");
+		Menu irregularityItem = new Menu("Irregularity");
+
+    sortMenu.setOnShowing(e -> {
+			switchMode(ApplicationMode.COLLECTIONS);
+		});
+
+		/*
+		 * Nb Carbons
+		 */
+
+		MenuItem nbCarbonsIncreasing = new MenuItem("Increasing");
+		MenuItem nbCarbonsDecreasing = new MenuItem("Decreasing");
+
+		nbCarbonsIncreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new NbCarbonsComparator(), false);
+		});
+
+		nbCarbonsDecreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new NbCarbonsComparator(), true);
+		});
+
+		nbCarbonsItem.getItems().addAll(nbCarbonsIncreasing, nbCarbonsDecreasing);
+
+		/*
+		 * Nb hydrogens
+		 */
+
+		MenuItem nbHydrogensIncreasing = new MenuItem("Increasing");
+		MenuItem nbHydrogensDecreasing = new MenuItem("Decreasing");
+
+		nbHydrogensIncreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new NbHydrogensComparator(), false);
+		});
+
+		nbHydrogensDecreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new NbHydrogensComparator(), true);
+		});
+
+		nbHydrogensItem.getItems().addAll(nbHydrogensIncreasing, nbHydrogensDecreasing);
+
+		/*
+		 * Nb Hexagons
+		 */
+
+		MenuItem nbHexagonsIncreasing = new MenuItem("Increasing");
+		MenuItem nbHexagonsDecreasing = new MenuItem("Decreasing");
+
+		nbHexagonsIncreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new NbHexagonsComparator(), false);
+		});
+
+		nbHexagonsDecreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new NbHexagonsComparator(), true);
+		});
+
+		nbHexagonsItem.getItems().addAll(nbHexagonsIncreasing, nbHexagonsDecreasing);
+
+		/*
+		 * Nb Kekule Structures
+		 */
+
+		MenuItem nbKekuleStructuresIncreasing = new MenuItem("Increasing");
+		MenuItem nbKekuleStructuresDecreasing = new MenuItem("Decreasing");
+
+		nbKekuleStructuresIncreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new NbKekuleStructuresComparator(), false);
+		});
+
+		nbKekuleStructuresDecreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new NbKekuleStructuresComparator(), true);
+		});
+
+		nbKekuleStructuresItem.getItems().addAll(nbKekuleStructuresIncreasing, nbKekuleStructuresDecreasing);
+
+		/*
+		 * Irregularity
+		 */
+
+		MenuItem irregularityIncreasing = new MenuItem("Increasing");
+		MenuItem irregularityDecreasing = new MenuItem("Decreasing");
+
+		irregularityIncreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new IrregularityComparator(), false);
+		});
+
+		irregularityDecreasing.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new IrregularityComparator(), true);
+		});
+
+		irregularityItem.getItems().addAll(irregularityIncreasing, irregularityDecreasing);
+
+		sortMenu.getItems().addAll(nbCarbonsItem, nbHydrogensItem, nbHexagonsItem, nbKekuleStructuresItem,
+				irregularityItem);
+        
+    return sortMenu;
+  }
+
+  private Menu filterMenu() {
+    // defines the menu item related to filters
+    Menu filterMenu = new Menu("Fi_lter");
+    
+    final MenuItem menuItem = new MenuItem();
+    filterMenu.getItems().add(menuItem);
+    filterMenu.addEventHandler(Menu.ON_SHOWN, event -> filterMenu.hide());
+    filterMenu.addEventHandler(Menu.ON_SHOWING, event -> filterMenu.fire());
+    
+		filterMenu.setOnAction(e -> {
+			switchMode(ApplicationMode.FILTER);
+		});
+    
+    return filterMenu;
+  }
+  
+  private Menu computationsMenu() {
+    // defines the menu item related to the computations
+    Menu computationsMenu = new Menu("C_omputations");
+    
+		MenuItem reItem = new MenuItem("Resonance Energy (Lin)");
+		MenuItem clarItem = new MenuItem("Clar Cover");
+		MenuItem rboItem = new MenuItem("Ring Bond Order");
+		MenuItem irregularityStatsItem = new MenuItem("Irregularity Statistics");
+		MenuItem irSpectraItem = new MenuItem("IR Spectra");
+
+    computationsMenu.setOnShowing(e -> {
+			switchMode(ApplicationMode.COLLECTIONS);
+		});
+
+
+		reItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).resonanceEnergyLin();
+		});
+
+		clarItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).clarCover();
+		});
+
+		rboItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).ringBoundOrder();
+		});
+
+		irregularityStatsItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).irregularityStatistics();
+		});
+    
+    irSpectraItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).IRSpectra();
+		});
+
+		computationsMenu.getItems().addAll(reItem, clarItem, rboItem, irregularityStatsItem,irSpectraItem);
+
+    return computationsMenu;
+  }
+=======
+>>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
 
   private Menu preferencesMenu (){
     // defines the menu item related to the preferences
@@ -329,6 +660,10 @@ public class BenzenoidApplication extends Application {
 
 		localColorScaleItem.setSelected(true);
 		AromaticityGroup.aromaticityDisplayType = AromaticityDisplayType.LOCAL_COLOR_SCALE;
+
+    preferencesMenu.setOnShowing(e -> {
+			switchMode(ApplicationMode.COLLECTIONS);
+		});
 
 		localColorScaleItem.setOnAction(e -> {
 
@@ -412,6 +747,12 @@ public class BenzenoidApplication extends Application {
     // defines the menu item related to the active tasks
 
 		tasksMenu = new Menu("_Active tasks");
+<<<<<<< HEAD
+    
+    addTask("None");
+    
+=======
+>>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
     return tasksMenu;
   }
 
@@ -483,7 +824,10 @@ public class BenzenoidApplication extends Application {
 				break;
 
 			case FILTER:
-				((FilteringPane) filteringPane).refresh();
+				Robot robot = new Robot();
+        robot.keyPress(KeyCode.ESCAPE);
+        robot.keyRelease(KeyCode.ESCAPE);
+        ((FilteringPane) filteringPane).refresh();
 				rootPane.setCenter(filteringPane);
 				break;
 
@@ -515,7 +859,6 @@ public class BenzenoidApplication extends Application {
 	}
 
 	public void addTask(String task) {
-
 		TaskHBox hBox = new TaskHBox(this, task);
 		tasksBoxes.add(hBox);
 
@@ -524,6 +867,8 @@ public class BenzenoidApplication extends Application {
 
 		tasksMenu.getItems().add(menuItem);
 
+    if (tasksMenu.getItems().size() > 1)
+      removeTask ("None");
 	}
 
 	public void removeTask(String task) {
@@ -535,6 +880,8 @@ public class BenzenoidApplication extends Application {
 				break;
 			}
 		}
+    if (tasksBoxes.size() == 0)
+      addTask("None");
 	}
 
 	public Configuration getConfiguration() {

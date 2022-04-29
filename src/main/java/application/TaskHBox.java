@@ -21,6 +21,14 @@ public class TaskHBox extends HBox {
 	}
 
 	private void initialize() {
+    
+    Label label = new Label(task);
+		label.setTextFill(Color.BLACK);
+    
+    if (task.equals("None")) {
+      this.getChildren().addAll(label);
+      return;
+    }
 
 		Image image = new Image("/resources/graphics/icon-load.gif", 16, 16, false, false);
 		ImageView loadIcon = new ImageView(image);
@@ -33,8 +41,7 @@ public class TaskHBox extends HBox {
 		stopButton.resize(16, 16);
 		stopButton.setStyle("-fx-background-color: transparent;");
 
-		Label label = new Label(task);
-		label.setTextFill(Color.BLACK);
+		
 
 		stopButton.setOnAction(e -> {
 
@@ -51,6 +58,7 @@ public class TaskHBox extends HBox {
 				application.getBenzenoidCollectionsPane().stopRBO();
 		});
 
+    
 		this.getChildren().addAll(label, loadIcon, stopButton);
 	}
 
