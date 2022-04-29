@@ -188,11 +188,8 @@ public class BenzenoidApplication extends Application {
 	private MenuBar buildMenuBar(BorderPane rootPane) {
 
 		MenuBar menuBar = new MenuBar();
-<<<<<<< HEAD
+		
 		menuBar.getMenus().addAll(fileMenu(), collectionsMenu(), inputMenu(), sortMenu(), filterMenu(), computationsMenu(), preferencesMenu(), tasksMenu(), helpMenu());
-=======
-		menuBar.getMenus().addAll(collectionsMenu(), inputMenu(), preferencesMenu(), tasksMenu(), helpMenu());
->>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
     
 		return menuBar;
 	}
