@@ -40,5 +40,8 @@ These problems are modeled and solved thanks to constraint programming and, in p
 * Nicolas PRCOVIC
 * [Cyril TERRIOUX](https://pageperso.lis-lab.fr/cyril.terrioux/en/index.html)
 
+# Issues and suggestions
+If you encounter any problem, if you want to report a bug, or if you want to propose a property or a calculation that you would like to see implemented, please contact us using the form available at [https://github.com/benzAI-team/BenzAI/issues](https://github.com/benzAI-team/BenzAI/issues).
+
 # Contact
 * firstname.name@univ-amu.fr
