@@ -47,6 +47,7 @@ public class DatabasePane extends ScrollPane {
 	private ArrayList<HBoxDatabaseCriterion> hBoxesCriterions;
 
 	private Button addButton;
+	private Button closeButton;
 
 	private Button findButton;
 	private ImageView loadIcon;
@@ -115,6 +116,17 @@ public class DatabasePane extends ScrollPane {
 				Utils.alert("Invalid criterion(s)");
 			}
 		});
+    
+    ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
+		closeButton = new Button();
+		closeButton.setGraphic(imageClose);
+		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
+		closeButton.resize(30, 30);
+		closeButton.setStyle("-fx-background-color: transparent;");
+
+		closeButton.setOnAction(e -> {
+			application.switchMode(ApplicationMode.COLLECTIONS);
+		});
 
 		ImageView imageGenerate = new ImageView(new Image("/resources/graphics/icon-resume.png"));
 		findButton = new Button();
@@ -167,7 +179,7 @@ public class DatabasePane extends ScrollPane {
 		}
 
 		buttonsBox = new HBox(5.0);
-		buttonsBox.getChildren().addAll(addButton, findButton);
+		buttonsBox.getChildren().addAll(closeButton, addButton, findButton);
 
 		gridPane.add(buttonsBox, 0, nbCriterions + 1);
 	}

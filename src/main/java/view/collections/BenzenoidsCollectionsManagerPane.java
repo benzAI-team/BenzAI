@@ -135,7 +135,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		collectionPropertiesArea.setEditable(false);
 		collectionPropertiesArea.setPrefRowCount(1);
 
-		initializeMenu();
 		initializeContextMenu();
 
 		copiedBenzenoidPanes = new ArrayList<>();
@@ -284,9 +283,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		}
 	}
 
-	private void initializeMenu() {
+	public Menu initializeMoveMenuItem() {
 
-		menuBar = new MenuBar();
 		moveItemMenu = new Menu("Move");
 
 		moveItemMenu.setOnAction(e -> {
@@ -299,234 +297,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		CollectionMenuItem menuItem = new CollectionMenuItem(0, "(none)");
 		moveItemMenu.getItems().addAll(menuItem);
 
-		Menu sortMenu = new Menu("_Sort");
-		Menu nbCarbonsItem = new Menu("Number of carbons");
-		Menu nbHydrogensItem = new Menu("Number of hydrogens");
-		Menu nbHexagonsItem = new Menu("Number of hexagons");
-		Menu nbKekuleStructuresItem = new Menu("Number of Kekulé structures");
-		Menu irregularityItem = new Menu("Irregularity");
-
-		/*
-		 * Nb Carbons
-		 */
-
-		MenuItem nbCarbonsIncreasing = new MenuItem("Increasing");
-		MenuItem nbCarbonsDecreasing = new MenuItem("Decreasing");
-
-		nbCarbonsIncreasing.setOnAction(e -> {
-			sort(new NbCarbonsComparator(), false);
-		});
-
-		nbCarbonsDecreasing.setOnAction(e -> {
-			sort(new NbCarbonsComparator(), true);
-		});
-
-		nbCarbonsItem.getItems().addAll(nbCarbonsIncreasing, nbCarbonsDecreasing);
-
-		/*
-		 * Nb hydrogens
-		 */
-
-		MenuItem nbHydrogensIncreasing = new MenuItem("Increasing");
-		MenuItem nbHydrogensDecreasing = new MenuItem("Decreasing");
-
-		nbHydrogensIncreasing.setOnAction(e -> {
-			sort(new NbHydrogensComparator(), false);
-		});
-
-		nbHydrogensDecreasing.setOnAction(e -> {
-			sort(new NbHydrogensComparator(), true);
-		});
-
-		nbHydrogensItem.getItems().addAll(nbHydrogensIncreasing, nbHydrogensDecreasing);
-
-		/*
-		 * Nb Hexagons
-		 */
-
-		MenuItem nbHexagonsIncreasing = new MenuItem("Increasing");
-		MenuItem nbHexagonsDecreasing = new MenuItem("Decreasing");
-
-		nbHexagonsIncreasing.setOnAction(e -> {
-			sort(new NbHexagonsComparator(), false);
-		});
-
-		nbHexagonsDecreasing.setOnAction(e -> {
-			sort(new NbHexagonsComparator(), true);
-		});
-
-		nbHexagonsItem.getItems().addAll(nbHexagonsIncreasing, nbHexagonsDecreasing);
-
-		/*
-		 * Nb Kekule Structures
-		 */
-
-		MenuItem nbKekuleStructuresIncreasing = new MenuItem("Increasing");
-		MenuItem nbKekuleStructuresDecreasing = new MenuItem("Decreasing");
-
-		nbKekuleStructuresIncreasing.setOnAction(e -> {
-			sort(new NbKekuleStructuresComparator(), false);
-		});
-
-		nbKekuleStructuresDecreasing.setOnAction(e -> {
-			sort(new NbKekuleStructuresComparator(), true);
-		});
-
-		nbKekuleStructuresItem.getItems().addAll(nbKekuleStructuresIncreasing, nbKekuleStructuresDecreasing);
-
-		/*
-		 * Irregularity
-		 */
-
-		MenuItem irregularityIncreasing = new MenuItem("Increasing");
-		MenuItem irregularityDecreasing = new MenuItem("Decreasing");
-
-		irregularityIncreasing.setOnAction(e -> {
-			sort(new IrregularityComparator(), false);
-		});
-
-		irregularityDecreasing.setOnAction(e -> {
-			sort(new IrregularityComparator(), true);
-		});
-
-		irregularityItem.getItems().addAll(irregularityIncreasing, irregularityDecreasing);
-
-		sortMenu.getItems().addAll(nbCarbonsItem, nbHydrogensItem, nbHexagonsItem, nbKekuleStructuresItem,
-				irregularityItem);
-
-		Menu filterMenu = new Menu();
-		Label filterLabel = new Label("Filter");
-
-		filterMenu.setGraphic(filterLabel);
-
-		filterLabel.setOnMouseClicked(e -> {
-			application.switchMode(ApplicationMode.FILTER);
-		});
-
-		Menu fileMenu = new Menu("_File");
-		Menu exportBenzenoidMenu = new Menu("Export benzenoid(s)");
-		MenuItem exportGraph = new MenuItem(".graph");
-		MenuItem exportPng = new MenuItem(".png");
-		MenuItem exportCml = new MenuItem(".cml");
-		MenuItem exportCom = new MenuItem(".com");
-
-		MenuItem exportCollection = new MenuItem("Export collection");
-		MenuItem importCollection = new MenuItem("Import collection");
-
-		fileMenu.getItems().addAll(exportBenzenoidMenu, exportCollection, importCollection);
-		exportBenzenoidMenu.getItems().addAll(exportGraph, exportPng, exportCml, exportCom);
-
-		exportGraph.setOnAction(e -> {
-			exportGraph();
-		});
-
-		exportPng.setOnAction(e -> {
-			exportPng();
-		});
-
-		exportCml.setOnAction(e -> {
-			exportCML();
-		});
-
-		exportCom.setOnAction(e -> {
-			exportCOM();
-		});
-
-		importCollection.setOnAction(e -> {
-			DirectoryChooser directoryChooser = new DirectoryChooser();
-			File directory = directoryChooser.showDialog(application.getStage());
-
-			if (directory != null) {
-				importCollection(directory);
-			}
-		});
-
-		exportCollection.setOnAction(e -> {
-			DirectoryChooser directoryChooser = new DirectoryChooser();
-			File directory = directoryChooser.showDialog(application.getStage());
-
-			if (directory != null) {
-				BenzenoidCollectionPane currentPane = getSelectedTab();
-				currentPane.export(directory);
-			}
-		});
-
-		// boulot ici
-
-		manageCollection = new Menu("_Manage collection");
-
-		MenuItem itemRename = new MenuItem("Rename");
-		MenuItem itemDelete = new MenuItem("Delete benzenoid(s)");
-		MenuItem itemCopy = new MenuItem("Copy benzenoid(s)");
-		MenuItem itemPaste = new MenuItem("Paster benzenoid(s)");
-		MenuItem itemSelect = new MenuItem("Select all");
-
-		itemPaste.setOnAction(e -> {
-			paste();
-		});
-
-		itemSelect.setOnAction(e -> {
-			selectAll();
-		});
-
-		itemRename.setOnAction(e -> {
-			RenameCollectionPane root;
-			root = new RenameCollectionPane(this);
-			Stage stage = new Stage();
-			stage.setTitle("Rename collection");
-
-			stage.setResizable(false);
-
-			stage.getIcons().add(new Image("/resources/graphics/icon-benzene.png"));
-
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add("/resources/style/application.css");
-
-			stage.setScene(scene);
-			stage.show();
-		});
-
-		itemDelete.setOnAction(e -> {
-			BenzenoidCollectionPane currentPane = getSelectedTab();
-			currentPane.removeBenzenoidPanes(currentPane.getSelectedBenzenoidPanes());
-			log("Deleting " + currentPane.getSelectedBenzenoidPanes().size() + " benzenoid(s) from " + currentPane.getName(), true);
-		});
-
-		itemCopy.setOnAction(e -> {
-			originBenzenoidCollectionPane = getSelectedTab();
-			originBenzenoidCollectionPane.copy();
-		});
-
-		manageCollection.getItems().addAll(itemRename, itemDelete, itemCopy, itemSelect, moveItemMenu);
-
-		Menu computationsMenu = new Menu("C_omputations");
-		MenuItem reItem = new MenuItem("Resonance Energy (Lin)");
-		MenuItem clarItem = new MenuItem("Clar Cover");
-		MenuItem rboItem = new MenuItem("Ring Bond Order");
-		MenuItem irregularityStatsItem = new MenuItem("IrregularityStatistics");
-
-		reItem.setOnAction(e -> {
-			resonanceEnergyLin();
-		});
-
-		clarItem.setOnAction(e -> {
-			clarCover();
-		});
-
-		rboItem.setOnAction(e -> {
-			ringBoundOrder();
-		});
-
-		irregularityStatsItem.setOnAction(e -> {
-			irregularityStatistics();
-		});
-
-		computationsMenu.getItems().addAll(reItem, clarItem, rboItem, irregularityStatsItem);
-
-		menuBar.getMenus().addAll(fileMenu, manageCollection, sortMenu, filterMenu, computationsMenu);
-
-		this.setTop(menuBar);
-
+    return moveItemMenu;
 	}
 
 	public void remove(BenzenoidCollectionPane pane) {
@@ -626,7 +397,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem rboItem = new MenuItem("Ring bond Order");
 
 		MenuItem dbItem = new MenuItem("Find in database (DEBUG)");
-		MenuItem irSpectraItem = new MenuItem("IR Spectra");
+		MenuItem irSpectraItem = new MenuItem("IR spectra");
 
 		MenuItem checkDatabaseItem = new MenuItem("Check database");
 
@@ -1413,7 +1184,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			collectionPane.refreshColorScales();
 	}
 
-	private void sort(MoleculeComparator comparator, boolean ascending) {
+	public void sort(MoleculeComparator comparator, boolean ascending) {
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 		currentPane.setComparator(comparator);
 		currentPane.sort(ascending);
@@ -1467,7 +1238,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	}
 
-	private void exportCOM() {
+	public void exportCOM() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
@@ -1529,7 +1300,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		}
 	}
 
-	private void exportCML() {
+	public void exportCML() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
@@ -1591,7 +1362,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	}
 
-	private void exportGraph() {
+	public void exportGraph() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
@@ -1799,13 +1570,19 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	}
 
-	private void IRSpectra() {
+	public void IRSpectra() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
 		log("Requesting database (" + currentPane.getName() + ", " + currentPane.getSelectedBenzenoidPanes().size()
 				+ " benzenoids)", true);
 
+    if (currentPane.getSelectedBenzenoidPanes().size() == 0)
+    {
+      Utils.alert("Please, select at least one benzenoid having less than 10 hexagons");
+      return;
+    }
+  
 		ArrayList<BenzenoidPane> panes = new ArrayList<>();
 		for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes())
 			panes.add(pane);
