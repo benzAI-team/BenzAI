@@ -63,6 +63,7 @@ public class GeneratorPane extends ScrollPane {
 	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
 	private ArrayList<HBoxCriterion> hBoxesCriterions;
 	private Button addButton;
+	private Button closeButton;
 	private Button generateButton;
 	private Button stopButton;
 	private Button pauseButton;
@@ -113,6 +114,19 @@ public class GeneratorPane extends ScrollPane {
 		addButton.resize(30, 30);
 		addButton.setStyle("-fx-background-color: transparent;");
 
+		ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
+		closeButton = new Button();
+		closeButton.setGraphic(imageClose);
+		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
+		closeButton.resize(30, 30);
+		closeButton.setStyle("-fx-background-color: transparent;");
+
+		closeButton.setOnAction(e -> {
+			application.switchMode(ApplicationMode.COLLECTIONS);
+		});
+
+
+
 		ImageView imageStop = new ImageView(new Image("/resources/graphics/icon-stop.png"));
 		stopButton = new Button();
 		stopButton.setGraphic(imageStop);
@@ -133,7 +147,7 @@ public class GeneratorPane extends ScrollPane {
 			}
 
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(addButton, generateButton);
+			buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
 		});
 
 		ImageView imagePause = new ImageView(new Image("/resources/graphics/icon-pause.png"));
@@ -146,7 +160,7 @@ public class GeneratorPane extends ScrollPane {
 		pauseButton.setOnAction(e -> {
 			curentModel.pause();
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(resumeButton, stopButton);
+			buttonsBox.getChildren().addAll(closeButton,resumeButton, stopButton);
 		});
 
 		ImageView imageResume = new ImageView(new Image("/resources/graphics/icon-resume.png"));
@@ -265,7 +279,7 @@ public class GeneratorPane extends ScrollPane {
 		}
 
 		buttonsBox = new HBox(5.0);
-		buttonsBox.getChildren().addAll(addButton, generateButton);
+		buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
 
 		if (!valid)
 			buttonsBox.getChildren().add(warningIcon);
@@ -461,7 +475,7 @@ public class GeneratorPane extends ScrollPane {
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
 
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(loadIcon, pauseButton, stopButton);
+			buttonsBox.getChildren().addAll(closeButton,loadIcon, pauseButton, stopButton);
 
 			Iterator it = criterionsMap.entrySet().iterator();
 			while (it.hasNext()) {
@@ -527,14 +541,14 @@ public class GeneratorPane extends ScrollPane {
 						isRunning = false;
 						if (!curentModel.isPaused()) {
 							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(addButton, generateButton);
+							buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
 							buildBenzenoidPanesThread();
 							application.removeTask("Benzenoid generation");
 						}
 
 						else {
 							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(resumeButton, stopButton);
+							buttonsBox.getChildren().addAll(closeButton,resumeButton, stopButton);
 						}
 
 						break;
@@ -559,7 +573,7 @@ public class GeneratorPane extends ScrollPane {
 	private void resumeGeneration() {
 
 		buttonsBox.getChildren().clear();
-		buttonsBox.getChildren().addAll(loadIcon, pauseButton, stopButton);
+		buttonsBox.getChildren().addAll(closeButton,loadIcon, pauseButton, stopButton);
 
 		final Service<Void> calculateService = new Service<Void>() {
 
@@ -594,13 +608,13 @@ public class GeneratorPane extends ScrollPane {
 
 					if (curentModel.isPaused()) {
 						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(resumeButton, stopButton);
+						buttonsBox.getChildren().addAll(closeButton,resumeButton, stopButton);
 					}
 
 					else {
 						if (!curentModel.isPaused()) {
 							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(addButton, generateButton);
+							buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
 							buildBenzenoidPanes();
 						}
 					}
@@ -666,7 +680,7 @@ public class GeneratorPane extends ScrollPane {
 			selectedCollectionTab.refresh();
 
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(addButton, generateButton);
+			buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
 			application.switchMode(ApplicationMode.COLLECTIONS);
 		}
 
