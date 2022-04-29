@@ -188,11 +188,7 @@ public class BenzenoidApplication extends Application {
 	private MenuBar buildMenuBar(BorderPane rootPane) {
 
 		MenuBar menuBar = new MenuBar();
-<<<<<<< HEAD
-		menuBar.getMenus().addAll(fileMenu(), collectionsMenu(), inputMenu(), sortMenu(), filterMenu(), computationsMenu(), preferencesMenu(), tasksMenu(), helpMenu());
-=======
-		menuBar.getMenus().addAll(collectionsMenu(), inputMenu(), preferencesMenu(), tasksMenu(), helpMenu());
->>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
+    menuBar.getMenus().addAll(fileMenu(), collectionsMenu(), inputMenu(), sortMenu(), filterMenu(), computationsMenu(), preferencesMenu(), tasksMenu(), helpMenu());
     
 		return menuBar;
 	}
@@ -214,7 +210,6 @@ public class BenzenoidApplication extends Application {
 				configuration.save();
 			}
 		});
-<<<<<<< HEAD
 
 		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
 			if (configuration.remembersSize()) {
@@ -284,28 +279,6 @@ public class BenzenoidApplication extends Application {
 				currentPane.export(directory);
 			}
 		});
-=======
-
-		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
-			if (configuration.remembersSize()) {
-				configuration.setHeight(newVal.doubleValue());
-				configuration.save();
-			}
-		});
-
-		primaryStage.centerOnScreen();
-
-		primaryStage.getIcons().add(new Image("/resources/graphics/icon-benzene.png"));
-
-	}
-
-  private Menu collectionsMenu() {
-    // defines the menu item related to the collections
- 		final Menu collectionsMenu = new Menu();
-
-    
-   	Label collectionsLabel = new Label("Collections");
->>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
     
     return fileMenu;
   }
@@ -362,7 +335,6 @@ public class BenzenoidApplication extends Application {
 			stage.show();
 		});
 
-<<<<<<< HEAD
 		itemDelete.setOnAction(e -> {
 			BenzenoidCollectionPane currentPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
 			currentPane.removeBenzenoidPanes(currentPane.getSelectedBenzenoidPanes());
@@ -386,16 +358,6 @@ public class BenzenoidApplication extends Application {
     inputMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
-=======
-		collectionsMenu.setGraphic(collectionsLabel);
-    
-    return collectionsMenu;
-  }
-
-  private Menu inputMenu() {
-    // defines the menu item related to the input
-    final Menu inputMenu = new Menu("_Input");
->>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
 
 		MenuItem generatorMenu = new MenuItem("Generator");
 		MenuItem databaseMenu = new MenuItem("Database");
@@ -455,29 +417,15 @@ public class BenzenoidApplication extends Application {
 			switchMode(ApplicationMode.DRAW);
 		});
 
-<<<<<<< HEAD
-=======
-		MenuItem operationsMenu = new MenuItem("Operations on collections");
-
-		operationsMenu.setOnAction(e -> {
-			// ((CollectionsOperationsPane) operationPane).refreshBoxes();
-			switchMode(ApplicationMode.COLLECTIONS_OPERATIONS);
-		});
->>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
 
 		inputMenu.getItems().add(generatorMenu);
 		inputMenu.getItems().add(databaseMenu);
 		inputMenu.getItems().add(drawMenu);
 		inputMenu.getItems().add(importMenu);
-<<<<<<< HEAD
-=======
-		inputMenu.getItems().add(operationsMenu);
->>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
     
     return inputMenu;
   }
 
-<<<<<<< HEAD
   private Menu sortMenu() {
     // defines the menu item related to the sort of collections
 
@@ -638,8 +586,6 @@ public class BenzenoidApplication extends Application {
 
     return computationsMenu;
   }
-=======
->>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
 
   private Menu preferencesMenu (){
     // defines the menu item related to the preferences
@@ -747,12 +693,9 @@ public class BenzenoidApplication extends Application {
     // defines the menu item related to the active tasks
 
 		tasksMenu = new Menu("_Active tasks");
-<<<<<<< HEAD
     
     addTask("None");
     
-=======
->>>>>>> d7c253016fe8f079d0411b2b1f24eff94b54c8e0
     return tasksMenu;
   }
 
