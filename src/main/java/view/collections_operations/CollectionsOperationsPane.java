@@ -14,6 +14,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import molecules.Molecule;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
@@ -61,8 +65,7 @@ public class CollectionsOperationsPane extends GridPane {
 		operatorBox.getItems().addAll("Union", "Intersection", "Difference");
 
 		for (int i = 0; i < application.getBenzenoidCollectionsPane().getBenzenoidSetPanes().size() - 1; i++) {
-			BenzenoidCollectionPane collectionPane = application.getBenzenoidCollectionsPane().getBenzenoidSetPanes()
-					.get(i);
+			BenzenoidCollectionPane collectionPane = application.getBenzenoidCollectionsPane().getBenzenoidSetPanes().get(i);
 			collectionBox1.getItems().add(collectionPane.getName());
 			collectionBox2.getItems().add(collectionPane.getName());
 		}
@@ -79,6 +82,18 @@ public class CollectionsOperationsPane extends GridPane {
 
 		this.add(operationBox, 0, 1);
 		this.add(boxCollectionName, 0, 2);
+
+
+		ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
+		Button closeButton = new Button();
+		closeButton.setGraphic(imageClose);
+		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
+		closeButton.resize(30, 30);
+		closeButton.setStyle("-fx-background-color: transparent;");
+
+		closeButton.setOnAction(e -> {
+			application.switchMode(ApplicationMode.COLLECTIONS);
+		});
 
 		applyButton = new Button("Apply");
 
@@ -140,7 +155,10 @@ public class CollectionsOperationsPane extends GridPane {
 				Utils.alert("Error !");
 		});
 
-		this.add(applyButton, 0, 3);
+    HBox boxButton = new HBox(5.0);
+		boxButton.getChildren().addAll(closeButton,applyButton);
+
+		this.add(boxButton, 0, 3);
 	}
 
 	public void refreshBoxes() {
