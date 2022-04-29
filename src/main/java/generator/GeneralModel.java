@@ -757,8 +757,8 @@ public class GeneralModel {
 
 			}
 
-			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
-
+			else {
+				
 				ArrayList<Integer> vertices = new ArrayList<>();
 				for (int i = 0; i < channeling.length; i++)
 					if (channeling[i].getValue() == 1)
@@ -767,129 +767,68 @@ public class GeneralModel {
 				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
 
 				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, vertices);
+				
+				ArrayList<ArrayList<Integer>> translations;
+				
+				if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) {
+				
+					if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) 
+						translations = solution.translationsFaceMirror();
+				
+					else  
+						translations = solution.translationsEdgeMirror();
+					
+					BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
 
-				ArrayList<ArrayList<Integer>> translations = solution.translationsFaceMirror();
-
-				BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
-
-				if (reified == null) {
-					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", solution.getNbNodes()).reify();
-					nbHexagonsReifies[solution.getNbNodes()] = newVariable;
-					reified = newVariable;
-				}
-
-				for (ArrayList<Integer> translation : translations) {
-
-					ArrayList<Integer> nogood = new ArrayList<>();
-
-					if (translation.size() > 1) {
-
-						BoolVar[] varClause = new BoolVar[translation.size() + 1];
-						IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.size() + 1];
-
-						for (int i = 0; i < translation.size(); i++) {
-
-							varClause[i] = channeling[translation.get(i)];
-							valClause[i] = new IntIterableRangeSet(0);
-
-							nogood.add(translation.get(i));
-						}
-
-						varClause[varClause.length - 1] = reified;
-						valClause[valClause.length - 1] = new IntIterableRangeSet(0);
-
-						if (!nogoods.contains(nogood)) {
-							chocoModel.getClauseConstraint().addClause(varClause, valClause);
-							nogoods.add(nogood);
-						}
+					if (reified == null) {
+						BoolVar newVariable = chocoModel.arithm(nbVertices, "=", solution.getNbNodes()).reify();
+						nbHexagonsReifies[solution.getNbNodes()] = newVariable;
+						reified = newVariable;
 					}
+					
+					for (ArrayList<Integer> translation : translations) {
 
-					else if (translation.size() == 1) {
+						ArrayList<Integer> nogood = new ArrayList<>();
 
-						nogood.add(translation.get(0));
-						nogood.add(translation.get(0));
+						if (translation.size() > 1) {
 
-						BoolVar[] varClause = new BoolVar[] { channeling[translation.get(0)], reified };
+							BoolVar[] varClause = new BoolVar[translation.size() + 1];
+							IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.size() + 1];
 
-						IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+							for (int i = 0; i < translation.size(); i++) {
+
+								varClause[i] = channeling[translation.get(i)];
+								valClause[i] = new IntIterableRangeSet(0);
+
+								nogood.add(translation.get(i));
+							}
+
+							varClause[varClause.length - 1] = reified;
+							valClause[valClause.length - 1] = new IntIterableRangeSet(0);
+
+							if (!nogoods.contains(nogood)) {
+								chocoModel.getClauseConstraint().addClause(varClause, valClause);
+								nogoods.add(nogood);
+							}
+						}
+
+						else if (translation.size() == 1) {
+
+							nogood.add(translation.get(0));
+							nogood.add(translation.get(0));
+
+							BoolVar[] varClause = new BoolVar[] { channeling[translation.get(0)], reified };
+
+							IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 								new IntIterableRangeSet(0) };
 
-						if (!nogoods.contains(nogood)) {
-							chocoModel.getClauseConstraint().addClause(varClause, valClause);
-							nogoods.add(nogood);
+							if (!nogoods.contains(nogood)) {
+								chocoModel.getClauseConstraint().addClause(varClause, valClause);
+								nogoods.add(nogood);
+							}
 						}
 					}
 				}
-
-			}
-
-			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL)) {
-
-				ArrayList<Integer> vertices = new ArrayList<>();
-				for (int i = 0; i < channeling.length; i++)
-					if (channeling[i].getValue() == 1)
-						vertices.add(i);
-
-				if (vertices.toString().contains("[0, 1, 2, 3, 4, 5, 6, 12, 13, 20]"))
-					System.out.print("");
-
-				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
-
-				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, vertices);
-
-				ArrayList<ArrayList<Integer>> translations = solution.translationsEdgeMirror();
-
-				BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
-
-				if (reified == null) {
-					BoolVar newVariable = chocoModel.arithm(nbVertices, "=", solution.getNbNodes()).reify();
-					nbHexagonsReifies[solution.getNbNodes()] = newVariable;
-					reified = newVariable;
-				}
-
-				for (ArrayList<Integer> translation : translations) {
-
-					ArrayList<Integer> nogood = new ArrayList<>();
-
-					if (translation.size() > 1) {
-
-						BoolVar[] varClause = new BoolVar[translation.size() + 1];
-						IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.size() + 1];
-
-						for (int i = 0; i < translation.size(); i++) {
-
-							varClause[i] = channeling[translation.get(i)];
-							valClause[i] = new IntIterableRangeSet(0);
-
-							nogood.add(translation.get(i));
-						}
-
-						varClause[varClause.length - 1] = reified;
-						valClause[valClause.length - 1] = new IntIterableRangeSet(0);
-
-						if (!nogoods.contains(nogood)) {
-							chocoModel.getClauseConstraint().addClause(varClause, valClause);
-							nogoods.add(nogood);
-						}
-					}
-
-					else if (translation.size() == 1) {
-
-						nogood.add(translation.get(0));
-						nogood.add(translation.get(0));
-
-						BoolVar[] varClause = new BoolVar[] { channeling[translation.get(0)], reified };
-
-						IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
-								new IntIterableRangeSet(0) };
-
-						if (!nogoods.contains(nogood)) {
-							chocoModel.getClauseConstraint().addClause(varClause, valClause);
-							nogoods.add(nogood);
-						}
-					}
-				}
-
 			}
 
 			BenzenoidSolution solution = new BenzenoidSolution(watchedGUB, nbCrowns,
