@@ -39,6 +39,7 @@ public class FilteringPane extends ScrollPane {
 	private BenzenoidApplication application;
 
 	private Button addButton;
+  private Button closeButton;
 	private Button filterButton;
 
 	private GridPane gridPane;
@@ -75,6 +76,7 @@ public class FilteringPane extends ScrollPane {
 		this.setContent(gridPane);
 
 		ChoiceBoxFilteringCriterion choiceBoxCriterion = new ChoiceBoxFilteringCriterion(0, this);
+    Tooltip.install(addButton, new Tooltip("Add new criterion"));
 		choiceBoxesCriterions.add(choiceBoxCriterion);
 		hBoxesCriterions.add(new HBoxDefaultFilteringCriterion(this, choiceBoxCriterion));
 
@@ -116,12 +118,28 @@ public class FilteringPane extends ScrollPane {
 				Utils.alert("Invalid criterion(s)");
 			}
 		});
+    
+    ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
+		closeButton = new Button();
+		closeButton.setGraphic(imageClose);
+		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
+		closeButton.resize(30, 30);
+		closeButton.setStyle("-fx-background-color: transparent;");
+
+		closeButton.setOnAction(e -> {
+			application.switchMode(ApplicationMode.COLLECTIONS);
+		});
 
 		filterButton = new Button("Filter");
 
 		filterButton.setOnAction(e -> {
-			ArrayList<FilteringCriterion> criterions = getCriterions();
-			filter(criterions);
+
+			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
+
+			if (invalidIndexes.size() == 0)
+        filter(getCriterions());
+      else
+        Utils.alert("Please, select at least one criterion");
 		});
 	}
 
@@ -163,7 +181,7 @@ public class FilteringPane extends ScrollPane {
 		collectionChoiceBox.getSelectionModel().select(curentPane.getIndex());
 
 		HBox buttonsBox = new HBox(5.0);
-		buttonsBox.getChildren().addAll(addButton, filterButton, collectionChoiceBox);
+		buttonsBox.getChildren().addAll(closeButton, addButton, filterButton, collectionChoiceBox);
 
 		gridPane.add(buttonsBox, 0, nbCriterions + 1);
 
@@ -172,9 +190,9 @@ public class FilteringPane extends ScrollPane {
 	private ArrayList<FilteringCriterion> getCriterions() {
 
 		ArrayList<FilteringCriterion> criterions = new ArrayList<>();
-
-		for (HBoxFilteringCriterion hBoxCriterion : hBoxesCriterions) {
-			criterions.addAll(hBoxCriterion.buildCriterions());
+    
+    for (HBoxFilteringCriterion hBoxCriterion : hBoxesCriterions) {
+      criterions.addAll(hBoxCriterion.buildCriterions());
 		}
 
 		return criterions;
