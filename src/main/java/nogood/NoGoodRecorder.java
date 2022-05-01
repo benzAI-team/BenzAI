@@ -9,27 +9,30 @@ import generator.GeneralModel;
 import generator.Solution;
 
 public abstract class NoGoodRecorder {
-	
+
 	protected GeneralModel model;
-	
-	public NoGoodRecorder (GeneralModel model) {
+	protected Solution solution;
+
+	public NoGoodRecorder(GeneralModel model, Solution solution) {
 		this.model = model;
+		this.solution = solution;
 	}
-	
-	public abstract ArrayList<ArrayList<Integer>> computeOccurences();
-	
+
+	protected abstract ArrayList<ArrayList<Integer>> computeOccurences();
+
 	public void record() {
-		
+
 		ArrayList<ArrayList<Integer>> translations = computeOccurences();
-		
+
 		BoolVar reified = model.getNbHexagonsReified(solution.getNbNodes());
-		
+
 		if (reified == null) {
-			BoolVar newVariable = model.getProblem().arithm(model.getNbVerticesVar(), "=", solution.getNbNodes()).reify();
+			BoolVar newVariable = model.getProblem().arithm(model.getNbVerticesVar(), "=", solution.getNbNodes())
+					.reify();
 			model.setNbHexagonsReified(solution.getNbNodes(), newVariable);
 			reified = newVariable;
 		}
-		
+
 		for (ArrayList<Integer> translation : translations) {
 
 			ArrayList<Integer> nogood = new ArrayList<>();
@@ -64,7 +67,7 @@ public abstract class NoGoodRecorder {
 				BoolVar[] varClause = new BoolVar[] { model.getChanneling()[translation.get(0)], reified };
 
 				IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
-					new IntIterableRangeSet(0) };
+						new IntIterableRangeSet(0) };
 
 				if (!model.getNoGoods().contains(nogood)) {
 					model.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -72,8 +75,7 @@ public abstract class NoGoodRecorder {
 				}
 			}
 		}
-		
+
 	}
-	
-	
+
 }

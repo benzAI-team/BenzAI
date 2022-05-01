@@ -1,18 +1,18 @@
 package nogood;
 
 import java.util.ArrayList;
+
 import generator.GeneralModel;
 import generator.Solution;
 
 public class NoGoodHorizontalAxisRecorder extends NoGoodRecorder {
 
-	public NoGoodHorizontalAxisRecorder(GeneralModel model) {
-		super(model);
+	public NoGoodHorizontalAxisRecorder(GeneralModel model, Solution solution) {
+		super(model, solution);
 	}
 
 	@Override
-	public ArrayList<ArrayList<Integer>> computeOccurences(Solution solution) {
+	protected ArrayList<ArrayList<Integer>> computeOccurences() {
 		return solution.translationsFaceMirror();
 	}
 }
- 

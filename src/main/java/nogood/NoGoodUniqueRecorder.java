@@ -5,19 +5,18 @@ import java.util.ArrayList;
 import generator.GeneralModel;
 import generator.Solution;
 
-public class NoGoodUniqueRecorder extends NoGoodRecorder{
+public class NoGoodUniqueRecorder extends NoGoodRecorder {
 
-	public NoGoodUniqueRecorder(GeneralModel model) {
-		super(model);
-		
+	public NoGoodUniqueRecorder(GeneralModel model, Solution solution) {
+		super(model, solution);
+
 	}
 
 	@Override
-	public ArrayList<ArrayList<Integer>> computeOccurences(Solution solution) {
+	protected ArrayList<ArrayList<Integer>> computeOccurences() {
 		ArrayList<ArrayList<Integer>> translations = new ArrayList<>();
 		translations.add(solution.getVertices());
 		return translations;
 	}
 
-	
 }

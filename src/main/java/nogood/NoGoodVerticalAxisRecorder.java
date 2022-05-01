@@ -7,12 +7,12 @@ import generator.Solution;
 
 public class NoGoodVerticalAxisRecorder extends NoGoodRecorder {
 
-	public NoGoodVerticalAxisRecorder(GeneralModel model) {
-		super(model);
+	public NoGoodVerticalAxisRecorder(GeneralModel model, Solution solution) {
+		super(model, solution);
 	}
 
 	@Override
-	public ArrayList<ArrayList<Integer>> computeOccurences(Solution solution) {
+	protected ArrayList<ArrayList<Integer>> computeOccurences() {
 		return solution.translationsEdgeMirror();
 	}
 
