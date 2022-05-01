@@ -15,7 +15,7 @@ public class NoGoodNoneRecorder extends NoGoodRecorder {
 	@Override
 	protected ArrayList<ArrayList<Integer>> computeOccurences() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 }
