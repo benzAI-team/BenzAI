@@ -492,8 +492,6 @@ public class GeneratorPane extends ScrollPane {
 							for (GeneralModel model : models) {
 								curentModel = model;
 
-								model.applyNoGoods(generatedMolecules);
-
 								curentModel.solve();
 
 								generatedMolecules

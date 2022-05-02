@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.PriorityQueue;
-
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.search.limits.SolutionCounter;
@@ -19,14 +18,12 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.solver.variables.Variable;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
-
 import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 import generator.fragments.Fragment;
 import generator.fragments.FragmentOccurences;
 import generator.fragments.FragmentResolutionInformations;
 import modules.Module;
-import molecules.Molecule;
 import molecules.Node;
 import nogood.NoGoodHorizontalAxisRecorder;
 import nogood.NoGoodNoneRecorder;
@@ -791,120 +788,6 @@ public class GeneralModel {
 
 				noGoodRecorder.record();
 
-//				ArrayList<Integer> vertices = new ArrayList<>();
-//				for (int i = 0; i < channeling.length; i++)
-//					if (channeling[i].getValue() == 1)
-//						vertices.add(i);
-//
-//				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
-//
-//				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, vertices);
-//				
-//				ArrayList<ArrayList<Integer>> translations;
-//				
-//				if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR) || GeneratorCriterion.containsSubject(criterions,  Subject.SYMM_VERTICAL)) {
-//				
-//					if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR)) 
-//						translations = solution.translationsFaceMirror();
-//				
-//					else  
-//						translations = solution.translationsEdgeMirror();
-//					
-//					BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
-//
-//					if (reified == null) {
-//						BoolVar newVariable = chocoModel.arithm(nbVertices, "=", solution.getNbNodes()).reify();
-//						nbHexagonsReifies[solution.getNbNodes()] = newVariable;
-//						reified = newVariable;
-//					}
-//					
-//					for (ArrayList<Integer> translation : translations) {
-//
-//						ArrayList<Integer> nogood = new ArrayList<>();
-//
-//						if (translation.size() > 1) {
-//
-//							BoolVar[] varClause = new BoolVar[translation.size() + 1];
-//							IntIterableRangeSet[] valClause = new IntIterableRangeSet[translation.size() + 1];
-//
-//							for (int i = 0; i < translation.size(); i++) {
-//
-//								varClause[i] = channeling[translation.get(i)];
-//								valClause[i] = new IntIterableRangeSet(0);
-//
-//								nogood.add(translation.get(i));
-//							}
-//
-//							varClause[varClause.length - 1] = reified;
-//							valClause[valClause.length - 1] = new IntIterableRangeSet(0);
-//
-//							if (!nogoods.contains(nogood)) {
-//								chocoModel.getClauseConstraint().addClause(varClause, valClause);
-//								nogoods.add(nogood);
-//							}
-//						}
-//
-//						else if (translation.size() == 1) {
-//
-//							nogood.add(translation.get(0));
-//							nogood.add(translation.get(0));
-//
-//							BoolVar[] varClause = new BoolVar[] { channeling[translation.get(0)], reified };
-//
-//							IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
-//								new IntIterableRangeSet(0) };
-//
-//							if (!nogoods.contains(nogood)) {
-//								chocoModel.getClauseConstraint().addClause(varClause, valClause);
-//								nogoods.add(nogood);
-//							}
-//						}
-//					}
-//				}
-//				
-//				else {
-//					
-//					if (GeneratorCriterion.containsSubject(criterions, Subject.SINGLE_PATTERN)) {
-//						
-//						BoolVar reified = nbHexagonsReifies[solution.getNbNodes()];
-//
-//						if (reified == null) {
-//							BoolVar newVariable = chocoModel.arithm(nbVertices, "=", solution.getNbNodes()).reify();
-//							nbHexagonsReifies[solution.getNbNodes()] = newVariable;
-//							reified = newVariable;
-//						}
-//						
-//						ArrayList<Integer> ng = new ArrayList<>();
-//						
-//						ArrayList<Integer> v = new ArrayList<>();
-//						for (int i = 0; i < channeling.length; i++)
-//							if (channeling[i].getValue() == 1)
-//								v.add(i);
-//						
-//						if (v.size() > 1) {
-//							BoolVar[] varClause = new BoolVar[v.size() + 1];
-//							IntIterableRangeSet[] valClause = new IntIterableRangeSet[v.size() + 1];
-//
-//							for (int i = 0; i < v.size(); i++) {
-//
-//								varClause[i] = channeling[v.get(i)];
-//								valClause[i] = new IntIterableRangeSet(0);
-//
-//								ng.add(v.get(i));
-//							}
-//
-//							varClause[varClause.length - 1] = reified;
-//							valClause[valClause.length - 1] = new IntIterableRangeSet(0);
-//
-//							if (!nogoods.contains(ng)) {
-//								chocoModel.getClauseConstraint().addClause(varClause, valClause);
-//								nogoods.add(ng);
-//							}
-//						}
-//						
-//					}
-//					
-//				}
 			}
 
 			BenzenoidSolution solution = new BenzenoidSolution(watchedGUB, nbCrowns,
@@ -2223,78 +2106,6 @@ public class GeneralModel {
 			}
 
 			indexSolution++;
-		}
-
-	}
-
-	public void applyNoGoods(ArrayList<Molecule> molecules) {
-
-		for (Molecule molecule : molecules) {
-
-			Fragment pattern = molecule.convertToPattern(0, 0);
-
-			nogoodsFragments.add(pattern);
-
-			ArrayList<Fragment> rotations = pattern.computeRotations();
-			// nogoodsFragments.addAll(rotations);
-
-			FragmentOccurences occurences = new FragmentOccurences();
-
-			BoolVar reified = nbHexagonsReifies[pattern.getNbNodes()];
-
-			if (reified == null) {
-				BoolVar newVariable = chocoModel.arithm(nbVertices, "=", pattern.getNbNodes()).reify();
-				nbHexagonsReifies[pattern.getNbNodes()] = newVariable;
-				reified = newVariable;
-			}
-
-			for (Fragment f : rotations)
-				occurences
-						.addAll(computeTranslationsBorders(f.getNodesRefs(), f.getNeighborGraph(), occurences, false));
-
-			for (Integer[] occurence : occurences.getOccurences()) {
-
-				ArrayList<Integer> nogood = new ArrayList<>();
-
-				if (occurence.length > 1) {
-
-					BoolVar[] varClause = new BoolVar[occurence.length + 1];
-					IntIterableRangeSet[] valClause = new IntIterableRangeSet[occurence.length + 1];
-
-					for (int i = 0; i < occurence.length; i++) {
-
-						varClause[i] = watchedBenzenoidVertices[occurence[i]];
-						valClause[i] = new IntIterableRangeSet(0);
-
-						nogood.add(occurence[i]);
-					}
-
-					varClause[varClause.length - 1] = reified;
-					valClause[valClause.length - 1] = new IntIterableRangeSet(0);
-
-					if (!nogoods.contains(nogood)) {
-						chocoModel.getClauseConstraint().addClause(varClause, valClause);
-						nogoods.add(nogood);
-					}
-				}
-
-				else if (occurence.length == 1) {
-
-					nogood.add(occurence[0]);
-					nogood.add(occurence[0]);
-
-					BoolVar[] varClause = new BoolVar[] { watchedBenzenoidVertices[occurence[0]], reified };
-
-					IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
-							new IntIterableRangeSet(0) };
-
-					if (!nogoods.contains(nogood)) {
-						chocoModel.getClauseConstraint().addClause(varClause, valClause);
-						nogoods.add(nogood);
-					}
-				}
-			}
-
 		}
 
 	}
