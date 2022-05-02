@@ -3,6 +3,7 @@ package generator;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import generator.fragments.Fragment;
 import molecules.Node;
 
 public class Solution {
@@ -15,6 +16,7 @@ public class Solution {
 	private Node[] coronenoidNodes;
 	private int nbCrowns;
 	
+	private Fragment pattern;
 	
 	public Solution(Node[] coronenoidNodes, int[] correspondancesHexagons, int [] hexagonsCorrespondances, int[][] coordsMatrixCoronenoid,
 			int coronenoidCenter, int nbCrowns, ArrayList<Integer> vertices) {
@@ -25,9 +27,24 @@ public class Solution {
 		this.coronenoidCenter = coronenoidCenter;
 		this.nbCrowns = nbCrowns;
 		this.vertices = vertices;
+		test();
 	}
 
-	
+	private void test() {
+		
+		int diameter = coordsMatrixCoronenoid.length;
+		
+		ArrayList<Integer> translatedVertices = new ArrayList<>();
+		for (Integer v : vertices)
+			translatedVertices.add(hexagonsCorrespondances[v]);
+			
+		ArrayList<Integer> mirror = new ArrayList<>();
+		for (Integer v : translatedVertices)
+			mirror.add(Solution.vert(diameter, nbCrowns, v));
+		
+		System.out.println(translatedVertices.toString() + " -> " + mirror.toString());
+		System.out.print("");
+	}
 	
 	public ArrayList<Integer> getVertices() {
 		return vertices;
@@ -297,6 +314,38 @@ public class Solution {
 		
 		return translatedRotations;
 		
+	}
+	
+	public void mirror() {
+		
+		int diameter = coordsMatrixCoronenoid.length;
+		int [][] neighbors = new int[vertices.size()][6];
+		
+		for (int i = 0 ; i < vertices.size() ; i++) {
+			
+			int vertex = vertices.get(i);
+			Node node = coronenoidNodes[vertex];
+		
+			int x = node.getX();
+			int y = node.getY();
+			
+			if (x > 0 && coordsMatrixCoronenoid[x - 1][y] != -1) //HIGH-RIGHT
+				neighbors[i][0] = coordsMatrixCoronenoid[x - 1][y];
+			
+//			if (y + 1 < diameter && coordsMatrixCoronenoid[x][y + 1]) //RIGHT
+//				neighbors[i][1]
+			
+		}
+		
+		
+	}
+	
+	public static int diag(int diameter, int i) {
+		return i / diameter +  (i % diameter) * diameter;
+	}
+	
+	public static int vert(int nbCrowns, int diameter, int i) {
+		return (nbCrowns - 1) + (diameter + 1) * (i / diameter) - (i % diameter);
 	}
 	
 	public static int rotation60(int diameter, int nbCrowns, int i) {
