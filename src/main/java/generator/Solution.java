@@ -25,7 +25,6 @@ public class Solution {
 		this.coronenoidCenter = coronenoidCenter;
 		this.nbCrowns = nbCrowns;
 		this.vertices = vertices;
-		test();
 	}
 
 	
@@ -262,19 +261,6 @@ public class Solution {
 		return translations;
 		
 	}
-	
-	public void test() {
-//		int sommet = 1;
-//		for (int i = 0 ; i < 6 ; i++) {
-//			System.out.println(sommet);
-//			sommet = Solution.rotation60(coordsMatrixCoronenoid.length, nbCrowns, sommet);
-//		}
-		
-		ArrayList<ArrayList<Integer>> l = allRotations();
-		System.out.print("");
-	}
-	
-	
 	
 	public ArrayList<ArrayList<Integer>> allRotations() {
 		
