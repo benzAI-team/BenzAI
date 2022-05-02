@@ -153,14 +153,6 @@ public class ModelBuilder {
 			}
 		}
 
-		// ~ if (nbMaxHeight < nbMaxWidth) {
-		// ~ for (GeneratorCriterion cri : criterionsHeight)
-		// ~ cri.setSubject(Subject.RECT_WIDTH);
-		// ~ for (GeneratorCriterion cri : criterionsWidth)
-		// ~ cri.setSubject(Subject.RECT_HEIGHT);
-
-		// ~ }
-
 		for (GeneratorCriterion criterion : map.get("rhombus")) {
 
 			Subject subject = criterion.getSubject();
@@ -205,10 +197,6 @@ public class ModelBuilder {
 
 			int nbMaxCrowns = (upperBoundHexagons + 10) / 6;
 
-//			for (int i = 2; i <= nbMaxCrowns; i++) {
-//				models.add(new GeneralModel(map.get("hexagons"), criterions, map, i));
-//			}
-
 			models.add(new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns));
 		}
 
@@ -231,11 +219,7 @@ public class ModelBuilder {
 			}
 
 			int nbMaxCrowns = (upperBoundHexagons + 4) / 3;
-
-//			for (int i = 2; i <= nbMaxCrowns; i++) {
-//				models.add(new GeneralModel(map.get("hexagons"), criterions, map, i));
-//			}
-//			
+			
 			models.add(new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns));
 		}
 

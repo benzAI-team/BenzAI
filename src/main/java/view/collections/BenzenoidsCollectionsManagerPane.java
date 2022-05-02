@@ -1631,7 +1631,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 					String name = currentPane.getSelectedBenzenoidPanes().get(i).getName();
 					String filename;
-
+					
 					if (!name.equals(""))
 						filename = name.split("\n")[0] + ".graph";
 					else {
@@ -1640,7 +1640,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					}
 
 //					File file = new File(directoryPath + "/molecule_" + i + ".graph");
-					File file = new File(directoryPath + filename);
+					
+					String strName = directoryPath + "/" + filename;
+					strName = strName.replace("//", "/");
+					
+					File file = new File(strName);
 
 					try {
 						molecule.exportToGraphFile(file);
