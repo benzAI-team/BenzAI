@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.PriorityQueue;
+
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.search.limits.SolutionCounter;
@@ -18,6 +19,7 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.solver.variables.Variable;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
+
 import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 import generator.fragments.Fragment;
@@ -532,7 +534,7 @@ public class GeneralModel {
 		}
 	}
 
-	private Fragment convertToFragment() {
+	private Fragment convertToPattern() {
 
 		ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
 
@@ -761,13 +763,18 @@ public class GeneralModel {
 				for (int i = 0; i < channeling.length; i++)
 					if (channeling[i].getValue() == 1)
 						vertices.add(i);
-				
+
+				if (vertices.toString().equals("[0, 4, 5, 10, 15]"))
+					System.out.print("");
+
 				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
-				
-				Solution solution = new Solution(nodesRefs, correspondancesHexagons, hexagonsCorrespondances, coordsMatrix, center, nbCrowns, vertices);
-				
+
+				Solution solution = new Solution(nodesRefs, correspondancesHexagons, hexagonsCorrespondances,
+						coordsMatrix, center, nbCrowns, vertices);
+				solution.setPattern(convertToPattern());
+
 				NoGoodRecorder noGoodRecorder = new NoGoodAllRecorder(this, solution);
-				
+
 				noGoodRecorder.record();
 			}
 
@@ -780,7 +787,8 @@ public class GeneralModel {
 
 				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
 
-				Solution solution = new Solution(nodesRefs, correspondancesHexagons, hexagonsCorrespondances, coordsMatrix, center, nbCrowns, vertices);
+				Solution solution = new Solution(nodesRefs, correspondancesHexagons, hexagonsCorrespondances,
+						coordsMatrix, center, nbCrowns, vertices);
 
 				NoGoodRecorder noGoodRecorder = new NoGoodNoneRecorder(this, solution);
 
@@ -2018,7 +2026,7 @@ public class GeneralModel {
 				}
 			}
 
-			Fragment fragment = convertToFragment();
+			Fragment fragment = convertToPattern();
 			nogoodsFragments.add(fragment);
 
 			ArrayList<Fragment> rotations = fragment.computeRotations();

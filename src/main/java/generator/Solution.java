@@ -5,21 +5,22 @@ import java.util.Collections;
 
 import generator.fragments.Fragment;
 import molecules.Node;
+import utils.Couple;
 
 public class Solution {
 
 	private ArrayList<Integer> vertices;
-	private int[] correspondancesHexagons; //avec variables hors coro -> sans
-	private int [] hexagonsCorrespondances;//sans variables hors coro -> avec
+	private int[] correspondancesHexagons; // avec variables hors coro -> sans
+	private int[] hexagonsCorrespondances;// sans variables hors coro -> avec
 	private int[][] coordsMatrixCoronenoid;
 	private int coronenoidCenter;
 	private Node[] coronenoidNodes;
 	private int nbCrowns;
-	
+
 	private Fragment pattern;
-	
-	public Solution(Node[] coronenoidNodes, int[] correspondancesHexagons, int [] hexagonsCorrespondances, int[][] coordsMatrixCoronenoid,
-			int coronenoidCenter, int nbCrowns, ArrayList<Integer> vertices) {
+
+	public Solution(Node[] coronenoidNodes, int[] correspondancesHexagons, int[] hexagonsCorrespondances,
+			int[][] coordsMatrixCoronenoid, int coronenoidCenter, int nbCrowns, ArrayList<Integer> vertices) {
 		this.coronenoidNodes = coronenoidNodes;
 		this.correspondancesHexagons = correspondancesHexagons;
 		this.hexagonsCorrespondances = hexagonsCorrespondances;
@@ -31,21 +32,9 @@ public class Solution {
 	}
 
 	private void test() {
-		
-		int diameter = coordsMatrixCoronenoid.length;
-		
-		ArrayList<Integer> translatedVertices = new ArrayList<>();
-		for (Integer v : vertices)
-			translatedVertices.add(hexagonsCorrespondances[v]);
-			
-		ArrayList<Integer> mirror = new ArrayList<>();
-		for (Integer v : translatedVertices)
-			mirror.add(Solution.vert(diameter, nbCrowns, v));
-		
-		System.out.println(translatedVertices.toString() + " -> " + mirror.toString());
-		System.out.print("");
+
 	}
-	
+
 	public ArrayList<Integer> getVertices() {
 		return vertices;
 	}
@@ -64,6 +53,10 @@ public class Solution {
 
 	public int getNbNodes() {
 		return vertices.size();
+	}
+
+	public void setPattern(Fragment pattern) {
+		this.pattern = pattern;
 	}
 
 	public ArrayList<Integer> rotation180() {
@@ -231,24 +224,24 @@ public class Solution {
 
 		return translations;
 	}
-	
+
 	public ArrayList<ArrayList<Integer>> allTranslations() {
-		
+
 		ArrayList<ArrayList<Integer>> translations = new ArrayList<>();
 		int diameter = coordsMatrixCoronenoid.length;
-		
+
 		ArrayList<ArrayList<Integer>> rotations = allRotations();
-		
+
 		for (ArrayList<Integer> rotation : rotations) {
-			
-			for (int xShift = - diameter ; xShift <= diameter ; xShift ++) {
-				for (int yShift = - diameter ; yShift <= diameter ; yShift ++) {
-					
+
+			for (int xShift = -diameter; xShift <= diameter; xShift++) {
+				for (int yShift = -diameter; yShift <= diameter; yShift++) {
+
 					ArrayList<Integer> translation = new ArrayList<>();
 					boolean embedded = true;
-					
-					for (int i = 0 ; i < rotation.size() ; i++) {
-					
+
+					for (int i = 0; i < rotation.size(); i++) {
+
 						int vertexIndex = rotation.get(i);
 
 						Node node = coronenoidNodes[vertexIndex];
@@ -256,99 +249,268 @@ public class Solution {
 						int x = node.getX() + xShift;
 						int y = node.getY() + yShift;
 
-						if (!(x >= 0 && x < diameter && y >= 0 && y < diameter)
-								|| coordsMatrixCoronenoid[x][y] == -1) {
+						if (!(x >= 0 && x < diameter && y >= 0 && y < diameter) || coordsMatrixCoronenoid[x][y] == -1) {
 							embedded = false;
 							break;
 						}
 
 						translation.add(correspondancesHexagons[coordsMatrixCoronenoid[x][y]]);
 					}
-					
+
 					if (embedded) {
 						Collections.sort(translation);
 						if (!translations.contains(translation))
 							translations.add(translation);
-					}				
+					}
 				}
 			}
-			
+
 		}
-		
+
 		return translations;
-		
+
 	}
-	
+
 	public ArrayList<ArrayList<Integer>> allRotations() {
-		
-		
+
 		ArrayList<ArrayList<Integer>> rotations = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> translatedRotations = new ArrayList<>();
-		
+
+		/*
+		 * Simple rotations
+		 */
+
 		int diameter = coordsMatrixCoronenoid.length;
-		
-		
+
 		ArrayList<Integer> initialRotation = new ArrayList<>();
 		for (Integer vertex : vertices)
 			initialRotation.add(hexagonsCorrespondances[vertex]);
-		
+
 		rotations.add(initialRotation);
 		translatedRotations.add(vertices);
-		
-		for (int i = 1 ; i < 6 ; i ++) {
-			
+
+		for (int i = 1; i < 6; i++) {
+
 			ArrayList<Integer> lastRotation = rotations.get(rotations.size() - 1);
 			ArrayList<Integer> newRotation = new ArrayList<>();
 			ArrayList<Integer> translatedRotation = new ArrayList<>();
-			
+
 			for (Integer vertex : lastRotation) {
 				int newVertex = Solution.rotation60(diameter, nbCrowns, vertex);
 				newRotation.add(newVertex);
 				translatedRotation.add(correspondancesHexagons[newVertex]);
 			}
-			
+
 			rotations.add(newRotation);
 			translatedRotations.add(translatedRotation);
 		}
-		
-		
-		return translatedRotations;
-		
-	}
-	
-	public void mirror() {
-		
-		int diameter = coordsMatrixCoronenoid.length;
-		int [][] neighbors = new int[vertices.size()][6];
-		
-		for (int i = 0 ; i < vertices.size() ; i++) {
-			
-			int vertex = vertices.get(i);
-			Node node = coronenoidNodes[vertex];
-		
-			int x = node.getX();
-			int y = node.getY();
-			
-			if (x > 0 && coordsMatrixCoronenoid[x - 1][y] != -1) //HIGH-RIGHT
-				neighbors[i][0] = coordsMatrixCoronenoid[x - 1][y];
-			
-//			if (y + 1 < diameter && coordsMatrixCoronenoid[x][y + 1]) //RIGHT
-//				neighbors[i][1]
-			
+
+		/*
+		 * Mirror rotations
+		 */
+
+		Fragment mirrorPattern = pattern.mirror();
+		ArrayList<Integer> mirror = placePattern(mirrorPattern);
+
+		ArrayList<Integer> initialRotation2 = new ArrayList<>();
+		for (Integer vertex : mirror)
+			initialRotation2.add(hexagonsCorrespondances[vertex]);
+
+		rotations.add(initialRotation2);
+		translatedRotations.add(mirror);
+
+		for (int i = 1; i < 6; i++) {
+
+			ArrayList<Integer> lastRotation = rotations.get(rotations.size() - 1);
+			ArrayList<Integer> newRotation = new ArrayList<>();
+			ArrayList<Integer> translatedRotation = new ArrayList<>();
+
+			for (Integer vertex : lastRotation) {
+				int newVertex = Solution.rotation60(diameter, nbCrowns, vertex);
+				newRotation.add(newVertex);
+				translatedRotation.add(correspondancesHexagons[newVertex]);
+			}
+
+			rotations.add(newRotation);
+			translatedRotations.add(translatedRotation);
 		}
-		
-		
+
+		return translatedRotations;
+
 	}
-	
-	public static int diag(int diameter, int i) {
-		return i / diameter +  (i % diameter) * diameter;
+
+	private ArrayList<Integer> placePattern(Fragment pattern) {
+
+		/*
+		 * Trouver l'hexagone pr�sent du fragment le plus en haut � gauche
+		 */
+
+		int diameter = coordsMatrixCoronenoid.length;
+
+		int minY = Integer.MAX_VALUE;
+		for (Node node : pattern.getNodesRefs())
+			if (node.getY() < minY)
+				minY = node.getY();
+
+		while (true) {
+
+			boolean containsPresentHexagon = false;
+			for (int i = 0; i < pattern.getNodesRefs().length; i++) {
+				Node node = pattern.getNodesRefs()[i];
+				if (node.getY() == minY)
+					containsPresentHexagon = true;
+			}
+
+			if (containsPresentHexagon)
+				break;
+
+			minY++;
+		}
+
+		int nodeIndex = -1;
+		int minX = Integer.MAX_VALUE;
+		for (int i = 0; i < pattern.getNodesRefs().length; i++) {
+			Node node = pattern.getNodesRefs()[i];
+			if (node.getY() == minY && node.getX() < minX) {
+				minX = node.getX();
+				nodeIndex = i;
+			}
+		}
+
+		for (int y = 0; y < diameter; y++) {
+			for (int x = 0; x < diameter; x++) {
+				int hexagon = coordsMatrixCoronenoid[y][x];
+				if (hexagon != -1) {
+
+					/*
+					 * On place le fragment dans le coron�no�de de telle sorte que firstNode
+					 * corresponde � hexagon
+					 */
+
+					int[] checkedHexagons = new int[pattern.getNodesRefs().length];
+					Couple<Integer, Integer>[] coords = new Couple[pattern.getNodesRefs().length];
+
+					int candidat = nodeIndex;
+					checkedHexagons[nodeIndex] = 1;
+					coords[nodeIndex] = new Couple<>(x, y);
+
+					ArrayList<Integer> candidats = new ArrayList<Integer>();
+
+					for (int i = 0; i < 6; i++) {
+						if (pattern.getNeighborGraph()[candidat][i] != -1) {
+
+							int neighbor = pattern.getNeighborGraph()[candidat][i];
+							candidats.add(neighbor);
+							Couple<Integer, Integer> coord;
+
+							if (i == 0)
+								coord = new Couple<>(x, y - 1);
+
+							else if (i == 1)
+								coord = new Couple<>(x + 1, y);
+
+							else if (i == 2)
+								coord = new Couple<>(x + 1, y + 1);
+
+							else if (i == 3)
+								coord = new Couple<>(x, y + 1);
+
+							else if (i == 4)
+								coord = new Couple<>(x - 1, y);
+
+							else
+								coord = new Couple<>(x - 1, y - 1);
+
+							coords[neighbor] = coord;
+							checkedHexagons[neighbor] = 1;
+						}
+					}
+
+					while (candidats.size() > 0) {
+
+						candidat = candidats.get(0);
+
+						for (int i = 0; i < 6; i++) {
+							if (pattern.getNeighborGraph()[candidat][i] != -1) {
+
+								int neighbor = pattern.getNeighborGraph()[candidat][i];
+
+								if (checkedHexagons[neighbor] == 0) {
+
+									candidats.add(neighbor);
+									Couple<Integer, Integer> coord;
+
+									if (i == 0)
+										coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() - 1);
+
+									else if (i == 1)
+										coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY());
+
+									else if (i == 2)
+										coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY() + 1);
+
+									else if (i == 3)
+										coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() + 1);
+
+									else if (i == 4)
+										coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY());
+
+									else
+										coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY() - 1);
+
+									coords[neighbor] = coord;
+									checkedHexagons[neighbor] = 1;
+								}
+							}
+						}
+
+						candidats.remove(candidats.get(0));
+					}
+
+					/*
+					 * On teste si le fragment obtenu est valide
+					 */
+
+					boolean valid = true;
+					for (int i = 0; i < coords.length; i++) {
+						Couple<Integer, Integer> coord = coords[i];
+
+						if (!isValid(coord, i))
+							valid = false;
+					}
+
+					if (valid) {
+
+						ArrayList<Integer> vertices = new ArrayList<>();
+
+						for (int i = 0; i < coords.length; i++) {
+
+							Couple<Integer, Integer> coord = coords[i];
+							vertices.add(correspondancesHexagons[coordsMatrixCoronenoid[coord.getY()][coord.getX()]]);
+						}
+
+						return vertices;
+					}
+				}
+			}
+		}
+
+		return null;
 	}
-	
-	public static int vert(int nbCrowns, int diameter, int i) {
-		return (nbCrowns - 1) + (diameter + 1) * (i / diameter) - (i % diameter);
+
+	private boolean isValid(Couple<Integer, Integer> coord, int index) {
+
+		int diameter = coordsMatrixCoronenoid.length;
+
+		if (coord.getX() < 0 || coord.getX() >= diameter || coord.getY() < 0 || coord.getY() >= diameter
+				|| coordsMatrixCoronenoid[coord.getY()][coord.getX()] == -1) {
+			return false;
+		}
+
+		return true;
 	}
-	
+
 	public static int rotation60(int diameter, int nbCrowns, int i) {
-		return diameter * (nbCrowns - 1 ) - (i % diameter) * diameter + (i / diameter) * (diameter + 1); 
+		return diameter * (nbCrowns - 1) - (i % diameter) * diameter + (i / diameter) * (diameter + 1);
 	}
 }
