@@ -25,7 +25,7 @@ import generator.fragments.FragmentOccurences;
 import generator.fragments.FragmentResolutionInformations;
 import modules.Module;
 import molecules.Node;
-import nogood.NoGoodAllRecorder;
+import nogood.NoGoodBorderRecorder;
 import nogood.NoGoodHorizontalAxisRecorder;
 import nogood.NoGoodNoneRecorder;
 import nogood.NoGoodRecorder;
@@ -130,6 +130,9 @@ public class GeneralModel {
 
 	private int nbTotalSolutions = 0;
 	private int indexSolution;
+
+	private ArrayList<Integer> topBorder;
+	private ArrayList<Integer> leftBorder;
 
 	/*
 	 * Modules
@@ -341,6 +344,24 @@ public class GeneralModel {
 		buildNeighborGraph();
 
 		nbVertices = chocoModel.intVar("nbVertices", 1, nbHexagonsCoronenoid);
+
+		leftBorder = new ArrayList<>();
+		topBorder = new ArrayList<>();
+
+		for (int y = 0; y < diameter; y++) {
+
+			if (coordsMatrix[0][y] != -1)
+				topBorder.add(coordsMatrix[0][y]);
+		}
+
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+				if (coordsMatrix[i][j] != -1) {
+					leftBorder.add(coordsMatrix[i][j]);
+					break;
+				}
+			}
+		}
 	}
 
 	private void initializeConstraints() {
@@ -657,7 +678,7 @@ public class GeneralModel {
 		if (!GeneratorCriterion.containsSymmetry(criterions)) {
 
 			solution.setPattern(convertToPattern());
-			noGoodRecorder = new NoGoodAllRecorder(this, solution);
+			noGoodRecorder = new NoGoodBorderRecorder(this, solution, topBorder, leftBorder);
 		}
 
 		else {

@@ -225,6 +225,31 @@ public class Solution {
 		return translations;
 	}
 
+	public ArrayList<ArrayList<Integer>> borderTranslations(ArrayList<Integer> topBorder,
+			ArrayList<Integer> leftBorder) {
+
+		ArrayList<ArrayList<Integer>> borderTranslations = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> translations = allTranslations();
+
+		for (ArrayList<Integer> translation : translations) {
+			boolean touchTop = false;
+			boolean touchLeft = false;
+
+			for (Integer i : translation) {
+				if (topBorder.contains(i))
+					touchTop = true;
+				if (leftBorder.contains(i))
+					touchLeft = true;
+				if (touchTop && touchLeft) {
+					borderTranslations.add(translation);
+					break;
+				}
+			}
+		}
+
+		return borderTranslations;
+	}
+
 	public ArrayList<ArrayList<Integer>> allTranslations() {
 
 		ArrayList<ArrayList<Integer>> translations = new ArrayList<>();
