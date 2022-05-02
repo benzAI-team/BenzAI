@@ -8,20 +8,28 @@ import molecules.Node;
 public class Solution {
 
 	private ArrayList<Integer> vertices;
-	private int[] correspondancesHexagons;
+	private int[] correspondancesHexagons; //avec variables hors coro -> sans
+	private int [] hexagonsCorrespondances;//sans variables hors coro -> avec
 	private int[][] coordsMatrixCoronenoid;
 	private int coronenoidCenter;
 	private Node[] coronenoidNodes;
-
-	public Solution(Node[] coronenoidNodes, int[] correspondancesHexagons, int[][] coordsMatrixCoronenoid,
-			int coronenoidCenter, ArrayList<Integer> vertices) {
+	private int nbCrowns;
+	
+	
+	public Solution(Node[] coronenoidNodes, int[] correspondancesHexagons, int [] hexagonsCorrespondances, int[][] coordsMatrixCoronenoid,
+			int coronenoidCenter, int nbCrowns, ArrayList<Integer> vertices) {
 		this.coronenoidNodes = coronenoidNodes;
 		this.correspondancesHexagons = correspondancesHexagons;
+		this.hexagonsCorrespondances = hexagonsCorrespondances;
 		this.coordsMatrixCoronenoid = coordsMatrixCoronenoid;
 		this.coronenoidCenter = coronenoidCenter;
+		this.nbCrowns = nbCrowns;
 		this.vertices = vertices;
+		test();
 	}
 
+	
+	
 	public ArrayList<Integer> getVertices() {
 		return vertices;
 	}
@@ -206,5 +214,106 @@ public class Solution {
 		}
 
 		return translations;
+	}
+	
+	public ArrayList<ArrayList<Integer>> allTranslations() {
+		
+		ArrayList<ArrayList<Integer>> translations = new ArrayList<>();
+		int diameter = coordsMatrixCoronenoid.length;
+		
+		ArrayList<ArrayList<Integer>> rotations = allRotations();
+		
+		for (ArrayList<Integer> rotation : rotations) {
+			
+			for (int xShift = - diameter ; xShift <= diameter ; xShift ++) {
+				for (int yShift = - diameter ; yShift <= diameter ; yShift ++) {
+					
+					ArrayList<Integer> translation = new ArrayList<>();
+					boolean embedded = true;
+					
+					for (int i = 0 ; i < rotation.size() ; i++) {
+					
+						int vertexIndex = rotation.get(i);
+
+						Node node = coronenoidNodes[vertexIndex];
+
+						int x = node.getX() + xShift;
+						int y = node.getY() + yShift;
+
+						if (!(x >= 0 && x < diameter && y >= 0 && y < diameter)
+								|| coordsMatrixCoronenoid[x][y] == -1) {
+							embedded = false;
+							break;
+						}
+
+						translation.add(correspondancesHexagons[coordsMatrixCoronenoid[x][y]]);
+					}
+					
+					if (embedded) {
+						Collections.sort(translation);
+						if (!translations.contains(translation))
+							translations.add(translation);
+					}				
+				}
+			}
+			
+		}
+		
+		return translations;
+		
+	}
+	
+	public void test() {
+//		int sommet = 1;
+//		for (int i = 0 ; i < 6 ; i++) {
+//			System.out.println(sommet);
+//			sommet = Solution.rotation60(coordsMatrixCoronenoid.length, nbCrowns, sommet);
+//		}
+		
+		ArrayList<ArrayList<Integer>> l = allRotations();
+		System.out.print("");
+	}
+	
+	
+	
+	public ArrayList<ArrayList<Integer>> allRotations() {
+		
+		
+		ArrayList<ArrayList<Integer>> rotations = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> translatedRotations = new ArrayList<>();
+		
+		int diameter = coordsMatrixCoronenoid.length;
+		
+		
+		ArrayList<Integer> initialRotation = new ArrayList<>();
+		for (Integer vertex : vertices)
+			initialRotation.add(hexagonsCorrespondances[vertex]);
+		
+		rotations.add(initialRotation);
+		translatedRotations.add(vertices);
+		
+		for (int i = 1 ; i < 6 ; i ++) {
+			
+			ArrayList<Integer> lastRotation = rotations.get(rotations.size() - 1);
+			ArrayList<Integer> newRotation = new ArrayList<>();
+			ArrayList<Integer> translatedRotation = new ArrayList<>();
+			
+			for (Integer vertex : lastRotation) {
+				int newVertex = Solution.rotation60(diameter, nbCrowns, vertex);
+				newRotation.add(newVertex);
+				translatedRotation.add(correspondancesHexagons[newVertex]);
+			}
+			
+			rotations.add(newRotation);
+			translatedRotations.add(translatedRotation);
+		}
+		
+		
+		return translatedRotations;
+		
+	}
+	
+	public static int rotation60(int diameter, int nbCrowns, int i) {
+		return diameter * (nbCrowns - 1 ) - (i % diameter) * diameter + (i / diameter) * (diameter + 1); 
 	}
 }

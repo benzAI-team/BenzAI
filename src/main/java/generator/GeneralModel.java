@@ -767,7 +767,7 @@ public class GeneralModel {
 
 				int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
 
-				Solution solution = new Solution(nodesRefs, correspondancesHexagons, coordsMatrix, center, vertices);
+				Solution solution = new Solution(nodesRefs, correspondancesHexagons, hexagonsCorrespondances, coordsMatrix, center, nbCrowns, vertices);
 
 				NoGoodRecorder noGoodRecorder = new NoGoodNoneRecorder(this, solution);
 
