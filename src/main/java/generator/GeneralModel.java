@@ -351,13 +351,13 @@ public class GeneralModel {
 		for (int y = 0; y < diameter; y++) {
 
 			if (coordsMatrix[0][y] != -1)
-				topBorder.add(coordsMatrix[0][y]);
+				topBorder.add(correspondancesHexagons[coordsMatrix[0][y]]);
 		}
 
 		for (int i = 0; i < diameter; i++) {
 			for (int j = 0; j < diameter; j++) {
 				if (coordsMatrix[i][j] != -1) {
-					leftBorder.add(coordsMatrix[i][j]);
+					leftBorder.add(correspondancesHexagons[coordsMatrix[i][j]]);
 					break;
 				}
 			}
