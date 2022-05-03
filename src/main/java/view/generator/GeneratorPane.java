@@ -489,15 +489,24 @@ public class GeneratorPane extends ScrollPane {
 						@Override
 						protected Void call() throws Exception {
 
-							for (GeneralModel model : models) {
-								curentModel = model;
+//							for (GeneralModel model : models) {
+//								curentModel = model;
+//
+//								curentModel.solve();
+//
+//								generatedMolecules
+//										.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
+//
+//							}
 
-								curentModel.solve();
+							GeneralModel model = models.get(0);
+							curentModel = model;
 
-								generatedMolecules
-										.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
+							System.out.println(models.size() + " models");
+							model.solve();
 
-							}
+							generatedMolecules
+									.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
 
 							System.out.println("Fin génération");
 
