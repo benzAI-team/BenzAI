@@ -63,6 +63,5 @@ public class RhombusGeneratorCriterion extends GeneratorCriterion2 {
 		}
 
 		return upperBoundDimension;
-
 	}
 }
