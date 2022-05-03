@@ -25,7 +25,7 @@ public class NbCarbonsGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public int optimizeNbCrowns() {
+	public int optimizeNbCrowns(int upperBoundNbHexagons) {
 		return -1;
 	}
 

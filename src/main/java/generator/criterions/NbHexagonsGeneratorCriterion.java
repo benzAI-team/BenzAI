@@ -22,19 +22,9 @@ public class NbHexagonsGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public int optimizeNbCrowns() {
+	public int optimizeNbCrowns(int upperBoundNbHexagons) {
 
-		int nbHexagons = optimizeNbHexagons();
-		int nbCrowns = -1;
-
-		if (isUpperBound()) {
-			nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
-
-			if (nbHexagons % 2 == 1)
-				nbCrowns--;
-		}
-
-		return nbCrowns;
+		return -1;
 	}
 
 }

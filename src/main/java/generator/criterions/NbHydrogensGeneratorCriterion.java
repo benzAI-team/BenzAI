@@ -24,7 +24,7 @@ public class NbHydrogensGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public int optimizeNbCrowns() {
+	public int optimizeNbCrowns(int upperBoundNbHexagons) {
 		// TODO Auto-generated method stub
 		return -1;
 	}

@@ -17,7 +17,7 @@ public abstract class GeneratorCriterion2 {
 
 	public abstract int optimizeNbHexagons();
 
-	public abstract int optimizeNbCrowns();
+	public abstract int optimizeNbCrowns(int upperBoundNbHexagons);
 
 	public boolean isUpperBound() {
 		return operator == Operator.LEQ || operator == Operator.LT || operator == Operator.EQ;

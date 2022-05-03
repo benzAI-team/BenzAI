@@ -1,9 +1,9 @@
 package generator.criterions;
 
-public class DiameterGeneratorCriterion extends GeneratorCriterion2 {
+public class CatacondensedGeneratorCriterion extends GeneratorCriterion2 {
 
-	public DiameterGeneratorCriterion(Operator operator, String value) {
-		super(operator, value);
+	public CatacondensedGeneratorCriterion() {
+		super(Operator.NONE, "");
 	}
 
 	@Override
