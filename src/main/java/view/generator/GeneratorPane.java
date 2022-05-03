@@ -505,8 +505,8 @@ public class GeneratorPane extends ScrollPane {
 							System.out.println(models.size() + " models");
 							model.solve();
 
-							generatedMolecules
-									.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
+//							generatedMolecules
+//									.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
 
 							System.out.println("Fin génération");
 
@@ -577,6 +577,7 @@ public class GeneratorPane extends ScrollPane {
 					@Override
 					protected Void call() throws Exception {
 						curentModel.getGeneratorRun().resume();
+
 						return null;
 					}
 				};
@@ -657,11 +658,15 @@ public class GeneratorPane extends ScrollPane {
 
 			isRunning = false;
 
-			ResultSolver resultSolver = new ResultSolver();
+//			ResultSolver resultSolver = new ResultSolver();
+//
+//			for (GeneralModel model : models) {
+//				resultSolver.addResult(model.getResultSolver());
+//			}
 
-			for (GeneralModel model : models) {
-				resultSolver.addResult(model.getResultSolver());
-			}
+			ResultSolver resultSolver = models.get(0).getResultSolver();
+
+			generatedMolecules = buildMolecules(resultSolver, generatedMolecules.size());
 
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);
