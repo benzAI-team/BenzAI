@@ -1,6 +1,7 @@
 package generator.criterions;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import utils.Couple;
 
@@ -21,8 +22,7 @@ public class CoronenoidGeneratorCriterion extends GeneratorCriterion2 {
 
 	@Override
 	public int optimizeNbHexagons() {
-		// TODO Auto-generated method stub
-		return 0;
+		return -1;
 	}
 
 	@Override
@@ -70,6 +70,13 @@ public class CoronenoidGeneratorCriterion extends GeneratorCriterion2 {
 		}
 
 		return upperBoundNbCrowns;
+	}
+
+	@Override
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+		if (criterionsMap.get("coronenoid") == null)
+			criterionsMap.put("coronenoid", new ArrayList<>());
+		criterionsMap.get("coronenoid").add(this);
 	}
 
 }

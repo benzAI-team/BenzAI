@@ -1,6 +1,7 @@
 package generator.criterions;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import utils.Couple;
 
@@ -125,5 +126,12 @@ public class IrregularityGeneratorCriterion extends GeneratorCriterion2 {
 
 	public int getNbN4Criterions() {
 		return n4Operators.size();
+	}
+
+	@Override
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+		if (criterionsMap.get("irregularity") == null)
+			criterionsMap.put("irregularity", new ArrayList<>());
+		criterionsMap.get("irregularity").add(this);
 	}
 }

@@ -1,5 +1,8 @@
 package generator.criterions;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class NbHydrogensGeneratorCriterion extends GeneratorCriterion2 {
 
 	public NbHydrogensGeneratorCriterion(Operator operator, String value) {
@@ -25,8 +28,14 @@ public class NbHydrogensGeneratorCriterion extends GeneratorCriterion2 {
 
 	@Override
 	public int optimizeNbCrowns(int upperBoundNbHexagons) {
-		// TODO Auto-generated method stub
 		return -1;
+	}
+
+	@Override
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+		if (criterionsMap.get("hydrogens") == null)
+			criterionsMap.put("hydrogens", new ArrayList<>());
+		criterionsMap.get("hydrogens").add(this);
 	}
 
 }

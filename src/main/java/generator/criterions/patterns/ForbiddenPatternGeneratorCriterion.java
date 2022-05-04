@@ -7,5 +7,4 @@ public class ForbiddenPatternGeneratorCriterion extends PatternGeneratorCriterio
 	public ForbiddenPatternGeneratorCriterion(FragmentResolutionInformations patternsInformations) {
 		super(patternsInformations);
 	}
-
 }

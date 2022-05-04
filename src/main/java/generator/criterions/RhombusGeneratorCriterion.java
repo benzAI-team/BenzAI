@@ -1,6 +1,7 @@
 package generator.criterions;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import utils.Couple;
 
@@ -63,5 +64,12 @@ public class RhombusGeneratorCriterion extends GeneratorCriterion2 {
 		}
 
 		return upperBoundDimension;
+	}
+
+	@Override
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+		if (criterionsMap.get("rhombus") == null)
+			criterionsMap.put("rhombus", new ArrayList<>());
+		criterionsMap.get("rhombus").add(this);
 	}
 }

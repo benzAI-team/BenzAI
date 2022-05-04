@@ -1,6 +1,7 @@
 package generator.criterions;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import utils.Couple;
 
@@ -111,5 +112,12 @@ public class RectangleGeneratorCriterion extends GeneratorCriterion2 {
 		}
 
 		return upperBoundNbColumns;
+	}
+
+	@Override
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+		if (criterionsMap.get("rectangle") == null)
+			criterionsMap.put("rectangle", new ArrayList<>());
+		criterionsMap.get("rectangle").add(this);
 	}
 }

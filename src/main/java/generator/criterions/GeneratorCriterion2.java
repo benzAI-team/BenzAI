@@ -1,5 +1,8 @@
 package generator.criterions;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public abstract class GeneratorCriterion2 {
 
 	public enum Operator {
@@ -18,6 +21,8 @@ public abstract class GeneratorCriterion2 {
 	public abstract int optimizeNbHexagons();
 
 	public abstract int optimizeNbCrowns(int upperBoundNbHexagons);
+
+	public abstract void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap);
 
 	public boolean isUpperBound() {
 		return operator == Operator.LEQ || operator == Operator.LT || operator == Operator.EQ;
