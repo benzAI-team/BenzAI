@@ -15,6 +15,10 @@ public abstract class PatternGeneratorCriterion extends GeneratorCriterion2 {
 		this.patternsInformations = patternsInformations;
 	}
 
+	public FragmentResolutionInformations getPatternsInformations() {
+		return patternsInformations;
+	}
+
 	@Override
 	public int optimizeNbHexagons() {
 		return -1;

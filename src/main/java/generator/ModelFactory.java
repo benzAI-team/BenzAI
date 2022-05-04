@@ -1,9 +1,11 @@
 package generator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import generator.criterions.GeneratorCriterion2;
+import generator.criterions.patterns.PatternGeneratorCriterion;
 import generator.fragments.FragmentResolutionInformations;
 
 public class ModelFactory {
@@ -13,7 +15,7 @@ public class ModelFactory {
 	 */
 
 	private ArrayList<GeneratorCriterion2> criterions;
-	private Map<String, ArrayList<GeneratorCriterion2>> mapCriterions;
+	private Map<String, ArrayList<GeneratorCriterion2>> criterionsMap;
 	private FragmentResolutionInformations patternsInformations;
 
 	/*
@@ -23,22 +25,14 @@ public class ModelFactory {
 	private int upperBoundNbHexagons;
 	private int upperBoundNbCrowns;
 
-	public ModelFactory(ArrayList<GeneratorCriterion2> criterions,
-			Map<String, ArrayList<GeneratorCriterion2>> mapCriterions) {
+	public ModelFactory(ArrayList<GeneratorCriterion2> criterions) {
 		this.criterions = criterions;
-		this.mapCriterions = mapCriterions;
-	}
-
-	public ModelFactory(ArrayList<GeneratorCriterion2> criterions,
-			Map<String, ArrayList<GeneratorCriterion2>> mapCriterions,
-			FragmentResolutionInformations patternsInformations) {
-		this.criterions = criterions;
-		this.mapCriterions = mapCriterions;
-		this.patternsInformations = patternsInformations;
 	}
 
 	public GeneralModel buildModel() {
 
+		buildMap();
+		retrievePatternsInformations();
 		optimizeNbHexagons();
 		optimizeNbCrowns();
 
@@ -70,4 +64,20 @@ public class ModelFactory {
 		}
 	}
 
+	private void buildMap() {
+
+		criterionsMap = new HashMap<>();
+
+		for (GeneratorCriterion2 criterion : criterions)
+			criterion.buildMap(criterionsMap);
+	}
+
+	private void retrievePatternsInformations() {
+
+		if (criterionsMap.get("patterns") != null) {
+			for (GeneratorCriterion2 criterion : criterionsMap.get("patterns"))
+				patternsInformations = ((PatternGeneratorCriterion) criterion).getPatternsInformations();
+		} else
+			patternsInformations = null;
+	}
 }
