@@ -20,14 +20,104 @@ public class RectangleModule2 extends Module {
 	private IntVar nbLines;
 	private IntVar nbColumns;
 
-	private IntVar zero;
+	private BoolVar zero;
 
 	public RectangleModule2(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
 		super(generalModel);
 		this.criterions = criterions;
+	}
 
-		buildCorrespondances();
-		System.out.println("");
+	private void buildLines() {
+		lines = new BoolVar[generalModel.getDiameter()][generalModel.getDiameter()];
+
+		for (int i = 0; i < generalModel.getDiameter(); i++) {
+			for (int j = 0; j < generalModel.getDiameter(); j++) {
+				if (generalModel.getCoordsMatrix()[i][j] != -1)
+					lines[i][j] = generalModel.getVG()[generalModel.getCoordsMatrix()[i][j]];
+				else
+					lines[i][j] = zero;
+			}
+		}
+
+	}
+
+	private void buildColumns() {
+
+		int diameter = generalModel.getDiameter();
+		int nbCrowns = generalModel.getNbCrowns();
+
+		int[][] coordsMatrix = generalModel.getCoordsMatrix();
+
+		ArrayList<ArrayList<Integer>> lines = new ArrayList<>();
+
+		for (int i = nbCrowns - 1; i >= 0; i--) {
+
+			ArrayList<Integer> line = new ArrayList<>();
+			for (int j = 0; j < i; j++)
+				line.add(-1);
+
+			int li = i;
+			int j = 0;
+
+			while (true) {
+
+				line.add(coordsMatrix[li][j]);
+
+				li++;
+				j++;
+
+				if (li >= diameter || j >= diameter)
+					break;
+
+			}
+
+			lines.add(line);
+		}
+
+		for (int j = 1; j < nbCrowns; j++) {
+
+			ArrayList<Integer> line = new ArrayList<>();
+
+			int i = 0;
+			int lj = j;
+
+			while (true) {
+
+				line.add(coordsMatrix[i][lj]);
+
+				i++;
+				lj++;
+
+				if (lj >= diameter || i >= diameter)
+					break;
+			}
+
+			while (line.size() < diameter)
+				line.add(-1);
+
+			lines.add(line);
+		}
+
+		columns = new BoolVar[diameter][];
+
+		for (int i = 0; i < lines.size(); i++) {
+
+			BoolVar[] line = new BoolVar[diameter];
+
+			for (int j = 0; j < diameter; j++) {
+
+				int index = lines.get(i).get(j);
+
+				if (index != -1)
+					line[j] = generalModel.getWatchedGraphVertices()[index];
+				else
+					line[j] = zero;
+
+			}
+
+			columns[i] = line;
+
+		}
 	}
 
 	private void buildCorrespondances() {
@@ -58,14 +148,32 @@ public class RectangleModule2 extends Module {
 
 	@Override
 	public void buildVariables() {
-		// TODO Auto-generated method stub
+
+		zero = generalModel.getProblem().boolVar("zero", false);
+
+		buildCorrespondances();
+		buildLines();
+		buildColumns();
+
+		nbLines = generalModel.getProblem().intVar("nbLines", 1, generalModel.getDiameter());
+		nbColumns = generalModel.getProblem().intVar("nb_columns", 1, generalModel.getDiameter());
 
 	}
 
 	@Override
 	public void postConstraints() {
-		// TODO Auto-generated method stub
 
+		/*
+		 * Presence clause
+		 */
+
+		for (int i = 1; i < generalModel.getDiameter(); i++) {
+
+			BoolVar nbLinesReify = generalModel.getProblem().arithm(nbLines, "<=", i).reify();
+			BoolVar[] line = lines[correspondances[i]];
+			BoolVar sumLineReify = generalModel.getProblem().sum(line, "=", 0).reify();
+
+		}
 	}
 
 	@Override
