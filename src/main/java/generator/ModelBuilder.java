@@ -19,6 +19,7 @@ import modules.MultipleFragments1Module;
 import modules.NbCarbonsModule;
 import modules.NbHydrogensModule;
 import modules.RectangleModule;
+import modules.RectangleModule2;
 import modules.RhombusModule;
 import modules.SingleFragment1Module;
 import modules.SymmetriesModule;
@@ -219,7 +220,7 @@ public class ModelBuilder {
 			}
 
 			int nbMaxCrowns = (upperBoundHexagons + 4) / 3;
-			
+
 			models.add(new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns));
 		}
 
@@ -325,7 +326,7 @@ public class ModelBuilder {
 
 		if (GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
 			for (GeneralModel model : models)
-				model.addModule(new RectangleModule(model, map.get("rectangle")));
+				model.addModule(new RectangleModule2(model, map.get("rectangle")));
 
 		if (GeneratorCriterion.containsSubject(criterions, Subject.RHOMBUS)) {
 			for (GeneralModel model : models)

@@ -25,6 +25,9 @@ public class RectangleModule2 extends Module {
 	public RectangleModule2(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
 		super(generalModel);
 		this.criterions = criterions;
+
+		buildCorrespondances();
+		System.out.println("");
 	}
 
 	private void buildCorrespondances() {
