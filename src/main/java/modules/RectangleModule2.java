@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
@@ -173,7 +174,29 @@ public class RectangleModule2 extends Module {
 			BoolVar[] line = lines[correspondances[i]];
 			BoolVar sumLineReify = generalModel.getProblem().sum(line, "=", 0).reify();
 
+			BoolVar[] varClause = new BoolVar[] { nbLinesReify, sumLineReify };
+			IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+					new IntIterableRangeSet(1) };
+
+			generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
+
+			System.out.println("(#l >= " + i + ") => !L" + correspondances[i]);
+
+			BoolVar nbColumnsReify = generalModel.getProblem().arithm(nbLines, "<=", i).reify();
+			BoolVar[] column = columns[correspondances[i]];
+			BoolVar sumColumnReify = generalModel.getProblem().sum(column, "=", 0).reify();
+
+			BoolVar[] varClause2 = new BoolVar[] { nbColumnsReify, sumColumnReify };
+			IntIterableRangeSet[] valClause2 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+					new IntIterableRangeSet(1) };
+
+			generalModel.getProblem().getClauseConstraint().addClause(varClause2, valClause2);
+
+			System.out.println("(#c >= " + i + ") => !C" + correspondances[i]);
+
 		}
+
+		System.out.print("");
 	}
 
 	@Override
