@@ -34,10 +34,11 @@ public class ModelFactory {
 		buildMap();
 		retrievePatternsInformations();
 		optimizeNbHexagons();
-		optimizeNbCrowns();
 
 		if (upperBoundNbHexagons == -1)
 			return null;
+
+		optimizeNbCrowns();
 
 		return null;
 	}
@@ -62,6 +63,13 @@ public class ModelFactory {
 			if (nbCrowns != -1 && nbCrowns > upperBoundNbCrowns)
 				upperBoundNbCrowns = nbCrowns;
 		}
+
+		if (upperBoundNbCrowns == -1) {
+			upperBoundNbCrowns = (int) Math.floor((((double) ((double) upperBoundNbHexagons + 1)) / 2.0) + 1.0);
+
+			if (upperBoundNbHexagons % 2 == 1)
+				upperBoundNbCrowns--;
+		}
 	}
 
 	private void buildMap() {
@@ -80,4 +88,5 @@ public class ModelFactory {
 		} else
 			patternsInformations = null;
 	}
+
 }

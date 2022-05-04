@@ -489,7 +489,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		itemDelete.setOnAction(e -> {
 			BenzenoidCollectionPane currentPane = getSelectedTab();
 			currentPane.removeBenzenoidPanes(currentPane.getSelectedBenzenoidPanes());
-			log("Deleting " + currentPane.getSelectedBenzenoidPanes().size() + " benzenoid(s) from " + currentPane.getName(), true);
+			log("Deleting " + currentPane.getSelectedBenzenoidPanes().size() + " benzenoid(s) from "
+					+ currentPane.getName(), true);
 		});
 
 		itemCopy.setOnAction(e -> {
@@ -539,45 +540,43 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		return benzenoidSetPanes.size();
 	}
 
-  
-	public boolean isCollectionPaneLabel (String name) {
-    // returns true if name is the label of an existing pane
-    Iterator<BenzenoidCollectionPane> iter = benzenoidSetPanes.iterator();
-    
-    while ((iter.hasNext()) && (!iter.next().getName().equals(name))) {
-    }
+	public boolean isCollectionPaneLabel(String name) {
+		// returns true if name is the label of an existing pane
+		Iterator<BenzenoidCollectionPane> iter = benzenoidSetPanes.iterator();
 
-    return iter.hasNext();
+		while ((iter.hasNext()) && (!iter.next().getName().equals(name))) {
+		}
+
+		return iter.hasNext();
 	}
 
-
 	public String getNextCollectionPaneLabel() {
-    // returns the next label of the form "collection #num"
+		// returns the next label of the form "collection #num"
 		int i = 1;
 		String label;
 		do {
 			label = "Collection #" + i;
-      i = i + 1;
+			i = i + 1;
 		} while (isCollectionPaneLabel(label));
 
 		return label;
 	}
 
 	public String getNextCollectionPaneLabel(String name) {
-    // returns the next label of the form "collection #num"
-    if (isCollectionPaneLabel(name)) {
-      int i = 1;
-      String label;
-      do {
-        label = name+ "("+i+")";
-        i = i + 1;
-      } while (isCollectionPaneLabel(label));
+		// returns the next label of the form "collection #num"
+		if (isCollectionPaneLabel(name)) {
+			int i = 1;
+			String label;
+			do {
+				label = name + "(" + i + ")";
+				i = i + 1;
+			} while (isCollectionPaneLabel(label));
 
-      return label;
-    }
-    else return name;
+			return label;
+		} else
+			return name;
 	}
-  
+
 	public BenzenoidCollectionPane getSelectedPane() {
 
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
@@ -819,7 +818,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		setPaneOrigin.removeBenzenoidPanes(benzenoidPanesMoved);
 		setPaneOrigin.refresh();
 
-		log("Moving " + benzenoidPanesMoved.size() + " benzenoid(s) from " + setPaneOrigin.getName() + " to " + setPaneDestination.getName(), true);
+		log("Moving " + benzenoidPanesMoved.size() + " benzenoid(s) from " + setPaneOrigin.getName() + " to "
+				+ setPaneDestination.getName(), true);
 
 		for (int i = 0; i < moleculesMoved.size(); i++) {
 			setPaneDestination.addBenzenoid(moleculesMoved.get(i), displayTypesMoved.get(i));
@@ -857,7 +857,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		}
 
 		log("Pasting " + copiedBenzenoidPanes.size() + " benzenoid(s) in " + destinationPane.getName(), true);
-		
+
 		destinationPane.refresh();
 	}
 
@@ -868,7 +868,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "RE Lin";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),getNextCollectionPaneLabel(currentPane.getName()+"-"+name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
 		application.addTask("RE Lin");
 
@@ -966,7 +967,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "RE Lin&Fan";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),getNextCollectionPaneLabel(currentPane.getName()+"-"+name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
 		for (BenzenoidPane benzenoidPane : selectedBenzenoidPanes) {
 			Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
@@ -986,7 +988,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "Clar cover";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),getNextCollectionPaneLabel(currentPane.getName()+"-"+name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
 		application.addTask("Clar cover");
 
@@ -1093,7 +1096,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "RBO";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),getNextCollectionPaneLabel(currentPane.getName()+"-"+name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
 		BenzenoidsCollectionsManagerPane manager = this;
 
@@ -1631,7 +1635,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 					String name = currentPane.getSelectedBenzenoidPanes().get(i).getName();
 					String filename;
-					
+
 					if (!name.equals(""))
 						filename = name.split("\n")[0] + ".graph";
 					else {
@@ -1640,10 +1644,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					}
 
 //					File file = new File(directoryPath + "/molecule_" + i + ".graph");
-					
+
 					String strName = directoryPath + "/" + filename;
 					strName = strName.replace("//", "/");
-					
+
 					File file = new File(strName);
 
 					try {
@@ -1765,6 +1769,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 									pane.buildFrequencies();
 									pane.buildIntensities();
 									pane.buildEnergies();
+								}
+
+								else {
+									indexDatabase++;
+									System.out.print("");
 								}
 							}
 						}
