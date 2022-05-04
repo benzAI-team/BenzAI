@@ -192,7 +192,7 @@ public class RectangleModule2 extends Module {
 
 			generalModel.getProblem().getClauseConstraint().addClause(varClause2, valClause2);
 
-			System.out.println("(#c >= " + i + ") => !C" + correspondances[i]);
+			System.out.println("(#c >= " + i + ") >= !C" + correspondances[i]);
 
 		}
 
