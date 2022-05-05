@@ -1,5 +1,7 @@
 package solution;
 
+import java.util.ArrayList;
+
 public class ClarCoverSolution {
 
 	private int[] circles;
@@ -85,4 +87,24 @@ public class ClarCoverSolution {
 		return builder.toString();
 	}
 
+	public static double [] getRadicalarStatistics(ArrayList<ClarCoverSolution> solutions) {
+		
+		if (solutions.size() == 0)
+			return null;
+		
+		int nbCarbons = solutions.get(0).getNbCarbons();
+		
+		double [] radicalarStatistics = new double[nbCarbons];
+		
+		for (int i = 0 ; i < nbCarbons ; i ++) {
+			double avg = 0.0;
+			for (ClarCoverSolution solution : solutions) {
+				avg += solution.getSingleElectrons()[i];
+			}
+			avg = avg / (double) solutions.size();
+			radicalarStatistics[i] = avg;
+		}
+		
+		return radicalarStatistics;	
+	}
 }
