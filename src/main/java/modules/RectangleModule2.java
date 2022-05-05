@@ -8,6 +8,7 @@ import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeS
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
+import generator.GeneratorCriterion.Subject;
 
 public class RectangleModule2 extends Module {
 
@@ -221,6 +222,27 @@ public class RectangleModule2 extends Module {
 			generalModel.getProblem().getClauseConstraint().addClause(varClause3, valClause3);
 			
 			System.out.println(xi.getName() + " < = > " + "(#l >= " + lineIndex + " AND #c >= " + columnIndex + ")");
+		}
+		
+		/*
+		 * Constraints on number of lines and columns
+		 */
+
+		for (GeneratorCriterion criterion : criterions) {
+
+			Subject subject = criterion.getSubject();
+
+			if (subject == Subject.RECT_WIDTH || subject == Subject.RECT_HEIGHT) {
+
+				String operator = criterion.getOperatorString();
+				int value = Integer.parseInt(criterion.getValue());
+
+				if (subject == Subject.RECT_HEIGHT)
+					generalModel.getProblem().arithm(nbColumns, operator, value).post();
+
+				else
+					generalModel.getProblem().arithm(nbLines, operator, value).post();
+			}
 		}
 		
 		generalModel.getProblem().times(nbLines, nbColumns, generalModel.getNbVerticesVar()).post();
