@@ -20,8 +20,8 @@ public class RectangleModule2 extends Module {
 	private BoolVar[][] lines;
 	private BoolVar[][] columns;
 
-	private IntVar nbLines;
-	private IntVar nbColumns;
+	private IntVar width;
+	private IntVar height;
 
 	private BoolVar zero;
 
@@ -161,8 +161,8 @@ public class RectangleModule2 extends Module {
 		buildLines();
 		buildColumns();
 
-		nbLines = generalModel.getProblem().intVar("nbLines", 1, generalModel.getDiameter());
-		nbColumns = generalModel.getProblem().intVar("nb_columns", 1, generalModel.getDiameter());
+		width = generalModel.getProblem().intVar("nbLines", 1, generalModel.getDiameter());
+		height = generalModel.getProblem().intVar("nb_columns", 1, generalModel.getDiameter());
 
 	}
 
@@ -187,8 +187,8 @@ public class RectangleModule2 extends Module {
 			int lineIndex = correspondances2[find(xi, lines)] + 1;
 			int columnIndex = correspondances2[find(xi, columns)] + 1;
 			
-			BoolVar lineVar = generalModel.getProblem().arithm(nbLines, ">=", lineIndex).reify();
-			BoolVar columnVar = generalModel.getProblem().arithm(nbColumns, ">=", columnIndex).reify();
+			BoolVar lineVar = generalModel.getProblem().arithm(width, ">=", lineIndex).reify();
+			BoolVar columnVar = generalModel.getProblem().arithm(height, ">=", columnIndex).reify();
 			
 			// Clause 1
 			
@@ -219,9 +219,7 @@ public class RectangleModule2 extends Module {
 					new IntIterableRangeSet(1)
 			};
 			
-			generalModel.getProblem().getClauseConstraint().addClause(varClause3, valClause3);
-			
-			System.out.println(xi.getName() + " < = > " + "(#l >= " + lineIndex + " AND #c >= " + columnIndex + ")");
+			generalModel.getProblem().getClauseConstraint().addClause(varClause3, valClause3);			
 		}
 		
 		/*
@@ -238,15 +236,15 @@ public class RectangleModule2 extends Module {
 				int value = Integer.parseInt(criterion.getValue());
 
 				if (subject == Subject.RECT_HEIGHT)
-					generalModel.getProblem().arithm(nbColumns, operator, value).post();
+					generalModel.getProblem().arithm(height, operator, value).post();
 
 				else
-					generalModel.getProblem().arithm(nbLines, operator, value).post();
+					generalModel.getProblem().arithm(width, operator, value).post();
 			}
 		}
 		
-		generalModel.getProblem().times(nbLines, nbColumns, generalModel.getNbVerticesVar()).post();
-		generalModel.getProblem().arithm(nbLines, ">=", nbColumns).post();
+		generalModel.getProblem().times(width, height, generalModel.getNbVerticesVar()).post();
+		generalModel.getProblem().arithm(width, ">=", height).post();
 		
 		System.out.print("");
 		
@@ -254,8 +252,8 @@ public class RectangleModule2 extends Module {
 
 	@Override
 	public void addWatchedVariables() {
-		generalModel.addWatchedVariable(nbLines);
-		generalModel.addWatchedVariable(nbColumns);
+		generalModel.addWatchedVariable(width);
+		generalModel.addWatchedVariable(height);
 	}
 
 	@Override
