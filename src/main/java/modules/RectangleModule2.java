@@ -14,6 +14,7 @@ public class RectangleModule2 extends Module {
 	private ArrayList<GeneratorCriterion> criterions;
 
 	private int[] correspondances;
+	private int[] correspondances2;
 
 	private BoolVar[][] lines;
 	private BoolVar[][] columns;
@@ -124,6 +125,7 @@ public class RectangleModule2 extends Module {
 	private void buildCorrespondances() {
 
 		correspondances = new int[generalModel.getDiameter()];
+		correspondances2 = new int[generalModel.getDiameter()];
 
 		int center = (generalModel.getDiameter() - 1) / 2;
 		correspondances[0] = center;
@@ -133,10 +135,12 @@ public class RectangleModule2 extends Module {
 
 			if (i % 2 == 1) {
 				correspondances[i] = center - shift;
+				correspondances2[center - shift] = i;
 			}
 
 			else {
 				correspondances[i] = center + shift;
+				correspondances2[center + shift] = i;
 				shift++;
 			}
 		}
@@ -161,48 +165,75 @@ public class RectangleModule2 extends Module {
 
 	}
 
+	public int find(BoolVar x, BoolVar[][] matrix) {
+		
+		for (int i = 0 ; i < matrix.length ; i++) {
+			for (int j = 0 ; j < matrix[i].length ; j++) {
+				if (matrix[i][j].equals(x))
+					return i;
+			}
+		}
+		
+		return -1;
+	}
+	
 	@Override
 	public void postConstraints() {
 
-		/*
-		 * Presence clause
-		 */
-
-		for (int i = 1; i < generalModel.getDiameter(); i++) {
-
-			BoolVar nbLinesReify = generalModel.getProblem().arithm(nbLines, "<=", i).reify();
-			BoolVar[] line = lines[correspondances[i]];
-			BoolVar sumLineReify = generalModel.getProblem().sum(line, "=", 0).reify();
-
-			BoolVar[] varClause = new BoolVar[] { nbLinesReify, sumLineReify };
-			IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
-					new IntIterableRangeSet(1) };
-
-			generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
-
-			System.out.println("(#l >= " + i + ") => !L" + correspondances[i]);
-
-			BoolVar nbColumnsReify = generalModel.getProblem().arithm(nbLines, "<=", i).reify();
-			BoolVar[] column = columns[correspondances[i]];
-			BoolVar sumColumnReify = generalModel.getProblem().sum(column, "=", 0).reify();
-
-			BoolVar[] varClause2 = new BoolVar[] { nbColumnsReify, sumColumnReify };
-			IntIterableRangeSet[] valClause2 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
-					new IntIterableRangeSet(1) };
-
+		for (int i = 0 ; i < generalModel.getNbHexagonsCoronenoid() ; i++) {
+			
+			BoolVar xi = generalModel.getChanneling()[i];
+			int lineIndex = correspondances2[find(xi, lines)] + 1;
+			int columnIndex = correspondances2[find(xi, columns)] + 1;
+			
+			BoolVar lineVar = generalModel.getProblem().arithm(nbLines, ">=", lineIndex).reify();
+			BoolVar columnVar = generalModel.getProblem().arithm(nbColumns, ">=", columnIndex).reify();
+			
+			// Clause 1
+			
+			BoolVar [] varClause1 = new BoolVar[] {xi, lineVar};
+			IntIterableRangeSet [] valClause1 = new IntIterableRangeSet[] {
+					new IntIterableRangeSet(0),
+					new IntIterableRangeSet(1)
+			};
+			
+			generalModel.getProblem().getClauseConstraint().addClause(varClause1, valClause1);
+			
+			// Clause 2
+			
+			BoolVar [] varClause2 = new BoolVar[] {xi, columnVar};
+			IntIterableRangeSet [] valClause2 = new IntIterableRangeSet[] {
+					new IntIterableRangeSet(0),
+					new IntIterableRangeSet(1)
+			};
+			
 			generalModel.getProblem().getClauseConstraint().addClause(varClause2, valClause2);
-
-			System.out.println("(#c >= " + i + ") >= !C" + correspondances[i]);
-
+			
+			// Clause 3
+			
+			BoolVar [] varClause3 = new BoolVar[] {lineVar, columnVar, xi};
+			IntIterableRangeSet [] valClause3 = new IntIterableRangeSet[] {
+					new IntIterableRangeSet(0),
+					new IntIterableRangeSet(0),
+					new IntIterableRangeSet(1)
+			};
+			
+			generalModel.getProblem().getClauseConstraint().addClause(varClause3, valClause3);
+			
+			System.out.println(xi.getName() + " < = > " + "(#l >= " + lineIndex + " AND #c >= " + columnIndex + ")");
 		}
-
+		
+		generalModel.getProblem().times(nbLines, nbColumns, generalModel.getNbVerticesVar()).post();
+		generalModel.getProblem().arithm(nbLines, ">=", nbColumns).post();
+		
 		System.out.print("");
+		
 	}
 
 	@Override
 	public void addWatchedVariables() {
-		// TODO Auto-generated method stub
-
+		generalModel.addWatchedVariable(nbLines);
+		generalModel.addWatchedVariable(nbColumns);
 	}
 
 	@Override

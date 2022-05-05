@@ -395,7 +395,7 @@ public class GeneralModel {
 			module.changeWatchedGraphVertices();
 		}
 
-		if (GeneratorCriterion.containsSymmetry(criterions))
+		if (GeneratorCriterion.containsSymmetry(criterions) || GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
 			applyBorderConstraints = false;
 
 		if (applyBorderConstraints)
