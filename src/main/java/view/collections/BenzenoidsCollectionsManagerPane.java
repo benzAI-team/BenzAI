@@ -105,6 +105,9 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	private Service<Void> calculateServiceClarCover;
 	private boolean clarRunning;
 
+	private Service<Void> calculateServiceRadicalar;
+	private boolean radicalarRunning;
+	
 	private Service<Void> calculateServiceRBO;
 	private boolean rboRunning;
 
@@ -629,6 +632,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		MenuItem checkDatabaseItem = new MenuItem("Check database");
 
+		MenuItem radicalarStatsItem = new MenuItem("Radicalar statistics");
+		
 		exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
 
 		renameMenu.setOnAction(e -> {
@@ -650,6 +655,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		});
 
+		radicalarStatsItem.setOnAction(e -> {
+			radicalarStatistics();
+		});
+		
 		exportPropertiesItem.setOnAction(e -> {
 			exportProperties();
 		});
@@ -756,7 +765,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		contextMenu.getItems().addAll(renameMenu, importCollectionItem, exportCollectionItem, moveItem, copyItem,
 				pasteItem, deleteItem, exportMenu, selectAllItem, unselectAllItem, drawItem, irregularityItem,
-				reLinItem, clarItem, rboItem/* , reLinFanItem, dbItem */, irSpectraItem, checkDatabaseItem);
+				reLinItem, clarItem, rboItem/* , reLinFanItem, dbItem */, irSpectraItem, checkDatabaseItem, radicalarStatsItem);
 
 		this.setOnContextMenuRequested(e -> {
 
@@ -982,6 +991,115 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
 	}
 
+	public void radicalarStatistics() {
+
+		BenzenoidCollectionPane currentPane = getSelectedTab();
+		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+
+		String name = "Radicalar statistics";
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
+
+		application.addTask("Radicalar statistics");
+
+		clarRunning = true;
+
+		if (selectedBenzenoidPanes.size() == 0) {
+			selectAll();
+		}
+
+		calculateServiceRadicalar = new Service<Void>() {
+
+			@Override
+			protected Task<Void> createTask() {
+				return new Task<Void>() {
+
+					@Override
+					protected Void call() throws Exception {
+
+						ArrayList<BenzenoidPane> panes = new ArrayList<>();
+
+						for (BenzenoidPane pane : selectedBenzenoidPanes)
+							panes.add(pane);
+
+						indexClar = 0;
+						int size = panes.size();
+
+						System.out.println("Computing radicalar statistics of " + size + "benzenoids");
+						log("Radicalar statistics (" + size + "benzenoids)", true);
+
+						for (BenzenoidPane benzenoidPane : panes) {
+							if (clarRunning) {
+								Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+
+								ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverSolver.solve(molecule);
+								if (clarCoverSolutions.size() > 0) {
+//									ClarCoverSolution clarCoverSolution = clarCoverSolutions
+//											.get(clarCoverSolutions.size() - 1);
+//									molecule.setClarCoverSolution(clarCoverSolution);
+//									benzenoidSetPane.addBenzenoid(molecule, DisplayType.CLAR_COVER);
+									molecule.setClarCoverSolutions(clarCoverSolutions);
+								}
+								indexClar++;
+								System.out.println(indexClar + " / " + size);
+
+								Platform.runLater(new Runnable() {
+									@Override
+									public void run() {
+										if (indexClar == 1) {
+											log(indexClar + " / " + size, false);
+											lineIndexClar = currentPane.getConsole().getNbLines() - 1;
+										} else
+											changeLineConsole(indexClar + " / " + size, lineIndexClar);
+									}
+								});
+
+							}
+						}
+
+						return null;
+					}
+
+				};
+			}
+		};
+		
+		calculateServiceRadicalar.stateProperty().addListener(new ChangeListener<State>() {
+
+			@SuppressWarnings("incomplete-switch")
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+
+				switch (newValue) {
+				case FAILED:
+					clarRunning = false;
+					Utils.alert("Failed");
+					break;
+
+				case CANCELLED:
+					clarRunning = false;
+					benzenoidSetPane.refresh();
+					tabPane.getSelectionModel().clearAndSelect(0);
+					addBenzenoidSetPane(benzenoidSetPane);
+					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+					application.removeTask("Clar cover");
+					break;
+
+				case SUCCEEDED:
+					clarRunning = false;
+					benzenoidSetPane.refresh();
+					tabPane.getSelectionModel().clearAndSelect(0);
+					addBenzenoidSetPane(benzenoidSetPane);
+					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+					application.removeTask("Clar cover");
+					break;
+				}
+			}
+		});
+
+		calculateServiceRadicalar.start();
+	}
+	
 	public void clarCover() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();

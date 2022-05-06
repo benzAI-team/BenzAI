@@ -42,6 +42,7 @@ import utils.Interval;
 import utils.RelativeMatrix;
 import view.groups.ClarCoverGroup;
 import view.groups.RBOGroup;
+import view.groups.RadicalarClarCoverGroup;
 
 public class Molecule implements Comparable<Molecule> {
 
@@ -80,6 +81,9 @@ public class Molecule implements Comparable<Molecule> {
 	private ClarCoverSolution clarCoverSolution;
 	private ClarCoverGroup clarCoverGroup;
 
+	private ArrayList<ClarCoverSolution> clarCoverSolutions;
+	private RadicalarClarCoverGroup radicalarGroup;
+	
 	private RBO RBO;
 	private RBOGroup rboGroup;
 
@@ -1806,4 +1810,12 @@ public class Molecule implements Comparable<Molecule> {
 		return false;
 	}
 
+	public void setClarCoverSolutions(ArrayList<ClarCoverSolution> clarCoverSolutions) {
+		this.clarCoverSolutions = clarCoverSolutions;
+		radicalarGroup = new RadicalarClarCoverGroup(this, clarCoverSolutions);
+	}
+	
+	public RadicalarClarCoverGroup getRadicalarGroup() {
+		return radicalarGroup;
+	}
 }

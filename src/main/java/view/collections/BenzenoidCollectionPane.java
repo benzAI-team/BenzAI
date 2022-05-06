@@ -45,7 +45,7 @@ public class BenzenoidCollectionPane extends Tab {
 	};
 
 	public enum DisplayType {
-		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO
+		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR
 	};
 
 	private BenzenoidsCollectionsManagerPane parent;
@@ -89,6 +89,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 	private ArrayList<Group> clarCoverGroups;
 	private ArrayList<Group> rboGroups;
+	private ArrayList<Group> radicalarGroups;
 
 	private boolean lock;
 
@@ -131,7 +132,8 @@ public class BenzenoidCollectionPane extends Tab {
 
 		clarCoverGroups = new ArrayList<>();
 		rboGroups = new ArrayList<>();
-
+		radicalarGroups = new ArrayList<>();
+		
 		console = new Console();
 		benzenoidPropertiesArea = new TextArea();
 		frequenciesArea = new TextArea();
@@ -487,6 +489,37 @@ public class BenzenoidCollectionPane extends Tab {
 
 								break;
 
+							case RADICALAR:
+								
+								if (radicalarGroups.get(i) == null) {
+
+									//Group benzenoidDrawRBO = molecule.get();
+									Group benzenoidDrawRadicalar = molecule.getRadicalarGroup();
+									
+									BenzenoidPane benzenoidPaneRadicalar = new BenzenoidPane(collectionPane, -1, null,
+											benzenoidDrawRadicalar, "", molecule.getVerticesSolutions(), index, false);
+
+									// flowPane.getChildren().add(benzenoidPaneRBO);
+									benzenoidPanes.add(benzenoidPaneRadicalar);
+
+									rboGroups.set(i, benzenoidDrawRadicalar);
+								}
+
+								else {
+
+									System.out.println("On recalcule pas !");
+
+									Group benzenoidDrawRadicalar = radicalarGroups.get(i);
+
+									BenzenoidPane benzenoidPaneRadicalar = new BenzenoidPane(collectionPane, -1, null,
+											benzenoidDrawRadicalar, "", molecule.getVerticesSolutions(), index, false);
+
+									// flowPane.getChildren().add(benzenoidPaneRBO);
+									benzenoidPanes.add(benzenoidPaneRadicalar);
+								}
+								
+								break;
+								
 							default:
 
 								MoleculeGroup benzenoidDraw = new MoleculeGroup(molecule);
