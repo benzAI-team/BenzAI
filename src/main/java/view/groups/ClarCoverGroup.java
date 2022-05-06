@@ -70,87 +70,90 @@ public class ClarCoverGroup extends MoleculeGroup {
 					int hexagonIndex = molecule.getHexagonsInvolved(i, j).get(0);
 					int[] hexagon = molecule.getHexagon(hexagonIndex);
 
-					int iPosition = -1;
-					int jPosition = -1;
+					int position1 = -1;
+					int position2 = -1;
 
 					for (int k = 0; k < 6; k++) {
 						if (hexagon[k] == i)
-							iPosition = k;
+							position1 = k;
 						if (hexagon[k] == j)
-							jPosition = k;
+							position2 = k;
 					}
 
-					double x1, y1, x2, y2;
-					double shift = 5.0;
+          if (position1 > position2)
+          {
+            int aux = position1;
+            position1 = position2;
+            position2 = aux;
+          }
+          
+          System.out.println(position1+" "+position2);
 
-					/*
-					 * x1, y1
-					 */
 
-					if (iPosition == 0) {
-						x1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition);
-						y1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition + 1) + shift;
-					}
+          //~ System.out.println("Pos "+iPosition+" "+jPosition);
 
-					else if (iPosition == 1) {
-						x1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition) - shift;
-						y1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition + 1);
-					}
+					double x1 = 0, y1 = 0;
+					double x2 = 0, y2 = 0;
 
-					else if (iPosition == 2) {
-						x1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition) - shift;
-						y1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition + 1);
-					}
-
-					else if (iPosition == 3) {
-						x1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition);
-						y1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition + 1) - shift;
-					}
-
-					else if (iPosition == 4) {
-						x1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition) + shift;
-						y1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition + 1);
-					}
-
-					else {
-						x1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition) + shift;
-						y1 = hexagons[hexagonIndex].getPoints().get(2 * iPosition + 1);
-					}
-
-					/*
-					 * x2, y2
-					 */
-
-					if (jPosition == 0) {
-						x2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition);
-						y2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition + 1) + shift;
-					}
-
-					else if (jPosition == 1) {
-						x2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition) - shift;
-						y2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition + 1);
-					}
-
-					else if (jPosition == 2) {
-						x2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition) - shift;
-						y2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition + 1);
-					}
-
-					else if (jPosition == 3) {
-						x2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition);
-						y2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition + 1) - shift;
-					}
-
-					else if (jPosition == 4) {
-						x2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition) + shift;
-						y2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition + 1);
-					}
-
-					else {
-						x2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition) + shift;
-						y2 = hexagons[hexagonIndex].getPoints().get(2 * jPosition + 1);
-					}
-
+          switch (position1){
+            case 0:
+              x1 = hexagons[hexagonIndex].getPoints().get(0);
+              y1 = hexagons[hexagonIndex].getPoints().get(1) + 5.0;
+           
+              if (position2 == 1)
+              {
+                x2 = hexagons[hexagonIndex].getPoints().get(2) - 4.0;
+                y2 = hexagons[hexagonIndex].getPoints().get(3) + 2.5;
+              }
+              else
+                {
+                  x2 = hexagons[hexagonIndex].getPoints().get(10) + 4.0;
+                  y2 = hexagons[hexagonIndex].getPoints().get(11) + 3.0;
+                }
+              break;
+              
+            case 1:
+              x1 = hexagons[hexagonIndex].getPoints().get(2) - 4.0;
+              y1 = hexagons[hexagonIndex].getPoints().get(3) + 2.0;
+              
+              x2 = hexagons[hexagonIndex].getPoints().get(4) - 4.0;
+              y2 = hexagons[hexagonIndex].getPoints().get(5) - 2.0;
+              break;
+              
+            case 2:
+              x1 = hexagons[hexagonIndex].getPoints().get(4) - 4.0;
+              y1 = hexagons[hexagonIndex].getPoints().get(5) - 2.5;
+              
+              x2 = hexagons[hexagonIndex].getPoints().get(6);
+              y2 = hexagons[hexagonIndex].getPoints().get(7) - 5.0;
+              
+              break;
+              
+            case 3:
+              x1 = hexagons[hexagonIndex].getPoints().get(6);
+              y1 = hexagons[hexagonIndex].getPoints().get(7) - 5.0;
+              
+              x2 = hexagons[hexagonIndex].getPoints().get(8) + 4;
+              y2 = hexagons[hexagonIndex].getPoints().get(9) - 2.5;
+              
+              break;
+              
+            case 4:
+              x1 = hexagons[hexagonIndex].getPoints().get(8) + 4.0;
+              y1 = hexagons[hexagonIndex].getPoints().get(9) - 2.0;
+              
+              x2 = hexagons[hexagonIndex].getPoints().get(10) + 4.0;
+              y2 = hexagons[hexagonIndex].getPoints().get(11) + 2.0;
+              
+              break;
+          
+            case 5:
+              break;
+            }
+          
+          System.out.println("Coord ("+x1+","+y1+")");
+          System.out.println("Coord ("+x2+","+y2+")");
+          
 					Line line = new Line(x1, y1, x2, y2);
 					this.getChildren().add(line);
 				}
