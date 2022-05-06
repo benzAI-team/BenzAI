@@ -1039,6 +1039,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 //									molecule.setClarCoverSolution(clarCoverSolution);
 //									benzenoidSetPane.addBenzenoid(molecule, DisplayType.CLAR_COVER);
 									molecule.setClarCoverSolutions(clarCoverSolutions);
+									benzenoidSetPane.addBenzenoid(molecule, DisplayType.RADICALAR);
 								}
 								indexClar++;
 								System.out.println(indexClar + " / " + size);

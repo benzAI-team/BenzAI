@@ -293,6 +293,7 @@ public class BenzenoidCollectionPane extends Tab {
 		molecules.add(molecule);
 		displayTypes.add(displayType);
 		clarCoverGroups.add(null);
+		radicalarGroups.add(null);
 		rboGroups.add(null);
 	}
 
@@ -501,8 +502,9 @@ public class BenzenoidCollectionPane extends Tab {
 
 									// flowPane.getChildren().add(benzenoidPaneRBO);
 									benzenoidPanes.add(benzenoidPaneRadicalar);
-
-									rboGroups.set(i, benzenoidDrawRadicalar);
+									//flowPane.getChildren().add(benzenoidPaneRadicalar);
+									
+									radicalarGroups.set(i, benzenoidDrawRadicalar);
 								}
 
 								else {
@@ -516,6 +518,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 									// flowPane.getChildren().add(benzenoidPaneRBO);
 									benzenoidPanes.add(benzenoidPaneRadicalar);
+									//flowPane.getChildren().add(benzenoidPaneRadicalar);
 								}
 								
 								break;

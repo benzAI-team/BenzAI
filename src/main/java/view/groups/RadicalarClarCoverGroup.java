@@ -14,7 +14,6 @@ public class RadicalarClarCoverGroup extends MoleculeGroup {
 	public RadicalarClarCoverGroup(Molecule molecule, ArrayList<ClarCoverSolution> clarCoverSolutions) {
 		super(molecule);
 		this.clarCoverSolutions = clarCoverSolutions;
-
 		drawRadicalar();
 	}
 
