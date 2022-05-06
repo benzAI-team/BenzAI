@@ -146,9 +146,6 @@ public class ClarCoverGroup extends MoleculeGroup {
               break;
             }
           
-          System.out.println("Coord ("+x1+","+y1+")");
-          System.out.println("Coord ("+x2+","+y2+")");
-          
 					Line line = new Line(x1, y1, x2, y2);
 					this.getChildren().add(line);
 				}
