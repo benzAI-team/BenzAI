@@ -87,11 +87,6 @@ public class ClarCoverGroup extends MoleculeGroup {
             position2 = aux;
           }
           
-          System.out.println(position1+" "+position2);
-
-
-          //~ System.out.println("Pos "+iPosition+" "+jPosition);
-
 					double x1 = 0, y1 = 0;
 					double x2 = 0, y2 = 0;
 
