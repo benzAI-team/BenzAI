@@ -1,4 +1,4 @@
-package database;
+package database.models;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import molecules.Molecule;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 
-public class SelectQueryContent {
+public class IRSpectraEntry {
 
 	private int idMolecule;
 	private String moleculeName;
@@ -28,7 +28,7 @@ public class SelectQueryContent {
 	 * Constructor
 	 */
 
-	public SelectQueryContent(int idMolecule, String moleculeName, int nbHexagons, int nbCarbons, int nbHydrogens,
+	public IRSpectraEntry(int idMolecule, String moleculeName, int nbHexagons, int nbCarbons, int nbHydrogens,
 			double irregularity, int idGaussianResult, ArrayList<Double> finalEnergies, ArrayList<Double> frequencies,
 			ArrayList<Double> intensities, double zeroPointEnergy) {
 
@@ -98,7 +98,7 @@ public class SelectQueryContent {
 	 */
 
 	@SuppressWarnings("rawtypes")
-	public static SelectQueryContent buildQueryContent(Map result) {
+	public static IRSpectraEntry buildQueryContent(Map result) {
 
 		int idMolecule = (int) ((double) result.get("id"));
 		String name = (String) result.get("name");
@@ -135,11 +135,11 @@ public class SelectQueryContent {
 		for (String energy : splittedEnergies)
 			finalEnergies.add(Double.parseDouble(energy));
 
-		return new SelectQueryContent(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idSpectrum,
+		return new IRSpectraEntry(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idSpectrum,
 				finalEnergies, frequencies, intensities, zeroPointEnergy);
 	}
 
-	public static SelectQueryContent buildQueryContent(ArrayList<String> result) {
+	public static IRSpectraEntry buildQueryContent(ArrayList<String> result) {
 
 		int idMolecule = -1;
 		String moleculeName = "";
@@ -207,7 +207,7 @@ public class SelectQueryContent {
 				zeroPointEnergy = Double.parseDouble(splittedLine[1]);
 		}
 
-		return new SelectQueryContent(idMolecule, moleculeName, nbHexagons, nbCarbons, nbHydrogens, irregularity,
+		return new IRSpectraEntry(idMolecule, moleculeName, nbHexagons, nbCarbons, nbHydrogens, irregularity,
 				idGaussianResult, finalEnergies, frequencies, intensities, zeroPointEnergy);
 	}
 

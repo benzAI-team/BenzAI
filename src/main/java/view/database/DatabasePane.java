@@ -8,7 +8,7 @@ import java.util.Map;
 import application.ApplicationMode;
 import application.BenzenoidApplication;
 import database.BenzenoidCriterion;
-import database.SelectQueryContent;
+import database.models.IRSpectraEntry;
 import http.JSonStringBuilder;
 import http.Post;
 import javafx.beans.value.ChangeListener;
@@ -226,7 +226,7 @@ public class DatabasePane extends ScrollPane {
 										if (i == 4968)
 											System.out.print("");
 
-										SelectQueryContent content = SelectQueryContent.buildQueryContent(map);
+										IRSpectraEntry content = IRSpectraEntry.buildQueryContent(map);
 
 										Molecule molecule = null;
 

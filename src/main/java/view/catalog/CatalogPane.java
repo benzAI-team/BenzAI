@@ -14,8 +14,8 @@ import classifier.IrregularityClassifier;
 import classifier.MoleculeInformation;
 import classifier.PAHClass;
 import database.BenzenoidCriterion;
-import database.SelectQueryContent;
 import database.BenzenoidCriterion.Subject;
+import database.models.IRSpectraEntry;
 import http.JSonStringBuilder;
 import http.Post;
 import javafx.collections.FXCollections;
@@ -387,7 +387,7 @@ public class CatalogPane extends GridPane {
 
 					for (Map map : results) {
 
-						SelectQueryContent content = SelectQueryContent.buildQueryContent(map);
+						IRSpectraEntry content = IRSpectraEntry.buildQueryContent(map);
 
 						Molecule molecule = content.buildMolecule();
 						ResultLogFile resultLog = content.buildResultLogFile();

@@ -19,7 +19,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
 import classifier.Irregularity;
-import database.SelectQueryContent;
+import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
@@ -1703,7 +1703,7 @@ public class Molecule implements Comparable<Molecule> {
 			List<Map> results = Post.post(url, json);
 
 			if (results.size() > 0) {
-				SelectQueryContent content = SelectQueryContent.buildQueryContent(results.get(0));
+				IRSpectraEntry content = IRSpectraEntry.buildQueryContent(results.get(0));
 				nicsResult = content.buildResultLogFile();
 				System.out.println(nicsResult);
 				return nicsResult;

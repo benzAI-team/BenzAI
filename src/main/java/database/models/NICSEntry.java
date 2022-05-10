@@ -1,5 +1,7 @@
 package database.models;
 
+import java.util.Map;
+
 public class NICSEntry {
 
 	private Long id;
@@ -8,10 +10,10 @@ public class NICSEntry {
 	private int nbCarbons;
 	private int nbHydrogens;
 	private double irregularity;
-	
+
 	private int idHexagon;
 	private double value;
-	
+
 	public NICSEntry(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity,
 			int idHexagon, double value) {
 		super();
@@ -55,5 +57,22 @@ public class NICSEntry {
 
 	public double getValue() {
 		return value;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static NICSEntry buildQueryContent(Map result) {
+
+		Long idMolecule = (Long) (result.get("id"));
+		String name = (String) result.get("name");
+		int nbHexagons = (int) ((double) result.get("nbHexagons"));
+		int nbCarbons = (int) ((double) result.get("nbCarbons"));
+		int nbHydrogens = (int) ((double) result.get("nbHydrogens"));
+		double irregularity = (double) result.get("irregularity");
+
+		double idNics = (double) result.get("idNics");
+		int idHexagon = (int) result.get("idHexagon");
+		double value = (int) result.get("value");
+
+		return new NICSEntry(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idHexagon, value);
 	}
 }
