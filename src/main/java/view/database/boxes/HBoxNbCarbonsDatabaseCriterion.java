@@ -2,8 +2,8 @@ package view.database.boxes;
 
 import java.util.ArrayList;
 
-import sql.BenzenoidCriterion;
-import sql.BenzenoidCriterion.Subject;
+import database.BenzenoidCriterion;
+import database.BenzenoidCriterion.Subject;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 

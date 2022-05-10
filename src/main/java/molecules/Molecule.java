@@ -19,6 +19,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
 import classifier.Irregularity;
+import database.SelectQueryContent;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
@@ -36,7 +37,6 @@ import solveur.LinAlgorithm;
 import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.RBOSolver;
 import spectrums.ResultLogFile;
-import sql.SelectQueryContent;
 import utils.Couple;
 import utils.Interval;
 import utils.RelativeMatrix;

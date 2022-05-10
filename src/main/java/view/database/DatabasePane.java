@@ -7,6 +7,8 @@ import java.util.Map;
 
 import application.ApplicationMode;
 import application.BenzenoidApplication;
+import database.BenzenoidCriterion;
+import database.SelectQueryContent;
 import http.JSonStringBuilder;
 import http.Post;
 import javafx.beans.value.ChangeListener;
@@ -29,8 +31,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import molecules.Molecule;
 import spectrums.ResultLogFile;
-import sql.BenzenoidCriterion;
-import sql.SelectQueryContent;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidsCollectionsManagerPane;

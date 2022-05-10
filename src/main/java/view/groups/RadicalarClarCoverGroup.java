@@ -44,7 +44,6 @@ public class RadicalarClarCoverGroup extends MoleculeGroup {
 					double y = hexagons[hexagonIndex].getPoints().get(2 * position + 1);
 					Circle circleShape = new Circle(x, y, getRadius(stat));
 					circleShape.setStroke(Color.RED);
-					//circleShape.setStr
 					circleShape.setFill(Color.RED);
 					circleShape.setStrokeWidth(2.0);
 					this.getChildren().add(circleShape);
