@@ -32,4 +32,10 @@ public class AtomGeometry {
 	public String toString() {
 		return label + " : " + geometry.toString();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		AtomGeometry a = (AtomGeometry) o;
+		return a.getLabel() == getLabel() && a.getX() == getX() && a.getY() == getY() && a.getZ() == getZ();
+	}
 }

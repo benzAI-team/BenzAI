@@ -51,7 +51,6 @@ public class NICS {
 
 		for (Entry<Long, ArrayList<NICSEntry>> entry : sortedEntries.entrySet()) {
 
-			Long key = entry.getKey();
 			ArrayList<NICSEntry> nicsEntries = entry.getValue();
 
 			Long moleculeId = nicsEntries.get(0).getId();
@@ -75,4 +74,33 @@ public class NICS {
 
 		return nicsResults;
 	}
+
+	public Long getMoleculeId() {
+		return moleculeId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getNbHexagons() {
+		return nbHexagons;
+	}
+
+	public int getNbCarbons() {
+		return nbCarbons;
+	}
+
+	public int getNbHydrogens() {
+		return nbHydrogens;
+	}
+
+	public double getIrregularity() {
+		return irregularity;
+	}
+
+	public Double[] getNicsValues() {
+		return nicsValues;
+	}
+
 }
