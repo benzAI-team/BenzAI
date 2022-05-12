@@ -16,6 +16,7 @@ public class IMS2D1A {
 	private double irregularity;
 
 	private ArrayList<AtomGeometry> geometry;
+	private ArrayList<IMS2D1APoint> points;
 
 	public IMS2D1A(Long moleculeId, String name, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity) {
 
@@ -25,17 +26,21 @@ public class IMS2D1A {
 		this.nbCarbons = nbCarbons;
 		this.nbHydrogens = nbHydrogens;
 		this.irregularity = irregularity;
-		geometry = new ArrayList<>();
 	}
 
 	public void setGeometry(ArrayList<AtomGeometry> geometry) {
 		this.geometry = geometry;
 	}
 
+	public void setPoints(ArrayList<IMS2D1APoint> points) {
+		this.points = points;
+	}
+	
 	public static ArrayList<IMS2D1A> buildIMS2D1A(ArrayList<IMS2D1AEntry> entries) {
 
 		HashMap<Long, ArrayList<IMS2D1AEntry>> sortedEntries = new HashMap<>();
-
+		ArrayList<IMS2D1A> ims2d1as = new ArrayList<>();
+		
 		for (IMS2D1AEntry entry : entries) {
 			if (sortedEntries.get(entry.getId()) == null) {
 				sortedEntries.put(entry.getId(), new ArrayList<>());
@@ -59,6 +64,10 @@ public class IMS2D1A {
 
 			IMS2D1A ims2d1a = new IMS2D1A(moleculeId, name, nbHexagons, nbCarbons, nbHydrogens, irregularity);
 
+			/*
+			 * Retrieving geometry
+			 */
+			
 			ArrayList<AtomGeometry> geometry = new ArrayList<>();
 
 			for (IMS2D1AEntry ims2d1aEntry : ims2d1aEntries) {
@@ -74,8 +83,90 @@ public class IMS2D1A {
 			}
 
 			ims2d1a.setGeometry(geometry);
+			
+			/*
+			 * Retrieving point values
+			 */
+			
+			ArrayList<IMS2D1APoint> points = new ArrayList<>();
+			
+			String xVectorStr = ims2d1aEntries.get(0).getxVector();
+			String yVectorStr = ims2d1aEntries.get(0).getyVector();
+			
+			String [] split1 = xVectorStr.split(" ");
+			String [] split2 = yVectorStr.split(" ");
+			
+			double [] xVector = new double[3];
+			double [] yVector = new double[3];
+			
+			int nbPointsX = ims2d1aEntries.get(0).getNbPointsX();
+			
+			for (int i = 0 ; i < 3 ; i ++) {
+				xVector[i] = Double.parseDouble(split1[i]);
+				yVector[i] = Double.parseDouble(split2[i]);
+			}
+			
+			double xNorm = Math.sqrt(xVector[0] * xVector[0] + xVector[1] * xVector[1] + xVector[2] * xVector[2]);
+			double yNorm = Math.sqrt(yVector[0] * yVector[0] + yVector[1] * yVector[1] + yVector[2] * yVector[2]);
+			
+			for (IMS2D1AEntry ims2d1aEntry : ims2d1aEntries) {
+				
+				Long idPoint = ims2d1aEntry.getIdPoint();
+				double value = ims2d1aEntry.getValue();
+				
+				int y = 0;
+				
+				while (y * nbPointsX < idPoint)
+					y++;
+				y--;
+				
+				int x = (int) (idPoint - (y * nbPointsX));
+				
+				double xCoord = x * xNorm;
+				double yCoord = y * yNorm;
+				
+				IMS2D1APoint point = new IMS2D1APoint(xCoord, yCoord, value);
+				
+				if (!points.contains(point))
+					points.add(point);
+			}
+			
+			ims2d1a.setPoints(points);
+			ims2d1as.add(ims2d1a);
 		}
 
-		return null;
+		return ims2d1as;
+	}
+
+	public Long getMoleculeId() {
+		return moleculeId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getNbHexagons() {
+		return nbHexagons;
+	}
+
+	public int getNbCarbons() {
+		return nbCarbons;
+	}
+
+	public int getNbHydrogens() {
+		return nbHydrogens;
+	}
+
+	public double getIrregularity() {
+		return irregularity;
+	}
+
+	public ArrayList<AtomGeometry> getGeometry() {
+		return geometry;
+	}
+
+	public ArrayList<IMS2D1APoint> getPoints() {
+		return points;
 	}
 }

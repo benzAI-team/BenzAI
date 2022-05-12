@@ -26,6 +26,9 @@ public class IMS2D1AEntry {
 	private String yVector;
 	private int nbPointsX;
 	private int nbPointsY;
+	private double originX;
+	private double originY;
+	private double originZ;
 
 	// point_ims2d1a
 	private Long idPoint;
@@ -34,7 +37,8 @@ public class IMS2D1AEntry {
 
 	public IMS2D1AEntry(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity,
 			Long idAtom, double x, double y, double z, String label, Long idIMS2D1A, String xVector, String yVector,
-			int nbPointsX, int nbPointsY, Long idPoint, int numPoint, double value) {
+			int nbPointsX, int nbPointsY, double originX, double originY, double originZ, Long idPoint, int numPoint,
+			double value) {
 
 		this.id = id;
 		this.name = name;
@@ -52,6 +56,9 @@ public class IMS2D1AEntry {
 		this.yVector = yVector;
 		this.nbPointsX = nbPointsX;
 		this.nbPointsY = nbPointsY;
+		this.originX = originX;
+		this.originY = originY;
+		this.originZ = originZ;
 		this.idPoint = idPoint;
 		this.numPoint = numPoint;
 		this.value = value;
@@ -121,6 +128,18 @@ public class IMS2D1AEntry {
 		return nbPointsY;
 	}
 
+	public double getOriginX() {
+		return originX;
+	}
+
+	public double getOriginY() {
+		return originY;
+	}
+
+	public double getOriginZ() {
+		return originZ;
+	}
+
 	public Long getIdPoint() {
 		return idPoint;
 	}
@@ -157,6 +176,9 @@ public class IMS2D1AEntry {
 		String yVector = (String) result.get("vectorY");
 		int nbPointsX = (int) result.get("nbPointsX");
 		int nbPointsY = (int) result.get("nbPointsY");
+		double originX = (double) result.get("originX");
+		double originY = (double) result.get("originY");
+		double originZ = (double) result.get("originZ");
 
 		// point_ims2d1a
 		Long idPoint = (Long) result.get("idPoint");
@@ -164,6 +186,6 @@ public class IMS2D1AEntry {
 		double value = (double) result.get("value");
 
 		return new IMS2D1AEntry(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idAtom, x, y, z,
-				label, idIMS2D1A, xVector, yVector, nbPointsX, nbPointsY, idPoint, numPoint, value);
+				label, idIMS2D1A, xVector, yVector, nbPointsX, nbPointsY, originX, originY, originZ, idPoint, numPoint, value);
 	}
 }
