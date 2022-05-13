@@ -26,7 +26,7 @@ public class ClarCoverSolver {
 		BoolVar[][] bondsMatrix = new BoolVar[molecule.getNbNodes()][molecule.getNbNodes()];
 
 		IntVar nbCircles = model.intVar("nb_circles", 0, molecule.getNbHexagons());
-		IntVar nbSingleElectrons = model.intVar("nb_single_electrons", 0, 2);
+		IntVar nbSingleElectrons = model.intVar("nb_single_electrons", 0, molecule.getNbHexagons());
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++)
 			circles[i] = model.boolVar("circle[" + i + "]");

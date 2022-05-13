@@ -26,6 +26,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import molecules.Molecule;
 import solution.BenzenoidSolution;
+import solution.ClarCoverSolution;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
 import spectrums.ResultLogFile;
@@ -330,8 +331,6 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			else
 				builder.append(molecule.getNbHexagons() + " hexagons\n");
 
-			// String nbKekuleStructures =
-			// Double.toString(molecule.getNbKekuleStructures()).split(Pattern.quote("."))[0];
 			String kekuleStr = Double.toString(molecule.getNbKekuleStructures());
 
 			String nbKekuleStructures = "";
@@ -366,8 +365,22 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				}
 			}
 
-			description = builder.toString();
+			
 
+			//ClarCoverSolution clarCoverSolution = molecule.getClarCoverSolution();
+			ArrayList<ClarCoverSolution> clarCoverSolutions = molecule.getClarCoverSolutions();
+			if (clarCoverSolutions != null) {
+				builder.append("\nradicalar statistics\n");
+				double [] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
+				for (int i = 0 ; i < stats.length ; i++)
+					builder.append("C" + (i+1) + " : " + stats[i] + "\n");
+			}
+//			if (clarCoverSolution != null) {
+//				builder.append("\nradicalar statistics\n");
+//				//double [] stats = clarCoverSolution
+//			}
+			
+			description = builder.toString();
 			return description;
 
 		}

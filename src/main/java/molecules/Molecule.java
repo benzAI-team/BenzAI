@@ -844,6 +844,14 @@ public class Molecule implements Comparable<Molecule> {
 				writer.write("E(H_" + i + ")\t" + aromaticity.getLocalAromaticity()[i] + "\n");
 		}
 
+		ArrayList<ClarCoverSolution> clarCoverSolutions = this.getClarCoverSolutions();
+		if (clarCoverSolutions != null) {
+			writer.write("\nradicalar statistics\n");
+			double [] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
+			for (int i = 0 ; i < stats.length ; i++)
+				writer.write("C" + (i+1) + " : " + stats[i] + "\n");
+		}
+		
 		writer.close();
 
 	}
@@ -1813,6 +1821,10 @@ public class Molecule implements Comparable<Molecule> {
 	public void setClarCoverSolutions(ArrayList<ClarCoverSolution> clarCoverSolutions) {
 		this.clarCoverSolutions = clarCoverSolutions;
 		radicalarGroup = new RadicalarClarCoverGroup(this, clarCoverSolutions);
+	}
+	
+	public ArrayList<ClarCoverSolution> getClarCoverSolutions() {
+		return clarCoverSolutions;
 	}
 	
 	public RadicalarClarCoverGroup getRadicalarGroup() {

@@ -2,6 +2,7 @@ package view.groups;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import molecules.Molecule;
@@ -46,6 +47,7 @@ public class RadicalarClarCoverGroup extends MoleculeGroup {
 					circleShape.setStroke(Color.RED);
 					circleShape.setFill(Color.RED);
 					circleShape.setStrokeWidth(2.0);
+					Tooltip.install(circleShape, new Tooltip(Double.toString(stat)));
 					this.getChildren().add(circleShape);
 				}
 			}
