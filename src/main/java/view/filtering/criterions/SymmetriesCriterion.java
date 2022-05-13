@@ -78,13 +78,15 @@ public class SymmetriesCriterion extends FilteringCriterion {
 
 		int nbCrowns = molecule.getNbCrowns();
 		if (nbCrowns > -1) {
-			GeneralModel chosenModel = null;
-			for (GeneralModel model : models) {
-				if (model.getNbCrowns() == nbCrowns) {
-					chosenModel = model;
-					break;
-				}
-			}
+//			GeneralModel chosenModel = null;
+//			for (GeneralModel model : models) {
+//				if (model.getNbCrowns() == nbCrowns) {
+//					chosenModel = model;
+//					break;
+//				}
+//			}
+			GeneralModel chosenModel = models.get(0);
+			chosenModel.addModule(new BenzenoidModule(chosenModel, molecule));
 			ResultSolver resultSolver = chosenModel.solve();
 			finalResultSolver.addResult(resultSolver);
 		}

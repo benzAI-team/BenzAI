@@ -1,6 +1,7 @@
 package modules;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.IntVar;
@@ -38,22 +39,22 @@ public class BenzenoidModule extends Module {
 
 		Fragment pattern = molecule.convertToPattern(0, 0);
 
-		ArrayList<Integer> topBorder = new ArrayList<>();
-		ArrayList<Integer> leftBorder = new ArrayList<>();
+//		ArrayList<Integer> topBorder = new ArrayList<>();
+//		ArrayList<Integer> leftBorder = new ArrayList<>();
 
-		for (int i = 0; i < diameter; i++) {
-			if (coordsMatrix[0][i] != -1)
-				topBorder.add(coordsMatrix[0][i]);
-		}
-
-		for (int i = 0; i < diameter; i++) {
-
-			int j = 0;
-			while (coordsMatrix[i][j] == -1)
-				j++;
-
-			leftBorder.add(coordsMatrix[i][j]);
-		}
+//		for (int i = 0; i < diameter; i++) {
+//			if (coordsMatrix[0][i] != -1)
+//				topBorder.add(coordsMatrix[0][i]);
+//		}
+//
+//		for (int i = 0; i < diameter; i++) {
+//
+//			int j = 0;
+//			while (coordsMatrix[i][j] == -1)
+//				j++;
+//
+//			leftBorder.add(coordsMatrix[i][j]);
+//		}
 
 		ArrayList<Fragment> rotations = pattern.computeRotations();
 		ArrayList<Integer[]> translations = new ArrayList<>();
@@ -152,4 +153,50 @@ public class BenzenoidModule extends Module {
 
 		return translations;
 	}
+	
+//	public ArrayList<ArrayList<Integer>> allTranslations() {
+//
+//		ArrayList<ArrayList<Integer>> translations = new ArrayList<>();
+//		int diameter = coordsMatrixCoronenoid.length;
+//
+//		ArrayList<ArrayList<Integer>> rotations = allRotations();
+//
+//		for (ArrayList<Integer> rotation : rotations) {
+//
+//			for (int xShift = -diameter; xShift <= diameter; xShift++) {
+//				for (int yShift = -diameter; yShift <= diameter; yShift++) {
+//
+//					ArrayList<Integer> translation = new ArrayList<>();
+//					boolean embedded = true;
+//
+//					for (int i = 0; i < rotation.size(); i++) {
+//
+//						int vertexIndex = rotation.get(i);
+//
+//						Node node = coronenoidNodes[vertexIndex];
+//
+//						int x = node.getX() + xShift;
+//						int y = node.getY() + yShift;
+//
+//						if (!(x >= 0 && x < diameter && y >= 0 && y < diameter) || coordsMatrixCoronenoid[x][y] == -1) {
+//							embedded = false;
+//							break;
+//						}
+//
+//						translation.add(correspondancesHexagons[coordsMatrixCoronenoid[x][y]]);
+//					}
+//
+//					if (embedded) {
+//						Collections.sort(translation);
+//						if (!translations.contains(translation))
+//							translations.add(translation);
+//					}
+//				}
+//			}
+//
+//		}
+//
+//		return translations;
+//
+//	}
 }
