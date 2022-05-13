@@ -369,7 +369,11 @@ public class DatabasePane extends ScrollPane {
 
 		}
 
-		return JSonStringBuilder.buildJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, opeId,
+		String json = JSonStringBuilder.buildNewJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, opeId,
 				opeName, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity);
+		
+		System.out.println(json);
+		
+		return json;
 	}
 }
