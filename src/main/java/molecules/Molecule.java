@@ -19,6 +19,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
 import classifier.Irregularity;
+import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
@@ -36,12 +37,12 @@ import solveur.LinAlgorithm;
 import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.RBOSolver;
 import spectrums.ResultLogFile;
-import sql.SelectQueryContent;
 import utils.Couple;
 import utils.Interval;
 import utils.RelativeMatrix;
 import view.groups.ClarCoverGroup;
 import view.groups.RBOGroup;
+import view.groups.RadicalarClarCoverGroup;
 
 public class Molecule implements Comparable<Molecule> {
 
@@ -80,6 +81,9 @@ public class Molecule implements Comparable<Molecule> {
 	private ClarCoverSolution clarCoverSolution;
 	private ClarCoverGroup clarCoverGroup;
 
+	private ArrayList<ClarCoverSolution> clarCoverSolutions;
+	private RadicalarClarCoverGroup radicalarGroup;
+	
 	private RBO RBO;
 	private RBOGroup rboGroup;
 
@@ -1699,7 +1703,7 @@ public class Molecule implements Comparable<Molecule> {
 			List<Map> results = Post.post(url, json);
 
 			if (results.size() > 0) {
-				SelectQueryContent content = SelectQueryContent.buildQueryContent(results.get(0));
+				IRSpectraEntry content = IRSpectraEntry.buildQueryContent(results.get(0));
 				nicsResult = content.buildResultLogFile();
 				System.out.println(nicsResult);
 				return nicsResult;
@@ -1806,4 +1810,12 @@ public class Molecule implements Comparable<Molecule> {
 		return false;
 	}
 
+	public void setClarCoverSolutions(ArrayList<ClarCoverSolution> clarCoverSolutions) {
+		this.clarCoverSolutions = clarCoverSolutions;
+		radicalarGroup = new RadicalarClarCoverGroup(this, clarCoverSolutions);
+	}
+	
+	public RadicalarClarCoverGroup getRadicalarGroup() {
+		return radicalarGroup;
+	}
 }

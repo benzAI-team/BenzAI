@@ -2,7 +2,6 @@ package modules;
 
 import java.util.ArrayList;
 
-import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
@@ -85,7 +84,6 @@ public class RectangleModule extends Module {
 		return automaton;
 	}
 
-
 	@Override
 	public void postConstraints() {
 
@@ -105,8 +103,10 @@ public class RectangleModule extends Module {
 
 		for (int i = 0; i < cSum.length; i++) {
 
-			generalModel.getProblem().or(generalModel.getProblem().arithm(cSum[i], "=", 0),generalModel.getProblem().arithm(cSum[i], "=", xW)).post();
-			generalModel.getProblem().or(generalModel.getProblem().arithm(dSum[i], "=", 0),generalModel.getProblem().arithm(dSum[i], "=", xH)).post();
+			generalModel.getProblem().or(generalModel.getProblem().arithm(cSum[i], "=", 0),
+					generalModel.getProblem().arithm(cSum[i], "=", xW)).post();
+			generalModel.getProblem().or(generalModel.getProblem().arithm(dSum[i], "=", 0),
+					generalModel.getProblem().arithm(dSum[i], "=", xH)).post();
 
 		}
 
@@ -139,14 +139,15 @@ public class RectangleModule extends Module {
 				if (subject == Subject.RECT_HEIGHT)
 					generalModel.getProblem().arithm(xH, operator, value).post();
 
-				else 
+				else
 					generalModel.getProblem().arithm(xW, operator, value).post();
 			}
 		}
 
 		generalModel.getProblem().times(xH, xW, generalModel.getNbVerticesVar()).post(); // x * a = z
 		generalModel.getProblem().arithm(xH, ">=", xW).post(); // xH >= xw
-		generalModel.getProblem().arithm(generalModel.getChanneling()[0], "=", 1).post(); // The top-left hexagon must be present
+		// generalModel.getProblem().arithm(generalModel.getChanneling()[0], "=",
+		// 1).post(); // The top-left hexagon must be present
 
 		System.out.println(generalModel.getProblem());
 

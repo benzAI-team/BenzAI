@@ -1,4 +1,4 @@
-package sql;
+package database;
 
 import java.io.BufferedWriter;
 import java.io.File;

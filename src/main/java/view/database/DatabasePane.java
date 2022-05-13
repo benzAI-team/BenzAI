@@ -7,6 +7,8 @@ import java.util.Map;
 
 import application.ApplicationMode;
 import application.BenzenoidApplication;
+import database.BenzenoidCriterion;
+import database.models.IRSpectraEntry;
 import http.JSonStringBuilder;
 import http.Post;
 import javafx.beans.value.ChangeListener;
@@ -29,8 +31,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import molecules.Molecule;
 import spectrums.ResultLogFile;
-import sql.BenzenoidCriterion;
-import sql.SelectQueryContent;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidsCollectionsManagerPane;
@@ -238,7 +238,7 @@ public class DatabasePane extends ScrollPane {
 										if (i == 4968)
 											System.out.print("");
 
-										SelectQueryContent content = SelectQueryContent.buildQueryContent(map);
+										IRSpectraEntry content = IRSpectraEntry.buildQueryContent(map);
 
 										Molecule molecule = null;
 
@@ -381,7 +381,11 @@ public class DatabasePane extends ScrollPane {
 
 		}
 
-		return JSonStringBuilder.buildJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, opeId,
+		String json = JSonStringBuilder.buildNewJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, opeId,
 				opeName, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity);
+		
+		System.out.println(json);
+		
+		return json;
 	}
 }

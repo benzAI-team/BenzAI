@@ -22,6 +22,8 @@ public class Post {
 	@SuppressWarnings("rawtypes")
 	public static List<Map> post(String urlString, String jsonInputString) throws IOException {
 
+		System.out.println(jsonInputString);
+		
 		URL url = new URL(urlString);
 
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();

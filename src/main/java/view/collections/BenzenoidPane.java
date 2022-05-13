@@ -72,7 +72,10 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		this.solution = solution;
 		this.benzenoidDraw = benzenoidDraw;
 		this.name = description;
-
+		
+		if (name == null)
+			name = "";
+		
 		this.index = index;
 
 		isSelected = false;
@@ -118,6 +121,9 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		this.benzenoidDraw = benzenoidDraw;
 		this.name = description;
 
+		if (name == null)
+			name = "";
+		
 		this.index = index;
 
 		isSelected = false;

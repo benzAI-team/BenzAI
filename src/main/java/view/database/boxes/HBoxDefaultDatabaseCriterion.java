@@ -2,7 +2,7 @@ package view.database.boxes;
 
 import java.util.ArrayList;
 
-import sql.BenzenoidCriterion;
+import database.BenzenoidCriterion;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 

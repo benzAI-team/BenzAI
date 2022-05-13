@@ -2,10 +2,10 @@ package view.database.boxes;
 
 import java.util.ArrayList;
 
+import database.BenzenoidCriterion;
+import database.BenzenoidCriterion.Subject;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import sql.BenzenoidCriterion;
-import sql.BenzenoidCriterion.Subject;
 import utils.Utils;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;

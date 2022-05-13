@@ -105,7 +105,6 @@ public class ClarCoverSolver {
 			}
 
 			clarCoverSolutions.add(new ClarCoverSolution(circlesInt, bondsInt, singleElectronsInt));
-
 		}
 
 		return clarCoverSolutions;

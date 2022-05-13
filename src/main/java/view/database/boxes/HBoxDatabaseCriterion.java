@@ -2,11 +2,11 @@ package view.database.boxes;
 
 import java.util.ArrayList;
 
+import database.BenzenoidCriterion;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import sql.BenzenoidCriterion;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 import view.database.DeleteButton;

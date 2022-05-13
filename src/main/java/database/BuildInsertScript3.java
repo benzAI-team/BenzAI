@@ -1,4 +1,4 @@
-package sql;
+package database;
 
 import java.io.*;
 import java.math.BigDecimal;
