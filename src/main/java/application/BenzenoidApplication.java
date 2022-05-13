@@ -556,11 +556,11 @@ public class BenzenoidApplication extends Application {
 		MenuItem rboItem = new MenuItem("Ring Bond Order");
 		MenuItem irregularityStatsItem = new MenuItem("Irregularity Statistics");
 		MenuItem irSpectraItem = new MenuItem("IR Spectra");
+		MenuItem radicalarItem = new MenuItem("Radicalar electrons statistics");
 
-    computationsMenu.setOnShowing(e -> {
+		computationsMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
-
 
 		reItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).resonanceEnergyLin();
@@ -578,11 +578,15 @@ public class BenzenoidApplication extends Application {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).irregularityStatistics();
 		});
     
-    irSpectraItem.setOnAction(e -> {
+		irSpectraItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).IRSpectra();
 		});
 
-		computationsMenu.getItems().addAll(reItem, clarItem, rboItem, irregularityStatsItem,irSpectraItem);
+		radicalarItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).radicalarStatistics();
+		});
+		
+		computationsMenu.getItems().addAll(reItem, clarItem, rboItem, irregularityStatsItem,irSpectraItem, radicalarItem);
 
     return computationsMenu;
   }

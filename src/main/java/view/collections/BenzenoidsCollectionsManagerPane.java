@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import application.ApplicationMode;
 import application.BenzenoidApplication;
 import classifier.Irregularity;
@@ -20,9 +19,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker.State;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -42,12 +39,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import molecules.Molecule;
-import molecules.sort.IrregularityComparator;
 import molecules.sort.MoleculeComparator;
-import molecules.sort.NbCarbonsComparator;
-import molecules.sort.NbHexagonsComparator;
-import molecules.sort.NbHydrogensComparator;
-import molecules.sort.NbKekuleStructuresComparator;
 import new_classifier.NewCarbonsHydrogensClassifier;
 import new_classifier.NewClassifier;
 import parsers.CMLConverter;
@@ -85,7 +77,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	private BenzenoidPane hoveringPane;
 	private BenzenoidCollectionPane addTab;
-	private MenuBar menuBar;
+
 	private Parameter parameter;
 
 	private TextArea collectionPropertiesArea;
@@ -93,7 +85,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	private Menu moveItem;
 
 	private Menu moveItemMenu;
-	private Menu manageCollection;
+
 
 	/*
 	 * Threads
