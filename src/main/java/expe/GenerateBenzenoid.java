@@ -176,7 +176,7 @@ public class GenerateBenzenoid {
 			System.out.println(pair.getKey() + " = " + pair.getValue().toString());
 		}
 
-		GeneralModel model = ModelBuilder.buildModel(criterions, map, null).get(0);
+		GeneralModel model = ModelBuilder.buildModel(criterions, map, null);
 
 		model.solve();
 	}

@@ -74,25 +74,22 @@ public class SymmetriesCriterion extends FilteringCriterion {
 
 		ResultSolver finalResultSolver = new ResultSolver();
 
-		ArrayList<GeneralModel> models = ModelBuilder.buildModel(criterions, criterionsMap, null);
+		GeneralModel model = ModelBuilder.buildModel(criterions, criterionsMap, null);
 
 		// int nbCrowns = molecule.getNbCrowns();
-		int nbCrowns = models.get(0).getNbCrowns();
+		int nbCrowns = model.getNbCrowns();
 		if (nbCrowns > -1) {
-			GeneralModel chosenModel = models.get(0);
-			chosenModel.addModule(new BenzenoidModule(chosenModel, molecule));
-			ResultSolver resultSolver = chosenModel.solve();
+			model.addModule(new BenzenoidModule(model, molecule));
+			ResultSolver resultSolver = model.solve();
 			finalResultSolver.addResult(resultSolver);
 		}
 
 		else {
 
-			for (GeneralModel model : models) {
-				model.addModule(new BenzenoidModule(model, molecule));
-				ResultSolver resultSolver = model.solve();
+			model.addModule(new BenzenoidModule(model, molecule));
+			ResultSolver resultSolver = model.solve();
 
-				finalResultSolver.addResult(resultSolver);
-			}
+			finalResultSolver.addResult(resultSolver);
 
 		}
 

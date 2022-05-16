@@ -54,7 +54,7 @@ public class GeneratorPane extends ScrollPane {
 
 	BenzenoidCollectionPane selectedCollectionTab;
 
-	private ArrayList<GeneralModel> models;
+	private GeneralModel model;
 	private GeneralModel curentModel;
 
 	private BenzenoidApplication application;
@@ -125,8 +125,6 @@ public class GeneratorPane extends ScrollPane {
 			application.switchMode(ApplicationMode.COLLECTIONS);
 		});
 
-
-
 		ImageView imageStop = new ImageView(new Image("/resources/graphics/icon-stop.png"));
 		stopButton = new Button();
 		stopButton.setGraphic(imageStop);
@@ -135,19 +133,18 @@ public class GeneratorPane extends ScrollPane {
 		stopButton.setStyle("-fx-background-color: transparent;");
 
 		stopButton.setOnAction(e -> {
-			for (GeneralModel model : models) {
-				if (model.isPaused())
-					resumeGeneration();
 
-				model.getProblem().getSolver().limitSearch(() -> {
-					return curentModel.getGeneratorRun().isStopped();
-				});
+			if (model.isPaused())
+				resumeGeneration();
 
-				model.stop();
-			}
+			model.getProblem().getSolver().limitSearch(() -> {
+				return curentModel.getGeneratorRun().isStopped();
+			});
+
+			model.stop();
 
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
+			buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 		});
 
 		ImageView imagePause = new ImageView(new Image("/resources/graphics/icon-pause.png"));
@@ -160,7 +157,7 @@ public class GeneratorPane extends ScrollPane {
 		pauseButton.setOnAction(e -> {
 			curentModel.pause();
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(closeButton,resumeButton, stopButton);
+			buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 		});
 
 		ImageView imageResume = new ImageView(new Image("/resources/graphics/icon-resume.png"));
@@ -279,7 +276,7 @@ public class GeneratorPane extends ScrollPane {
 		}
 
 		buttonsBox = new HBox(5.0);
-		buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
+		buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 
 		if (!valid)
 			buttonsBox.getChildren().add(warningIcon);
@@ -475,7 +472,7 @@ public class GeneratorPane extends ScrollPane {
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
 
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(closeButton,loadIcon, pauseButton, stopButton);
+			buttonsBox.getChildren().addAll(closeButton, loadIcon, pauseButton, stopButton);
 
 			Iterator it = criterionsMap.entrySet().iterator();
 			while (it.hasNext()) {
@@ -484,7 +481,7 @@ public class GeneratorPane extends ScrollPane {
 			}
 
 			try {
-				models = ModelBuilder.buildModel(criterions, criterionsMap, fragmentsInformations);
+				model = ModelBuilder.buildModel(criterions, criterionsMap, fragmentsInformations);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -503,27 +500,8 @@ public class GeneratorPane extends ScrollPane {
 						@Override
 						protected Void call() throws Exception {
 
-//							for (GeneralModel model : models) {
-//								curentModel = model;
-//
-//								curentModel.solve();
-//
-//								generatedMolecules
-//										.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
-//
-//							}
-
-							GeneralModel model = models.get(0);
-							curentModel = model;
-
-							System.out.println(models.size() + " models");
 							model.solve();
-
-//							generatedMolecules
-//									.addAll(buildMolecules(model.getResultSolver(), generatedMolecules.size()));
-
 							System.out.println("Fin génération");
-
 							return null;
 						}
 					};
@@ -548,14 +526,14 @@ public class GeneratorPane extends ScrollPane {
 						isRunning = false;
 						if (!curentModel.isPaused()) {
 							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
+							buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 							buildBenzenoidPanesThread();
 							application.removeTask("Benzenoid generation");
 						}
 
 						else {
 							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(closeButton,resumeButton, stopButton);
+							buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 						}
 
 						break;
@@ -580,7 +558,7 @@ public class GeneratorPane extends ScrollPane {
 	private void resumeGeneration() {
 
 		buttonsBox.getChildren().clear();
-		buttonsBox.getChildren().addAll(closeButton,loadIcon, pauseButton, stopButton);
+		buttonsBox.getChildren().addAll(closeButton, loadIcon, pauseButton, stopButton);
 
 		final Service<Void> calculateService = new Service<Void>() {
 
@@ -616,13 +594,13 @@ public class GeneratorPane extends ScrollPane {
 
 					if (curentModel.isPaused()) {
 						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(closeButton,resumeButton, stopButton);
+						buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 					}
 
 					else {
 						if (!curentModel.isPaused()) {
 							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
+							buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 							buildBenzenoidPanes();
 						}
 					}
@@ -643,11 +621,7 @@ public class GeneratorPane extends ScrollPane {
 
 	private void buildBenzenoidPanesThread() {
 
-		int size = 0;
-
-		for (GeneralModel model : models) {
-			size += model.getResultSolver().size();
-		}
+		int size = model.getResultSolver().size();
 
 		if (size > 0) {
 
@@ -672,13 +646,7 @@ public class GeneratorPane extends ScrollPane {
 
 			isRunning = false;
 
-//			ResultSolver resultSolver = new ResultSolver();
-//
-//			for (GeneralModel model : models) {
-//				resultSolver.addResult(model.getResultSolver());
-//			}
-
-			ResultSolver resultSolver = models.get(0).getResultSolver();
+			ResultSolver resultSolver = model.getResultSolver();
 
 			generatedMolecules = buildMolecules(resultSolver, generatedMolecules.size());
 
@@ -692,7 +660,7 @@ public class GeneratorPane extends ScrollPane {
 			selectedCollectionTab.refresh();
 
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(closeButton,addButton, generateButton);
+			buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 			application.switchMode(ApplicationMode.COLLECTIONS);
 		}
 

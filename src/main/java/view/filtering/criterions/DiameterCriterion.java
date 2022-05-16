@@ -38,7 +38,7 @@ public class DiameterCriterion extends FilteringCriterion {
 
 		HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = GeneratorPane.buildCriterionsMap(criterions);
 
-		GeneralModel model = ModelBuilder.buildModel(criterions, criterionsMap, null).get(0);
+		GeneralModel model = ModelBuilder.buildModel(criterions, criterionsMap, null);
 
 		model.addModule(new BenzenoidModule(model, molecule));
 

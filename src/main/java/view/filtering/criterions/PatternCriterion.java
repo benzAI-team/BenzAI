@@ -36,7 +36,7 @@ public class PatternCriterion extends FilteringCriterion {
 
 		HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = GeneratorPane.buildCriterionsMap(criterions);
 
-		GeneralModel model = ModelBuilder.buildModel(criterions, criterionsMap, patternsInfos).get(0);
+		GeneralModel model = ModelBuilder.buildModel(criterions, criterionsMap, patternsInfos);
 
 		model.addModule(new BenzenoidModule(model, molecule));
 
