@@ -55,7 +55,6 @@ public class GeneratorPane extends ScrollPane {
 	BenzenoidCollectionPane selectedCollectionTab;
 
 	private GeneralModel model;
-	private GeneralModel curentModel;
 
 	private BenzenoidApplication application;
 	private GridPane gridPane;
@@ -138,7 +137,7 @@ public class GeneratorPane extends ScrollPane {
 				resumeGeneration();
 
 			model.getProblem().getSolver().limitSearch(() -> {
-				return curentModel.getGeneratorRun().isStopped();
+				return model.getGeneratorRun().isStopped();
 			});
 
 			model.stop();
@@ -155,7 +154,7 @@ public class GeneratorPane extends ScrollPane {
 		pauseButton.resize(32, 32);
 		Tooltip.install(pauseButton, new Tooltip("Pause"));
 		pauseButton.setOnAction(e -> {
-			curentModel.pause();
+			model.pause();
 			buttonsBox.getChildren().clear();
 			buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 		});
@@ -524,7 +523,7 @@ public class GeneratorPane extends ScrollPane {
 						break;
 					case SUCCEEDED:
 						isRunning = false;
-						if (!curentModel.isPaused()) {
+						if (!model.isPaused()) {
 							buttonsBox.getChildren().clear();
 							buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 							buildBenzenoidPanesThread();
@@ -568,7 +567,7 @@ public class GeneratorPane extends ScrollPane {
 
 					@Override
 					protected Void call() throws Exception {
-						curentModel.getGeneratorRun().resume();
+						model.getGeneratorRun().resume();
 
 						return null;
 					}
@@ -592,13 +591,13 @@ public class GeneratorPane extends ScrollPane {
 					break;
 				case SUCCEEDED:
 
-					if (curentModel.isPaused()) {
+					if (model.isPaused()) {
 						buttonsBox.getChildren().clear();
 						buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 					}
 
 					else {
-						if (!curentModel.isPaused()) {
+						if (!model.isPaused()) {
 							buttonsBox.getChildren().clear();
 							buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 							buildBenzenoidPanes();
@@ -642,7 +641,7 @@ public class GeneratorPane extends ScrollPane {
 	}
 
 	private void buildBenzenoidPanes() {
-		if (!curentModel.isPaused()) {
+		if (!model.isPaused()) {
 
 			isRunning = false;
 
