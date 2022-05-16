@@ -76,7 +76,8 @@ public class SymmetriesCriterion extends FilteringCriterion {
 
 		ArrayList<GeneralModel> models = ModelBuilder.buildModel(criterions, criterionsMap, null);
 
-		int nbCrowns = molecule.getNbCrowns();
+		// int nbCrowns = molecule.getNbCrowns();
+		int nbCrowns = models.get(0).getNbCrowns();
 		if (nbCrowns > -1) {
 			GeneralModel chosenModel = models.get(0);
 			chosenModel.addModule(new BenzenoidModule(chosenModel, molecule));
