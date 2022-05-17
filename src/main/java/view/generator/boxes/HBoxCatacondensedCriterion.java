@@ -8,10 +8,11 @@ import generator.GeneratorCriterion.Subject;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxCatacondensedCriterion extends HBoxCriterion{
+public class HBoxCatacondensedCriterion extends HBoxCriterion {
 
 	public HBoxCatacondensedCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
+		valid = true;
 	}
 
 	@Override
@@ -31,6 +32,5 @@ public class HBoxCatacondensedCriterion extends HBoxCriterion{
 		criterions.add(new GeneratorCriterion(Subject.CATACONDENSED, Operator.NONE, ""));
 		return criterions;
 	}
-	
-	
+
 }
