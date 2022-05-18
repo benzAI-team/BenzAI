@@ -15,50 +15,47 @@ public class JSonStringBuilder {
 
 		return json;
 	}
-	
+
 	public static String buildNewJsonString(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens,
 			double irregularity, String opeId, String opeName, String opeHexagons, String opeCarbons,
 			String opeHydrogens, String opeIrregularity) {
-		
-		StringBuilder json = new StringBuilder();
-		
-		json.append("{");
-		
-		if (!opeId.equals(""))
-			json.append("\"idCriterion\": \"" + opeId + " " + id + "\", ");
-		else
-			json.append("\"idCriterion\": \"\", ");
-		
-		if (!opeName.equals(""))
-			json.append("\"nameCriterion\": \"" + opeName + " " + name + "\", ");
-		else
-			json.append("\"nameCriterion\": \"\", ");
-		
-		
-		if (!opeHexagons.equals(""))
-			json.append("\"nbHexagonsCriterion\": \"" + opeHexagons + " " + nbHexagons + "\", ");
-		else
-			json.append("\"nbHexagonsCriterion\": \"\", ");
-		
-		
-		if (!opeCarbons.equals(""))
-			json.append("\"nbCarbonsCriterion\": \"" + opeCarbons + " " + nbCarbons + "\", ");
-		else
-			json.append("\"nbCarbonsCriterion\": \"\", ");
 
-		
+		StringBuilder json = new StringBuilder();
+
+		json.append("{");
+
+		if (!opeId.equals(""))
+			json.append("\"id\": \"" + opeId + " " + id + "\", ");
+		else
+			json.append("\"id\": \"\", ");
+
+		if (!opeName.equals(""))
+			json.append("\"name\": \"" + opeName + " " + name + "\", ");
+		else
+			json.append("\"name\": \"\", ");
+
+		if (!opeHexagons.equals(""))
+			json.append("\"nbHexagons\": \"" + opeHexagons + " " + nbHexagons + "\", ");
+		else
+			json.append("\"nbHexagons\": \"\", ");
+
+		if (!opeCarbons.equals(""))
+			json.append("\"nbCarbons\": \"" + opeCarbons + " " + nbCarbons + "\", ");
+		else
+			json.append("\"nbCarbons\": \"\", ");
+
 		if (!opeHydrogens.equals(""))
-			json.append("\"nbHydrogensCriterion\": \"" + opeHydrogens + " " + nbHydrogens + "\", ");
+			json.append("\"nbHydrogens\": \"" + opeHydrogens + " " + nbHydrogens + "\", ");
 		else
-			json.append("\"nbHydrogensCriterion\": \"\", ");
-		
+			json.append("\"nbHydrogens\": \"\", ");
+
 		if (!opeIrregularity.equals(""))
-			json.append("\"irregularityCriterion\": \"" + opeIrregularity + " " + irregularity + "\"");
+			json.append("\"irregularity\": \"" + opeIrregularity + " " + irregularity + "\"");
 		else
-			json.append("\"irregularityCriterion\": \"\"");
-		
+			json.append("\"irregularity\": \"\"");
+
 		json.append("}");
-		
+
 		return json.toString();
 	}
 }
