@@ -56,6 +56,7 @@ public class JSonStringBuilder {
 
 		json.append("}");
 
+		System.out.println(json.toString());
 		return json.toString();
 	}
 }
