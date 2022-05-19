@@ -1,6 +1,9 @@
+---
 layout:default
+---
+<script type="text/javascript" src="request.js"></script>
 
-<form action="https://www.google.fr" method=GET">
+<form action="https://www.google.fr" method=GET" onsubmit="return request (this);>
       <input name="q" id="q"/>
       <button type="submit">Send</button>
-</form>
+</form> 
