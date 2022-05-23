@@ -75,6 +75,7 @@ public class ClarCoverSolver {
 
 		IntVar OBJ = model.intVar("objectif", ub, 999);
 		model.scalar(new IntVar[] { nbCircles, nbSingleElectrons }, new int[] { 1, -100 }, "=", OBJ).post();
+
 		model.setObjective(Model.MAXIMIZE, OBJ);
 
 		Solver solver = model.getSolver();
