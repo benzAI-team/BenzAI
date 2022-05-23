@@ -1,8 +1,10 @@
 package modules;
 
 import java.util.ArrayList;
+
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.IntVar;
+
 import generator.GeneralModel;
 import generator.fragments.Fragment;
 import molecules.Molecule;
