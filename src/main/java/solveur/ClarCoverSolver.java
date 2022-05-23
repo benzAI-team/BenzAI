@@ -71,7 +71,9 @@ public class ClarCoverSolver {
 		model.sum(circles, "=", nbCircles).post();
 		model.sum(singleElectrons, "=", nbSingleElectrons).post();
 
-		IntVar OBJ = model.intVar("objectif", -200, 999);
+		int ub = -100 * molecule.getNbHexagons();
+
+		IntVar OBJ = model.intVar("objectif", ub, 999);
 		model.scalar(new IntVar[] { nbCircles, nbSingleElectrons }, new int[] { 1, -100 }, "=", OBJ).post();
 		model.setObjective(Model.MAXIMIZE, OBJ);
 
