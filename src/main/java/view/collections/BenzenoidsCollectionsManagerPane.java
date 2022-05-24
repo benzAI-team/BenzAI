@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import application.ApplicationMode;
 import application.BenzenoidApplication;
 import classifier.Irregularity;
@@ -86,7 +87,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	private Menu moveItemMenu;
 
-
 	/*
 	 * Threads
 	 */
@@ -99,7 +99,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	private Service<Void> calculateServiceRadicalar;
 	private boolean radicalarRunning;
-	
+
 	private Service<Void> calculateServiceRBO;
 	private boolean rboRunning;
 
@@ -292,7 +292,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		CollectionMenuItem menuItem = new CollectionMenuItem(0, "(none)");
 		moveItemMenu.getItems().addAll(menuItem);
 
-    return moveItemMenu;
+		return moveItemMenu;
 	}
 
 	public void remove(BenzenoidCollectionPane pane) {
@@ -305,45 +305,43 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		return benzenoidSetPanes.size();
 	}
 
-  
-	public boolean isCollectionPaneLabel (String name) {
-    // returns true if name is the label of an existing pane
-    Iterator<BenzenoidCollectionPane> iter = benzenoidSetPanes.iterator();
-    
-    while ((iter.hasNext()) && (!iter.next().getName().equals(name))) {
-    }
+	public boolean isCollectionPaneLabel(String name) {
+		// returns true if name is the label of an existing pane
+		Iterator<BenzenoidCollectionPane> iter = benzenoidSetPanes.iterator();
 
-    return iter.hasNext();
+		while ((iter.hasNext()) && (!iter.next().getName().equals(name))) {
+		}
+
+		return iter.hasNext();
 	}
 
-
 	public String getNextCollectionPaneLabel() {
-    // returns the next label of the form "collection #num"
+		// returns the next label of the form "collection #num"
 		int i = 1;
 		String label;
 		do {
 			label = "Collection #" + i;
-      i = i + 1;
+			i = i + 1;
 		} while (isCollectionPaneLabel(label));
 
 		return label;
 	}
 
 	public String getNextCollectionPaneLabel(String name) {
-    // returns the next label of the form "collection #num"
-    if (isCollectionPaneLabel(name)) {
-      int i = 1;
-      String label;
-      do {
-        label = name+ "("+i+")";
-        i = i + 1;
-      } while (isCollectionPaneLabel(label));
+		// returns the next label of the form "collection #num"
+		if (isCollectionPaneLabel(name)) {
+			int i = 1;
+			String label;
+			do {
+				label = name + "(" + i + ")";
+				i = i + 1;
+			} while (isCollectionPaneLabel(label));
 
-      return label;
-    }
-    else return name;
+			return label;
+		} else
+			return name;
 	}
-  
+
 	public BenzenoidCollectionPane getSelectedPane() {
 
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
@@ -395,7 +393,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem irSpectraItem = new MenuItem("IR spectra");
 
 		MenuItem checkDatabaseItem = new MenuItem("Check database");
-		
+
 		MenuItem radicalarStatsItem = new MenuItem("Radicalar statistics");
 
 		exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
@@ -422,7 +420,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		radicalarStatsItem.setOnAction(e -> {
 			radicalarStatistics();
 		});
-		
+
 		exportPropertiesItem.setOnAction(e -> {
 			exportProperties();
 		});
@@ -529,7 +527,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		contextMenu.getItems().addAll(renameMenu, importCollectionItem, exportCollectionItem, moveItem, copyItem,
 				pasteItem, deleteItem, exportMenu, selectAllItem, unselectAllItem, drawItem, irregularityItem,
-				reLinItem, clarItem, rboItem/* , reLinFanItem, dbItem */, irSpectraItem, checkDatabaseItem, radicalarStatsItem);
+				reLinItem, clarItem, rboItem, reLinFanItem/* , dbItem */, irSpectraItem, checkDatabaseItem,
+				radicalarStatsItem);
 
 		this.setOnContextMenuRequested(e -> {
 
@@ -591,7 +590,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		setPaneOrigin.removeBenzenoidPanes(benzenoidPanesMoved);
 		setPaneOrigin.refresh();
 
-		log("Moving " + benzenoidPanesMoved.size() + " benzenoid(s) from " + setPaneOrigin.getName() + " to " + setPaneDestination.getName(), true);
+		log("Moving " + benzenoidPanesMoved.size() + " benzenoid(s) from " + setPaneOrigin.getName() + " to "
+				+ setPaneDestination.getName(), true);
 
 		for (int i = 0; i < moleculesMoved.size(); i++) {
 			setPaneDestination.addBenzenoid(moleculesMoved.get(i), displayTypesMoved.get(i));
@@ -629,7 +629,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		}
 
 		log("Pasting " + copiedBenzenoidPanes.size() + " benzenoid(s) in " + destinationPane.getName(), true);
-		
+
 		destinationPane.refresh();
 	}
 
@@ -640,7 +640,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "RE Lin";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),getNextCollectionPaneLabel(currentPane.getName()+"-"+name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
 		application.addTask("RE Lin");
 
@@ -738,7 +739,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "RE Lin&Fan";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),getNextCollectionPaneLabel(currentPane.getName()+"-"+name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
 		for (BenzenoidPane benzenoidPane : selectedBenzenoidPanes) {
 			Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
@@ -758,7 +760,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "Clar cover";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),getNextCollectionPaneLabel(currentPane.getName()+"-"+name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
 		application.addTask("Clar cover");
 
@@ -865,7 +868,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "RBO";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),getNextCollectionPaneLabel(currentPane.getName()+"-"+name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
 		BenzenoidsCollectionsManagerPane manager = this;
 
@@ -1578,12 +1582,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		log("Requesting database (" + currentPane.getName() + ", " + currentPane.getSelectedBenzenoidPanes().size()
 				+ " benzenoids)", true);
 
-    if (currentPane.getSelectedBenzenoidPanes().size() == 0)
-    {
-      Utils.alert("Please, select at least one benzenoid having less than 10 hexagons");
-      return;
-    }
-  
+		if (currentPane.getSelectedBenzenoidPanes().size() == 0) {
+			Utils.alert("Please, select at least one benzenoid having less than 10 hexagons");
+			return;
+		}
+
 		ArrayList<BenzenoidPane> panes = new ArrayList<>();
 		for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes())
 			panes.add(pane);
@@ -1792,7 +1795,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		moveItemMenu.getItems().addAll(items);
 	}
-	
+
 	public void radicalarStatistics() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
@@ -1866,7 +1869,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				};
 			}
 		};
-		
+
 		calculateServiceRadicalar.stateProperty().addListener(new ChangeListener<State>() {
 
 			@SuppressWarnings("incomplete-switch")
