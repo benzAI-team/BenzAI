@@ -3,16 +3,7 @@ package application;
 import java.io.File;
 import java.util.ArrayList;
 
-import molecules.sort.IrregularityComparator;
-import molecules.sort.MoleculeComparator;
-import molecules.sort.NbCarbonsComparator;
-import molecules.sort.NbHexagonsComparator;
-import molecules.sort.NbHydrogensComparator;
-import molecules.sort.NbKekuleStructuresComparator;
-
-
 import http.Post;
-import javafx.scene.robot.Robot;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
@@ -22,15 +13,18 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import javafx.scene.robot.Robot;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import molecules.Molecule;
+import molecules.sort.IrregularityComparator;
+import molecules.sort.NbCarbonsComparator;
+import molecules.sort.NbHexagonsComparator;
+import molecules.sort.NbHydrogensComparator;
+import molecules.sort.NbKekuleStructuresComparator;
 import parsers.GraphParser;
 import solveur.Aromaticity.RIType;
 import utils.Utils;
@@ -38,8 +32,8 @@ import view.catalog.CatalogPane;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidsCollectionsManagerPane;
-import view.collections.RenameCollectionPane;
 import view.collections.IRSpectraParameterPane;
+import view.collections.RenameCollectionPane;
 import view.collections_operations.CollectionsOperationsPane;
 import view.database.DatabasePane;
 import view.draw.DrawBenzenoidPane;
@@ -188,8 +182,9 @@ public class BenzenoidApplication extends Application {
 	private MenuBar buildMenuBar(BorderPane rootPane) {
 
 		MenuBar menuBar = new MenuBar();
-    menuBar.getMenus().addAll(fileMenu(), collectionsMenu(), inputMenu(), sortMenu(), filterMenu(), computationsMenu(), preferencesMenu(), tasksMenu(), helpMenu());
-    
+		menuBar.getMenus().addAll(fileMenu(), collectionsMenu(), inputMenu(), sortMenu(), filterMenu(),
+				computationsMenu(), preferencesMenu(), tasksMenu(), helpMenu());
+
 		return menuBar;
 	}
 
@@ -224,9 +219,8 @@ public class BenzenoidApplication extends Application {
 
 	}
 
-
-  private Menu fileMenu() {
-    // defines the menu item related to the file management
+	private Menu fileMenu() {
+		// defines the menu item related to the file management
 		Menu fileMenu = new Menu("_File");
 		Menu exportBenzenoidMenu = new Menu("Export benzenoid(s)");
 		MenuItem exportGraph = new MenuItem(".graph");
@@ -240,10 +234,9 @@ public class BenzenoidApplication extends Application {
 		fileMenu.getItems().addAll(exportBenzenoidMenu, exportCollection, importCollection);
 		exportBenzenoidMenu.getItems().addAll(exportGraph, exportPng, exportCml, exportCom);
 
-    fileMenu.setOnShowing(e -> {
+		fileMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
-
 
 		exportGraph.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).exportGraph();
@@ -275,37 +268,35 @@ public class BenzenoidApplication extends Application {
 			File directory = directoryChooser.showDialog(getStage());
 
 			if (directory != null) {
-				BenzenoidCollectionPane currentPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
+				BenzenoidCollectionPane currentPane = ((BenzenoidsCollectionsManagerPane) collectionsPane)
+						.getSelectedTab();
 				currentPane.export(directory);
 			}
 		});
-    
-    return fileMenu;
-  }
 
-  private Menu collectionsMenu() {
-    // defines the menu item related to the collections
- 		final Menu collectionsMenu = new Menu("_Collections");
+		return fileMenu;
+	}
 
-  
-    collectionsMenu.setOnShowing(e -> {
+	private Menu collectionsMenu() {
+		// defines the menu item related to the collections
+		final Menu collectionsMenu = new Menu("_Collections");
+
+		collectionsMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
-  
-    
-    
+
 		MenuItem itemRename = new MenuItem("Rename collection");
 		MenuItem itemDelete = new MenuItem("Delete benzenoid(s)");
 		MenuItem itemCopy = new MenuItem("Copy benzenoid(s)");
 		MenuItem itemPaste = new MenuItem("Paste benzenoid(s)");
 		MenuItem itemSelect = new MenuItem("Select all");
 		MenuItem unselectAllItem = new MenuItem("Unselect all");
-    MenuItem operationsMenu = new MenuItem("Operations on collections");
+		MenuItem operationsMenu = new MenuItem("Operations on collections");
 
 		operationsMenu.setOnAction(e -> {
 			switchMode(ApplicationMode.COLLECTIONS_OPERATIONS);
 		});
-    
+
 		itemPaste.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).paste();
 		});
@@ -313,8 +304,8 @@ public class BenzenoidApplication extends Application {
 		itemSelect.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).selectAll();
 		});
-    
-    unselectAllItem.setOnAction(e -> {
+
+		unselectAllItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).unselectAll();
 		});
 
@@ -338,24 +329,28 @@ public class BenzenoidApplication extends Application {
 		itemDelete.setOnAction(e -> {
 			BenzenoidCollectionPane currentPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
 			currentPane.removeBenzenoidPanes(currentPane.getSelectedBenzenoidPanes());
-			((BenzenoidsCollectionsManagerPane) collectionsPane).log("Deleting " + currentPane.getSelectedBenzenoidPanes().size() + " benzenoid(s) from " + currentPane.getName(), true);
+			((BenzenoidsCollectionsManagerPane) collectionsPane).log("Deleting "
+					+ currentPane.getSelectedBenzenoidPanes().size() + " benzenoid(s) from " + currentPane.getName(),
+					true);
 		});
 
 		itemCopy.setOnAction(e -> {
-			BenzenoidCollectionPane originBenzenoidCollectionPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
+			BenzenoidCollectionPane originBenzenoidCollectionPane = ((BenzenoidsCollectionsManagerPane) collectionsPane)
+					.getSelectedTab();
 			originBenzenoidCollectionPane.copy();
 		});
 
-		collectionsMenu.getItems().addAll(itemRename, itemDelete, itemCopy, itemPaste, itemSelect, ((BenzenoidsCollectionsManagerPane) collectionsPane).initializeMoveMenuItem(),operationsMenu);
-    
-    return collectionsMenu;
-  }
+		collectionsMenu.getItems().addAll(itemRename, itemDelete, itemCopy, itemPaste, itemSelect,
+				((BenzenoidsCollectionsManagerPane) collectionsPane).initializeMoveMenuItem(), operationsMenu);
 
-  private Menu inputMenu() {
-    // defines the menu item related to the input
-    final Menu inputMenu = new Menu("_Input");
+		return collectionsMenu;
+	}
 
-    inputMenu.setOnShowing(e -> {
+	private Menu inputMenu() {
+		// defines the menu item related to the input
+		final Menu inputMenu = new Menu("_Input");
+
+		inputMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
 
@@ -377,7 +372,8 @@ public class BenzenoidApplication extends Application {
 					Molecule molecule = GraphParser.parseUndirectedGraph(file);
 					molecule.setDescription(file.getName());
 
-					BenzenoidCollectionPane benzenoidCollectionPane = ((BenzenoidsCollectionsManagerPane) collectionsPane).getSelectedTab();
+					BenzenoidCollectionPane benzenoidCollectionPane = ((BenzenoidsCollectionsManagerPane) collectionsPane)
+							.getSelectedTab();
 
 					benzenoidCollectionPane.addBenzenoid(molecule, DisplayType.BASIC);
 					benzenoidCollectionPane.refresh();
@@ -387,7 +383,7 @@ public class BenzenoidApplication extends Application {
 			}
 
 		});
-    
+
 		MenuItem importCollectionItem = new MenuItem("Import collection");
 
 		importCollectionItem.setOnAction(e -> {
@@ -403,8 +399,7 @@ public class BenzenoidApplication extends Application {
 
 		importMenu.getItems().addAll(importBenzenoidItem, importCollectionItem);
 
-
- 		databaseMenu.setOnAction(e -> {
+		databaseMenu.setOnAction(e -> {
 			switchMode(ApplicationMode.DATABASE);
 		});
 
@@ -417,17 +412,16 @@ public class BenzenoidApplication extends Application {
 			switchMode(ApplicationMode.DRAW);
 		});
 
-
 		inputMenu.getItems().add(generatorMenu);
 		inputMenu.getItems().add(databaseMenu);
 		inputMenu.getItems().add(drawMenu);
 		inputMenu.getItems().add(importMenu);
-    
-    return inputMenu;
-  }
 
-  private Menu sortMenu() {
-    // defines the menu item related to the sort of collections
+		return inputMenu;
+	}
+
+	private Menu sortMenu() {
+		// defines the menu item related to the sort of collections
 
 		Menu sortMenu = new Menu("_Sort");
 		Menu nbCarbonsItem = new Menu("Number of carbons");
@@ -436,7 +430,7 @@ public class BenzenoidApplication extends Application {
 		Menu nbKekuleStructuresItem = new Menu("Number of Kekulé structures");
 		Menu irregularityItem = new Menu("Irregularity");
 
-    sortMenu.setOnShowing(e -> {
+		sortMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
 
@@ -527,31 +521,32 @@ public class BenzenoidApplication extends Application {
 
 		sortMenu.getItems().addAll(nbCarbonsItem, nbHydrogensItem, nbHexagonsItem, nbKekuleStructuresItem,
 				irregularityItem);
-        
-    return sortMenu;
-  }
 
-  private Menu filterMenu() {
-    // defines the menu item related to filters
-    Menu filterMenu = new Menu("Fi_lter");
-    
-    final MenuItem menuItem = new MenuItem();
-    filterMenu.getItems().add(menuItem);
-    filterMenu.addEventHandler(Menu.ON_SHOWN, event -> filterMenu.hide());
-    filterMenu.addEventHandler(Menu.ON_SHOWING, event -> filterMenu.fire());
-    
+		return sortMenu;
+	}
+
+	private Menu filterMenu() {
+		// defines the menu item related to filters
+		Menu filterMenu = new Menu("Fi_lter");
+
+		final MenuItem menuItem = new MenuItem();
+		filterMenu.getItems().add(menuItem);
+		filterMenu.addEventHandler(Menu.ON_SHOWN, event -> filterMenu.hide());
+		filterMenu.addEventHandler(Menu.ON_SHOWING, event -> filterMenu.fire());
+
 		filterMenu.setOnAction(e -> {
 			switchMode(ApplicationMode.FILTER);
 		});
-    
-    return filterMenu;
-  }
-  
-  private Menu computationsMenu() {
-    // defines the menu item related to the computations
-    Menu computationsMenu = new Menu("C_omputations");
-    
+
+		return filterMenu;
+	}
+
+	private Menu computationsMenu() {
+		// defines the menu item related to the computations
+		Menu computationsMenu = new Menu("C_omputations");
+
 		MenuItem reItem = new MenuItem("Resonance Energy (Lin)");
+		MenuItem reLinFanItem = new MenuItem("Resonance Energy (Lin & Fan)");
 		MenuItem clarItem = new MenuItem("Clar Cover");
 		MenuItem rboItem = new MenuItem("Ring Bond Order");
 		MenuItem irregularityStatsItem = new MenuItem("Irregularity Statistics");
@@ -566,6 +561,10 @@ public class BenzenoidApplication extends Application {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).resonanceEnergyLin();
 		});
 
+		reLinFanItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).resonanceEnergyLinFan();
+		});
+
 		clarItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).clarCover();
 		});
@@ -577,7 +576,7 @@ public class BenzenoidApplication extends Application {
 		irregularityStatsItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).irregularityStatistics();
 		});
-    
+
 		irSpectraItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).IRSpectra();
 		});
@@ -585,16 +584,17 @@ public class BenzenoidApplication extends Application {
 		radicalarItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).radicalarStatistics();
 		});
-		
-		computationsMenu.getItems().addAll(reItem, clarItem, rboItem, irregularityStatsItem,irSpectraItem, radicalarItem);
 
-    return computationsMenu;
-  }
+		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, rboItem, irregularityStatsItem,
+				irSpectraItem, radicalarItem);
 
-  private Menu preferencesMenu (){
-    // defines the menu item related to the preferences
-    
-    Menu preferencesMenu = new Menu("P_references");
+		return computationsMenu;
+	}
+
+	private Menu preferencesMenu() {
+		// defines the menu item related to the preferences
+
+		Menu preferencesMenu = new Menu("P_references");
 		Menu aromaticityDisplayMenu = new Menu("Resonance energy display");
 		CheckMenuItem localColorScaleItem = new CheckMenuItem("Local color scale");
 		CheckMenuItem globalColorScaleItem = new CheckMenuItem("Global color scale");
@@ -611,7 +611,7 @@ public class BenzenoidApplication extends Application {
 		localColorScaleItem.setSelected(true);
 		AromaticityGroup.aromaticityDisplayType = AromaticityDisplayType.LOCAL_COLOR_SCALE;
 
-    preferencesMenu.setOnShowing(e -> {
+		preferencesMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
 
@@ -688,25 +688,24 @@ public class BenzenoidApplication extends Application {
 		});
 
 		windowMenu.getItems().add(rememberResizeItem);
-    
-    return preferencesMenu;
-  }
-  
 
-  private Menu tasksMenu (){
-    // defines the menu item related to the active tasks
+		return preferencesMenu;
+	}
+
+	private Menu tasksMenu() {
+		// defines the menu item related to the active tasks
 
 		tasksMenu = new Menu("_Active tasks");
-    
-    addTask("None");
-    
-    return tasksMenu;
-  }
 
-  private Menu helpMenu (){
-    // defines the menu item related to the help
-    
-    Menu helpMenu = new Menu("_Help");
+		addTask("None");
+
+		return tasksMenu;
+	}
+
+	private Menu helpMenu() {
+		// defines the menu item related to the help
+
+		Menu helpMenu = new Menu("_Help");
 
 		MenuItem helpItem = new MenuItem("Help content");
 		MenuItem aboutItem = new MenuItem("About BenzAI");
@@ -728,12 +727,12 @@ public class BenzenoidApplication extends Application {
 		});
 
 		helpMenu.getItems().addAll(helpItem, aboutItem);
-    
-    return helpMenu;
-  }
-  
-  private Menu debugMenu (){
-    // defines the menu item related to the help
+
+		return helpMenu;
+	}
+
+	private Menu debugMenu() {
+		// defines the menu item related to the help
 		Menu fill1Item = new Menu();
 
 		Label labelFill1 = new Label("Fill (debug)");
@@ -742,9 +741,9 @@ public class BenzenoidApplication extends Application {
 		});
 
 		fill1Item.setGraphic(labelFill1);
-    
-    return fill1Item;
-  }
+
+		return fill1Item;
+	}
 
 	public void switchMode(ApplicationMode mode) {
 
@@ -772,9 +771,9 @@ public class BenzenoidApplication extends Application {
 
 			case FILTER:
 				Robot robot = new Robot();
-        robot.keyPress(KeyCode.ESCAPE);
-        robot.keyRelease(KeyCode.ESCAPE);
-        ((FilteringPane) filteringPane).refresh();
+				robot.keyPress(KeyCode.ESCAPE);
+				robot.keyRelease(KeyCode.ESCAPE);
+				((FilteringPane) filteringPane).refresh();
 				rootPane.setCenter(filteringPane);
 				break;
 
@@ -814,8 +813,8 @@ public class BenzenoidApplication extends Application {
 
 		tasksMenu.getItems().add(menuItem);
 
-    if (tasksMenu.getItems().size() > 1)
-      removeTask ("None");
+		if (tasksMenu.getItems().size() > 1)
+			removeTask("None");
 	}
 
 	public void removeTask(String task) {
@@ -827,8 +826,8 @@ public class BenzenoidApplication extends Application {
 				break;
 			}
 		}
-    if (tasksBoxes.size() == 0)
-      addTask("None");
+		if (tasksBoxes.size() == 0)
+			addTask("None");
 	}
 
 	public Configuration getConfiguration() {
