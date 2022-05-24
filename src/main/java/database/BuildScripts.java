@@ -122,6 +122,7 @@ public class BuildScripts {
 		Triplet<Double, Double, Double> origin;
 		Triplet<Double, Double, Double> vector1;
 		Triplet<Double, Double, Double> vector2;
+		ArrayList<Double> points = new ArrayList<>();
 
 		line = null;
 
@@ -166,6 +167,11 @@ public class BuildScripts {
 		double zVector2 = Double.parseDouble(vector2Split[3]);
 		vector2 = new Triplet<>(xVector2, yVector2, zVector2);
 
+		while (lineIndex < lines.size()) {
+			if (!line.equals("")) {
+				points.add(Double.parseDouble(lines.get(lineIndex)));
+			}
+		}
 	}
 
 	private static void treatMolecule(long id, File graphFile, File irFile, File nicsFile, File ims2dFile)
