@@ -35,6 +35,7 @@ public class ClarCoverSolver {
 		for (int i = 0; i < molecule.getNbNodes(); i++) {
 			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
 				if (molecule.edgeExists(i, j)) {
+
 					BoolVar bondVariable = model.boolVar("bond[" + i + "][" + j + "]");
 					bonds[index] = bondVariable;
 					bondsMatrix[i][j] = bondVariable;
