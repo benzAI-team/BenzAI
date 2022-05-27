@@ -1193,12 +1193,12 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void sort(MoleculeComparator comparator, boolean ascending) {
 		
 		if (comparator instanceof ResonanceEnergyComparator) {
-			//selectAll();
-			//resonanceEnergyLin();
+			selectAll();
+			resonanceEnergyLin();
 			
-			BenzenoidCollectionPane curentPane = getSelectedTab();
-			for (Molecule molecule : curentPane.getMolecules())
-				molecule.getAromaticity();
+//			BenzenoidCollectionPane curentPane = getSelectedTab();
+//			for (Molecule molecule : curentPane.getMolecules())
+//				molecule.getAromaticity();
 		}
 		
 		BenzenoidCollectionPane currentPane = getSelectedTab();
