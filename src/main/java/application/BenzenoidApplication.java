@@ -25,6 +25,7 @@ import molecules.sort.NbCarbonsComparator;
 import molecules.sort.NbHexagonsComparator;
 import molecules.sort.NbHydrogensComparator;
 import molecules.sort.NbKekuleStructuresComparator;
+import molecules.sort.ResonanceEnergyComparator;
 import parsers.GraphParser;
 import solveur.Aromaticity.RIType;
 import utils.Utils;
@@ -429,7 +430,8 @@ public class BenzenoidApplication extends Application {
 		Menu nbHexagonsItem = new Menu("Number of hexagons");
 		Menu nbKekuleStructuresItem = new Menu("Number of Kekulé structures");
 		Menu irregularityItem = new Menu("Irregularity");
-
+		Menu reItem = new Menu("Global Resonance Energy");
+		
 		sortMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
@@ -519,8 +521,25 @@ public class BenzenoidApplication extends Application {
 
 		irregularityItem.getItems().addAll(irregularityIncreasing, irregularityDecreasing);
 
+		/*
+		 * Resonance Energy
+		 */
+
+		MenuItem reIncreasingItem = new MenuItem("Increasing");
+		MenuItem reDecreasingItem = new MenuItem("Decreasing");
+		
+		reIncreasingItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new ResonanceEnergyComparator(), false);
+		});
+		
+		reDecreasingItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).sort(new ResonanceEnergyComparator(), true);
+		});
+		
+		reItem.getItems().addAll(reIncreasingItem, reDecreasingItem);
+		
 		sortMenu.getItems().addAll(nbCarbonsItem, nbHydrogensItem, nbHexagonsItem, nbKekuleStructuresItem,
-				irregularityItem);
+				irregularityItem/*, reItem*/);
 
 		return sortMenu;
 	}

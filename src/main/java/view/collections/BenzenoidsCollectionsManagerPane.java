@@ -41,6 +41,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import molecules.Molecule;
 import molecules.sort.MoleculeComparator;
+import molecules.sort.ResonanceEnergyComparator;
 import new_classifier.NewCarbonsHydrogensClassifier;
 import new_classifier.NewClassifier;
 import parsers.CMLConverter;
@@ -1190,6 +1191,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	}
 
 	public void sort(MoleculeComparator comparator, boolean ascending) {
+		
+		if (comparator instanceof ResonanceEnergyComparator) {
+			//selectAll();
+			//resonanceEnergyLin();
+			
+			BenzenoidCollectionPane curentPane = getSelectedTab();
+			for (Molecule molecule : curentPane.getMolecules())
+				molecule.getAromaticity();
+		}
+		
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 		currentPane.setComparator(comparator);
 		currentPane.sort(ascending);

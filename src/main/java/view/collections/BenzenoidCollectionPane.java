@@ -31,6 +31,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import molecules.Molecule;
 import molecules.sort.MoleculeComparator;
+import molecules.sort.ResonanceEnergyComparator;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
 import solveur.LinFanAlgorithm;
@@ -947,6 +948,12 @@ public class BenzenoidCollectionPane extends Tab {
 	}
 
 	public void setComparator(MoleculeComparator comparator) {
+		
+//		if (comparator instanceof ResonanceEnergyComparator) {
+//			for (Molecule molecule : molecules)
+//				molecule.getAromaticity();
+//		}
+		
 		for (Molecule molecule : molecules)
 			molecule.setComparator(comparator);
 	}

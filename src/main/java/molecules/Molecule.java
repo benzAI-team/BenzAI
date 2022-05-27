@@ -1043,18 +1043,8 @@ public class Molecule implements Comparable<Molecule> {
 
 	public Aromaticity getAromaticity() {
 
-//		System.out.println("GETAROMATICITY() !!!!");
-//
-//		if (aromaticity == null) {
-//			System.out.println("calcul aromaticit�");
-//			try {
-//				aromaticity = LinAlgorithm.solve(this, PerfectMatchingType.DET);
-//				aromaticity.normalize(getNbKekuleStructures());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return aromaticity;
+		if (aromaticity != null)
+			return aromaticity;
 
 		try {
 			aromaticity = LinAlgorithm.solve(this, PerfectMatchingType.DET);
