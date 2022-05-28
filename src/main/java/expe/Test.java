@@ -22,6 +22,9 @@ public class Test {
 	public static void main(String[] args) throws IOException {
 		String path = "/home/adrien/Bureau/pour_adrien/dossier_resultat/U_5_hexagons0_irreg.png";
 		String encoded = pictureToString(path);
+		
+		System.out.println(encoded.length());
+		
 		stringToPicture(encoded, "test.png");
 	}
 }

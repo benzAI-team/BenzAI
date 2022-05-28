@@ -107,7 +107,7 @@ public class BuildScripts {
 
 	}
 
-	private static void insertIMS2D(long id, File ims2dFile) throws IOException {
+	private static void insertIMS2D(long id, File ims2dFile, File pictureFile) throws IOException {
 
 		ArrayList<String> lines = new ArrayList<>();
 		BufferedReader reader = new BufferedReader(new FileReader(ims2dFile));
@@ -211,13 +211,27 @@ public class BuildScripts {
 		 * Inserting IMS2D1A
 		 */
 		
-		//`idIms2d1a` `idBenzenoid` `vectorX` `vectorY` `nbPointsX` `nbPointsY` `originX` `originY` `originZ`
+		//`idIms2d1a` `idBenzenoid` `vectorX` `vectorY` `nbPointsX` `nbPointsY` `originX` `originY` `originZ` `picture`
 		
 		String vectorX = xVector1 + " " + yVector1 + " " + zVector1;
 		String vectorY = xVector2 + " " + yVector2 + " " + zVector2;
 		
+		
+		
 		writer.write("INSERT INTO ims2d_1a (`idIms2d1a`, `idBenzenoid`, `vectorX`, `vectorY`, `nbPointsX`, `nbPointsY`, `originX`, `originY`, `originZ`) VALUES (" + 
-											 indexIms2d + ", " + id + ", '" + vectorX + "', '" + vectorY + "', " + nbPointsX + ", " + nbPointsY + ", " + xOrigin + ", " + yOrigin + ", " + zOrigin + ");\n");
+											 indexIms2d + ", " + id + ", '" + vectorX + "', '" + vectorY + "', " + nbPointsX + ", " + nbPointsY + ", " + xOrigin + ", " + yOrigin + ", " + zOrigin + ");\n\n");
+		
+		
+		/*
+		 * Inserting picture
+		 */
+		
+		//`idPicture` `idBenzenoid` `idIms2d1a` `picture`
+		
+		String picture = PictureConverter.pngToString(pictureFile.getAbsolutePath());
+		
+		writer.write("INSERT INTO picture_ims2d_1a (`idPicture`, `idBenzenoid`, `idIms2d1a`, `picture`) VALUES (" + 
+		                                    indexIms2d + ", " + id + ", " + indexIms2d + ", '" + picture + "');\n\n"); 
 		
 		/*
 		 * Inserting points
@@ -278,10 +292,11 @@ public class BuildScripts {
 
 		File molFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0.graph_coord");
 		File ims2dFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0.ims2d");
+		File pictureFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0_ims2d_1a.png");
 		
 		Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
 		
-		insertIMS2D(0, ims2dFile);
+		insertIMS2D(0, ims2dFile, pictureFile);
 		
 		writer.close();
 	}
