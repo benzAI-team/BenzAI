@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
@@ -31,7 +30,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import molecules.Molecule;
 import molecules.sort.MoleculeComparator;
-import molecules.sort.ResonanceEnergyComparator;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
 import solveur.LinFanAlgorithm;
@@ -46,7 +44,7 @@ public class BenzenoidCollectionPane extends Tab {
 	};
 
 	public enum DisplayType {
-		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR
+		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A
 	};
 
 	private BenzenoidsCollectionsManagerPane parent;
@@ -91,7 +89,8 @@ public class BenzenoidCollectionPane extends Tab {
 	private ArrayList<Group> clarCoverGroups;
 	private ArrayList<Group> rboGroups;
 	private ArrayList<Group> radicalarGroups;
-
+	private ArrayList<Group> ims2d1aGroups;
+	
 	private boolean lock;
 
 	public BenzenoidCollectionPane(BenzenoidsCollectionsManagerPane parent, int index, String name) {
@@ -134,6 +133,7 @@ public class BenzenoidCollectionPane extends Tab {
 		clarCoverGroups = new ArrayList<>();
 		rboGroups = new ArrayList<>();
 		radicalarGroups = new ArrayList<>();
+		ims2d1aGroups = new ArrayList<>();
 		
 		console = new Console();
 		benzenoidPropertiesArea = new TextArea();
@@ -296,6 +296,7 @@ public class BenzenoidCollectionPane extends Tab {
 		clarCoverGroups.add(null);
 		radicalarGroups.add(null);
 		rboGroups.add(null);
+		ims2d1aGroups.add(null);
 	}
 
 	public void addSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
@@ -495,31 +496,40 @@ public class BenzenoidCollectionPane extends Tab {
 								
 								if (radicalarGroups.get(i) == null) {
 
-									//Group benzenoidDrawRBO = molecule.get();
 									Group benzenoidDrawRadicalar = molecule.getRadicalarGroup();
-									
 									BenzenoidPane benzenoidPaneRadicalar = new BenzenoidPane(collectionPane, -1, null,
 											benzenoidDrawRadicalar, "", molecule.getVerticesSolutions(), index, false);
-
-									// flowPane.getChildren().add(benzenoidPaneRBO);
 									benzenoidPanes.add(benzenoidPaneRadicalar);
-									//flowPane.getChildren().add(benzenoidPaneRadicalar);
-									
 									radicalarGroups.set(i, benzenoidDrawRadicalar);
 								}
 
 								else {
 
 									System.out.println("On recalcule pas !");
-
 									Group benzenoidDrawRadicalar = radicalarGroups.get(i);
-
 									BenzenoidPane benzenoidPaneRadicalar = new BenzenoidPane(collectionPane, -1, null,
 											benzenoidDrawRadicalar, "", molecule.getVerticesSolutions(), index, false);
-
-									// flowPane.getChildren().add(benzenoidPaneRBO);
 									benzenoidPanes.add(benzenoidPaneRadicalar);
-									//flowPane.getChildren().add(benzenoidPaneRadicalar);
+								}
+								
+								break;
+								
+							case IMS2D1A : 
+								
+								if (ims2d1aGroups.get(i) == null) {
+									
+									Group bezenoidDrawIms2d1a = molecule.getIMS2D1AGroup();
+									BenzenoidPane benzenoidPaneIms2d1a = new BenzenoidPane(collectionPane, -1, null,
+											bezenoidDrawIms2d1a, "", molecule.getVerticesSolutions(), index, false);
+									benzenoidPanes.add(benzenoidPaneIms2d1a);
+									ims2d1aGroups.set(i, bezenoidDrawIms2d1a);
+								}
+								
+								else {
+									Group bezenoidDrawIms2d1a = ims2d1aGroups.get(i);
+									BenzenoidPane benzenoidPaneIms2d1a = new BenzenoidPane(collectionPane, -1, null,
+											bezenoidDrawIms2d1a, "", molecule.getVerticesSolutions(), index, false);
+									benzenoidPanes.add(benzenoidPaneIms2d1a);
 								}
 								
 								break;
