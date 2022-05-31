@@ -32,6 +32,7 @@ Several criteria can be combined to meet their needs:
   * Diameter (i.e. the longest shortest path between two hexagons in the structure) 
   * Particular shapes: Coronenoid, rectangle, rhombus, catacondensed
   * With/without holes (Coronoids)
+  * Satisfying certain [symmetries](symmetries)
   * With/without a combination of patterns (e.g. deep bay, armchair edge, ...). Patterns can be joint, disjoint or share hexagons.
 
 The collection above corresponds to the criterion "at most four hexagons".
