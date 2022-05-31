@@ -29,7 +29,13 @@ These problems are modeled and solved thanks to constraint programming and, in p
 * Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet.  
   [Exhaustive Generation of Benzenoid Structures Sharing Common Patterns](https://hal-amu.archives-ouvertes.fr/hal-03402690).  
   In _Proceedings of the 27th International Conference on Principles and Practice of Constraint Programming (CP)_, pages 19:1-19:18, 2021.
-
+* Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet.  
+  [How Constraint Programming Can Help Chemists to Generate Benzenoid Structures and Assess the local Aromaticity of Benzenoids](https://link.springer.com/article/10.1007/s10601-022-09328-x).   
+  In _Constraints_, 2022.
+* A. Varet, N. Prcovic, C. Terrioux, D. Hagebaum-Reignier and Y. Carissan.  
+  [BenzAI: A Program to Design Benzenoids with Defined Properties Using Constraint Programming](https://pubs.acs.org/doi/10.1021/acs.jcim.2c00353).   
+  In _Journal of Chemical Information and Modeling_, 2022.
+  
 [BibTeX file](biblio.bib)
 
 
