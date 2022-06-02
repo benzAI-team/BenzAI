@@ -41,6 +41,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import molecules.Molecule;
 import molecules.sort.MoleculeComparator;
+import molecules.sort.ResonanceEnergyComparator;
 import new_classifier.NewCarbonsHydrogensClassifier;
 import new_classifier.NewClassifier;
 import parsers.CMLConverter;
@@ -396,6 +397,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		MenuItem radicalarStatsItem = new MenuItem("Radicalar statistics");
 
+		MenuItem ims2d1aItem = new MenuItem("IMS2D-1A");
+		
 		exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
 
 		renameMenu.setOnAction(e -> {
@@ -417,6 +420,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		});
 
+		ims2d1aItem.setOnAction(e -> {
+			ims2d1a();
+		});
+		
 		radicalarStatsItem.setOnAction(e -> {
 			radicalarStatistics();
 		});
@@ -528,7 +535,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		contextMenu.getItems().addAll(renameMenu, importCollectionItem, exportCollectionItem, moveItem, copyItem,
 				pasteItem, deleteItem, exportMenu, selectAllItem, unselectAllItem, drawItem, irregularityItem,
 				reLinItem, clarItem, rboItem, reLinFanItem/* , dbItem */, irSpectraItem, checkDatabaseItem,
-				radicalarStatsItem);
+				radicalarStatsItem, ims2d1aItem);
 
 		this.setOnContextMenuRequested(e -> {
 
@@ -1190,6 +1197,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	}
 
 	public void sort(MoleculeComparator comparator, boolean ascending) {
+		
+		if (comparator instanceof ResonanceEnergyComparator) {
+			selectAll();
+			resonanceEnergyLin();
+			
+//			BenzenoidCollectionPane curentPane = getSelectedTab();
+//			for (Molecule molecule : curentPane.getMolecules())
+//				molecule.getAromaticity();
+		}
+		
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 		currentPane.setComparator(comparator);
 		currentPane.sort(ascending);
@@ -1506,7 +1523,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 							Molecule molecule = currentPane.getMolecule(pane.getIndex());
 
-							if (!molecule.databaseChecked()) {
+							if (!molecule.databaseCheckedIR()) {
 								if (molecule.getNicsResult() != null) {
 									System.out.println(molecule);
 
@@ -1575,6 +1592,38 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	}
 
+	public void ims2d1a() {
+		
+		BenzenoidCollectionPane currentPane = getSelectedTab();
+		
+		String name = "Ims2D_1A";
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
+		
+		if (currentPane.getSelectedBenzenoidPanes().size() == 0) {
+			Utils.alert("Please, select at least one benzenoid having less than 10 hexagons");
+			return;
+		}
+		
+		if (currentPane.getSelectedBenzenoidPanes().size() == 0)
+			selectAll();
+		
+		ArrayList<BenzenoidPane> panes = new ArrayList<>();
+		for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes())
+			panes.add(pane);
+		
+		for (BenzenoidPane pane : panes) {
+			Molecule molecule = currentPane.getMolecule(pane.getIndex());
+			molecule.getIms2d1a();
+			benzenoidSetPane.addBenzenoid(molecule, DisplayType.IMS2D1A);
+		}
+		
+		benzenoidSetPane.refresh();
+		tabPane.getSelectionModel().clearAndSelect(0);
+		addBenzenoidSetPane(benzenoidSetPane);
+		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+	}
+	
 	public void IRSpectra() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
@@ -1607,7 +1656,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 							Molecule molecule = currentPane.getMolecule(pane.getIndex());
 
-							if (!molecule.databaseChecked()) {
+							if (!molecule.databaseCheckedIR()) {
 								if (molecule.getNicsResult() != null) {
 									System.out.println(molecule);
 

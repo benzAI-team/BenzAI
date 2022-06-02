@@ -417,7 +417,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (frequencies != null)
 			return frequencies;
 
-		if (getMolecule().databaseChecked()) {
+		if (getMolecule().databaseCheckedIR()) {
 
 			Molecule molecule = benzenoidSetPane.getMolecule(index);
 			ResultLogFile log = molecule.getNicsResult();
@@ -451,7 +451,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (energies != null)
 			return energies;
 
-		if (getMolecule().databaseChecked()) {
+		if (getMolecule().databaseCheckedIR()) {
 
 			Molecule molecule = benzenoidSetPane.getMolecule(index);
 			ResultLogFile log = molecule.getNicsResult();
@@ -483,7 +483,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (intensities != null)
 			return intensities;
 
-		if (getMolecule().databaseChecked()) {
+		if (getMolecule().databaseCheckedIR()) {
 
 			Molecule molecule = benzenoidSetPane.getMolecule(index);
 			ResultLogFile log = molecule.getNicsResult();
