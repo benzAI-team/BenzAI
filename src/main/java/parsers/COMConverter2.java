@@ -4,12 +4,116 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.chocosolver.solver.Model;
+import org.chocosolver.solver.Solution;
+import org.chocosolver.solver.Solver;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
+import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
+import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
+import org.chocosolver.solver.variables.BoolVar;
+import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.solver.variables.UndirectedGraphVar;
+import org.chocosolver.util.objects.graphs.UndirectedGraph;
+import org.chocosolver.util.objects.setDataStructures.SetType;
+
 import molecules.Molecule;
 import parsers.ComConverter.ComType;
 import utils.Couple;
 import utils.Triplet;
 
 public class COMConverter2 {
+
+	public static ArrayList<ArrayList<Integer>> countCycles(Triplet<Double, Double, Double>[] carbons) {
+
+		ArrayList<ArrayList<Integer>> cycles = new ArrayList<>();
+
+		int[][] matrix = new int[carbons.length][carbons.length];
+		int nbEdges = 0;
+
+		for (int i = 0; i < carbons.length; i++) {
+			Triplet<Double, Double, Double> c1 = carbons[i];
+			for (int j = (i + 1); j < carbons.length; j++) {
+				Triplet<Double, Double, Double> c2 = carbons[j];
+				double distance = distance(c1, c2);
+
+				if (distance <= 1.4) {
+					matrix[i][j] = 1;
+					matrix[j][i] = 1;
+					nbEdges++;
+				}
+			}
+		}
+
+		Model model = new Model("Cycles");
+
+		int nbCarbons = carbons.length;
+
+		UndirectedGraph GLB = new UndirectedGraph(model, nbCarbons, SetType.BITSET, false);
+		UndirectedGraph GUB = new UndirectedGraph(model, nbCarbons, SetType.BITSET, false);
+
+		for (int i = 0; i < nbCarbons; i++) {
+			GUB.addNode(i);
+			for (int j = (i + 1); j < nbCarbons; j++) {
+				if (matrix[i][j] == 1)
+					GUB.addEdge(i, j);
+			}
+		}
+
+		int[] firstVertices = new int[nbEdges];
+		int[] secondVertices = new int[nbEdges];
+
+		UndirectedGraphVar g = model.graphVar("g", GLB, GUB);
+		BoolVar[] boolEdges = new BoolVar[nbEdges];
+
+		int index = 0;
+		for (int i = 0; i < nbCarbons; i++) {
+			for (int j = (i + 1); j < nbCarbons; j++) {
+
+				if (matrix[i][j] == 1) {
+					boolEdges[index] = model.boolVar("(" + i + "--" + j + ")");
+					model.edgeChanneling(g, boolEdges[index], i, j).post();
+					firstVertices[index] = i;
+					secondVertices[index] = j;
+					index++;
+				}
+			}
+		}
+
+		IntVar nbNodes = model.intVar("nb_nodes", 0, nbCarbons);
+		model.nbNodes(g, nbNodes).post();
+		model.arithm(nbNodes, "=", 6).post();
+
+		model.minDegree(g, 2).post();
+		model.maxDegree(g, 2).post();
+		model.connected(g).post();
+
+		model.getSolver().setSearch(new IntStrategy(boolEdges, new FirstFail(model), new IntDomainMin()));
+		Solver solver = model.getSolver();
+
+		Solution solution;
+
+		while (solver.solve()) {
+			solution = new Solution(model);
+			solution.record();
+
+			ArrayList<Integer> cycle = new ArrayList<Integer>();
+
+			for (int i = 0; i < boolEdges.length; i++) {
+				if (solution.getIntVal(boolEdges[i]) == 1) {
+					if (!cycle.contains(firstVertices[i]))
+						cycle.add(firstVertices[i]);
+					if (!cycle.contains(secondVertices[i]))
+						cycle.add(secondVertices[i]);
+				}
+			}
+
+			cycles.add(cycle);
+
+		}
+
+		return cycles;
+
+	}
 
 	public static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
 
@@ -295,6 +399,8 @@ public class COMConverter2 {
 		ArrayList<Triplet<Double, Double, Double>> hydrogens = new ArrayList<Triplet<Double, Double, Double>>();
 		ArrayList<Couple<Integer, Integer>> badCarbons = checkInvalidCarbons(molecule, carbons);
 		ArrayList<Integer> carbonsWithHydrogens = getCarbonsWithHydrogens(molecule);
+
+		ArrayList<ArrayList<Integer>> cycles = countCycles(carbons);
 
 		System.out.println("");
 
