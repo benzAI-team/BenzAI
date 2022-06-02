@@ -178,12 +178,6 @@ public class IrregularityModule extends Module {
 
 	@Override
 	public void addWatchedVariables() {
-		//~ generalModel.addWatchedVariable(N0);
-		//~ generalModel.addWatchedVariable(N1);
-		//~ generalModel.addWatchedVariable(N2);
-		//~ generalModel.addWatchedVariable(N3);
-		//~ generalModel.addWatchedVariable(N4);
-		//~ generalModel.addWatchedVariable(XI);
 	}
 
 	private void buildXN() {
