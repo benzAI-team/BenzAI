@@ -123,7 +123,6 @@ public class BenzenoidApplication extends Application {
 
 			generatorScene = new Scene(rootPane);
 			generatorScene.getStylesheets().add("/resources/style/application.css");
-			// generatorScene.getStylesheets().add("application/dark_mode.css");
 
 			// initializeIcons();
 
