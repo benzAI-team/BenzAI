@@ -3,7 +3,6 @@
     -fx-font-family: "Arial";
     -fx-base: lightblue;
     -fx-background:aliceblue;
-    -fx-background-insets:10.0px;
 }
 
 .label {
