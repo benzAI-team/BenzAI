@@ -14,7 +14,7 @@ The first use case deals with the generation of the first four benzenoids having
 First, we go to the menu Input and choose the entry Generator.
 ![Menu](gallery/use_case_1_1.png)
 
-We impose as first criterion that the number of hexagons is equal to six. Then we define a second criterion related to the symmetry.
+We impose as the first criterion that the number of hexagons is equal to six. Then we define a second criterion related to the symmetry and the third one in order to limit the number of solutions to four.
 ![Criteria](gallery/use_case_1_2.png)
 
 Finally, we run the generation and obtain the first four desired benzenoids (among eleven).
