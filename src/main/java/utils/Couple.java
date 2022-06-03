@@ -2,8 +2,8 @@ package utils;
 
 public class Couple<X, Y> {
 
-	private X x;
-	private Y y;
+	protected X x;
+	protected Y y;
 
 	public Couple(X x, Y y) {
 		super();
