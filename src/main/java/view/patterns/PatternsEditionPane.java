@@ -52,11 +52,13 @@ public class PatternsEditionPane extends BorderPane {
 	private CheckMenuItem disableItem;
 	private TextField occurencesField;
 	private TextField fieldName;
+  private int colorLabel;   // the label of the last color assign to a hexagon
 
 	public PatternsEditionPane(HBoxPatternCriterion parent) {
 		super();
 		this.parent = parent;
 		initialize();
+    colorLabel = 0;
 	}
 
 	private void initialize() {
@@ -484,6 +486,14 @@ public class PatternsEditionPane extends BorderPane {
 			item.setSelected(false);
 		}
 	}
+
+  public void setColorLabel(int label) {
+    colorLabel = label;
+  }
+  
+  public int getColorLabel() {
+    return (colorLabel);
+  }
 
 	private void hide() {
 		parent.hideFragmentStage();

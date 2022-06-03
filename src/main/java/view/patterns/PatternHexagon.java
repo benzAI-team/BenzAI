@@ -48,7 +48,14 @@ public class PatternHexagon extends Polygon {
 	}
 
 	private void shiftLabel() {
-		label = (label + 1) % 4;
+    int lastLabel = group.getParentPane().getColorLabel();
+    
+    if (lastLabel == label) {
+      label = (label + 1) % 4;
+      group.getParentPane().setColorLabel(label);
+    }
+    else
+      label = lastLabel;
 		this.setFill(COLORS[label]);
 	}
 
