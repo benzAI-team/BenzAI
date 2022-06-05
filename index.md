@@ -21,7 +21,7 @@ These problems are modeled and solved thanks to constraint programming and, in p
 
 # Documentation and tutorials
 
-* Some examples of [use cases](https://github.com/benzAI-team/BenzAI/use_cases)
+* Some examples of [use cases](use_cases)
 * Tutorials are availabale on [our Youtube channel](https://www.youtube.com/channel/UCjJ19k3zEIBWdQDTPhQ-i3Q) dedicated to BenzAI 
 
 # Bibliography
