@@ -19,6 +19,11 @@ These problems are modeled and solved thanks to constraint programming and, in p
 * [Release](https://github.com/benzAI-team/BenzAI/releases)
 * An [archive](benzenoids.zip) containing some well-known benzenoids in our [graph file format](graph_format).
 
+# Documentation and tutorials
+
+* Some examples of [use cases](https://github.com/benzAI-team/BenzAI/use_cases)
+* Tutorials are availabale on [our Youtube channel](https://www.youtube.com/channel/UCjJ19k3zEIBWdQDTPhQ-i3Q) dedicated to BenzAI 
+
 # Bibliography
 * Y. Carissan, D. Hagebaum-Reignier, N. Prcovic, C. Terrioux and A. Varet.  
   [Using Constraint Programming to Generate Benzenoid Structures in Theoretical Chemistry](https://hal.archives-ouvertes.fr/hal-02931934/).   
