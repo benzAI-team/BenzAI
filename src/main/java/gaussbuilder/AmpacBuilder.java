@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import molecules.Molecule;
@@ -23,9 +25,17 @@ public class AmpacBuilder {
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
 		
-		writer.write("  am1 rhf singlet truste t=auto\n");
+		int nbElectrons = carbons.length;
+		
+		if (nbElectrons % 2 == 0)
+			writer.write("  am1 rhf singlet truste t=auto\n");
+		else
+			writer.write("  am1 uhf doublet truste t=auto\n");
+		
 		writer.write(outputFile.getName() + "\n");
 		writer.write(" Comment\n");
+		
+		NumberFormat formatter = new DecimalFormat("#0.000000"); 
 		
 		//" C             -1.214500  1    0.694000  1    0.000000  1 #   "
 		for (int i = 0 ; i < carbons.length ; i++) {
@@ -35,7 +45,12 @@ public class AmpacBuilder {
 			double y = carbon.getY();
 			double z = carbon.getZ();
 			
-			writer.write(" C\t\t" + x + "\t\t1\t\t" + y + "\t\t1\t\t" + z + "\t\t1 #   \n");
+			String xStr = formatter.format(x).toString().replace(",", ".");
+			String yStr = formatter.format(y).toString().replace(",", ".");
+			String zStr = formatter.format(z).toString().replace(",", ".");
+			    
+			
+			writer.write(" C\t" + xStr + "\t1\t" + yStr + "\t1\t" + zStr + "\t1 #   \n");
 		}
 		
 		for (Triplet<Double, Double, Double> hydrogen : hydrogens) {
@@ -43,10 +58,14 @@ public class AmpacBuilder {
 			double y = hydrogen.getY();
 			double z = hydrogen.getZ();
 			
-			writer.write(" H\t\t" + x + "\t\t1\t\t" + y + "\t\t1\t\t" + z + "\t\t1 #   \n");
+			String xStr = formatter.format(x).toString().replace(",", ".");
+			String yStr = formatter.format(y).toString().replace(",", ".");
+			String zStr = formatter.format(z).toString().replace(",", ".");
+			
+			writer.write(" H\t" + xStr + "\t1\t" + yStr + "\t1\t" + zStr + "\t1 #   \n");
 		}
 		
-		writer.write(" 0\t\t" + 0.000000 + "\t\t0\t\t" + 0.000000 + "\t\t0\t\t" + 0.000000 + "\t0\n");
+		writer.write(" 0\t" + "0.000000" + "\t0\t" + "0.000000" + "\t0\t" + "0.000000" + "\t0\n");
 		
 		writer.close();
 	}

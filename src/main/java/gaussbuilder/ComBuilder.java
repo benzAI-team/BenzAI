@@ -1,11 +1,16 @@
 package gaussbuilder;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import molecules.Molecule;
+import parsers.GraphParser;
 import parsers.ComConverter.ComType;
 import utils.Triplet;
 
@@ -74,5 +79,18 @@ public class ComBuilder {
 
 		writer.close();
 		
+	}
+	
+	public static void main(String [] args) throws IOException {
+		File dir = new File("/home/adrien/Documents/old_log_files/bad_benzenoids/");
+		
+		for (File f : dir.listFiles()) {
+			if (f.getName().endsWith(".graph_coord")) {
+				Molecule m = GraphParser.parseUndirectedGraph(f);
+				Geometry geometry = GeometryBuilder.buildGeometry(m);
+				ComBuilder.buildComFile(geometry, f.getAbsolutePath().replace(".graph_coord", ".com"), 0, ComType.ER, f.getName().replace(".graph_coord", ""));
+				AmpacBuilder.buildAmpacFile(m, f.getAbsolutePath().replace(".graph_coord", ".dat"));
+			}
+		}
 	}
 }
