@@ -83,14 +83,39 @@ public class ComBuilder {
 	
 	public static void main(String [] args) throws IOException {
 		File dir = new File("/home/adrien/Documents/old_log_files/bad_benzenoids/");
+		BufferedWriter w = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/bad_benzenoids/delete_bad_benzenodis.sql")));
+		
+		StringBuilder benzenoid = new StringBuilder();
+		StringBuilder point = new StringBuilder();
+		StringBuilder ims2d1a = new StringBuilder();
+		StringBuilder ir = new StringBuilder();
+		StringBuilder names = new StringBuilder();
 		
 		for (File f : dir.listFiles()) {
 			if (f.getName().endsWith(".graph_coord")) {
 				Molecule m = GraphParser.parseUndirectedGraph(f);
-				Geometry geometry = GeometryBuilder.buildGeometry(m);
-				ComBuilder.buildComFile(geometry, f.getAbsolutePath().replace(".graph_coord", ".com"), 0, ComType.ER, f.getName().replace(".graph_coord", ""));
-				AmpacBuilder.buildAmpacFile(m, f.getAbsolutePath().replace(".graph_coord", ".dat"));
+//				Geometry geometry = GeometryBuilder.buildGeometry(m);
+//				ComBuilder.buildComFile(geometry, f.getAbsolutePath().replace(".graph_coord", ".com"), 0, ComType.ER, f.getName().replace(".graph_coord", ""));
+//				AmpacBuilder.buildAmpacFile(m, f.getAbsolutePath().replace(".graph_coord", ".dat"));
+				String name = m.getNames().get(0);
+				benzenoid.append("DELETE FROM benzenoid WHERE id IN (SELECT idMolecule FROM name WHERE name = '" + name + "');\n");
+				point.append("DELETE FROM point_ims2d_1a WHERE idIms2d1a IN "
+						+ "(SELECT idIms2d1a FROM ims2d_1a WHERE idBenzenoid IN (SELECT id FROM benzenoid WHERE id IN (SELECT idMolecule FROM name WHERE name = '" + name + "')));\n");
+				ims2d1a.append("DELETE FROM ims2d_1a WHERE idBenzenoid IN (SELECT id from benzenoid WHERE id IN (SELECT idMolecule FROM name WHERE name = '" + name + "'));\n");
+				ir.append("DELETE FROM gaussian_result WHERE id_molecule IN (SELECT id from benzenoid WHERE id IN (SELECT idMolecule FROM name WHERE name = '" + name + "'));\n");
+				names.append("DELETE FROM name WHERE idMolecule IN (SELECT id FROM benzenoid WHERE id IN (SELECT idMolecule FROM name WHERE name = '" + name + "'));\n");
 			}
+			
 		}
+
+		System.out.println(ir.toString().split("\n")[0]);
+		System.out.println(point.toString().split("\n")[0]);
+		System.out.println(ims2d1a.toString().split("\n")[0]);
+		System.out.println(names.toString().split("\n")[0]);
+		System.out.println(benzenoid.toString().split("\n")[0]);
+		
+		w.write(ir.toString() + "\n" + point.toString() + "\n" + ims2d1a.toString() + "\n" + names.toString() + benzenoid.toString());
+		
+		w.close();
 	}
 }
