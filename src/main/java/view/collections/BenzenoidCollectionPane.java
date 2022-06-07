@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
@@ -90,7 +91,7 @@ public class BenzenoidCollectionPane extends Tab {
 	private ArrayList<Group> rboGroups;
 	private ArrayList<Group> radicalarGroups;
 	private ArrayList<Group> ims2d1aGroups;
-	
+
 	private boolean lock;
 
 	public BenzenoidCollectionPane(BenzenoidsCollectionsManagerPane parent, int index, String name) {
@@ -134,7 +135,7 @@ public class BenzenoidCollectionPane extends Tab {
 		rboGroups = new ArrayList<>();
 		radicalarGroups = new ArrayList<>();
 		ims2d1aGroups = new ArrayList<>();
-		
+
 		console = new Console();
 		benzenoidPropertiesArea = new TextArea();
 		frequenciesArea = new TextArea();
@@ -493,7 +494,7 @@ public class BenzenoidCollectionPane extends Tab {
 								break;
 
 							case RADICALAR:
-								
+
 								if (radicalarGroups.get(i) == null) {
 
 									Group benzenoidDrawRadicalar = molecule.getRadicalarGroup();
@@ -511,29 +512,29 @@ public class BenzenoidCollectionPane extends Tab {
 											benzenoidDrawRadicalar, "", molecule.getVerticesSolutions(), index, false);
 									benzenoidPanes.add(benzenoidPaneRadicalar);
 								}
-								
+
 								break;
-								
-							case IMS2D1A : 
-								
+
+							case IMS2D1A:
+
 								if (ims2d1aGroups.get(i) == null) {
-									
+
 									Group bezenoidDrawIms2d1a = molecule.getIMS2D1AGroup();
 									BenzenoidPane benzenoidPaneIms2d1a = new BenzenoidPane(collectionPane, -1, null,
 											bezenoidDrawIms2d1a, "", molecule.getVerticesSolutions(), index, false);
 									benzenoidPanes.add(benzenoidPaneIms2d1a);
 									ims2d1aGroups.set(i, bezenoidDrawIms2d1a);
 								}
-								
+
 								else {
 									Group bezenoidDrawIms2d1a = ims2d1aGroups.get(i);
 									BenzenoidPane benzenoidPaneIms2d1a = new BenzenoidPane(collectionPane, -1, null,
 											bezenoidDrawIms2d1a, "", molecule.getVerticesSolutions(), index, false);
 									benzenoidPanes.add(benzenoidPaneIms2d1a);
 								}
-								
+
 								break;
-								
+
 							default:
 
 								MoleculeGroup benzenoidDraw = new MoleculeGroup(molecule);
@@ -958,12 +959,12 @@ public class BenzenoidCollectionPane extends Tab {
 	}
 
 	public void setComparator(MoleculeComparator comparator) {
-		
+
 //		if (comparator instanceof ResonanceEnergyComparator) {
 //			for (Molecule molecule : molecules)
 //				molecule.getAromaticity();
 //		}
-		
+
 		for (Molecule molecule : molecules)
 			molecule.setComparator(comparator);
 	}
@@ -1026,6 +1027,8 @@ public class BenzenoidCollectionPane extends Tab {
 	}
 
 	public void setEnergies(String energies) {
+		if (energies.contains("-"))
+			System.out.print("");
 		energiesArea.setText(energies);
 	}
 

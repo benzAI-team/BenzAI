@@ -73,10 +73,10 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		this.solution = solution;
 		this.benzenoidDraw = benzenoidDraw;
 		this.name = description;
-		
+
 		if (name == null)
 			name = "";
-		
+
 		this.index = index;
 
 		isSelected = false;
@@ -124,7 +124,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 		if (name == null)
 			name = "";
-		
+
 		this.index = index;
 
 		isSelected = false;
@@ -210,7 +210,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		benzenoidSetPane.setDescription(buildDescription());
 		benzenoidSetPane.setFrequencies(buildFrequencies());
 		benzenoidSetPane.setEnergies(buildEnergies());
-		benzenoidSetPane.setIntensities(buildEnergies());
+		benzenoidSetPane.setIntensities(buildIntensities());
 
 		setStyle("-fx-border-color: blue;" + "-fx-border-width: 4;" + "-fx-border-radius: 10px;");
 		benzenoidSetPane.refreshCollectionProperties();
@@ -365,21 +365,19 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				}
 			}
 
-			
-
-			//ClarCoverSolution clarCoverSolution = molecule.getClarCoverSolution();
+			// ClarCoverSolution clarCoverSolution = molecule.getClarCoverSolution();
 			ArrayList<ClarCoverSolution> clarCoverSolutions = molecule.getClarCoverSolutions();
 			if (clarCoverSolutions != null) {
 				builder.append("\nradicalar statistics\n");
-				double [] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
-				for (int i = 0 ; i < stats.length ; i++)
-					builder.append("C" + (i+1) + " : " + stats[i] + "\n");
+				double[] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
+				for (int i = 0; i < stats.length; i++)
+					builder.append("C" + (i + 1) + " : " + stats[i] + "\n");
 			}
 //			if (clarCoverSolution != null) {
 //				builder.append("\nradicalar statistics\n");
 //				//double [] stats = clarCoverSolution
 //			}
-			
+
 			description = builder.toString();
 			return description;
 
