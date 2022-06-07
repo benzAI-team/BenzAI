@@ -21,7 +21,7 @@ public class GeometryBuilder {
 
 		return -1;
 	}
-	
+
 	public static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
 
 		ArrayList<Integer> carbons = new ArrayList<Integer>();
@@ -33,7 +33,7 @@ public class GeometryBuilder {
 
 		return carbons;
 	}
-	
+
 	public static Couple<Integer, Integer> findHexagon(Molecule molecule, int carbon) {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
@@ -48,9 +48,9 @@ public class GeometryBuilder {
 
 		return null;
 	}
-	
+
 	public static Geometry buildGeometry(Molecule molecule) {
-		
+
 		int hexa = -1, yMin = Integer.MAX_VALUE;
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
@@ -217,9 +217,9 @@ public class GeometryBuilder {
 		ArrayList<Couple<Integer, Integer>> badCarbons = GaussChecker.checkInvalidCarbons(molecule, carbons);
 		ArrayList<Integer> carbonsWithHydrogens = getCarbonsWithHydrogens(molecule);
 
-		//hc[i] = j  => l'hydrogene i est lié au carbone j
+		// hc[i] = j => l'hydrogene i est lié au carbone j
 		ArrayList<Integer> hydrogensConnections = new ArrayList<>();
-		
+
 		int[] treatedCarbons = new int[molecule.getNbNodes()];
 
 		for (Integer u : carbonsWithHydrogens) {
@@ -419,7 +419,7 @@ public class GeometryBuilder {
 				treatedCarbons[u] = 1;
 			}
 		}
-		
-		return new Geometry(carbons, hydrogens);
+
+		return new Geometry(carbons, hydrogens, hydrogensConnections);
 	}
 }
