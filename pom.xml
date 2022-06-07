@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>BenzAI-team</groupId>
 	<artifactId>BenzAI</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0-cross</version>
   <description>BenzAI Application</description>
   <packaging>jar</packaging>
   
@@ -71,24 +71,70 @@
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-base</artifactId>
       <version>18</version>
+      <classifier>linux</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>18</version>
+      <classifier>mac</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>18</version>
+      <classifier>win</classifier>
     </dependency>
 
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>18</version>
+      <classifier>linux</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>18</version>
+      <classifier>mac</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>18</version>
+      <classifier>win</classifier>
     </dependency>
 
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics </artifactId>
       <version>18</version>
+      <classifier>linux</classifier>
     </dependency>
- 
-     <dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics </artifactId>
+      <version>18</version>
+      <classifier>mac</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics </artifactId>
+      <version>18</version>
+      <classifier>win</classifier>
+    </dependency>
+
+    <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-swing</artifactId>
       <version>18</version>
+      <classifier>win</classifier>
     </dependency>
  
     <dependency>
@@ -108,7 +154,6 @@
       <artifactId>commons-io</artifactId>
       <version>2.11.0</version>
     </dependency>
-
 
   </dependencies>
 </project>

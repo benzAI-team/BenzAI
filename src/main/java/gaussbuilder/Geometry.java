@@ -7,8 +7,11 @@ import utils.Triplet;
 
 public class Geometry extends Couple<Triplet<Double, Double, Double> [], ArrayList<Triplet<Double, Double, Double>>>{
 
-	public Geometry(Triplet<Double, Double, Double>[] x, ArrayList<Triplet<Double, Double, Double>> y) {
+	private ArrayList<Integer> hydrogensConnections = new ArrayList<>();
+	
+	public Geometry(Triplet<Double, Double, Double>[] x, ArrayList<Triplet<Double, Double, Double>> y, ArrayList<Integer> hydrogensConnections) {
 		super(x, y);
+		this.hydrogensConnections = hydrogensConnection;
 	}
 
 	public Triplet<Double, Double, Double>[] getCarbons() {

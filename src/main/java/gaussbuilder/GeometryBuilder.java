@@ -217,6 +217,9 @@ public class GeometryBuilder {
 		ArrayList<Couple<Integer, Integer>> badCarbons = GaussChecker.checkInvalidCarbons(molecule, carbons);
 		ArrayList<Integer> carbonsWithHydrogens = getCarbonsWithHydrogens(molecule);
 
+		//hc[i] = j  => l'hydrogene i est lié au carbone j
+		ArrayList<Integer> hydrogensConnections = new ArrayList<>();
+		
 		int[] treatedCarbons = new int[molecule.getNbNodes()];
 
 		for (Integer u : carbonsWithHydrogens) {
@@ -294,6 +297,7 @@ public class GeometryBuilder {
 
 					// if (molecule.getCoords().get(xvr, yvr) == -1)
 					hydrogens.add(new Triplet<>(xv, yv, 0.0));
+					hydrogensConnections.add(u);
 				}
 
 				/*
@@ -405,7 +409,9 @@ public class GeometryBuilder {
 					}
 
 					hydrogens.add(new Triplet<>(uHX, uHY, uHZ));
+					hydrogensConnections.add(u);
 					hydrogens.add(new Triplet<>(vHX, vHY, vHZ));
+					hydrogensConnections.add(carbonPair);
 
 					treatedCarbons[carbonPair] = 1;
 				}
