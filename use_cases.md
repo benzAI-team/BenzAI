@@ -20,6 +20,7 @@ We impose as the first criterion that the number of hexagons is equal to six. Th
 Finally, we run the generation and obtain the first four desired benzenoids (among eleven).
 ![Result](gallery/use_case_1_3.png)
 
+---
 
 ## A generation of the benzenoids having seven hexagons and contains two patterns (Figure 2)
 
@@ -44,6 +45,7 @@ We are now ready to run the generation
 We run the generation and obtain 213 desired benzenoids from which five have been selected to form Figure 2.
 ![Menu](gallery/use_case_2_6.png)
 
+---
 
 ## A generation based on the number of carbon atoms (Figure 4)
 
@@ -72,6 +74,7 @@ Here is the result of the sorting:
 
 The first solution is the best one since we only generate the desired structured (remember that the number of benzenoids may become huge).
 
+---
 
 ## Vibrational spectra (Figure 5)
 
@@ -101,6 +104,7 @@ The spectrum for the benzenoids having 17 carbon atoms:
 The spectrum for the benzenoids having 18 carbon atoms:
 ![spectrum](gallery/use_case_4_8.png)
 
+---
 
 ## Comparison of models (Figure 6)
 
@@ -132,6 +136,7 @@ Finally, we compute the Ring Bond Order:
 The result is once again presented automatically in a new tab:
 ![result](gallery/use_case_5_9.png)
 
+---
 
 ## Distribution of the irregularity parameter (Figure 9)
 
@@ -152,10 +157,9 @@ Now, we generate all the benzenoids having at most 9 hexagons.
 ![generate](gallery/use_case_6_5.png)
 
 We obtain 8,392 benzenoids:
-![result](gallery/use_case_6_5.png)
-
-Then we select all the benzenoids and run the computation of the distribution:
 ![result](gallery/use_case_6_6.png)
 
+Then we select all the benzenoids and run the computation of the distribution:
 Here is the result:
 ![result](gallery/use_case_6_7.png)
+
