@@ -574,7 +574,7 @@ public class BenzenoidApplication extends Application {
 		MenuItem irregularityStatsItem = new MenuItem("Irregularity Statistics");
 		MenuItem irSpectraItem = new MenuItem("IR Spectra");
 		MenuItem radicalarItem = new MenuItem("Radicalar electrons statistics");
-		MenuItem ims2d1aItem = new MenuItem("Ims2d-1A");
+		MenuItem ims2d1aItem = new MenuItem("IMS2D-1A");
 		
 		computationsMenu.setOnShowing(e -> {
 			switchMode(ApplicationMode.COLLECTIONS);
@@ -613,7 +613,7 @@ public class BenzenoidApplication extends Application {
 		});
 		
 		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, rboItem, irregularityStatsItem,
-				irSpectraItem, radicalarItem, ims2d1aItem);
+				irSpectraItem, radicalarItem/*, ims2d1aItem*/);
 
 		return computationsMenu;
 	}
