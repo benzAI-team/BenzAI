@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -367,7 +368,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem copyItem = new MenuItem("Copy");
 		MenuItem pasteItem = new MenuItem("Paste");
 		MenuItem deleteItem = new MenuItem("Delete");
-
+    
 		Menu exportMenu = new Menu("Export");
 		Menu exportBenzenoidItem = new Menu("Export benzenoid");
 		MenuItem exportPropertiesItem = new MenuItem("Export properties");
@@ -532,10 +533,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			checkDatabase();
 		});
 
-		contextMenu.getItems().addAll(renameMenu, importCollectionItem, exportCollectionItem, moveItem, copyItem,
-				pasteItem, deleteItem, exportMenu, selectAllItem, unselectAllItem, drawItem, irregularityItem,
-				reLinItem, clarItem, rboItem, reLinFanItem/* , dbItem */, irSpectraItem, checkDatabaseItem,
-				radicalarStatsItem, ims2d1aItem);
+		contextMenu.getItems().addAll(exportMenu,importCollectionItem, exportCollectionItem, new SeparatorMenuItem(), 
+        renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem, checkDatabaseItem, new SeparatorMenuItem(), 
+        drawItem,  new SeparatorMenuItem(), 
+        reLinItem, reLinFanItem, clarItem, rboItem, irregularityItem, irSpectraItem, radicalarStatsItem, ims2d1aItem);
 
 		this.setOnContextMenuRequested(e -> {
 
@@ -549,8 +550,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				currentPane.setPropertiesArea(hoveringPane.buildDescription());
 
 			for (int i = 0; i < benzenoidSetPanes.size() - 1; i++) {
-				// for (BenzenoidCollectionPane collectionPane : benzenoidSetPanes) {
-
 				BenzenoidCollectionPane collectionPane = benzenoidSetPanes.get(i);
 
 				if (!collectionPane.equals(currentPane)) {
@@ -1500,7 +1499,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			pane.getConsole().clear();
 	}
 
-	private void checkDatabase() {
+	public void checkDatabase() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 

@@ -292,6 +292,7 @@ public class BenzenoidApplication extends Application {
 		MenuItem itemSelect = new MenuItem("Select all");
 		MenuItem unselectAllItem = new MenuItem("Unselect all");
 		MenuItem operationsMenu = new MenuItem("Operations on collections");
+    MenuItem checkDatabaseItem = new MenuItem("Check database");
 
 		operationsMenu.setOnAction(e -> {
 			switchMode(ApplicationMode.COLLECTIONS_OPERATIONS);
@@ -339,9 +340,12 @@ public class BenzenoidApplication extends Application {
 					.getSelectedTab();
 			originBenzenoidCollectionPane.copy();
 		});
+    
+    checkDatabaseItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).checkDatabase();
+		});
 
-		collectionsMenu.getItems().addAll(itemRename, itemDelete, itemCopy, itemPaste, itemSelect,
-				((BenzenoidsCollectionsManagerPane) collectionsPane).initializeMoveMenuItem(), operationsMenu);
+		collectionsMenu.getItems().addAll(itemRename, itemDelete, itemCopy, itemPaste, ((BenzenoidsCollectionsManagerPane) collectionsPane).initializeMoveMenuItem(), itemSelect, unselectAllItem, operationsMenu,checkDatabaseItem);
 
 		return collectionsMenu;
 	}
