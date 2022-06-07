@@ -81,7 +81,8 @@ Benzenoid structures can be exported to the following format:
 
 ## Analyzing electronic structures
 To analyze the electronic structure of benzenoids, one of the following methods can be exploited:
-* Resonance energy (Lin's algorithm)
+* Resonance energy: Two computations are available. The first one relies on Lin's algorithm while the second one is based on Lin and Fan's algorithm. 
+The latter may be time expensive since it requires to enumerate all the Kekulé structures. As both algorithms obtain similar results, we recommend users to exploit the first algorithm.
 * Clar cover
 * Ring bond order
 
