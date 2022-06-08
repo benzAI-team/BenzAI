@@ -121,7 +121,7 @@ public class ComBuilder {
 		for (File f : dir.listFiles()) {
 			if (f.getName().endsWith(".out")) {
 				Geometry g = AmpacBuilder.parseAmpacGeometry(f.getAbsolutePath());
-				//buildComFile(g, f.getAbsolutePath().replace(".out", "_ampac.com"), 0, ComType.IR, f.getName());
+				buildComFile(g, f.getAbsolutePath().replace(".out", "_ampac.com"), 0, ComType.IR, f.getName());
 				Molecule m = GraphParser.parseUndirectedGraph(new File(f.getAbsolutePath().replace(".out", ".graph_coord")));
 				GaussChecker.checkGeometry(f.getName(), m, g);
 			}

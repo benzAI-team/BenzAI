@@ -21,7 +21,7 @@ public class NewFormat {
 
 		int index = 1;
 		for (Triplet<Double, Double, Double> carbon : geometry.getCarbons()) {
-			w.write(index + " " + "C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + " Csp2 ");
+			w.write(index + " " + "C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + " 2 ");
 
 			int carbonIndex = index - 1;
 
@@ -43,7 +43,7 @@ public class NewFormat {
 
 		for (int i = 0; i < molecule.getNbHydrogens(); i++) {
 			Triplet<Double, Double, Double> hydrogen = geometry.getHydrogens().get(i);
-			w.write(index + " " + "H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + " H "
+			w.write(index + " " + "H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + " 5 "
 					+ (geometry.getHydrogensConnections().get(i)/* + molecule.getNbNodes() */ + 1) + "\n");
 			index++;
 		}
@@ -52,9 +52,19 @@ public class NewFormat {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Molecule m = GraphParser
-				.parseUndirectedGraph(new File("C:\\Users\\adrie\\Desktop\\benzenoids\\naphtalene.graph"));
+		//Molecule m = GraphParser
+		//		.parseUndirectedGraph(new File("/home/adrien/Documents/old_log_files/bad_benzenoids/7_hexagons202.graph_coord"));
 
-		generate(m, "test.txt");
+		//generate(m, "/home/adrien/Documents/old_log_files/bad_benzenoids/7_hexagons202.xyz");
+		
+		File dir = new File("/home/adrien/Documents/old_log_files/bad_benzenoids/");
+		for (File f : dir.listFiles()) {
+			if (f.getName().endsWith(".graph_coord")) {
+				System.out.println("Treating " + f.getAbsolutePath());
+				Molecule m = GraphParser.parseUndirectedGraph(f);
+				generate(m, f.getAbsolutePath().replace(".graph_coord", ".xyz"));
+			}
+		}
+		
 	}
 }
