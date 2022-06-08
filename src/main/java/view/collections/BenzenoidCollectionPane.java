@@ -67,8 +67,6 @@ public class BenzenoidCollectionPane extends Tab {
 
 	private Label propertiesLabel;
 	private Label frequenciesLabel;
-	private Label intensitiesLabel;
-	private Label energiesLabel;
 
 	private TextArea selectedArea;
 	// private HBox propertiesBox;
@@ -111,9 +109,7 @@ public class BenzenoidCollectionPane extends Tab {
 		lock = false;
 
 		propertiesLabel = new Label("Benzenoid's properties");
-		frequenciesLabel = new Label("Frequencies");
-		intensitiesLabel = new Label("Intensities");
-		energiesLabel = new Label("Energies");
+		frequenciesLabel = new Label("IR Spectra");
 
 		propertiesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
 		propertiesLabel.setMaxWidth(Double.MAX_VALUE);
@@ -122,15 +118,7 @@ public class BenzenoidCollectionPane extends Tab {
 		frequenciesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
 		frequenciesLabel.setMaxWidth(Double.MAX_VALUE);
 		frequenciesLabel.setAlignment(Pos.CENTER);
-
-		intensitiesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-		intensitiesLabel.setMaxWidth(Double.MAX_VALUE);
-		intensitiesLabel.setAlignment(Pos.CENTER);
-
-		energiesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-		energiesLabel.setMaxWidth(Double.MAX_VALUE);
-		energiesLabel.setAlignment(Pos.CENTER);
-
+		
 		clarCoverGroups = new ArrayList<>();
 		rboGroups = new ArrayList<>();
 		radicalarGroups = new ArrayList<>();
@@ -167,36 +155,6 @@ public class BenzenoidCollectionPane extends Tab {
 				break;
 
 			case FREQUENCIES:
-				displayedProperty = DisplayedProperty.INTENSITIES;
-				gridPane.getChildren().remove(borderPane);
-				gridPane.getChildren().remove(selectedArea);
-				selectedArea = intensitiesArea;
-
-				borderPane = new BorderPane();
-				borderPane.setLeft(previousButton);
-				borderPane.setCenter(intensitiesLabel);
-				borderPane.setRight(nextButton);
-
-				gridPane.add(borderPane, 1, 0);
-				gridPane.add(selectedArea, 1, 1);
-				break;
-
-			case INTENSITIES:
-				displayedProperty = DisplayedProperty.ENERGIES;
-				gridPane.getChildren().remove(borderPane);
-				gridPane.getChildren().remove(selectedArea);
-				selectedArea = energiesArea;
-
-				borderPane = new BorderPane();
-				borderPane.setLeft(previousButton);
-				borderPane.setCenter(energiesLabel);
-				borderPane.setRight(nextButton);
-
-				gridPane.add(borderPane, 1, 0);
-				gridPane.add(selectedArea, 1, 1);
-				break;
-
-			case ENERGIES:
 				displayedProperty = DisplayedProperty.PROPERTIES;
 				gridPane.getChildren().remove(borderPane);
 				gridPane.getChildren().remove(selectedArea);
@@ -210,6 +168,10 @@ public class BenzenoidCollectionPane extends Tab {
 				gridPane.add(borderPane, 1, 0);
 				gridPane.add(selectedArea, 1, 1);
 				break;
+
+			default:
+				//DO_NOTHING
+				break;
 			}
 
 		});
@@ -218,14 +180,14 @@ public class BenzenoidCollectionPane extends Tab {
 			switch (displayedProperty) {
 
 			case PROPERTIES:
-				displayedProperty = DisplayedProperty.ENERGIES;
+				displayedProperty = DisplayedProperty.FREQUENCIES;
 				gridPane.getChildren().remove(borderPane);
 				gridPane.getChildren().remove(selectedArea);
-				selectedArea = energiesArea;
+				selectedArea = frequenciesArea;
 
 				borderPane = new BorderPane();
 				borderPane.setLeft(previousButton);
-				borderPane.setCenter(energiesLabel);
+				borderPane.setCenter(frequenciesLabel);
 				borderPane.setRight(nextButton);
 
 				gridPane.add(borderPane, 1, 0);
@@ -246,35 +208,9 @@ public class BenzenoidCollectionPane extends Tab {
 				gridPane.add(borderPane, 1, 0);
 				gridPane.add(selectedArea, 1, 1);
 				break;
-
-			case INTENSITIES:
-				displayedProperty = DisplayedProperty.FREQUENCIES;
-				gridPane.getChildren().remove(borderPane);
-				gridPane.getChildren().remove(selectedArea);
-				selectedArea = frequenciesArea;
-
-				borderPane = new BorderPane();
-				borderPane.setLeft(previousButton);
-				borderPane.setCenter(frequenciesLabel);
-				borderPane.setRight(nextButton);
-
-				gridPane.add(borderPane, 1, 0);
-				gridPane.add(selectedArea, 1, 1);
-				break;
-
-			case ENERGIES:
-				displayedProperty = DisplayedProperty.INTENSITIES;
-				gridPane.getChildren().remove(borderPane);
-				gridPane.getChildren().remove(selectedArea);
-				selectedArea = intensitiesArea;
-
-				borderPane = new BorderPane();
-				borderPane.setLeft(previousButton);
-				borderPane.setCenter(intensitiesLabel);
-				borderPane.setRight(nextButton);
-
-				gridPane.add(borderPane, 1, 0);
-				gridPane.add(selectedArea, 1, 1);
+				
+			default:
+				//DO_NOTHING
 				break;
 
 			}
@@ -636,22 +572,8 @@ public class BenzenoidCollectionPane extends Tab {
 			selectedArea = frequenciesArea;
 			break;
 
-		case INTENSITIES:
-			// propertiesBox.getChildren().addAll(previousButton, frequenciesLabel,
-			// nextButton);
-			borderPane.setLeft(previousButton);
-			borderPane.setCenter(intensitiesLabel);
-			borderPane.setRight(nextButton);
-			selectedArea = intensitiesArea;
-			break;
-
-		case ENERGIES:
-			// propertiesBox.getChildren().addAll(previousButton, energiesLabel,
-			// nextButton);
-			borderPane.setLeft(previousButton);
-			borderPane.setCenter(energiesLabel);
-			borderPane.setRight(nextButton);
-			selectedArea = energiesArea;
+		default:
+			//DO_NOTHING
 			break;
 		}
 

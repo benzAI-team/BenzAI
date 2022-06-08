@@ -456,13 +456,15 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			ResultLogFile log = getMolecule().getNicsResult();
 			
 			if (log != null) {
-				b.append("i Freq Inten");
+				b.append("i\tFreq\tInten\n");
 				for (int i = 0 ; i < log.getNbFrequencies() ; i++) {
-					b.append(i + " " + log.getFrequency(i) + " " + log.getIntensity(i) + "\n");
+					b.append(i + "\t" + log.getFrequency(i) + "\t" + log.getIntensity(i) + "\n");
 				}
 				b.append("final energy: " + log.getFinalEnergy().get(log.getFinalEnergy().size() - 1));
 			}
 			
+			irData = b.toString();
+			return irData;
 		}
 		
 		return "";
