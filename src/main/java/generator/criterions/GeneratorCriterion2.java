@@ -6,7 +6,7 @@ import java.util.Map;
 public abstract class GeneratorCriterion2 {
 
 	public enum Operator {
-		LEQ, LT, EQ, GT, GEQ, DIFF, EVEN, ODD, NONE
+		LEQ, LT, EQ, GT, GEQ, DIFF, EVEN, ODD, MIN, MAX, NONE
 	}
 
 	protected Operator operator;

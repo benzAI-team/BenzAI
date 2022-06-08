@@ -10,6 +10,10 @@ import solveur.LinAlgorithm;
 
 public class Utils {
 
+	public static String [] splitBySeparators(String str) {
+		return str.split("\\s+");
+	}
+	
 	public static Integer [] toArray(ArrayList<Integer> list) {
 		Integer [] array = new Integer[list.size()];
 		

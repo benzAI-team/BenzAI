@@ -11,6 +11,7 @@ import view.generator.boxes.HBoxIrregularityCriterion;
 import view.generator.boxes.HBoxNbCarbonsCriterion;
 import view.generator.boxes.HBoxNbHexagonsCriterion;
 import view.generator.boxes.HBoxNbHydrogensCriterion;
+import view.generator.boxes.HBoxNbKekuleStructuresCriterion;
 import view.generator.boxes.HBoxNbSolutionsCriterion;
 import view.generator.boxes.HBoxPatternCriterion;
 import view.generator.boxes.HBoxRectangleCriterion;
@@ -44,6 +45,7 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 		this.getItems().add("Catacondensed");
 		this.getItems().add("Symmetries");
 		this.getItems().add("Pattern properties");
+		this.getItems().add("Number of Kekulé structures");
 		this.getItems().add("Number of solutions");
 		this.getItems().add("Time limit");
 
@@ -134,6 +136,11 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 					parent.setHBox(index, box);
 				}
 
+				else if (value.equals("Number of Kekulé structures")) {
+					HBoxCriterion box = new HBoxNbKekuleStructuresCriterion(parent, this);
+					parent.setHBox(index, box);
+				}
+				
 				else if (value.equals("Time limit")) {
 					HBoxCriterion box = new HBoxTimeoutCriterion(parent, this);
 					parent.setHBox(index, box);

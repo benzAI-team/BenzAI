@@ -1,13 +1,18 @@
 package gaussbuilder;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import molecules.Molecule;
 import parsers.GraphParser;
 import utils.Triplet;
+import utils.Utils;
 
 
 public class NewFormat {
@@ -51,6 +56,75 @@ public class NewFormat {
 
 		w.close();
 	}
+	
+	public static void buildCom(String inputXYZ, String outputCom) throws IOException {
+	
+		BufferedReader r = new BufferedReader(new FileReader(new File(inputXYZ)));
+		BufferedWriter w = new BufferedWriter(new FileWriter(new File(outputCom)));
+		
+//		w.write("%mem=1Gb" + "\n");
+//		w.write("# opt b3lyp/6-31G" + "\n");
+//		w.write("\n");
+//		w.write(title + "\n");
+//		w.write("\n");
+//		if (spin % 2 == 0)
+//			w.write(charge + " 1" + "\n");
+//		else
+//			w.write(charge + " 2" + "\n");
+		
+		String line;
+		boolean first = true;
+		
+		ArrayList<String> lines = new ArrayList<>();
+		
+		int nbCarbons = 0;
+		int nbHydrogens = 0;
+		
+		while((line = r.readLine()) != null) {
+			if (first)
+				first = false;
+			else {
+				lines.add(line);
+				
+				String [] split = Utils.splitBySeparators(line);
+				String atom = split[2];
+				if (atom.equals("C"))
+					nbCarbons ++;
+				else if (atom.equals("H"))
+					nbHydrogens ++;
+			}
+		}
+		
+		int spin = (6 * nbCarbons) + nbHydrogens;
+		int charge = 0;
+		
+		w.write("%mem=1Gb" + "\n");
+		w.write("# opt b3lyp/6-31G" + "\n");
+		w.write("\n");
+		w.write(inputXYZ + "\n");
+		w.write("\n");
+		if (spin % 2 == 0)
+			w.write(charge + " 1" + "\n");
+		else
+			w.write(charge + " 2" + "\n");
+		
+		for (String l : lines) {
+			
+			String [] split = Utils.splitBySeparators(l);
+			
+			String atom = split[2];
+			String x = split[3];
+			String y = split[4];
+			String z = split[5];
+			
+			w.write(" " + atom + "\t" + x + "\t" + y + "\t" + z + "\n");
+		}
+		
+		w.write("\n");
+		
+		w.close();
+		r.close();
+	}
 
 	public static void main(String[] args) throws IOException {
 		//Molecule m = GraphParser
@@ -58,14 +132,16 @@ public class NewFormat {
 
 		//generate(m, "/home/adrien/Documents/old_log_files/bad_benzenoids/7_hexagons202.xyz");
 		
-		File dir = new File("/home/adrien/Documents/old_log_files/bad_benzenoids/");
-		for (File f : dir.listFiles()) {
-			if (f.getName().endsWith(".graph_coord")) {
-				System.out.println("Treating " + f.getAbsolutePath());
-				Molecule m = GraphParser.parseUndirectedGraph(f);
-				generate(m, f.getAbsolutePath().replace(".graph_coord", ".xyz"));
-			}
-		}
+//		File dir = new File("/home/adrien/Documents/old_log_files/bad_benzenoids/");
+//		for (File f : dir.listFiles()) {
+//			if (f.getName().endsWith(".graph_coord")) {
+//				System.out.println("Treating " + f.getAbsolutePath());
+//				Molecule m = GraphParser.parseUndirectedGraph(f);
+//				generate(m, f.getAbsolutePath().replace(".graph_coord", ".xyz"));
+//			}
+//		}
+		
+		buildCom("/home/adrien/Documents/old_log_files/bad_benzenoids/7_hexagons202.xyz_2", "/home/adrien/Documents/old_log_files/bad_benzenoids/7_hexagons202_tinker.com");
 		
 	}
 }

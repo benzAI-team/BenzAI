@@ -12,6 +12,7 @@ import application.BenzenoidApplication;
 import application.Configuration;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
+import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 import generator.ModelBuilder;
 import generator.ResultSolver;
@@ -42,6 +43,8 @@ import parsers.GraphParser;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
+import view.filtering.criterions.FilteringOperator;
+import view.filtering.criterions.NbKekuleStructuresCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
 import view.generator.boxes.HBoxNbCarbonsCriterion;
@@ -81,6 +84,8 @@ public class GeneratorPane extends ScrollPane {
 
 	private boolean valid;
 
+	ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
+	
 	/*
 	 * Solver informations
 	 */
@@ -403,6 +408,22 @@ public class GeneratorPane extends ScrollPane {
 
 		int index = beginIndex;
 
+		NbKekuleStructuresCriterion kekuleFilteringCriterion = null;
+		GeneratorCriterion kekuleGeneratorCriterion = null;
+		
+		
+		for (GeneratorCriterion criterion : criterions) {
+			if (criterion.getSubject() == Subject.NB_KEKULE_STRUCTURES) {
+				kekuleGeneratorCriterion = criterion;
+				if (criterion.getOperator() != Operator.MIN && criterion.getOperator() != Operator.MAX) {
+					FilteringOperator operator = FilteringOperator.getOperator(criterion.getOperatorString());
+					kekuleFilteringCriterion = new NbKekuleStructuresCriterion(operator, Double.parseDouble(criterion.getValue()));
+				}
+				
+				break;
+			}
+		}
+		
 		ArrayList<Molecule> molecules = new ArrayList<>();
 
 		for (int i = 0; i < resultSolver.size(); i++) {
@@ -452,6 +473,48 @@ public class GeneratorPane extends ScrollPane {
 			}
 		}
 
+		if (kekuleFilteringCriterion != null) {
+			ArrayList<Molecule> filteredMolecules = new ArrayList<>();
+			
+			for (Molecule molecule : molecules) {
+				if (kekuleFilteringCriterion.checksCriterion(molecule))
+					filteredMolecules.add(molecule);
+			}
+			return filteredMolecules;
+		}
+		
+		else if (kekuleGeneratorCriterion != null) {
+			
+			ArrayList<Molecule> minMolecules = new ArrayList<>();
+			ArrayList<Molecule> maxMolecules = new ArrayList<>();
+			
+			double nbMinKekuleStructures = Double.MAX_VALUE;
+			double nbMaxKekuleStructures = -1.0;
+			
+			for (Molecule molecule : molecules) {
+				double nbKekuleStructures = molecule.getNbKekuleStructures();
+				
+				if (nbKekuleStructures >= nbMaxKekuleStructures) {
+					if (nbKekuleStructures > nbMaxKekuleStructures) {
+						maxMolecules.clear();
+					}
+					maxMolecules.add(molecule);
+				}
+				
+				if (nbKekuleStructures <= nbMinKekuleStructures) {
+					if (nbKekuleStructures < nbMinKekuleStructures) {
+						minMolecules.clear();
+					}
+					minMolecules.add(molecule);
+				}
+			}
+			
+			if (kekuleGeneratorCriterion.getOperator() == Operator.MIN)
+				return minMolecules;
+			else
+				return maxMolecules;
+		}
+		
 		return molecules;
 	}
 
@@ -460,7 +523,7 @@ public class GeneratorPane extends ScrollPane {
 
 		if (valid) {
 
-			ArrayList<GeneratorCriterion> criterions = buildCriterions();
+			criterions = buildCriterions();
 			HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = buildCriterionsMap(criterions);
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
@@ -489,7 +552,7 @@ public class GeneratorPane extends ScrollPane {
 			application.addTask("Benzenoid generation");
 
 			generatedMolecules = new ArrayList<>();
-
+			
 			final Service<Void> calculateService = new Service<Void>() {
 
 				@Override
