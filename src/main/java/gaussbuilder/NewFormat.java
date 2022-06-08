@@ -9,6 +9,7 @@ import molecules.Molecule;
 import parsers.GraphParser;
 import utils.Triplet;
 
+
 public class NewFormat {
 
 	public static void generate(Molecule molecule, String outputPath) throws IOException {

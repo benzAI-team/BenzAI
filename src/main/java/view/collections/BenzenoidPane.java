@@ -48,7 +48,8 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 	private String frequencies;
 	private String intensities;
 	private String energies;
-
+	private String irData;
+	
 	private int index;
 
 	private boolean isSelected;
@@ -92,7 +93,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			if (!benzenoidSetPane.isLock()) {
 				benzenoidSetPane.setHoveringPane(this);
 				benzenoidSetPane.setDescription(buildDescription());
-				benzenoidSetPane.setFrequencies(buildFrequencies());
+				benzenoidSetPane.setFrequencies(buildIRDATA());
 				benzenoidSetPane.setEnergies(buildEnergies());
 				benzenoidSetPane.setIntensities(buildIntensities());
 			}
@@ -208,7 +209,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		isSelected = true;
 
 		benzenoidSetPane.setDescription(buildDescription());
-		benzenoidSetPane.setFrequencies(buildFrequencies());
+		benzenoidSetPane.setFrequencies(buildIRDATA());
 		benzenoidSetPane.setEnergies(buildEnergies());
 		benzenoidSetPane.setIntensities(buildIntensities());
 
@@ -444,6 +445,29 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		return frequencies;
 	}
 
+	public String buildIRDATA() {
+		
+		if (irData != null)
+			return irData;
+		
+		if (getMolecule().databaseCheckedIR()) {
+			
+			StringBuilder b = new StringBuilder();
+			ResultLogFile log = getMolecule().getNicsResult();
+			
+			if (log != null) {
+				b.append("i Freq Inten");
+				for (int i = 0 ; i < log.getNbFrequencies() ; i++) {
+					b.append(i + " " + log.getFrequency(i) + " " + log.getIntensity(i) + "\n");
+				}
+				b.append("final energy: " + log.getFinalEnergy().get(log.getFinalEnergy().size() - 1));
+			}
+			
+		}
+		
+		return "";
+	}
+	
 	public String buildEnergies() {
 
 		if (energies != null)
