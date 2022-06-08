@@ -148,10 +148,10 @@ public class GeneratorCriterion {
 		else if (operatorString.equals("ODD"))
 			return Operator.ODD;
 		
-		else if (operatorString.equals("MIN"))
+		else if (operatorString.equals("Min"))
 			return Operator.MIN;
 		
-		else if (operatorString.equals("MAX"))
+		else if (operatorString.equals("Max"))
 			return Operator.MAX;
 
 		else

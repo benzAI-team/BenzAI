@@ -41,7 +41,7 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 			valid = true;
 			this.getChildren().remove(warningIcon);
 			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			this.getChildren().addAll(fieldValue, deleteButton);
 		}
 		
 	}

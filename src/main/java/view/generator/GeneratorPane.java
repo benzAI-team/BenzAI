@@ -499,6 +499,7 @@ public class GeneratorPane extends ScrollPane {
 						maxMolecules.clear();
 					}
 					maxMolecules.add(molecule);
+					nbMaxKekuleStructures = nbKekuleStructures;
 				}
 				
 				if (nbKekuleStructures <= nbMinKekuleStructures) {
@@ -506,6 +507,7 @@ public class GeneratorPane extends ScrollPane {
 						minMolecules.clear();
 					}
 					minMolecules.add(molecule);
+					nbMinKekuleStructures = nbKekuleStructures;
 				}
 			}
 			
