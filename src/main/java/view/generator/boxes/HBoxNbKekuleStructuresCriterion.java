@@ -23,7 +23,6 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 	protected void checkValidity() {
 		
 		if (operatorChoiceBox.getValue().equals("Min") || operatorChoiceBox.getValue().equals("Max")) {
-			//System.out.println("1");
 			valid = true;
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(warningIcon);
@@ -32,7 +31,6 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 		}
 		
 		else if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
-			//System.out.println("2");
 			valid = false;
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(warningIcon);
@@ -41,13 +39,12 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 		}
 
 		else {
-			//System.out.println("3");
 			valid = true;
 			this.getChildren().remove(warningIcon);
 			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(fieldValue, deleteButton);
+			this.getChildren().addAll(deleteButton);
 		}
-		
+    
 	}
 
 	@Override
