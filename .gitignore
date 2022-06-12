@@ -7,3 +7,4 @@ config
 bin/*
 .gitignore
 *.graph_coord
+results.txt
