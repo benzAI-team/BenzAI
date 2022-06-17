@@ -368,7 +368,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem copyItem = new MenuItem("Copy");
 		MenuItem pasteItem = new MenuItem("Paste");
 		MenuItem deleteItem = new MenuItem("Delete");
-    
+
 		Menu exportMenu = new Menu("Export");
 		Menu exportBenzenoidItem = new Menu("Export benzenoid");
 		MenuItem exportPropertiesItem = new MenuItem("Export properties");
@@ -389,6 +389,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem reLinItem = new MenuItem("Resonance energy (Lin)");
 		MenuItem reLinFanItem = new MenuItem("Resonance energy (Lin & Fan)");
 		MenuItem clarItem = new MenuItem("Clar cover");
+		MenuItem clarStatsItem = new MenuItem("Clar cover with fixed bond");
 		MenuItem rboItem = new MenuItem("Ring bond Order");
 
 		MenuItem dbItem = new MenuItem("Find in database (DEBUG)");
@@ -399,7 +400,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem radicalarStatsItem = new MenuItem("Radicalar statistics");
 
 		MenuItem ims2d1aItem = new MenuItem("IMS2D-1A");
-		
+
 		exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
 
 		renameMenu.setOnAction(e -> {
@@ -424,7 +425,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ims2d1aItem.setOnAction(e -> {
 			ims2d1a();
 		});
-		
+
 		radicalarStatsItem.setOnAction(e -> {
 			radicalarStatistics();
 		});
@@ -473,6 +474,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		clarItem.setOnAction(e -> {
 			clarCover();
+		});
+
+		clarStatsItem.setOnAction(e -> {
+			clarCoverStatsFixed();
 		});
 
 		rboItem.setOnAction(e -> {
@@ -533,10 +538,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			checkDatabase();
 		});
 
-		contextMenu.getItems().addAll(exportMenu,importCollectionItem, exportCollectionItem, new SeparatorMenuItem(), 
-        renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem, checkDatabaseItem, new SeparatorMenuItem(), 
-        drawItem,  new SeparatorMenuItem(), 
-        reLinItem, reLinFanItem, clarItem, rboItem, irregularityItem, irSpectraItem, radicalarStatsItem/*, ims2d1aItem*/);
+		contextMenu.getItems().addAll(exportMenu, importCollectionItem, exportCollectionItem, new SeparatorMenuItem(),
+				renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem,
+				checkDatabaseItem, new SeparatorMenuItem(), drawItem, new SeparatorMenuItem(), reLinItem, reLinFanItem,
+				clarItem, clarStatsItem, rboItem, irregularityItem, irSpectraItem,
+				radicalarStatsItem/* , ims2d1aItem */);
 
 		this.setOnContextMenuRequested(e -> {
 
@@ -758,6 +764,78 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		tabPane.getSelectionModel().clearAndSelect(0);
 		addBenzenoidSetPane(benzenoidSetPane);
 		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+	}
+
+	public void clarCoverStatsFixed() {
+
+		BenzenoidCollectionPane currentPane = getSelectedTab();
+		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+
+		String name = "Clar cover - fixed bonds";
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
+
+		ArrayList<BenzenoidPane> panes = new ArrayList<>();
+
+		for (BenzenoidPane pane : selectedBenzenoidPanes)
+			panes.add(pane);
+
+		indexClar = 0;
+		int size = panes.size();
+
+		System.out.println("Computing Clar Cover of " + size + "benzenoids");
+		log("Clar Cover (" + size + "benzenoids)", true);
+
+		for (BenzenoidPane benzenoidPane : panes) {
+			Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+			ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverSolver.solve(molecule);
+			if (clarCoverSolutions.size() > 0) {
+
+				// (i,j) = 1 => full simple // (i,j) = 2 => full double
+				int[][] bonds = new int[molecule.getNbNodes()][molecule.getNbNodes()];
+				for (ClarCoverSolution solution : clarCoverSolutions) {
+
+					for (int i = 0; i < molecule.getNbHexagons(); i++) {
+						if (solution.isCircle(i)) {
+							for (int j = 0; j < 6; j++) {
+								int k = (j + 1) % 6;
+
+								int u = molecule.getHexagon(i)[j];
+								int v = molecule.getHexagon(i)[k];
+
+								bonds[u][v] = -1;
+								bonds[v][u] = -1;
+							}
+						}
+					}
+
+					for (int i = 0; i < molecule.getNbNodes(); i++) {
+						for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+							if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+								if (solution.isDoubleBond(i, j)) {
+									if (bonds[i][j] == 0) {
+										bonds[i][j] = 2;
+										bonds[j][i] = 2;
+									} else if (bonds[i][j] == 1) {
+										bonds[i][j] = -1;
+										bonds[j][i] = -1;
+									}
+								} else {
+									if (bonds[i][j] == 0) {
+										bonds[i][j] = 1;
+										bonds[j][i] = 1;
+									} else if (bonds[i][j] == 2) {
+										bonds[i][j] = -1;
+										bonds[j][i] = -1;
+									}
+								}
+							}
+						}
+					}
+				}
+				System.out.print("");
+			}
+		}
 	}
 
 	public void clarCover() {
@@ -1196,16 +1274,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	}
 
 	public void sort(MoleculeComparator comparator, boolean ascending) {
-		
+
 		if (comparator instanceof ResonanceEnergyComparator) {
 			selectAll();
 			resonanceEnergyLin();
-			
+
 //			BenzenoidCollectionPane curentPane = getSelectedTab();
 //			for (Molecule molecule : curentPane.getMolecules())
 //				molecule.getAromaticity();
 		}
-		
+
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 		currentPane.setComparator(comparator);
 		currentPane.sort(ascending);
@@ -1313,7 +1391,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					try {
 						ComConverter.generateComFile(molecule, file, 0, ComType.ER, file.getName());
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -1398,7 +1475,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					try {
 						currentPane.getMolecule(hoveringPane.getIndex()).exportToGraphFile(file);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -1592,37 +1668,37 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	}
 
 	public void ims2d1a() {
-		
+
 		BenzenoidCollectionPane currentPane = getSelectedTab();
-		
+
 		String name = "Ims2D_1A";
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
 				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
-		
+
 		if (currentPane.getSelectedBenzenoidPanes().size() == 0) {
 			Utils.alert("Please, select at least one benzenoid having less than 10 hexagons");
 			return;
 		}
-		
+
 		if (currentPane.getSelectedBenzenoidPanes().size() == 0)
 			selectAll();
-		
+
 		ArrayList<BenzenoidPane> panes = new ArrayList<>();
 		for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes())
 			panes.add(pane);
-		
+
 		for (BenzenoidPane pane : panes) {
 			Molecule molecule = currentPane.getMolecule(pane.getIndex());
 			molecule.getIms2d1a();
 			benzenoidSetPane.addBenzenoid(molecule, DisplayType.IMS2D1A);
 		}
-		
+
 		benzenoidSetPane.refresh();
 		tabPane.getSelectionModel().clearAndSelect(0);
 		addBenzenoidSetPane(benzenoidSetPane);
 		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
 	}
-	
+
 	public void IRSpectra() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
