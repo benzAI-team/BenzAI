@@ -145,6 +145,8 @@ public class ClarCoverFixedBondGroup extends MoleculeGroup {
 					}
 
 					Line line = new Line(x1, y1, x2, y2);
+					line.setStrokeWidth(2.5);
+
 					line.setFill(Color.BLUE);
 					line.setStroke(Color.BLUE);
 					this.getChildren().add(line);
@@ -238,6 +240,7 @@ public class ClarCoverFixedBondGroup extends MoleculeGroup {
 					if (bonds[i][j] == 2) {
 						line.setFill(Color.RED);
 						line.setStroke(Color.RED);
+						line.setStrokeWidth(2.5);
 					}
 
 					this.getChildren().add(line);

@@ -834,8 +834,20 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					}
 				}
 				System.out.print("");
+				molecule.setFixedBonds(bonds);
+
+				ClarCoverSolution clarCoverSolution = clarCoverSolutions.get(clarCoverSolutions.size() - 1);
+				molecule.setClarCoverSolution(clarCoverSolution);
+				benzenoidSetPane.addBenzenoid(molecule, DisplayType.CLAR_COVER_FIXED);
+
 			}
 		}
+
+		benzenoidSetPane.refresh();
+		tabPane.getSelectionModel().clearAndSelect(0);
+		addBenzenoidSetPane(benzenoidSetPane);
+		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+
 	}
 
 	public void clarCover() {

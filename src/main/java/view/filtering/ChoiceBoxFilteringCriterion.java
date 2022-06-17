@@ -2,6 +2,7 @@ package view.filtering;
 
 import javafx.scene.control.ChoiceBox;
 import view.filtering.boxes.HBoxCatacondensedFilteringCriterion;
+import view.filtering.boxes.HBoxConcealedKekuleanFilteringCriterion;
 import view.filtering.boxes.HBoxCoronenoidFilteringCriterion;
 import view.filtering.boxes.HBoxCoronoidFilteringCriterion;
 import view.filtering.boxes.HBoxDiameterFilteringCriterion;
@@ -43,6 +44,7 @@ public class ChoiceBoxFilteringCriterion extends ChoiceBox<String> {
 		this.getItems().add("Symmetries");
 		this.getItems().add("Pattern properties");
 		this.getItems().add("Number of Kekule structures");
+		this.getItems().add("Concealed Kekulean");
 
 		this.setOnAction(e -> {
 
@@ -69,9 +71,14 @@ public class ChoiceBoxFilteringCriterion extends ChoiceBox<String> {
 					HBoxFilteringCriterion box = new HBoxCoronenoidFilteringCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
-				
+
 				else if (value.equals("Number of Kekule structures")) {
 					HBoxFilteringCriterion box = new HBoxNbKekuleStructuresFilteringCriterion(parent, this);
+					parent.setHBox(index, box);
+				}
+
+				else if (value.equals("Concealed Kekulean")) {
+					HBoxFilteringCriterion box = new HBoxConcealedKekuleanFilteringCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
 

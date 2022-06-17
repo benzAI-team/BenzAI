@@ -36,6 +36,7 @@ import solveur.Aromaticity.RIType;
 import solveur.LinFanAlgorithm;
 import utils.Utils;
 import view.groups.AromaticityGroup;
+import view.groups.ClarCoverFixedBondGroup;
 import view.groups.MoleculeGroup;
 
 public class BenzenoidCollectionPane extends Tab {
@@ -45,7 +46,7 @@ public class BenzenoidCollectionPane extends Tab {
 	};
 
 	public enum DisplayType {
-		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A
+		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED
 	};
 
 	private BenzenoidsCollectionsManagerPane parent;
@@ -118,7 +119,7 @@ public class BenzenoidCollectionPane extends Tab {
 		frequenciesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
 		frequenciesLabel.setMaxWidth(Double.MAX_VALUE);
 		frequenciesLabel.setAlignment(Pos.CENTER);
-		
+
 		clarCoverGroups = new ArrayList<>();
 		rboGroups = new ArrayList<>();
 		radicalarGroups = new ArrayList<>();
@@ -170,7 +171,7 @@ public class BenzenoidCollectionPane extends Tab {
 				break;
 
 			default:
-				//DO_NOTHING
+				// DO_NOTHING
 				break;
 			}
 
@@ -208,9 +209,9 @@ public class BenzenoidCollectionPane extends Tab {
 				gridPane.add(borderPane, 1, 0);
 				gridPane.add(selectedArea, 1, 1);
 				break;
-				
+
 			default:
-				//DO_NOTHING
+				// DO_NOTHING
 				break;
 
 			}
@@ -399,6 +400,18 @@ public class BenzenoidCollectionPane extends Tab {
 
 								break;
 
+							case CLAR_COVER_FIXED:
+
+								Group benzenoidDrawClarFixed = new ClarCoverFixedBondGroup(molecule,
+										molecule.getClarCoverSolution(), molecule.getFixedBonds());
+
+								BenzenoidPane benzenoidPaneClarFixedBond = new BenzenoidPane(collectionPane, -1, null,
+										benzenoidDrawClarFixed, "", molecule.getVerticesSolutions(), index, false);
+
+								benzenoidPanes.add(benzenoidPaneClarFixedBond);
+
+								break;
+
 							case RBO:
 
 								if (rboGroups.get(i) == null) {
@@ -573,7 +586,7 @@ public class BenzenoidCollectionPane extends Tab {
 			break;
 
 		default:
-			//DO_NOTHING
+			// DO_NOTHING
 			break;
 		}
 
