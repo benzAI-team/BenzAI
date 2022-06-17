@@ -132,16 +132,19 @@ public class NewFormat {
 
 		//generate(m, "/home/adrien/Documents/old_log_files/bad_benzenoids/7_hexagons202.xyz");
 		
-//		File dir = new File("/home/adrien/Documents/old_log_files/bad_benzenoids/");
-//		for (File f : dir.listFiles()) {
-//			if (f.getName().endsWith(".graph_coord")) {
-//				System.out.println("Treating " + f.getAbsolutePath());
-//				Molecule m = GraphParser.parseUndirectedGraph(f);
-//				generate(m, f.getAbsolutePath().replace(".graph_coord", ".xyz"));
-//			}
-//		}
+		File dir = new File("/home/adrien/Documents/old_log_files/bad_benzenoids/");
+		for (File f : dir.listFiles()) {
+			if (f.getName().endsWith(".xyz_2")) {
+				System.out.println("Treating " + f.getAbsolutePath());
+				//Molecule m = GraphParser.parseUndirectedGraph(new File(f.getAbsolutePath().replace(".xyz_2", ".graph_coord")));
+				//generate(m, f.getAbsolutePath().replace(".graph_coord", ".xyz"));
+				buildCom(f.getAbsolutePath(), f.getAbsolutePath().replace(".xyz_2", "_tinker.com"));
+			}
+		}
 		
-		buildCom("/home/adrien/Documents/old_log_files/bad_benzenoids/7_hexagons202.xyz_2", "/home/adrien/Documents/old_log_files/bad_benzenoids/7_hexagons202_tinker.com");
+		
+		
+		
 		
 	}
 }
