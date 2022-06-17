@@ -671,21 +671,18 @@ public class BenzenoidCollectionPane extends Tab {
 			collectionProperties.append(", " + nbRe + " RE view");
 			if (nbRe > 1)
 				collectionProperties.append("s");
-			collectionProperties.append("\t");
 		}
 
 		if (nbClar > 0) {
 			collectionProperties.append(", " + nbClar + " Clar cover view");
 			if (nbClar > 1)
 				collectionProperties.append("s");
-			collectionProperties.append("\t");
 		}
 
 		if (nbRBO > 0) {
-			collectionProperties.append(", " + nbRBO + "RBO view");
+			collectionProperties.append(", " + nbRBO + " RBO view");
 			if (nbRBO > 1)
 				collectionProperties.append("s");
-			collectionProperties.append("\t");
 		}
 
 		parent.setCollectionPropertiesText(collectionProperties.toString());
