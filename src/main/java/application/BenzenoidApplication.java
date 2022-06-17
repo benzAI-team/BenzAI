@@ -573,7 +573,7 @@ public class BenzenoidApplication extends Application {
 		MenuItem rboItem = new MenuItem("Ring Bond Order");
 		MenuItem irregularityStatsItem = new MenuItem("Irregularity Statistics");
 		MenuItem irSpectraItem = new MenuItem("IR Spectra");
-		MenuItem radicalarItem = new MenuItem("Radicalar electrons statistics");
+		MenuItem radicalarItem = new MenuItem("Radicalar statistics");
 		MenuItem ims2d1aItem = new MenuItem("IMS2D-1A");
 		
 		computationsMenu.setOnShowing(e -> {
