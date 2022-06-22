@@ -1151,7 +1151,6 @@ public class Molecule implements Comparable<Molecule> {
 		return hexagons[hexagon];
 	}
 
-	@SuppressWarnings("unused")
 	public RBO getRBO() {
 
 		if (RBO != null)
@@ -1159,62 +1158,6 @@ public class Molecule implements Comparable<Molecule> {
 
 		RBO = RBOSolver.RBO(this);
 		return RBO;
-
-//		if (RBO != null)
-//			return RBO;
-//
-//		RBO = new double[nbHexagons];
-//
-//		ArrayList<ClarCoverSolution> clarCoversSolution = ClarCoverSolver.solve(this);
-//		ArrayList<ClarCoverSolution> kekuleStructuresSolutions = KekuleStructureSolver.solve(this);
-//
-//		double[][] doubleBondsStats = new double[nbNodes][nbNodes];
-//
-//		if (kekuleStructuresSolutions.size() > 0) {
-//
-//			for (ClarCoverSolution kekuleStructureSolution : kekuleStructuresSolutions) {
-//
-//				for (int i = 0; i < nbNodes; i++) {
-//					for (int j = (i + 1); j < nbNodes; j++) {
-//						if (kekuleStructureSolution.isDoubleBond(i, j)) {
-//							doubleBondsStats[i][j] += 1.0;
-//							doubleBondsStats[j][i] += 1.0;
-//						}
-//					}
-//				}
-//			}
-//
-//			for (int i = 0; i < nbNodes; i++) {
-//				for (int j = (i + 1); j < nbNodes; j++) {
-//					if (edgeExists(i, j)) {
-//
-//						double value = (doubleBondsStats[i][j] / (double) kekuleStructuresSolutions.size()) * 100.0;
-//						doubleBondsStats[i][j] = value;
-//						doubleBondsStats[j][i] = value;
-//						System.out.print("");
-//					}
-//				}
-//			}
-//
-//			for (int i = 0; i < nbHexagons; i++) {
-//
-//				int[] hexagon = hexagons[i];
-//				double avg = 0.0;
-//
-//				for (int j = 0; j < 6; j++) {
-//
-//					int u = hexagon[j];
-//					int v = hexagon[(j + 1) % 6];
-//
-//					avg += doubleBondsStats[u][v];
-//				}
-//
-//				avg = avg / 100.0;
-//				RBO[i] = avg;
-//			}
-//		}
-//
-//		return RBO;
 	}
 
 	public void setComparator(MoleculeComparator comparator) {
@@ -1590,6 +1533,7 @@ public class Molecule implements Comparable<Molecule> {
 		return names;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void buildHexagonsCoords2() {
 		int[][] dualGraph = this.getDualGraph();
 
