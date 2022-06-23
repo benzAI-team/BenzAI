@@ -9,7 +9,8 @@ public class GeneratorCriterion {
 		SYMM_ROT_60, SYMM_ROT_120, SYMM_ROT_180, SYMM_VERTICAL, SYMM_ROT_120_V, SYMM_ROT_180_E, XI, N0, N1, N2, N3, N4,
 		VIEW_IRREG, RECTANGLE, SINGLE_PATTERN, MULTIPLE_PATTERNS, FORBIDDEN_PATTERN, OCCURENCE_PATTERN, CORONOID_2,
 		NB_HOLES, ROT_60_MIRROR, ROT_120_MIRROR_H, ROT_120_MIRROR_E, ROT_120_VERTEX_MIRROR, ROT_180_EDGE_MIRROR,
-		ROT_180_MIRROR, MIRROR_H, MIRROR_E, RHOMBUS, TIMEOUT, NB_SOLUTIONS, RHOMBUS_DIMENSION, CORONENOID, NB_CROWNS, NB_KEKULE_STRUCTURES
+		ROT_180_MIRROR, MIRROR_H, MIRROR_E, RHOMBUS, TIMEOUT, NB_SOLUTIONS, RHOMBUS_DIMENSION, CORONENOID, NB_CROWNS,
+		NB_KEKULE_STRUCTURES, CONCEALED
 	}
 
 	public static boolean containsSymmetry(List<GeneratorCriterion> criterions) {
@@ -109,10 +110,10 @@ public class GeneratorCriterion {
 
 		case MIN:
 			return "MIN";
-			
+
 		case MAX:
 			return "MAX";
-			
+
 		default:
 			return null;
 		}
@@ -147,10 +148,10 @@ public class GeneratorCriterion {
 
 		else if (operatorString.equals("ODD"))
 			return Operator.ODD;
-		
+
 		else if (operatorString.equals("Min"))
 			return Operator.MIN;
-		
+
 		else if (operatorString.equals("Max"))
 			return Operator.MAX;
 

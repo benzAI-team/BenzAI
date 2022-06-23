@@ -3,6 +3,7 @@ package view.generator;
 import javafx.scene.control.ChoiceBox;
 import utils.Utils;
 import view.generator.boxes.HBoxCatacondensedCriterion;
+import view.generator.boxes.HBoxConcealedCriterion;
 import view.generator.boxes.HBoxCoronenoidCriterion;
 import view.generator.boxes.HBoxCoronoidCriterion;
 import view.generator.boxes.HBoxCriterion;
@@ -45,7 +46,8 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 		this.getItems().add("Catacondensed");
 		this.getItems().add("Symmetries");
 		this.getItems().add("Pattern properties");
-		this.getItems().add("Number of Kekulé structures");
+		this.getItems().add("Number of Kekule structures");
+		this.getItems().add("Concealed non kekulean");
 		this.getItems().add("Number of solutions");
 		this.getItems().add("Time limit");
 
@@ -140,7 +142,12 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 					HBoxCriterion box = new HBoxNbKekuleStructuresCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
-				
+
+				else if (value.equals("Concealed non kekulean")) {
+					HBoxCriterion box = new HBoxConcealedCriterion(parent, this);
+					parent.setHBox(index, box);
+				}
+
 				else if (value.equals("Time limit")) {
 					HBoxCriterion box = new HBoxTimeoutCriterion(parent, this);
 					parent.setHBox(index, box);
