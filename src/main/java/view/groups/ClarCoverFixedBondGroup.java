@@ -11,12 +11,15 @@ public class ClarCoverFixedBondGroup extends MoleculeGroup {
 
 	private ClarCoverSolution clarCoverSolution;
 	private int[][] bonds;
+	private int[] circles;
 
-	public ClarCoverFixedBondGroup(Molecule molecule, ClarCoverSolution clarCoverSolution, int[][] bonds) {
+	public ClarCoverFixedBondGroup(Molecule molecule, ClarCoverSolution clarCoverSolution, int[][] bonds,
+			int[] circles) {
 		super(molecule);
 		removeTexts();
 		this.clarCoverSolution = clarCoverSolution;
 		this.bonds = bonds;
+		this.circles = circles;
 
 		drawCircles();
 		drawSingleElectrons();
@@ -31,7 +34,10 @@ public class ClarCoverFixedBondGroup extends MoleculeGroup {
 				Hexagon2 hexagon = hexagons[i];
 				Couple<Double, Double> center = hexagon.getCenter();
 				Circle circleShape = new Circle(center.getX(), center.getY(), 15.0);
-				circleShape.setStroke(Color.BLACK);
+				if (circles[i] == 2)
+					circleShape.setStroke(Color.RED);
+				else
+					circleShape.setStroke(Color.BLACK);
 				circleShape.setFill(Color.WHITE);
 				this.getChildren().add(circleShape);
 			}

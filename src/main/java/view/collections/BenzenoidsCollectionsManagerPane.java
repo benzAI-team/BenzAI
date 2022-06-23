@@ -790,7 +790,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 			ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverSolver.solve(molecule);
 			if (clarCoverSolutions.size() > 0) {
-
+				// 0 = non défini // 1 = pas de cercle // 2 = cercle
+				int[] circles = new int[molecule.getNbHexagons()];
 				// (i,j) = 1 => full simple // (i,j) = 2 => full double
 				int[][] bonds = new int[molecule.getNbNodes()][molecule.getNbNodes()];
 				for (ClarCoverSolution solution : clarCoverSolutions) {
@@ -806,6 +807,20 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								bonds[u][v] = -1;
 								bonds[v][u] = -1;
 							}
+
+							if (circles[i] == 0) // non défini
+								circles[i] = 2;
+
+							if (circles[i] == 1) // pas de rond
+								circles[i] = -1;
+						}
+
+						else {
+							if (circles[i] == 0) // non défini
+								circles[i] = 1;
+
+							if (circles[i] == 2) // rond
+								circles[i] = -1;
 						}
 					}
 
@@ -835,6 +850,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				}
 				System.out.print("");
 				molecule.setFixedBonds(bonds);
+				molecule.setFixedCircles(circles);
 
 				ClarCoverSolution clarCoverSolution = clarCoverSolutions.get(clarCoverSolutions.size() - 1);
 				molecule.setClarCoverSolution(clarCoverSolution);

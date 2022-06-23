@@ -82,6 +82,7 @@ public class Molecule implements Comparable<Molecule> {
 	private ClarCoverSolution clarCoverSolution;
 	private ClarCoverGroup clarCoverGroup;
 	private int[][] fixedBonds;
+	private int[] fixedCircles;
 
 	private ArrayList<ClarCoverSolution> clarCoverSolutions;
 	private RadicalarClarCoverGroup radicalarGroup;
@@ -1814,6 +1815,14 @@ public class Molecule implements Comparable<Molecule> {
 
 	public int[][] getFixedBonds() {
 		return fixedBonds;
+	}
+
+	public int[] getFixedCircles() {
+		return fixedCircles;
+	}
+
+	public void setFixedCircles(int[] fixedCircles) {
+		this.fixedCircles = fixedCircles;
 	}
 
 	public IMS2D1AGroup getIMS2D1AGroup() {

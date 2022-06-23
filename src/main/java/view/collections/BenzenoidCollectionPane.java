@@ -403,7 +403,8 @@ public class BenzenoidCollectionPane extends Tab {
 							case CLAR_COVER_FIXED:
 
 								Group benzenoidDrawClarFixed = new ClarCoverFixedBondGroup(molecule,
-										molecule.getClarCoverSolution(), molecule.getFixedBonds());
+										molecule.getClarCoverSolution(), molecule.getFixedBonds(),
+										molecule.getFixedCircles());
 
 								BenzenoidPane benzenoidPaneClarFixedBond = new BenzenoidPane(collectionPane, -1, null,
 										benzenoidDrawClarFixed, "", molecule.getVerticesSolutions(), index, false);
