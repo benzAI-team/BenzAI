@@ -43,6 +43,7 @@ import parsers.GraphParser;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
+import view.filtering.criterions.ConcealedNonKekuleanCriterion;
 import view.filtering.criterions.FilteringOperator;
 import view.filtering.criterions.NbKekuleStructuresCriterion;
 import view.generator.boxes.HBoxCriterion;
@@ -85,7 +86,7 @@ public class GeneratorPane extends ScrollPane {
 	private boolean valid;
 
 	ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-	
+
 	/*
 	 * Solver informations
 	 */
@@ -410,20 +411,24 @@ public class GeneratorPane extends ScrollPane {
 
 		NbKekuleStructuresCriterion kekuleFilteringCriterion = null;
 		GeneratorCriterion kekuleGeneratorCriterion = null;
-		
-		
+		boolean concealed = false;
+
 		for (GeneratorCriterion criterion : criterions) {
 			if (criterion.getSubject() == Subject.NB_KEKULE_STRUCTURES) {
 				kekuleGeneratorCriterion = criterion;
 				if (criterion.getOperator() != Operator.MIN && criterion.getOperator() != Operator.MAX) {
 					FilteringOperator operator = FilteringOperator.getOperator(criterion.getOperatorString());
-					kekuleFilteringCriterion = new NbKekuleStructuresCriterion(operator, Double.parseDouble(criterion.getValue()));
+					kekuleFilteringCriterion = new NbKekuleStructuresCriterion(operator,
+							Double.parseDouble(criterion.getValue()));
 				}
-				
+
 				break;
 			}
+
+			else if (criterion.getSubject() == Subject.CONCEALED)
+				concealed = true;
 		}
-		
+
 		ArrayList<Molecule> molecules = new ArrayList<>();
 
 		for (int i = 0; i < resultSolver.size(); i++) {
@@ -473,27 +478,29 @@ public class GeneratorPane extends ScrollPane {
 			}
 		}
 
+		ArrayList<Molecule> filteredMolecules = molecules;
+
 		if (kekuleFilteringCriterion != null) {
-			ArrayList<Molecule> filteredMolecules = new ArrayList<>();
-			
+			ArrayList<Molecule> kekuleMolecules = new ArrayList<>();
+
 			for (Molecule molecule : molecules) {
 				if (kekuleFilteringCriterion.checksCriterion(molecule))
-					filteredMolecules.add(molecule);
+					kekuleMolecules.add(molecule);
 			}
-			return filteredMolecules;
+			filteredMolecules = kekuleMolecules;
 		}
-		
+
 		else if (kekuleGeneratorCriterion != null) {
-			
+
 			ArrayList<Molecule> minMolecules = new ArrayList<>();
 			ArrayList<Molecule> maxMolecules = new ArrayList<>();
-			
+
 			double nbMinKekuleStructures = Double.MAX_VALUE;
 			double nbMaxKekuleStructures = -1.0;
-			
+
 			for (Molecule molecule : molecules) {
 				double nbKekuleStructures = molecule.getNbKekuleStructures();
-				
+
 				if (nbKekuleStructures >= nbMaxKekuleStructures) {
 					if (nbKekuleStructures > nbMaxKekuleStructures) {
 						maxMolecules.clear();
@@ -501,7 +508,7 @@ public class GeneratorPane extends ScrollPane {
 					maxMolecules.add(molecule);
 					nbMaxKekuleStructures = nbKekuleStructures;
 				}
-				
+
 				if (nbKekuleStructures <= nbMinKekuleStructures) {
 					if (nbKekuleStructures < nbMinKekuleStructures) {
 						minMolecules.clear();
@@ -510,14 +517,26 @@ public class GeneratorPane extends ScrollPane {
 					nbMinKekuleStructures = nbKekuleStructures;
 				}
 			}
-			
+
 			if (kekuleGeneratorCriterion.getOperator() == Operator.MIN)
-				return minMolecules;
+				filteredMolecules = minMolecules;
 			else
-				return maxMolecules;
+				filteredMolecules = maxMolecules;
 		}
-		
-		return molecules;
+
+		if (concealed) {
+			ConcealedNonKekuleanCriterion concealedCriterion = new ConcealedNonKekuleanCriterion();
+			ArrayList<Molecule> concealeds = new ArrayList<>();
+
+			for (Molecule molecule : filteredMolecules) {
+				if (concealedCriterion.checksCriterion(molecule))
+					concealeds.add(molecule);
+			}
+
+			filteredMolecules = concealeds;
+		}
+
+		return filteredMolecules;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -554,7 +573,7 @@ public class GeneratorPane extends ScrollPane {
 			application.addTask("Benzenoid generation");
 
 			generatedMolecules = new ArrayList<>();
-			
+
 			final Service<Void> calculateService = new Service<Void>() {
 
 				@Override
