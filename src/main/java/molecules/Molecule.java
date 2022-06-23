@@ -83,6 +83,7 @@ public class Molecule implements Comparable<Molecule> {
 	private ClarCoverGroup clarCoverGroup;
 	private int[][] fixedBonds;
 	private int[] fixedCircles;
+	private ArrayList<int[][]> kekuleStructures;
 
 	private ArrayList<ClarCoverSolution> clarCoverSolutions;
 	private RadicalarClarCoverGroup radicalarGroup;
@@ -1847,5 +1848,13 @@ public class Molecule implements Comparable<Molecule> {
 				colorShift--;
 		}
 		return colorShift;
+	}
+
+	public ArrayList<int[][]> getKekuleStructures() {
+		return kekuleStructures;
+	}
+
+	public void setKekuleStructures(ArrayList<int[][]> kekuleStructures) {
+		this.kekuleStructures = kekuleStructures;
 	}
 }

@@ -37,6 +37,7 @@ import solveur.LinFanAlgorithm;
 import utils.Utils;
 import view.groups.AromaticityGroup;
 import view.groups.ClarCoverFixedBondGroup;
+import view.groups.KekuleStructureGroup;
 import view.groups.MoleculeGroup;
 
 public class BenzenoidCollectionPane extends Tab {
@@ -46,7 +47,7 @@ public class BenzenoidCollectionPane extends Tab {
 	};
 
 	public enum DisplayType {
-		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED
+		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED, KEKULE
 	};
 
 	private BenzenoidsCollectionsManagerPane parent;
@@ -397,6 +398,17 @@ public class BenzenoidCollectionPane extends Tab {
 
 								// flowPane.getChildren().add(benzenoidPaneClar);
 								benzenoidPanes.add(benzenoidPaneClar);
+
+								break;
+
+							case KEKULE:
+								int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
+								Group kekuleGroup = new KekuleStructureGroup(molecule, kekuleStructure);
+
+								BenzenoidPane kekulePane = new BenzenoidPane(collectionPane, -1, null, kekuleGroup, "",
+										molecule.getVerticesSolutions(), index, false);
+
+								benzenoidPanes.add(kekulePane);
 
 								break;
 

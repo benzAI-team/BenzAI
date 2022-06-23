@@ -6,14 +6,67 @@ import java.util.List;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
+import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
+import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
 import molecules.Molecule;
+import molecules.UndirPonderateGraph;
+import parsers.GraphParser;
 import solution.ClarCoverSolution;
 import utils.Couple;
 
 public class KekuleStructureSolver {
+
+	public static ArrayList<int[][]> computeKekuleStructures(Molecule molecule, int nbSolutionsMax) {
+
+		ArrayList<int[][]> structures = new ArrayList<>();
+
+		Model model = new Model("Kekulé Structures");
+
+		BoolVar[] edges = new BoolVar[molecule.getNbEdges()];
+
+		for (int i = 0; i < molecule.getNbEdges(); i++) {
+			edges[i] = model.boolVar("edge " + (i + 1));
+		}
+
+		for (int i = 0; i < molecule.getEdgeMatrix().size(); i++) {
+			int nbAdjacentEdges = molecule.getEdgeMatrix().get(i).size();
+			BoolVar[] adjacentEdges = new BoolVar[nbAdjacentEdges];
+
+			for (int j = 0; j < nbAdjacentEdges; j++) {
+				adjacentEdges[j] = edges[molecule.getEdgeMatrix().get(i).get(j)];
+			}
+
+			model.sum(adjacentEdges, "=", 1).post();
+		}
+
+		model.getSolver().setSearch(new IntStrategy(edges, new FirstFail(model), new IntDomainMin()));
+		Solver solver = model.getSolver();
+		int nbSolutions = 0;
+
+		while (solver.solve() && nbSolutions < nbSolutionsMax) {
+			Solution solution = new Solution(model);
+			solution.record();
+
+			int[] edgesValues = new int[molecule.getNbEdges()];
+
+			for (int j = 0; j < molecule.getNbEdges(); j++) {
+				edgesValues[j] = solution.getIntVal(edges[j]);
+			}
+
+			/*
+			 * Computing the curent Kekulé's structure
+			 */
+
+			UndirPonderateGraph kekuleStructure = GraphParser.exportSolutionToPonderateGraph(molecule, edgesValues);
+			structures.add(kekuleStructure.getAdjacencyMatrix());
+		}
+
+		return structures;
+	}
 
 	public static ArrayList<ClarCoverSolution> solve(Molecule molecule) {
 
@@ -27,7 +80,6 @@ public class KekuleStructureSolver {
 
 		IntVar nbCircles = model.intVar("nb_circles", 0, molecule.getNbHexagons());
 		IntVar nbSingleElectrons = model.intVar("nb_single_electrons", 0, 2);
-		
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++)
 			circles[i] = model.boolVar("circle[" + i + "]");
@@ -40,7 +92,7 @@ public class KekuleStructureSolver {
 					bonds[index] = bondVariable;
 					bondsMatrix[i][j] = bondVariable;
 					bondsMatrix[j][i] = bondVariable;
-					
+
 					index++;
 				}
 			}
@@ -68,7 +120,7 @@ public class KekuleStructureSolver {
 
 			model.sum(sum, "=", 1).post();
 		}
-		
+
 		model.sum(circles, "=", nbCircles).post();
 		model.arithm(nbCircles, "=", 0).post();
 		model.sum(singleElectrons, "=", nbSingleElectrons).post();
@@ -82,9 +134,9 @@ public class KekuleStructureSolver {
 		ArrayList<ClarCoverSolution> clarCoverSolutions = new ArrayList<>();
 
 		List<Solution> solutions = solver.findAllOptimalSolutions(OBJ, Model.MAXIMIZE);
-		
+
 		for (Solution solution : solutions) {
-			
+
 			int[] circlesInt = new int[circles.length];
 			int[][] bondsInt = new int[molecule.getNbNodes()][molecule.getNbNodes()];
 			int[] singleElectronsInt = new int[molecule.getNbNodes()];
@@ -93,7 +145,7 @@ public class KekuleStructureSolver {
 				circlesInt[i] = solution.getIntVal(circles[i]);
 
 			for (int i = 0; i < molecule.getNbNodes(); i++) {
-				
+
 				singleElectronsInt[i] = solution.getIntVal(singleElectrons[i]);
 
 				for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
@@ -105,11 +157,12 @@ public class KekuleStructureSolver {
 				}
 
 			}
-			
+
 			clarCoverSolutions.add(new ClarCoverSolution(circlesInt, bondsInt, singleElectronsInt));
-			
+
 		}
-		
+
 		return clarCoverSolutions;
 	}
+
 }

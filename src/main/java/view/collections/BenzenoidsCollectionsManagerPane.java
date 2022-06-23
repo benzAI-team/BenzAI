@@ -52,6 +52,7 @@ import parsers.GraphParser;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity.RIType;
 import solveur.ClarCoverSolver;
+import solveur.KekuleStructureSolver;
 import spectrums.IRSpectra;
 import spectrums.Parameter;
 import spectrums.ResultLogFile;
@@ -864,6 +865,33 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		addBenzenoidSetPane(benzenoidSetPane);
 		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
 
+	}
+
+	public void kekuleStructures() {
+		BenzenoidCollectionPane currentPane = getSelectedTab();
+		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel("Kekule structures"));
+
+		if (selectedBenzenoidPanes.size() != 1) {
+			Utils.alert("Please select only one benzenoid");
+		}
+
+		else {
+			Molecule molecule = selectedBenzenoidPanes.get(0).getMolecule();
+			ArrayList<int[][]> kekuleStructures = KekuleStructureSolver.computeKekuleStructures(molecule, 20);
+			molecule.setKekuleStructures(kekuleStructures);
+
+			for (int[][] kekuleStructure : kekuleStructures) {
+				benzenoidSetPane.addBenzenoid(molecule, DisplayType.KEKULE);
+			}
+		}
+
+		benzenoidSetPane.refresh();
+		tabPane.getSelectionModel().clearAndSelect(0);
+		addBenzenoidSetPane(benzenoidSetPane);
+		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
 	}
 
 	public void clarCover() {
