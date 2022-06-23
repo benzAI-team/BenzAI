@@ -391,6 +391,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem reLinFanItem = new MenuItem("Resonance energy (Lin & Fan)");
 		MenuItem clarItem = new MenuItem("Clar cover");
 		MenuItem clarStatsItem = new MenuItem("Clar cover with fixed bond");
+		MenuItem kekuleItem = new MenuItem("Kekule structures");
 		MenuItem rboItem = new MenuItem("Ring bond Order");
 
 		MenuItem dbItem = new MenuItem("Find in database (DEBUG)");
@@ -421,6 +422,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			stage.setScene(scene);
 			stage.show();
 
+		});
+
+		kekuleItem.setOnAction(e -> {
+			kekuleStructures();
 		});
 
 		ims2d1aItem.setOnAction(e -> {
@@ -542,7 +547,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		contextMenu.getItems().addAll(exportMenu, importCollectionItem, exportCollectionItem, new SeparatorMenuItem(),
 				renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem,
 				checkDatabaseItem, new SeparatorMenuItem(), drawItem, new SeparatorMenuItem(), reLinItem, reLinFanItem,
-				clarItem, clarStatsItem, rboItem, irregularityItem, irSpectraItem,
+				clarItem, clarStatsItem, kekuleItem, rboItem, irregularityItem, irSpectraItem,
 				radicalarStatsItem/* , ims2d1aItem */);
 
 		this.setOnContextMenuRequested(e -> {

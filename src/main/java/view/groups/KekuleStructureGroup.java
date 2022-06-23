@@ -18,7 +18,7 @@ public class KekuleStructureGroup extends MoleculeGroup {
 
 		for (int i = 0; i < bonds.length; i++) {
 			for (int j = (i + 1); j < bonds.length; j++) {
-				if (bonds[i][j] == 2) {
+				if (bonds[i][j] == 1) {
 
 					int hexagonIndex = molecule.getHexagonsInvolved(i, j).get(0);
 					int[] hexagon = molecule.getHexagon(hexagonIndex);
