@@ -570,6 +570,7 @@ public class BenzenoidApplication extends Application {
 		MenuItem reItem = new MenuItem("Resonance Energy (Lin)");
 		MenuItem reLinFanItem = new MenuItem("Resonance Energy (Lin & Fan)");
 		MenuItem clarItem = new MenuItem("Clar Cover");
+		MenuItem kekuleItem = new MenuItem("Kekule structures");
 		MenuItem rboItem = new MenuItem("Ring Bond Order");
 		MenuItem irregularityStatsItem = new MenuItem("Irregularity Statistics");
 		MenuItem irSpectraItem = new MenuItem("IR Spectra");
@@ -580,6 +581,10 @@ public class BenzenoidApplication extends Application {
 			switchMode(ApplicationMode.COLLECTIONS);
 		});
 
+		kekuleItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).kekuleStructures();
+		});
+		
 		reItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).resonanceEnergyLin();
 		});
@@ -612,7 +617,7 @@ public class BenzenoidApplication extends Application {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).ims2d1a();
 		});
 		
-		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, rboItem, irregularityStatsItem,
+		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, kekuleItem, rboItem, irregularityStatsItem,
 				irSpectraItem, radicalarItem/*, ims2d1aItem*/);
 
 		return computationsMenu;

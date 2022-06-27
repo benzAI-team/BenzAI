@@ -28,19 +28,43 @@ public class KekuleStructureSolver {
 
 		BoolVar[] edges = new BoolVar[molecule.getNbEdges()];
 
-		for (int i = 0; i < molecule.getNbEdges(); i++) {
-			edges[i] = model.boolVar("edge " + (i + 1));
-		}
-
-		for (int i = 0; i < molecule.getEdgeMatrix().size(); i++) {
-			int nbAdjacentEdges = molecule.getEdgeMatrix().get(i).size();
-			BoolVar[] adjacentEdges = new BoolVar[nbAdjacentEdges];
-
-			for (int j = 0; j < nbAdjacentEdges; j++) {
-				adjacentEdges[j] = edges[molecule.getEdgeMatrix().get(i).get(j)];
+		Couple<Integer, Integer> [] indexesEdges = new Couple[molecule.getNbEdges()];
+		int [][] edgesIndexes = new int[molecule.getNbNodes()][molecule.getNbNodes()];
+		int [] adjacentEdges = new int[molecule.getNbNodes()];
+		int index = 0;
+		
+		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
+			for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
+				edgesIndexes[i][j] = -1;
 			}
-
-			model.sum(adjacentEdges, "=", 1).post();
+		}
+		
+		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
+			for (int j = (i + 1) ; j < molecule.getNbNodes() ; j++) {
+				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+					edges[index] = model.boolVar("e_" + i + "_" + j);
+					edgesIndexes[i][j] = index;
+					edgesIndexes[j][i] = index;
+					indexesEdges[index] = new Couple<>(i, j);
+					System.out.println("(" + i + ", " + j + ") -> " + index);
+					adjacentEdges[i] ++;
+					adjacentEdges[j] ++;
+					index ++;
+				}
+			}
+		}
+		
+		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
+			BoolVar[] edgeSum = new BoolVar[adjacentEdges[i]];
+			index = 0;
+			for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
+				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+					int edgeIndex = edgesIndexes[i][j];
+					edgeSum[index] = edges[edgeIndex];
+					index ++;
+				}
+			}
+			model.sum(edgeSum, "=", 1).post();
 		}
 
 		model.getSolver().setSearch(new IntStrategy(edges, new FirstFail(model), new IntDomainMin()));
@@ -61,8 +85,28 @@ public class KekuleStructureSolver {
 			 * Computing the curent Kekulé's structure
 			 */
 
-			UndirPonderateGraph kekuleStructure = GraphParser.exportSolutionToPonderateGraph(molecule, edgesValues);
-			structures.add(kekuleStructure.getAdjacencyMatrix());
+			int [][] structure = new int[molecule.getNbNodes()][molecule.getNbNodes()];
+			for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
+				for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
+					if (molecule.getAdjacencyMatrix()[i][j] == 0)
+						structure[i][j] = -1;
+					else
+						structure[i][j] = 0;
+				}
+			}
+			
+			for (int i = 0 ; i < edgesValues.length ; i++) {
+				if (edgesValues[i] == 1) {
+					Couple<Integer, Integer> couple = indexesEdges[i];
+					int u = couple.getX();
+					int v = couple.getY();
+					structure[u][v] = 1;
+					structure[v][u] = 1;
+				}
+			}
+			
+			//UndirPonderateGraph kekuleStructure = GraphParser.exportSolutionToPonderateGraph(molecule, edgesValues);
+			structures.add(structure);
 		}
 
 		return structures;
