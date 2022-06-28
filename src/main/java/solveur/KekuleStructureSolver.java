@@ -105,8 +105,8 @@ public class KekuleStructureSolver {
 				}
 			}
 			
-			//UndirPonderateGraph kekuleStructure = GraphParser.exportSolutionToPonderateGraph(molecule, edgesValues);
 			structures.add(structure);
+			nbSolutions ++;
 		}
 
 		return structures;

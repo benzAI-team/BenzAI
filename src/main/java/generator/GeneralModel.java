@@ -30,6 +30,7 @@ import nogood.NoGoodHorizontalAxisRecorder;
 import nogood.NoGoodNoneRecorder;
 import nogood.NoGoodRecorder;
 import nogood.NoGoodUniqueRecorder;
+import nogood.NoGoodVerticalAxisRecorder;
 import solution.BenzenoidSolution;
 import solving_modes.GeneralModelMode;
 import utils.Couple;
@@ -689,8 +690,9 @@ public class GeneralModel {
 				noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
 
 			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL))
-				noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
-
+				//noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
+				noGoodRecorder = new NoGoodVerticalAxisRecorder(this, solution);
+				
 			else {
 
 				if (GeneratorCriterion.containsSubject(criterions, Subject.SINGLE_PATTERN)
