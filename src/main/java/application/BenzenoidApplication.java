@@ -567,13 +567,14 @@ public class BenzenoidApplication extends Application {
 		// defines the menu item related to the computations
 		Menu computationsMenu = new Menu("C_omputations");
 
-		MenuItem reItem = new MenuItem("Resonance Energy (Lin)");
-		MenuItem reLinFanItem = new MenuItem("Resonance Energy (Lin & Fan)");
-		MenuItem clarItem = new MenuItem("Clar Cover");
-		MenuItem kekuleItem = new MenuItem("Kekule structures");
-		MenuItem rboItem = new MenuItem("Ring Bond Order");
-		MenuItem irregularityStatsItem = new MenuItem("Irregularity Statistics");
-		MenuItem irSpectraItem = new MenuItem("IR Spectra");
+		MenuItem reItem = new MenuItem("Resonance energy (Lin)");
+		MenuItem reLinFanItem = new MenuItem("Resonance energy (Lin & Fan)");
+		MenuItem clarItem = new MenuItem("Clar cover");
+    MenuItem clarStatsItem = new MenuItem("Clar cover with fixed bond");
+		MenuItem kekuleItem = new MenuItem("Kekulé structures");
+		MenuItem rboItem = new MenuItem("Ring bond order");
+		MenuItem irregularityStatsItem = new MenuItem("Irregularity statistics");
+		MenuItem irSpectraItem = new MenuItem("IR spectra");
 		MenuItem radicalarItem = new MenuItem("Radicalar statistics");
 		MenuItem ims2d1aItem = new MenuItem("IMS2D-1A");
 		
@@ -597,6 +598,10 @@ public class BenzenoidApplication extends Application {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).clarCover();
 		});
 
+		clarStatsItem.setOnAction(e -> {
+			((BenzenoidsCollectionsManagerPane) collectionsPane).clarCoverStatsFixed();;
+		});
+
 		rboItem.setOnAction(e -> {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).ringBoundOrder();
 		});
@@ -617,7 +622,7 @@ public class BenzenoidApplication extends Application {
 			((BenzenoidsCollectionsManagerPane) collectionsPane).ims2d1a();
 		});
 		
-		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, kekuleItem, rboItem, irregularityStatsItem,
+		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, clarStatsItem, kekuleItem, rboItem, irregularityStatsItem,
 				irSpectraItem, radicalarItem/*, ims2d1aItem*/);
 
 		return computationsMenu;

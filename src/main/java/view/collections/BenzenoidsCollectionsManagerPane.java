@@ -391,8 +391,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem reLinFanItem = new MenuItem("Resonance energy (Lin & Fan)");
 		MenuItem clarItem = new MenuItem("Clar cover");
 		MenuItem clarStatsItem = new MenuItem("Clar cover with fixed bond");
-		MenuItem kekuleItem = new MenuItem("Kekule structures");
-		MenuItem rboItem = new MenuItem("Ring bond Order");
+		MenuItem kekuleItem = new MenuItem("Kekulé structures");
+		MenuItem rboItem = new MenuItem("Ring bond order");
 
 		MenuItem dbItem = new MenuItem("Find in database (DEBUG)");
 		MenuItem irSpectraItem = new MenuItem("IR spectra");
@@ -877,7 +877,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
-				getNextCollectionPaneLabel("Kekule structures"));
+				getNextCollectionPaneLabel("Kekulé structures"));
 
 		if (selectedBenzenoidPanes.size() != 1) {
 			Utils.alert("Please select only one benzenoid");
