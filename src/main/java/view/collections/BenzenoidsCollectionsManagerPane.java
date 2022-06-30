@@ -879,20 +879,31 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
 				getNextCollectionPaneLabel("Kekulé structures"));
 
-		if (selectedBenzenoidPanes.size() != 1) {
-			Utils.alert("Please select only one benzenoid");
+		if (selectedBenzenoidPanes.size() == 0) {
+			Utils.alert("Please select a benzenoid");
+      return;
 		}
+    else {
+        if (selectedBenzenoidPanes.size() > 1) {
+          Utils.alert("Please select only one benzenoid");
+          return;
+        }    
+        else {
+          Molecule molecule = selectedBenzenoidPanes.get(0).getMolecule();
+          
+          if (molecule.getNbKekuleStructures() == 0) {
+            Utils.alert("The selected benzenoid has no Kekulé structures.");
+            return;
+          }
+          
+          ArrayList<int[][]> kekuleStructures = KekuleStructureSolver.computeKekuleStructures(molecule, 20);
+          molecule.setKekuleStructures(kekuleStructures);
 
-		else {
-			Molecule molecule = selectedBenzenoidPanes.get(0).getMolecule();
-			ArrayList<int[][]> kekuleStructures = KekuleStructureSolver.computeKekuleStructures(molecule, 20);
-			molecule.setKekuleStructures(kekuleStructures);
-
-			for (int[][] kekuleStructure : kekuleStructures) {
-				benzenoidSetPane.addBenzenoid(molecule, DisplayType.KEKULE);
-			}
-		}
-
+          for (int[][] kekuleStructure : kekuleStructures) {
+            benzenoidSetPane.addBenzenoid(molecule, DisplayType.KEKULE);
+          }
+        }
+    }
 		benzenoidSetPane.refresh();
 		tabPane.getSelectionModel().clearAndSelect(0);
 		addBenzenoidSetPane(benzenoidSetPane);
