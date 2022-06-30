@@ -654,6 +654,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void resonanceEnergyLin() {
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
+
 		linRunning = true;
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
@@ -754,7 +759,15 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void resonanceEnergyLinFan() {
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
+
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+
+		if (selectedBenzenoidPanes.size() == 0)
+			selectAll();
 
 		String name = "RE Lin&Fan";
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
@@ -775,11 +788,21 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void clarCoverStatsFixed() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
-		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+    
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
+		
+    ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "Clar cover - fixed bonds";
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
 				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
+
+		if (selectedBenzenoidPanes.size() == 0) {
+			selectAll();
+		}
 
 		ArrayList<BenzenoidPane> panes = new ArrayList<>();
 
@@ -874,7 +897,13 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	public void kekuleStructures() {
 		BenzenoidCollectionPane currentPane = getSelectedTab();
-		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+		
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
+    
+    ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
 				getNextCollectionPaneLabel("Kekulé structures"));
@@ -913,6 +942,12 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void clarCover() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
+    
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
+    
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "Clar cover";
@@ -1021,6 +1056,12 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void ringBoundOrder() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
+
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
+    
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "RBO";
@@ -1126,8 +1167,17 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void irregularityStatistics() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
-		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+		
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
+    
+    ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 		ArrayList<Molecule> molecules = new ArrayList<>();
+
+		if (selectedBenzenoidPanes.size() == 0)
+			selectAll();
 
 		for (BenzenoidPane benzenoidPane : selectedBenzenoidPanes) {
 			Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
@@ -1775,6 +1825,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
+
 		log("Requesting database (" + currentPane.getName() + ", " + currentPane.getSelectedBenzenoidPanes().size()
 				+ " benzenoids)", true);
 
@@ -1995,6 +2050,11 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	public void radicalarStatistics() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
+    
+    if (currentPane.getBenzenoidPanes().size() == 0){
+      Utils.alert("There is no benzenoid!");
+      return;
+    }
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "Radicalar statistics";
