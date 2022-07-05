@@ -1,5 +1,6 @@
 package database.models;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -28,6 +29,18 @@ public class IMS2D1A {
 		this.irregularity = irregularity;
 	}
 
+	public IMS2D1A(Long moleculeId, String name, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity, ArrayList<AtomGeometry> geometry, ArrayList<IMS2D1APoint> points) {
+
+		this.moleculeId = moleculeId;
+		this.name = name;
+		this.nbHexagons = nbHexagons;
+		this.nbCarbons = nbCarbons;
+		this.nbHydrogens = nbHydrogens;
+		this.irregularity = irregularity;
+		this.geometry = geometry;
+		this.points = points;
+	}
+	
 	public void setGeometry(ArrayList<AtomGeometry> geometry) {
 		this.geometry = geometry;
 	}
@@ -168,5 +181,10 @@ public class IMS2D1A {
 
 	public ArrayList<IMS2D1APoint> getPoints() {
 		return points;
+	}
+	
+	public static IMS2D1A parseIMS2D1A(File ims2d1aFile) {
+		
+		return null;
 	}
 }
