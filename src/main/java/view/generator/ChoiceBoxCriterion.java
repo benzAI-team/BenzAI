@@ -46,8 +46,8 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 		this.getItems().add("Catacondensed");
 		this.getItems().add("Symmetries");
 		this.getItems().add("Pattern properties");
-		this.getItems().add("Number of Kekule structures");
-		this.getItems().add("Concealed non kekulean");
+		this.getItems().add("Number of Kekulé structures");
+		this.getItems().add("Concealed non Kekulean");
 		this.getItems().add("Number of solutions");
 		this.getItems().add("Time limit");
 
@@ -143,7 +143,7 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 					parent.setHBox(index, box);
 				}
 
-				else if (value.equals("Concealed non kekulean")) {
+				else if (value.equals("Concealed non Kekulean")) {
 					HBoxCriterion box = new HBoxConcealedCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
