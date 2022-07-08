@@ -2,9 +2,11 @@ package database.models;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import http.Post;
 import molecules.Molecule;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
@@ -100,18 +102,33 @@ public class IRSpectraEntry {
 	@SuppressWarnings("rawtypes")
 	public static IRSpectraEntry buildQueryContent(Map result) {
 
-		int idMolecule = (int) ((double) result.get("id"));
-		String name = (String) result.get("name");
+		int idMolecule = (int) ((double) result.get("idBenzenoid"));
+		// String name = (String) result.get("inchie");
+		String name = "";
 		int nbHexagons = (int) ((double) result.get("nbHexagons"));
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
 		int nbHydrogens = (int) ((double) result.get("nbHydrogens"));
 		double irregularity = (double) result.get("irregularity");
 
-		int idSpectrum = (int) ((double) result.get("idSpectrum"));
+		int idSpectrum = (int) ((double) result.get("idSpectra"));
 		String frequenciesString = (String) result.get("frequencies");
 		String intensitiesString = (String) result.get("intensities");
-		String finalEnergiesString = (String) result.get("finalEnergies");
+		double finalEnergy = (double) result.get("finalEnergy");
 		double zeroPointEnergy = (double) result.get("zeroPointEnergy");
+
+		// Récupérer le nom
+		String url = "https://benzenoids.lis-lab.fr/find_name/";
+		String json = "{\"idBenzenoid\":" + idMolecule + "}";
+		List<Map> results = null;
+		try {
+			results = Post.post(url, json);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		for (Map map : results) {
+			name = (String) map.get("name");
+		}
 
 		ArrayList<Double> frequencies = new ArrayList<>();
 
@@ -129,11 +146,12 @@ public class IRSpectraEntry {
 				intensities.add(Double.parseDouble(intensity));
 		}
 
-		String[] splittedEnergies = finalEnergiesString.split("\\s+");
+		// String[] splittedEnergies = finalEnergiesString.split("\\s+");
 		ArrayList<Double> finalEnergies = new ArrayList<>();
+		finalEnergies.add(finalEnergy);
 
-		for (String energy : splittedEnergies)
-			finalEnergies.add(Double.parseDouble(energy));
+//		for (String energy : splittedEnergies)
+//			finalEnergies.add(Double.parseDouble(energy));
 
 		return new IRSpectraEntry(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idSpectrum,
 				finalEnergies, frequencies, intensities, zeroPointEnergy);

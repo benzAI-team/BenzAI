@@ -23,7 +23,7 @@ public class Post {
 	public static List<Map> post(String urlString, String jsonInputString) throws IOException {
 
 		System.out.println(jsonInputString);
-		
+
 		URL url = new URL(urlString);
 
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -80,7 +80,7 @@ public class Post {
 		isDatabaseConnected = true;
 
 		try {
-			String url = "https://benzenoids.lis-lab.fr/find_name/";
+			String url = "https://benzenoids.lis-lab.fr/find_by_name/";
 			String json = "{\"name\": \"1-11-20-27-28-29-30-39\"}";
 			post(url, json);
 		} catch (Exception e) {
