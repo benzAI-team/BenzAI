@@ -1683,7 +1683,7 @@ public class Molecule implements Comparable<Molecule> {
 		databaseCheckedIR = true;
 
 		String name = getNames().get(0);
-		String url = "https://benzenoids.lis-lab.fr/find_name/";
+		String url = "https://benzenoids.lis-lab.fr/find_by_name/";
 		String json = "{\"name\": \"" + name + "\"}";
 
 		try {
