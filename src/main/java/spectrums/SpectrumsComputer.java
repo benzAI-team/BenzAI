@@ -440,7 +440,7 @@ public class SpectrumsComputer {
 		HashMap<String, Couple<ArrayList<Double>, ResultLogFile>> map = new HashMap<>();
 
 		for (Molecule molecule : molecules) {
-			ResultLogFile nicsResult = molecule.getNicsResult();
+			ResultLogFile nicsResult = molecule.getIRSpectraResult();
 			ArrayList<Double> spectres = spectres(nicsResult, parameter);
 			map.put(molecule.getNames().get(0), new Couple<ArrayList<Double>, ResultLogFile>(spectres, nicsResult));
 		}

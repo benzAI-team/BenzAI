@@ -1672,7 +1672,7 @@ public class Molecule implements Comparable<Molecule> {
 
 	// "{\"name\": \"1-11-20-27-28-29-30-39\"}";
 	@SuppressWarnings("rawtypes")
-	public ResultLogFile getNicsResult() {
+	public ResultLogFile getIRSpectraResult() {
 
 		if (nicsResult != null || databaseCheckedIR)
 			return nicsResult;
