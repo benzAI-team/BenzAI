@@ -29,30 +29,33 @@ public class InsertScriptFinal {
 	private static BufferedWriter out;
 	
 	public static String quote(String str) {
-		return "\"\"" + str + "\"\"";
+		return "\"" + str + "\"";
 	}
 	
-	public static String getGeometry(File ims2d1aFile) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(ims2d1aFile));
-		String line;
+	public static String getGeometry(File comFile) throws IOException {
 		
-		StringBuilder builder = new StringBuilder();
+		BufferedReader reader = new BufferedReader(new FileReader(comFile));
+		String line;
+		StringBuilder geometry = new StringBuilder();
+		boolean geo = false;
 		
 		while((line = reader.readLine()) != null) {
-			if (line.equals(""))
-				break;
+			if (line.startsWith("0 1") || line.startsWith("0 2"))
+				geo = true;
 			
-			String [] split = Utils.splitBySeparators(line);
+			else {	
+				if (geo && line.equals(""))
+					geo = false;
 			
-			Triplet<Double, Double, Double> coords = new Triplet<>(Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]));
-			
-			builder.append(split[0] + "_" + coords.getX() + "_" + coords.getY() + "_" + coords.getZ() + " ");
-				
+				else if (geo) {
+					String [] split = Utils.splitBySeparators(line);
+					geometry.append(split[1] + "_" + split[2] + "_" + split[3] + "_" + split[4] + " ");
+				}
+			}
 		}
 		
 		reader.close();
-		
-		return builder.toString();
+		return geometry.toString();
 	}
 	
 	public static String fileToString(File file) throws IOException {
@@ -147,8 +150,13 @@ public class InsertScriptFinal {
 		StringBuilder insert = new StringBuilder();
 		
 		insert.append("INSERT INTO ims2d_1a (idIms2d1a, idBenzenoid, vectorX, vectorY, nbPointsX, nbPointsY, origin, points, picture) VALUES (\n");
-		insert.append(idIMS2D1A + ", " + idBenzenoid + ", " + quote(v1Str) + ", " + quote(v2Str) + ", " + nbPointsX + ", " + nbPointsY + ", " + quote(originStr) + ", " + quote(pointsStr.toString()) + ", " + quote(picture));
+		insert.append(idIMS2D1A + ", " + idBenzenoid + ", " + quote(v1Str) + ", " + quote(v2Str) + ", " + nbPointsX + ", " + nbPointsY + ", " + quote(originStr) + ", " + 
+		quote(pointsStr.toString()) + ", " + quote(picture));
 		insert.append(");");
+		
+		out.write(insert.toString());
+		
+		idIMS2D1A ++;
 	}
 	
 	// Fill the tables `benzenoid` and `name`
@@ -177,9 +185,9 @@ public class InsertScriptFinal {
 		if (nicsFile.exists())
 			nics = nicsFileToString(nicsFile);
 		
-		File ims2d1aFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_ims2d1a.txt"));
+		File comFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".com"));
 		
-		String geometry = getGeometry(ims2d1aFile);
+		String geometry = getGeometry(comFile);
 		
 		ArrayList<String> names = molecule.getNames();
 		
@@ -222,7 +230,10 @@ public class InsertScriptFinal {
 		
 		insert.append(idSpectra + ", " + idBenzenoid + ", " + quote(frequencies.toString()) + ", " + quote(intensities.toString()) + ", " + zpe + ", " + finalEnergy);
 		
-		insert.append(")\n");
+		insert.append(");\n");
+		
+		out.write(insert.toString() + "\n");
+		
 		idSpectra ++;
 	}
 	
@@ -236,17 +247,26 @@ public class InsertScriptFinal {
 		idName = 0;
 		idIMS2D1A = 0;
 		
+		boolean first = true;
+		
 		for (File molFile : files) {
 			if (molFile.getName().endsWith(".graph_coord")) {
+				if (first) {
+				System.out.println("Treating " + molFile.getName());
 				
-				
-				File ims2dTextFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_ims2d1a.png"));
-				
-				
-
 				insertBenzenoid(molFile);
+				insertIRSpectra(molFile);
+				
+				File ims2dTextFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_ims2d1a.txt"));
+				File ims2dMapFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_ims2d1a.png"));
+				
+				if (ims2dTextFile.exists() && ims2dMapFile.exists())
+					insertIMS2D1A(ims2dTextFile, ims2dMapFile);
 				
 				idBenzenoid ++;
+				}
+				
+				//first = false;
 			}
 		}
 		

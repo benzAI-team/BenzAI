@@ -623,7 +623,7 @@ public class BenzenoidApplication extends Application {
 		});
 		
 		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, clarStatsItem, kekuleItem, rboItem, irregularityStatsItem,
-				irSpectraItem, radicalarItem/*, ims2d1aItem*/);
+				irSpectraItem, radicalarItem, ims2d1aItem);
 
 		return computationsMenu;
 	}

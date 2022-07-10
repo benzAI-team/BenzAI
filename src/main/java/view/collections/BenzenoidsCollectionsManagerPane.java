@@ -548,7 +548,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem,
 				checkDatabaseItem, new SeparatorMenuItem(), drawItem, new SeparatorMenuItem(), reLinItem, reLinFanItem,
 				clarItem, clarStatsItem, kekuleItem, rboItem, irregularityItem, irSpectraItem,
-				radicalarStatsItem/* , ims2d1aItem */);
+				radicalarStatsItem, ims2d1aItem);
 
 		this.setOnContextMenuRequested(e -> {
 
