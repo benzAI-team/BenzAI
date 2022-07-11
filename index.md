@@ -39,7 +39,7 @@ These problems are modeled and solved thanks to constraint programming and, in p
   In _Constraints_, 2022.
 * A. Varet, N. Prcovic, C. Terrioux, D. Hagebaum-Reignier and Y. Carissan.  
   [BenzAI: A Program to Design Benzenoids with Defined Properties Using Constraint Programming](https://pubs.acs.org/doi/10.1021/acs.jcim.2c00353).   
-  In _Journal of Chemical Information and Modeling_, 2022.
+  In _Journal of Chemical Information and Modeling_, 62(11), pages 2811-2820, 2022.
   
 [BibTeX file](biblio.bib)
 
