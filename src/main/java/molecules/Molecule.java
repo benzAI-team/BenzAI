@@ -110,7 +110,7 @@ public class Molecule implements Comparable<Molecule> {
 
 	public Molecule(int nbNodes, int nbEdges, int nbHexagons, int[][] hexagons, Node[] nodesRefs,
 			int[][] adjacencyMatrix, RelativeMatrix coords) {
-
+    
 		comparator = new NbHexagonsComparator();
 
 		this.nbNodes = nbNodes;
@@ -143,27 +143,6 @@ public class Molecule implements Comparable<Molecule> {
 		buildHexagonsCoords2();
 	}
 
-	public Molecule(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeMatrix,
-			int[][] adjacencyMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
-			RelativeMatrix coords) {
-
-		this.nbNodes = nbNodes;
-		this.nbEdges = nbEdges;
-		this.nbHexagons = nbHexagons;
-		this.edgeMatrix = edgeMatrix;
-		this.adjacencyMatrix = adjacencyMatrix;
-		this.edgesString = edgesString;
-		this.hexagonsString = hexagonsString;
-		this.nodesRefs = nodesRefs;
-		this.coords = coords;
-
-		hexagons = new int[nbHexagons][6];
-		initHexagons();
-
-		computeDualGraph();
-		computeDegrees();
-		buildHexagonsCoords2();
-	}
 
 	public Molecule(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeMatrix,
 			int[][] adjacencyMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
