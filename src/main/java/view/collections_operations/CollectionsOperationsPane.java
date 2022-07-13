@@ -27,6 +27,7 @@ import view.collections.BenzenoidsCollectionsManagerPane;
 public class CollectionsOperationsPane extends GridPane {
 
 	private BenzenoidApplication application;
+	private BenzenoidsCollectionsManagerPane collectionsPane;
 
 	private ChoiceBox<String> collectionBox1;
 	private ChoiceBox<String> collectionBox2;
@@ -41,9 +42,9 @@ public class CollectionsOperationsPane extends GridPane {
 
 	private Button applyButton;
 
-	public CollectionsOperationsPane(BenzenoidApplication application) {
-		super();
+	public CollectionsOperationsPane(BenzenoidApplication application, BenzenoidsCollectionsManagerPane collectionsPane) {
 		this.application = application;
+		this.collectionsPane = collectionsPane;
 		initialize();
 	}
 
@@ -64,8 +65,8 @@ public class CollectionsOperationsPane extends GridPane {
 
 		operatorBox.getItems().addAll("Union", "Intersection", "Difference");
 
-		for (int i = 0; i < application.getBenzenoidCollectionsPane().getBenzenoidSetPanes().size() - 1; i++) {
-			BenzenoidCollectionPane collectionPane = application.getBenzenoidCollectionsPane().getBenzenoidSetPanes().get(i);
+		for (int i = 0; i < collectionsPane.getBenzenoidSetPanes().size() - 1; i++) {
+			BenzenoidCollectionPane collectionPane = collectionsPane.getBenzenoidSetPanes().get(i);
 			collectionBox1.getItems().add(collectionPane.getName());
 			collectionBox2.getItems().add(collectionPane.getName());
 		}
@@ -92,7 +93,7 @@ public class CollectionsOperationsPane extends GridPane {
 		closeButton.setStyle("-fx-background-color: transparent;");
 
 		closeButton.setOnAction(e -> {
-			application.switchMode(ApplicationMode.COLLECTIONS);
+			application.switchMode(application.getPanes().getCollectionsPane());
 		});
 
 		applyButton = new Button("Apply");
@@ -102,7 +103,7 @@ public class CollectionsOperationsPane extends GridPane {
 			BenzenoidCollectionPane pane1 = null;
 			BenzenoidCollectionPane pane2 = null;
 
-			for (BenzenoidCollectionPane pane : application.getBenzenoidCollectionsPane().getBenzenoidSetPanes()) {
+			for (BenzenoidCollectionPane pane : collectionsPane.getBenzenoidSetPanes()) {
 				if (pane.getName().equals(collectionBox1.getValue()))
 					pane1 = pane;
 				if (pane.getName().equals(collectionBox2.getValue()))
@@ -125,7 +126,7 @@ public class CollectionsOperationsPane extends GridPane {
 
 			if (molecules != null) {
 
-				BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
+				BenzenoidsCollectionsManagerPane managerPane = collectionsPane;
 
 				String name;
 
@@ -148,7 +149,7 @@ public class CollectionsOperationsPane extends GridPane {
 				managerPane.getTabPane().getSelectionModel()
 						.clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
 
-				application.switchMode(ApplicationMode.COLLECTIONS);
+				application.switchMode(application.getPanes().getCollectionsPane());
 			}
 
 			else
@@ -170,8 +171,8 @@ public class CollectionsOperationsPane extends GridPane {
 
 		this.getChildren().remove(operationBox);
 
-		for (int i = 0; i < application.getBenzenoidCollectionsPane().getBenzenoidSetPanes().size() - 1; i++) {
-			BenzenoidCollectionPane collectionPane = application.getBenzenoidCollectionsPane().getBenzenoidSetPanes()
+		for (int i = 0; i < collectionsPane.getBenzenoidSetPanes().size() - 1; i++) {
+			BenzenoidCollectionPane collectionPane = collectionsPane.getBenzenoidSetPanes()
 					.get(i);
 			collectionBox1.getItems().add(collectionPane.getName());
 			collectionBox2.getItems().add(collectionPane.getName());

@@ -229,10 +229,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
 				evt.consume();
 			} else if (Alt_c.match(evt)) { // runs the collection windows
-				application.switchMode(ApplicationMode.COLLECTIONS);
+				application.switchMode(application.getPanes().getCollectionsPane());
 				evt.consume();
 			} else if (Alt_t.match(evt)) { // runs the filter windows
-				application.switchMode(ApplicationMode.FILTER);
+				application.switchMode(application.getPanes().getFilteringPane());
 				evt.consume();
 			}
 		});
@@ -532,7 +532,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			BenzenoidCollectionPane currentPane = getSelectedTab();
 			for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes()) {
 				Molecule molecule = currentPane.getMolecule(pane.getIndex());
-				System.out.println(molecule.getNicsResult());
+				System.out.println(molecule.getIRSpectraResult());
 			}
 		});
 
@@ -548,7 +548,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem,
 				checkDatabaseItem, new SeparatorMenuItem(), drawItem, new SeparatorMenuItem(), reLinItem, reLinFanItem,
 				clarItem, clarStatsItem, kekuleItem, rboItem, irregularityItem, irSpectraItem,
-				radicalarStatsItem/* , ims2d1aItem */);
+				radicalarStatsItem, ims2d1aItem);
 
 		this.setOnContextMenuRequested(e -> {
 
@@ -1245,14 +1245,14 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		if (currentPane.getSelectedBenzenoidPanes().size() == 1) {
 			Molecule molecule = currentPane.getMolecule(currentPane.getSelectedBenzenoidPanes().get(0).getIndex());
 			application.getDrawPane().importBenzenoid(molecule);
-			application.switchMode(ApplicationMode.DRAW);
+			application.switchMode(application.getPanes().getDrawPane());
 
 		}
 
 		else if (hoveringPane != null) {
 			Molecule molecule = currentPane.getMolecule(hoveringPane.getIndex());
 			application.getDrawPane().importBenzenoid(molecule);
-			application.switchMode(ApplicationMode.DRAW);
+			application.switchMode(application.getPanes().getDrawPane());
 		}
 	}
 
@@ -1721,7 +1721,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 							Molecule molecule = currentPane.getMolecule(pane.getIndex());
 
 							if (!molecule.databaseCheckedIR()) {
-								if (molecule.getNicsResult() != null) {
+								if (molecule.getIRSpectraResult() != null) {
 									System.out.println(molecule);
 
 									Platform.runLater(new Runnable() {
@@ -1859,7 +1859,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 							Molecule molecule = currentPane.getMolecule(pane.getIndex());
 
 							if (!molecule.databaseCheckedIR()) {
-								if (molecule.getNicsResult() != null) {
+								if (molecule.getIRSpectraResult() != null) {
 									System.out.println(molecule);
 
 									Platform.runLater(new Runnable() {
@@ -1935,7 +1935,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		for (BenzenoidPane pane : panes) {
 
 			Molecule molecule = currentPane.getMolecule(pane.getIndex());
-			if (molecule.getNicsResult() != null)
+			if (molecule.getIRSpectraResult() != null)
 				moleculesInDB.add(molecule);
 		}
 
@@ -1966,7 +1966,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 			for (Molecule molecule : moleculesClasses) {
 
-				ResultLogFile result = molecule.getNicsResult();
+				ResultLogFile result = molecule.getIRSpectraResult();
 				classResults.add(result);
 				finalEnergies.put(molecule.getNames().get(0),
 						result.getFinalEnergy().get(result.getFinalEnergy().size() - 1));

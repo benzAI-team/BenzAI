@@ -44,6 +44,8 @@ import view.generator.preferences.GeneratorPreferencesPane;
 import view.groups.AromaticityDisplayType;
 import view.groups.AromaticityGroup;
 import view.help.HelpPane;
+import view.primaryStage.Panes;
+import view.primaryStage.menus.*;
 
 public class BenzenoidApplication extends Application {
 
@@ -63,13 +65,7 @@ public class BenzenoidApplication extends Application {
 	 * Main regions
 	 */
 
-	private Region generatorPane;
-	private Region collectionsPane;
-	private DrawBenzenoidPane drawPane;
-	private Region filteringPane;
-	private Region databasePane;
-	private Region operationPane;
-	private Region generationPreferencesPane;
+	private Panes panes;
 
 	/*
 	 * Menus
@@ -92,32 +88,26 @@ public class BenzenoidApplication extends Application {
 
 			configuration = Configuration.readConfigurationFile();
 
-			mode = ApplicationMode.COLLECTIONS;
+			//mode = ApplicationMode.COLLECTIONS;
 
 			homeRegion = new AboutPane(this);
 
-			collectionsPane = new BenzenoidsCollectionsManagerPane(this);
-			generatorPane = new GeneratorPane(this);
-			drawPane = new DrawBenzenoidPane(this);
-			databasePane = new CatalogPane(this);
-			filteringPane = new FilteringPane(this);
-			operationPane = new CollectionsOperationsPane(this);
-			generationPreferencesPane = new GeneratorPreferencesPane(this);
+			panes = new Panes(this);
 
-			((BenzenoidsCollectionsManagerPane) collectionsPane).log("BenzAI started", true);
+			((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("BenzAI started", true);
 
 			if (database)
-				((BenzenoidsCollectionsManagerPane) collectionsPane).log("Connection to database established", true);
+				((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("Connection to database established", true);
 			else
-				((BenzenoidsCollectionsManagerPane) collectionsPane).log("Connection to database failed", true);
+				((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("Connection to database failed", true);
 
-			((BenzenoidsCollectionsManagerPane) collectionsPane).log("", false);
+			((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("", false);
 
 			tasksBoxes = new ArrayList<>();
 
 			stage = primaryStage;
 
-			databasePane = new DatabasePane(this);
+			panes.setDatabasePane( new DatabasePane(this));
 
 			rootPane = buildRootPane();
 
@@ -169,7 +159,7 @@ public class BenzenoidApplication extends Application {
 		rootPane.setTop(menuBar);
 
 		mode = ApplicationMode.COLLECTIONS;
-		rootPane.setCenter(collectionsPane);
+		rootPane.setCenter(panes.getCollectionsPane());
 
 		return rootPane;
 	}
@@ -182,8 +172,8 @@ public class BenzenoidApplication extends Application {
 	private MenuBar buildMenuBar(BorderPane rootPane) {
 
 		MenuBar menuBar = new MenuBar();
-		menuBar.getMenus().addAll(fileMenu(), collectionsMenu(), inputMenu(), sortMenu(), filterMenu(),
-				computationsMenu(), preferencesMenu(), tasksMenu(), helpMenu());
+		menuBar.getMenus().addAll(FileMenu.build(this), CollectionsMenu.build(this), InputMenu.build(this), SortMenu.build(this), FilterMenu.build(this),
+				ComputationsMenu.build(this), PreferencesMenu.build(this), TasksMenu.build(this), HelpMenu.build(this));
 
 		return menuBar;
 	}
@@ -219,6 +209,12 @@ public class BenzenoidApplication extends Application {
 
 	}
 
+<<<<<<< HEAD
+	/***
+	 * 
+	 * @return the menu item related to the help
+	 */
+=======
 	private Menu fileMenu() {
 		// defines the menu item related to the file management
 		Menu fileMenu = new Menu("_File");
@@ -623,7 +619,7 @@ public class BenzenoidApplication extends Application {
 		});
 		
 		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, clarStatsItem, kekuleItem, rboItem, irregularityStatsItem,
-				irSpectraItem, radicalarItem/*, ims2d1aItem*/);
+				irSpectraItem, radicalarItem, ims2d1aItem);
 
 		return computationsMenu;
 	}
@@ -768,8 +764,8 @@ public class BenzenoidApplication extends Application {
 		return helpMenu;
 	}
 
+>>>>>>> main
 	private Menu debugMenu() {
-		// defines the menu item related to the help
 		Menu fill1Item = new Menu();
 
 		Label labelFill1 = new Label("Fill (debug)");
@@ -782,63 +778,43 @@ public class BenzenoidApplication extends Application {
 		return fill1Item;
 	}
 
-	public void switchMode(ApplicationMode mode) {
-
-		if (!this.mode.equals(mode)) {
-
-			this.mode = mode;
-
-			switch (mode) {
-
-			case COLLECTIONS:
-				rootPane.setCenter(collectionsPane);
-				break;
-
-			case GENERATOR:
-				rootPane.setCenter(generatorPane);
-				break;
-
-			case DRAW:
-				rootPane.setCenter(drawPane);
-				break;
-
-			case DATABASE:
-				rootPane.setCenter(databasePane);
-				break;
-
-			case FILTER:
-				Robot robot = new Robot();
-				robot.keyPress(KeyCode.ESCAPE);
-				robot.keyRelease(KeyCode.ESCAPE);
-				((FilteringPane) filteringPane).refresh();
-				rootPane.setCenter(filteringPane);
-				break;
-
-			case COLLECTIONS_OPERATIONS:
-				((CollectionsOperationsPane) operationPane).refreshBoxes();
-				rootPane.setCenter(operationPane);
-				break;
-
-			case GENERATOR_PREFERENCES:
-				rootPane.setCenter(generationPreferencesPane);
-				break;
-
-			default:
-				break;
-			}
+	/***
+	 * 
+	 * @param pane
+	 */
+	public void switchMode(Region pane) {
+		if(pane instanceof FilteringPane) {
+			Robot robot = new Robot();
+			robot.keyPress(KeyCode.ESCAPE);
+			robot.keyRelease(KeyCode.ESCAPE);
+			((FilteringPane) pane).refresh();
 		}
+		if(pane instanceof CollectionsOperationsPane)
+			((CollectionsOperationsPane) pane).refreshBoxes();
+		rootPane.setCenter(pane);
 	}
-
+	
+	/***
+	 * getters, setters
+	 */
 	public BenzenoidsCollectionsManagerPane getBenzenoidCollectionsPane() {
-		return (BenzenoidsCollectionsManagerPane) collectionsPane;
+		return (BenzenoidsCollectionsManagerPane) panes.getCollectionsPane();
 	}
 
 	public DrawBenzenoidPane getDrawPane() {
-		return drawPane;
+		return panes.getDrawPane();
 	}
 
 	public FilteringPane getFilteringPane() {
-		return (FilteringPane) filteringPane;
+		return (FilteringPane) panes.getFilteringPane();
+	}
+
+	public Menu getTasksMenu() {
+		return tasksMenu;
+	}
+
+	public void setTasksMenu(Menu tasksMenu) {
+		this.tasksMenu = tasksMenu;
 	}
 
 	public void addTask(String task) {
@@ -872,10 +848,23 @@ public class BenzenoidApplication extends Application {
 	}
 
 	public GeneratorPane getGeneratorPane() {
-		return (GeneratorPane) generatorPane;
+		return (GeneratorPane) panes.getGeneratorPane();
+	}
+
+	public Panes getPanes() {
+		return panes;
+	}
+
+	public ArrayList<TaskHBox> getTasksBoxes() {
+		return tasksBoxes;
+	}
+
+	public void setTasksBoxes(ArrayList<TaskHBox> tasksBoxes) {
+		this.tasksBoxes = tasksBoxes;
 	}
 
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }

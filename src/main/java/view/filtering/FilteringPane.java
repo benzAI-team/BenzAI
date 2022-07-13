@@ -37,6 +37,7 @@ import view.filtering.criterions.FilteringCriterion;
 public class FilteringPane extends ScrollPane {
 
 	private BenzenoidApplication application;
+	private BenzenoidsCollectionsManagerPane collectionsPane;
 
 	private Button addButton;
   private Button closeButton;
@@ -55,8 +56,9 @@ public class FilteringPane extends ScrollPane {
 	private int lineConsole;
 	private int indexFiltering;
 	
-	public FilteringPane(BenzenoidApplication application) {
+	public FilteringPane(BenzenoidApplication application, BenzenoidsCollectionsManagerPane collectionsPane) {
 		this.application = application;
+		this.collectionsPane = collectionsPane;
 		initialize();
 
 	}
@@ -127,7 +129,7 @@ public class FilteringPane extends ScrollPane {
 		closeButton.setStyle("-fx-background-color: transparent;");
 
 		closeButton.setOnAction(e -> {
-			application.switchMode(ApplicationMode.COLLECTIONS);
+			application.switchMode(application.getPanes().getCollectionsPane());
 		});
 
 		filterButton = new Button("Filter");
@@ -171,13 +173,13 @@ public class FilteringPane extends ScrollPane {
 		}
 
 		collectionChoiceBox = new ChoiceBox<>();
-		for (int i = 0; i < application.getBenzenoidCollectionsPane().getBenzenoidSetPanes().size() - 1; i++) {
-			BenzenoidCollectionPane collectionPane = application.getBenzenoidCollectionsPane().getBenzenoidSetPanes()
+		for (int i = 0; i < collectionsPane.getBenzenoidSetPanes().size() - 1; i++) {
+			BenzenoidCollectionPane collectionPane = collectionsPane.getBenzenoidSetPanes()
 					.get(i);
 			collectionChoiceBox.getItems().add(collectionPane.getName());
 		}
 
-		BenzenoidCollectionPane curentPane = application.getBenzenoidCollectionsPane().getSelectedTab();
+		BenzenoidCollectionPane curentPane = collectionsPane.getSelectedTab();
 		collectionChoiceBox.getSelectionModel().select(curentPane.getIndex());
 
 		HBox buttonsBox = new HBox(5.0);
@@ -200,10 +202,10 @@ public class FilteringPane extends ScrollPane {
 
 	private void filter(ArrayList<FilteringCriterion> criterions) {
 
-		BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
+		BenzenoidsCollectionsManagerPane managerPane = collectionsPane;
 
 		int index = collectionChoiceBox.getSelectionModel().getSelectedIndex();
-		BenzenoidCollectionPane collectionPane = application.getBenzenoidCollectionsPane().getBenzenoidSetPanes()
+		BenzenoidCollectionPane collectionPane = collectionsPane.getBenzenoidSetPanes()
 				.get(index);
 
 		BenzenoidCollectionPane newCollectionPane = new BenzenoidCollectionPane(managerPane,
@@ -277,14 +279,14 @@ public class FilteringPane extends ScrollPane {
 					managerPane.addBenzenoidSetPane(newCollectionPane);
 					managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
 
-					application.getBenzenoidCollectionsPane().log("Filtering collection " + collectionPane.getName(), true);
+					collectionsPane.log("Filtering collection " + collectionPane.getName(), true);
 					for (FilteringCriterion criterion : criterions) {
 						application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
 					}
-					application.getBenzenoidCollectionsPane().log("-> " + newCollectionPane.getName(), false);
-					application.getBenzenoidCollectionsPane().log("", false);
+					collectionsPane.log("-> " + newCollectionPane.getName(), false);
+					collectionsPane.log("", false);
 
-					application.switchMode(ApplicationMode.COLLECTIONS);
+					application.switchMode(application.getPanes().getCollectionsPane());
 
 					break;
 

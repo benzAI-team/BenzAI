@@ -24,6 +24,7 @@ import parsers.GraphParser;
 import utils.Couple;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
+import view.collections.BenzenoidsCollectionsManagerPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.CollectionMenuItem;
 
@@ -34,7 +35,8 @@ public class DrawBenzenoidPane extends BorderPane {
 	}
 
 	private BenzenoidApplication application;
-
+	private BenzenoidsCollectionsManagerPane collectionsPane;
+	
 	private MenuBar menuBar;
 	private HBox buttonBar;
 	private BorderPane borderPane;
@@ -44,9 +46,10 @@ public class DrawBenzenoidPane extends BorderPane {
 
 	private int nbCrowns;
 
-	public DrawBenzenoidPane(BenzenoidApplication application) {
+	public DrawBenzenoidPane(BenzenoidApplication application, BenzenoidsCollectionsManagerPane collectionsPane) {
 
 		this.application = application;
+		this.collectionsPane = collectionsPane;
 		initialize();
 	}
 
@@ -132,8 +135,7 @@ public class DrawBenzenoidPane extends BorderPane {
 
 		Menu addMenu = new Menu("Add to collection");
 
-		ArrayList<BenzenoidCollectionPane> collectionPanes = application.getBenzenoidCollectionsPane()
-				.getBenzenoidSetPanes();
+		ArrayList<BenzenoidCollectionPane> collectionPanes = collectionsPane.getBenzenoidSetPanes();
 
 		for (int i = 0; i < collectionPanes.size() - 1; i++) {
 

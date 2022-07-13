@@ -127,7 +127,7 @@ public class GeneratorPane extends ScrollPane {
 		closeButton.setStyle("-fx-background-color: transparent;");
 
 		closeButton.setOnAction(e -> {
-			application.switchMode(ApplicationMode.COLLECTIONS);
+			application.switchMode(application.getPanes().getCollectionsPane());
 		});
 
 		ImageView imageStop = new ImageView(new Image("/resources/graphics/icon-stop.png"));
@@ -713,7 +713,7 @@ public class GeneratorPane extends ScrollPane {
 				@Override
 				public void run() {
 					buildBenzenoidPanes();
-					application.switchMode(ApplicationMode.COLLECTIONS);
+					application.switchMode(application.getPanes().getCollectionsPane());
 				}
 			});
 
@@ -744,7 +744,7 @@ public class GeneratorPane extends ScrollPane {
 
 			buttonsBox.getChildren().clear();
 			buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-			application.switchMode(ApplicationMode.COLLECTIONS);
+			application.switchMode(application.getPanes().getCollectionsPane());
 		}
 
 		else {
