@@ -50,7 +50,6 @@ import view.primaryStage.menus.*;
 public class BenzenoidApplication extends Application {
 
 	private Stage stage;
-	private ApplicationMode mode;
 	private BorderPane rootPane;
 
 	private Configuration configuration;
@@ -87,8 +86,6 @@ public class BenzenoidApplication extends Application {
 			boolean database = Post.checkDatabaseConnection();
 
 			configuration = Configuration.readConfigurationFile();
-
-			//mode = ApplicationMode.COLLECTIONS;
 
 			homeRegion = new AboutPane(this);
 
@@ -158,7 +155,6 @@ public class BenzenoidApplication extends Application {
 		MenuBar menuBar = buildMenuBar(rootPane);
 		rootPane.setTop(menuBar);
 
-		//mode = ApplicationMode.COLLECTIONS;
 		rootPane.setCenter(panes.getCollectionsPane());
 
 		return rootPane;

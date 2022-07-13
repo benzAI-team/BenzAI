@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import application.ApplicationMode;
 import application.BenzenoidApplication;
 import classifier.Irregularity;
 import classifier.MoleculeInformation;

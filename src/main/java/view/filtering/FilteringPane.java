@@ -2,7 +2,6 @@ package view.filtering;
 
 import java.util.ArrayList;
 
-import application.ApplicationMode;
 import application.BenzenoidApplication;
 import generator.fragments.FragmentResolutionInformations;
 import javafx.application.Platform;

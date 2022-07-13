@@ -2,7 +2,6 @@ package view.collections_operations;
 
 import java.util.ArrayList;
 
-import application.ApplicationMode;
 import application.BenzenoidApplication;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

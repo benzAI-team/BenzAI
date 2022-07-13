@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import application.ApplicationMode;
 import application.BenzenoidApplication;
 import database.BenzenoidCriterion;
 import database.models.IRSpectraEntry;

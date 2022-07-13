@@ -2,7 +2,6 @@ package view.primaryStage.menus;
 
 import java.io.File;
 
-import application.ApplicationMode;
 import application.BenzenoidApplication;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
