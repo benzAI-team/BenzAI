@@ -350,39 +350,7 @@ public class Molecule implements Comparable<Molecule> {
 			index++;
 		}
 	}
-
-	public void exportToGraphviz(String outputFileName) {
-		// COMPIL: dot -Kfdp -n -Tpng -o test.png test
-		try {
-			BufferedWriter w = new BufferedWriter(new FileWriter(new File(outputFileName)));
-
-			w.write("graph{" + "\n");
-
-			for (int i = 1; i <= nodesRefs.length; i++) {
-				w.write("\t" + i + " [pos=\"" + nodesRefs[(i - 1)].getX() + "," + nodesRefs[(i - 1)].getY() + "!\"]"
-						+ "\n");
-			}
-
-			w.write("\n");
-
-			for (int i = 0; i < adjacencyMatrix.length; i++) {
-				for (int j = i + 1; j < adjacencyMatrix[i].length; j++) {
-
-					if (adjacencyMatrix[i][j] != 0)
-						w.write("\t" + (i) + " -- " + (j) + "\n");
-
-				}
-			}
-
-			w.write("}");
-
-			w.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	public RelativeMatrix getNodesMem() {
 		return nodesMem;
 	}

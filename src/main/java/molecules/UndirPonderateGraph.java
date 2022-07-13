@@ -170,63 +170,6 @@ private int nbNodes, nbEdges, nbHexagons;
 	/**
 	 * Class's methods
 	 */
-
-	public void exportToGraphviz(String outputFileName) {
-		//COMPIL: dot -Kfdp -n -Tpng -o test.png test
-		try {
-			BufferedWriter w = new BufferedWriter(new FileWriter(new File(outputFileName)));
-			
-			w.write("graph{" + "\n");
-			
-			for (int i = 1 ; i <= nodesRefs.length ; i++) {
-				w.write("\t" + i + " [pos=\"" + nodesRefs[(i-1)].getX() + "," + nodesRefs[(i-1)].getY() + "!\"]" + "\n" );
-			}
-			
-			w.write("\n");
-			
-			for (int i = 0 ; i < adjacencyMatrix.length ; i++) {
-				for (int j = i + 1 ; j < adjacencyMatrix[i].length ; j++) {
-					
-					if (adjacencyMatrix[i][j] == 0)
-						w.write("\t" + (i+1) + " -- " + (j+1) + "\n");
-					
-					if (adjacencyMatrix[i][j] == 1)
-						w.write("\t" + (i+1) + " -- " + (j+1) + " [color=\"red:white:red\"]" + "\n");
-					
-				}
-			}
-			
-			w.write("}");
-			
-			w.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void exportToDimacs(String outputFileName) throws IOException{
-		BufferedWriter w = new BufferedWriter(new FileWriter(new File(outputFileName)));
-		for (int i = 0 ; i < adjacencyMatrix.length ; i++) {
-			for (int j = i+1 ; j < adjacencyMatrix[i].length ; j++) {
-				if (adjacencyMatrix[i][j] != -1) {
-					w.write("e " + nodesRefs[i].getX() + "_" + nodesRefs[i].getY() + " " + 
-			                   	   nodesRefs[j].getX() + "_" + nodesRefs[j].getY() + " " + adjacencyMatrix[i][j] + "\n");
-				}
-			}
-		}
-		w.close();
-	}
-	
-	public void displayDoubleBounds() {
-		System.out.println("------");
-		for (int i = 0 ; i < adjacencyMatrix.length ; i++) {
-			for (int j = i + 1 ; j < adjacencyMatrix[i].length ; j++) {
-				if (adjacencyMatrix[i][j] == 1)
-					System.out.println("(" + i + ", " + j + ") = 1");
-			}
-		}
-	}
 	
 	public int getMaxIndex() {
 		return maxIndex;
