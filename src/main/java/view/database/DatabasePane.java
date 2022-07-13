@@ -125,7 +125,7 @@ public class DatabasePane extends ScrollPane {
 		closeButton.setStyle("-fx-background-color: transparent;");
 
 		closeButton.setOnAction(e -> {
-			application.switchMode(ApplicationMode.COLLECTIONS);
+			application.switchMode(application.getPanes().getCollectionsPane());
 		});
 
 		ImageView imageGenerate = new ImageView(new Image("/resources/graphics/icon-resume.png"));
@@ -197,7 +197,7 @@ public class DatabasePane extends ScrollPane {
 		BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
 		managerPane.log("-> " + managerPane.getSelectedTab().getName(), false);
 		managerPane.getSelectedTab().refresh();
-		application.switchMode(ApplicationMode.COLLECTIONS);
+		application.switchMode(application.getPanes().getCollectionsPane());
 	}
 
 	@SuppressWarnings("rawtypes")
