@@ -25,14 +25,14 @@ public class JSonStringBuilder {
 		json.append("{");
 
 		if (!opeId.equals(""))
-			json.append("\"id\": \"" + opeId + " " + id + "\", ");
+			json.append("\"idBenzenoid\": \"" + opeId + " " + id + "\", ");
 		else
-			json.append("\"id\": \"\", ");
+			json.append("\"idBenzenoid\": \"\", ");
 
 		if (!opeName.equals(""))
-			json.append("\"name\": \"" + opeName + " " + name + "\", ");
+			json.append("\"inchie\": \"" + opeName + " " + name + "\", ");
 		else
-			json.append("\"name\": \"\", ");
+			json.append("\"inchie\": \"\", ");
 
 		if (!opeHexagons.equals(""))
 			json.append("\"nbHexagons\": \"" + opeHexagons + " " + nbHexagons + "\", ");
