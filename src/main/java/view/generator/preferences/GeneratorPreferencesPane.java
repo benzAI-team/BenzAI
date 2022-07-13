@@ -1,7 +1,7 @@
 package view.generator.preferences;
 
 import application.BenzenoidApplication;
-import application.Configuration;
+import application.Settings;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -46,7 +46,7 @@ public class GeneratorPreferencesPane extends GridPane {
 		timeUnitBox.getSelectionModel().select(0);
 
 		timeField.setOnKeyReleased(e -> {
-			Configuration configuration = application.getConfiguration();
+			Settings configuration = application.getConfiguration();
 
 			if (Utils.isNumber(timeField.getText())) {
 				configuration.setGenerationTime(Integer.parseInt(timeField.getText()));
@@ -56,7 +56,7 @@ public class GeneratorPreferencesPane extends GridPane {
 		});
 
 		timeUnitBox.setOnAction(e -> {
-			Configuration configuration = application.getConfiguration();
+			Settings configuration = application.getConfiguration();
 
 			if (Utils.isNumber(timeField.getText())) {
 				configuration.setGenerationTime(Integer.parseInt(timeField.getText()));
@@ -66,7 +66,7 @@ public class GeneratorPreferencesPane extends GridPane {
 		});
 
 		solutionsField.setOnKeyReleased(e -> {
-			Configuration configuration = application.getConfiguration();
+			Settings configuration = application.getConfiguration();
 
 			if (Utils.isNumber(solutionsField.getText())) {
 				configuration.setNbMaxSolutions(Integer.parseInt(solutionsField.getText()));
@@ -100,7 +100,7 @@ public class GeneratorPreferencesPane extends GridPane {
 
 	private void refresh() {
 
-		Configuration configuration = application.getConfiguration();
+		Settings configuration = application.getConfiguration();
 
 		if (configuration.getGenerationTime() > 0 && configuration.getTimeUnit() != null) {
 			timeField.setText(Integer.toString(configuration.getGenerationTime()));

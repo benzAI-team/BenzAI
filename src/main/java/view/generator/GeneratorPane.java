@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import application.BenzenoidApplication;
-import application.Configuration;
+import application.Settings;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
@@ -753,7 +753,7 @@ public class GeneratorPane extends ScrollPane {
 	}
 
 	private void checkConfiguration() {
-		Configuration configuration = application.getConfiguration();
+		Settings configuration = application.getConfiguration();
 
 		if (configuration.getGenerationTime() > 0 && configuration.getTimeUnit() != null) {
 			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this);

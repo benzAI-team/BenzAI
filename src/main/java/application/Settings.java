@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 import javafx.stage.Screen;
 
-public class Configuration {
+public class Settings {
 	
 	/*
 	 * Window's properties
@@ -102,9 +102,9 @@ public class Configuration {
 	 * I/O methods
 	 */
 
-	public static Configuration readConfigurationFile() throws IOException {
+	public static Settings readConfigurationFile() throws IOException {
 
-		Configuration configuration = new Configuration();
+		Settings configuration = new Settings();
 
 		File file = new File("config");
 

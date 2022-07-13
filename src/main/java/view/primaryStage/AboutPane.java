@@ -1,5 +1,6 @@
-package application;
+package view.primaryStage;
 
+import application.BenzenoidApplication;
 import javafx.geometry.Insets;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;

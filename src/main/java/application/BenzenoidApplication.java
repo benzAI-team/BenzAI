@@ -44,6 +44,7 @@ import view.generator.preferences.GeneratorPreferencesPane;
 import view.groups.AromaticityDisplayType;
 import view.groups.AromaticityGroup;
 import view.help.HelpPane;
+import view.primaryStage.AboutPane;
 import view.primaryStage.Panes;
 import view.primaryStage.menus.*;
 
@@ -52,7 +53,7 @@ public class BenzenoidApplication extends Application {
 	private Stage stage;
 	private BorderPane rootPane;
 
-	private Configuration configuration;
+	private Settings configuration;
 
 	/*
 	 * Home region
@@ -85,7 +86,7 @@ public class BenzenoidApplication extends Application {
 
 			boolean database = Post.checkDatabaseConnection();
 
-			configuration = Configuration.readConfigurationFile();
+			configuration = Settings.readConfigurationFile();
 
 			homeRegion = new AboutPane(this);
 
@@ -284,7 +285,7 @@ public class BenzenoidApplication extends Application {
 			addTask("None");
 	}
 
-	public Configuration getConfiguration() {
+	public Settings getConfiguration() {
 		return configuration;
 	}
 
