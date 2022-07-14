@@ -112,7 +112,7 @@ public class RectangleModule2 extends Module {
 				int index = lines.get(i).get(j);
 
 				if (index != -1)
-					line[j] = generalModel.getWatchedGraphVertices()[index];
+					line[j] = generalModel.getGraphVertices()[index];
 				else
 					line[j] = zero;
 
@@ -251,7 +251,7 @@ public class RectangleModule2 extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		generalModel.addWatchedVariable(width);
 		generalModel.addWatchedVariable(height);
 	}
@@ -263,7 +263,7 @@ public class RectangleModule2 extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		// TODO Auto-generated method stub
 
 	}

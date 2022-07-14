@@ -215,7 +215,7 @@ public class CoronoidModule2 extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		
 	}
 
@@ -226,7 +226,7 @@ public class CoronoidModule2 extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		// TODO Auto-generated method stub
 
 	}

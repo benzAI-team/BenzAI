@@ -22,7 +22,7 @@ public class CatacondensedModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class CatacondensedModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 
 	}
 

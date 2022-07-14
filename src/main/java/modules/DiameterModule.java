@@ -32,7 +32,7 @@ public class DiameterModule extends Module {
 	@Override
 	public void postConstraints() {
 
-		generalModel.getProblem().diameter(generalModel.getWatchedGraphVar(), diameter).post();
+		generalModel.getProblem().diameter(generalModel.getGraphVar(), diameter).post();
 
 		for (GeneratorCriterion criterion : criterions) {
 
@@ -49,7 +49,7 @@ public class DiameterModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		generalModel.addWatchedVariable(diameter);
 	}
 
@@ -59,7 +59,7 @@ public class DiameterModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 
 	}
 

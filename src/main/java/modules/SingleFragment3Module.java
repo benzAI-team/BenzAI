@@ -141,7 +141,7 @@ public class SingleFragment3Module extends Module{
 		for (Integer i : presentHexagons) {	
 			for (int j = 0 ; j < generalModel.getDiameter() * generalModel.getDiameter() ; j++) {
 			
-				if (generalModel.getWatchedGraphVertices()[j] != null) {
+				if (generalModel.getGraphVertices()[j] != null) {
 					//(i)
 
 					varClause = new IntVar[coronenoidCorrespondances[i].getDomainSize()];
@@ -161,7 +161,7 @@ public class SingleFragment3Module extends Module{
 					}
 					vit.dispose();
 
-					varClause[index] = generalModel.getWatchedGraphVertices()[j];
+					varClause[index] = generalModel.getGraphVertices()[j];
 					valClause[index] = new IntIterableRangeSet(1);
 					
 					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -173,7 +173,7 @@ public class SingleFragment3Module extends Module{
 		for (Integer i : absentHexagons ) {
 			for (int j = 0 ; j < generalModel.getDiameter() * generalModel.getDiameter() ; j++) {
 			
-				if (generalModel.getWatchedGraphVertices()[j] != null) {
+				if (generalModel.getGraphVertices()[j] != null) {
 					
 					varClause = new IntVar[coronenoidCorrespondances[i].getDomainSize()];
 					valClause = new IntIterableRangeSet[coronenoidCorrespondances[i].getDomainSize()];
@@ -192,7 +192,7 @@ public class SingleFragment3Module extends Module{
 					}
 					vit.dispose();
 
-					varClause[index] = generalModel.getWatchedGraphVertices()[j];
+					varClause[index] = generalModel.getGraphVertices()[j];
 					valClause[index] = new IntIterableRangeSet(0);
 					
 					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -204,7 +204,7 @@ public class SingleFragment3Module extends Module{
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		//generalModel.addWatchedVariable(coronenoidCorrespondances);
 	}
 
@@ -285,7 +285,7 @@ public class SingleFragment3Module extends Module{
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() { }
+	public void changeGraphVertices() { }
 	
 	private Tuples buildTable() {
 		

@@ -95,13 +95,13 @@ public class ForbiddenFragmentModule3 extends Module{
 		 	int index = 0;
 		 		
 			for (Integer j : absent) {
-				varClause[index] = generalModel.getWatchedGraphVertices()[j];
+				varClause[index] = generalModel.getGraphVertices()[j];
 				valClause[index] = new IntIterableRangeSet(1);
 				index ++;
 			}
 				
 			for (Integer j : present) {
-				varClause[index] = generalModel.getWatchedGraphVertices()[j];
+				varClause[index] = generalModel.getGraphVertices()[j];
 				valClause[index] = new IntIterableRangeSet(0);
 				index ++;
 			}
@@ -112,7 +112,7 @@ public class ForbiddenFragmentModule3 extends Module{
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		//generalModel.addWatchedVariable(presences);
 	}
 
@@ -155,7 +155,7 @@ VariableSelector<IntVar> variableSelector = null;
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() { }
+	public void changeGraphVertices() { }
 	
 	private void computeFragmentOccurences() {
 		

@@ -40,7 +40,7 @@ public class CoronoidModule extends Module{
 		
 		coronoid = generalModel.getProblem().graphVar("coronoid", GLBCoronoid, GUBCoronoid);
 			
-		generalModel.setWatchedGUB(GUBCoronoid);
+		generalModel.setGUB(GUBCoronoid);
 		
 		benzenoidDegrees = new IntVar[generalModel.getNbHexagonsCoronenoid()];
 		for (int i = 0 ; i < benzenoidDegrees.length ; i++)
@@ -136,7 +136,7 @@ public class CoronoidModule extends Module{
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 	
 	}
 	
@@ -205,10 +205,10 @@ public class CoronoidModule extends Module{
 	}
 
 	@Override 
-	public void changeWatchedGraphVertices() {
-		generalModel.setWatchedGraphVertices(coronoidVertices);
-		generalModel.setWatchedChanneling(coronoidChanneling);
-		generalModel.setWatchedGraphVar(coronoid);
+	public void changeGraphVertices() {
+		generalModel.setGraphVertices(coronoidVertices);
+		generalModel.setChanneling(coronoidChanneling);
+		generalModel.setGraphVar(coronoid);
 	}
 
 	@Override

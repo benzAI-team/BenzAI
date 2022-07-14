@@ -154,7 +154,7 @@ public class RectangleModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 //		generalModel.addWatchedVariable(generalModel.getChanneling());
 		generalModel.addWatchedVariable(xW);
 		generalModel.addWatchedVariable(xH);
@@ -228,7 +228,7 @@ public class RectangleModule extends Module {
 				int index = lines.get(i).get(j);
 
 				if (index != -1)
-					line[j] = generalModel.getWatchedGraphVertices()[index];
+					line[j] = generalModel.getGraphVertices()[index];
 				else
 					line[j] = zero;
 
@@ -253,7 +253,7 @@ public class RectangleModule extends Module {
 			for (int line = 0; line < diameter; line++) {
 
 				if (coordsMatrix[line][column] != -1)
-					c[line] = generalModel.getWatchedGraphVertices()[coordsMatrix[line][column]];
+					c[line] = generalModel.getGraphVertices()[coordsMatrix[line][column]];
 				else
 					c[line] = zero;
 			}
@@ -276,7 +276,7 @@ public class RectangleModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 
 	}
 

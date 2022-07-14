@@ -15,9 +15,9 @@ public abstract class Module implements Comparable<Module>{
 	public abstract void setPriority();
 	public abstract void buildVariables();	
 	public abstract void postConstraints();
-	public abstract void addWatchedVariables();
+	public abstract void addVariables();
 	public abstract void changeSolvingStrategy();
-	public abstract void changeWatchedGraphVertices();
+	public abstract void changeGraphVertices();
 	
 	public int getPriority() {
 		return priority;

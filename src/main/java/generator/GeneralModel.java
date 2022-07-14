@@ -104,19 +104,19 @@ public class GeneralModel {
 	private UndirectedGraph GUB;
 	private UndirectedGraph GLB;
 
-	private UndirectedGraph watchedGUB;
+	//private UndirectedGraph watchedGUB;
 
 	private UndirectedGraphVar benzenoid;
 	private BoolVar[] channeling;
 	private BoolVar[] benzenoidVertices;
 	private BoolVar[][] benzenoidEdges;
 
-	private UndirectedGraphVar watchedGraphVar;
+	//private UndirectedGraphVar watchedGraphVar;
 
-	private BoolVar[] watchedChanneling;
-	private BoolVar[] watchedBenzenoidVertices;
+	//private BoolVar[] watchedChanneling;
+	//private BoolVar[] watchedBenzenoidVertices;
 
-	private ArrayList<Variable> watchedVariables = new ArrayList<Variable>();
+	private ArrayList<Variable> variables = new ArrayList<Variable>();
 
 	private IntVar nbVertices;
 	private BoolVar[] edges;
@@ -329,17 +329,17 @@ public class GeneralModel {
 
 		buildAdjacencyMatrix();
 
-		setWatchedGUB(GUB);
+		//setWatchedGUB(GUB);
 
 		benzenoid = chocoModel.graphVar("g", GLB, GUB);
 
 		buildBenzenoidVertices();
 		buildBenzenoidEdges();
 
-		watchedGraphVar = benzenoid;
+		//watchedGraphVar = benzenoid;
 
-		watchedBenzenoidVertices = benzenoidVertices;
-		watchedChanneling = channeling;
+		//watchedBenzenoidVertices = benzenoidVertices;
+		//watchedChanneling = channeling;
 
 		buildCoordsCorrespondance();
 		buildNeighborGraph();
@@ -375,7 +375,7 @@ public class GeneralModel {
 	}
 
 	public void addWatchedVariable(Variable variable) {
-		watchedVariables.add(variable);
+		variables.add(variable);
 	}
 
 	public void addWatchedVariable(Variable... variables) {
@@ -392,8 +392,8 @@ public class GeneralModel {
 		for (Module module : modules) {
 			module.buildVariables();
 			module.postConstraints();
-			module.addWatchedVariables();
-			module.changeWatchedGraphVertices();
+			module.addVariables();
+			module.changeGraphVertices();
 		}
 
 		if (GeneratorCriterion.containsSymmetry(criterions) || GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
@@ -402,7 +402,7 @@ public class GeneralModel {
 		if (applyBorderConstraints)
 			ConstraintBuilder.postBordersConstraints(this);
 
-		chocoModel.nbNodes(watchedGraphVar, nbVertices).post();
+		chocoModel.nbNodes(benzenoid, nbVertices).post();
 
 		for (GeneratorCriterion criterion : hexagonsCriterions) {
 
@@ -461,24 +461,24 @@ public class GeneralModel {
 		return benzenoid;
 	}
 
-	public UndirectedGraphVar getWatchedGraphVar() {
-		return watchedGraphVar;
+	public UndirectedGraphVar getGraphVar() {
+		return benzenoid;
 	}
 
 	public BoolVar[][] getBenzenoidEdges() {
 		return benzenoidEdges;
 	}
 
-	public BoolVar[] getWatchedGraphVertices() {
-		return watchedBenzenoidVertices;
+	public BoolVar[] getGraphVertices() {
+		return benzenoidVertices;
 	}
 
-	public void setWatchedGraphVertices(BoolVar[] graphVertices) {
-		watchedBenzenoidVertices = graphVertices;
+	public void setGraphVertices(BoolVar[] graphVertices) {
+		benzenoidVertices = graphVertices;
 	}
 
-	public void setWatchedGUB(UndirectedGraph GUB) {
-		watchedGUB = GUB;
+	public void setGUB(UndirectedGraph GUB) {
+		this.GUB = GUB;
 	}
 
 	public UndirectedGraphVar benzenoidGraphVar(String name) {
@@ -499,14 +499,14 @@ public class GeneralModel {
 
 	public void displaySolution() {
 
-		for (int index = 0; index < watchedChanneling.length; index++) {
-			if (watchedChanneling[index].getValue() == 1)
+		for (int index = 0; index < channeling.length; index++) {
+			if (channeling[index].getValue() == 1)
 				System.out.print(index + " ");
 		}
 
 		System.out.println("");
 
-		for (Variable x : watchedVariables)
+		for (Variable x : variables)
 			if (x.getName().equals("XI"))
 				System.out.println(x.getName() + " = " + (double) ((((IntVar) x).getValue())) / 100);
 			else
@@ -521,7 +521,7 @@ public class GeneralModel {
 		StringBuilder builder = new StringBuilder();
 		builder.append("solution " + index + "\n");
 
-		for (Variable x : watchedVariables)
+		for (Variable x : variables)
 
 			if (x.getName().equals("XI")) {
 
@@ -558,9 +558,9 @@ public class GeneralModel {
 		for (int i = 0; i < correspondance.length; i++)
 			correspondance[i] = -1;
 
-		for (int index = 0; index < watchedBenzenoidVertices.length; index++) {
-			if (watchedBenzenoidVertices[index] != null) {
-				if (watchedBenzenoidVertices[index].getValue() == 1) {
+		for (int index = 0; index < benzenoidVertices.length; index++) {
+			if (benzenoidVertices[index] != null) {
+				if (benzenoidVertices[index].getValue() == 1) {
 					hexagonsSolutions.add(index);
 					correspondance[index] = hexagonsSolutions.size() - 1;
 				}
@@ -751,7 +751,7 @@ public class GeneralModel {
 
 			recordNoGoods();
 
-			BenzenoidSolution solverSolution = new BenzenoidSolution(watchedGUB, nbCrowns,
+			BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
 					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 			String description = buildDescription(indexSolution);
 			resultSolver.addSolution(solverSolution, description, nbCrowns);
@@ -759,13 +759,13 @@ public class GeneralModel {
 			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
 			ArrayList<Integer> verticesSolution = new ArrayList<>();
 
-			for (int index = 0; index < watchedBenzenoidVertices.length; index++) {
+			for (int index = 0; index < benzenoidVertices.length; index++) {
 
-				if (watchedBenzenoidVertices[index] != null) {
-					verticesSolution.add(watchedBenzenoidVertices[index].getValue());
+				if (benzenoidVertices[index] != null) {
+					verticesSolution.add(benzenoidVertices[index].getValue());
 
-					if (watchedBenzenoidVertices[index].getValue() == 1) {
-						presentHexagons.add(watchedBenzenoidVertices[index]);
+					if (benzenoidVertices[index].getValue() == 1) {
+						presentHexagons.add(benzenoidVertices[index]);
 					}
 
 				} else
@@ -1409,12 +1409,12 @@ public class GeneralModel {
 		return channeling;
 	}
 
-	public void setWatchedChanneling(BoolVar[] channeling) {
-		this.watchedChanneling = channeling;
+	public void setChanneling(BoolVar[] channeling) {
+		this.channeling = channeling;
 	}
 
-	public void setWatchedGraphVar(UndirectedGraphVar graphVar) {
-		this.watchedGraphVar = graphVar;
+	public void setGraphVar(UndirectedGraphVar graphVar) {
+		benzenoid = graphVar;
 	}
 
 	public int[][] getNeighborGraph() {
@@ -1469,7 +1469,7 @@ public class GeneralModel {
 
 			recordNoGoods();
 
-			BenzenoidSolution solution = new BenzenoidSolution(watchedGUB, nbCrowns,
+			BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns,
 					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 			String description = buildDescription(indexSolution);
 			resultSolver.addSolution(solution, description, nbCrowns);
@@ -1477,13 +1477,13 @@ public class GeneralModel {
 			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
 			ArrayList<Integer> verticesSolution = new ArrayList<>();
 
-			for (int index = 0; index < watchedBenzenoidVertices.length; index++) {
+			for (int index = 0; index < benzenoidVertices.length; index++) {
 
-				if (watchedBenzenoidVertices[index] != null) {
-					verticesSolution.add(watchedBenzenoidVertices[index].getValue());
+				if (benzenoidVertices[index] != null) {
+					verticesSolution.add(benzenoidVertices[index].getValue());
 
-					if (watchedBenzenoidVertices[index].getValue() == 1) {
-						presentHexagons.add(watchedBenzenoidVertices[index]);
+					if (benzenoidVertices[index].getValue() == 1) {
+						presentHexagons.add(benzenoidVertices[index]);
 					}
 
 				} else

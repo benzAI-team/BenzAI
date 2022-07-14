@@ -52,7 +52,7 @@ public class BenzenoidModule extends Module {
 			IntVar[] variables = new IntVar[translation.length];
 
 			for (int j = 0; j < translation.length; j++) {
-				variables[j] = generalModel.getWatchedGraphVertices()[translation[j]];
+				variables[j] = generalModel.getGraphVertices()[translation[j]];
 			}
 
 			or[i] = generalModel.getProblem().sum(variables, "=", variables.length);
@@ -65,7 +65,7 @@ public class BenzenoidModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		// DO_NOTHING
 	}
 
@@ -75,7 +75,7 @@ public class BenzenoidModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		// DO_NOTHING
 	}
 

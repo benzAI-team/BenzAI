@@ -183,7 +183,7 @@ public class MultipleFragments3Module extends Module{
 			for (Integer j : presentHexagons) {
 				for (int k = 0 ; k < generalModel.getDiameter() * generalModel.getDiameter() ; k++) {
 					
-					if (generalModel.getWatchedGraphVertices()[k] != null) {
+					if (generalModel.getGraphVertices()[k] != null) {
 						//(i)
 						
 						varClause = new IntVar[coronenoidCorrespondances[j].getDomainSize()];
@@ -203,7 +203,7 @@ public class MultipleFragments3Module extends Module{
 						}
 						vit.dispose();
 
-						varClause[index] = generalModel.getWatchedGraphVertices()[k];
+						varClause[index] = generalModel.getGraphVertices()[k];
 						valClause[index] = new IntIterableRangeSet(1);
 						
 						generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -215,7 +215,7 @@ public class MultipleFragments3Module extends Module{
 			for (Integer j : absentHexagons) {
 				for (int k = 0 ; k < generalModel.getDiameter() * generalModel.getDiameter() ; k++) {
 					
-					if (generalModel.getWatchedGraphVertices()[k] != null) {
+					if (generalModel.getGraphVertices()[k] != null) {
 
 						varClause = new IntVar[coronenoidCorrespondances[j].getDomainSize()];
 						valClause = new IntIterableRangeSet[coronenoidCorrespondances[j].getDomainSize()];
@@ -234,7 +234,7 @@ public class MultipleFragments3Module extends Module{
 						}
 						vit.dispose();
 
-						varClause[index] = generalModel.getWatchedGraphVertices()[k];
+						varClause[index] = generalModel.getGraphVertices()[k];
 						valClause[index] = new IntIterableRangeSet(0);
 						
 						generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -266,7 +266,7 @@ public class MultipleFragments3Module extends Module{
 	}
 
 	@Override
-	public void addWatchedVariables() {	
+	public void addVariables() {	
 	//	for (IntVar [] coronenoidCorrespondances : allCoronenoidCorrespondances)
 	//		generalModel.addWatchedVariable(coronenoidCorrespondances);
 	}
@@ -363,7 +363,7 @@ public class MultipleFragments3Module extends Module{
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		
 	}
 	

@@ -104,12 +104,12 @@ public class ForbiddenFragmentModule2 extends Module{
 			int index = 0;
 				
 			for (Integer j : absent) {
-				andCstr[index] = generalModel.getProblem().arithm(generalModel.getWatchedGraphVertices()[j], "=", 0);
+				andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 0);
 				index ++;
 			}
 				
 			for (Integer j : present) {
-				andCstr[index] = generalModel.getProblem().arithm(generalModel.getWatchedGraphVertices()[j], "=", 1);
+				andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 1);
 				index ++;
 			}
 				
@@ -121,7 +121,7 @@ public class ForbiddenFragmentModule2 extends Module{
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		//generalModel.addWatchedVariable(presences);
 	}
 
@@ -199,7 +199,7 @@ public class ForbiddenFragmentModule2 extends Module{
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() { }
+	public void changeGraphVertices() { }
 	
 	private void computeFragmentOccurences() {
 		

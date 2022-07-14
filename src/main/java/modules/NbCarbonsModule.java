@@ -177,7 +177,7 @@ public class NbCarbonsModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		// DO_NOTHING
 	}
 
@@ -187,7 +187,7 @@ public class NbCarbonsModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		// DO_NOTHING
 	}
 

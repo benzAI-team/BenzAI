@@ -44,7 +44,7 @@ public class CatacondensedModule2 extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -56,7 +56,7 @@ public class CatacondensedModule2 extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -86,16 +86,16 @@ public class CatacondensedModule2 extends Module {
 					int w = getMatrix(coordsMatrix, i+1, j+1);
 					
 					if (v1 != -1 && w != -1)
-						triangles.add(new BoolVar[] {generalModel.getWatchedGraphVertices()[u], 
-													generalModel.getWatchedGraphVertices()[v1], 
-													generalModel.getWatchedGraphVertices()[w]});
+						triangles.add(new BoolVar[] {generalModel.getGraphVertices()[u], 
+													generalModel.getGraphVertices()[v1], 
+													generalModel.getGraphVertices()[w]});
 					
 					
 						
 					if (v2 != -1 && w != -1)
-						triangles.add(new BoolVar[] {generalModel.getWatchedGraphVertices()[u], 
-								generalModel.getWatchedGraphVertices()[v2], 
-								generalModel.getWatchedGraphVertices()[w]});
+						triangles.add(new BoolVar[] {generalModel.getGraphVertices()[u], 
+								generalModel.getGraphVertices()[v2], 
+								generalModel.getGraphVertices()[w]});
 					
 				}
 			}

@@ -170,7 +170,7 @@ public class NbHydrogensModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		// TODO Auto-generated method stub
 
 	}
@@ -182,7 +182,7 @@ public class NbHydrogensModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		// TODO Auto-generated method stub
 
 	}

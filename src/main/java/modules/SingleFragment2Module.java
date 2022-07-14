@@ -162,7 +162,7 @@ public class SingleFragment2Module extends Module {
 					varClause[index] = fragmentCorrespondances[T1[j]];
 					valClause[index] = new IntIterableRangeSet(-1);
 					index++;
-					varClause[index] = generalModel.getWatchedGraphVertices()[j];
+					varClause[index] = generalModel.getGraphVertices()[j];
 					valClause[index] = new IntIterableRangeSet(1);
 					
 					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -190,7 +190,7 @@ public class SingleFragment2Module extends Module {
 					varClause[index] = fragmentCorrespondances[T1[j]];
 					valClause[index] = new IntIterableRangeSet(-1);
 					index++;
-					varClause[index] = generalModel.getWatchedGraphVertices()[j];
+					varClause[index] = generalModel.getGraphVertices()[j];
 					valClause[index] = new IntIterableRangeSet(0);
 					
 					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -216,7 +216,7 @@ public class SingleFragment2Module extends Module {
 			varClause[index] = fragmentCorrespondances[T1[j]];
 			valClause[index] = new IntIterableRangeSet(-1);
 			index++;
-			varClause[index] = generalModel.getWatchedGraphVertices()[j];
+			varClause[index] = generalModel.getGraphVertices()[j];
 			valClause[index] = new IntIterableRangeSet(0);
 			
 			}
@@ -281,7 +281,7 @@ public class SingleFragment2Module extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 //		generalModel.addWatchedVariable(fragmentCorrespondances);
 	}
 
@@ -361,7 +361,7 @@ public class SingleFragment2Module extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() { }
+	public void changeGraphVertices() { }
 
 	private Tuples buildSubTable(ArrayList<Integer> okColumns, ArrayList<Integer> nokColumns) {
 		

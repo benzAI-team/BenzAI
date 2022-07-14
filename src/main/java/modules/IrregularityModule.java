@@ -89,7 +89,7 @@ public class IrregularityModule extends Module {
 							DUOS[index], TRIOS[index], QUATUORS[index] };
 
 					generalModel.getProblem().ifThenElse(
-							generalModel.getProblem().arithm(generalModel.getWatchedGraphVertices()[index], "=", 1),
+							generalModel.getProblem().arithm(generalModel.getGraphVertices()[index], "=", 1),
 							generalModel.getProblem().table(tuple, table, "CT+"),
 							generalModel.getProblem().sum(new IntVar[] { NULL[index], SOLOS[index], DUOS[index],
 									TRIOS[index], QUATUORS[index] }, "=", 0));
@@ -177,7 +177,7 @@ public class IrregularityModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 	}
 
 	private void buildXN() {
@@ -187,7 +187,7 @@ public class IrregularityModule extends Module {
 		for (int line = 0; line < dualGraph.length; line++) {
 			for (int column = 0; column < dualGraph[line].length; column++) {
 				if (dualGraph[line][column] != -1) {
-					xN[line][column] = generalModel.getWatchedGraphVertices()[dualGraph[line][column]];
+					xN[line][column] = generalModel.getGraphVertices()[dualGraph[line][column]];
 				} else {
 					xN[line][column] = zero;
 				}
@@ -330,7 +330,7 @@ public class IrregularityModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 
 	}
 

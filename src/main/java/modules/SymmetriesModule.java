@@ -62,7 +62,7 @@ public class SymmetriesModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 
 	}
 
@@ -72,7 +72,7 @@ public class SymmetriesModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 
 	}
 
@@ -97,9 +97,9 @@ public class SymmetriesModule extends Module {
 				if (inCoronenoid(i, j))
 					if (inCoronenoid(p.from(Utils.getHexagonID(i, j, generalModel.getDiameter())))) {
 
-						BoolVar x = generalModel.getWatchedGraphVertices()[Utils.getHexagonID(i, j,
+						BoolVar x = generalModel.getGraphVertices()[Utils.getHexagonID(i, j,
 								generalModel.getDiameter())];
-						BoolVar y = generalModel.getWatchedGraphVertices()[p
+						BoolVar y = generalModel.getGraphVertices()[p
 								.from(Utils.getHexagonID(i, j, generalModel.getDiameter()))];
 
 						BoolVar[] clauseVariables1 = new BoolVar[] { x, y };
@@ -116,7 +116,7 @@ public class SymmetriesModule extends Module {
 
 					} else {
 
-						BoolVar x = generalModel.getWatchedGraphVertices()[Utils.getHexagonID(i, j,
+						BoolVar x = generalModel.getGraphVertices()[Utils.getHexagonID(i, j,
 								generalModel.getDiameter())];
 
 						BoolVar[] clauseVariables = new BoolVar[] { x, x };

@@ -107,13 +107,13 @@ public class SingleFragment1Module extends Module {
 			valClause[0] = new IntIterableRangeSet(0);
 
 			for (Integer j : absent) {
-				varClause[1] = generalModel.getWatchedGraphVertices()[j];
+				varClause[1] = generalModel.getGraphVertices()[j];
 				valClause[1] = new IntIterableRangeSet(0);
 				generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 			}
 
 			for (Integer j : present) {
-				varClause[1] = generalModel.getWatchedGraphVertices()[j];
+				varClause[1] = generalModel.getGraphVertices()[j];
 				valClause[1] = new IntIterableRangeSet(1);
 				generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 			}
@@ -126,7 +126,7 @@ public class SingleFragment1Module extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		// generalModel.addWatchedVariable(presences);
 	}
 
@@ -203,7 +203,7 @@ public class SingleFragment1Module extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 	}
 
 	private void computeFragmentOccurences() {

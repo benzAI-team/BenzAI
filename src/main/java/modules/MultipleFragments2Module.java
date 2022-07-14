@@ -309,7 +309,7 @@ public class MultipleFragments2Module extends Module {
 						varClause[index] = correspondancesAllHexagons[T1[j]];
 						valClause[index] = new IntIterableRangeSet(-1);
 						index++;
-						varClause[index] = generalModel.getWatchedGraphVertices()[j];
+						varClause[index] = generalModel.getGraphVertices()[j];
 						valClause[index] = new IntIterableRangeSet(1);
 						
 						generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -338,7 +338,7 @@ public class MultipleFragments2Module extends Module {
 						varClause[index] = correspondancesAllHexagons[T1[j]];
 						valClause[index] = new IntIterableRangeSet(-1);
 						index++;
-						varClause[index] = generalModel.getWatchedGraphVertices()[j];
+						varClause[index] = generalModel.getGraphVertices()[j];
 						valClause[index] = new IntIterableRangeSet(0);
 						
 						generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -719,7 +719,7 @@ public class MultipleFragments2Module extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		// for (IntVar [] array : fragmentCorrespondancesAllHexagons)
 		// generalModel.addWatchedVariable(array);
 	}
@@ -814,7 +814,7 @@ public class MultipleFragments2Module extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		// TODO Auto-generated method stub
 	}
 

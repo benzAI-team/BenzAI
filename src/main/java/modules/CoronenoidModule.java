@@ -65,7 +65,7 @@ public class CoronenoidModule extends Module {
 		// diameter =
 		// nbCrowns.add(generalModel.getProblem().intVar(-1)).mul(generalModel.getProblem().intVar(2)).intVar();
 
-		generalModel.getProblem().diameter(generalModel.getWatchedGraphVar(), diameter).post();
+		generalModel.getProblem().diameter(generalModel.getGraphVar(), diameter).post();
 
 		for (GeneratorCriterion criterion : criterions) {
 			if (criterion.getSubject() == Subject.NB_CROWNS && !criterion.getValue().equals("Unspecified")) {
@@ -79,7 +79,7 @@ public class CoronenoidModule extends Module {
 	}
 
 	@Override
-	public void addWatchedVariables() {
+	public void addVariables() {
 		generalModel.addWatchedVariable(nbCrowns);
 		// generalModel.addWatchedVariable(sub);
 		generalModel.addWatchedVariable(diameter);
@@ -99,7 +99,7 @@ public class CoronenoidModule extends Module {
 	}
 
 	@Override
-	public void changeWatchedGraphVertices() {
+	public void changeGraphVertices() {
 		// TODO Auto-generated method stub
 
 	}
