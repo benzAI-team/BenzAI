@@ -43,7 +43,7 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 			this.getChildren().addAll(fieldValue, deleteButton);
 		}
 		
-		parent.refreshValidity();
+		parent.refreshGenerationPossibility();
 	}
 	
 	@Override

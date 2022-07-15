@@ -32,7 +32,12 @@ public class BenzenoidSolution {
 		this.name = benzenoidSolution.getName();
 		this.hexagonsCorrespondances = hexagonsCorrespondances;
 	}
-
+/***
+ * 
+ * @param chocoGraph
+ * @param hexagonsCorrespondances
+ * @return translate a ChocoGraph graph to a SimpleGraph
+ */
 	public static SimpleGraph<Integer, DefaultEdge> choco2JGraphT(UndirectedGraph chocoGraph,
 			int[] hexagonsCorrespondances) {
 
@@ -48,7 +53,11 @@ public class BenzenoidSolution {
 
 		return graph;
 	}
-
+/***
+ * Saves the solution as a CML files
+ * @param number
+ * @param path
+ */
 	public void saveCML(int number, String path) {
 		File fichier = new File(path + "/" + name + "-" + number + ".cml");
 		try {
@@ -60,6 +69,9 @@ public class BenzenoidSolution {
 		}
 	}
 
+	/***
+	 * getters, setters
+	 */
 	public int getNbCouronnes() {
 		return nbCouronnes;
 	}

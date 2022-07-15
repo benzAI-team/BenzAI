@@ -42,7 +42,7 @@ public class HBoxNbCarbonsCriterion extends ClassicalHBoxCriterion{
 			this.getChildren().addAll(fieldValue, deleteButton);
 		}
 		
-		parent.refreshValidity();
+		parent.refreshGenerationPossibility();
 		
 	}
 	

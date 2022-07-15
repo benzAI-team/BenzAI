@@ -18,7 +18,7 @@ public class HBoxCatacondensedCriterion extends HBoxCriterion {
 	@Override
 	protected void checkValidity() {
 		valid = true;
-		parent.refreshValidity();
+		parent.refreshGenerationPossibility();
 	}
 
 	@Override

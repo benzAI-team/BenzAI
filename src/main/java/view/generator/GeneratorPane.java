@@ -749,6 +749,9 @@ public class GeneratorPane extends ScrollPane {
 
 	}
 
+	/***
+	 * 
+	 */
 	private void buildBenzenoidPanesThread() {
 
 		int size = model.getResultSolver().size();
@@ -771,6 +774,9 @@ public class GeneratorPane extends ScrollPane {
 		}
 	}
 
+	/***
+	 * 
+	 */
 	private void buildBenzenoidPanes() {
 		if (!model.isPaused()) {
 
@@ -800,7 +806,18 @@ public class GeneratorPane extends ScrollPane {
 		}
 	}
 
+	/***
+	 * Add automatic stop criterions based on the settings
+	 */
 	private void checkSettings() {
+		checkGenerationTime();
+		checkNbMaxSolutions();
+	}
+	
+	/***
+	 * Add time limit if in the settings
+	 */
+	private void checkGenerationTime() {
 		Settings settings = application.getSettings();
 
 		if (settings.getGenerationTime() > 0 && settings.getTimeUnit() != null) {
@@ -820,7 +837,13 @@ public class GeneratorPane extends ScrollPane {
 
 			refresh();
 		}
-
+	}
+	
+	/***
+	 * Add number of solution limit if in the settings
+	 */
+	private void checkNbMaxSolutions() {
+		Settings settings = application.getSettings();
 		if (settings.getNbMaxSolutions() > 0) {
 
 			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this);
@@ -844,7 +867,7 @@ public class GeneratorPane extends ScrollPane {
 		stopButton.fire();
 	}
 
-	public void refreshValidity() {
+	public void refreshGenerationPossibility() {
 
 		ArrayList<GeneratorCriterion> criterions = buildCriterions();
 		canStartGeneration = false;

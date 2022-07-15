@@ -31,7 +31,7 @@ public class HBoxNbHexagonsCriterion extends ClassicalHBoxCriterion {
 			this.getChildren().add(deleteButton);
 		}
 		
-		parent.refreshValidity();
+		parent.refreshGenerationPossibility();
 	}
 	
 	@Override

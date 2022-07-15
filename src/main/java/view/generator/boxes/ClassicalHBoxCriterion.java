@@ -33,7 +33,7 @@ public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
 		}
 
 		if (valid)
-			parent.refreshValidity();
+			parent.refreshGenerationPossibility();
 	}
 
 	@Override
