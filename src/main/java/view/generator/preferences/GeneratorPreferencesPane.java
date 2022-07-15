@@ -46,31 +46,31 @@ public class GeneratorPreferencesPane extends GridPane {
 		timeUnitBox.getSelectionModel().select(0);
 
 		timeField.setOnKeyReleased(e -> {
-			Settings configuration = application.getSettings();
+			Settings settings = application.getSettings();
 
 			if (Utils.isNumber(timeField.getText())) {
-				configuration.setGenerationTime(Integer.parseInt(timeField.getText()));
-				configuration.setTimeUnit(timeUnitBox.getValue());
-				configuration.save();
+				settings.setGenerationTime(Integer.parseInt(timeField.getText()));
+				settings.setTimeUnit(timeUnitBox.getValue());
+				settings.save();
 			}
 		});
 
 		timeUnitBox.setOnAction(e -> {
-			Settings configuration = application.getSettings();
+			Settings settings = application.getSettings();
 
 			if (Utils.isNumber(timeField.getText())) {
-				configuration.setGenerationTime(Integer.parseInt(timeField.getText()));
-				configuration.setTimeUnit(timeUnitBox.getValue());
-				configuration.save();
+				settings.setGenerationTime(Integer.parseInt(timeField.getText()));
+				settings.setTimeUnit(timeUnitBox.getValue());
+				settings.save();
 			}
 		});
 
 		solutionsField.setOnKeyReleased(e -> {
-			Settings configuration = application.getSettings();
+			Settings settings = application.getSettings();
 
 			if (Utils.isNumber(solutionsField.getText())) {
-				configuration.setNbMaxSolutions(Integer.parseInt(solutionsField.getText()));
-				configuration.save();
+				settings.setNbMaxSolutions(Integer.parseInt(solutionsField.getText()));
+				settings.save();
 			}
 		});
 
@@ -100,15 +100,15 @@ public class GeneratorPreferencesPane extends GridPane {
 
 	private void refresh() {
 
-		Settings configuration = application.getSettings();
+		Settings settings = application.getSettings();
 
-		if (configuration.getGenerationTime() > 0 && configuration.getTimeUnit() != null) {
-			timeField.setText(Integer.toString(configuration.getGenerationTime()));
-			timeUnitBox.getSelectionModel().select(configuration.getTimeUnit());
+		if (settings.getGenerationTime() > 0 && settings.getTimeUnit() != null) {
+			timeField.setText(Integer.toString(settings.getGenerationTime()));
+			timeUnitBox.getSelectionModel().select(settings.getTimeUnit());
 		}
 
-		if (configuration.getNbMaxSolutions() > 0) {
-			solutionsField.setText(Integer.toString(configuration.getNbMaxSolutions()));
+		if (settings.getNbMaxSolutions() > 0) {
+			solutionsField.setText(Integer.toString(settings.getNbMaxSolutions()));
 		}
 	}
 }

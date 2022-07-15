@@ -102,9 +102,9 @@ public class Settings {
 	 * I/O methods
 	 */
 
-	public static Settings readConfigurationFile() throws IOException {
+	public static Settings readSettingsFile() throws IOException {
 
-		Settings configuration = new Settings();
+		Settings settings = new Settings();
 
 		File file = new File("config");
 
@@ -123,17 +123,17 @@ public class Settings {
 
 				if (splittedLine[0].equals("remember-window-size")) {
 					rememberSize = Boolean.parseBoolean(splittedLine[1]);
-					configuration.setRemembersSize(rememberSize);
+					settings.setRemembersSize(rememberSize);
 				}
 
 				if (splittedLine[0].equals("width")) {
 					width = Double.parseDouble(splittedLine[1]);
-					configuration.setWidth(width);
+					settings.setWidth(width);
 				}
 
 				else if (splittedLine[0].equals("height")) {
 					height = Double.parseDouble(splittedLine[1]);
-					configuration.setHeight(height);
+					settings.setHeight(height);
 				}
 
 				else if (splittedLine[0].equals("generation-time-limit")) {
@@ -141,16 +141,16 @@ public class Settings {
 					String timeProperties = splittedLine[1];
 					String[] splittedTimeProperties = timeProperties.split(" ");
 
-					configuration.setGenerationTime(Integer.parseInt(splittedTimeProperties[0]));
-					configuration.setTimeUnit(splittedTimeProperties[1]);
+					settings.setGenerationTime(Integer.parseInt(splittedTimeProperties[0]));
+					settings.setTimeUnit(splittedTimeProperties[1]);
 				}
 
 				else if (splittedLine[0].equals("generation-max-solutions")) {
-					configuration.setNbMaxSolutions(Integer.parseInt(splittedLine[1]));
+					settings.setNbMaxSolutions(Integer.parseInt(splittedLine[1]));
 				}
 				
 				else if (splittedLine[0].contentEquals("home-window")) {
-					configuration.setDisplayHomeWindow(Boolean.parseBoolean(splittedLine[1]));
+					settings.setDisplayHomeWindow(Boolean.parseBoolean(splittedLine[1]));
 				}
 			}
 
@@ -162,13 +162,13 @@ public class Settings {
 			double width = (Screen.getPrimary().getBounds().getWidth() * 2.0 / 2.5);
 			double height = (Screen.getPrimary().getBounds().getHeight() * 2.0 / 2.5);
 
-			configuration.setWidth(width);
-			configuration.setHeight(height);
+			settings.setWidth(width);
+			settings.setHeight(height);
 
-			configuration.save();
+			settings.save();
 		}
 
-		return configuration;
+		return settings;
 	}
 
 	public void save() {

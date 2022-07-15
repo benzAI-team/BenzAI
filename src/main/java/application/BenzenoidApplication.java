@@ -86,7 +86,7 @@ public class BenzenoidApplication extends Application {
 
 			boolean database = Post.checkDatabaseConnection();
 
-			settings = Settings.readConfigurationFile();
+			settings = Settings.readSettingsFile();
 
 			homeRegion = new AboutPane(this);
 
