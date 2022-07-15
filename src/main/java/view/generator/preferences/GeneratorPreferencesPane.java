@@ -46,7 +46,7 @@ public class GeneratorPreferencesPane extends GridPane {
 		timeUnitBox.getSelectionModel().select(0);
 
 		timeField.setOnKeyReleased(e -> {
-			Settings configuration = application.getConfiguration();
+			Settings configuration = application.getSettings();
 
 			if (Utils.isNumber(timeField.getText())) {
 				configuration.setGenerationTime(Integer.parseInt(timeField.getText()));
@@ -56,7 +56,7 @@ public class GeneratorPreferencesPane extends GridPane {
 		});
 
 		timeUnitBox.setOnAction(e -> {
-			Settings configuration = application.getConfiguration();
+			Settings configuration = application.getSettings();
 
 			if (Utils.isNumber(timeField.getText())) {
 				configuration.setGenerationTime(Integer.parseInt(timeField.getText()));
@@ -66,7 +66,7 @@ public class GeneratorPreferencesPane extends GridPane {
 		});
 
 		solutionsField.setOnKeyReleased(e -> {
-			Settings configuration = application.getConfiguration();
+			Settings configuration = application.getSettings();
 
 			if (Utils.isNumber(solutionsField.getText())) {
 				configuration.setNbMaxSolutions(Integer.parseInt(solutionsField.getText()));
@@ -100,7 +100,7 @@ public class GeneratorPreferencesPane extends GridPane {
 
 	private void refresh() {
 
-		Settings configuration = application.getConfiguration();
+		Settings configuration = application.getSettings();
 
 		if (configuration.getGenerationTime() > 0 && configuration.getTimeUnit() != null) {
 			timeField.setText(Integer.toString(configuration.getGenerationTime()));

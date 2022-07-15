@@ -53,7 +53,7 @@ public class BenzenoidApplication extends Application {
 	private Stage stage;
 	private BorderPane rootPane;
 
-	private Settings configuration;
+	private Settings settings;
 
 	/*
 	 * Home region
@@ -86,7 +86,7 @@ public class BenzenoidApplication extends Application {
 
 			boolean database = Post.checkDatabaseConnection();
 
-			configuration = Settings.readConfigurationFile();
+			settings = Settings.readConfigurationFile();
 
 			homeRegion = new AboutPane(this);
 
@@ -118,7 +118,7 @@ public class BenzenoidApplication extends Application {
 			primaryStage.setScene(generatorScene);
 			primaryStage.show();
 
-			if (configuration.isDisplayHomeWindow())
+			if (settings.isDisplayHomeWindow())
 				displayAboutWindow();
 
 		} catch (Exception e) {
@@ -183,20 +183,20 @@ public class BenzenoidApplication extends Application {
 	private void initPrimaryStageProperties(Stage primaryStage) {
 		primaryStage.setTitle("BenzAI");
 
-		primaryStage.setWidth(configuration.getWidth());
-		primaryStage.setHeight(configuration.getHeight());
+		primaryStage.setWidth(settings.getWidth());
+		primaryStage.setHeight(settings.getHeight());
 
 		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			if (configuration.remembersSize()) {
-				configuration.setWidth(newVal.doubleValue());
-				configuration.save();
+			if (settings.remembersSize()) {
+				settings.setWidth(newVal.doubleValue());
+				settings.save();
 			}
 		});
 
 		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
-			if (configuration.remembersSize()) {
-				configuration.setHeight(newVal.doubleValue());
-				configuration.save();
+			if (settings.remembersSize()) {
+				settings.setHeight(newVal.doubleValue());
+				settings.save();
 			}
 		});
 
@@ -285,8 +285,8 @@ public class BenzenoidApplication extends Application {
 			addTask("None");
 	}
 
-	public Settings getConfiguration() {
-		return configuration;
+	public Settings getSettings() {
+		return settings;
 	}
 
 	public GeneratorPane getGeneratorPane() {

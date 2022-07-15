@@ -55,71 +55,133 @@ import view.generator.boxes.HBoxTimeoutCriterion;
 
 public class GeneratorPane extends ScrollPane {
 
+	private BenzenoidApplication application;
+	private GeneralModel model;
+	private boolean canStartGeneration;
+	private boolean isRunning;
+	private ArrayList<Molecule> generatedMolecules;
+	private int nbCriterions;
+	ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
+	private FragmentResolutionInformations fragmentsInformations;
+
 	BenzenoidCollectionPane selectedCollectionTab;
 
-	private GeneralModel model;
-
-	private BenzenoidApplication application;
+	private Label titleLabel;
+	private ImageView loadIcon;
+	private ImageView warningIcon;
 	private GridPane gridPane;
-	private int nbCriterions;
 	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
 	private ArrayList<HBoxCriterion> hBoxesCriterions;
+
+	private HBox buttonsBox;
 	private Button addButton;
 	private Button closeButton;
 	private Button generateButton;
 	private Button stopButton;
 	private Button pauseButton;
 	private Button resumeButton;
-	private ImageView loadIcon;
 
-	private boolean isRunning;
-
-	private HBox buttonsBox;
-
-	private Label titleLabel;
-
-	private ImageView warningIcon;
-
-	private ArrayList<Molecule> generatedMolecules;
-
-	private boolean valid;
-
-	ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-	/*
-	 * Solver informations
-	 */
-
-	private FragmentResolutionInformations fragmentsInformations;
 
 	public GeneratorPane(BenzenoidApplication application) {
 		this.application = application;
-		initialize();
+		isRunning = false;
+		nbCriterions = 1;
+		initializePane();
 	}
 
-	private void initialize() {
+	private void initializePane() {
 
 		titleLabel = new Label("Generate benzenoids");
 		titleLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
+		this.setFitToHeight(true);
+		this.setFitToWidth(true);
+		this.setPrefWidth(1400);
+		this.setPrefWidth(this.getPrefWidth());
 
-		isRunning = false;
+		loadIcon = buildLoadIcon();
+		warningIcon = buildWarningIcon();
+		
+		addButton = buildAddButton();
+		closeButton = buildCloseButton();
+		stopButton = buildStopButton();
+		pauseButton = buildPauseButton();
+		resumeButton = buildResumeButton();
+		generateButton = buildGenerateButton();
 
-		nbCriterions = 1;
+		choiceBoxesCriterions = new ArrayList<>();
+		hBoxesCriterions = new ArrayList<>();
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this);
+		choiceBoxesCriterions.add(choiceBoxCriterion);
+		hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
+		gridPane = buildGridPane();
+
+		this.setContent(gridPane);
+
+		checkSettings();
+
+		refresh();
+	}
+
+	/***
+	 * 
+	 * @return 
+	 */
+	private ImageView buildLoadIcon() {
 		Image image = new Image("/resources/graphics/icon-load.gif");
-		loadIcon = new ImageView(image);
+		ImageView loadIcon = new ImageView(image);
 		loadIcon.resize(30, 30);
-
+		return loadIcon;
+	}
+	
+	private ImageView buildWarningIcon() {
+		ImageView warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
+		warningIcon.resize(30, 30);
+		Tooltip.install(warningIcon, new Tooltip(
+				"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required. Moreover, all the criterions must be valid"));
+		return warningIcon;
+	}
+	/***
+	 * 
+	 * @return addButton for adding a criterion
+	 */
+	private Button buildAddButton() {
+		Button addButton = new Button();
 		ImageView imageAdd = new ImageView(new Image("/resources/graphics/icon-add.png"));
-
-		addButton = new Button();
 		addButton.setGraphic(imageAdd);
 		Tooltip.install(addButton, new Tooltip("Add new criterion"));
 		addButton.resize(30, 30);
 		addButton.setStyle("-fx-background-color: transparent;");
+		addButton.setOnAction(e -> {
 
+			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
+
+			if (invalidIndexes.size() == 0) {
+				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this);
+				choiceBoxesCriterions.add(choiceBoxCriterion);
+				hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+				nbCriterions++;
+
+				System.out.println(nbCriterions + " criterions");
+
+				refresh();
+
+			}
+			else {
+				Utils.alert("Invalid criterion(s)");
+			}
+		});
+
+		return addButton;
+	}
+	
+	/***
+	 * 
+	 * @return closeButton to return to collection pane
+	 */
+	private Button buildCloseButton() {
+		Button closeButton = new Button();
 		ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
-		closeButton = new Button();
 		closeButton.setGraphic(imageClose);
 		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
 		closeButton.resize(30, 30);
@@ -128,9 +190,16 @@ public class GeneratorPane extends ScrollPane {
 		closeButton.setOnAction(e -> {
 			application.switchMode(application.getPanes().getCollectionsPane());
 		});
-
+		return closeButton;
+	}
+	
+	/***
+	 * 
+	 * @return stopButton to stop generation
+	 */
+	private Button buildStopButton() {
 		ImageView imageStop = new ImageView(new Image("/resources/graphics/icon-stop.png"));
-		stopButton = new Button();
+		Button stopButton = new Button();
 		stopButton.setGraphic(imageStop);
 		Tooltip.install(stopButton, new Tooltip("Stop generation"));
 		stopButton.resize(30, 30);
@@ -150,10 +219,16 @@ public class GeneratorPane extends ScrollPane {
 			buttonsBox.getChildren().clear();
 			buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 		});
-
+	return stopButton;
+	}
+	
+	/***
+	 * 
+	 * @return pauseButton to pause generation
+	 */
+	private Button buildPauseButton() {
+		Button pauseButton = new Button();
 		ImageView imagePause = new ImageView(new Image("/resources/graphics/icon-pause.png"));
-
-		pauseButton = new Button();
 		pauseButton.setGraphic(imagePause);
 		pauseButton.setStyle("-fx-background-color: transparent;");
 		pauseButton.resize(32, 32);
@@ -163,9 +238,15 @@ public class GeneratorPane extends ScrollPane {
 			buttonsBox.getChildren().clear();
 			buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 		});
-
+		return pauseButton;
+	}
+	/***
+	 * 
+	 * @return resumeButton to resume generation
+	 */
+	private Button buildResumeButton() {
+		Button resumeButton = new Button();
 		ImageView imageResume = new ImageView(new Image("/resources/graphics/icon-resume.png"));
-		resumeButton = new Button();
 		resumeButton.setGraphic(imageResume);
 		resumeButton.setStyle("-fx-background-color: transparent;");
 		resumeButton.resize(30, 30);
@@ -173,32 +254,15 @@ public class GeneratorPane extends ScrollPane {
 		resumeButton.setOnAction(e -> {
 			resumeGeneration();
 		});
-
-		addButton.setOnAction(e -> {
-
-			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
-
-			if (invalidIndexes.size() == 0) {
-
-				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this);
-				choiceBoxesCriterions.add(choiceBoxCriterion);
-				hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
-
-				nbCriterions++;
-
-				System.out.println(nbCriterions + " criterions");
-
-				refresh();
-
-			}
-
-			else {
-				Utils.alert("Invalid criterion(s)");
-			}
-		});
-
+		return resumeButton;
+	}
+	/***
+	 * 
+	 * @return generateButton to start generation
+	 */
+	private Button buildGenerateButton() {
+		Button generateButton = new Button();
 		ImageView imageGenerate = new ImageView(new Image("/resources/graphics/icon-resume.png"));
-		generateButton = new Button();
 		generateButton.setGraphic(imageGenerate);
 		Tooltip.install(generateButton, new Tooltip("Generate benzenoids"));
 		generateButton.setStyle("-fx-background-color: transparent;");
@@ -210,41 +274,25 @@ public class GeneratorPane extends ScrollPane {
 			} else
 				Utils.alert("Cannot launch generation: another one is running");
 		});
-
-		choiceBoxesCriterions = new ArrayList<>();
-		hBoxesCriterions = new ArrayList<>();
-
-		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this);
-
-		choiceBoxesCriterions.add(choiceBoxCriterion);
-		hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
-
-		this.setFitToHeight(true);
-		this.setFitToWidth(true);
-		this.setPrefWidth(1400);
-
-		gridPane = new GridPane();
-
+		return generateButton;
+	}
+	/***
+	 * 
+	 * @return gridPane
+	 */
+	private GridPane buildGridPane() {
+		GridPane gridPane = new GridPane();
 		gridPane.setPrefWidth(1400);
-
 		gridPane.setPadding(new Insets(50));
 		gridPane.setHgap(5);
 		gridPane.setVgap(5);
-
-		this.setPrefWidth(this.getPrefWidth());
-
-		this.setContent(gridPane);
-
-		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
-		warningIcon.resize(30, 30);
-		Tooltip.install(warningIcon, new Tooltip(
-				"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required. Moreover, all the criterions must be valid"));
-
-		checkConfiguration();
-
-		refresh();
+		return gridPane;
 	}
-
+	
+	/***
+	 * 
+	 * @return
+	 */
 	private ArrayList<Integer> containsInvalidCriterion() {
 
 		ArrayList<Integer> indexes = new ArrayList<>();
@@ -541,7 +589,7 @@ public class GeneratorPane extends ScrollPane {
 	@SuppressWarnings("rawtypes")
 	private void generateBenzenoids() {
 
-		if (valid) {
+		if (canStartGeneration) {
 
 			criterions = buildCriterions();
 			HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = buildCriterionsMap(criterions);
@@ -633,7 +681,7 @@ public class GeneratorPane extends ScrollPane {
 
 		else {
 			Utils.alert(
-					"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required");
+					"A criterion limiting the number of solutions (eg, limiting hexagons/carbons/hydrogens/number of lines and columns) is required");
 		}
 	}
 
@@ -752,10 +800,10 @@ public class GeneratorPane extends ScrollPane {
 		}
 	}
 
-	private void checkConfiguration() {
-		Settings configuration = application.getConfiguration();
+	private void checkSettings() {
+		Settings settings = application.getSettings();
 
-		if (configuration.getGenerationTime() > 0 && configuration.getTimeUnit() != null) {
+		if (settings.getGenerationTime() > 0 && settings.getTimeUnit() != null) {
 			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this);
 			choiceBoxesCriterions.add(choiceBoxCriterion);
 			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
@@ -765,15 +813,15 @@ public class GeneratorPane extends ScrollPane {
 			HBoxTimeoutCriterion criterionBox = (HBoxTimeoutCriterion) hBoxesCriterions
 					.get(choiceBoxCriterion.getIndex());
 
-			criterionBox.setTime(Integer.toString(configuration.getGenerationTime()));
-			criterionBox.setTimeUnit(configuration.getTimeUnit());
+			criterionBox.setTime(Integer.toString(settings.getGenerationTime()));
+			criterionBox.setTimeUnit(settings.getTimeUnit());
 
 			nbCriterions++;
 
 			refresh();
 		}
 
-		if (configuration.getNbMaxSolutions() > 0) {
+		if (settings.getNbMaxSolutions() > 0) {
 
 			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this);
 			choiceBoxesCriterions.add(choiceBoxCriterion);
@@ -784,7 +832,7 @@ public class GeneratorPane extends ScrollPane {
 			HBoxNbSolutionsCriterion criterionBox = (HBoxNbSolutionsCriterion) hBoxesCriterions
 					.get(choiceBoxCriterion.getIndex());
 
-			criterionBox.setNbSolutions(Integer.toString(configuration.getNbMaxSolutions()));
+			criterionBox.setNbSolutions(Integer.toString(settings.getNbMaxSolutions()));
 
 			nbCriterions++;
 
@@ -799,7 +847,7 @@ public class GeneratorPane extends ScrollPane {
 	public void refreshValidity() {
 
 		ArrayList<GeneratorCriterion> criterions = buildCriterions();
-		valid = false;
+		canStartGeneration = false;
 
 		if (criterions != null) {
 
@@ -814,14 +862,14 @@ public class GeneratorPane extends ScrollPane {
 
 				if ((subject == Subject.NB_HEXAGONS || subject == Subject.NB_CARBONS || subject == Subject.NB_HYDROGENS
 						|| subject == Subject.RHOMBUS_DIMENSION) && criterion.isUpperBound()) {
-					valid = true;
+					canStartGeneration = true;
 					break;
 				}
 
 				if (subject == Subject.RECT_HEIGHT && criterion.isUpperBound()) {
 					lines = true;
 					if (lines && columns) {
-						valid = true;
+						canStartGeneration = true;
 						break;
 					}
 				}
@@ -829,7 +877,7 @@ public class GeneratorPane extends ScrollPane {
 				if (subject == Subject.RECT_WIDTH && criterion.isUpperBound()) {
 					columns = true;
 					if (lines && columns) {
-						valid = true;
+						canStartGeneration = true;
 						break;
 					}
 				}
@@ -837,7 +885,7 @@ public class GeneratorPane extends ScrollPane {
 
 			buttonsBox.getChildren().remove(warningIcon);
 
-			if (valid)
+			if (canStartGeneration)
 				buttonsBox.getChildren().remove(warningIcon);
 			else
 				buttonsBox.getChildren().add(warningIcon);
