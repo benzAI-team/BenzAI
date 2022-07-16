@@ -14,10 +14,6 @@ public class CatacondensedModule2 extends Module {
 		super(generalModel);
 	}
 
-	@Override
-	public void setPriority() {
-		//DO_NOTHING
-	}
 
 	@Override
 	public void buildVariables() {

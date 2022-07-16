@@ -212,11 +212,6 @@ public class CoronoidModule extends Module{
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 3;
-	}
-	
-	@Override
 	public String toString() {
 		return "CoronoidModule";
 	}

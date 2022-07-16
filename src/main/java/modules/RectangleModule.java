@@ -281,11 +281,6 @@ public class RectangleModule extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 2;
-	}
-
-	@Override
 	public String toString() {
 		return "RectangleModule";
 	}

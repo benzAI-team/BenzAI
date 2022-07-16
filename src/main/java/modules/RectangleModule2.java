@@ -148,11 +148,6 @@ public class RectangleModule2 extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 1;
-	}
-
-	@Override
 	public void buildVariables() {
 
 		zero = generalModel.getProblem().boolVar("zero", false);

@@ -20,11 +20,6 @@ public class DiameterModule extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 1;
-	}
-
-	@Override
 	public void buildVariables() {
 		diameter = generalModel.getProblem().intVar("diameter", 0, generalModel.getNbMaxHexagons());
 	}

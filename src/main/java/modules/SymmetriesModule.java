@@ -17,11 +17,6 @@ public class SymmetriesModule extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 4;
-	}
-
-	@Override
 	public void buildVariables() {
 
 	}

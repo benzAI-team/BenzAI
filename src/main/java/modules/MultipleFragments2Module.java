@@ -57,11 +57,6 @@ public class MultipleFragments2Module extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 1;
-	}
-
-	@Override
 	public void buildVariables() {
 
 		additionalCrowns = new ArrayList<>();

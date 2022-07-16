@@ -20,11 +20,6 @@ public class BenzenoidModule extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		// DO_NOTHING
-	}
-
-	@Override
 	public void buildVariables() {
 		// DO_NOTHING
 	}

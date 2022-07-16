@@ -335,11 +335,6 @@ public class IrregularityModule extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 1;
-	}
-
-	@Override
 	public String toString() {
 		return "IrregularityModule";
 	}

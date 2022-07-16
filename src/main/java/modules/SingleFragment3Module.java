@@ -45,11 +45,6 @@ public class SingleFragment3Module extends Module{
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 1;
-	}
-
-	@Override
 	public void buildVariables() {
 				
 		generalModel.buildNeighborGraphWithOutterHexagons(fragment.getOrder());

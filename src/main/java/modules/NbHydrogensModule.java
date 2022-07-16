@@ -34,11 +34,6 @@ public class NbHydrogensModule extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 1;
-	}
-
-	@Override
 	public void buildVariables() {
 
 		zero = generalModel.getProblem().boolVar(false);

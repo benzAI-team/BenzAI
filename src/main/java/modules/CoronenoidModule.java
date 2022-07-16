@@ -28,12 +28,6 @@ public class CoronenoidModule extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void buildVariables() {
 		nbCrowns = generalModel.getProblem().intVar("nb_crowns", 1, generalModel.getNbCrowns());
 		diameter = generalModel.getProblem().intVar("diameter", 0, generalModel.getDiameter());

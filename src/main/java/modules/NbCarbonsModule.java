@@ -39,11 +39,6 @@ public class NbCarbonsModule extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-		priority = 1;
-	}
-
-	@Override
 	public void buildVariables() {
 
 		benzenoidCarbons = new IntVar[generalModel.getChanneling().length];

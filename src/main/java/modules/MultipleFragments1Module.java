@@ -57,11 +57,6 @@ public class MultipleFragments1Module extends Module {
 		this.orderStrategy = orderStrategy;
 		this.interraction = interraction;
 	}
-	
-	@Override
-	public void setPriority() {
-		priority = 1;
-	}
 
 	@Override
 	public void buildVariables() {

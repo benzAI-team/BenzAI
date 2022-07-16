@@ -36,10 +36,10 @@ public class CatacondensedModule extends Module {
 
 	}
 
-	@Override
-	public void setPriority() {
-		priority = 2;
-	}
+//	@Override
+//	public void setPriority() {
+//		priority = 2;
+//	}
 
 	@Override
 	public String toString() {

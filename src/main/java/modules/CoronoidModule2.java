@@ -44,11 +44,6 @@ public class CoronoidModule2 extends Module {
 	}
 
 	@Override
-	public void setPriority() {
-
-	}
-
-	@Override
 	public void buildVariables() {
 
 		for (GeneratorCriterion criterion : criterions) {
