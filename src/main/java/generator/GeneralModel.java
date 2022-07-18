@@ -139,7 +139,7 @@ public class GeneralModel {
 	 * Modules
 	 */
 
-	private PriorityQueue<Module> modules = new PriorityQueue<Module>();
+	private ArrayList<Module> modules = new ArrayList<Module>();
 
 	/*
 	 * Constructors

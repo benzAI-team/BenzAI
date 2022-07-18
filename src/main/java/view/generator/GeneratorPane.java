@@ -133,7 +133,10 @@ public class GeneratorPane extends ScrollPane {
 		loadIcon.resize(30, 30);
 		return loadIcon;
 	}
-	
+	/***
+	 * 
+	 * @return
+	 */
 	private ImageView buildWarningIcon() {
 		ImageView warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
 		warningIcon.resize(30, 30);
@@ -219,7 +222,7 @@ public class GeneratorPane extends ScrollPane {
 			buttonsBox.getChildren().clear();
 			buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 		});
-	return stopButton;
+		return stopButton;
 	}
 	
 	/***
