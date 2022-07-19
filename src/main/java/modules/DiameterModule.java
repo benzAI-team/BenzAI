@@ -45,7 +45,7 @@ public class DiameterModule extends Module {
 
 	@Override
 	public void addVariables() {
-		generalModel.addWatchedVariable(diameter);
+		generalModel.addVariable(diameter);
 	}
 
 	@Override

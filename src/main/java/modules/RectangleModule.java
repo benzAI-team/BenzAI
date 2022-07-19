@@ -156,8 +156,8 @@ public class RectangleModule extends Module {
 	@Override
 	public void addVariables() {
 //		generalModel.addWatchedVariable(generalModel.getChanneling());
-		generalModel.addWatchedVariable(xW);
-		generalModel.addWatchedVariable(xH);
+		generalModel.addVariable(xW);
+		generalModel.addVariable(xH);
 	}
 
 	private void buildD1() {

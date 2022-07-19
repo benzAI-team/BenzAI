@@ -374,13 +374,13 @@ public class GeneralModel {
 			nbClausesLexLead = ConstraintBuilder.postSymmetryBreakingConstraints(this);
 	}
 
-	public void addWatchedVariable(Variable variable) {
+	public void addVariable(Variable variable) {
 		variables.add(variable);
 	}
 
-	public void addWatchedVariable(Variable... variables) {
+	public void addVariable(Variable... variables) {
 		for (Variable variable : variables)
-			addWatchedVariable(variable);
+			addVariable(variable);
 	}
 
 	public void addModule(Module module) {
@@ -916,7 +916,7 @@ public class GeneralModel {
 		return outterHexagonsIndexes;
 	}
 
-	public PriorityQueue<Module> getModules() {
+	public ArrayList<Module> getModules() {
 		return modules;
 	}
 

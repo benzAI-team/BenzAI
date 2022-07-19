@@ -74,9 +74,9 @@ public class CoronenoidModule extends Module {
 
 	@Override
 	public void addVariables() {
-		generalModel.addWatchedVariable(nbCrowns);
+		generalModel.addVariable(nbCrowns);
 		// generalModel.addWatchedVariable(sub);
-		generalModel.addWatchedVariable(diameter);
+		generalModel.addVariable(diameter);
 	}
 
 	@Override

@@ -223,9 +223,9 @@ public class OccurenceFragmentModule extends Module{
 
 	@Override
 	public void addVariables() {
-		generalModel.addWatchedVariable(occurenceVar);
-		generalModel.addWatchedVariable(presences);
-		generalModel.addWatchedVariable(presences2);
+		generalModel.addVariable(occurenceVar);
+		generalModel.addVariable(presences);
+		generalModel.addVariable(presences2);
 	}
 
 	@Override

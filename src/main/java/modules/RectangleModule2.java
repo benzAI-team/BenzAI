@@ -247,8 +247,8 @@ public class RectangleModule2 extends Module {
 
 	@Override
 	public void addVariables() {
-		generalModel.addWatchedVariable(width);
-		generalModel.addWatchedVariable(height);
+		generalModel.addVariable(width);
+		generalModel.addVariable(height);
 	}
 
 	@Override
