@@ -107,34 +107,6 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		});
 	}
 
-	public BenzenoidPane(BenzenoidCollectionPane parameterPane, String solution, Group benzenoidDraw,
-			String description, ArrayList<Integer> verticesSolution, int index, boolean isDrawMolecule,
-			BenzenoidSolution benzenoidSolution, int[] hexagonsCorrespondances) {
-
-		super();
-
-		this.benzenoidSetPane = parameterPane;
-
-		this.solution = solution;
-		this.benzenoidDraw = benzenoidDraw;
-		this.name = description;
-
-		if (name == null)
-			name = "";
-
-		this.index = index;
-
-		isSelected = false;
-
-		this.setStyle("-fx-border-color: black;" + "-fx-border-width: 4;" + "-fx-border-radius: 10px;");
-
-		addItems();
-
-		this.verticesSolution = verticesSolution;
-		this.isDrawMolecule = isDrawMolecule;
-
-		this.benzenoidSolution = benzenoidSolution;
-	}
 
 	public int getIndex() {
 		return index;
