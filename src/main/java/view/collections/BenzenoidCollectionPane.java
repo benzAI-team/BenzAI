@@ -224,6 +224,7 @@ public class BenzenoidCollectionPane extends Tab {
 	public void addBenzenoid(Molecule molecule, DisplayType displayType) {
 		molecules.add(molecule);
 		displayTypes.add(displayType);
+    selectedBenzenoidPanes.clear();
 	}
 
 	public void addSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {

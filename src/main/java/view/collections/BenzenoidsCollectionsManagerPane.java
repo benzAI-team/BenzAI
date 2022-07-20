@@ -605,7 +605,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		}
 
 		setPaneOrigin.removeBenzenoidPanes(benzenoidPanesMoved);
-		setPaneOrigin.refresh();
 
 		log("Moving " + benzenoidPanesMoved.size() + " benzenoid(s) from " + setPaneOrigin.getName() + " to "
 				+ setPaneDestination.getName(), true);
@@ -613,8 +612,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		for (int i = 0; i < moleculesMoved.size(); i++) {
 			setPaneDestination.addBenzenoid(moleculesMoved.get(i), displayTypesMoved.get(i));
 		}
-
+  
+    // refreshing the two considered panes
 		setPaneDestination.refresh();
+		setPaneOrigin.refresh();
 
 		System.out.println("end move() : origin.benzenoidPanes.size() = " + setPaneOrigin.getBenzenoidPanes().size());
 		System.out.println(
