@@ -6,16 +6,17 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import database.PictureConverter;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import molecules.Molecule;
 
-public class IMS2D1AGroup extends Group {
+public class IMS2D1AGroup extends MoleculeGroup {
 
 	private String pictureData;
 	
-	public IMS2D1AGroup(String pictureData) {
-		this.pictureData = pictureData;
+	public IMS2D1AGroup(Molecule molecule) {
+    super(molecule);
+		this.pictureData = molecule.getIms2d1a();
 		try {
 			buildImage();
 		} catch (IOException e) {
@@ -50,6 +51,10 @@ public class IMS2D1AGroup extends Group {
 		return new File("map.png");
 	}
 	
+  
+  protected void drawHexagons() {
+  }
+  
 	public static void main(String [] args) {
 		try {
 			System.out.println(PictureConverter.pngToString("/home/adrien/Téléchargements/unknown.png"));

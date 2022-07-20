@@ -20,9 +20,8 @@ public class RBOGroup extends MoleculeGroup {
 
 	private Color[] palette;
 
-	public RBOGroup(BenzenoidsCollectionsManagerPane pane, Molecule molecule) {
+	public RBOGroup(Molecule molecule) {
 		super(molecule);
-		this.pane = pane;
 		RBO = molecule.getRBO();
 		removeTexts();
 		buildPalette();

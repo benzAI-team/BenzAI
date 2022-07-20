@@ -1101,7 +1101,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 							if (rboRunning) {
 								Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 								molecule.getRBO();
-								molecule.setRBOGroup(new RBOGroup(manager, molecule));
 								benzenoidSetPane.addBenzenoid(molecule, DisplayType.RBO);
 								indexRBO++;
 								System.out.println(indexRBO + " / " + size);

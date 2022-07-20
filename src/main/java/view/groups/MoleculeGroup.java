@@ -232,7 +232,7 @@ public class MoleculeGroup extends Group {
 		return height;
 	}
 
-	private void drawHexagons() {
+	protected void drawHexagons() {
 
 		texts = new ArrayList<>();
 
