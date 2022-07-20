@@ -139,7 +139,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 		nextButton.setOnAction(e -> {
 
-			switch (displayedProperty) {
+    switch (displayedProperty) {
 			case PROPERTIES:
 				displayedProperty = DisplayedProperty.FREQUENCIES;
 				gridPane.getChildren().remove(borderPane);
@@ -343,7 +343,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 									AromaticityGroup aromaticityGroup = new AromaticityGroup(parent, molecule,
 											aromaticity);
-									BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, -1, null,
+									BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null,
 											aromaticityGroup, "", molecule.getVerticesSolutions(), index, false);
 
 									// flowPane.getChildren().add(benzenoidPane);
@@ -378,7 +378,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 									AromaticityGroup aromaticityGroup = new AromaticityGroup(parent, molecule,
 											aromaticity);
-									BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, -1, null,
+									BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null,
 											aromaticityGroup, "", molecule.getVerticesSolutions(), index, false);
 
 									// flowPane.getChildren().add(benzenoidPane);
@@ -392,9 +392,8 @@ public class BenzenoidCollectionPane extends Tab {
 
 							case CLAR_COVER:
 
-								BenzenoidPane benzenoidPaneClar = new BenzenoidPane(collectionPane, -1, null,
-										molecule.getClarCoverGroup(), "", molecule.getVerticesSolutions(), index,
-										false);
+								BenzenoidPane benzenoidPaneClar = new BenzenoidPane(collectionPane, null,
+										molecule.getClarCoverGroup(), "", molecule.getVerticesSolutions(), index, false);
 
 								// flowPane.getChildren().add(benzenoidPaneClar);
 								benzenoidPanes.add(benzenoidPaneClar);
@@ -405,7 +404,7 @@ public class BenzenoidCollectionPane extends Tab {
 								int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
 								Group kekuleGroup = new KekuleStructureGroup(molecule, kekuleStructure);
 
-								BenzenoidPane kekulePane = new BenzenoidPane(collectionPane, -1, null, kekuleGroup, "",
+								BenzenoidPane kekulePane = new BenzenoidPane(collectionPane, null, kekuleGroup, "",
 										molecule.getVerticesSolutions(), index, false);
 
 								benzenoidPanes.add(kekulePane);
@@ -418,7 +417,7 @@ public class BenzenoidCollectionPane extends Tab {
 										molecule.getClarCoverSolution(), molecule.getFixedBonds(),
 										molecule.getFixedCircles());
 
-								BenzenoidPane benzenoidPaneClarFixedBond = new BenzenoidPane(collectionPane, -1, null,
+								BenzenoidPane benzenoidPaneClarFixedBond = new BenzenoidPane(collectionPane, null,
 										benzenoidDrawClarFixed, "", molecule.getVerticesSolutions(), index, false);
 
 								benzenoidPanes.add(benzenoidPaneClarFixedBond);
@@ -431,7 +430,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 									Group benzenoidDrawRBO = molecule.getRBOGroup();
 
-									BenzenoidPane benzenoidPaneRBO = new BenzenoidPane(collectionPane, -1, null,
+									BenzenoidPane benzenoidPaneRBO = new BenzenoidPane(collectionPane, null,
 											benzenoidDrawRBO, "", molecule.getVerticesSolutions(), index, false);
 
 									// flowPane.getChildren().add(benzenoidPaneRBO);
@@ -446,7 +445,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 									Group benzenoidDrawRBO = rboGroups.get(i);
 
-									BenzenoidPane benzenoidPaneRBO = new BenzenoidPane(collectionPane, -1, null,
+									BenzenoidPane benzenoidPaneRBO = new BenzenoidPane(collectionPane, null,
 											benzenoidDrawRBO, "", molecule.getVerticesSolutions(), index, false);
 
 									// flowPane.getChildren().add(benzenoidPaneRBO);
@@ -460,7 +459,7 @@ public class BenzenoidCollectionPane extends Tab {
 								if (radicalarGroups.get(i) == null) {
 
 									Group benzenoidDrawRadicalar = molecule.getRadicalarGroup();
-									BenzenoidPane benzenoidPaneRadicalar = new BenzenoidPane(collectionPane, -1, null,
+									BenzenoidPane benzenoidPaneRadicalar = new BenzenoidPane(collectionPane, null,
 											benzenoidDrawRadicalar, "", molecule.getVerticesSolutions(), index, false);
 									benzenoidPanes.add(benzenoidPaneRadicalar);
 									radicalarGroups.set(i, benzenoidDrawRadicalar);
@@ -470,7 +469,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 									System.out.println("On recalcule pas !");
 									Group benzenoidDrawRadicalar = radicalarGroups.get(i);
-									BenzenoidPane benzenoidPaneRadicalar = new BenzenoidPane(collectionPane, -1, null,
+									BenzenoidPane benzenoidPaneRadicalar = new BenzenoidPane(collectionPane, null,
 											benzenoidDrawRadicalar, "", molecule.getVerticesSolutions(), index, false);
 									benzenoidPanes.add(benzenoidPaneRadicalar);
 								}
@@ -482,7 +481,7 @@ public class BenzenoidCollectionPane extends Tab {
 								if (ims2d1aGroups.get(i) == null) {
 
 									Group bezenoidDrawIms2d1a = molecule.getIMS2D1AGroup();
-									BenzenoidPane benzenoidPaneIms2d1a = new BenzenoidPane(collectionPane, -1, null,
+									BenzenoidPane benzenoidPaneIms2d1a = new BenzenoidPane(collectionPane, null,
 											bezenoidDrawIms2d1a, "", molecule.getVerticesSolutions(), index, false);
 									benzenoidPanes.add(benzenoidPaneIms2d1a);
 									ims2d1aGroups.set(i, bezenoidDrawIms2d1a);
@@ -490,7 +489,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 								else {
 									Group bezenoidDrawIms2d1a = ims2d1aGroups.get(i);
-									BenzenoidPane benzenoidPaneIms2d1a = new BenzenoidPane(collectionPane, -1, null,
+									BenzenoidPane benzenoidPaneIms2d1a = new BenzenoidPane(collectionPane, null,
 											bezenoidDrawIms2d1a, "", molecule.getVerticesSolutions(), index, false);
 									benzenoidPanes.add(benzenoidPaneIms2d1a);
 								}
@@ -502,7 +501,7 @@ public class BenzenoidCollectionPane extends Tab {
 								MoleculeGroup benzenoidDraw = new MoleculeGroup(molecule);
 								String description = molecule.getDescription();
 
-								BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, -1, null, benzenoidDraw,
+								BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, benzenoidDraw,
 										description, molecule.getVerticesSolutions(), index, false);
 
 								// flowPane.getChildren().add(benzenoidPane);

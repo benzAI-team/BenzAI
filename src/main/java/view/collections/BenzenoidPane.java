@@ -36,8 +36,6 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 	private BenzenoidCollectionPane benzenoidSetPane;
 
-	private int nbCrowns;
-
 	@SuppressWarnings("unused")
 	private String solution;
 
@@ -63,14 +61,13 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 	private HBox descriptionBox;
 
-	public BenzenoidPane(BenzenoidCollectionPane parameterPane, int nbCrowns, String solution, Group benzenoidDraw,
+	public BenzenoidPane(BenzenoidCollectionPane parameterPane, String solution, Group benzenoidDraw,
 			String description, ArrayList<Integer> verticesSolution, int index, boolean isDrawMolecule) {
 
 		super();
 
 		this.benzenoidSetPane = parameterPane;
 
-		this.nbCrowns = nbCrowns;
 		this.solution = solution;
 		this.benzenoidDraw = benzenoidDraw;
 		this.name = description;
@@ -110,7 +107,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		});
 	}
 
-	public BenzenoidPane(BenzenoidCollectionPane parameterPane, int nbCrowns, String solution, Group benzenoidDraw,
+	public BenzenoidPane(BenzenoidCollectionPane parameterPane, String solution, Group benzenoidDraw,
 			String description, ArrayList<Integer> verticesSolution, int index, boolean isDrawMolecule,
 			BenzenoidSolution benzenoidSolution, int[] hexagonsCorrespondances) {
 
@@ -118,7 +115,6 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 		this.benzenoidSetPane = parameterPane;
 
-		this.nbCrowns = nbCrowns;
 		this.solution = solution;
 		this.benzenoidDraw = benzenoidDraw;
 		this.name = description;
@@ -307,10 +303,6 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 	public void setIndex(int index) {
 		this.index = index;
-	}
-
-	public int getNbCrowns() {
-		return nbCrowns;
 	}
 
 	public BenzenoidCollectionPane getBenzenoidCollectionPane() {
