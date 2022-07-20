@@ -53,6 +53,7 @@ import view.generator.boxes.HBoxNbHydrogensCriterion;
 import view.generator.boxes.HBoxNbSolutionsCriterion;
 import view.generator.boxes.HBoxTimeoutCriterion;
 
+
 public class GeneratorPane extends ScrollPane {
 
 	private BenzenoidApplication application;

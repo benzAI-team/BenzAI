@@ -145,36 +145,36 @@ public class GeneralModel {
 	 * Constructors
 	 */
 
-	public GeneralModel(ArrayList<GeneratorCriterion> hexagonsCriterions, boolean applySymmetriesConstraints) {
-
-		this.hexagonsCriterions = hexagonsCriterions;
-		this.applySymmetriesConstraints = applySymmetriesConstraints;
-
-		nbMaxHexagons = 0;
-
-		for (GeneratorCriterion criterion : hexagonsCriterions) {
-
-			Operator operator = criterion.getOperator();
-
-			if (operator == Operator.EQ || operator == Operator.LT || operator == Operator.LEQ) {
-
-				int value = Integer.parseInt(criterion.getValue());
-
-				if (value > nbMaxHexagons)
-					nbMaxHexagons = value;
-			}
-
-		}
-
-		nbCrowns = (int) Math.floor((((double) ((double) nbMaxHexagons + 1)) / 2.0) + 1.0);
-
-		if (nbMaxHexagons % 2 == 1)
-			nbCrowns--;
-
-		diameter = (2 * nbCrowns) - 1;
-
-		initialize();
-	}
+//	public GeneralModel(ArrayList<GeneratorCriterion> hexagonsCriterions, boolean applySymmetriesConstraints) {
+//
+//		this.hexagonsCriterions = hexagonsCriterions;
+//		this.applySymmetriesConstraints = applySymmetriesConstraints;
+//
+//		nbMaxHexagons = 0;
+//
+//		for (GeneratorCriterion criterion : hexagonsCriterions) {
+//
+//			Operator operator = criterion.getOperator();
+//
+//			if (operator == Operator.EQ || operator == Operator.LT || operator == Operator.LEQ) {
+//
+//				int value = Integer.parseInt(criterion.getValue());
+//
+//				if (value > nbMaxHexagons)
+//					nbMaxHexagons = value;
+//			}
+//
+//		}
+//
+//		nbCrowns = (int) Math.floor((((double) ((double) nbMaxHexagons + 1)) / 2.0) + 1.0);
+//
+//		if (nbMaxHexagons % 2 == 1)
+//			nbCrowns--;
+//
+//		diameter = (2 * nbCrowns) - 1;
+//
+//		initialize();
+//	}
 
 	public GeneralModel(ArrayList<GeneratorCriterion> hexagonsCriterions, ArrayList<GeneratorCriterion> criterions,
 			Map<String, ArrayList<GeneratorCriterion>> mapCriterions) {
@@ -242,20 +242,20 @@ public class GeneralModel {
 		initialize();
 	}
 
-	public GeneralModel(int nbCrowns, int nbHexagons) {
-
-		mode = GeneralModelMode.BOTH;
-
-		this.nbCrowns = nbCrowns;
-		this.nbHexagons = nbHexagons;
-		nbMaxHexagons = nbHexagons;
-		diameter = (2 * nbCrowns) - 1;
-
-		hexagonsCriterions = new ArrayList<>();
-		hexagonsCriterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
-
-		initialize();
-	}
+//	public GeneralModel(int nbCrowns, int nbHexagons) {
+//
+//		mode = GeneralModelMode.BOTH;
+//
+//		this.nbCrowns = nbCrowns;
+//		this.nbHexagons = nbHexagons;
+//		nbMaxHexagons = nbHexagons;
+//		diameter = (2 * nbCrowns) - 1;
+//
+//		hexagonsCriterions = new ArrayList<>();
+//		hexagonsCriterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
+//
+//		initialize();
+//	}
 
 	public GeneralModel(int n, GeneralModelMode mode) {
 

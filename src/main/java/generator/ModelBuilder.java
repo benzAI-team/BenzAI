@@ -38,146 +38,16 @@ public class ModelBuilder {
 				&& map.get("rhombus").size() == 0)
 			return null;
 
-		int upperBoundHexagons = Integer.MAX_VALUE;
-
-		for (GeneratorCriterion criterion : map.get("hexagons")) {
-
-			Operator operator = criterion.getOperator();
-			int value = Integer.parseInt(criterion.getValue());
-
-			if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
-
-				if (operator == Operator.LT)
-					value--;
-
-				if (value < upperBoundHexagons)
-					upperBoundHexagons = value;
-			}
-		}
-
-		for (GeneratorCriterion criterion : map.get("carbons")) {
-
-			Operator operator = criterion.getOperator();
-
-			if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
-
-				double nbAtoms = Double.parseDouble(criterion.getValue());
-
-				if (operator == Operator.LT)
-					nbAtoms--;
-
-				double bound = Math.ceil(((nbAtoms - 6.0) / 4.0) + 1.0);
-				if (bound < upperBoundHexagons)
-					upperBoundHexagons = (int) bound;
-
-			}
-		}
-
-		for (GeneratorCriterion criterion : map.get("hydrogens")) {
-
-			Operator operator = criterion.getOperator();
-
-			if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
-
-				double nbAtoms = Double.parseDouble(criterion.getValue());
-
-				if (operator == Operator.LT)
-					nbAtoms--;
-
-				double bound = Math.ceil(((nbAtoms - 8) / 2.0) + 2.0);
-				if (bound < upperBoundHexagons)
-					upperBoundHexagons = (int) bound;
-
-			}
-		}
-
-		for (GeneratorCriterion criterion : map.get("coronenoid")) {
-
-			Operator operator = criterion.getOperator();
-			Subject subject = criterion.getSubject();
-
-			if (subject == Subject.NB_CROWNS
-					&& (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT)) {
-
-				int value = Integer.parseInt(criterion.getValue());
-
-				double bound = 6.0 * (((double) value * ((double) value - 1.0)) / 2.0) + 1.0;
-
-				if (bound < upperBoundHexagons)
-					upperBoundHexagons = (int) bound;
-			}
-		}
-
-		int nbMaxHeight = 0;
-		int nbMaxWidth = 0;
-
-		ArrayList<GeneratorCriterion> criterionsHeight = new ArrayList<>();
-		ArrayList<GeneratorCriterion> criterionsWidth = new ArrayList<>();
-
-		for (GeneratorCriterion criterion : map.get("rectangle")) {
-
-			Operator operator = criterion.getOperator();
-			Subject subject = criterion.getSubject();
-
-			if (subject == Subject.RECT_HEIGHT) {
-
-				criterionsHeight.add(criterion);
-
-				if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
-
-					int value = Integer.parseInt(criterion.getValue());
-
-					if (value > nbMaxHeight)
-						nbMaxHeight = value;
-				}
-			}
-
-			if (subject == Subject.RECT_WIDTH) {
-
-				criterionsWidth.add(criterion);
-
-				if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
-
-					int value = Integer.parseInt(criterion.getValue());
-
-					if (value > nbMaxWidth)
-						nbMaxWidth = value;
-
-				}
-			}
-		}
-
-		if (nbMaxHeight > 0 && nbMaxWidth > 0) {
-			int bound = nbMaxHeight * nbMaxWidth;
-			if (bound < upperBoundHexagons) {
-				upperBoundHexagons = bound;
-			}
-		}
-
-		for (GeneratorCriterion criterion : map.get("rhombus")) {
-
-			Subject subject = criterion.getSubject();
-			String value = criterion.getValue();
-
-			if (subject == Subject.RHOMBUS_DIMENSION && Utils.isNumber(value) && criterion.isUpperBound()) {
-
-				int intVal = Integer.parseInt(value);
-				int bound = intVal * intVal;
-
-				if (bound < upperBoundHexagons) {
-					upperBoundHexagons = bound;
-				}
-			}
-		}
-
+		int hexagonsUpperBound = computeHexagonsUpperBound(map);
+		
 		if (map.get("hexagons").size() == 0) {
 			map.get("hexagons").add(
-					new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.LEQ, Integer.toString(upperBoundHexagons)));
+					new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.LEQ, Integer.toString(hexagonsUpperBound)));
 		}
 
 		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONENOID)) {
 
-			int nbMaxCrowns = getNbCrownsMax(upperBoundHexagons);
+			int nbMaxCrowns = getNbCrownsMax(hexagonsUpperBound);
 			model = new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns);
 		}
 
@@ -196,7 +66,7 @@ public class ModelBuilder {
 				}
 			}
 
-			int nbMaxCrowns = (upperBoundHexagons + 10) / 6;
+			int nbMaxCrowns = (hexagonsUpperBound + 10) / 6;
 
 			model = new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns);
 		}
@@ -219,7 +89,7 @@ public class ModelBuilder {
 				}
 			}
 
-			int nbMaxCrowns = (upperBoundHexagons + 4) / 3;
+			int nbMaxCrowns = (hexagonsUpperBound + 4) / 3;
 
 			model = new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns);
 		}
@@ -289,7 +159,7 @@ public class ModelBuilder {
 			int nbCrowns;
 
 			if (nbMaxHexagons > 4 * nbMaxHoles)
-				nbCrowns = (upperBoundHexagons + 2 - 4 * nbMaxHoles) / 2;
+				nbCrowns = (hexagonsUpperBound + 2 - 4 * nbMaxHoles) / 2;
 
 			else
 				nbCrowns = 1;
@@ -441,7 +311,145 @@ public class ModelBuilder {
 
 		return model;
 	}
+	/***
+	 * 
+	 * @param map
+	 * @return the upper bound for the number of hexagons
+	 */
+	private static int computeHexagonsUpperBound(Map<String, ArrayList<GeneratorCriterion>>  map) {
+		int hexagonsUpperBound = Integer.MAX_VALUE;
 
+		for (GeneratorCriterion criterion : map.get("hexagons")) {
+
+			Operator operator = criterion.getOperator();
+			int value = Integer.parseInt(criterion.getValue());
+
+			if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
+
+				if (operator == Operator.LT)
+					value--;
+
+				if (value < hexagonsUpperBound)
+					hexagonsUpperBound = value;
+			}
+		}
+
+		for (GeneratorCriterion criterion : map.get("carbons")) {
+
+			Operator operator = criterion.getOperator();
+
+			if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
+
+				double nbAtoms = Double.parseDouble(criterion.getValue());
+
+				if (operator == Operator.LT)
+					nbAtoms--;
+
+				double bound = Math.ceil(((nbAtoms - 6.0) / 4.0) + 1.0);
+				if (bound < hexagonsUpperBound)
+					hexagonsUpperBound = (int) bound;
+
+			}
+		}
+
+		for (GeneratorCriterion criterion : map.get("hydrogens")) {
+
+			Operator operator = criterion.getOperator();
+
+			if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
+
+				double nbAtoms = Double.parseDouble(criterion.getValue());
+
+				if (operator == Operator.LT)
+					nbAtoms--;
+
+				double bound = Math.ceil(((nbAtoms - 8) / 2.0) + 2.0);
+				if (bound < hexagonsUpperBound)
+					hexagonsUpperBound = (int) bound;
+
+			}
+		}
+
+		for (GeneratorCriterion criterion : map.get("coronenoid")) {
+
+			Operator operator = criterion.getOperator();
+			Subject subject = criterion.getSubject();
+
+			if (subject == Subject.NB_CROWNS
+					&& (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT)) {
+
+				int value = Integer.parseInt(criterion.getValue());
+
+				double bound = 6.0 * (((double) value * ((double) value - 1.0)) / 2.0) + 1.0;
+
+				if (bound < hexagonsUpperBound)
+					hexagonsUpperBound = (int) bound;
+			}
+		}
+
+		int nbMaxHeight = 0;
+		int nbMaxWidth = 0;
+
+		ArrayList<GeneratorCriterion> criterionsHeight = new ArrayList<>();
+		ArrayList<GeneratorCriterion> criterionsWidth = new ArrayList<>();
+
+		for (GeneratorCriterion criterion : map.get("rectangle")) {
+
+			Operator operator = criterion.getOperator();
+			Subject subject = criterion.getSubject();
+
+			if (subject == Subject.RECT_HEIGHT) {
+
+				criterionsHeight.add(criterion);
+
+				if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
+
+					int value = Integer.parseInt(criterion.getValue());
+
+					if (value > nbMaxHeight)
+						nbMaxHeight = value;
+				}
+			}
+
+			if (subject == Subject.RECT_WIDTH) {
+
+				criterionsWidth.add(criterion);
+
+				if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
+
+					int value = Integer.parseInt(criterion.getValue());
+
+					if (value > nbMaxWidth)
+						nbMaxWidth = value;
+
+				}
+			}
+		}
+
+		if (nbMaxHeight > 0 && nbMaxWidth > 0) {
+			int bound = nbMaxHeight * nbMaxWidth;
+			if (bound < hexagonsUpperBound) {
+				hexagonsUpperBound = bound;
+			}
+		}
+
+		for (GeneratorCriterion criterion : map.get("rhombus")) {
+
+			Subject subject = criterion.getSubject();
+			String value = criterion.getValue();
+
+			if (subject == Subject.RHOMBUS_DIMENSION && Utils.isNumber(value) && criterion.isUpperBound()) {
+
+				int intVal = Integer.parseInt(value);
+				int bound = intVal * intVal;
+
+				if (bound < hexagonsUpperBound) {
+					hexagonsUpperBound = bound;
+				}
+			}
+		}
+		return hexagonsUpperBound;
+	}
 	private static int getNbCrownsMax(int maxSize) {
 
 		int nbCrowns = 1;

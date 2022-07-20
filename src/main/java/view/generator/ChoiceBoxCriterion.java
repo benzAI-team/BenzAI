@@ -1,6 +1,7 @@
 package view.generator;
 
 import javafx.scene.control.ChoiceBox;
+import modelProperty.builders.ModelPropertyBuilder;
 import utils.Utils;
 import view.generator.boxes.HBoxCatacondensedCriterion;
 import view.generator.boxes.HBoxConcealedCriterion;
@@ -58,7 +59,8 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 				String value = getValue();
 
 				System.out.println(value);
-
+				//HBoxCriterion box = ModelProperty.getHBoxCriterion(value);
+				//parent.setHBox(index, box);
 				if (value.equals("Number of hexagons")) {
 					HBoxCriterion box = new HBoxNbHexagonsCriterion(parent, this);
 					parent.setHBox(index, box);
