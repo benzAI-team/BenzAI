@@ -684,7 +684,7 @@ public class GeneratorPane extends ScrollPane {
 
 		else {
 			Utils.alert(
-					"A criterion limiting the number of solutions (eg, limiting hexagons/carbons/hydrogens/number of lines and columns) is required");
+					"A criterion limiting the number of solutions (e.g. limiting hexagons/carbons/hydrogens/number of lines and columns) is required");
 		}
 	}
 
@@ -788,6 +788,11 @@ public class GeneratorPane extends ScrollPane {
 			ResultSolver resultSolver = model.getResultSolver();
 
 			generatedMolecules = buildMolecules(resultSolver, generatedMolecules.size());
+      
+      if (generatedMolecules.size() == 0) {
+        Utils.alert("No benzenoid found");
+        return;
+      }
 
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);
