@@ -15,10 +15,8 @@ public class FilterMenu {
 		
 		Menu filterMenu = new Menu("Fi_lter");
 
-		final MenuItem menuItem = new MenuItem();
+		final MenuItem menuItem = new MenuItem("Filter");
 		filterMenu.getItems().add(menuItem);
-		filterMenu.addEventHandler(Menu.ON_SHOWN, event -> filterMenu.hide());
-		filterMenu.addEventHandler(Menu.ON_SHOWING, event -> filterMenu.fire());
 
 		filterMenu.setOnAction(e -> {
 			app.switchMode(app.getPanes().getFilteringPane());
