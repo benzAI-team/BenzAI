@@ -308,7 +308,8 @@ public class BenzenoidCollectionPane extends Tab {
 							DisplayType displayType = displayTypes.get(i);
 
               MoleculeGroup group;
-
+              String description = molecule.getDescription();
+              
               try {
               
                 switch (displayType) {
@@ -364,6 +365,8 @@ public class BenzenoidCollectionPane extends Tab {
                     int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
 
                     group = new KekuleStructureGroup(molecule, kekuleStructure);
+                    
+                    description += "structure " + (index+1);
 
                     break;
 
@@ -398,8 +401,7 @@ public class BenzenoidCollectionPane extends Tab {
                     break;
                 }
                 
-                String description = molecule.getDescription();
-              	BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group, "", molecule.getVerticesSolutions(), index, false);
+              	BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group, description, molecule.getVerticesSolutions(), index, false);
                 benzenoidPanes.add(benzenoidPane);
 
               } catch (IOException e) {
