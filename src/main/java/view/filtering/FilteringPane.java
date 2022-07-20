@@ -272,6 +272,10 @@ public class FilteringPane extends ScrollPane {
 					break;
 				case SUCCEEDED:
 					
+          if (newCollectionPane.getMolecules().size() == 0) {
+            Utils.alert("There is no remaining benzenoids after filtering ");
+            return;
+          }
 					newCollectionPane.refresh();
 
 					managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
