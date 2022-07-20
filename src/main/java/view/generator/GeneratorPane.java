@@ -512,7 +512,7 @@ public class GeneratorPane extends ScrollPane {
 				String[] lines = resultSolver.getDescriptions().get(i).split("\n");
 				StringBuilder b = new StringBuilder();
 
-				b.append("solution_" + index + "\n");
+				b.append("solution_" + (index+1) + "\n");
 				for (int j = 1; j < lines.length; j++)
 					b.append(lines[j] + "\n");
 
