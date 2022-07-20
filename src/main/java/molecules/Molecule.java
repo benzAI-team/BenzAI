@@ -15,9 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-
 import classifier.Irregularity;
 import database.PictureConverter;
 import database.models.IRSpectraEntry;
@@ -254,13 +251,6 @@ public class Molecule implements Comparable<Molecule> {
 	 * Class's methods
 	 */
 
-	public SimpleGraph<Integer, DefaultEdge> getCarbonGraph() {
-		return GraphConversion.buildCarbonGraph(this);
-	}
-
-	public SimpleGraph<Integer, DefaultEdge> getHexagonGraph() {
-		return GraphConversion.buildHexagonGraph(this);
-	}
 
 	private void computeDegrees() {
 
