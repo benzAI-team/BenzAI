@@ -1807,12 +1807,25 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes())
 			panes.add(pane);
 
+    int nbNotAvailable = 0; // the number of benzenoids for which the map is not available
 		for (BenzenoidPane pane : panes) {
 			Molecule molecule = currentPane.getMolecule(pane.getIndex());
-			molecule.getIms2d1a();
-			benzenoidSetPane.addBenzenoid(molecule, DisplayType.IMS2D1A);
+			if (molecule.getIms2d1a() != null)
+        benzenoidSetPane.addBenzenoid(molecule, DisplayType.IMS2D1A);
+      else nbNotAvailable++;
 		}
 
+    if (nbNotAvailable == currentPane.getSelectedBenzenoidPanes().size())
+    {
+      Utils.alert ("No map is available yet for the selection");
+      return;
+    }
+    else
+      if (nbNotAvailable == 1)
+        Utils.alert ("No map is available yet for one benzenoid of the selection");
+      else
+        Utils.alert ("No map is available yet for "+nbNotAvailable+" benzenoids of the selection");
+        
 		benzenoidSetPane.refresh();
 		tabPane.getSelectionModel().clearAndSelect(0);
 		addBenzenoidSetPane(benzenoidSetPane);
