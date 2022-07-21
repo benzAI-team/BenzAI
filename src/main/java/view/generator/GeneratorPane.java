@@ -35,6 +35,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
 import molecules.Molecule;
 import parsers.GraphCoordFileBuilder;
 import parsers.GraphFileBuilder;
@@ -62,7 +64,8 @@ public class GeneratorPane extends ScrollPane {
 	private boolean isRunning;
 	private ArrayList<Molecule> generatedMolecules;
 	private int nbCriterions;
-	ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
+	//ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
+	private ModelPropertySet modelPropertySet;
 	private FragmentResolutionInformations fragmentsInformations;
 
 	BenzenoidCollectionPane selectedCollectionTab;
@@ -595,14 +598,18 @@ public class GeneratorPane extends ScrollPane {
 
 		if (canStartGeneration) {
 
-			criterions = buildCriterions();
-			HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = buildCriterionsMap(criterions);
+			//criterions = buildCriterions();
+			modelPropertySet = buildModelPropertySet();
+			
+			//HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = buildCriterionsMap(criterions);
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
-			for (GeneratorCriterion criterion : criterions) {
-				application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
-			}
-
+//			for (GeneratorCriterion criterion : criterions) {
+//				application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
+//			}
+			for(ModelProperty modelProperty : modelPropertySet)
+				application.getBenzenoidCollectionsPane().log(modelProperty.getName(), false);
+				
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
 
 			buttonsBox.getChildren().clear();
@@ -687,6 +694,11 @@ public class GeneratorPane extends ScrollPane {
 			Utils.alert(
 					"A criterion limiting the number of solutions (eg, limiting hexagons/carbons/hydrogens/number of lines and columns) is required");
 		}
+	}
+
+	private ModelPropertySet buildModelPropertySet() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private void resumeGeneration() {

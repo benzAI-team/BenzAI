@@ -71,13 +71,13 @@ public class GeneralModel {
 
 	// Don't used for regular solving
 	private boolean applySymmetriesConstraints = true;
+	private boolean applyBorderConstraints = true;
 
 	private int nbCrowns;
 	private int nbHexagons;
 	private int diameter;
 
 	private int nbEdges;
-	private boolean applyBorderConstraints = true;
 	private int nbClausesLexLead = 0;
 
 	boolean verbose = false;
@@ -104,17 +104,10 @@ public class GeneralModel {
 	private UndirectedGraph GUB;
 	private UndirectedGraph GLB;
 
-	//private UndirectedGraph watchedGUB;
-
 	private UndirectedGraphVar benzenoid;
 	private BoolVar[] channeling;
 	private BoolVar[] benzenoidVertices;
 	private BoolVar[][] benzenoidEdges;
-
-	//private UndirectedGraphVar watchedGraphVar;
-
-	//private BoolVar[] watchedChanneling;
-	//private BoolVar[] watchedBenzenoidVertices;
 
 	private ArrayList<Variable> variables = new ArrayList<Variable>();
 
@@ -329,18 +322,10 @@ public class GeneralModel {
 
 		buildAdjacencyMatrix();
 
-		//setWatchedGUB(GUB);
-
 		benzenoid = chocoModel.graphVar("g", GLB, GUB);
 
 		buildBenzenoidVertices();
 		buildBenzenoidEdges();
-
-		//watchedGraphVar = benzenoid;
-
-		//watchedBenzenoidVertices = benzenoidVertices;
-		//watchedChanneling = channeling;
-
 		buildCoordsCorrespondance();
 		buildNeighborGraph();
 
