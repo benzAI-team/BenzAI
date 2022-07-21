@@ -615,14 +615,14 @@ public class GeneratorPane extends ScrollPane {
 			buttonsBox.getChildren().clear();
 			buttonsBox.getChildren().addAll(closeButton, loadIcon, pauseButton, stopButton);
 
-			Iterator it = criterionsMap.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry pair = (Map.Entry) it.next();
-				System.out.println(pair.getKey() + " = " + pair.getValue().toString());
-			}
+//			Iterator it = criterionsMap.entrySet().iterator();
+//			while (it.hasNext()) {
+//				Map.Entry pair = (Map.Entry) it.next();
+//				System.out.println(pair.getKey() + " = " + pair.getValue().toString());
+//			}
 
 			try {
-				model = ModelBuilder.buildModel(criterions, criterionsMap, fragmentsInformations);
+				model = ModelBuilder.buildModel(modelPropertySet, fragmentsInformations);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

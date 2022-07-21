@@ -23,6 +23,8 @@ import generator.GeneratorCriterion.Subject;
 import generator.fragments.Fragment;
 import generator.fragments.FragmentOccurences;
 import generator.fragments.FragmentResolutionInformations;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
 import modules.Module;
 import molecules.Node;
 import nogood.NoGoodBorderRecorder;
@@ -132,7 +134,7 @@ public class GeneralModel {
 	 * Modules
 	 */
 
-	private ArrayList<Module> modules = new ArrayList<Module>();
+	//private ArrayList<Module> modules = new ArrayList<Module>();
 
 	/*
 	 * Constructors
@@ -292,6 +294,10 @@ public class GeneralModel {
 	 * Initialization methods
 	 */
 
+	public GeneralModel(ModelPropertySet modelPropertySet) {
+		// TODO Auto-generated constructor stub
+	}
+
 	private void initialize() {
 		initializeMatrix();
 		initializeVariables();
@@ -368,13 +374,14 @@ public class GeneralModel {
 			addVariable(variable);
 	}
 
-	public void addModule(Module module) {
-		modules.add(module);
-	}
+//	public void addModule(ModelProperty modelProperty) {
+//		modules.add(modelProperty);
+//	}
 
 	private void applyModules() {
 
-		for (Module module : modules) {
+		for (ModelProperty modelProperty : modelPropertySet) {
+			Module module = modelProperty.getModule();
 			module.buildVariables();
 			module.postConstraints();
 			module.addVariables();
