@@ -29,8 +29,8 @@ public class RectangleModule extends Module {
 	private IntVar[] cSum;
 	private IntVar[] dSum;
 
-	protected IntVar xH;
-	protected IntVar xW;
+	protected IntVar height;
+	protected IntVar width;
 
 	protected ArrayList<GeneratorCriterion> criterions;
 
@@ -59,8 +59,8 @@ public class RectangleModule extends Module {
 		 * taille de la solution
 		 */
 
-		xH = generalModel.getProblem().intVar("height", 1, generalModel.getDiameter());
-		xW = generalModel.getProblem().intVar("width", 1, generalModel.getNbCrowns());
+		height = generalModel.getProblem().intVar("height", 1, generalModel.getDiameter());
+		width = generalModel.getProblem().intVar("width", 1, generalModel.getNbCrowns());
 	}
 
 	private FiniteAutomaton buildAutomaton() {
@@ -104,9 +104,9 @@ public class RectangleModule extends Module {
 		for (int i = 0; i < cSum.length; i++) {
 
 			generalModel.getProblem().or(generalModel.getProblem().arithm(cSum[i], "=", 0),
-					generalModel.getProblem().arithm(cSum[i], "=", xW)).post();
+					generalModel.getProblem().arithm(cSum[i], "=", width)).post();
 			generalModel.getProblem().or(generalModel.getProblem().arithm(dSum[i], "=", 0),
-					generalModel.getProblem().arithm(dSum[i], "=", xH)).post();
+					generalModel.getProblem().arithm(dSum[i], "=", height)).post();
 
 		}
 
@@ -137,15 +137,15 @@ public class RectangleModule extends Module {
 				int value = Integer.parseInt(criterion.getValue());
 
 				if (subject == Subject.RECT_HEIGHT)
-					generalModel.getProblem().arithm(xH, operator, value).post();
+					generalModel.getProblem().arithm(height, operator, value).post();
 
 				else
-					generalModel.getProblem().arithm(xW, operator, value).post();
+					generalModel.getProblem().arithm(width, operator, value).post();
 			}
 		}
 
-		generalModel.getProblem().times(xH, xW, generalModel.getNbVerticesVar()).post(); // x * a = z
-		generalModel.getProblem().arithm(xH, ">=", xW).post(); // xH >= xw
+		generalModel.getProblem().times(height, width, generalModel.getNbVerticesVar()).post(); // x * a = z
+		generalModel.getProblem().arithm(height, ">=", width).post(); // xH >= xw
 		// generalModel.getProblem().arithm(generalModel.getChanneling()[0], "=",
 		// 1).post(); // The top-left hexagon must be present
 
@@ -156,8 +156,10 @@ public class RectangleModule extends Module {
 	@Override
 	public void addVariables() {
 //		generalModel.addWatchedVariable(generalModel.getChanneling());
-		generalModel.addVariable(xW);
-		generalModel.addVariable(xH);
+
+//		generalModel.addWatchedVariable(width);
+//		generalModel.addWatchedVariable(height);
+
 	}
 
 	private void buildD1() {

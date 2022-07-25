@@ -6,7 +6,7 @@ import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Subject;
 
-public class RhombusModule extends RectangleModule {
+public class RhombusModule extends RectangleModule2 {
 
 	public RhombusModule(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
 		super(generalModel, criterions);
@@ -21,11 +21,11 @@ public class RhombusModule extends RectangleModule {
 
 			if (criterion.getSubject() == Subject.RHOMBUS_DIMENSION) {
 				String operatorStr = criterion.getOperatorString();
-				generalModel.getProblem().arithm(xW, operatorStr, Integer.parseInt(criterion.getValue())).post();
+				generalModel.getProblem().arithm(width, operatorStr, Integer.parseInt(criterion.getValue())).post();
 			}
 		}
 
-		//~ generalModel.getProblem().arithm(rotation, "=", 1).post();
-		generalModel.getProblem().arithm(xH, "=", xW).post();
+		// ~ generalModel.getProblem().arithm(rotation, "=", 1).post();
+		generalModel.getProblem().arithm(height, "=", width).post();
 	}
 }

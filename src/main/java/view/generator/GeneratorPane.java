@@ -81,7 +81,6 @@ public class GeneratorPane extends ScrollPane {
 	private Button pauseButton;
 	private Button resumeButton;
 
-
 	public GeneratorPane(BenzenoidApplication application) {
 		this.application = application;
 		isRunning = false;
@@ -100,7 +99,7 @@ public class GeneratorPane extends ScrollPane {
 
 		loadIcon = buildLoadIcon();
 		warningIcon = buildWarningIcon();
-		
+
 		addButton = buildAddButton();
 		closeButton = buildCloseButton();
 		stopButton = buildStopButton();
@@ -125,7 +124,7 @@ public class GeneratorPane extends ScrollPane {
 
 	/***
 	 * 
-	 * @return 
+	 * @return
 	 */
 	private ImageView buildLoadIcon() {
 		Image image = new Image("/resources/graphics/icon-load.gif");
@@ -133,10 +132,7 @@ public class GeneratorPane extends ScrollPane {
 		loadIcon.resize(30, 30);
 		return loadIcon;
 	}
-	/***
-	 * 
-	 * @return
-	 */
+
 	private ImageView buildWarningIcon() {
 		ImageView warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
 		warningIcon.resize(30, 30);
@@ -144,6 +140,7 @@ public class GeneratorPane extends ScrollPane {
 				"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required. Moreover, all the criterions must be valid"));
 		return warningIcon;
 	}
+
 	/***
 	 * 
 	 * @return addButton for adding a criterion
@@ -169,15 +166,14 @@ public class GeneratorPane extends ScrollPane {
 
 				refresh();
 
-			}
-			else {
+			} else {
 				Utils.alert("Invalid criterion(s)");
 			}
 		});
 
 		return addButton;
 	}
-	
+
 	/***
 	 * 
 	 * @return closeButton to return to collection pane
@@ -195,7 +191,7 @@ public class GeneratorPane extends ScrollPane {
 		});
 		return closeButton;
 	}
-	
+
 	/***
 	 * 
 	 * @return stopButton to stop generation
@@ -224,7 +220,7 @@ public class GeneratorPane extends ScrollPane {
 		});
 		return stopButton;
 	}
-	
+
 	/***
 	 * 
 	 * @return pauseButton to pause generation
@@ -243,6 +239,7 @@ public class GeneratorPane extends ScrollPane {
 		});
 		return pauseButton;
 	}
+
 	/***
 	 * 
 	 * @return resumeButton to resume generation
@@ -259,6 +256,7 @@ public class GeneratorPane extends ScrollPane {
 		});
 		return resumeButton;
 	}
+
 	/***
 	 * 
 	 * @return generateButton to start generation
@@ -279,6 +277,7 @@ public class GeneratorPane extends ScrollPane {
 		});
 		return generateButton;
 	}
+
 	/***
 	 * 
 	 * @return gridPane
@@ -291,7 +290,7 @@ public class GeneratorPane extends ScrollPane {
 		gridPane.setVgap(5);
 		return gridPane;
 	}
-	
+
 	/***
 	 * 
 	 * @return
@@ -512,7 +511,7 @@ public class GeneratorPane extends ScrollPane {
 				String[] lines = resultSolver.getDescriptions().get(i).split("\n");
 				StringBuilder b = new StringBuilder();
 
-				b.append("solution_" + (index+1) + "\n");
+				b.append("solution_" + (index + 1) + "\n");
 				for (int j = 1; j < lines.length; j++)
 					b.append(lines[j] + "\n");
 
@@ -788,11 +787,11 @@ public class GeneratorPane extends ScrollPane {
 			ResultSolver resultSolver = model.getResultSolver();
 
 			generatedMolecules = buildMolecules(resultSolver, generatedMolecules.size());
-      
-      if (generatedMolecules.size() == 0) {
-        Utils.alert("No benzenoid found");
-        return;
-      }
+
+			if (generatedMolecules.size() == 0) {
+				Utils.alert("No benzenoid found");
+				return;
+			}
 
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);
@@ -821,7 +820,7 @@ public class GeneratorPane extends ScrollPane {
 		checkGenerationTime();
 		checkNbMaxSolutions();
 	}
-	
+
 	/***
 	 * Add time limit if in the settings
 	 */
@@ -846,7 +845,7 @@ public class GeneratorPane extends ScrollPane {
 			refresh();
 		}
 	}
-	
+
 	/***
 	 * Add number of solution limit if in the settings
 	 */

@@ -12,7 +12,7 @@ import generator.GeneratorCriterion.Subject;
 
 public class RectangleModule2 extends Module {
 
-	private ArrayList<GeneratorCriterion> criterions;
+	protected ArrayList<GeneratorCriterion> criterions;
 
 	private int[] correspondances;
 	private int[] correspondances2;
@@ -20,8 +20,8 @@ public class RectangleModule2 extends Module {
 	private BoolVar[][] lines;
 	private BoolVar[][] columns;
 
-	private IntVar width;
-	private IntVar height;
+	protected IntVar width;
+	protected IntVar height;
 
 	private BoolVar zero;
 
@@ -162,61 +162,54 @@ public class RectangleModule2 extends Module {
 	}
 
 	public int find(BoolVar x, BoolVar[][] matrix) {
-		
-		for (int i = 0 ; i < matrix.length ; i++) {
-			for (int j = 0 ; j < matrix[i].length ; j++) {
+
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
 				if (matrix[i][j].equals(x))
 					return i;
 			}
 		}
-		
+
 		return -1;
 	}
-	
+
 	@Override
 	public void postConstraints() {
 
-		for (int i = 0 ; i < generalModel.getNbHexagonsCoronenoid() ; i++) {
-			
+		for (int i = 0; i < generalModel.getNbHexagonsCoronenoid(); i++) {
+
 			BoolVar xi = generalModel.getChanneling()[i];
 			int lineIndex = correspondances2[find(xi, lines)] + 1;
 			int columnIndex = correspondances2[find(xi, columns)] + 1;
-			
+
 			BoolVar lineVar = generalModel.getProblem().arithm(width, ">=", lineIndex).reify();
 			BoolVar columnVar = generalModel.getProblem().arithm(height, ">=", columnIndex).reify();
-			
+
 			// Clause 1
-			
-			BoolVar [] varClause1 = new BoolVar[] {xi, lineVar};
-			IntIterableRangeSet [] valClause1 = new IntIterableRangeSet[] {
-					new IntIterableRangeSet(0),
-					new IntIterableRangeSet(1)
-			};
-			
+
+			BoolVar[] varClause1 = new BoolVar[] { xi, lineVar };
+			IntIterableRangeSet[] valClause1 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+					new IntIterableRangeSet(1) };
+
 			generalModel.getProblem().getClauseConstraint().addClause(varClause1, valClause1);
-			
+
 			// Clause 2
-			
-			BoolVar [] varClause2 = new BoolVar[] {xi, columnVar};
-			IntIterableRangeSet [] valClause2 = new IntIterableRangeSet[] {
-					new IntIterableRangeSet(0),
-					new IntIterableRangeSet(1)
-			};
-			
+
+			BoolVar[] varClause2 = new BoolVar[] { xi, columnVar };
+			IntIterableRangeSet[] valClause2 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+					new IntIterableRangeSet(1) };
+
 			generalModel.getProblem().getClauseConstraint().addClause(varClause2, valClause2);
-			
+
 			// Clause 3
-			
-			BoolVar [] varClause3 = new BoolVar[] {lineVar, columnVar, xi};
-			IntIterableRangeSet [] valClause3 = new IntIterableRangeSet[] {
-					new IntIterableRangeSet(0),
-					new IntIterableRangeSet(0),
-					new IntIterableRangeSet(1)
-			};
-			
-			generalModel.getProblem().getClauseConstraint().addClause(varClause3, valClause3);			
+
+			BoolVar[] varClause3 = new BoolVar[] { lineVar, columnVar, xi };
+			IntIterableRangeSet[] valClause3 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
+					new IntIterableRangeSet(0), new IntIterableRangeSet(1) };
+
+			generalModel.getProblem().getClauseConstraint().addClause(varClause3, valClause3);
 		}
-		
+
 		/*
 		 * Constraints on number of lines and columns
 		 */
@@ -237,12 +230,12 @@ public class RectangleModule2 extends Module {
 					generalModel.getProblem().arithm(width, operator, value).post();
 			}
 		}
-		
+
 		generalModel.getProblem().times(width, height, generalModel.getNbVerticesVar()).post();
 		generalModel.getProblem().arithm(width, ">=", height).post();
-		
+
 		System.out.print("");
-		
+
 	}
 
 	@Override

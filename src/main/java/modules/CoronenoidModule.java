@@ -10,7 +10,6 @@ import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 
 public class CoronenoidModule extends Module {
@@ -56,17 +55,12 @@ public class CoronenoidModule extends Module {
 		// diameter = 2 * sub = 2 * (nbCrowns - 1)
 		generalModel.getProblem().times(sub, generalModel.getProblem().intVar(2), diameter).post();
 
-		// diameter =
-		// nbCrowns.add(generalModel.getProblem().intVar(-1)).mul(generalModel.getProblem().intVar(2)).intVar();
-
 		generalModel.getProblem().diameter(generalModel.getGraphVar(), diameter).post();
 
 		for (GeneratorCriterion criterion : criterions) {
 			if (criterion.getSubject() == Subject.NB_CROWNS && !criterion.getValue().equals("Unspecified")) {
 
-				Operator operator = criterion.getOperator();
 				int value = Integer.parseInt(criterion.getValue());
-
 				generalModel.getProblem().arithm(nbCrowns, criterion.getOperatorString(), value).post();
 			}
 		}

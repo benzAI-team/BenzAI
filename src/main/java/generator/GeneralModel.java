@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
@@ -104,17 +103,17 @@ public class GeneralModel {
 	private UndirectedGraph GUB;
 	private UndirectedGraph GLB;
 
-	//private UndirectedGraph watchedGUB;
+	// private UndirectedGraph watchedGUB;
 
 	private UndirectedGraphVar benzenoid;
 	private BoolVar[] channeling;
 	private BoolVar[] benzenoidVertices;
 	private BoolVar[][] benzenoidEdges;
 
-	//private UndirectedGraphVar watchedGraphVar;
+	// private UndirectedGraphVar watchedGraphVar;
 
-	//private BoolVar[] watchedChanneling;
-	//private BoolVar[] watchedBenzenoidVertices;
+	// private BoolVar[] watchedChanneling;
+	// private BoolVar[] watchedBenzenoidVertices;
 
 	private ArrayList<Variable> variables = new ArrayList<Variable>();
 
@@ -139,7 +138,7 @@ public class GeneralModel {
 	 * Modules
 	 */
 
-	private ArrayList<Module> modules = new ArrayList<Module>();
+	private ArrayList<Module> modules = new ArrayList<>();
 
 	/*
 	 * Constructors
@@ -329,17 +328,17 @@ public class GeneralModel {
 
 		buildAdjacencyMatrix();
 
-		//setWatchedGUB(GUB);
+		// setWatchedGUB(GUB);
 
 		benzenoid = chocoModel.graphVar("g", GLB, GUB);
 
 		buildBenzenoidVertices();
 		buildBenzenoidEdges();
 
-		//watchedGraphVar = benzenoid;
+		// watchedGraphVar = benzenoid;
 
-		//watchedBenzenoidVertices = benzenoidVertices;
-		//watchedChanneling = channeling;
+		// watchedBenzenoidVertices = benzenoidVertices;
+		// watchedChanneling = channeling;
 
 		buildCoordsCorrespondance();
 		buildNeighborGraph();
@@ -396,7 +395,8 @@ public class GeneralModel {
 			module.changeGraphVertices();
 		}
 
-		if (GeneratorCriterion.containsSymmetry(criterions) || GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
+		if (GeneratorCriterion.containsSymmetry(criterions)
+				|| GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
 			applyBorderConstraints = false;
 
 		if (applyBorderConstraints)
@@ -690,9 +690,9 @@ public class GeneralModel {
 				noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
 
 			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL))
-				//noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
+				// noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
 				noGoodRecorder = new NoGoodVerticalAxisRecorder(this, solution);
-				
+
 			else {
 
 				if (GeneratorCriterion.containsSubject(criterions, Subject.SINGLE_PATTERN)
@@ -1469,8 +1469,8 @@ public class GeneralModel {
 
 			recordNoGoods();
 
-			BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns,
-					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
+			BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns, chocoModel.getName() + indexSolution,
+					hexagonsCorrespondances);
 			String description = buildDescription(indexSolution);
 			resultSolver.addSolution(solution, description, nbCrowns);
 
