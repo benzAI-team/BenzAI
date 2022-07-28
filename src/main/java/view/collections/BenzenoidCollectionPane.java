@@ -12,7 +12,6 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker.State;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -36,11 +35,12 @@ import solveur.Aromaticity.RIType;
 import solveur.LinFanAlgorithm;
 import utils.Utils;
 import view.groups.AromaticityGroup;
-import view.groups.ClarCoverGroup;
 import view.groups.ClarCoverFixedBondGroup;
+import view.groups.ClarCoverGroup;
+import view.groups.ClarCoverREGroup;
+import view.groups.IMS2D1AGroup;
 import view.groups.KekuleStructureGroup;
 import view.groups.MoleculeGroup;
-import view.groups.IMS2D1AGroup;
 import view.groups.RBOGroup;
 import view.groups.RadicalarClarCoverGroup;
 
@@ -51,7 +51,7 @@ public class BenzenoidCollectionPane extends Tab {
 	};
 
 	public enum DisplayType {
-		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED, KEKULE
+		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED, KEKULE, CLAR_RE
 	};
 
 	private BenzenoidsCollectionsManagerPane parent;
@@ -131,7 +131,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 		nextButton.setOnAction(e -> {
 
-    switch (displayedProperty) {
+			switch (displayedProperty) {
 			case PROPERTIES:
 				displayedProperty = DisplayedProperty.FREQUENCIES;
 				gridPane.getChildren().remove(borderPane);
@@ -224,7 +224,7 @@ public class BenzenoidCollectionPane extends Tab {
 	public void addBenzenoid(Molecule molecule, DisplayType displayType) {
 		molecules.add(molecule);
 		displayTypes.add(displayType);
-    selectedBenzenoidPanes.clear();
+		selectedBenzenoidPanes.clear();
 	}
 
 	public void addSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
@@ -308,106 +308,112 @@ public class BenzenoidCollectionPane extends Tab {
 							Molecule molecule = molecules.get(i);
 							DisplayType displayType = displayTypes.get(i);
 
-              MoleculeGroup group;
-              String description = molecule.getDescription();
-              
-              try {
-              
-                switch (displayType) {
-                  case RE_LIN: {
-                      Aromaticity aromaticity = molecule.getAromaticity();
-                      
-                      double[][] circuits = aromaticity.getLocalCircuits();
+							MoleculeGroup group;
+							String description = molecule.getDescription();
 
-                      for (int j = 0; j < circuits.length; j++) {
-                        System.out.print("H" + j + " : ");
-                        for (int k = 0; k < circuits[j].length; k++) {
-                          System.out.print(circuits[j][k] + " ");
-                        }
-                        System.out.println("");
-                      }
+							try {
 
-                      for (int j = 0; j < molecule.getNbHexagons(); j++) {
-                        System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
-                      }
+								switch (displayType) {
+								case RE_LIN: {
+									Aromaticity aromaticity = molecule.getAromaticity();
 
-                      group = new AromaticityGroup(parent, molecule, aromaticity);
-                    }
-                    break;
-                  
-                  case RE_LIN_FAN: {
-                      Aromaticity aromaticity = LinFanAlgorithm.computeEnergy(molecule);
-                      aromaticity.normalize(molecule.getNbKekuleStructures());
+									double[][] circuits = aromaticity.getLocalCircuits();
 
-                      double[][] circuits = aromaticity.getLocalCircuits();
+									for (int j = 0; j < circuits.length; j++) {
+										System.out.print("H" + j + " : ");
+										for (int k = 0; k < circuits[j].length; k++) {
+											System.out.print(circuits[j][k] + " ");
+										}
+										System.out.println("");
+									}
 
-                      for (int j = 0; j < circuits.length; j++) {
-                        System.out.print("H" + j + " : ");
-                        for (int k = 0; k < circuits[j].length; k++) {
-                          System.out.print(circuits[j][k] + " ");
-                        }
-                        System.out.println("");
-                      }
+									for (int j = 0; j < molecule.getNbHexagons(); j++) {
+										System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
+									}
 
-                      for (int j = 0; j < molecule.getNbHexagons(); j++) {
-                        System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
-                      }
+									group = new AromaticityGroup(parent, molecule, aromaticity);
+								}
+									break;
 
-                      group = new AromaticityGroup(parent, molecule, aromaticity);
-                    }
-                    break;
+								case RE_LIN_FAN: {
+									Aromaticity aromaticity = LinFanAlgorithm.computeEnergy(molecule);
+									aromaticity.normalize(molecule.getNbKekuleStructures());
 
-                  case CLAR_COVER:
-                    group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
-                    
-                    break;
+									double[][] circuits = aromaticity.getLocalCircuits();
 
-                  case KEKULE:
-                    int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
+									for (int j = 0; j < circuits.length; j++) {
+										System.out.print("H" + j + " : ");
+										for (int k = 0; k < circuits[j].length; k++) {
+											System.out.print(circuits[j][k] + " ");
+										}
+										System.out.println("");
+									}
 
-                    group = new KekuleStructureGroup(molecule, kekuleStructure);
-                    
-                    description += "structure " + (index+1);
+									for (int j = 0; j < molecule.getNbHexagons(); j++) {
+										System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
+									}
 
-                    break;
+									group = new AromaticityGroup(parent, molecule, aromaticity);
+								}
+									break;
 
-                  case CLAR_COVER_FIXED:
+								case CLAR_COVER:
+									group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
 
-                    group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(), molecule.getFixedBonds(), molecule.getFixedCircles());
+									break;
 
-                    break;
+								case KEKULE:
+									int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
 
-                  case RBO:
+									group = new KekuleStructureGroup(molecule, kekuleStructure);
 
-                    group = new RBOGroup (molecule);
+									description += "structure " + (index + 1);
 
-                    break;
+									break;
 
-                  case RADICALAR:
+								case CLAR_COVER_FIXED:
 
-                    group = new RadicalarClarCoverGroup(molecule);
+									group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(),
+											molecule.getFixedBonds(), molecule.getFixedCircles());
 
-                    break;
+									break;
 
-                  case IMS2D1A:
+								case RBO:
 
-                    group = new IMS2D1AGroup(molecule);
+									group = new RBOGroup(molecule);
 
-                    break;
+									break;
 
-                  default:
+								case RADICALAR:
 
-                    group = new MoleculeGroup(molecule);
+									group = new RadicalarClarCoverGroup(molecule);
 
-                    break;
-                }
-                
-              	BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group, description, molecule.getVerticesSolutions(), index, false);
-                benzenoidPanes.add(benzenoidPane);
+									break;
 
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
+								case IMS2D1A:
+
+									group = new IMS2D1AGroup(molecule);
+
+									break;
+
+								case CLAR_RE:
+									group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
+									break;
+
+								default:
+
+									group = new MoleculeGroup(molecule);
+
+									break;
+								}
+
+								BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group,
+										description, molecule.getVerticesSolutions(), index, false);
+								benzenoidPanes.add(benzenoidPane);
+
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 
 							index++;
 						}

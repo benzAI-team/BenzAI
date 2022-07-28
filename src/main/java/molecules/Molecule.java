@@ -1,11 +1,7 @@
 package molecules;
 
-import static java.lang.ProcessBuilder.Redirect.appendTo;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +12,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import classifier.Irregularity;
-import database.PictureConverter;
 import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
@@ -29,7 +24,6 @@ import molecules.sort.MoleculeComparator;
 import molecules.sort.NbHexagonsComparator;
 import solution.BenzenoidSolution;
 import solution.ClarCoverSolution;
-import solution.GraphConversion;
 import solveur.Aromaticity;
 import solveur.LinAlgorithm;
 import solveur.LinAlgorithm.PerfectMatchingType;
@@ -38,7 +32,6 @@ import spectrums.ResultLogFile;
 import utils.Couple;
 import utils.Interval;
 import utils.RelativeMatrix;
-import molecules.RBO;
 
 public class Molecule implements Comparable<Molecule> {
 
@@ -100,7 +93,7 @@ public class Molecule implements Comparable<Molecule> {
 
 	public Molecule(int nbNodes, int nbEdges, int nbHexagons, int[][] hexagons, Node[] nodesRefs,
 			int[][] adjacencyMatrix, RelativeMatrix coords) {
-    
+
 		comparator = new NbHexagonsComparator();
 
 		this.nbNodes = nbNodes;
@@ -132,7 +125,6 @@ public class Molecule implements Comparable<Molecule> {
 		computeDegrees();
 		buildHexagonsCoords2();
 	}
-
 
 	public Molecule(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeMatrix,
 			int[][] adjacencyMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
@@ -244,7 +236,6 @@ public class Molecule implements Comparable<Molecule> {
 	 * Class's methods
 	 */
 
-
 	private void computeDegrees() {
 
 		degrees = new int[nbNodes];
@@ -312,7 +303,7 @@ public class Molecule implements Comparable<Molecule> {
 			index++;
 		}
 	}
-	
+
 	public RelativeMatrix getNodesMem() {
 		return nodesMem;
 	}
@@ -403,7 +394,6 @@ public class Molecule implements Comparable<Molecule> {
 
 		return nbHydrogens;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -990,6 +980,20 @@ public class Molecule implements Comparable<Molecule> {
 		return clarCoverSolution;
 	}
 
+	public int[] resonanceEnergyClar() {
+
+		int[] clarValues = new int[nbHexagons];
+
+		for (ClarCoverSolution solution : clarCoverSolutions) {
+			for (int i = 0; i < nbHexagons; i++) {
+				if (solution.isCircle(i))
+					clarValues[i]++;
+			}
+		}
+
+		return clarValues;
+	}
+
 	private int[][] buildCoordsMatrix(int nbCrowns, int diameter) {
 
 		int[][] coordsMatrix = new int[diameter][diameter];
@@ -1432,7 +1436,7 @@ public class Molecule implements Comparable<Molecule> {
 
 	}
 
-	//"/find_ims2d_1a_by_name"
+	// "/find_ims2d_1a_by_name"
 	public String getIms2d1a() {
 
 		if (ims2d1a != null || databaseCheckedIMS2D1A)
@@ -1460,7 +1464,7 @@ public class Molecule implements Comparable<Molecule> {
 			System.out.println("Connection to database failed");
 			return null;
 		}
-		
+
 		return ims2d1a;
 	}
 

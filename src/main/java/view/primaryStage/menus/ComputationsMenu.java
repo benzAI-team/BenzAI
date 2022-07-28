@@ -10,21 +10,24 @@ public class ComputationsMenu {
 	public ComputationsMenu() {
 		// TODO Auto-generated constructor stub
 	}
+
 	public static Menu build(BenzenoidApplication app) {
-		BenzenoidsCollectionsManagerPane collectionsPane =  (BenzenoidsCollectionsManagerPane) app.getPanes().getCollectionsPane();
+		BenzenoidsCollectionsManagerPane collectionsPane = (BenzenoidsCollectionsManagerPane) app.getPanes()
+				.getCollectionsPane();
 		Menu computationsMenu = new Menu("C_omputations");
 
 		MenuItem reItem = new MenuItem("Resonance energy (Lin)");
 		MenuItem reLinFanItem = new MenuItem("Resonance energy (Lin & Fan)");
 		MenuItem clarItem = new MenuItem("Clar cover");
-    MenuItem clarStatsItem = new MenuItem("Clar cover with fixed bond");
+		MenuItem clarREItem = new MenuItem("Clar aromaticity");
+		MenuItem clarStatsItem = new MenuItem("Clar cover with fixed bond");
 		MenuItem kekuleItem = new MenuItem("Kekulé structures");
 		MenuItem rboItem = new MenuItem("Ring bond order");
 		MenuItem irregularityStatsItem = new MenuItem("Irregularity statistics");
 		MenuItem irSpectraItem = new MenuItem("IR spectra");
 		MenuItem radicalarItem = new MenuItem("Radicalar statistics");
 		MenuItem ims2d1aItem = new MenuItem("IMS2D-1A");
-		
+
 		computationsMenu.setOnShowing(e -> {
 			app.switchMode(collectionsPane);
 		});
@@ -32,7 +35,7 @@ public class ComputationsMenu {
 		kekuleItem.setOnAction(e -> {
 			collectionsPane.kekuleStructures();
 		});
-		
+
 		reItem.setOnAction(e -> {
 			collectionsPane.resonanceEnergyLin();
 		});
@@ -45,8 +48,13 @@ public class ComputationsMenu {
 			collectionsPane.clarCover();
 		});
 
+		clarREItem.setOnAction(e -> {
+			collectionsPane.clarCoverRE();
+		});
+
 		clarStatsItem.setOnAction(e -> {
-			collectionsPane.clarCoverStatsFixed();;
+			collectionsPane.clarCoverStatsFixed();
+			;
 		});
 
 		rboItem.setOnAction(e -> {
@@ -68,9 +76,9 @@ public class ComputationsMenu {
 		ims2d1aItem.setOnAction(e -> {
 			collectionsPane.ims2d1a();
 		});
-		
-		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, clarStatsItem, kekuleItem, rboItem, irregularityStatsItem,
-				irSpectraItem, radicalarItem/*, ims2d1aItem*/);
+
+		computationsMenu.getItems().addAll(reItem, reLinFanItem, clarItem, clarREItem, clarStatsItem, kekuleItem,
+				rboItem, irregularityStatsItem, irSpectraItem, radicalarItem, ims2d1aItem);
 
 		return computationsMenu;
 

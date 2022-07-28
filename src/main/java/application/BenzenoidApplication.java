@@ -1,12 +1,10 @@
 package application;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import http.Post;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -16,37 +14,24 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.robot.Robot;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import molecules.Molecule;
-import molecules.sort.IrregularityComparator;
-import molecules.sort.NbCarbonsComparator;
-import molecules.sort.NbHexagonsComparator;
-import molecules.sort.NbHydrogensComparator;
-import molecules.sort.NbKekuleStructuresComparator;
-import molecules.sort.ResonanceEnergyComparator;
-import parsers.GraphParser;
-import solveur.Aromaticity.RIType;
-import utils.Utils;
-import view.catalog.CatalogPane;
-import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidsCollectionsManagerPane;
-import view.collections.IRSpectraParameterPane;
-import view.collections.RenameCollectionPane;
 import view.collections_operations.CollectionsOperationsPane;
 import view.database.DatabasePane;
 import view.draw.DrawBenzenoidPane;
 import view.filtering.FilteringPane;
 import view.generator.GeneratorPane;
-import view.generator.preferences.GeneratorPreferencesPane;
-import view.groups.AromaticityDisplayType;
-import view.groups.AromaticityGroup;
-import view.help.HelpPane;
 import view.primaryStage.AboutPane;
 import view.primaryStage.Panes;
-import view.primaryStage.menus.*;
+import view.primaryStage.menus.CollectionsMenu;
+import view.primaryStage.menus.ComputationsMenu;
+import view.primaryStage.menus.FileMenu;
+import view.primaryStage.menus.FilterMenu;
+import view.primaryStage.menus.HelpMenu;
+import view.primaryStage.menus.InputMenu;
+import view.primaryStage.menus.PreferencesMenu;
+import view.primaryStage.menus.SortMenu;
+import view.primaryStage.menus.TasksMenu;
 
 public class BenzenoidApplication extends Application {
 
@@ -95,9 +80,11 @@ public class BenzenoidApplication extends Application {
 			((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("BenzAI started", true);
 
 			if (database)
-				((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("Connection to database established", true);
+				((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane())
+						.log("Connection to database established", true);
 			else
-				((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("Connection to database failed", true);
+				((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("Connection to database failed",
+						true);
 
 			((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("", false);
 
@@ -105,7 +92,7 @@ public class BenzenoidApplication extends Application {
 
 			stage = primaryStage;
 
-			panes.setDatabasePane( new DatabasePane(this));
+			panes.setDatabasePane(new DatabasePane(this));
 
 			rootPane = buildRootPane();
 
@@ -169,8 +156,9 @@ public class BenzenoidApplication extends Application {
 	private MenuBar buildMenuBar(BorderPane rootPane) {
 
 		MenuBar menuBar = new MenuBar();
-		menuBar.getMenus().addAll(FileMenu.build(this), CollectionsMenu.build(this), InputMenu.build(this), SortMenu.build(this), FilterMenu.build(this),
-				ComputationsMenu.build(this), PreferencesMenu.build(this), TasksMenu.build(this), HelpMenu.build(this));
+		menuBar.getMenus().addAll(FileMenu.build(this), CollectionsMenu.build(this), InputMenu.build(this),
+				SortMenu.build(this), FilterMenu.build(this), ComputationsMenu.build(this), PreferencesMenu.build(this),
+				TasksMenu.build(this), HelpMenu.build(this));
 
 		return menuBar;
 	}
@@ -206,7 +194,6 @@ public class BenzenoidApplication extends Application {
 
 	}
 
-
 	private Menu debugMenu() {
 		Menu fill1Item = new Menu();
 
@@ -225,17 +212,17 @@ public class BenzenoidApplication extends Application {
 	 * @param pane
 	 */
 	public void switchMode(Region pane) {
-		if(pane instanceof FilteringPane) {
+		if (pane instanceof FilteringPane) {
 			Robot robot = new Robot();
 			robot.keyPress(KeyCode.ESCAPE);
 			robot.keyRelease(KeyCode.ESCAPE);
 			((FilteringPane) pane).refresh();
 		}
-		if(pane instanceof CollectionsOperationsPane)
+		if (pane instanceof CollectionsOperationsPane)
 			((CollectionsOperationsPane) pane).refreshBoxes();
 		rootPane.setCenter(pane);
 	}
-	
+
 	/***
 	 * getters, setters
 	 */
