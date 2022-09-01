@@ -41,8 +41,7 @@ public class MultipleFragments3Module extends Module{
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public MultipleFragments3Module(GeneralModel generalModel, ArrayList<Fragment> fragments, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		super(generalModel);
+	public MultipleFragments3Module(ArrayList<Fragment> fragments, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		this.fragments = fragments;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
@@ -52,7 +51,8 @@ public class MultipleFragments3Module extends Module{
 
 	@Override
 	public void buildVariables() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		generalModel.buildNeighborGraphWithOutterHexagons(maxOrder);
 		generalModel.buildAdjacencyMatrixWithOutterHexagons();
 			
@@ -115,7 +115,8 @@ public class MultipleFragments3Module extends Module{
 
 	@Override
 	public void postConstraints() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		for (int i = 0 ; i < fragments.size() ; i++) {
 			
 			Fragment fragment = fragments.get(i);
@@ -268,7 +269,8 @@ public class MultipleFragments3Module extends Module{
 
 	@Override
 	public void changeSolvingStrategy() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		int nbCorrespondances = 0;
 		
 		for (IntVar [] correspondances : allCoronenoidCorrespondances)
@@ -377,7 +379,7 @@ public class MultipleFragments3Module extends Module{
 		
 		table = new Tuples(true);
 		
-		int [][] matrix = generalModel.getAdjacencyMatrixOutterHexagons();
+		int [][] matrix = getGeneralModel().getAdjacencyMatrixOutterHexagons();
 		
 		for (int i = 0 ; i < matrix.length ; i++) {
 			for (int j = (i + 1) ; j < matrix.length ; j++) {

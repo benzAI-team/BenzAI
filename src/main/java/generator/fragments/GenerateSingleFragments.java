@@ -3,6 +3,7 @@ package generator.fragments;
 import java.io.File;
 import java.io.IOException;
 import generator.GeneralModel;
+import generator.NbHexagons;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
@@ -15,21 +16,21 @@ public class GenerateSingleFragments {
 
 	private static void solve1(Fragment fragment, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		
-		GeneralModel model = new GeneralModel(nbHexagons, GeneralModelMode.NB_HEXAGONS);
+		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
 		model.addModule(new SingleFragment1Module(model, fragment, variableStrategy, valueStrategy, orderStrategy));
 		model.solve();
 	}
 	
 	private static void solve2(Fragment fragment, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy){
 		
-		GeneralModel model = new GeneralModel(nbHexagons, GeneralModelMode.NB_HEXAGONS);	
+		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));	
 		model.addModule(new SingleFragment2Module(model, fragment, false, variableStrategy, valueStrategy, orderStrategy));
 		model.solve();
 	}
 	
 	private static void solve3(Fragment fragment, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		
-		GeneralModel model = new GeneralModel(nbHexagons, GeneralModelMode.NB_HEXAGONS);	
+		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));	
 		model.addModule(new SingleFragment3Module(model, fragment, variableStrategy, valueStrategy, orderStrategy));
 		model.solve();
 	}

@@ -36,9 +36,8 @@ public class SingleFragment1Module extends Module {
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 
-	public SingleFragment1Module(GeneralModel generalModel, Fragment fragment, VariableStrategy variablesStrategy,
+	public SingleFragment1Module(Fragment fragment, VariableStrategy variablesStrategy,
 			ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		super(generalModel);
 		this.fragment = fragment;
 		this.variablesStrategy = variablesStrategy;
 		this.valueStrategy = valueStrategy;
@@ -52,7 +51,7 @@ public class SingleFragment1Module extends Module {
 
 		presences = new BoolVar[fragmentOccurences.getOccurences().size()];
 		for (int i = 0; i < presences.length; i++)
-			presences[i] = generalModel.getProblem().boolVar("presence_" + i);
+			presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
 
 		presentHexagons = new ArrayList<>();
 		absentHexagons = new ArrayList<>();
@@ -75,6 +74,7 @@ public class SingleFragment1Module extends Module {
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		ArrayList<Integer[]> occurences = fragmentOccurences.getOccurences();
 
@@ -127,6 +127,7 @@ public class SingleFragment1Module extends Module {
 
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 
 		IntVar[] branchingVariables = new IntVar[generalModel.getChanneling().length + presences.length];
 		int index = 0;
@@ -208,7 +209,7 @@ public class SingleFragment1Module extends Module {
 		fragmentOccurences = new FragmentOccurences();
 
 		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(generalModel.computeTranslations(f));
+			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));
 	}
 
 }

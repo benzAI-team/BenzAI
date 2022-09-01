@@ -8,9 +8,6 @@ import generator.GeneralModel;
 
 public class CatacondensedModule extends Module {
 
-	public CatacondensedModule(GeneralModel generalModel) {
-		super(generalModel);
-	}
 
 	@Override
 	public void buildVariables() {
@@ -18,7 +15,7 @@ public class CatacondensedModule extends Module {
 
 	@Override
 	public void postConstraints() {
-		generalModel.getProblem().tree(generalModel.getXG()).post();
+		getGeneralModel().getProblem().tree(getGeneralModel().getXG()).post();
 	}
 
 	@Override
@@ -27,19 +24,14 @@ public class CatacondensedModule extends Module {
 
 	@Override
 	public void changeSolvingStrategy() {
-		generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getChanneling(),
-				new FirstFail(generalModel.getProblem()), new IntDomainMax()));
+		getGeneralModel().getProblem().getSolver().setSearch(new IntStrategy(getGeneralModel().getChanneling(),
+				new FirstFail(getGeneralModel().getProblem()), new IntDomainMax()));
 	}
 
 	@Override
 	public void changeGraphVertices() {
 
 	}
-
-//	@Override
-//	public void setPriority() {
-//		priority = 2;
-//	}
 
 	@Override
 	public String toString() {

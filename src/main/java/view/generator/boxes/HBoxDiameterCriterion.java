@@ -3,31 +3,20 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
 public class HBoxDiameterCriterion extends ClassicalHBoxCriterion{
 
-	public HBoxDiameterCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+	public HBoxDiameterCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(generatorPane, choiceBoxCriterion);
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-		
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		
-		if (valid) {
-			Subject subject = Subject.DIAMETER;
-			Operator operator = GeneratorCriterion.getOperator(operatorChoiceBox.getValue());
-			String value = fieldValue.getText();
-			
-			criterions.add(new GeneratorCriterion(subject, operator, value));
-		}
-		
-		return criterions;
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+		if (isValid()) 
+			modelPropertySet.getBySubject("diameter").addExpression(new BinaryNumericalExpression("diameter", operatorChoiceBox.getValue(), Integer.decode(fieldValue.getText())));
 	}
-
 }

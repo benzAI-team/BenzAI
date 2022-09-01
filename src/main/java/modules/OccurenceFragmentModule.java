@@ -40,8 +40,7 @@ public class OccurenceFragmentModule extends Module{
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public OccurenceFragmentModule(GeneralModel generalModel, Fragment fragment, int nbOccurences, VariableStrategy variablesStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		super(generalModel);
+	public OccurenceFragmentModule(Fragment fragment, int nbOccurences, VariableStrategy variablesStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		this.fragment = fragment;
 		this.nbOccurences = nbOccurences;
 		this.variablesStrategy = variablesStrategy;
@@ -51,7 +50,8 @@ public class OccurenceFragmentModule extends Module{
 
 	@Override
 	public void buildVariables() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		computeFragmentOccurences();
 		
 		occurenceVar = generalModel.getProblem().intVar("n_e", 0, nbOccurences);
@@ -85,7 +85,8 @@ public class OccurenceFragmentModule extends Module{
 
 	@Override
 	public void postConstraints() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		ArrayList<Integer []> occurences = fragmentOccurences.getOccurences();
 		
 		for (int i = 0 ; i < occurences.size() ; i++) {
@@ -223,6 +224,7 @@ public class OccurenceFragmentModule extends Module{
 
 	@Override
 	public void addVariables() {
+		GeneralModel generalModel = getGeneralModel();
 		generalModel.addVariable(occurenceVar);
 		generalModel.addVariable(presences);
 		generalModel.addVariable(presences2);
@@ -230,7 +232,8 @@ public class OccurenceFragmentModule extends Module{
 
 	@Override
 	public void changeSolvingStrategy() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		IntVar[] branchingVariables = new IntVar[generalModel.getChanneling().length + presences.length + presences2.length];
 		int index = 0;
 		
@@ -324,7 +327,7 @@ public class OccurenceFragmentModule extends Module{
 		fragmentOccurences = new FragmentOccurences();
 		
 		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(generalModel.computeTranslations(f));	
+			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));	
 	}
 
 }

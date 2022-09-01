@@ -36,8 +36,7 @@ public class SingleFragment3Module extends Module{
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public SingleFragment3Module(GeneralModel generalModel, Fragment fragment, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		super(generalModel);
+	public SingleFragment3Module(Fragment fragment, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		this.fragment = fragment;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
@@ -46,7 +45,8 @@ public class SingleFragment3Module extends Module{
 
 	@Override
 	public void buildVariables() {
-				
+		GeneralModel generalModel = getGeneralModel();
+
 		generalModel.buildNeighborGraphWithOutterHexagons(fragment.getOrder());
 		generalModel.buildAdjacencyMatrixWithOutterHexagons();
 		
@@ -92,7 +92,8 @@ public class SingleFragment3Module extends Module{
 
 	@Override
 	public void postConstraints() {
-	
+		GeneralModel generalModel = getGeneralModel();
+
 		//Setting labels	
 		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
 			
@@ -205,6 +206,7 @@ public class SingleFragment3Module extends Module{
 
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 
 		IntVar [] branchingVariables = new IntVar[generalModel.getChanneling().length + coronenoidCorrespondances.length];
 		
@@ -286,7 +288,7 @@ public class SingleFragment3Module extends Module{
 		
 		Tuples table = new Tuples(true);
 		
-		int [][] matrix = generalModel.getAdjacencyMatrixOutterHexagons();
+		int [][] matrix = getGeneralModel().getAdjacencyMatrixOutterHexagons();
 		
 		for (int i = 0 ; i < matrix.length ; i++) {
 			for (int j = (i + 1) ; j < matrix.length ; j++) {

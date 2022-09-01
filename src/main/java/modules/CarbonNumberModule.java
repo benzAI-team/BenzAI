@@ -1,6 +1,5 @@
 package modules;
 
-import java.util.ArrayList;
 
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.constraints.extension.Tuples;
@@ -9,23 +8,20 @@ import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.Variable;
 
 import generator.GeneralModel;
-import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PropertyExpression;
+import modelProperty.expression.ParameterizedExpression;
 
-public class NbCarbonsModule extends Module {
+public class CarbonNumberModule extends Module {
 
 	private int[][] dualGraph;
-	ArrayList<GeneratorCriterion> criterions;
 
 	/*
 	 * Constraints programming variables
 	 */
 
 	private IntVar nbCarbonsVar;
-
 	private IntVar[] benzenoidCarbons;
-
 	private BoolVar[][] xN;
 	private BoolVar zero;
 
@@ -33,13 +29,9 @@ public class NbCarbonsModule extends Module {
 	 * Debug
 	 */
 
-	public NbCarbonsModule(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-		super(generalModel);
-		this.criterions = criterions;
-	}
-
 	@Override
 	public void buildVariables() {
+		GeneralModel generalModel = getGeneralModel();
 
 		benzenoidCarbons = new IntVar[generalModel.getChanneling().length];
 		for (int i = 0; i < generalModel.getChanneling().length; i++)
@@ -51,71 +43,38 @@ public class NbCarbonsModule extends Module {
 		buildXN();
 
 		int nbCarbonsMin = 6 * generalModel.getDiameter() * generalModel.getDiameter();
-		int nbHydrogensMin = 6 * generalModel.getDiameter() * generalModel.getDiameter();
 
 		int nbCarbonsMax = 0;
-		int nbHydrogensMax = 0;
 
-		for (GeneratorCriterion criterion : criterions) {
+		for (PropertyExpression expression : this.getExpressionList()) {
+			String operator = ((ParameterizedExpression)expression).getOperator();
 
-			Subject subject = criterion.getSubject();
-			Operator operator = criterion.getOperator();
-
-			if (operator != Operator.EVEN && operator != Operator.ODD) {
-
-				int value = Integer.parseInt(criterion.getValue());
-
-				if (operator == Operator.EQ) {
-
-					if (subject == Subject.NB_CARBONS) {
+			if (operator != "even" && operator != "odd") {
+				int value = ((BinaryNumericalExpression)expression).getValue();
+				if (operator == "=") {
 						nbCarbonsMin = value;
 						nbCarbonsMax = value;
-					}
-
-					else if (subject == Subject.NB_HYDROGENS) {
-						nbHydrogensMin = value;
-						nbHydrogensMax = value;
-					}
-
 				}
-
-				else if (operator == Operator.LT || operator == Operator.LEQ) {
-
-					if (subject == Subject.NB_CARBONS && value > nbCarbonsMax)
+				else if (operator == "<" || operator == "<=")
 						nbCarbonsMax = value;
-
-					if (subject == Subject.NB_HYDROGENS && value > nbHydrogensMax)
-						nbHydrogensMax = value;
-				}
-
-				else if (operator == Operator.GT || operator == Operator.GEQ) {
-
-					if (subject == Subject.NB_CARBONS && value < nbCarbonsMin)
+				else if (operator == ">" || operator == ">=")
 						nbCarbonsMin = value;
 
-					if (subject == Subject.NB_HYDROGENS && value < nbHydrogensMin)
-						nbHydrogensMin = value;
-				}
 			}
 		}
 
 		if (nbCarbonsMin == 6 * generalModel.getDiameter() * generalModel.getDiameter())
 			nbCarbonsMin = 0;
 
-		if (nbHydrogensMin == 6 * generalModel.getDiameter() * generalModel.getDiameter())
-			nbHydrogensMin = 0;
-
 		if (nbCarbonsMax == 0)
 			nbCarbonsMax = 6 * generalModel.getDiameter() * generalModel.getDiameter();
-
-		if (nbHydrogensMax == 0)
-			nbHydrogensMax = 6 * generalModel.getDiameter() * generalModel.getDiameter();
 
 		nbCarbonsVar = generalModel.getProblem().intVar("nb_carbons", nbCarbonsMin, nbCarbonsMax);
 	}
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		/*
 		 * Table constraints for carbons
@@ -145,26 +104,18 @@ public class NbCarbonsModule extends Module {
 		Constraint c = generalModel.getProblem().sum(benzenoidCarbons, "=", nbCarbonsVar);
 		c.post();
 
-		for (GeneratorCriterion criterion : criterions) {
+		for (PropertyExpression expression : this.getExpressionList()) {
+			String operator = ((ParameterizedExpression)expression).getOperator();
 
-			Subject subject = criterion.getSubject();
-			Operator operator = criterion.getOperator();
+			if (operator != "even" && operator != "odd") {
+				int value = ((BinaryNumericalExpression)expression).getValue();
+				generalModel.getProblem().arithm(nbCarbonsVar, ((ParameterizedExpression)expression).getOperator(), value).post();
 
-			int value = -1;
-			if (!criterion.getValue().equals(""))
-				value = Integer.parseInt(criterion.getValue());
-
-			if (subject == Subject.NB_CARBONS) {
-				if (operator != Operator.EVEN && operator != Operator.ODD) {
-
-					generalModel.getProblem().arithm(nbCarbonsVar, criterion.getOperatorString(), value).post();
-
-				} else {
-					if (operator == Operator.EVEN)
-						generalModel.getProblem().mod(nbCarbonsVar, 2, 0).post();
-					else
-						generalModel.getProblem().mod(nbCarbonsVar, 2, 1).post();
-				}
+			} else {
+				if (operator == "even")
+					generalModel.getProblem().mod(nbCarbonsVar, 2, 0).post();
+				else
+					generalModel.getProblem().mod(nbCarbonsVar, 2, 1).post();
 			}
 		}
 
@@ -187,6 +138,7 @@ public class NbCarbonsModule extends Module {
 	}
 
 	private void buildXN() {
+		GeneralModel generalModel = getGeneralModel();
 
 		xN = new BoolVar[generalModel.getChanneling().length][6];
 
@@ -204,6 +156,7 @@ public class NbCarbonsModule extends Module {
 	}
 
 	private void buildDualGraph() {
+		GeneralModel generalModel = getGeneralModel();
 
 		dualGraph = new int[generalModel.getChanneling().length][6];
 

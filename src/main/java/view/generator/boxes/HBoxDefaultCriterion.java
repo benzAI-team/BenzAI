@@ -1,8 +1,6 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
+import modelProperty.ModelPropertySet;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
@@ -14,17 +12,17 @@ public class HBoxDefaultCriterion extends HBoxCriterion {
 
 	@Override
 	protected void checkValidity() {
-		valid = false;
+		setValid(false);
 	}
 
 	@Override
 	protected void initialize() {
-		this.getChildren().addAll(warningIcon, deleteButton);
+		this.getChildren().addAll(getWarningIcon(), deleteButton);
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-		return null;
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+
 	}
 
 	

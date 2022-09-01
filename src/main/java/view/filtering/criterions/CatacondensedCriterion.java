@@ -18,11 +18,11 @@ public class CatacondensedCriterion extends FilteringCriterion {
 	@Override
 	public Boolean checksCriterion(Molecule molecule) {
 		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		GeneratorCriterion hexagonCriterion = new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ,
-				Integer.toString(molecule.getNbHexagons()));
+		GeneratorCriterion hexagonCriterion = new GeneratorCriterion("NB_HEXAGONS", "=",
+				molecule.getNbHexagons());
 
 		criterions.add(hexagonCriterion);
-		criterions.add(new GeneratorCriterion(Subject.CATACONDENSED, Operator.NONE, ""));
+		criterions.add(new GeneratorCriterion("CATACONDENSED", "", -1));
 
 		HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = GeneratorPane.buildCriterionsMap(criterions);
 

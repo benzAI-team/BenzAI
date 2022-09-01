@@ -10,27 +10,21 @@ import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PropertyExpression;
 
 public class CoronenoidModule extends Module {
-
-	private ArrayList<GeneratorCriterion> criterions;
 
 	private IntVar nbCrowns;
 	private IntVar diameter;
 
 	IntVar sub;
 
-	public CoronenoidModule(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-		super(generalModel);
-		this.criterions = criterions;
-	}
 
 	@Override
 	public void buildVariables() {
-		nbCrowns = generalModel.getProblem().intVar("nb_crowns", 1, generalModel.getNbCrowns());
-		diameter = generalModel.getProblem().intVar("diameter", 0, generalModel.getDiameter());
+		nbCrowns = getGeneralModel().getProblem().intVar("nb_crowns", 1, getGeneralModel().getNbCrowns());
+		diameter = getGeneralModel().getProblem().intVar("diameter", 0, getGeneralModel().getDiameter());
 	}
 
 	@Override
@@ -39,6 +33,7 @@ public class CoronenoidModule extends Module {
 		int[] nbHexagons = getNbHexagons();
 		int[] diameters = getDiameterDomain();
 
+		GeneralModel generalModel = getGeneralModel();
 		Constraint[] constraints = new Constraint[nbHexagons.length];
 		for (int i = 0; i < constraints.length; i++) {
 			Constraint hexagonsCstr = generalModel.getProblem().arithm(generalModel.getNbVerticesVar(), "=",
@@ -61,19 +56,18 @@ public class CoronenoidModule extends Module {
 
 		generalModel.getProblem().diameter(generalModel.getGraphVar(), diameter).post();
 
-		for (GeneratorCriterion criterion : criterions) {
-			if (criterion.getSubject() == Subject.NB_CROWNS && !criterion.getValue().equals("Unspecified")) {
-
-				Operator operator = criterion.getOperator();
-				int value = Integer.parseInt(criterion.getValue());
-
-				generalModel.getProblem().arithm(nbCrowns, criterion.getOperatorString(), value).post();
+		for (PropertyExpression binaryNumericalExpression : this.getExpressionList()) {
+			int value = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();
+			if (value != -1) {
+				String operator = ((BinaryNumericalExpression)binaryNumericalExpression).getOperator();
+				generalModel.getProblem().arithm(nbCrowns, operator, value).post();
 			}
 		}
 	}
 
 	@Override
 	public void addVariables() {
+		GeneralModel generalModel = getGeneralModel();
 		generalModel.addVariable(nbCrowns);
 		// generalModel.addWatchedVariable(sub);
 		generalModel.addVariable(diameter);
@@ -81,6 +75,7 @@ public class CoronenoidModule extends Module {
 
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 
 		IntVar[] variables = new IntVar[generalModel.getChanneling().length + 1];
 		variables[0] = nbCrowns;
@@ -99,9 +94,9 @@ public class CoronenoidModule extends Module {
 	}
 
 	private int[] getNbHexagons() {
-		int[] nbHexagons = new int[generalModel.getNbCrowns()];
+		int[] nbHexagons = new int[getGeneralModel().getNbCrowns()];
 
-		for (int nbCrowns = 1; nbCrowns <= generalModel.getNbCrowns(); nbCrowns++) {
+		for (int nbCrowns = 1; nbCrowns <= getGeneralModel().getNbCrowns(); nbCrowns++) {
 
 			int n = (int) (6.0 * (((nbCrowns * (nbCrowns - 1)) / 2.0)) + 1.0);
 			nbHexagons[nbCrowns - 1] = n;
@@ -111,9 +106,9 @@ public class CoronenoidModule extends Module {
 	}
 
 	private int[] getDiameterDomain() {
-		int[] diameters = new int[generalModel.getNbCrowns()];
+		int[] diameters = new int[getGeneralModel().getNbCrowns()];
 
-		for (int nbCrowns = 1; nbCrowns <= generalModel.getNbCrowns(); nbCrowns++) {
+		for (int nbCrowns = 1; nbCrowns <= getGeneralModel().getNbCrowns(); nbCrowns++) {
 
 			int n = 2 * (nbCrowns - 1);
 			diameters[nbCrowns - 1] = n;

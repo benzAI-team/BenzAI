@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import generator.criterions.GeneratorCriterion2;
-import modelProperty.expression.HexagonNumberExpression;
+import modelProperty.expression.BinaryNumericalExpression;
 import view.generator.boxes.HBoxCriterion;
 
 public abstract class ModelPropertyBuilder {

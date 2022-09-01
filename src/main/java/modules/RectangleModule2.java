@@ -8,11 +8,11 @@ import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeS
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.expression.PropertyExpression;
+import modelProperty.expression.RectangleExpression;
 
 public class RectangleModule2 extends Module {
 
-	private ArrayList<GeneratorCriterion> criterions;
 
 	private int[] correspondances;
 	private int[] correspondances2;
@@ -25,12 +25,10 @@ public class RectangleModule2 extends Module {
 
 	private BoolVar zero;
 
-	public RectangleModule2(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-		super(generalModel);
-		this.criterions = criterions;
-	}
 
 	private void buildLines() {
+		GeneralModel generalModel = getGeneralModel();
+
 		lines = new BoolVar[generalModel.getDiameter()][generalModel.getDiameter()];
 
 		for (int i = 0; i < generalModel.getDiameter(); i++) {
@@ -45,6 +43,7 @@ public class RectangleModule2 extends Module {
 	}
 
 	private void buildColumns() {
+		GeneralModel generalModel = getGeneralModel();
 
 		int diameter = generalModel.getDiameter();
 		int nbCrowns = generalModel.getNbCrowns();
@@ -124,6 +123,7 @@ public class RectangleModule2 extends Module {
 	}
 
 	private void buildCorrespondances() {
+		GeneralModel generalModel = getGeneralModel();
 
 		correspondances = new int[generalModel.getDiameter()];
 		correspondances2 = new int[generalModel.getDiameter()];
@@ -149,6 +149,7 @@ public class RectangleModule2 extends Module {
 
 	@Override
 	public void buildVariables() {
+		GeneralModel generalModel = getGeneralModel();
 
 		zero = generalModel.getProblem().boolVar("zero", false);
 
@@ -175,6 +176,7 @@ public class RectangleModule2 extends Module {
 	
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		for (int i = 0 ; i < generalModel.getNbHexagonsCoronenoid() ; i++) {
 			
@@ -221,21 +223,13 @@ public class RectangleModule2 extends Module {
 		 * Constraints on number of lines and columns
 		 */
 
-		for (GeneratorCriterion criterion : criterions) {
+		for (PropertyExpression expression : this.getExpressionList()) {
+			RectangleExpression rectangleExpression = (RectangleExpression)expression;
 
-			Subject subject = criterion.getSubject();
-
-			if (subject == Subject.RECT_WIDTH || subject == Subject.RECT_HEIGHT) {
-
-				String operator = criterion.getOperatorString();
-				int value = Integer.parseInt(criterion.getValue());
-
-				if (subject == Subject.RECT_HEIGHT)
-					generalModel.getProblem().arithm(height, operator, value).post();
-
-				else
-					generalModel.getProblem().arithm(width, operator, value).post();
-			}
+			if(rectangleExpression.getHeight() >= 0)
+				generalModel.getProblem().arithm(height, rectangleExpression.getHeightOperator(), rectangleExpression.getHeight()).post();
+			if(rectangleExpression.getWidth() >= 0)
+				generalModel.getProblem().arithm(width, rectangleExpression.getWidthOperator(), rectangleExpression.getWidth()).post();
 		}
 		
 		generalModel.getProblem().times(width, height, generalModel.getNbVerticesVar()).post();
@@ -247,6 +241,7 @@ public class RectangleModule2 extends Module {
 
 	@Override
 	public void addVariables() {
+		GeneralModel generalModel = getGeneralModel();
 		generalModel.addVariable(width);
 		generalModel.addVariable(height);
 	}

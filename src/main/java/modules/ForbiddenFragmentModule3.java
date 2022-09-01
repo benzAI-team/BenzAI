@@ -32,8 +32,8 @@ public class ForbiddenFragmentModule3 extends Module{
 	private VariableStrategy variableStrategy;
 	private ValueStrategy valueStrategy;
 	
-	public ForbiddenFragmentModule3(GeneralModel generalModel, Fragment fragment, VariableStrategy variableStrategy, ValueStrategy valueStrategy) {
-		super(generalModel);
+	public ForbiddenFragmentModule3(Fragment fragment, VariableStrategy variableStrategy, ValueStrategy valueStrategy) {
+		super();
 		this.fragment = fragment;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
@@ -65,6 +65,7 @@ public class ForbiddenFragmentModule3 extends Module{
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		ArrayList<Integer []> occurences = fragmentOccurences.getOccurences();
 		
@@ -113,8 +114,9 @@ public class ForbiddenFragmentModule3 extends Module{
 
 	@Override
 	public void changeSolvingStrategy() {
-		
-VariableSelector<IntVar> variableSelector = null;
+		GeneralModel generalModel = getGeneralModel();
+
+		VariableSelector<IntVar> variableSelector = null;
 		
 		switch(variableStrategy) {
 		
@@ -158,7 +160,7 @@ VariableSelector<IntVar> variableSelector = null;
 		fragmentOccurences = new FragmentOccurences();
 		
 		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(generalModel.computeTranslations(f));
+			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));
 	}
 
 }

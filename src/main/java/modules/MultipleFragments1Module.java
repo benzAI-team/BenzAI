@@ -39,18 +39,16 @@ public class MultipleFragments1Module extends Module {
 
 	private PatternsInterraction interraction;
 	
-	public MultipleFragments1Module(GeneralModel generalModel, ArrayList<Fragment> fragments,
+	public MultipleFragments1Module(ArrayList<Fragment> fragments,
 			VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		super(generalModel);
 		this.fragments = fragments;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
 		this.orderStrategy = orderStrategy;
 	}
 
-	public MultipleFragments1Module(GeneralModel generalModel, ArrayList<Fragment> fragments,
+	public MultipleFragments1Module(ArrayList<Fragment> fragments,
 			VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy, PatternsInterraction interraction) {
-		super(generalModel);
 		this.fragments = fragments;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
@@ -78,7 +76,7 @@ public class MultipleFragments1Module extends Module {
 
 			BoolVar[] presences = new BoolVar[fragmentOccurences.getOccurences().size()];
 			for (int j = 0; j < presences.length; j++)
-				presences[j] = generalModel.getProblem().boolVar("presence_" + i + "_" + j);
+				presences[j] = getGeneralModel().getProblem().boolVar("presence_" + i + "_" + j);
 
 			allPresences.add(presences);
 
@@ -110,6 +108,7 @@ public class MultipleFragments1Module extends Module {
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		for (int f = 0; f < fragments.size(); f++) {
 
@@ -271,6 +270,7 @@ public class MultipleFragments1Module extends Module {
 
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 
 		int nbPresencesVariables = 0;
 
@@ -362,6 +362,7 @@ public class MultipleFragments1Module extends Module {
 	}
 
 	private void computeFragmentOccurences() {
+		GeneralModel generalModel = getGeneralModel();
 
 		fragmentsOccurences = new ArrayList<>();
 

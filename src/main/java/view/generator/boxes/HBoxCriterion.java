@@ -1,30 +1,29 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
 @SuppressWarnings("unused")
 public abstract class HBoxCriterion extends HBox {
 
-	protected boolean valid;
+	private boolean valid;
 	
 	protected DeleteButton deleteButton;
-	protected ImageView warningIcon;
+	private ImageView warningIcon;
 	 
-	protected GeneratorPane parent;
+	private GeneratorPane generatorPane;
 	private ChoiceBoxCriterion choiceBoxCriterion;
 	
-	public HBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(5.0);
 		
-		this.parent = parent;
+		this.generatorPane = generatorPane;
 		this.choiceBoxCriterion = choiceBoxCriterion;
 		
 		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
@@ -34,7 +33,7 @@ public abstract class HBoxCriterion extends HBox {
 		Tooltip.install(deleteButton, new Tooltip("Delete criterion"));
 		
 		deleteButton.setOnAction(e -> {
-			parent.removeCriterion(choiceBoxCriterion, this);
+			generatorPane.removeCriterion(choiceBoxCriterion, this);
 		});
 		
 		initialize();
@@ -43,10 +42,51 @@ public abstract class HBoxCriterion extends HBox {
 	protected abstract void checkValidity();
 	protected abstract void initialize();
 	
-	public abstract ArrayList<GeneratorCriterion> buildCriterions();
+	public abstract void addPropertyExpression(ModelPropertySet modelPropertySet);
 	
+
+	/***
+	 * getters, setters
+	 */
+	public DeleteButton getDeleteButton() {
+		return deleteButton;
+	}
+
+	public void setDeleteButton(DeleteButton deleteButton) {
+		this.deleteButton = deleteButton;
+	}
+
+	public ImageView getWarningIcon() {
+		return warningIcon;
+	}
+
+	public void setWarningIcon(ImageView warningIcon) {
+		this.warningIcon = warningIcon;
+	}
+
+
+	public GeneratorPane getGeneratorPane() {
+		return generatorPane;
+	}
+
+	public void setGeneratorPane(GeneratorPane generatorPane) {
+		this.generatorPane = generatorPane;
+	}
+
+	public ChoiceBoxCriterion getChoiceBoxCriterion() {
+		return choiceBoxCriterion;
+	}
+
+	public void setChoiceBoxCriterion(ChoiceBoxCriterion choiceBoxCriterion) {
+		this.choiceBoxCriterion = choiceBoxCriterion;
+	}
+
 	public boolean isValid() {
 		return valid;
+	}
+
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}
 	
 

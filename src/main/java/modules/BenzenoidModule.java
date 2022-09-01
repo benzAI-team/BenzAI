@@ -14,8 +14,7 @@ public class BenzenoidModule extends Module {
 
 	private Molecule molecule;
 
-	public BenzenoidModule(GeneralModel generalModel, Molecule molecule) {
-		super(generalModel);
+	public BenzenoidModule(Molecule molecule) {
 		this.molecule = molecule;
 	}
 
@@ -27,7 +26,7 @@ public class BenzenoidModule extends Module {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void postConstraints() {
-
+		GeneralModel generalModel = getGeneralModel();
 		int diameter = generalModel.getDiameter();
 		int[][] coordsMatrix = generalModel.getCoordsMatrix();
 
@@ -78,8 +77,8 @@ public class BenzenoidModule extends Module {
 
 		ArrayList<Integer[]> translations = new ArrayList<>();
 
-		int diameter = generalModel.getDiameter();
-		int[][] coordsMatrix = generalModel.getCoordsMatrix();
+		int diameter = getGeneralModel().getDiameter();
+		int[][] coordsMatrix = getGeneralModel().getCoordsMatrix();
 
 		int xMin = Integer.MAX_VALUE;
 		int yMin = Integer.MAX_VALUE;

@@ -10,10 +10,6 @@ import generator.GeneralModel;
 
 public class CatacondensedModule2 extends Module {
 
-	public CatacondensedModule2(GeneralModel generalModel) {
-		super(generalModel);
-	}
-
 
 	@Override
 	public void buildVariables() {
@@ -33,7 +29,7 @@ public class CatacondensedModule2 extends Module {
 					new IntIterableRangeSet(0)
 			};
 
-			generalModel.getProblem().getClauseConstraint().addClause(triangle, valClause);
+			getGeneralModel().getProblem().getClauseConstraint().addClause(triangle, valClause);
 		}
 		
 		System.out.println("");
@@ -66,7 +62,7 @@ public class CatacondensedModule2 extends Module {
 	}
 	
 	private ArrayList<BoolVar []> computeTriangles() {
-		
+		GeneralModel generalModel = getGeneralModel();
 		int diameter = generalModel.getDiameter();
 		int [][] coordsMatrix = generalModel.getCoordsMatrix();
 		

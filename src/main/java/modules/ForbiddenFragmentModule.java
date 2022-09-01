@@ -26,8 +26,8 @@ public class ForbiddenFragmentModule extends Module{
 	
 	private FragmentOccurences fragmentOccurences;
 	
-	public ForbiddenFragmentModule(GeneralModel generalModel, Fragment fragment) {
-		super(generalModel);
+	public ForbiddenFragmentModule(Fragment fragment) {
+		super();
 		this.fragment = fragment;
 	}
 
@@ -39,7 +39,7 @@ public class ForbiddenFragmentModule extends Module{
 		if (mode < 3){
 			presences = new BoolVar[fragmentOccurences.getOccurences().size()];
 			for (int i = 0 ; i < presences.length ; i++)
-				presences[i] = generalModel.getProblem().boolVar("presence_" + i);
+				presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
 		}
 		
 		presentHexagons = new ArrayList<>();
@@ -63,6 +63,7 @@ public class ForbiddenFragmentModule extends Module{
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		ArrayList<Integer []> occurences = fragmentOccurences.getOccurences();
 		
@@ -156,6 +157,7 @@ public class ForbiddenFragmentModule extends Module{
 
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 		//generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getVG(), new FirstFail(generalModel.getProblem()), new IntDomainMin()), new IntStrategy(presences, new FirstFail(generalModel.getProblem()), new IntDomainMin()));
 		if (mode < 3)
 			generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getChanneling(), new FirstFail(generalModel.getProblem()), new IntDomainMin()), new IntStrategy(presences, new FirstFail(generalModel.getProblem()), new IntDomainMin()));
@@ -171,7 +173,7 @@ public class ForbiddenFragmentModule extends Module{
 		fragmentOccurences = new FragmentOccurences();
 		
 		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(generalModel.computeTranslations(f));
+			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));
 	}
 
 }

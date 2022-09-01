@@ -3,10 +3,11 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.ParameterizedExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -23,24 +24,24 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 	protected void checkValidity() {
 		
 		if (operatorChoiceBox.getValue().equals("Min") || operatorChoiceBox.getValue().equals("Max")) {
-			valid = true;
+			setValid(true);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(warningIcon);
+			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(deleteButton);
 			this.getChildren().add(deleteButton);
 		}
 		
 		else if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
-			valid = false;
+			setValid(false);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(warningIcon);
+			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(fieldValue, warningIcon, deleteButton);
+			this.getChildren().addAll(fieldValue, getWarningIcon(), deleteButton);
 		}
 
 		else {
-			valid = true;
-			this.getChildren().remove(warningIcon);
+			setValid(true);
+			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(deleteButton);
 			this.getChildren().addAll(deleteButton);
 		}
@@ -48,26 +49,14 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		
-		if (valid) {
-			
-			Subject subject = Subject.NB_KEKULE_STRUCTURES;
-			Operator operator = GeneratorCriterion.getOperator(operatorChoiceBox.getValue());
-			
-			if (operator != Operator.MIN && operator != Operator.MAX) {
-				String value = fieldValue.getText();
-				criterions.add(new GeneratorCriterion(subject, operator, value));
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {		
+		if (isValid()) {		
+				String operator = operatorChoiceBox.getValue();	
+				if (operator != "min" && operator != "max")
+					modelPropertySet.getBySubject("kekuleNumber").addExpression(new BinaryNumericalExpression("kekuleNumber", operator, Integer.decode(fieldValue.getText())));			
+				else 
+					modelPropertySet.getBySubject("kekuleNumber").addExpression(new ParameterizedExpression("kekuleNumber", operator));
 			}
-			
-			else {
-				String value = "";
-				criterions.add(new GeneratorCriterion(subject, operator, value));
-			}
-		}
-		
-		return criterions;
 	}
 
 }

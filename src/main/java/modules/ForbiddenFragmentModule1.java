@@ -36,8 +36,8 @@ public class ForbiddenFragmentModule1 extends Module{
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public ForbiddenFragmentModule1(GeneralModel generalModel, Fragment fragment, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		super(generalModel);
+	public ForbiddenFragmentModule1(Fragment fragment, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
+		super();
 		this.fragment = fragment;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
@@ -52,7 +52,7 @@ public class ForbiddenFragmentModule1 extends Module{
 
 		presences = new BoolVar[fragmentOccurences.getOccurences().size()];
 		for (int i = 0 ; i < presences.length ; i++)
-			presences[i] = generalModel.getProblem().boolVar("presence_" + i);
+			presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
 		
 		presentHexagons = new ArrayList<>();
 		absentHexagons = new ArrayList<>();
@@ -75,6 +75,7 @@ public class ForbiddenFragmentModule1 extends Module{
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		ArrayList<Integer []> occurences = fragmentOccurences.getOccurences();
 		
@@ -198,7 +199,8 @@ public class ForbiddenFragmentModule1 extends Module{
 
 	@Override
 	public void changeSolvingStrategy() {	
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		IntVar [] branchingVariables = new IntVar[generalModel.getChanneling().length + presences.length];
 		int index = 0;
 		
@@ -277,7 +279,7 @@ public class ForbiddenFragmentModule1 extends Module{
 		fragmentOccurences = new FragmentOccurences();
 		
 		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(generalModel.computeTranslations(f));
+			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));
 	}
 
 }

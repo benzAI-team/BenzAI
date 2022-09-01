@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import modelProperty.ModelPropertySet;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -30,22 +31,22 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 
 	private GeneratorCriterion criterion;
 
-	public HBoxPatternCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+	public HBoxPatternCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(generatorPane, choiceBoxCriterion);
 	}
 
 	@Override
 	protected void checkValidity() {
 
-		valid = true;
+		setValid(true);
 
-		this.getChildren().remove(warningIcon);
+		this.getChildren().remove(getWarningIcon());
 		this.getChildren().remove(editButton);
 		this.getChildren().remove(deleteButton);
 
 		if (patternInformationField.getText().equals("NO_PROPERTY")) {
-			valid = false;
-			this.getChildren().add(warningIcon);
+			setValid(false);
+			this.getChildren().add(getWarningIcon());
 		}
 
 		this.getChildren().addAll(editButton, deleteButton);
@@ -55,13 +56,13 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 	protected void initialize() {
 		initializeEditButton();
 
-		valid = false;
+		setValid(false);
 
 		patternInformationField = new TextField();
 		patternInformationField.setEditable(false);
 		patternInformationField.setText("NO_PROPERTY");
 
-		this.getChildren().addAll(patternInformationField, warningIcon, editButton, deleteButton);
+		this.getChildren().addAll(patternInformationField, getWarningIcon(), editButton, deleteButton);
 	}
 
 	public void setCriterion(GeneratorCriterion criterion) {
@@ -92,14 +93,11 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-		if (valid)
+		if (isValid())
 			criterions.add(criterion);
 
-		return criterions;
 	}
 
 	public void displayPatternEditionWindows() {
@@ -150,11 +148,11 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 	}
 
 	public BenzenoidApplication getApplication() {
-		return parent.getApplication();
+		return getGeneratorPane().getApplication();
 	}
 
 	public void setFragmentResolutionInformations(FragmentResolutionInformations fragmentsInformations) {
-		parent.setFragmentResolutionInformations(fragmentsInformations);
+		getGeneratorPane().setFragmentResolutionInformations(fragmentsInformations);
 	}
 
 	public FragmentResolutionInformations getPatternInformations() {

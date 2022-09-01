@@ -8,12 +8,13 @@ import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PropertyExpression;
+import modelProperty.expression.ParameterizedExpression;
 
-public class NbHydrogensModule extends Module {
+public class HydrogenNumberModule extends Module {
 
 	private int[][] dualGraph;
-	private ArrayList<GeneratorCriterion> criterions;
 
 	/*
 	 * Constraints programming variables
@@ -28,13 +29,10 @@ public class NbHydrogensModule extends Module {
 
 	private IntVar N0, N1, N2, N3, N4, N6;
 
-	public NbHydrogensModule(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-		super(generalModel);
-		this.criterions = criterions;
-	}
 
 	@Override
 	public void buildVariables() {
+		GeneralModel generalModel = getGeneralModel();
 
 		zero = generalModel.getProblem().boolVar(false);
 
@@ -65,24 +63,24 @@ public class NbHydrogensModule extends Module {
 		int nbHydrogensMin = 6 * generalModel.getDiameter() * generalModel.getDiameter();
 		int nbHydrogensMax = 0;
 
-		for (GeneratorCriterion criterion : criterions) {
+		for (PropertyExpression expression : this.getExpressionList()) {
 
-			Operator operator = criterion.getOperator();
+			String operator = ((ParameterizedExpression)expression).getOperator();
 
-			if (operator != Operator.EVEN && operator != Operator.ODD) {
+			if (operator != "even" && operator != "odd") {
 
-				int value = Integer.parseInt(criterion.getValue());
+				int value = ((BinaryNumericalExpression)expression).getValue();
 
-				if (operator == Operator.EQ) {
+				if (operator == "=") {
 					nbHydrogensMin = value;
 					nbHydrogensMax = value;
 				}
 
-				else if (operator == Operator.LT || operator == Operator.LEQ) {
+				else if (operator == "<" || operator == "<=") {
 					nbHydrogensMax = value;
 				}
 
-				else if (operator == Operator.GT || operator == Operator.GEQ) {
+				else if (operator == ">" || operator == ">=") {
 					nbHydrogensMin = value;
 				}
 			}
@@ -99,6 +97,7 @@ public class NbHydrogensModule extends Module {
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		/*
 		 * Table constraints for hydrogens
@@ -143,19 +142,16 @@ public class NbHydrogensModule extends Module {
 
 		generalModel.getProblem().sum(new IntVar[] { N1, N2, N3, N4, N6 }, "=", nbHydrogensVar).post();
 
-		for (GeneratorCriterion criterion : criterions) {
+		for (PropertyExpression expression : this.getExpressionList()) {
 
-			Operator operator = criterion.getOperator();
+			String operator = ((ParameterizedExpression)expression).getOperator();
 
-			int value = -1;
-			if (!criterion.getValue().equals(""))
-				value = Integer.parseInt(criterion.getValue());
-
-			if (operator != Operator.EVEN && operator != Operator.ODD)
-				generalModel.getProblem().arithm(nbHydrogensVar, criterion.getOperatorString(), value).post();
-
+			if (operator != "even" && operator != "odd") {
+				int value = ((BinaryNumericalExpression)expression).getValue();
+				generalModel.getProblem().arithm(nbHydrogensVar, ((BinaryNumericalExpression)expression).getOperator(), value).post();
+			}
 			else {
-				if (operator == Operator.EVEN)
+				if (operator == "even")
 					generalModel.getProblem().mod(nbHydrogensVar, 2, 0).post();
 				else
 					generalModel.getProblem().mod(nbHydrogensVar, 2, 1).post();
@@ -183,6 +179,7 @@ public class NbHydrogensModule extends Module {
 	}
 
 	private void buildXN() {
+		GeneralModel generalModel = getGeneralModel();
 
 		xN = new BoolVar[generalModel.getChanneling().length][6];
 
@@ -200,6 +197,7 @@ public class NbHydrogensModule extends Module {
 	}
 
 	private void buildDualGraph() {
+		GeneralModel generalModel = getGeneralModel();
 
 		dualGraph = new int[generalModel.getChanneling().length][6];
 

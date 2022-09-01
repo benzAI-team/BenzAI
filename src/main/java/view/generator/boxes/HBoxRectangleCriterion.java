@@ -3,13 +3,14 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.RectangleExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -30,8 +31,8 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 	protected boolean valid1;
 	protected boolean valid2;
 
-	public HBoxRectangleCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+	public HBoxRectangleCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(generatorPane, choiceBoxCriterion);
 	}
 
 	@Override
@@ -45,8 +46,8 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 		 */
 
 		hBoxHeight.getChildren().remove(heightTextField);
-		hBoxHeight.getChildren().remove(warningIcon);
-		hBoxHeight.getChildren().remove(deleteButton);
+		hBoxHeight.getChildren().remove(getWarningIcon());
+		hBoxHeight.getChildren().remove(getDeleteButton());
 
 		if (heightChoice != null && heightChoice.equals("Unspecified"))
 			valid1 = true;
@@ -69,8 +70,8 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 		 */
 
 		hBoxWidth.getChildren().remove(widthTextField);
-		hBoxWidth.getChildren().remove(warningIcon);
-		hBoxWidth.getChildren().remove(deleteButton);
+		hBoxWidth.getChildren().remove(getWarningIcon());
+		hBoxWidth.getChildren().remove(getDeleteButton());
 
 		if (widthChoice != null && widthChoice.equals("Unspecified"))
 			valid2 = true;
@@ -88,12 +89,12 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 			}
 		}
 
-		valid = valid1 && valid2;
+		setValid(valid1 && valid2);
 
-		if (!valid)
-			hBoxHeight.getChildren().add(warningIcon);
+		if (!isValid())
+			hBoxHeight.getChildren().add(getWarningIcon());
 
-		hBoxHeight.getChildren().add(deleteButton);
+		hBoxHeight.getChildren().add(getDeleteButton());
 	}
 
 	@Override
@@ -111,16 +112,16 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 
 		heightChoiceBox.setOnAction(e -> {
 			checkValidity();
-			parent.refreshGenerationPossibility();
+			getGeneratorPane().refreshGenerationPossibility();
 		});
 
 		heightTextField.setOnKeyReleased(e -> {
 			checkValidity();
-			parent.refreshGenerationPossibility();
+			getGeneratorPane().refreshGenerationPossibility();
 		});
 
 		hBoxHeight = new HBox(5.0);
-		hBoxHeight.getChildren().addAll(heightLabel, heightChoiceBox, heightTextField, warningIcon, deleteButton);
+		hBoxHeight.getChildren().addAll(heightLabel, heightChoiceBox, heightTextField, getWarningIcon(), getDeleteButton());
 
 		Label widthLabel = new Label("Width: ");
 		widthChoiceBox = new ChoiceBox<>();
@@ -130,12 +131,12 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 
 		widthChoiceBox.setOnAction(e -> {
 			checkValidity();
-			parent.refreshGenerationPossibility();
+			getGeneratorPane().refreshGenerationPossibility();
 		});
 
 		widthTextField.setOnKeyReleased(e -> {
 			checkValidity();
-			parent.refreshGenerationPossibility();
+			getGeneratorPane().refreshGenerationPossibility();
 		});
 
 		hBoxWidth = new HBox(5.0);
@@ -151,24 +152,12 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-		if (valid) {
-
-			criterions.add(new GeneratorCriterion(Subject.RECTANGLE, Operator.NONE, ""));
-
-			if (!heightChoiceBox.getValue().equals("Unspecified"))
-				criterions.add(new GeneratorCriterion(Subject.RECT_HEIGHT,
-						GeneratorCriterion.getOperator(heightChoiceBox.getValue()), heightTextField.getText()));
-
-			if (!widthChoiceBox.getValue().equals("Unspecified"))
-				criterions.add(new GeneratorCriterion(Subject.RECT_WIDTH,
-						GeneratorCriterion.getOperator(widthChoiceBox.getValue()), widthTextField.getText()));
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+		if (isValid()) {
+			int height = heightTextField.getText().equals("Unspecified") ? -1 : Integer.decode(heightTextField.getText());
+			int width = widthTextField.getText().equals("Unspecified") ? -1 : Integer.decode(widthTextField.getText());
+			modelPropertySet.getBySubject("rectangle").addExpression(new RectangleExpression("rectangle",heightChoiceBox.getValue(), height, widthChoiceBox.getValue(), width));
 		}
-
-		return criterions;
 	}
 
 }

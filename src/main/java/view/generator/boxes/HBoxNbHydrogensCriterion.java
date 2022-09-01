@@ -3,8 +3,9 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.ParameterizedExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -20,52 +21,40 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 	public void checkValidity() {
 		
 		if (operatorChoiceBox.getValue().equals("EVEN") || operatorChoiceBox.getValue().equals("ODD")) {
-			valid = true;
+			setValid(true);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(warningIcon);
+			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(deleteButton);
 			this.getChildren().add(deleteButton);
 		}
 		
 		else if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
-			valid = false;
-			this.getChildren().remove(warningIcon);
+			setValid(false);
+			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(deleteButton);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().addAll(fieldValue, warningIcon, deleteButton);
+			this.getChildren().addAll(fieldValue, getWarningIcon(), deleteButton);
 		}
 		
 		else {
-			valid = true;
-			this.getChildren().remove(warningIcon);
+			setValid(true);
+			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(deleteButton);
 			this.getChildren().remove(fieldValue);
 			this.getChildren().addAll(fieldValue, deleteButton);
 		}
 		
-		parent.refreshGenerationPossibility();
+		getGeneratorPane().refreshGenerationPossibility();
 	}
 	
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-		
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		
-		if (valid) {
-			Subject subject = Subject.NB_HYDROGENS;
-			Operator operator = GeneratorCriterion.getOperator(operatorChoiceBox.getValue());
-			
-			if (operator != Operator.EVEN && operator != Operator.ODD) {
-				String value = fieldValue.getText();
-				criterions.add(new GeneratorCriterion(subject, operator, value));
-			}
-			
-			else {
-				String value = "";
-				criterions.add(new GeneratorCriterion(subject, operator, value));
-			}
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+		if (isValid()) {
+			String operator = operatorChoiceBox.getValue();	
+			if (operator != "even" && operator != "odd")
+				modelPropertySet.getBySubject("hydrogens").addExpression(new BinaryNumericalExpression("hydrogens", operator, Integer.decode(fieldValue.getText())));			
+			else 
+				modelPropertySet.getBySubject("hydrogens").addExpression(new ParameterizedExpression("hydrogens", operator));
 		}
-		
-		return criterions;
 	}
 }

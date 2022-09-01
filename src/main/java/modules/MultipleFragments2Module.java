@@ -47,8 +47,7 @@ public class MultipleFragments2Module extends Module {
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public MultipleFragments2Module(GeneralModel generalModel, ArrayList<Fragment> fragments, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		super(generalModel);
+	public MultipleFragments2Module(ArrayList<Fragment> fragments, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		this.fragments = fragments;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
@@ -58,6 +57,7 @@ public class MultipleFragments2Module extends Module {
 
 	@Override
 	public void buildVariables() {
+		GeneralModel generalModel = getGeneralModel();
 
 		additionalCrowns = new ArrayList<>();
 
@@ -238,6 +238,7 @@ public class MultipleFragments2Module extends Module {
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		for (int i = 0; i < fragments.size(); i++) {
 
@@ -721,6 +722,7 @@ public class MultipleFragments2Module extends Module {
 
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 
 		int nbFC = 0;
 
@@ -814,6 +816,7 @@ public class MultipleFragments2Module extends Module {
 	}
 
 	private void buildNeighborGraph() {
+		GeneralModel generalModel = getGeneralModel();
 
 		neighborGraph = new int[generalModel.getDiameter() * generalModel.getDiameter()][6];
 

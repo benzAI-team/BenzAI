@@ -28,6 +28,8 @@ import generator.GeneratorCriterion.Subject;
 import generator.ResultSolver;
 import generator.fragments.Fragment;
 import http.Post;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
 import molecules.sort.MoleculeComparator;
 import molecules.sort.NbHexagonsComparator;
 import solution.BenzenoidSolution;
@@ -695,14 +697,16 @@ public class Molecule implements Comparable<Molecule> {
 
 	public BenzenoidSolution buildBenzenoidSolution() {
 
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		criterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
+		ModelPropertySet modelPropertySet = new ModelPropertySet();
+		modelPropertySet.getBySubject("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", nbHexagons));
+//		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
+//		criterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
 
 		String name = toString();
 
 		String[] split = name.split(Pattern.quote("-"));
 
-		GeneralModel model = new GeneralModel(criterions, criterions, null);
+		GeneralModel model = new GeneralModel(modelPropertySet);
 
 		for (String s : split) {
 

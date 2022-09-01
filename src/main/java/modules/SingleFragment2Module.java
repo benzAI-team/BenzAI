@@ -44,8 +44,7 @@ public class SingleFragment2Module extends Module {
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public SingleFragment2Module(GeneralModel generalModel, Fragment fragment, boolean useSymmetries, VariableStrategy variableStrategy, ValueStrategy strategy, OrderStrategy orderStrategy) {
-		super(generalModel);
+	public SingleFragment2Module(Fragment fragment, boolean useSymmetries, VariableStrategy variableStrategy, ValueStrategy strategy, OrderStrategy orderStrategy) {
 		this.fragment = fragment;
 		this.useSymmetries = useSymmetries;
 		this.variableStrategy = variableStrategy;
@@ -55,7 +54,8 @@ public class SingleFragment2Module extends Module {
 
 	@Override
 	public void buildVariables() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		presentHexagons = new ArrayList<Integer>();
 		absentHexagons = new ArrayList<Integer>();
 		unknownHexagons = new ArrayList<Integer>();
@@ -101,6 +101,8 @@ public class SingleFragment2Module extends Module {
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
+
 		System.out.println("Scope");
 		for (IntVar x : fragmentCorrespondances)
 			System.out.println(x.toString());
@@ -282,7 +284,8 @@ public class SingleFragment2Module extends Module {
 
 	@Override
 	public void changeSolvingStrategy() { 
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		IntVar [] branchingVariables = new IntVar[generalModel.getChanneling().length + fragmentCorrespondances.length];
 		
 		int index = 0;
@@ -566,7 +569,8 @@ public class SingleFragment2Module extends Module {
 	}
 	
 	private  void buildNeighborGraph() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		neighborGraph = new int [generalModel.getDiameter() * generalModel.getDiameter()][6];
 		
 		for (int i = 0 ; i < neighborGraph.length ; i++) {

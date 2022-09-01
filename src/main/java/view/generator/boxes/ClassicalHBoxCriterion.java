@@ -8,8 +8,8 @@ import view.generator.GeneratorPane;
 
 public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
 
-	public ClassicalHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+	public ClassicalHBoxCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(generatorPane, choiceBoxCriterion);
 	}
 
 	protected ChoiceBox<String> operatorChoiceBox;
@@ -19,27 +19,27 @@ public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
 	protected void checkValidity() {
 
 		if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
-			valid = false;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(warningIcon, deleteButton);
+			setValid(false);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 		}
 
 		else {
-			valid = true;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			setValid(true);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().add(getDeleteButton());
 		}
 
-		if (valid)
-			parent.refreshGenerationPossibility();
+		if (isValid())
+			getGeneratorPane().refreshGenerationPossibility();
 	}
 
 	@Override
 	protected void initialize() {
 
-		valid = false;
+		setValid(false);
 
 		operatorChoiceBox = new ChoiceBox<String>();
 		operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=");
@@ -55,7 +55,7 @@ public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
 			checkValidity();
 		});
 
-		this.getChildren().addAll(operatorChoiceBox, fieldValue, warningIcon, deleteButton);
+		this.getChildren().addAll(operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
 
 	}
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import generator.GeneralModel;
+import generator.NbHexagons;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
@@ -16,7 +17,7 @@ public class GenerateMultipleFragments {
 
 	private static void solve1(ArrayList<Fragment> fragments, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy){
 		
-		GeneralModel model = new GeneralModel(nbHexagons, GeneralModelMode.NB_HEXAGONS);
+		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
 		model.addModule(new MultipleFragments1Module(model, fragments, variableStrategy, valueStrategy, orderStrategy));
 		System.out.println(model.getNbCrowns() + " crowns");
 		model.solve();
@@ -24,7 +25,7 @@ public class GenerateMultipleFragments {
 	
 	private static void solve2(ArrayList<Fragment> fragments, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy){
 			
-		GeneralModel model = new GeneralModel(nbHexagons, GeneralModelMode.NB_HEXAGONS);
+		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
 		model.addModule(new MultipleFragments2Module(model, fragments, variableStrategy, valueStrategy, orderStrategy));
 		
 		System.out.println(model.getNbCrowns() + " crowns");
@@ -34,7 +35,7 @@ public class GenerateMultipleFragments {
 	
 	private static void solve3(ArrayList<Fragment> fragments, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		
-		GeneralModel model = new GeneralModel(nbHexagons, GeneralModelMode.NB_HEXAGONS);
+		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
 		model.addModule(new MultipleFragments3Module(model, fragments, variableStrategy, valueStrategy, orderStrategy));
 		
 		System.out.println(model.getNbCrowns() + " crowns");

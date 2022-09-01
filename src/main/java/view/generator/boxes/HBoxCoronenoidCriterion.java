@@ -3,11 +3,11 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -30,37 +30,37 @@ public class HBoxCoronenoidCriterion extends HBoxCriterion {
 
 		if (operatorValue != null && operatorValue.equals("Unspecified")) {
 
-			valid = true;
+			setValid(true);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(warningIcon);
+			this.getChildren().remove(getWarningIcon());
 		}
 
 		else {
 
 			if (operatorValue == null || !Utils.isNumber(textValue)) {
 
-				valid = false;
+				setValid(false);
 
-				this.getChildren().remove(warningIcon);
-				this.getChildren().remove(deleteButton);
+				this.getChildren().remove(getWarningIcon());
+				this.getChildren().remove(getDeleteButton());
 
 				if (!this.getChildren().contains(fieldValue))
 					this.getChildren().add(fieldValue);
 
-				this.getChildren().addAll(warningIcon, deleteButton);
+				this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 			}
 
 			else {
 
-				valid = true;
+				setValid(true);
 
-				this.getChildren().remove(warningIcon);
-				this.getChildren().remove(deleteButton);
+				this.getChildren().remove(getWarningIcon());
+				this.getChildren().remove(getDeleteButton());
 
 				if (!this.getChildren().contains(fieldValue))
 					this.getChildren().add(fieldValue);
 
-				this.getChildren().addAll(deleteButton);
+				this.getChildren().addAll(getDeleteButton());
 			}
 		}
 	}
@@ -84,23 +84,16 @@ public class HBoxCoronenoidCriterion extends HBoxCriterion {
 			checkValidity();
 		});
 
-		this.getChildren().addAll(nbHolesLabel, operatorChoiceBox, fieldValue, warningIcon, deleteButton);
+		this.getChildren().addAll(nbHolesLabel, operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
 		checkValidity();
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-		if (valid) {
-			criterions.add(new GeneratorCriterion(Subject.CORONENOID, Operator.NONE, ""));
-			if (!operatorChoiceBox.getValue().equals("Unspecified"))
-				criterions.add(new GeneratorCriterion(Subject.NB_CROWNS,
-						GeneratorCriterion.getOperator(operatorChoiceBox.getValue()), fieldValue.getText()));
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+		if (isValid()) {
+			int nbCrowns = operatorChoiceBox.getValue().equals("Unspecified") ? - 1 : Integer.decode(fieldValue.getText());
+			modelPropertySet.getBySubject("coronenoid").addExpression(new BinaryNumericalExpression("coronenoid", operatorChoiceBox.getValue(), nbCrowns));
 		}
-
-		return criterions;
 	}
 
 }

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
 import generator.fragments.FragmentResolutionInformations;
 import modules.CatacondensedModule;
 import modules.CatacondensedModule2;
@@ -16,8 +14,8 @@ import modules.DiameterModule;
 import modules.ForbiddenFragmentModule1;
 import modules.IrregularityModule;
 import modules.MultipleFragments1Module;
-import modules.NbCarbonsModule;
-import modules.NbHydrogensModule;
+import modules.CarbonNumberModule;
+import modules.HydrogenNumberModule;
 import modules.RectangleModule;
 import modules.RectangleModule2;
 import modules.RhombusModule;
@@ -25,8 +23,10 @@ import modules.SingleFragment1Module;
 import modules.SymmetriesModule;
 import solving_modes.SymmetryType;
 import utils.Utils;
+import modelProperty.HexagonNumberProperty;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
 
 
 public class ModelBuilder {
@@ -38,15 +38,16 @@ public class ModelBuilder {
 		if(noLimitingProperties(modelPropertySet))
 			return null;
 
-		int hexagonsUpperBound = computeHexagonsUpperBound(modelPropertySet);
+		int hexagonsUpperBound = modelPropertySet.computeHexagonNumberUpperBound();
+		int nbCrowns = modelPropertySet.computeNbCrowns();
 		
-		// adds a hexagon property if not present -> REMOVE
-		if (map.get("hexagons").size() == 0) {
-			map.get("hexagons").add(
-					new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.LEQ, Integer.toString(hexagonsUpperBound)));
+		model = new GeneralModel(modelPropertySet);
+		// A retirer ?
+		if(!modelPropertySet.has("hexagons")) {
+			ModelProperty hexagonNumberProperty = modelPropertySet.getBySubject("hexagons");
+			hexagonNumberProperty.addExpression(new BinaryNumericalExpression("hexagons", "<=", hexagonsUpperBound));
 		}
 
-		model = new GeneralModel(modelPropertySet);
 		// A REPARTIR DANS LES MODEL PROPERTY
 //		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONENOID)) {
 //
@@ -177,6 +178,9 @@ public class ModelBuilder {
 		// for (GeneralModel model : models)
 		model.setPatternsInformations(patternsInformations);
 
+		for(ModelProperty modelProperty : modelPropertySet)
+			if(modelPropertySet.has(modelProperty.getSubject()))
+				model.applyModelProperty(modelProperty);
 		// A REPARTIR DANS LES MODEL PROPERTY
 //		if (map.get("carbons").size() > 0)
 //			// for (GeneralModel model : models)
@@ -296,29 +300,29 @@ public class ModelBuilder {
 		/*
 		 * Patterns
 		 */
-
-		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.SINGLE_PATTERN))
-			// for (GeneralModel model : models)
-			model.addModule(new SingleFragment1Module(model, patternsInformations.getFragments().get(0),
-					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-
-		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.MULTIPLE_PATTERNS))
-			// for (GeneralModel model : models)
-			model.addModule(new MultipleFragments1Module(model, patternsInformations.getFragments(),
-					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST,
-					patternsInformations.getInterraction()));
-
-		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.FORBIDDEN_PATTERN))
-			// for (GeneralModel model : models)
-			model.addModule(new ForbiddenFragmentModule1(model, patternsInformations.getFragments().get(0),
-					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+//TODO
+//		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.SINGLE_PATTERN))
+//			// for (GeneralModel model : models)
+//			model.addModule(new SingleFragment1Module(model, patternsInformations.getFragments().get(0),
+//					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+//
+//		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.MULTIPLE_PATTERNS))
+//			// for (GeneralModel model : models)
+//			model.addModule(new MultipleFragments1Module(model, patternsInformations.getFragments(),
+//					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST,
+//					patternsInformations.getInterraction()));
+//
+//		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.FORBIDDEN_PATTERN))
+//			// for (GeneralModel model : models)
+//			model.addModule(new ForbiddenFragmentModule1(model, patternsInformations.getFragments().get(0),
+//					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 
 		return model;
 	}
-/***
- * Check if any given model property allows to fix the model size
- * @param map
- */
+	/***
+	 * Checks if any given model property allows to fix the model size
+	 * @param map
+	 */
 	private static boolean noLimitingProperties(ModelPropertySet modelPropertySet) {
 	//	return map.get("hexagons").size() == 0 && map.get("carbons").size() == 0 && map.get("hydrogens").size() == 0
 	//			&& map.get("coronenoid").size() == 0 && map.get("rectangle").size() == 0
@@ -332,29 +336,29 @@ public class ModelBuilder {
 	 * @param map
 	 * @return the upper bound for the number of hexagons
 	 */
-	private static int computeHexagonsUpperBound(ModelPropertySet modelPropertySet) {
-		int hexagonsUpperBoundMin = Integer.MAX_VALUE;
-
-		for(ModelProperty modelProperty : modelPropertySet) {
-			int hexagonsUpperBound = modelProperty.computeHexagonsUpperBound();
-			if(hexagonsUpperBound < hexagonsUpperBoundMin)
-				hexagonsUpperBoundMin = hexagonsUpperBound;
-		}
+//	private static int computeHexagonsUpperBound(ModelPropertySet modelPropertySet) {
+//		int hexagonsUpperBoundMin = Integer.MAX_VALUE;
+//
+//		for(ModelProperty modelProperty : modelPropertySet) {
+//			int hexagonsUpperBound = modelProperty.computeHexagonNumberUpperBound();
+//			if(hexagonsUpperBound < hexagonsUpperBoundMin)
+//				hexagonsUpperBoundMin = hexagonsUpperBound;
+//		}
 		
 		// A REPARTIR DANS LES MODEL PROPERTY 
 //		for (GeneratorCriterion criterion : map.get("hexagons")) {
 //
-//			Operator operator = criterion.getOperator();
-//			int value = Integer.parseInt(criterion.getValue());
+//		Operator operator = criterion.getOperator();
+//		int value = Integer.parseInt(criterion.getValue());
 //
-//			if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
+//		if (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT) {
 //
-//				if (operator == Operator.LT)
-//					value--;
+//			if (operator == Operator.LT)
+//				value--;
 //
-//				if (value < hexagonsUpperBound)
-//					hexagonsUpperBound = value;
-//			}
+//			if (value < hexagonsUpperBound)
+//				hexagonsUpperBound = value;
+//		}
 //		}
 //
 //		for (GeneratorCriterion criterion : map.get("carbons")) {
@@ -471,114 +475,44 @@ public class ModelBuilder {
 //				}
 //			}
 //		}
-		return hexagonsUpperBoundMin;
+//		return hexagonsUpperBoundMin;
+//	}
+	
+	/***
+	 * 
+	 * @param nbHexagons
+	 * @return the number of crowns required for the given number of hexagons
+	 */
+	private static int getNbCrownsMax(int nbHexagons) {
+
+//		int nbCrowns = 1;
+//
+//		while (true) {
+//
+//			int nbHexagons = (int) (6.0 * ((nbCrowns * (nbCrowns - 1)) / 2.0) + 1.0);
+//			if (maxSize <= nbHexagons)
+//				break;
+//
+//			nbCrowns++;
+//		}
+
+		return (int) (Math.ceil(3.0 + Math.sqrt(12.0 * (double) nbHexagons - 3.0)));
 	}
-	private static int getNbCrownsMax(int maxSize) {
 
-		int nbCrowns = 1;
-
-		while (true) {
-
-			int nbHexagons = (int) (6.0 * ((nbCrowns * (nbCrowns - 1)) / 2.0) + 1.0);
-			if (maxSize <= nbHexagons)
-				break;
-
-			nbCrowns++;
-		}
-
-		return nbCrowns;
-	}
-
-	public static GeneralModel buildModel(ArrayList<GeneratorCriterion> criterions,
-			Map<String, ArrayList<GeneratorCriterion>> map, int nbCrowns,
+	/***
+	 * 
+	 * @param criterions
+	 * @param map
+	 * @param nbCrowns
+	 * @param patternsInformations
+	 * @return
+	 */
+	public static GeneralModel buildModel(ModelPropertySet modelPropertySet, int nbCrowns,
 			FragmentResolutionInformations patternsInformations) {
 
-		GeneralModel model;
-
-		model = new GeneralModel(map.get("hexagons"), criterions, map, nbCrowns);
-
-		if (map.get("carbons_hydrogens").size() > 0)
-			model.addModule(new NbCarbonsModule(model, map.get("carbons_hydrogens")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.VIEW_IRREG))
-			model.addModule(new IrregularityModule(model, map.get("irregularity")));
-
-		if (map.get("diameter").size() > 0)
-			model.addModule(new DiameterModule(model, map.get("diameter")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
-			model.addModule(new RectangleModule(model, map.get("rectangle")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.RHOMBUS))
-			model.addModule(new RhombusModule(model, map.get("rhombus")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID))
-			model.addModule(new CoronoidModule(model));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID_2))
-			model.addModule(new CoronoidModule2(model, map.get("coronoid2")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.CATACONDENSED))
-			model.addModule(new CatacondensedModule(model));
-
-		/*
-		 * Symmetries
-		 */
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_60_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_VERTEX_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_H)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_E)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_EDGE_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR))
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_60))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL))
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120_V))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180_E))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
-
-		/*
-		 * Patterns
-		 */
+		GeneralModel model = buildModel(modelPropertySet, nbCrowns);
+		
+		//  Patterns
 
 		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.SINGLE_PATTERN))
 			model.addModule(new SingleFragment1Module(model, patternsInformations.getFragments().get(0),
@@ -595,229 +529,246 @@ public class ModelBuilder {
 		return model;
 	}
 
-	public static GeneralModel buildModel(ArrayList<GeneratorCriterion> criterions,
-			Map<String, ArrayList<GeneratorCriterion>> map, int nbCrowns) {
+	/***
+	 * 
+	 * @param criterions
+	 * @param map
+	 * @param nbCrowns
+	 * @return
+	 */
+	public static GeneralModel buildModel(ModelPropertySet modelPropertySet, int nbCrowns) {
 
-		GeneralModel model = new GeneralModel(map.get("hexagons"), criterions, map, nbCrowns);
+		GeneralModel model = new GeneralModel(modelPropertySet, nbCrowns);
 
-		if (map.get("carbons_hydrogens").size() > 0)
-			model.addModule(new NbCarbonsModule(model, map.get("carbons_hydrogens")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.VIEW_IRREG))
-			model.addModule(new IrregularityModule(model, map.get("irregularity")));
-
-		if (map.get("diameter").size() > 0)
-			model.addModule(new DiameterModule(model, map.get("diameter")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
-			model.addModule(new RectangleModule(model, map.get("rectangle")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID))
-			model.addModule(new CoronoidModule(model));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.CATACONDENSED))
-			model.addModule(new CatacondensedModule(model));
-
-		/*
-		 * Symmetries
-		 */
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_60_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_VERTEX_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_H)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_E)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_EDGE_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR))
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_60))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL))
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120_V))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180_E))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
+		for(ModelProperty modelProperty : modelPropertySet)
+			model.applyModelProperty(modelProperty);
+//		if (map.get("carbons_hydrogens").size() > 0)
+//			model.addModule(new CarbonNumberModule(model, map.get("carbons_hydrogens")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.VIEW_IRREG))
+//			model.addModule(new IrregularityModule(model, map.get("irregularity")));
+//
+//		if (map.get("diameter").size() > 0)
+//			model.addModule(new DiameterModule(model, map.get("diameter")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
+//			model.addModule(new RectangleModule(model, map.get("rectangle")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.RHOMBUS))
+//			model.addModule(new RhombusModule(model, map.get("rhombus")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID))
+//			model.addModule(new CoronoidModule(model));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID_2))
+//			model.addModule(new CoronoidModule2(model, map.get("coronoid2")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.CATACONDENSED))
+//			model.addModule(new CatacondensedModule(model));
+//
+//		/*
+//		 * Symmetries
+//		 */
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_60_MIRROR)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_VERTEX_MIRROR)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_H)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_E)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_EDGE_MIRROR)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_MIRROR)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_60))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120_V))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180_E))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
 
 		return model;
 	}
 
-	public static GeneralModel buildModel(ArrayList<GeneratorCriterion> criterions) {
+	public static GeneralModel buildModel(ModelPropertySet modelPropertySet) {
 
-		Map<String, ArrayList<GeneratorCriterion>> map = new HashMap<>();
+//		Map<String, ArrayList<GeneratorCriterion>> map = new HashMap<>();
+//
+//		map.put("hexagons", new ArrayList<>());
+//		map.put("carbons_hydrogens", new ArrayList<>());
+//		map.put("irregularity", new ArrayList<>());
+//		map.put("diameter", new ArrayList<>());
+//		map.put("rectangle", new ArrayList<>());
+//		map.put("rhombus", new ArrayList<>());
+//		map.put("coronoid", new ArrayList<>());
+//		map.put("coronoid2", new ArrayList<>());
+//		map.put("catacondensed", new ArrayList<>());
+//		map.put("symmetries", new ArrayList<>());
+//		map.put("patterns", new ArrayList<>());
+//		map.put("stop", new ArrayList<>());
 
-		map.put("hexagons", new ArrayList<>());
-		map.put("carbons_hydrogens", new ArrayList<>());
-		map.put("irregularity", new ArrayList<>());
-		map.put("diameter", new ArrayList<>());
-		map.put("rectangle", new ArrayList<>());
-		map.put("rhombus", new ArrayList<>());
-		map.put("coronoid", new ArrayList<>());
-		map.put("coronoid2", new ArrayList<>());
-		map.put("catacondensed", new ArrayList<>());
-		map.put("symmetries", new ArrayList<>());
-		map.put("patterns", new ArrayList<>());
-		map.put("stop", new ArrayList<>());
+		
+//		for (GeneratorCriterion criterion : criterions) {
+//
+//			Subject subject = criterion.getSubject();
+//
+//			if (subject == Subject.NB_HEXAGONS)
+//				map.get("hexagons").add(criterion);
+//
+//			else if (subject == Subject.NB_CARBONS || subject == Subject.NB_HYDROGENS)
+//				map.get("carbons_hydrogens").add(criterion);
+//
+//			else if (subject == Subject.XI || subject == Subject.N0 || subject == Subject.N1 || subject == Subject.N2
+//					|| subject == Subject.N3 || subject == Subject.N4)
+//				map.get("irregularity").add(criterion);
+//
+//			else if (subject == Subject.RECT_HEIGHT || subject == Subject.RECT_WIDTH)
+//				map.get("rectangle").add(criterion);
+//
+//			else if (subject == Subject.SYMM_MIRROR || subject == Subject.SYMM_ROT_60 || subject == Subject.SYMM_ROT_120
+//					|| subject == Subject.SYMM_ROT_180 || subject == Subject.SYMM_VERTICAL
+//					|| subject == Subject.SYMM_ROT_120_V || subject == Subject.SYMM_ROT_180_E
+//					|| subject == Subject.ROT_60_MIRROR || subject == Subject.ROT_120_MIRROR_H
+//					|| subject == Subject.ROT_120_MIRROR_E || subject == Subject.ROT_120_VERTEX_MIRROR
+//					|| subject == Subject.ROT_180_EDGE_MIRROR || subject == Subject.ROT_180_MIRROR)
+//
+//				map.get("symmetries").add(criterion);
+//
+//			else if (subject == Subject.DIAMETER)
+//				map.get("diameter").add(criterion);
+//
+//			else if (subject == Subject.CORONOID)
+//				map.get("coronoid").add(criterion);
+//
+//			else if (subject == Subject.CORONOID_2 || subject == Subject.NB_HOLES)
+//				map.get("coronoid2").add(criterion);
+//
+//			else if (subject == Subject.CATACONDENSED)
+//				map.get("catacondensed").add(criterion);
+//
+//			else if (subject == Subject.RHOMBUS)
+//				map.get("rhombus").add(criterion);
+//
+//			else if (subject == Subject.TIMEOUT || subject == Subject.NB_SOLUTIONS)
+//				map.get("stop").add(criterion);
+//		}
 
-		for (GeneratorCriterion criterion : criterions) {
+		GeneralModel model = buildModel(modelPropertySet);
+		for(ModelProperty modelProperty : modelPropertySet)
+			model.applyModelProperty(modelProperty);
 
-			Subject subject = criterion.getSubject();
-
-			if (subject == Subject.NB_HEXAGONS)
-				map.get("hexagons").add(criterion);
-
-			else if (subject == Subject.NB_CARBONS || subject == Subject.NB_HYDROGENS)
-				map.get("carbons_hydrogens").add(criterion);
-
-			else if (subject == Subject.XI || subject == Subject.N0 || subject == Subject.N1 || subject == Subject.N2
-					|| subject == Subject.N3 || subject == Subject.N4)
-				map.get("irregularity").add(criterion);
-
-			else if (subject == Subject.RECT_HEIGHT || subject == Subject.RECT_WIDTH)
-				map.get("rectangle").add(criterion);
-
-			else if (subject == Subject.SYMM_MIRROR || subject == Subject.SYMM_ROT_60 || subject == Subject.SYMM_ROT_120
-					|| subject == Subject.SYMM_ROT_180 || subject == Subject.SYMM_VERTICAL
-					|| subject == Subject.SYMM_ROT_120_V || subject == Subject.SYMM_ROT_180_E
-					|| subject == Subject.ROT_60_MIRROR || subject == Subject.ROT_120_MIRROR_H
-					|| subject == Subject.ROT_120_MIRROR_E || subject == Subject.ROT_120_VERTEX_MIRROR
-					|| subject == Subject.ROT_180_EDGE_MIRROR || subject == Subject.ROT_180_MIRROR)
-
-				map.get("symmetries").add(criterion);
-
-			else if (subject == Subject.DIAMETER)
-				map.get("diameter").add(criterion);
-
-			else if (subject == Subject.CORONOID)
-				map.get("coronoid").add(criterion);
-
-			else if (subject == Subject.CORONOID_2 || subject == Subject.NB_HOLES)
-				map.get("coronoid2").add(criterion);
-
-			else if (subject == Subject.CATACONDENSED)
-				map.get("catacondensed").add(criterion);
-
-			else if (subject == Subject.RHOMBUS)
-				map.get("rhombus").add(criterion);
-
-			else if (subject == Subject.TIMEOUT || subject == Subject.NB_SOLUTIONS)
-				map.get("stop").add(criterion);
-		}
-
-		GeneralModel model = new GeneralModel(map.get("hexagons"), criterions, map);
-
-		if (map.get("carbons_hydrogens").size() > 0)
-			model.addModule(new NbCarbonsModule(model, map.get("carbons_hydrogens")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.VIEW_IRREG))
-			model.addModule(new IrregularityModule(model, map.get("irregularity")));
-
-		if (map.get("diameter").size() > 0)
-			model.addModule(new DiameterModule(model, map.get("diameter")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
-			model.addModule(new RectangleModule(model, map.get("rectangle")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.RHOMBUS))
-			model.addModule(new RhombusModule(model, map.get("rhombus")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID))
-			model.addModule(new CoronoidModule(model));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID_2))
-			model.addModule(new CoronoidModule2(model, map.get("coronoid2")));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.CATACONDENSED))
-			model.addModule(new CatacondensedModule(model));
-
-		/*
-		 * Symmetries
-		 */
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_60_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_VERTEX_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_H)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_E)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_EDGE_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_MIRROR)) {
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-		}
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR))
-			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_60))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL))
-			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120_V))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180_E))
-			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
+//		if (map.get("carbons_hydrogens").size() > 0)
+//			model.addModule(new CarbonNumberModule(model, map.get("carbons_hydrogens")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.VIEW_IRREG))
+//			model.addModule(new IrregularityModule(model, map.get("irregularity")));
+//
+//		if (map.get("diameter").size() > 0)
+//			model.addModule(new DiameterModule(model, map.get("diameter")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
+//			model.addModule(new RectangleModule(model, map.get("rectangle")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.RHOMBUS))
+//			model.addModule(new RhombusModule(model, map.get("rhombus")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID))
+//			model.addModule(new CoronoidModule(model));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.CORONOID_2))
+//			model.addModule(new CoronoidModule2(model, map.get("coronoid2")));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.CATACONDENSED))
+//			model.addModule(new CatacondensedModule(model));
+//
+//		/*
+//		 * Symmetries
+//		 */
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_60_MIRROR)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_VERTEX_MIRROR)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_H)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_120_MIRROR_E)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_EDGE_MIRROR)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.ROT_180_MIRROR)) {
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
+//			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
+//		}
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.MIRROR));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_60))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_60));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.VERTICAL));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_120_V))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_120_VERTEX));
+//
+//		if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_ROT_180_E))
+//			model.addModule(new SymmetriesModule(model, SymmetryType.ROT_180_EDGE));
 
 		return model;
 	}

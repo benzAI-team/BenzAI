@@ -6,46 +6,34 @@ import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PropertyExpression;
 
 public class DiameterModule extends Module {
 
-	private ArrayList<GeneratorCriterion> criterions;
-
 	private IntVar diameter;
-
-	public DiameterModule(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-		super(generalModel);
-		this.criterions = criterions;
-	}
 
 	@Override
 	public void buildVariables() {
-		diameter = generalModel.getProblem().intVar("diameter", 0, generalModel.getNbMaxHexagons());
+		diameter = getGeneralModel().getProblem().intVar("diameter", 0, getGeneralModel().getNbMaxHexagons());
 	}
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		generalModel.getProblem().diameter(generalModel.getGraphVar(), diameter).post();
 
-		for (GeneratorCriterion criterion : criterions) {
-
-			Subject subject = criterion.getSubject();
-
-			if (subject == Subject.DIAMETER) {
-
-				String operator = criterion.getOperatorString();
-				int value = Integer.parseInt(criterion.getValue());
-
-				generalModel.getProblem().arithm(diameter, operator, value).post();
-			}
+		for (PropertyExpression binaryNumericalExpression : this.getExpressionList()) {
+			String operator = ((BinaryNumericalExpression)binaryNumericalExpression).getOperator();
+			int value = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();
+			generalModel.getProblem().arithm(diameter, operator, value).post();
 		}
 	}
 
 	@Override
 	public void addVariables() {
-		generalModel.addVariable(diameter);
+		getGeneralModel().addVariable(diameter);
 	}
 
 	@Override

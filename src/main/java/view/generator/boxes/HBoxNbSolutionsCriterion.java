@@ -6,6 +6,7 @@ import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 import javafx.scene.control.TextField;
+import modelProperty.ModelPropertySet;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -50,7 +51,7 @@ public class HBoxNbSolutionsCriterion extends HBoxCriterion {
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 
 		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
 
