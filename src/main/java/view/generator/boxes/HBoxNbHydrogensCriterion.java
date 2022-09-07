@@ -3,6 +3,7 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.ParameterizedExpression;
@@ -12,8 +13,8 @@ import view.generator.GeneratorPane;
 
 public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 
-	public HBoxNbHydrogensCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+	public HBoxNbHydrogensCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
+		super(parent, choiceBoxCriterion, modelProperty);
 		operatorChoiceBox.getItems().addAll("EVEN", "ODD");
 	}
 
@@ -24,24 +25,24 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 			setValid(true);
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().add(getDeleteButton());
 		}
 		
 		else if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			setValid(false);
 			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(deleteButton);
+			this.getChildren().remove(getDeleteButton());
 			this.getChildren().remove(fieldValue);
-			this.getChildren().addAll(fieldValue, getWarningIcon(), deleteButton);
+			this.getChildren().addAll(fieldValue, getWarningIcon(), getDeleteButton());
 		}
 		
 		else {
 			setValid(true);
 			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(deleteButton);
+			this.getChildren().remove(getDeleteButton());
 			this.getChildren().remove(fieldValue);
-			this.getChildren().addAll(fieldValue, deleteButton);
+			this.getChildren().addAll(fieldValue, getDeleteButton());
 		}
 		
 		getGeneratorPane().refreshGenerationPossibility();

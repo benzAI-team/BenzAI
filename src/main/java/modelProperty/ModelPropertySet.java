@@ -59,7 +59,8 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 	}
 
 	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
-		return getBySubject(name).getHBoxCriterion(parent, choiceBoxCriterion);
+		ModelProperty modelProperty = getBySubject(name);
+		return modelProperty.getHBoxCriterion(parent, choiceBoxCriterion);
 	}
 
 	public Object[] getNames() {
@@ -83,6 +84,12 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 			nbCrowns = nbCrowns < bound ? nbCrowns : bound;
 		}
 		return nbCrowns;
+	}
+
+	public void clearPropertyExpressions() {
+		for(ModelProperty modelProperty : modelPropertyList)
+			modelProperty.clearExpressions();
+		
 	}
 	
 

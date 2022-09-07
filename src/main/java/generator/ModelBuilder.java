@@ -177,9 +177,9 @@ public class ModelBuilder {
 
 		// for (GeneralModel model : models)
 		model.setPatternsInformations(patternsInformations);
-
+		
 		for(ModelProperty modelProperty : modelPropertySet)
-			if(modelPropertySet.has(modelProperty.getSubject()))
+			if(modelProperty.isExpressed())
 				model.applyModelProperty(modelProperty);
 		// A REPARTIR DANS LES MODEL PROPERTY
 //		if (map.get("carbons").size() > 0)

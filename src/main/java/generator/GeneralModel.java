@@ -608,11 +608,11 @@ public class GeneralModel {
 				noGoodRecorder = new NoGoodVerticalAxisRecorder(this, solution);
 				
 			else {
-
-				if (GeneratorCriterion.containsSubject(criterions, "SINGLE_PATTERN")
-						|| GeneratorCriterion.containsSubject(criterions, "MULTIPLE_PATTERNS")
-						|| GeneratorCriterion.containsSubject(criterions, "FORBIDDEN_PATTERN"))
-					noGoodRecorder = new NoGoodUniqueRecorder(this, solution);
+//TODO
+//				if (GeneratorCriterion.containsSubject(criterions, "SINGLE_PATTERN")
+//						|| GeneratorCriterion.containsSubject(criterions, "MULTIPLE_PATTERNS")
+//						|| GeneratorCriterion.containsSubject(criterions, "FORBIDDEN_PATTERN"))
+//					noGoodRecorder = new NoGoodUniqueRecorder(this, solution);
 
 			}
 
@@ -628,7 +628,8 @@ public class GeneralModel {
 		chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
 
 		for (ModelProperty modelProperty : modelPropertySet) {
-			modelProperty.getModule().changeSolvingStrategy();
+			if(modelProperty.isExpressed())
+				modelProperty.getModule().changeSolvingStrategy();
 		}
 
 		solver = chocoModel.getSolver();
@@ -636,17 +637,18 @@ public class GeneralModel {
 			return Stopper.STOP;
 		});
 
-		if (mapCriterions != null && mapCriterions.get("stop") != null) {
-			for (GeneratorCriterion criterion : mapCriterions.get("stop")) {
-
-				if (criterion.getName() == "TIMEOUT")
-					solver.limitTime(criterion.getValue());
-
-				else if (criterion.getName() == "NB_SOLUTIONS")
-					solver.addStopCriterion(new SolutionCounter(chocoModel, (long)criterion.getValue()));
-
-			}
-		}
+		//TODO
+//		if (mapCriterions != null && mapCriterions.get("stop") != null) {
+//			for (GeneratorCriterion criterion : mapCriterions.get("stop")) {
+//
+//				if (criterion.getName() == "TIMEOUT")
+//					solver.limitTime(criterion.getValue());
+//
+//				else if (criterion.getName() == "NB_SOLUTIONS")
+//					solver.addStopCriterion(new SolutionCounter(chocoModel, (long)criterion.getValue()));
+//
+//			}
+//		}
 
 		resultSolver = new ResultSolver();
 

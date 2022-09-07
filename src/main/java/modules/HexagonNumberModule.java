@@ -26,7 +26,7 @@ public class HexagonNumberModule extends Module {
 		for (PropertyExpression expression : this.getExpressionList()) {
 			String operator = ((BinaryNumericalExpression)expression).getOperator();
 			int value = ((BinaryNumericalExpression)expression).getValue();
-			System.out.println("hexagons " + getGeneralModel().getNbVerticesVar() + " " +operator + " " + value);
+			System.out.println("hexagons " + getGeneralModel().getNbVerticesVar() + " " + operator + " " + value);
 			this.getGeneralModel().getChocoModel().arithm(getGeneralModel().getNbVerticesVar(), operator, value).post();
 		}
 		System.out.println(generalModel.getProblem().toString());

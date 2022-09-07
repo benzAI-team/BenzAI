@@ -2,6 +2,7 @@ package view.generator;
 
 import javafx.scene.control.ChoiceBox;
 import modelProperty.builders.ModelPropertyBuilder;
+import modelProperty.expression.PropertyExpression;
 import utils.Utils;
 import view.generator.boxes.HBoxCatacondensedCriterion;
 import view.generator.boxes.HBoxConcealedCriterion;
@@ -27,6 +28,7 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 	private int index;
 	private GeneratorPane parent;
 	private ModelPropertySet modelPropertySet;
+	private PropertyExpression expression;
 
 	public ChoiceBoxCriterion(int index, GeneratorPane parent, ModelPropertySet modelPropertySet) {
 		super();
@@ -54,7 +56,7 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 //		this.getItems().add("Pattern properties");
 		
 		
-		// A FAIRE
+		//TODO
 		//for(String name : modelFilterSet.getNames())
 		//	this.getItems().add(name);
 		
@@ -63,7 +65,7 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 //		this.getItems().add("Concealed non Kekulean");
 		
 		
-		// A FAIRE
+		//TODO
 		//for(String name : solverPropertySet.getNames())
 		//	this.getItems().add(name);	
 		
@@ -176,6 +178,8 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 		});
 	}
 
+	/** getters, setters
+	 */
 	public int getIndex() {
 		return index;
 	}
@@ -183,6 +187,16 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 	public void setIndex(int index) {
 		this.index = index;
 	}
+
+	public PropertyExpression getExpression() {
+		return expression;
+	}
+
+
+	public void setExpression(PropertyExpression expression) {
+		this.expression = expression;
+	}
+
 
 	@Override
 	public String toString() {

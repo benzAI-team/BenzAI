@@ -1,5 +1,6 @@
 package view.generator.boxes;
 
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.SubjectExpression;
 import view.generator.ChoiceBoxCriterion;
@@ -7,8 +8,8 @@ import view.generator.GeneratorPane;
 
 public class HBoxConcealedCriterion extends HBoxCriterion {
 
-	public HBoxConcealedCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxConcealedCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
+		super(generatorPane, choiceBoxCriterion, modelProperty);
 		setValid(true);
 	}
 

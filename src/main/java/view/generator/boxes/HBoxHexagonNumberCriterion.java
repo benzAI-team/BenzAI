@@ -2,6 +2,7 @@ package view.generator.boxes;
 
 import java.util.ArrayList;
 import generator.GeneratorCriterion;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import utils.Utils;
@@ -20,15 +21,15 @@ public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
 		if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			setValid(false);
 			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(getWarningIcon(), deleteButton);
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 		}
 		
 		else {
 			setValid(true);
 			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().add(getDeleteButton());
 		}
 		
 		getGeneratorPane().refreshGenerationPossibility();

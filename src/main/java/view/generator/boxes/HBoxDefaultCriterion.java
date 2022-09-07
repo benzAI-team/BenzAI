@@ -17,7 +17,7 @@ public class HBoxDefaultCriterion extends HBoxCriterion {
 
 	@Override
 	protected void initialize() {
-		this.getChildren().addAll(getWarningIcon(), deleteButton);
+		this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 	}
 
 	@Override

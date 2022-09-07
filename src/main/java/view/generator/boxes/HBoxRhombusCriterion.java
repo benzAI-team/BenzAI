@@ -6,6 +6,7 @@ import generator.GeneratorCriterion;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import utils.Utils;
@@ -28,7 +29,7 @@ public class HBoxRhombusCriterion extends HBoxCriterion {
 
 		this.getChildren().remove(dimensionTextField);
 		this.getChildren().remove(getWarningIcon());
-		this.getChildren().remove(deleteButton);
+		this.getChildren().remove(getDeleteButton());
 
 		if (dimensionChoice != null && dimensionChoice.contentEquals("Unspecified"))
 			setValid(true);
@@ -49,7 +50,7 @@ public class HBoxRhombusCriterion extends HBoxCriterion {
 		if (!isValid())
 			this.getChildren().add(getWarningIcon());
 
-		this.getChildren().add(deleteButton);
+		this.getChildren().add(getDeleteButton());
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class HBoxRhombusCriterion extends HBoxCriterion {
 			getGeneratorPane().refreshGenerationPossibility();
 		});
 
-		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, getWarningIcon(), deleteButton);
+		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, getWarningIcon(), getDeleteButton());
 		checkValidity();
 	}
 

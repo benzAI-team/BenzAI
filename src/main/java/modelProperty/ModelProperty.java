@@ -58,6 +58,22 @@ public abstract class ModelProperty {
 		expressions.add(expression);
 	}
 	
+	public void removeExpression(PropertyExpression expression) {
+		expressions.remove(expression);
+	}
+	
+	public void clearExpressions() {
+		expressions.clear();
+		
+	}
+	/***
+	 * 
+	 * @return
+	 */
+	public boolean isExpressed() {
+		return expressions.size() > 0;
+	}
+	
 	/***
 	 * getters, setters
 	 */
@@ -83,6 +99,7 @@ public abstract class ModelProperty {
 	public boolean hasUpperBound() {
 		return expressions.stream().anyMatch(x -> x.hasUpperBound());
 	}
+
 
 
 }

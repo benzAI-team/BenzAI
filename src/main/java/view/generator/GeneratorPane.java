@@ -3,14 +3,9 @@ package view.generator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import application.BenzenoidApplication;
 import application.Settings;
 import generator.GeneralModel;
-import generator.GeneratorCriterion;
 import generator.ModelBuilder;
 import generator.ResultSolver;
 import generator.fragments.FragmentResolutionInformations;
@@ -388,7 +383,7 @@ public class GeneratorPane extends ScrollPane {
 	 * 
 	 * @return
 	 */
-	private boolean buildCriterions() {
+	private boolean buildPropertyExpressions() {
 
 		for (HBoxCriterion box : hBoxesCriterions) {
 
@@ -712,7 +707,7 @@ public class GeneratorPane extends ScrollPane {
 	}
 
 	private boolean buildModelPropertySet() {
-
+		modelPropertySet.clearPropertyExpressions();
 		for (HBoxCriterion box : hBoxesCriterions) {
 
 			if (!box.isValid())
@@ -908,7 +903,7 @@ public class GeneratorPane extends ScrollPane {
 
 	public void refreshGenerationPossibility() {
 
-		boolean ok = buildCriterions();
+		boolean ok = buildPropertyExpressions();
 		canStartGeneration = false;
 
 		if (ok) {

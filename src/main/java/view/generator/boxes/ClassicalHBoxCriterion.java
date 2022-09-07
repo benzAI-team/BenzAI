@@ -2,6 +2,7 @@ package view.generator.boxes;
 
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import modelProperty.ModelProperty;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;

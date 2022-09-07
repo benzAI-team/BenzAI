@@ -7,6 +7,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
@@ -47,7 +48,7 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 				
 				setValid(true);
 				this.getChildren().remove(getWarningIcon());
-				this.getChildren().remove(deleteButton);
+				this.getChildren().remove(getDeleteButton());
 
 				if (!this.getChildren().contains(operatorChoiceBox))
 					this.getChildren().add(operatorChoiceBox);
@@ -57,7 +58,7 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 
 				fieldValue.setText(split[0] + "." + split[1]);
 				
-				this.getChildren().addAll(deleteButton);
+				this.getChildren().addAll(getDeleteButton());
 			}
 			
 			else {
@@ -66,7 +67,7 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 
 					setValid(false);
 					this.getChildren().remove(getWarningIcon());
-					this.getChildren().remove(deleteButton);
+					this.getChildren().remove(getDeleteButton());
 
 					if (!this.getChildren().contains(operatorChoiceBox))
 						this.getChildren().add(operatorChoiceBox);
@@ -74,14 +75,14 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 					if (!this.getChildren().contains(fieldValue))
 						this.getChildren().add(fieldValue);
 
-					this.getChildren().addAll(getWarningIcon(), deleteButton);
+					this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 				}
 
 				else if (!irregularityValue.equals("Compute irregularity")) {
 				
 					setValid(true);
 					this.getChildren().remove(getWarningIcon());
-					this.getChildren().remove(deleteButton);
+					this.getChildren().remove(getDeleteButton());
 
 					if (!this.getChildren().contains(operatorChoiceBox))
 						this.getChildren().add(operatorChoiceBox);
@@ -89,7 +90,7 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 					if (!this.getChildren().contains(fieldValue))
 						this.getChildren().add(fieldValue);
 
-					this.getChildren().addAll(deleteButton);
+					this.getChildren().addAll(getDeleteButton());
 				}
 			}
 		}

@@ -26,16 +26,16 @@ public class HBoxTimeoutCriterion extends HBoxCriterion {
 
 		if (!Utils.isNumber(timeField.getText()) && timeUnitBox.getValue() != null) {
 			valid = false;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(warningIcon, deleteButton);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 		}
 
 		else {
 			valid = true;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().add(getDeleteButton());
 		}
 	}
 
@@ -56,7 +56,7 @@ public class HBoxTimeoutCriterion extends HBoxCriterion {
 			checkValidity();
 		});
 
-		this.getChildren().addAll(timeField, timeUnitBox, warningIcon, deleteButton);
+		this.getChildren().addAll(timeField, timeUnitBox, getWarningIcon(), getDeleteButton());
 		checkValidity();
 	}
 

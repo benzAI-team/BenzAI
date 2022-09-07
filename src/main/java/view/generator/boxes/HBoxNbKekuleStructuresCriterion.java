@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import generator.GeneratorCriterion;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.ParameterizedExpression;
@@ -15,8 +16,8 @@ import view.generator.GeneratorPane;
 public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 
 	
-	public HBoxNbKekuleStructuresCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+	public HBoxNbKekuleStructuresCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
+		super(parent, choiceBoxCriterion, modelProperty);
 		operatorChoiceBox.getItems().addAll("Min", "Max");
 	}
 
@@ -27,23 +28,23 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 			setValid(true);
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().add(getDeleteButton());
 		}
 		
 		else if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			setValid(false);
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(fieldValue, getWarningIcon(), deleteButton);
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().addAll(fieldValue, getWarningIcon(), getDeleteButton());
 		}
 
 		else {
 			setValid(true);
 			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(deleteButton);
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().addAll(getDeleteButton());
 		}
     
 	}

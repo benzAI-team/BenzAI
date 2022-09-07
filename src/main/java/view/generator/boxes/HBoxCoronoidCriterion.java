@@ -6,6 +6,7 @@ import generator.GeneratorCriterion;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import utils.Utils;
@@ -54,12 +55,12 @@ public class HBoxCoronoidCriterion extends HBoxCriterion {
 				setValid(true);
 
 				this.getChildren().remove(getWarningIcon());
-				this.getChildren().remove(deleteButton);
+				this.getChildren().remove(getDeleteButton());
 
 				if (!this.getChildren().contains(fieldValue))
 					this.getChildren().add(fieldValue);
 
-				this.getChildren().addAll(deleteButton);
+				this.getChildren().addAll(getDeleteButton());
 			}
 		}
 	}
@@ -83,7 +84,7 @@ public class HBoxCoronoidCriterion extends HBoxCriterion {
 			checkValidity();
 		});
 
-		this.getChildren().addAll(nbHolesLabel, operatorChoiceBox, fieldValue, getWarningIcon(), deleteButton);
+		this.getChildren().addAll(nbHolesLabel, operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
 		checkValidity();
 	}
 

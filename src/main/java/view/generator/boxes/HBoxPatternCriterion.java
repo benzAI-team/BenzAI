@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
@@ -31,8 +32,8 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 
 	private GeneratorCriterion criterion;
 
-	public HBoxPatternCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxPatternCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
+		super(generatorPane, choiceBoxCriterion, modelProperty);
 	}
 
 	@Override
@@ -42,14 +43,14 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 
 		this.getChildren().remove(getWarningIcon());
 		this.getChildren().remove(editButton);
-		this.getChildren().remove(deleteButton);
+		this.getChildren().remove(getDeleteButton());
 
 		if (patternInformationField.getText().equals("NO_PROPERTY")) {
 			setValid(false);
 			this.getChildren().add(getWarningIcon());
 		}
 
-		this.getChildren().addAll(editButton, deleteButton);
+		this.getChildren().addAll(editButton, getDeleteButton());
 	}
 
 	@Override
@@ -62,7 +63,7 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 		patternInformationField.setEditable(false);
 		patternInformationField.setText("NO_PROPERTY");
 
-		this.getChildren().addAll(patternInformationField, getWarningIcon(), editButton, deleteButton);
+		this.getChildren().addAll(patternInformationField, getWarningIcon(), editButton, getDeleteButton());
 	}
 
 	public void setCriterion(GeneratorCriterion criterion) {

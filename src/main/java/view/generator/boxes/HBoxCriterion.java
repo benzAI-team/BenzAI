@@ -4,6 +4,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
@@ -14,11 +15,14 @@ public abstract class HBoxCriterion extends HBox {
 
 	private boolean valid;
 	
-	protected DeleteButton deleteButton;
+	private DeleteButton deleteButton;
 	private ImageView warningIcon;
 	 
 	private GeneratorPane generatorPane;
 	private ChoiceBoxCriterion choiceBoxCriterion;
+	
+	private PropertyExpression expression;
+
 	
 	public HBoxCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(5.0);
@@ -80,6 +84,16 @@ public abstract class HBoxCriterion extends HBox {
 	public void setChoiceBoxCriterion(ChoiceBoxCriterion choiceBoxCriterion) {
 		this.choiceBoxCriterion = choiceBoxCriterion;
 	}
+
+	public PropertyExpression getExpression() {
+		return expression;
+	}
+
+
+	public void setExpression(PropertyExpression expression) {
+		this.expression = expression;
+	}
+
 
 	public boolean isValid() {
 		return valid;
