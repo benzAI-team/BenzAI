@@ -13,8 +13,8 @@ import view.generator.GeneratorPane;
 
 public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 
-	public HBoxNbHydrogensCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
-		super(parent, choiceBoxCriterion, modelProperty);
+	public HBoxNbHydrogensCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 		operatorChoiceBox.getItems().addAll("EVEN", "ODD");
 	}
 

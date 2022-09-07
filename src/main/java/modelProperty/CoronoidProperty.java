@@ -12,7 +12,7 @@ import view.generator.boxes.HBoxCriterion;
 public class CoronoidProperty extends ModelProperty {
 
 	public CoronoidProperty() {
-		super("coronoid", new CoronoidModule2());
+		super("coronoid", "Coronoid", new CoronoidModule2());
 	}
 
 	@Override

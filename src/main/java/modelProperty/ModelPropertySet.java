@@ -16,6 +16,7 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 		modelPropertyList = new ArrayList<ModelProperty>();
 		modelPropertyList.add(new HexagonNumberProperty());
 		modelPropertyList.add(new CarbonNumberProperty());
+		modelPropertyList.add(new HydrogenNumberProperty());
 		modelPropertyList.add(new CatacondensedProperty());
 		modelPropertyList.add(new CoronenoidProperty());
 		modelPropertyList.add(new CoronoidProperty());
@@ -34,7 +35,7 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 	/***
 	 * 
 	 * @param subject
-	 * @return the model property named 'name'
+	 * @return the model property with 'subject'
 	 */
 	public ModelProperty getBySubject(String subject) {
 		for(ModelProperty modelProperty : modelPropertyList)
@@ -43,6 +44,18 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 		return null;
 	}
 	
+	/***
+	 * 
+	 * @param name
+	 * @return
+	 */
+	private ModelProperty getByName(String name) {
+		for(ModelProperty modelProperty : modelPropertyList)
+			if(modelProperty.getName() == name)
+				return modelProperty;
+		return null;
+	}
+
 	/***
 	 * 
 	 * @param subject
@@ -59,13 +72,16 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 	}
 
 	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
-		ModelProperty modelProperty = getBySubject(name);
+		ModelProperty modelProperty = getByName(name);
 		return modelProperty.getHBoxCriterion(parent, choiceBoxCriterion);
 	}
 
 	public Object[] getNames() {
+		return (Object[]) modelPropertyList.stream().map(x -> x.getName()).toArray();
+	}
+	
+	public Object[] getSubjects() {
 		return (Object[]) modelPropertyList.stream().map(x -> x.getSubject()).toArray();
-
 	}
 
 	public int computeHexagonNumberUpperBound() {

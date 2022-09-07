@@ -11,7 +11,7 @@ import view.generator.boxes.HBoxRhombusCriterion;
 public class RhombusProperty extends ModelProperty {
 
 	public RhombusProperty() {
-		super("rhombus", new RhombusModule());
+		super("rhombus", "Rhombus", new RhombusModule());
 	}
 
 	@Override

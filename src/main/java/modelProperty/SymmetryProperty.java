@@ -9,7 +9,7 @@ import view.generator.boxes.HBoxSymmetriesCriterion;
 public class SymmetryProperty extends ModelProperty {
 
 	public SymmetryProperty() {
-		super("symmetry", new SymmetriesModule());
+		super("symmetry", "Symmetries", new SymmetriesModule());
 	}
 
 	@Override

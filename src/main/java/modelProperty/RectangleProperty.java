@@ -13,7 +13,7 @@ import view.generator.boxes.HBoxRectangleCriterion;
 public class RectangleProperty extends ModelProperty {
 
 	public RectangleProperty() {
-		super("rectangle", new RectangleModule());
+		super("rectangle", "Rectangle", new RectangleModule());
 		// TODO Auto-generated constructor stub
 	}
 

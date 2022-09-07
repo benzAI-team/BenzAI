@@ -13,7 +13,7 @@ public class CoronenoidProperty extends ModelProperty {
 
 
 	public CoronenoidProperty() {
-		super("coronenoid", new CoronenoidModule());
+		super("coronenoid", "Coronenoid", new CoronenoidModule());
 	}
 
 	@Override
@@ -21,6 +21,17 @@ public class CoronenoidProperty extends ModelProperty {
 		return new HBoxCoronenoidCriterion(parent, choiceBoxCriterion);
 	}
 
+	@Override
+	public int computeNbCrowns() {
+		int nbCrownsMax = Integer.MAX_VALUE;
+		for(PropertyExpression expression : this.getExpressions()) {
+			BinaryNumericalExpression binaryNumericalExpression = (BinaryNumericalExpression)expression;
+			if(binaryNumericalExpression.hasUpperBound())
+				nbCrownsMax = nbCrownsMax < binaryNumericalExpression.getValue() ? nbCrownsMax : binaryNumericalExpression.getValue();
+		}
+		return nbCrownsMax;
+	}
+	
 	@Override
 	public int computeHexagonNumberUpperBound() {
 		int nbCrownsMax = Integer.MAX_VALUE;

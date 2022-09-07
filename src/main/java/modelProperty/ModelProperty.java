@@ -19,6 +19,7 @@ public abstract class ModelProperty {
 	/***
 	 * 
 	 * @param subject
+	 * @param name
 	 * @param module
 	 */
 	public ModelProperty(String subject, String name, Module module) {

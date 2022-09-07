@@ -8,8 +8,8 @@ import view.generator.GeneratorPane;
 
 public class HBoxConcealedCriterion extends HBoxCriterion {
 
-	public HBoxConcealedCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
-		super(generatorPane, choiceBoxCriterion, modelProperty);
+	public HBoxConcealedCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(generatorPane, choiceBoxCriterion);
 		setValid(true);
 	}
 

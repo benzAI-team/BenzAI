@@ -10,7 +10,7 @@ import view.generator.boxes.HBoxIrregularityCriterion;
 public class IrregularityProperty extends ModelProperty {
 
 	public IrregularityProperty() {
-		super("irregularity", new IrregularityModule());
+		super("irregularity", "Irregularity", new IrregularityModule());
 	}
 
 	@Override

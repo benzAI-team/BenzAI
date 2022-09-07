@@ -9,7 +9,7 @@ import view.generator.boxes.HBoxCriterion;
 public class FragmentProperty extends ModelProperty {
 
 	public FragmentProperty() {
-		super("fragment", new FragmentModule());
+		super("fragment", "Pattern properties", new FragmentModule());
 	}
 
 	@Override

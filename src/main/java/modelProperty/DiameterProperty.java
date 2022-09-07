@@ -12,8 +12,7 @@ import view.generator.boxes.HBoxDiameterCriterion;
 public class DiameterProperty extends ModelProperty {
 
 	public DiameterProperty() {
-		super("diameter", new DiameterModule());
-		// TODO Auto-generated constructor stub
+		super("diameter", "Diameter", new DiameterModule());
 	}
 
 	@Override

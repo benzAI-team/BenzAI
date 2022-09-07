@@ -10,7 +10,7 @@ import view.generator.boxes.HBoxCriterion;
 public class CatacondensedProperty extends ModelProperty {
 
 	public CatacondensedProperty() {
-		super("catacondensed", new CatacondensedModule());
+		super("catacondensed", "Catacondensed", new CatacondensedModule());
 	}
 
 	@Override
