@@ -12,6 +12,7 @@ import modelProperty.expression.BinaryNumericalExpression;
 
 public abstract class ModelProperty {
 	private String subject;
+	private String name;
 	private ArrayList<PropertyExpression> expressions = new ArrayList<PropertyExpression>();
 	private Module module;
 
@@ -20,9 +21,10 @@ public abstract class ModelProperty {
 	 * @param subject
 	 * @param module
 	 */
-	public ModelProperty(String subject, Module module) {
+	public ModelProperty(String subject, String name, Module module) {
 		super();
 		this.subject = subject;
+		this.name = name;
 		this.module = module;
 	}
 	
@@ -87,6 +89,14 @@ public abstract class ModelProperty {
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setModule(Module module) {

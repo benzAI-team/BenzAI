@@ -309,10 +309,10 @@ public class GeneralModel {
 	 * Apply all the model properties to the model
 	 */
 	private void applyModelProperties() {
-
 		for (ModelProperty modelProperty : modelPropertySet)
-			if(modelPropertySet.has(modelProperty.getSubject()))
+			if(modelPropertySet.has(modelProperty.getSubject())) {
 				applyModelProperty(modelProperty);
+			}
 
 		if (modelPropertySet.has("symmetry") || modelPropertySet.has("rectangle"))
 			applyBorderConstraints = false;

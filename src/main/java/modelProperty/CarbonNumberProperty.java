@@ -15,7 +15,7 @@ import view.generator.boxes.HBoxNbCarbonsCriterion;
 public class CarbonNumberProperty extends ModelProperty {
 
 	public CarbonNumberProperty() {
-		super("carbons", new CarbonNumberModule());
+		super("carbons", "Carbon number", new CarbonNumberModule());
 	}
 
 	@Override
