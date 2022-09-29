@@ -26,7 +26,7 @@ public class HBoxConcealedCriterion extends HBoxCriterion {
 
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
-		modelPropertySet.getBySubject("concealed").addExpression(new SubjectExpression("concealed"));
+		modelPropertySet.getById("concealed").addExpression(new SubjectExpression("concealed"));
 	}
 
 }

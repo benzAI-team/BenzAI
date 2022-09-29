@@ -478,7 +478,7 @@ public class GeneratorPane extends ScrollPane {
 		boolean concealed = false;
 
 		if (modelPropertySet.has("NB_KEKULE_STRUCTURES")) {
-			kekulePropertyExpressions = modelPropertySet.getBySubject("NB_KEKULE_STRUCTURES").getExpressions();
+			kekulePropertyExpressions = modelPropertySet.getById("NB_KEKULE_STRUCTURES").getExpressions();
 			for(PropertyExpression expression : kekulePropertyExpressions)
 				if (expression instanceof BinaryNumericalExpression) {
 					FilteringOperator operator = FilteringOperator.getOperator(((BinaryNumericalExpression)expression).getOperator());
@@ -618,7 +618,7 @@ public class GeneratorPane extends ScrollPane {
 //				application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
 //			}
 			for(ModelProperty modelProperty : modelPropertySet)
-				application.getBenzenoidCollectionsPane().log(modelProperty.getSubject(), false);
+				application.getBenzenoidCollectionsPane().log(modelProperty.getId(), false);
 				
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
 
@@ -907,12 +907,12 @@ public class GeneratorPane extends ScrollPane {
 		canStartGeneration = false;
 
 		if (ok) {
-			if(modelPropertySet.getBySubject("hexagons").hasUpperBound()
-					|| modelPropertySet.getBySubject("carbons").hasUpperBound()
-					|| modelPropertySet.getBySubject("hydrogens").hasUpperBound()
-					|| modelPropertySet.getBySubject("rhombus").hasUpperBound())
+			if(modelPropertySet.getById("hexagons").hasUpperBound()
+					|| modelPropertySet.getById("carbons").hasUpperBound()
+					|| modelPropertySet.getById("hydrogens").hasUpperBound()
+					|| modelPropertySet.getById("rhombus").hasUpperBound())
 				canStartGeneration = true;
-			if(((RectangleProperty)modelPropertySet.getBySubject("rectangle")).hasUpperBounds())
+			if(((RectangleProperty)modelPropertySet.getById("rectangle")).hasUpperBounds())
 				canStartGeneration = true;
 
 			buttonsBox.getChildren().remove(warningIcon);

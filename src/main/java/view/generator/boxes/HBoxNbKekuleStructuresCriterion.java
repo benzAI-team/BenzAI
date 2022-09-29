@@ -54,9 +54,9 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 		if (isValid()) {		
 				String operator = operatorChoiceBox.getValue();	
 				if (operator != "min" && operator != "max")
-					modelPropertySet.getBySubject("kekuleNumber").addExpression(new BinaryNumericalExpression("kekuleNumber", operator, Integer.decode(fieldValue.getText())));			
+					modelPropertySet.getById("kekuleNumber").addExpression(new BinaryNumericalExpression("kekuleNumber", operator, Integer.decode(fieldValue.getText())));			
 				else 
-					modelPropertySet.getBySubject("kekuleNumber").addExpression(new ParameterizedExpression("kekuleNumber", operator));
+					modelPropertySet.getById("kekuleNumber").addExpression(new ParameterizedExpression("kekuleNumber", operator));
 			}
 	}
 

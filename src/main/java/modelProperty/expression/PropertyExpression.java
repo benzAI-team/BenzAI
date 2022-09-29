@@ -1,20 +1,20 @@
 package modelProperty.expression;
 
 public abstract class PropertyExpression {
-	private String subject;
+	private String id;
 
 	
-	public PropertyExpression(String subject) {
+	public PropertyExpression(String id) {
 		super();
-		this.subject = subject;
+		this.id = id;
 	}
 
-	public String getSubject() {
-		return subject;
+	public String getId() {
+		return id;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public boolean hasUpperBound() {

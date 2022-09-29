@@ -38,7 +38,7 @@ public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {	
 		if (isValid())
-			modelPropertySet.getBySubject("hexagons").addExpression(new BinaryNumericalExpression("hexagons", operatorChoiceBox.getValue(), Integer.decode(fieldValue.getText())));
+			modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", operatorChoiceBox.getValue(), Integer.decode(fieldValue.getText())));
 	}
 
 }

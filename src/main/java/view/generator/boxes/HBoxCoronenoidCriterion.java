@@ -93,7 +93,7 @@ public class HBoxCoronenoidCriterion extends HBoxCriterion {
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {
 			int nbCrowns = operatorChoiceBox.getValue().equals("Unspecified") ? - 1 : Integer.decode(fieldValue.getText());
-			modelPropertySet.getBySubject("coronenoid").addExpression(new BinaryNumericalExpression("coronenoid", operatorChoiceBox.getValue(), nbCrowns));
+			modelPropertySet.getById("coronenoid").addExpression(new BinaryNumericalExpression("coronenoid", operatorChoiceBox.getValue(), nbCrowns));
 		}
 	}
 

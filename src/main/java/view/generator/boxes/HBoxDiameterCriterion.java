@@ -18,6 +18,6 @@ public class HBoxDiameterCriterion extends ClassicalHBoxCriterion{
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) 
-			modelPropertySet.getBySubject("diameter").addExpression(new BinaryNumericalExpression("diameter", operatorChoiceBox.getValue(), Integer.decode(fieldValue.getText())));
+			modelPropertySet.getById("diameter").addExpression(new BinaryNumericalExpression("diameter", operatorChoiceBox.getValue(), Integer.decode(fieldValue.getText())));
 	}
 }

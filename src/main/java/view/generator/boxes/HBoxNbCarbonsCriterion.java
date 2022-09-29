@@ -53,9 +53,9 @@ public class HBoxNbCarbonsCriterion extends ClassicalHBoxCriterion{
 		if (isValid()) {
 			String operator = operatorChoiceBox.getValue();	
 			if (operator != "even" && operator != "odd")
-				modelPropertySet.getBySubject("carbons").addExpression(new BinaryNumericalExpression("carbons", operator, Integer.decode(fieldValue.getText())));			
+				modelPropertySet.getById("carbons").addExpression(new BinaryNumericalExpression("carbons", operator, Integer.decode(fieldValue.getText())));			
 			else 
-				modelPropertySet.getBySubject("carbons").addExpression(new ParameterizedExpression("carbons", operator));
+				modelPropertySet.getById("carbons").addExpression(new ParameterizedExpression("carbons", operator));
 		}
 	}
 

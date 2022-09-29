@@ -3,10 +3,10 @@ package generator.criterions.patterns;
 import java.util.ArrayList;
 import java.util.Map;
 
-import generator.criterions.GeneratorCriterion2;
+import generator.criterions.GeneratorCriterion;
 import generator.fragments.FragmentResolutionInformations;
 
-public abstract class PatternGeneratorCriterion extends GeneratorCriterion2 {
+public abstract class PatternGeneratorCriterion extends GeneratorCriterion {
 
 	protected FragmentResolutionInformations patternsInformations;
 
@@ -30,7 +30,7 @@ public abstract class PatternGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion>> criterionsMap) {
 		if (criterionsMap.get("pattern") == null)
 			criterionsMap.put("pattern", new ArrayList<>());
 		criterionsMap.get("pattern").add(this);

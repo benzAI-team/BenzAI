@@ -29,7 +29,7 @@ public class HBoxCatacondensedCriterion extends HBoxCriterion {
 
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
-		 modelPropertySet.getBySubject("catacondensed").addExpression(new SubjectExpression("catacondensed"));
+		 modelPropertySet.getById("catacondensed").addExpression(new SubjectExpression("catacondensed"));
 	}
 
 }

@@ -3,7 +3,7 @@ package generator.criterions;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class NbHexagonsGeneratorCriterion extends GeneratorCriterion2 {
+public class NbHexagonsGeneratorCriterion extends GeneratorCriterion {
 
 	public NbHexagonsGeneratorCriterion(Operator operator, String value) {
 		super(operator, value);
@@ -30,7 +30,7 @@ public class NbHexagonsGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion>> criterionsMap) {
 		if (criterionsMap.get("hexagons") == null)
 			criterionsMap.put("hexagons", new ArrayList<>());
 		criterionsMap.get("hexagons").add(this);

@@ -3,12 +3,8 @@ package generator;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.PriorityQueue;
-
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
-import org.chocosolver.solver.search.limits.SolutionCounter;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
@@ -18,7 +14,6 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.solver.variables.Variable;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 
-import generator.criterions.GeneratorCriterionFactory;
 import generator.fragments.Fragment;
 import generator.fragments.FragmentOccurences;
 import generator.fragments.FragmentResolutionInformations;
@@ -145,31 +140,18 @@ public class GeneralModel {
 		this.modelPropertySet = modelPropertySet;
 
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
-
-		nbCrowns = (int) Math.floor((((double) ((double) nbMaxHexagons + 1)) / 2.0) + 1.0);
-
-		if (nbMaxHexagons % 2 == 1)
-			nbCrowns--;
-
+		//System.out.println("H:" + nbMaxHexagons);
+		nbCrowns = modelPropertySet.computeNbCrowns();
 		diameter = (2 * nbCrowns) - 1;
-
-		if (modelPropertySet.has("rectangle"))
-			applySymmetriesConstraints = false;
-
+		applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
 		initialize();
 	}
 
 	public GeneralModel(ModelPropertySet modelPropertySet, int nbCrowns) {
-
-		//this.hexagonsCriterions = hexagonsCriterions;
 		this.modelPropertySet = modelPropertySet;
-
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
-
 		this.nbCrowns = nbCrowns;
-
 		diameter = (2 * nbCrowns) - 1;
-
 		initialize();
 	}
 
@@ -310,7 +292,7 @@ public class GeneralModel {
 	 */
 	private void applyModelProperties() {
 		for (ModelProperty modelProperty : modelPropertySet)
-			if(modelPropertySet.has(modelProperty.getSubject())) {
+			if(modelPropertySet.has(modelProperty.getId())) {
 				applyModelProperty(modelProperty);
 			}
 
@@ -600,10 +582,10 @@ public class GeneralModel {
 
 			noGoodRecorder = new NoGoodNoneRecorder(this, solution);
 
-			if (((ParameterizedExpression)modelPropertySet.getBySubject("symmetry").getExpressions().get(0)).getOperator() == "SYMM_MIRROR")
+			if (((ParameterizedExpression)modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator() == "SYMM_MIRROR")
 				noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
 
-			else if (((ParameterizedExpression)modelPropertySet.getBySubject("symmetry").getExpressions().get(0)).getOperator() == "SYMM_VERTICAL")
+			else if (((ParameterizedExpression)modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator() == "SYMM_VERTICAL")
 				//noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
 				noGoodRecorder = new NoGoodVerticalAxisRecorder(this, solution);
 				
@@ -628,7 +610,7 @@ public class GeneralModel {
 		chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
 
 		for (ModelProperty modelProperty : modelPropertySet) {
-			if(modelProperty.isExpressed())
+			if(modelProperty.hasExpressions())
 				modelProperty.getModule().changeSolvingStrategy();
 		}
 

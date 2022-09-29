@@ -23,8 +23,6 @@ import database.PictureConverter;
 import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
 import generator.ResultSolver;
 import generator.fragments.Fragment;
 import http.Post;
@@ -698,7 +696,7 @@ public class Molecule implements Comparable<Molecule> {
 	public BenzenoidSolution buildBenzenoidSolution() {
 
 		ModelPropertySet modelPropertySet = new ModelPropertySet();
-		modelPropertySet.getBySubject("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", nbHexagons));
+		modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", nbHexagons));
 //		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
 //		criterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
 

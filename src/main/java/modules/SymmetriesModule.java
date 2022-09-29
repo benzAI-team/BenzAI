@@ -22,33 +22,91 @@ public class SymmetriesModule extends Module {
 
 		switch (((ParameterizedExpression)this.getExpressionList().get(0)).getOperator()) {
 
-		case "MIRROR":
+		case "C_2v(a) \"face-mirror\"":
 			postHasMirrorSymmetry();
 			break;
-
-		case "ROT_60":
-			this.postHasRot60Symmetry();
+			
+		case "C_6h \"(face)-60-rotation\"" : 
+			postHasRot60Symmetry();
 			break;
-
-		case "ROT_120":
+			
+		case "C_3h(i) \"face-120-rotation\"":			
 			postHasRot120Symmetry();
 			break;
 
-		case "ROT_180":
+		case "C_2h(i) \"vertex_180-rotation\"": 
 			postHasRot180Symmetry();
 			break;
 
-		case "VERTICAL":
+		case "C_2v(b) \"edge-mirror\"" : 
 			postHasVerticalSymmetry();
 			break;
 
-		case "ROT_120_VERTEX":
+		case "C_3h(ii) \"vertex-120-rotation\"" : 
 			postHasRot120VertexSymmetry();
 			break;
 
-		case "ROT_180_EDGE":
+		case "C_2h(ii) \"edge-180-rotation\"" : 
 			postHasRot180EdgeSymmetry();
 			break;
+
+		case "D_6h \"(vertex)-60-rotation+(edge)-mirror\"" : 
+			postHasMirrorSymmetry();
+			postHasRot60Symmetry();
+			break;
+			
+		case "D_3h(ii) \"vertex-120-rotation+(edge)-mirror\"" :
+			postHasRot120VertexSymmetry();
+			postHasVerticalSymmetry();
+			break;
+			
+		case "D_3h(ia) \"face-120-rotation+face-mirror\"" :
+			postHasRot120Symmetry();
+			postHasMirrorSymmetry();
+			break;
+			
+		case "D_3h(ib) \"face-120-rotation+edge-mirror\"" :
+			postHasRot120Symmetry();
+			postHasVerticalSymmetry();
+			break;
+			
+		case "D_2h(ii) \"edge-180-rotation+edge-mirror\"" :
+			postHasRot180EdgeSymmetry();
+			postHasVerticalSymmetry();
+			break;
+			
+		case "D_2h(i) \"face-180-rotation+edge-mirror\"" : 
+			postHasRot180Symmetry();
+			postHasMirrorSymmetry();
+			break;
+			
+//		case "MIRROR":
+//			postHasMirrorSymmetry();
+//			break;
+//
+//		case "ROT_60":
+//			this.postHasRot60Symmetry();
+//			break;
+//
+//		case "ROT_120":
+//			postHasRot120Symmetry();
+//			break;
+//
+//		case "ROT_180":
+//			postHasRot180Symmetry();
+//			break;
+//
+//		case "VERTICAL":
+//			postHasVerticalSymmetry();
+//			break;
+//
+//		case "ROT_120_VERTEX":
+//			postHasRot120VertexSymmetry();
+//			break;
+//
+//		case "ROT_180_EDGE":
+//			postHasRot180EdgeSymmetry();
+//			break;
 		}
 	}
 

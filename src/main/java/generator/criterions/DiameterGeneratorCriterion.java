@@ -3,7 +3,7 @@ package generator.criterions;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class DiameterGeneratorCriterion extends GeneratorCriterion2 {
+public class DiameterGeneratorCriterion extends GeneratorCriterion {
 
 	public DiameterGeneratorCriterion(Operator operator, String value) {
 		super(operator, value);
@@ -20,7 +20,7 @@ public class DiameterGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion>> criterionsMap) {
 		if (criterionsMap.get("diameter") == null)
 			criterionsMap.put("diameter", new ArrayList<>());
 		criterionsMap.get("diameter").add(this);

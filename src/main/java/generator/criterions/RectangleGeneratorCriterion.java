@@ -5,7 +5,7 @@ import java.util.Map;
 
 import utils.Couple;
 
-public class RectangleGeneratorCriterion extends GeneratorCriterion2 {
+public class RectangleGeneratorCriterion extends GeneratorCriterion {
 
 	private ArrayList<Operator> linesOperators;
 	private ArrayList<String> linesValues;
@@ -115,7 +115,7 @@ public class RectangleGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion>> criterionsMap) {
 		if (criterionsMap.get("rectangle") == null)
 			criterionsMap.put("rectangle", new ArrayList<>());
 		criterionsMap.get("rectangle").add(this);

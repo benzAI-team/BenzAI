@@ -10,21 +10,27 @@ import generator.GeneratorCriterion;
 import modelProperty.expression.PropertyExpression;
 import modelProperty.expression.BinaryNumericalExpression;
 
+/***
+ *
+ * @author nicolasprcovic
+ *
+ */
 public abstract class ModelProperty {
-	private String subject;
+	private String id;
 	private String name;
 	private ArrayList<PropertyExpression> expressions = new ArrayList<PropertyExpression>();
 	private Module module;
+	private ModelPropertySet modelPropertySet;
 
 	/***
 	 * 
-	 * @param subject
+	 * @param id
 	 * @param name
 	 * @param module
 	 */
-	public ModelProperty(String subject, String name, Module module) {
+	public ModelProperty(String id, String name, Module module) {
 		super();
-		this.subject = subject;
+		this.id = id;
 		this.name = name;
 		this.module = module;
 	}
@@ -33,7 +39,7 @@ public abstract class ModelProperty {
 	 * 
 	 * @param parent
 	 * @param choiceBoxCriterion
-	 * @return
+	 * @return the HBoxCriterion selected in choiceBoxCriterion
 	 */
 	public abstract HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion);
 	
@@ -50,7 +56,8 @@ public abstract class ModelProperty {
 	 * @return the default way to get the number of crowns from the max number of hexagons
 	 */
 	public int computeNbCrowns() {
-		return (int) (Math.ceil(3.0 + Math.sqrt(12.0 * (double) computeHexagonNumberUpperBound() - 3.0)));
+		//return (int) (Math.ceil(3.0 + Math.sqrt(12.0 * (double) this.getModelPropertySet().getHexagonNumberUpperBound() - 3.0)));
+		return (this.getModelPropertySet().getHexagonNumberUpperBound() + 2) / 2;
 	}
 
 	/***
@@ -73,8 +80,16 @@ public abstract class ModelProperty {
 	 * 
 	 * @return
 	 */
-	public boolean isExpressed() {
+	public boolean hasExpressions() {
 		return expressions.size() > 0;
+	}
+
+	/***
+	 * 
+	 * @return true iff any expression allows to limit the model size
+	 */
+	public boolean hasUpperBound() {
+		return expressions.stream().anyMatch(x -> x.hasUpperBound());
 	}
 	
 	/***
@@ -84,12 +99,12 @@ public abstract class ModelProperty {
 		return module;
 	}
 	
-	public String getSubject() {
-		return subject;
+	public String getId() {
+		return id;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -107,8 +122,12 @@ public abstract class ModelProperty {
 		return expressions;
 	}
 
-	public boolean hasUpperBound() {
-		return expressions.stream().anyMatch(x -> x.hasUpperBound());
+	public ModelPropertySet getModelPropertySet() {
+		return modelPropertySet;
+	}
+
+	public void setModelPropertySet(ModelPropertySet modelPropertySet) {
+		this.modelPropertySet = modelPropertySet;
 	}
 
 

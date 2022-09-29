@@ -5,8 +5,8 @@ public class RectangleExpression extends PropertyExpression {
 	private String heightOperator, widthOperator;
 
 	
-	public RectangleExpression(String subject, String heightOperator, int height, String widthOperator, int width) {
-		super(subject);
+	public RectangleExpression(String id, String heightOperator, int height, String widthOperator, int width) {
+		super(id);
 		this.height = height;
 		this.width = width;
 		this.heightOperator = heightOperator;

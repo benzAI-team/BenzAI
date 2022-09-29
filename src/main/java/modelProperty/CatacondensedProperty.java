@@ -17,10 +17,4 @@ public class CatacondensedProperty extends ModelProperty {
 	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxCatacondensedCriterion(parent, choiceBoxCriterion);
 	}
-
-	@Override
-	public int computeHexagonNumberUpperBound() {
-		return Integer.MAX_VALUE;
-	}
-
 }

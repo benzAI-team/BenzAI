@@ -70,7 +70,7 @@ public class HBoxSymmetriesCriterion extends HBoxCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 
-		modelPropertySet.getBySubject("symmetry").addExpression(new ParameterizedExpression("symmetry", symmetriesChoiceBox.getValue()));
+		modelPropertySet.getById("symmetry").addExpression(new ParameterizedExpression("symmetry", symmetriesChoiceBox.getValue()));
 //		if (symmetriesChoiceBox.getValue().equals("C_2v(a) \"face-mirror\""))
 //			criterions.add(new GeneratorCriterion(Subject.SYMM_MIRROR, Operator.NONE, ""));
 //

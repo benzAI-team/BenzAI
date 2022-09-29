@@ -53,9 +53,9 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 		if (isValid()) {
 			String operator = operatorChoiceBox.getValue();	
 			if (operator != "even" && operator != "odd")
-				modelPropertySet.getBySubject("hydrogens").addExpression(new BinaryNumericalExpression("hydrogens", operator, Integer.decode(fieldValue.getText())));			
+				modelPropertySet.getById("hydrogens").addExpression(new BinaryNumericalExpression("hydrogens", operator, Integer.decode(fieldValue.getText())));			
 			else 
-				modelPropertySet.getBySubject("hydrogens").addExpression(new ParameterizedExpression("hydrogens", operator));
+				modelPropertySet.getById("hydrogens").addExpression(new ParameterizedExpression("hydrogens", operator));
 		}
 	}
 }

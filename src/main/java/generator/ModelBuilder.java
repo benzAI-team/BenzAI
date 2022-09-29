@@ -44,7 +44,7 @@ public class ModelBuilder {
 		model = new GeneralModel(modelPropertySet);
 		// A retirer ?
 		if(!modelPropertySet.has("hexagons")) {
-			ModelProperty hexagonNumberProperty = modelPropertySet.getBySubject("hexagons");
+			ModelProperty hexagonNumberProperty = modelPropertySet.getById("hexagons");
 			hexagonNumberProperty.addExpression(new BinaryNumericalExpression("hexagons", "<=", hexagonsUpperBound));
 		}
 

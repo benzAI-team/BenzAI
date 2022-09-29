@@ -20,4 +20,23 @@ public class CoronoidProperty extends ModelProperty {
 		return new HBoxCoronoidCriterion(parent, choiceBoxCriterion) ;
 	}
 
+	@Override
+	public int computeNbCrowns() {
+		int nbMinHoles = 0;
+		for(PropertyExpression expression : this.getExpressions()) {
+			BinaryNumericalExpression binaryNumericalExpression = (BinaryNumericalExpression)expression;
+			if(binaryNumericalExpression.hasLowerBound())
+				nbMinHoles = nbMinHoles > binaryNumericalExpression.getValue() ? nbMinHoles : binaryNumericalExpression.getValue();
+		}
+//		if (nbMinHoles == 0)
+//			nbMinHoles = 1;
+
+		int nbCrowns;
+		int hexagonUpperBound = this.getModelPropertySet().getHexagonNumberUpperBound();
+		if (hexagonUpperBound > 4 * nbMinHoles)
+					nbCrowns = (hexagonUpperBound + 2 - 4 * nbMinHoles) / 2;
+		else
+			nbCrowns = 1;
+		return nbCrowns;	
+	}
 }

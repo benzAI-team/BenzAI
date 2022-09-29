@@ -1,6 +1,6 @@
 package modelProperty.builders;
 
-import generator.criterions.GeneratorCriterion2;
+import generator.criterions.GeneratorCriterion;
 import view.generator.boxes.HBoxCriterion;
 
 public class HexagonNumberPropertyBuilder extends ModelPropertyBuilder {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import generator.criterions.GeneratorCriterion2;
+import generator.criterions.GeneratorCriterion;
 import modelProperty.expression.BinaryNumericalExpression;
 import view.generator.boxes.HBoxCriterion;
 

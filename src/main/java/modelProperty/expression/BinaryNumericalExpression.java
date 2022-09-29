@@ -21,5 +21,9 @@ public class BinaryNumericalExpression extends ParameterizedExpression {
 		return (getOperator() == "<" || getOperator() == "=" | getOperator() == "<=") && value >= 0;
 	}
 
+	public boolean hasLowerBound() {
+		return (getOperator() == ">" || getOperator() == "=" | getOperator() == ">=");
+	}
+
 
 }
