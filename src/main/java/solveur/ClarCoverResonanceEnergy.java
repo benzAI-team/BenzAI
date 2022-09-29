@@ -19,12 +19,25 @@ public class ClarCoverResonanceEnergy {
 			usage();
 		else {
 			Molecule molecule = GraphParser.parseUndirectedGraph(new File(args[0]));
+			long begin = System.currentTimeMillis();
 			ArrayList<ClarCoverSolution> solutions = ClarCoverSolver.solve(molecule);
+			long end = System.currentTimeMillis(); 
+			long time = end - begin;
 			molecule.setClarCoverSolutions(solutions);
 			int[] clarValues = molecule.resonanceEnergyClar();
 
+			double [] clarValuesNormalised = new double[clarValues.length];
+			double nbCover = solutions.size();
+			
+			for (int i = 0 ; i < clarValuesNormalised.length ; i++)
+				clarValuesNormalised[i] = clarValues[i] / nbCover;
+			
 			for (int i = 0; i < clarValues.length; i++)
-				System.out.println(i + " " + clarValues[i]);
+				System.out.println(i + " " + clarValuesNormalised[i]);
+			
+			System.out.println(nbCover + " Clar's covers");
+			
+			System.out.println(time + " ms.");
 		}
 	}
 }

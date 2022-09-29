@@ -24,6 +24,7 @@ import generator.fragments.FragmentOccurences;
 import generator.fragments.FragmentResolutionInformations;
 import modules.Module;
 import molecules.Node;
+import nogood.NoGoodAllRecorder;
 import nogood.NoGoodBorderRecorder;
 import nogood.NoGoodHorizontalAxisRecorder;
 import nogood.NoGoodNoneRecorder;
@@ -258,6 +259,8 @@ public class GeneralModel {
 
 	public GeneralModel(int n, GeneralModelMode mode) {
 
+		criterions = new ArrayList<>();
+		
 		this.mode = mode;
 
 		switch (mode) {
@@ -395,6 +398,8 @@ public class GeneralModel {
 			module.changeGraphVertices();
 		}
 
+		if (criterions != null) {
+		
 		if (GeneratorCriterion.containsSymmetry(criterions)
 				|| GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
 			applyBorderConstraints = false;
@@ -402,6 +407,9 @@ public class GeneralModel {
 		if (applyBorderConstraints)
 			ConstraintBuilder.postBordersConstraints(this);
 
+		BoolVar center = channeling[(channeling.length - 1)/2];
+		//chocoModel.arithm(center, "=", 1).post();
+		
 		chocoModel.nbNodes(benzenoid, nbVertices).post();
 
 		for (GeneratorCriterion criterion : hexagonsCriterions) {
@@ -410,7 +418,7 @@ public class GeneralModel {
 			int value = Integer.parseInt(criterion.getValue());
 			chocoModel.arithm(nbVertices, operator, value).post();
 		}
-
+		}
 	}
 
 	/*
@@ -679,7 +687,10 @@ public class GeneralModel {
 		if (!GeneratorCriterion.containsSymmetry(criterions)) {
 
 			solution.setPattern(convertToPattern());
-			noGoodRecorder = new NoGoodBorderRecorder(this, solution, topBorder, leftBorder);
+			//noGoodRecorder = new NoGoodBorderRecorder(this, solution, topBorder, leftBorder);
+			noGoodRecorder = new NoGoodAllRecorder(this, solution);
+			//noGoodRecorder = new NoGoodNoneRecorder(this, solution);
+		
 		}
 
 		else {
@@ -774,7 +785,7 @@ public class GeneralModel {
 
 			resultSolver.addVerticesSolution(verticesSolution);
 
-			displaySolution();
+			//displaySolution();
 
 			if (verbose) {
 
@@ -1492,7 +1503,7 @@ public class GeneralModel {
 
 			resultSolver.addVerticesSolution(verticesSolution);
 
-			displaySolution();
+			//displaySolution();
 
 			if (verbose) {
 

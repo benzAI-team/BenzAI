@@ -294,7 +294,7 @@ public class Parser {
 	}
 	
 	public static void main(String [] args) throws IOException {
-		parseNICSResult(new File("/home/adrien/Documents/comparaisons_constraints/results_finaux/resultats_normalises/chisom/results_quantum_chemistry.txt"), 
-				new File("/home/adrien/Documents/comparaisons_constraints/results_finaux/resultats_normalises/chisom/"));
+		parseNICSResult(new File("/home/adrien/Documents/fleches/results_quantum_chemistry.txt"), 
+				new File("/home/adrien/Documents/fleches"));
 	}
 }

@@ -289,12 +289,19 @@ public class ModelBuilder {
 			int nbCrowns;
 
 			if (nbMaxHexagons > 4 * nbMaxHoles)
-				nbCrowns = (upperBoundHexagons + 2 - 4 * nbMaxHoles) / 2;
+				nbCrowns = ((upperBoundHexagons + 2 - 4 * nbMaxHoles) / 2);
 
 			else
 				nbCrowns = 1;
 
 			model = new GeneralModel(map.get("hexagons"), criterions, map, nbCrowns);
+			
+//			int nbMaxCrowns = (int) Math.floor((((double) ((double) nbMaxHexagons + 1)) / 2.0) + 1.0);
+//			if (nbMaxHexagons % 2 == 1)
+//				nbMaxCrowns--;
+//
+//			model = new GeneralModel(map.get("hexagons"), criterions, map, nbMaxCrowns);
+			
 		}
 
 		else {

@@ -15,6 +15,29 @@ import java.util.regex.Pattern;
 public class CorrelationCoefficient {
 
 	
+	static double correl2(ArrayList<Double> X, ArrayList<Double> Y, double n) {
+		
+		double sumM1 = 0.0;
+		double sumM2 = 0.0;
+		double sumM1M2 = 0.0;
+		
+		for (int i = 0 ; i < n ; i++) {
+			sumM1 += X.get(i);
+			sumM2 += Y.get(i);
+			sumM1M2 += X.get(i) * Y.get(i);
+		}
+		
+		double num = (n * sumM1M2) - (sumM1 * sumM2);
+		
+		double denum1 = Math.sqrt((n * sumM1) - (sumM1 * sumM1));
+		
+		double denum2 = Math.sqrt((n * sumM2) - (sumM2 * sumM2));
+		
+		double correl = num / (denum1 * denum2);
+		
+		return Math.abs(correl);
+	}
+	
 	 static double correlationCoefficient(ArrayList<Double> X, ArrayList<Double> Y, double n) {
 
 		 double sum_X = 0.0, sum_Y = 0.0, sum_XY = 0.0;
@@ -37,8 +60,15 @@ public class CorrelationCoefficient {
 
 		 // use formula for calculating correlation 
 		 // coefficient.
+		 
+		 double num = (double)(n * sum_XY - sum_X * sum_Y);
+		 double denom = (double)(Math.sqrt((n * squareSum_X - sum_X * sum_X) * (n * squareSum_Y - sum_Y * sum_Y)));
+		 
+//		 if (num == 0.0 && denom == 0.0)
+//			 return 1.0;
+		 
 		 double corr = (double)(n * sum_XY - sum_X * sum_Y) / (double)(Math.sqrt((n * squareSum_X - sum_X * sum_X) * (n * squareSum_Y - sum_Y * sum_Y)));
-		 return corr;
+		 return Math.abs(corr);
 	 }
 	 
 	 public static void buildFiles() throws IOException {

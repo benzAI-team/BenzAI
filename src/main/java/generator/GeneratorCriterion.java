@@ -13,6 +13,8 @@ public class GeneratorCriterion {
 		NB_KEKULE_STRUCTURES, CONCEALED
 	}
 
+	//public static boolean containsRectangle1(List<GeneratorCriterion> criterio)
+	
 	public static boolean containsSymmetry(List<GeneratorCriterion> criterions) {
 
 		for (GeneratorCriterion criterion : criterions) {

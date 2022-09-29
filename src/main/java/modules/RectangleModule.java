@@ -149,7 +149,7 @@ public class RectangleModule extends Module {
 		// generalModel.getProblem().arithm(generalModel.getChanneling()[0], "=",
 		// 1).post(); // The top-left hexagon must be present
 
-		System.out.println(generalModel.getProblem());
+		//System.out.println(generalModel.getProblem());
 
 	}
 

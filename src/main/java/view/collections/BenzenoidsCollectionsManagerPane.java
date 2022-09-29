@@ -45,6 +45,7 @@ import molecules.sort.ResonanceEnergyComparator;
 import new_classifier.NewCarbonsHydrogensClassifier;
 import new_classifier.NewClassifier;
 import parsers.CMLConverter;
+import parsers.COMConverter2;
 import parsers.ComConverter;
 import parsers.ComConverter.ComType;
 import parsers.GraphParser;
@@ -1489,6 +1490,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	public void exportCOM() {
 
+		System.out.println("xx");
+		
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
 		if (currentPane.getSelectedBenzenoidPanes().size() == 0) {
@@ -1501,7 +1504,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				if (file != null) {
 					Molecule molecule = currentPane.getMolecule(hoveringPane.getIndex());
 					try {
-						ComConverter.generateComFile(molecule, file, 0, ComType.ER, file.getName());
+						COMConverter2.generateComFile(molecule, file, 0, ComType.ER, file.getName());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -1539,7 +1542,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 					File file = new File(directoryPath + "/" + fileName);
 					try {
-						ComConverter.generateComFile(molecule, file, 0, ComType.ER, file.getName());
+						COMConverter2.generateComFile(molecule, file, 0, ComType.ER, file.getName());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

@@ -1,10 +1,12 @@
 package solveur;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import molecules.Molecule;
 import molecules.RBO;
 import molecules.SubGraph;
+import parsers.GraphParser;
 import solveur.LinAlgorithm.PerfectMatchingType;
 
 public class RBOSolver {
@@ -59,5 +61,28 @@ public class RBOSolver {
 		}
 
 		return new RBO(molecule, statistics, RBO);
+	}
+	
+	private static void usage() {
+		System.out.println("usage: java -jar jarfile file.graph_coord");
+	}
+	
+	public static void main(String [] args) {
+		
+		if (args.length != 1)
+			usage();
+		
+		else {
+			Molecule molecule = GraphParser.parseUndirectedGraph(new File(args[0]));
+			long begin = System.currentTimeMillis();
+			RBO rbo = RBO(molecule);
+			long end = System.currentTimeMillis();
+			for (int i = 0 ; i < molecule.getNbHexagons() ; i++) {
+				System.out.println(i + " " + rbo.getRBO()[i]);
+			}
+			long time = end - begin;
+			System.out.println(time + " ms.");
+		}
+		
 	}
 }

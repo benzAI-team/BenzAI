@@ -247,6 +247,19 @@ public class COMConverter2 {
 	public static void generateComFile(Molecule molecule, File file, int nbElectronsDiff, ComType type, String title)
 			throws IOException {
 
+		String coordName = file.getAbsolutePath().replace(".com", ".coords");
+		BufferedWriter w = new BufferedWriter(new FileWriter(new File(coordName)));
+		
+		for (int i = 0 ; i < molecule.getNbHexagons() ; i++) {
+			int [] hexa = molecule.getHexagon(i);
+			
+			for (int j : hexa)
+				w.write(j + " ");
+			w.write("\n");
+		}
+		
+		w.close();
+		
 		System.out.println("Treating " + title + ".log");
 		
 		int hexa = -1, yMin = Integer.MAX_VALUE;
