@@ -13,9 +13,9 @@ import molecules.Molecule;
 public class IMS2D1AGroup extends MoleculeGroup {
 
 	private String pictureData;
-	
+
 	public IMS2D1AGroup(Molecule molecule) {
-    super(molecule);
+		super(molecule);
 		this.pictureData = molecule.getIms2d1a();
 		try {
 			buildImage();
@@ -23,39 +23,40 @@ public class IMS2D1AGroup extends MoleculeGroup {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void buildImage() throws IOException {
-		
+
 		if (pictureData != null) {
-			
-			File file = writeFile();		
+
+			File file = writeFile();
 			InputStream stream = new FileInputStream("map.png");
-	    	Image image = new Image(stream);
-	    	ImageView imageView = new ImageView();
-	    	imageView.setImage(image);
+			Image image = new Image(stream);
+			ImageView imageView = new ImageView();
+			imageView.setImage(image);
+			imageView.setFitWidth(imageView.getFitWidth() / 2);
+			imageView.setFitHeight(imageView.getFitHeight() / 2);
 			super.getChildren().add(imageView);
 			file.delete();
 		}
-		
+
 		else {
 			Image image = new Image("/resources/graphics/unknown.png");
 			ImageView imageView = new ImageView();
-	    	imageView.setImage(image);
+			imageView.setImage(image);
 			super.getChildren().add(imageView);
 		}
 	}
-	
+
 	private File writeFile() throws IOException {
-		
+
 		PictureConverter.stringToPng(pictureData, "map.png");
 		return new File("map.png");
 	}
-	
-  
-  protected void drawHexagons() {
-  }
-  
-	public static void main(String [] args) {
+
+	protected void drawHexagons() {
+	}
+
+	public static void main(String[] args) {
 		try {
 			System.out.println(PictureConverter.pngToString("/home/adrien/Téléchargements/unknown.png"));
 		} catch (IOException e) {
