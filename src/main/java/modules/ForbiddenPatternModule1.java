@@ -18,27 +18,27 @@ import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import generator.fragments.Fragment;
-import generator.fragments.FragmentOccurences;
+import generator.patterns.Pattern;
+import generator.patterns.PatternOccurences;
 
-public class ForbiddenFragmentModule2 extends Module{
+public class ForbiddenPatternModule1 extends Module{
 	
-	private Fragment fragment;
+	private Pattern pattern;
 	
-	private ArrayList<Fragment> symmetricFragments;
+	private ArrayList<Pattern> symmetricPatterns;
 	
 	private ArrayList<Integer> presentHexagons, unknownHexagons, absentHexagons;
 	private BoolVar [] presences;
 	
-	private FragmentOccurences fragmentOccurences;
+	private PatternOccurences patternOccurences;
 	
 	private VariableStrategy variableStrategy;
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public ForbiddenFragmentModule2(Fragment fragment, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
+	public ForbiddenPatternModule1(Pattern pattern, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		super();
-		this.fragment = fragment;
+		this.pattern = pattern;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
 		this.orderStrategy = orderStrategy;
@@ -47,9 +47,10 @@ public class ForbiddenFragmentModule2 extends Module{
 	@Override
 	public void buildVariables() {
 		
-		computeFragmentOccurences();
+		computePatternOccurences();
 		
-		presences = new BoolVar[fragmentOccurences.getOccurences().size()];
+
+		presences = new BoolVar[patternOccurences.getOccurences().size()];
 		for (int i = 0 ; i < presences.length ; i++)
 			presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
 		
@@ -57,9 +58,9 @@ public class ForbiddenFragmentModule2 extends Module{
 		absentHexagons = new ArrayList<>();
 		unknownHexagons = new ArrayList<>();
 		
-		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 			
-			int label = fragment.getLabel(i);
+			int label = pattern.getLabel(i);
 			
 			if (label == 1)
 				unknownHexagons.add(i);
@@ -76,7 +77,7 @@ public class ForbiddenFragmentModule2 extends Module{
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		ArrayList<Integer []> occurences = fragmentOccurences.getOccurences();
+		ArrayList<Integer []> occurences = patternOccurences.getOccurences();
 		
 		for (int i = 0 ; i < occurences.size() ; i++) {
 			
@@ -93,26 +94,101 @@ public class ForbiddenFragmentModule2 extends Module{
 			for (Integer hexagon : absentHexagons) {
 				if (occurence[hexagon] != -1)
 					absent.add(occurence[hexagon]);
-			}
-
+			}		
+			
+			Constraint ifCstr = generalModel.getProblem().arithm(presences[i], "=", 1);
+			
 			Constraint [] andCstr = new Constraint[present.size() + absent.size()];
-				
+			
 			int index = 0;
-				
+			
 			for (Integer j : absent) {
 				andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 0);
 				index ++;
 			}
-				
+			
 			for (Integer j : present) {
 				andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 1);
 				index ++;
-			}
-				
-			generalModel.getProblem().and(andCstr).reifyWith(presences[i]);
-				
+			}	
+			
+			Constraint thenCstr = generalModel.getProblem().and(andCstr);
+			generalModel.getProblem().ifThen(ifCstr, thenCstr);
+			generalModel.getProblem().ifOnlyIf(ifCstr, thenCstr);
+			
 			generalModel.getProblem().sum(presences, "=", 0).post();
-					
+			
+			
+
+/*			
+			//Sens 1
+			
+			IntVar[] varClause;
+			IntIterableRangeSet[] valClause;
+			int index;
+			
+
+			
+			varClause = new IntVar [present.size() + absent.size() + 1];
+			valClause = new IntIterableRangeSet[present.size() + absent.size() + 1];
+			
+			index = 0;
+			
+			for (Integer j : absent) {
+				varClause[index] = generalModel.getWatchedGraphVertices()[j];
+				valClause[index] = new IntIterableRangeSet(1);
+				index ++;
+			}
+			
+			for (Integer j : present) {
+				varClause[index] = generalModel.getWatchedGraphVertices()[j];
+				valClause[index] = new IntIterableRangeSet(0);
+				index ++;
+			}
+			
+			varClause[index] = presences[i];
+			valClause[index] = new IntIterableRangeSet(1);
+			
+			generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
+		
+			
+		
+			//Sens 2
+			
+			BoolVar pi = presences[i];
+			
+			index = 0;
+			
+			for (Integer j : absent) {
+				
+				varClause = new IntVar [] {
+						pi,
+						generalModel.getWatchedGraphVertices()[j]
+				};
+				
+				valClause = new IntIterableRangeSet[] {
+						new IntIterableRangeSet(0), 
+						new IntIterableRangeSet(0)
+				};
+				
+				generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
+			}
+			
+			for (Integer j : present) {
+				
+				varClause = new IntVar [] {
+						pi,
+						generalModel.getWatchedGraphVertices()[j]
+				};
+				
+				valClause = new IntIterableRangeSet[] {
+						new IntIterableRangeSet(0), 
+						new IntIterableRangeSet(1)
+				};
+				
+				generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
+			}
+*/
 		}
 	}
 
@@ -122,7 +198,7 @@ public class ForbiddenFragmentModule2 extends Module{
 	}
 
 	@Override
-	public void changeSolvingStrategy() {
+	public void changeSolvingStrategy() {	
 		GeneralModel generalModel = getGeneralModel();
 
 		IntVar [] branchingVariables = new IntVar[generalModel.getChanneling().length + presences.length];
@@ -192,19 +268,18 @@ public class ForbiddenFragmentModule2 extends Module{
 		}
 		
 		generalModel.getProblem().getSolver().setSearch(new IntStrategy(branchingVariables, variableSelector, valueSelector));
-		
 	}
 
 	@Override
 	public void changeGraphVertices() { }
 	
-	private void computeFragmentOccurences() {
+	private void computePatternOccurences() {
 		
-		symmetricFragments = fragment.computeRotations();	
-		fragmentOccurences = new FragmentOccurences();
+		symmetricPatterns = pattern.computeRotations();	
+		patternOccurences = new PatternOccurences();
 		
-		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));
+		for (Pattern f : symmetricPatterns)
+			patternOccurences.addAll(getGeneralModel().computeTranslations(f));
 	}
 
 }

@@ -18,20 +18,20 @@ import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 
-public class SingleFragment2Module extends Module {
+public class SinglePattern2Module extends Module {
 
 	private boolean useSymmetries;
 	
-	private Fragment fragment;
+	private Pattern pattern;
 	private int [][] neighborGraph;
 
 	ArrayList<Integer> absentHexagons;
 	ArrayList<Integer> presentHexagons;
 	ArrayList<Integer> unknownHexagons;
 	
-	private IntVar[] fragmentCorrespondances;
+	private IntVar[] patternCorrespondances;
 	private int [] T1, T2;
 	
 	private BoolVar symmetry;
@@ -44,8 +44,8 @@ public class SingleFragment2Module extends Module {
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public SingleFragment2Module(Fragment fragment, boolean useSymmetries, VariableStrategy variableStrategy, ValueStrategy strategy, OrderStrategy orderStrategy) {
-		this.fragment = fragment;
+	public SinglePattern2Module(Pattern pattern, boolean useSymmetries, VariableStrategy variableStrategy, ValueStrategy strategy, OrderStrategy orderStrategy) {
+		this.pattern = pattern;
 		this.useSymmetries = useSymmetries;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = strategy;
@@ -70,7 +70,7 @@ public class SingleFragment2Module extends Module {
 			}
 		}
 		
-		fragmentCorrespondances = new IntVar[nbHexagonsCoronenoid];
+		patternCorrespondances = new IntVar[nbHexagonsCoronenoid];
 		T1 = new int [generalModel.getDiameter() * generalModel.getDiameter()];
 		T2 = new int [nbHexagonsCoronenoid];
 		
@@ -86,7 +86,7 @@ public class SingleFragment2Module extends Module {
 					T1[generalModel.getCoordsMatrix()[line][column]] = index;
 					System.out.println(generalModel.getCoordsMatrix()[line][column]+" "+index); 
 					T2[index] = coroIndex;
-					fragmentCorrespondances[index] = generalModel.getProblem().intVar("f_c_" + coroIndex, -1, fragment.getNbNodes()-1);  	// attention
+					patternCorrespondances[index] = generalModel.getProblem().intVar("f_c_" + coroIndex, -1, pattern.getNbNodes()-1);  	// attention
 					index ++;
 					
 					
@@ -104,19 +104,19 @@ public class SingleFragment2Module extends Module {
 		GeneralModel generalModel = getGeneralModel();
 
 		System.out.println("Scope");
-		for (IntVar x : fragmentCorrespondances)
+		for (IntVar x : patternCorrespondances)
 			System.out.println(x.toString());
 		
-		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 			
-			int label = fragment.getLabel(i);
+			int label = pattern.getLabel(i);
 
 			IntVar count;
 			if (label == 2)
 				count = generalModel.getProblem().intVar("count_" + i, 1, 1);
 			else count = generalModel.getProblem().intVar("count_" + i, 0, 1);
 			
-			generalModel.getProblem().count(i, fragmentCorrespondances, count).post();
+			generalModel.getProblem().count(i, patternCorrespondances, count).post();
 					
 			if (label == 1)
 				unknownHexagons.add(i);
@@ -138,25 +138,25 @@ public class SingleFragment2Module extends Module {
 			if (T1[j] != -1) {
 			
 			/*
-			 * Si un hexagone du coronénoïde est lié à un hexagon présent du fragment, alors il doit être présent dans la solution
+			 * Si un hexagone du coronénoïde est lié à un hexagon présent du pattern, alors il doit être présent dans la solution
 			 */	
 				
 				if (presentHexagons.size() > 0) {					
 					
-					varClause = new IntVar[fragment.getNbNodes()+2-presentHexagons.size()];
-					valClause = new IntIterableRangeSet[fragment.getNbNodes()+2-presentHexagons.size()];
+					varClause = new IntVar[pattern.getNbNodes()+2-presentHexagons.size()];
+					valClause = new IntIterableRangeSet[pattern.getNbNodes()+2-presentHexagons.size()];
 					
 					int index = 0;
 					
-					for (int i = 0; i < fragment.getNbNodes(); i++) {
+					for (int i = 0; i < pattern.getNbNodes(); i++) {
 						if (! presentHexagons.contains(i)) {
-					    	varClause[index] = fragmentCorrespondances[T1[j]];
+					    	varClause[index] = patternCorrespondances[T1[j]];
 					    	valClause[index] = new IntIterableRangeSet(i);
 					    	index++;
 						}
 					}
 	
-					varClause[index] = fragmentCorrespondances[T1[j]];
+					varClause[index] = patternCorrespondances[T1[j]];
 					valClause[index] = new IntIterableRangeSet(-1);
 					index++;
 					varClause[index] = generalModel.getGraphVertices()[j];
@@ -166,25 +166,25 @@ public class SingleFragment2Module extends Module {
 				}
 				
 				/*
-				 * Si un hexagone du coronénoïde est lié à un hexagone absent du fragment i, alors il ne doit pas être présent dans la solutions
+				 * Si un hexagone du coronénoïde est lié à un hexagone absent du pattern i, alors il ne doit pas être présent dans la solutions
 				 */
 				
 				if (absentHexagons.size() > 0) {
 	
-					varClause = new IntVar[fragment.getNbNodes()+2-absentHexagons.size()];
-					valClause = new IntIterableRangeSet[fragment.getNbNodes()+2-absentHexagons.size()];
+					varClause = new IntVar[pattern.getNbNodes()+2-absentHexagons.size()];
+					valClause = new IntIterableRangeSet[pattern.getNbNodes()+2-absentHexagons.size()];
 					
 					int index = 0;
 					
-					for (int i = 0; i < fragment.getNbNodes(); i++) {
+					for (int i = 0; i < pattern.getNbNodes(); i++) {
 						if (! absentHexagons.contains(i)) {
-					    	varClause[index] = fragmentCorrespondances[T1[j]];
+					    	varClause[index] = patternCorrespondances[T1[j]];
 					    	valClause[index] = new IntIterableRangeSet(i);
 					    	index++;
 						}
 					}
 	
-					varClause[index] = fragmentCorrespondances[T1[j]];
+					varClause[index] = patternCorrespondances[T1[j]];
 					valClause[index] = new IntIterableRangeSet(-1);
 					index++;
 					varClause[index] = generalModel.getGraphVertices()[j];
@@ -199,18 +199,18 @@ public class SingleFragment2Module extends Module {
 			int index = 0;
 
 			for (int i = 0 ; i < presentHexagons.size() ; i++) {
-		    	varClause[index] = fragmentCorrespondances[T1[j]];
+		    	varClause[index] = patternCorrespondances[T1[j]];
 		    	valClause[index] = new IntIterableRangeSet(presentHexagons.get(i));
 		    	index++;
 			}			
 
 			for (int i = 0 ; i < unknownHexagons.size() ; i++) {
-		    	varClause[index] = fragmentCorrespondances[T1[j]];
+		    	varClause[index] = patternCorrespondances[T1[j]];
 		    	valClause[index] = new IntIterableRangeSet(unknownHexagons.get(i));
 		    	index++;
 			}			
 
-			varClause[index] = fragmentCorrespondances[T1[j]];
+			varClause[index] = patternCorrespondances[T1[j]];
 			valClause[index] = new IntIterableRangeSet(-1);
 			index++;
 			varClause[index] = generalModel.getGraphVertices()[j];
@@ -235,7 +235,7 @@ public class SingleFragment2Module extends Module {
 					
 					ArrayList<IntVar> tupleList = new ArrayList<>();
 					
-					tupleList.add(fragmentCorrespondances[T1[index]]);
+					tupleList.add(patternCorrespondances[T1[index]]);
 					
 					ArrayList<Integer> okColumns = new ArrayList<Integer>();
 					okColumns.add(0);
@@ -251,7 +251,7 @@ public class SingleFragment2Module extends Module {
 						}
 						
 						else {
-							tupleList.add(fragmentCorrespondances[T1[neighbor]]);
+							tupleList.add(patternCorrespondances[T1[neighbor]]);
 							okColumns.add(i + 1);
 						}
 					}
@@ -279,14 +279,14 @@ public class SingleFragment2Module extends Module {
 
 	@Override
 	public void addVariables() {
-//		generalModel.addWatchedVariable(fragmentCorrespondances);
+//		generalModel.addWatchedVariable(patternCorrespondances);
 	}
 
 	@Override
 	public void changeSolvingStrategy() { 
 		GeneralModel generalModel = getGeneralModel();
 
-		IntVar [] branchingVariables = new IntVar[generalModel.getChanneling().length + fragmentCorrespondances.length];
+		IntVar [] branchingVariables = new IntVar[generalModel.getChanneling().length + patternCorrespondances.length];
 		
 		int index = 0;
 		
@@ -299,7 +299,7 @@ public class SingleFragment2Module extends Module {
 					index ++;
 				}
 				
-				for (IntVar x : fragmentCorrespondances) {
+				for (IntVar x : patternCorrespondances) {
 					System.out.println(index+" "+x.toString());
 					branchingVariables[index] = x;
 					index ++;
@@ -309,7 +309,7 @@ public class SingleFragment2Module extends Module {
 				
 			case CHANNELING_LAST:
 				
-				for (IntVar x : fragmentCorrespondances) {
+				for (IntVar x : patternCorrespondances) {
 					branchingVariables[index] = x;
 					index ++;
 				}
@@ -377,7 +377,7 @@ public class SingleFragment2Module extends Module {
 				
 				if (v != -1) {
 					
-					if (!(fragment.getLabel(v) == 1 || fragment.getLabel(v) == 3)) {
+					if (!(pattern.getLabel(v) == 1 || pattern.getLabel(v) == 3)) {
 						ok = false;
 					}
 				}
@@ -403,7 +403,7 @@ public class SingleFragment2Module extends Module {
 		}
 		
 		if (table.nbTuples() == 0) {
-			for (int i = 0 ; i < fragment.getNbNodes() ; i++)
+			for (int i = 0 ; i < pattern.getNbNodes() ; i++)
 				table.add(new int [] {i, 0});
 		}
 		
@@ -412,7 +412,7 @@ public class SingleFragment2Module extends Module {
 	
 	private void buildMatrixTableWithoutSymmetries() {
 		
-		matrixTable = new int [6 * fragment.getNbNodes()][8];
+		matrixTable = new int [6 * pattern.getNbNodes()][8];
 		
 		StringBuilder tableString = new StringBuilder();
 		tableString.append("TABLE\n");
@@ -427,15 +427,15 @@ public class SingleFragment2Module extends Module {
 		
 		for (int shift = 0 ; shift < 6 ; shift ++) {
 			
-			int [][] newNeighborGraph = new int [fragment.getNbNodes()][6]; 
+			int [][] newNeighborGraph = new int [pattern.getNbNodes()][6]; 
 			
-			for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+			for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 				for (int j = 0 ; j < 6 ; j++) {
-					newNeighborGraph[i][(j + shift) % 6] = fragment.getNeighbor(i, j);
+					newNeighborGraph[i][(j + shift) % 6] = pattern.getNeighbor(i, j);
 				}
 			}
 			
-			for (int i = 0 ; i < fragment.getNbNodes() ; i++) {	
+			for (int i = 0 ; i < pattern.getNbNodes() ; i++) {	
 			
 				int [] tuple = new int[7];
 				tuple[0] = i;
@@ -466,7 +466,7 @@ public class SingleFragment2Module extends Module {
 	
 	private void buildMatrixTable() {
 		
-		matrixTable = new int [2 * 6 * fragment.getNbNodes()][8];
+		matrixTable = new int [2 * 6 * pattern.getNbNodes()][8];
 		
 		StringBuilder tableString = new StringBuilder();
 		tableString.append("TABLE\n");
@@ -481,15 +481,15 @@ public class SingleFragment2Module extends Module {
 		
 		for (int shift = 0 ; shift < 6 ; shift ++) {
 			
-			int [][] newNeighborGraph = new int [fragment.getNbNodes()][6]; 
+			int [][] newNeighborGraph = new int [pattern.getNbNodes()][6]; 
 			
-			for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+			for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 				for (int j = 0 ; j < 6 ; j++) {
-					newNeighborGraph[i][(j + shift) % 6] = fragment.getNeighbor(i, j);
+					newNeighborGraph[i][(j + shift) % 6] = pattern.getNeighbor(i, j);
 				}
 			}
 			
-			for (int i = 0 ; i < fragment.getNbNodes() ; i++) {	
+			for (int i = 0 ; i < pattern.getNbNodes() ; i++) {	
 			
 				int [] tuple = new int[8];
 				tuple[0] = i;
@@ -520,29 +520,29 @@ public class SingleFragment2Module extends Module {
 		
 		tableString.append("\n");
 		
-		int [][] neighborGraphSymmetry = new int[fragment.getNbNodes()][6];
+		int [][] neighborGraphSymmetry = new int[pattern.getNbNodes()][6];
 		
-		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
-			neighborGraphSymmetry[i][0] = fragment.getNeighbor(i, 2);
-			neighborGraphSymmetry[i][1] = fragment.getNeighbor(i, 1);
-			neighborGraphSymmetry[i][2] = fragment.getNeighbor(i, 0);
-			neighborGraphSymmetry[i][3] = fragment.getNeighbor(i, 5);
-			neighborGraphSymmetry[i][4] = fragment.getNeighbor(i, 4);
-			neighborGraphSymmetry[i][5] = fragment.getNeighbor(i, 3);
+		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
+			neighborGraphSymmetry[i][0] = pattern.getNeighbor(i, 2);
+			neighborGraphSymmetry[i][1] = pattern.getNeighbor(i, 1);
+			neighborGraphSymmetry[i][2] = pattern.getNeighbor(i, 0);
+			neighborGraphSymmetry[i][3] = pattern.getNeighbor(i, 5);
+			neighborGraphSymmetry[i][4] = pattern.getNeighbor(i, 4);
+			neighborGraphSymmetry[i][5] = pattern.getNeighbor(i, 3);
 			
 		}
 		
 		for (int shift = 0 ; shift < 6 ; shift ++) {
 			
-			int [][] newNeighborGraph = new int [fragment.getNbNodes()][6]; 
+			int [][] newNeighborGraph = new int [pattern.getNbNodes()][6]; 
 			
-			for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+			for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 				for (int j = 0 ; j < 6 ; j++) {
 					newNeighborGraph[i][(j + shift) % 6] = neighborGraphSymmetry[i][j];
 				}
 			}
 			
-			for (int i = 0 ; i < fragment.getNbNodes() ; i++) {	
+			for (int i = 0 ; i < pattern.getNbNodes() ; i++) {	
 			
 				int [] tuple = new int[8];
 				tuple[0] = i;

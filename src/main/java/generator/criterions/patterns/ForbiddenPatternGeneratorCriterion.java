@@ -1,10 +1,10 @@
 package generator.criterions.patterns;
 
-import generator.fragments.FragmentResolutionInformations;
+import generator.patterns.PatternResolutionInformations;
 
 public class ForbiddenPatternGeneratorCriterion extends PatternGeneratorCriterion {
 
-	public ForbiddenPatternGeneratorCriterion(FragmentResolutionInformations patternsInformations) {
+	public ForbiddenPatternGeneratorCriterion(PatternResolutionInformations patternsInformations) {
 		super(patternsInformations);
 	}
 }

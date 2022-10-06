@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import org.chocosolver.solver.Solver;
 
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 import javafx.scene.Group;
 import solution.BenzenoidSolution;
 
@@ -23,7 +23,7 @@ public class ResultSolver {
 
 	private int[] hexagonsCorrespondances;
 	
-	private ArrayList<Fragment> nogoodsFragments = new ArrayList<>();
+	private ArrayList<Pattern> nogoodsFragments = new ArrayList<>();
 
 	/*
 	 * JavaFX Components
@@ -187,11 +187,11 @@ public class ResultSolver {
 		this.solver = solver;
 	}
 	
-	public void setNogoodsFragments(ArrayList<Fragment> nogoodsFragments) {
+	public void setNogoodsFragments(ArrayList<Pattern> nogoodsFragments) {
 		this.nogoodsFragments = nogoodsFragments;
 	}
 	
-	public ArrayList<Fragment> getNogoodsFragments() {
+	public ArrayList<Pattern> getNogoodsFragments() {
 		return nogoodsFragments;
 	}
 }

@@ -26,7 +26,7 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 		add(new RectangleProperty());
 		add(new RhombusProperty());
 		add(new SymmetryProperty());
-		add(new FragmentProperty());
+		add(new PatternProperty());
 	}
 
 	public void add(ModelProperty modelProperty) {

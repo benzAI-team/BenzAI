@@ -14,22 +14,19 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.solver.variables.Variable;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 
-import generator.fragments.Fragment;
-import generator.fragments.FragmentOccurences;
-import generator.fragments.FragmentResolutionInformations;
+import generator.patterns.Pattern;
+import generator.patterns.PatternOccurences;
+import generator.patterns.PatternResolutionInformations;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.ParameterizedExpression;
-import modules.Module;
 import molecules.Node;
 import nogood.NoGoodBorderRecorder;
 import nogood.NoGoodHorizontalAxisRecorder;
 import nogood.NoGoodNoneRecorder;
 import nogood.NoGoodRecorder;
-import nogood.NoGoodUniqueRecorder;
 import nogood.NoGoodVerticalAxisRecorder;
 import solution.BenzenoidSolution;
-import solving_modes.GeneralModelMode;
 import utils.Couple;
 import utils.Triplet;
 import view.generator.Stopper;
@@ -60,7 +57,7 @@ public class GeneralModel {
 
 	private Couple<Integer, Integer>[] coordsCorrespondance;
 
-	private FragmentResolutionInformations patternsInformations;
+	private PatternResolutionInformations patternsInformations;
 
 	/*
 	 * Parameters
@@ -116,7 +113,7 @@ public class GeneralModel {
 
 	ArrayList<BenzenoidSolution> benzenoidSolutions = new ArrayList<>();
 
-	private ArrayList<Fragment> nogoodsFragments = new ArrayList<>();
+	private ArrayList<Pattern> nogoodsFragments = new ArrayList<>();
 	private ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
 
 	private int nbTotalSolutions = 0;
@@ -445,7 +442,7 @@ public class GeneralModel {
 		}
 	}
 
-	private Fragment convertToPattern() {
+	private Pattern convertToPattern() {
 
 		ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
 
@@ -555,7 +552,7 @@ public class GeneralModel {
 		for (int i = 0; i < nbNodes; i++)
 			labels[i] = 2;
 
-		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
+		return new Pattern(matrix, labels, nodes, null, null, neighbors, 0);
 	}
 
 	private void recordNoGoods() {
@@ -1327,7 +1324,7 @@ public class GeneralModel {
 		return nbVertices;
 	}
 
-	public void setPatternsInformations(FragmentResolutionInformations patternsInformations) {
+	public void setPatternsInformations(PatternResolutionInformations patternsInformations) {
 		this.patternsInformations = patternsInformations;
 	}
 
@@ -1424,7 +1421,7 @@ public class GeneralModel {
 
 	}
 
-	private boolean isValid(Couple<Integer, Integer> coord, Fragment fragment, int index) {
+	private boolean isValid(Couple<Integer, Integer> coord, Pattern fragment, int index) {
 
 		if (coord.getX() < 0 || coord.getX() >= diameter || coord.getY() < 0 || coord.getY() >= diameter
 				|| coordsMatrix[coord.getY()][coord.getX()] == -1) {
@@ -1445,9 +1442,9 @@ public class GeneralModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public FragmentOccurences computeTranslations(Fragment fragment) {
+	public PatternOccurences computeTranslations(Pattern fragment) {
 
-		FragmentOccurences fragmentOccurences = new FragmentOccurences();
+		PatternOccurences fragmentOccurences = new PatternOccurences();
 
 		/*
 		 * Trouver l'hexagone pr�sent du fragment le plus en haut � gauche

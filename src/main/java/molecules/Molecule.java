@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
@@ -24,7 +23,7 @@ import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.ResultSolver;
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 import http.Post;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
@@ -391,7 +390,7 @@ public class Molecule implements Comparable<Molecule> {
 			String[] sHexagon = hexagon.split(" ");
 
 			for (int j = 1; j < sHexagon.length; j++) {
-				String[] sVertex = sHexagon[j].split(Pattern.quote("_"));
+				String[] sVertex = sHexagon[j].split(java.util.regex.Pattern.quote("_"));
 				int x = Integer.parseInt(sVertex[0]);
 				int y = Integer.parseInt(sVertex[1]);
 				hexagons[i][j - 1] = coords.get(x, y);
@@ -663,7 +662,7 @@ public class Molecule implements Comparable<Molecule> {
 		writer.write("nb_hydrogens\t" + this.getNbHydrogens() + "\n");
 		writer.write("nb_hexagons\t" + nbHexagons + "\n");
 
-		String nbKekuleStructures = Double.toString(getNbKekuleStructures()).split(Pattern.quote("."))[0];
+		String nbKekuleStructures = Double.toString(getNbKekuleStructures()).split(java.util.regex.Pattern.quote("."))[0];
 
 		writer.write(
 				new String(new String("nb_kekule_structures\t" + nbKekuleStructures).getBytes(), StandardCharsets.UTF_8)
@@ -702,7 +701,7 @@ public class Molecule implements Comparable<Molecule> {
 
 		String name = toString();
 
-		String[] split = name.split(Pattern.quote("-"));
+		String[] split = name.split(java.util.regex.Pattern.quote("-"));
 
 		GeneralModel model = new GeneralModel(modelPropertySet);
 
@@ -1126,7 +1125,7 @@ public class Molecule implements Comparable<Molecule> {
 		return false;
 	}
 
-	public Fragment convertToPattern(int xShift, int yShift) {
+	public Pattern convertToPattern(int xShift, int yShift) {
 
 		@SuppressWarnings("unchecked")
 		Couple<Integer, Integer>[] shiftCoords = new Couple[nbHexagons];
@@ -1223,10 +1222,10 @@ public class Molecule implements Comparable<Molecule> {
 		for (int i = 0; i < nbNodes; i++)
 			labels[i] = 2;
 
-		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
+		return new Pattern(matrix, labels, nodes, null, null, neighbors, 0);
 	}
 
-	public ArrayList<String> translations(Fragment pattern, int diameter, int[][] coordsMatrix,
+	public ArrayList<String> translations(Pattern pattern, int diameter, int[][] coordsMatrix,
 			ArrayList<Integer> topBorder, ArrayList<Integer> leftBorder) {
 
 		ArrayList<String> names = new ArrayList<>();
@@ -1348,10 +1347,10 @@ public class Molecule implements Comparable<Molecule> {
 				break;
 		}
 
-		Fragment pattern = convertToPattern(xShift, yShift);
-		ArrayList<Fragment> rotations = pattern.computeRotations();
+		Pattern pattern = convertToPattern(xShift, yShift);
+		ArrayList<Pattern> rotations = pattern.computeRotations();
 
-		for (Fragment f : rotations) {
+		for (Pattern f : rotations) {
 			ArrayList<String> rotationsNames = translations(f, diameter, coordsMatrix, topBorder, leftBorder);
 			for (String name : rotationsNames) {
 				if (!names.contains(name))

@@ -19,26 +19,26 @@ import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import generator.fragments.Fragment;
-import generator.fragments.FragmentOccurences;
+import generator.patterns.Pattern;
+import generator.patterns.PatternOccurences;
 
-public class SingleFragment1Module extends Module {
+public class SinglePattern1Module extends Module {
 
-	private Fragment fragment;
+	private Pattern pattern;
 
-	private ArrayList<Fragment> symmetricFragments;
+	private ArrayList<Pattern> symmetricPatterns;
 	private ArrayList<Integer> presentHexagons, unknownHexagons, absentHexagons;
 	private BoolVar[] presences;
 
-	private FragmentOccurences fragmentOccurences;
+	private PatternOccurences patternOccurences;
 
 	private VariableStrategy variablesStrategy;
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 
-	public SingleFragment1Module(Fragment fragment, VariableStrategy variablesStrategy,
+	public SinglePattern1Module(Pattern pattern, VariableStrategy variablesStrategy,
 			ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		this.fragment = fragment;
+		this.pattern = pattern;
 		this.variablesStrategy = variablesStrategy;
 		this.valueStrategy = valueStrategy;
 		this.orderStrategy = orderStrategy;
@@ -47,9 +47,9 @@ public class SingleFragment1Module extends Module {
 	@Override
 	public void buildVariables() {
 
-		computeFragmentOccurences();
+		computePatternOccurences();
 
-		presences = new BoolVar[fragmentOccurences.getOccurences().size()];
+		presences = new BoolVar[patternOccurences.getOccurences().size()];
 		for (int i = 0; i < presences.length; i++)
 			presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
 
@@ -57,9 +57,9 @@ public class SingleFragment1Module extends Module {
 		absentHexagons = new ArrayList<>();
 		unknownHexagons = new ArrayList<>();
 
-		for (int i = 0; i < fragment.getNbNodes(); i++) {
+		for (int i = 0; i < pattern.getNbNodes(); i++) {
 
-			int label = fragment.getLabel(i);
+			int label = pattern.getLabel(i);
 
 			if (label == 1)
 				unknownHexagons.add(i);
@@ -76,7 +76,7 @@ public class SingleFragment1Module extends Module {
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		ArrayList<Integer[]> occurences = fragmentOccurences.getOccurences();
+		ArrayList<Integer[]> occurences = patternOccurences.getOccurences();
 
 		for (int i = 0; i < occurences.size(); i++) {
 
@@ -202,14 +202,14 @@ public class SingleFragment1Module extends Module {
 	public void changeGraphVertices() {
 	}
 
-	private void computeFragmentOccurences() {
+	private void computePatternOccurences() {
 
-		symmetricFragments = fragment.computeRotations();
+		symmetricPatterns = pattern.computeRotations();
 
-		fragmentOccurences = new FragmentOccurences();
+		patternOccurences = new PatternOccurences();
 
-		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));
+		for (Pattern f : symmetricPatterns)
+			patternOccurences.addAll(getGeneralModel().computeTranslations(f));
 	}
 
 }

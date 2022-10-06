@@ -19,29 +19,29 @@ import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import generator.fragments.Fragment;
-import generator.fragments.FragmentOccurences;
+import generator.patterns.Pattern;
+import generator.patterns.PatternOccurences;
 
-public class OccurenceFragmentModule extends Module{
+public class OccurencePatternModule extends Module{
 
-	private Fragment fragment;
+	private Pattern pattern;
 	private int nbOccurences;
 	
-	private ArrayList<Fragment> symmetricFragments;
+	private ArrayList<Pattern> symmetricPatterns;
 	private ArrayList<Integer> presentHexagons, unknownHexagons, absentHexagons;
 	private BoolVar [] presences;
 	
 	private IntVar occurenceVar;
 	private BoolVar [] presences2;
 	
-	private FragmentOccurences fragmentOccurences;
+	private PatternOccurences patternOccurences;
 	
 	private VariableStrategy variablesStrategy;
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public OccurenceFragmentModule(Fragment fragment, int nbOccurences, VariableStrategy variablesStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		this.fragment = fragment;
+	public OccurencePatternModule(Pattern pattern, int nbOccurences, VariableStrategy variablesStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
+		this.pattern = pattern;
 		this.nbOccurences = nbOccurences;
 		this.variablesStrategy = variablesStrategy;
 		this.valueStrategy = valueStrategy;
@@ -52,15 +52,15 @@ public class OccurenceFragmentModule extends Module{
 	public void buildVariables() {
 		GeneralModel generalModel = getGeneralModel();
 
-		computeFragmentOccurences();
+		computePatternOccurences();
 		
 		occurenceVar = generalModel.getProblem().intVar("n_e", 0, nbOccurences);
 		
-		presences = new BoolVar[fragmentOccurences.getOccurences().size()];
+		presences = new BoolVar[patternOccurences.getOccurences().size()];
 		for (int i = 0 ; i < presences.length ; i++)
 			presences[i] = generalModel.getProblem().boolVar("presence_" + i);
 		
-		presences2 = new BoolVar[fragmentOccurences.getOccurences().size()];
+		presences2 = new BoolVar[patternOccurences.getOccurences().size()];
 		for (int i = 0 ; i < presences2.length ; i++)
 			presences2[i] = generalModel.getProblem().boolVar("presence2_" + i);
 		
@@ -68,9 +68,9 @@ public class OccurenceFragmentModule extends Module{
 		absentHexagons = new ArrayList<>();
 		unknownHexagons = new ArrayList<>();
 		
-		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 			
-			int label = fragment.getLabel(i);
+			int label = pattern.getLabel(i);
 			
 			if (label == 1)
 				unknownHexagons.add(i);
@@ -87,7 +87,7 @@ public class OccurenceFragmentModule extends Module{
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		ArrayList<Integer []> occurences = fragmentOccurences.getOccurences();
+		ArrayList<Integer []> occurences = patternOccurences.getOccurences();
 		
 		for (int i = 0 ; i < occurences.size() ; i++) {
 			
@@ -172,25 +172,25 @@ public class OccurenceFragmentModule extends Module{
 		
 		for (int hexagon : hexagons) {
 			
-			ArrayList<Integer> fragments = new ArrayList<>();
+			ArrayList<Integer> patterns = new ArrayList<>();
 			
-			for (int i = 0 ; i < fragmentOccurences.size() ; i++) {
+			for (int i = 0 ; i < patternOccurences.size() ; i++) {
 				
-				ArrayList<Integer> present = fragmentOccurences.getAllPresentHexagons().get(i);
-				ArrayList<Integer> absent = fragmentOccurences.getAllAbsentHexagons().get(i);
-				ArrayList<Integer> unknown = fragmentOccurences.getAllUnknownHexagons().get(i);
-				ArrayList<Integer> outter = fragmentOccurences.getAllOutterHexagons().get(i);
+				ArrayList<Integer> present = patternOccurences.getAllPresentHexagons().get(i);
+				ArrayList<Integer> absent = patternOccurences.getAllAbsentHexagons().get(i);
+				ArrayList<Integer> unknown = patternOccurences.getAllUnknownHexagons().get(i);
+				ArrayList<Integer> outter = patternOccurences.getAllOutterHexagons().get(i);
 			
 				if (present.contains(hexagon) || absent.contains(hexagon) || unknown.contains(hexagon) || outter.contains(hexagon))
-					fragments.add(i);
+					patterns.add(i);
 			}
 			
-			BoolVar [] e1 = new BoolVar[fragments.size()];
-			BoolVar [] e2 = new BoolVar[fragments.size()];
+			BoolVar [] e1 = new BoolVar[patterns.size()];
+			BoolVar [] e2 = new BoolVar[patterns.size()];
 			
-			for (int i = 0 ; i < fragments.size() ; i++) {
-				e1[i] = presences[fragments.get(i)];
-				e2[i] = presences2[fragments.get(i)];
+			for (int i = 0 ; i < patterns.size() ; i++) {
+				e1[i] = presences[patterns.get(i)];
+				e2[i] = presences2[patterns.get(i)];
 			}
 			
 			
@@ -320,14 +320,14 @@ public class OccurenceFragmentModule extends Module{
 		
 	}
 	
-	private void computeFragmentOccurences() {
+	private void computePatternOccurences() {
 		
-		symmetricFragments = fragment.computeRotations();
+		symmetricPatterns = pattern.computeRotations();
 		
-		fragmentOccurences = new FragmentOccurences();
+		patternOccurences = new PatternOccurences();
 		
-		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));	
+		for (Pattern f : symmetricPatterns)
+			patternOccurences.addAll(getGeneralModel().computeTranslations(f));	
 	}
 
 }

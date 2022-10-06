@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import generator.criterions.GeneratorCriterion;
-import generator.fragments.FragmentResolutionInformations;
+import generator.patterns.PatternResolutionInformations;
 
 public abstract class PatternGeneratorCriterion extends GeneratorCriterion {
 
-	protected FragmentResolutionInformations patternsInformations;
+	protected PatternResolutionInformations patternsInformations;
 
-	public PatternGeneratorCriterion(FragmentResolutionInformations patternsInformations) {
+	public PatternGeneratorCriterion(PatternResolutionInformations patternsInformations) {
 		super(Operator.NONE, "");
 		this.patternsInformations = patternsInformations;
 	}
 
-	public FragmentResolutionInformations getPatternsInformations() {
+	public PatternResolutionInformations getPatternsInformations() {
 		return patternsInformations;
 	}
 

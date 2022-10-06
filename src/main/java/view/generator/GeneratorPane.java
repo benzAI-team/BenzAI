@@ -8,7 +8,7 @@ import application.Settings;
 import generator.GeneralModel;
 import generator.ModelBuilder;
 import generator.ResultSolver;
-import generator.fragments.FragmentResolutionInformations;
+import generator.patterns.PatternResolutionInformations;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -63,7 +63,7 @@ public class GeneratorPane extends ScrollPane {
 	private int nbCriterions;
 	//ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
 	private ModelPropertySet modelPropertySet = new ModelPropertySet();
-	private FragmentResolutionInformations fragmentsInformations;
+	private PatternResolutionInformations patternsInformations;
 
 	BenzenoidCollectionPane selectedCollectionTab;
 
@@ -373,10 +373,10 @@ public class GeneratorPane extends ScrollPane {
 	
 	/***
 	 * 
-	 * @param fragmentsInformations
+	 * @param patternsInformations
 	 */
-	public void setFragmentResolutionInformations(FragmentResolutionInformations fragmentsInformations) {
-		this.fragmentsInformations = fragmentsInformations;
+	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
+		this.patternsInformations = patternsInformations;
 	}
 
 	/***
@@ -632,7 +632,7 @@ public class GeneratorPane extends ScrollPane {
 //			}
 
 			try {
-				model = ModelBuilder.buildModel(modelPropertySet, fragmentsInformations);
+				model = ModelBuilder.buildModel(modelPropertySet, patternsInformations);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

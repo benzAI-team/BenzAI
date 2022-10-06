@@ -1,4 +1,4 @@
-package generator.fragments;
+package generator.patterns;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,35 +8,35 @@ import generator.NbHexagons;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import modules.MultipleFragments1Module;
-import modules.MultipleFragments2Module;
-import modules.MultipleFragments3Module;
+import modules.MultiplePatterns1Module;
+import modules.MultiplePatterns2Module;
+import modules.MultiplePatterns3Module;
 import solving_modes.GeneralModelMode;
 
-public class GenerateMultipleFragments {
+public class GenerateMultiplePatterns {
 
-	private static void solve1(ArrayList<Fragment> fragments, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy){
+	private static void solve1(ArrayList<Pattern> patterns, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy){
 		
 		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
-		model.addModule(new MultipleFragments1Module(model, fragments, variableStrategy, valueStrategy, orderStrategy));
+		model.addModule(new MultiplePatterns1Module(model, patterns, variableStrategy, valueStrategy, orderStrategy));
 		System.out.println(model.getNbCrowns() + " crowns");
 		model.solve();
 	}
 	
-	private static void solve2(ArrayList<Fragment> fragments, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy){
+	private static void solve2(ArrayList<Pattern> patterns, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy){
 			
 		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
-		model.addModule(new MultipleFragments2Module(model, fragments, variableStrategy, valueStrategy, orderStrategy));
+		model.addModule(new MultiplePatterns2Module(model, patterns, variableStrategy, valueStrategy, orderStrategy));
 		
 		System.out.println(model.getNbCrowns() + " crowns");
 		
 		model.solve();
 	}
 	
-	private static void solve3(ArrayList<Fragment> fragments, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
+	private static void solve3(ArrayList<Pattern> patterns, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		
 		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
-		model.addModule(new MultipleFragments3Module(model, fragments, variableStrategy, valueStrategy, orderStrategy));
+		model.addModule(new MultiplePatterns3Module(model, patterns, variableStrategy, valueStrategy, orderStrategy));
 		
 		System.out.println(model.getNbCrowns() + " crowns");
 		
@@ -45,12 +45,12 @@ public class GenerateMultipleFragments {
 	
 	public static void main(String [] args) throws IOException {
 		
-		Fragment fragment1 = Fragment.importFragment(new File(args[0]));
-		Fragment fragment2 = Fragment.importFragment(new File(args[1]));		
+		Pattern pattern1 = Pattern.importPattern(new File(args[0]));
+		Pattern pattern2 = Pattern.importPattern(new File(args[1]));		
 		
-		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-		fragments.add(fragment1);
-		fragments.add(fragment2);
+		ArrayList<Pattern> patterns = new ArrayList<Pattern>();
+		patterns.add(pattern1);
+		patterns.add(pattern2);
 		
 		int nbHexagons = Integer.parseInt(args[2]);
 		
@@ -82,12 +82,12 @@ public class GenerateMultipleFragments {
 			orderStrategy = OrderStrategy.CHANNELING_LAST;
 		
 		if (mode == 1)
-			solve1(fragments, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
+			solve1(patterns, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
 		
 		else if (mode == 2)
-			solve2(fragments, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
+			solve2(patterns, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
 		
 		else if (mode == 3)
-			solve3(fragments, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
+			solve3(patterns, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
 	}
 }

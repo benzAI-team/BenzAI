@@ -1,4 +1,4 @@
-package generator.fragments;
+package generator.patterns;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,37 +7,37 @@ import generator.NbHexagons;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import modules.ForbiddenFragmentModule1;
-import modules.ForbiddenFragmentModule2;
-import modules.ForbiddenFragmentModule3;
+import modules.ForbiddenPatternModule1;
+import modules.ForbiddenPatternModule2;
+import modules.ForbiddenPatternModule3;
 import solving_modes.GeneralModelMode;
 
-public class GenerateForbiddenFragments {
+public class GenerateForbiddenPatterns {
 
-	public static void solve1(Fragment fragment, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
+	public static void solve1(Pattern pattern, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		
 		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
-		model.addModule(new ForbiddenFragmentModule1(model, fragment, variableStrategy, valueStrategy, orderStrategy));
+		model.addModule(new ForbiddenPatternModule1(model, pattern, variableStrategy, valueStrategy, orderStrategy));
 		model.solve();
 	}
 	
-	public static void solve2(Fragment fragment, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
+	public static void solve2(Pattern pattern, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		
 		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
-		model.addModule(new ForbiddenFragmentModule2(model, fragment, variableStrategy, valueStrategy, orderStrategy));
+		model.addModule(new ForbiddenPatternModule2(model, pattern, variableStrategy, valueStrategy, orderStrategy));
 		model.solve();
 	}
 	
-	public static void solve3(Fragment fragment, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy) {
+	public static void solve3(Pattern pattern, int nbHexagons, VariableStrategy variableStrategy, ValueStrategy valueStrategy) {
 		
 		GeneralModel model = new GeneralModel(new NbHexagons(nbHexagons));
-		model.addModule(new ForbiddenFragmentModule3(model, fragment, variableStrategy, valueStrategy));
+		model.addModule(new ForbiddenPatternModule3(model, pattern, variableStrategy, valueStrategy));
 		model.solve();
 	}
 	
 	public static void main(String [] args) throws IOException {
 		
-		Fragment fragment = Fragment.importFragment(new File(args[0]));
+		Pattern pattern = Pattern.importPattern(new File(args[0]));
 		int nbHexagons = Integer.parseInt(args[1]);
 		int mode = Integer.parseInt(args[2]);
 		
@@ -66,13 +66,13 @@ public class GenerateForbiddenFragments {
 			orderStrategy = OrderStrategy.CHANNELING_LAST;
 		
 		if (mode == 1)
-			solve1(fragment, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
+			solve1(pattern, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
 		
 		else if (mode == 2)
-			solve2(fragment, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
+			solve2(pattern, nbHexagons, variableStrategy, valueStrategy, orderStrategy);
 		
 		else if (mode == 3)
-			solve3(fragment, nbHexagons, variableStrategy, valueStrategy);
+			solve3(pattern, nbHexagons, variableStrategy, valueStrategy);
 		
 	}
 }

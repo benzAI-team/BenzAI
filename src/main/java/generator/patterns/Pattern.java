@@ -1,4 +1,4 @@
-package generator.fragments;
+package generator.patterns;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import molecules.Node;
 import utils.RelativeMatrix;
 
-public class Fragment {
+public class Pattern {
 
 	/*
 	 * Label : 1 = neutral, 2 = positive, 3 = negative
@@ -27,7 +27,7 @@ public class Fragment {
 
 	private Node center;
 
-	public Fragment(int[][] matrix, int[] labels, Node[] nodesRefs, RelativeMatrix relativeMatrix, Node center,
+	public Pattern(int[][] matrix, int[] labels, Node[] nodesRefs, RelativeMatrix relativeMatrix, Node center,
 			int[][] neighborGraph, int order) {
 		nbNodes = nodesRefs.length;
 		this.matrix = matrix;
@@ -132,7 +132,7 @@ public class Fragment {
 		writer.close();
 	}
 
-	public static Fragment importFragment(File file) throws IOException {
+	public static Pattern importPattern(File file) throws IOException {
 
 		int step = 0;
 
@@ -264,10 +264,10 @@ public class Fragment {
 			}
 		}
 
-		return new Fragment(matrix, labels, nodesRefs, relativeMatrix, centerNode, neighborGraph, degree);
+		return new Pattern(matrix, labels, nodesRefs, relativeMatrix, centerNode, neighborGraph, degree);
 	}
 
-	private Fragment buildFragment(int[][] neighborGraph, int[] labels, int order) {
+	private Pattern buildPattern(int[][] neighborGraph, int[] labels, int order) {
 
 		int nbNodes = neighborGraph.length;
 
@@ -371,13 +371,13 @@ public class Fragment {
 			candidats.remove(candidats.get(0));
 		}
 
-		return new Fragment(matrix, labels, nodesRefs, null, null, neighborGraph, order);
+		return new Pattern(matrix, labels, nodesRefs, null, null, neighborGraph, order);
 	}
 
-	public ArrayList<Fragment> computeRotations() {
+	public ArrayList<Pattern> computeRotations() {
 
-		ArrayList<Fragment> fragments = new ArrayList<>();
-		fragments.add(this);
+		ArrayList<Pattern> patterns = new ArrayList<>();
+		patterns.add(this);
 
 		int[][] neighborGraph = this.getNeighborGraph();
 
@@ -395,8 +395,8 @@ public class Fragment {
 				}
 			}
 
-			Fragment fragment = buildFragment(newNeighborGraph, labels, order);
-			fragments.add(fragment);
+			Pattern pattern = buildPattern(newNeighborGraph, labels, order);
+			patterns.add(pattern);
 		}
 
 		/*
@@ -424,11 +424,11 @@ public class Fragment {
 				}
 			}
 
-			Fragment fragment = buildFragment(newNeighborGraph, labels, order);
-			fragments.add(fragment);
+			Pattern pattern = buildPattern(newNeighborGraph, labels, order);
+			patterns.add(pattern);
 		}
 
-		return fragments;
+		return patterns;
 	}
 
 	public Node[] getNodesRefs() {
@@ -485,7 +485,7 @@ public class Fragment {
 		return coordsMatrix;
 	}
 
-	public static int getNbOptimizedCrowns(Fragment pattern) {
+	public static int getNbOptimizedCrowns(Pattern pattern) {
 
 		int nbPositiveHexagons = 0;
 		for (int i = 0; i < pattern.getNbNodes(); i++)
@@ -501,12 +501,12 @@ public class Fragment {
 
 		int[][] coordsMatrix = coordsMatrix(nbCrowns);
 
-		// ArrayList<Fragment> rotations = pattern.computeRotations();
+		// ArrayList<Pattern> rotations = pattern.computeRotations();
 		boolean ok = false;
 
 		while (!ok) {
 
-			// for (Fragment rotation : rotations) {
+			// for (Pattern rotation : rotations) {
 
 			boolean found = false;
 
@@ -561,7 +561,7 @@ public class Fragment {
 		return nbCrowns;
 	}
 
-	public Fragment mirror() {
+	public Pattern mirror() {
 
 		int[][] neighborGraphSymmetry = new int[nbNodes][6];
 
@@ -582,7 +582,7 @@ public class Fragment {
 			}
 		}
 
-		return buildFragment(newNeighborGraph, labels, order);
+		return buildPattern(newNeighborGraph, labels, order);
 	}
 
 	public int xMin() {
@@ -633,8 +633,9 @@ public class Fragment {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Fragment p = Fragment.importFragment(new File("expe_fragments/triangle.frg"));
-		int optNbCrowns = Fragment.getNbOptimizedCrowns(p);
+		Pattern p = Pattern.importPattern(new File("expe_fragments/triangle.frg"));
+		int optNbCrowns = Pattern.getNbOptimizedCrowns(p);
 		System.out.println(optNbCrowns);
 	}
+
 }

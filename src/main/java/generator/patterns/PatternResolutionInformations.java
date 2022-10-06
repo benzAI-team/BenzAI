@@ -1,17 +1,17 @@
-package generator.fragments;
+package generator.patterns;
 
 import java.util.ArrayList;
 
-public class FragmentResolutionInformations {
+public class PatternResolutionInformations {
 
-	private FragmentGenerationType type;
-	private ArrayList<Fragment> fragments;
+	private PatternGenerationType type;
+	private ArrayList<Pattern> patterns;
 	private PatternsInterraction interraction;
 	private boolean enabled;
 	
-	public FragmentResolutionInformations(FragmentGenerationType type, ArrayList<Fragment> fragments) {
+	public PatternResolutionInformations(PatternGenerationType type, ArrayList<Pattern> patterns) {
 		this.type = type;
-		this.fragments = fragments;
+		this.patterns = patterns;
 		enabled = true;
 	}
 
@@ -19,12 +19,12 @@ public class FragmentResolutionInformations {
 		this.interraction = interraction;
 	}
 	
-	public FragmentGenerationType getType() {
+	public PatternGenerationType getType() {
 		return type;
 	}
 
-	public ArrayList<Fragment> getFragments() {
-		return fragments;
+	public ArrayList<Pattern> getPatterns() {
+		return patterns;
 	}
 
 	public boolean isEnabled() {

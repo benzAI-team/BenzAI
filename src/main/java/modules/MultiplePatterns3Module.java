@@ -21,11 +21,11 @@ import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 
-public class MultipleFragments3Module extends Module{
+public class MultiplePatterns3Module extends Module{
 
-	private ArrayList<Fragment> fragments;
+	private ArrayList<Pattern> patterns;
 	
 	ArrayList<ArrayList<Integer>> allAbsentHexagons;
 	ArrayList<ArrayList<Integer>> allPresentHexagons;
@@ -41,8 +41,8 @@ public class MultipleFragments3Module extends Module{
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public MultipleFragments3Module(ArrayList<Fragment> fragments, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		this.fragments = fragments;
+	public MultiplePatterns3Module(ArrayList<Pattern> patterns, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
+		this.patterns = patterns;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
 		this.orderStrategy = orderStrategy;
@@ -62,7 +62,7 @@ public class MultipleFragments3Module extends Module{
 		allAbsentHexagons = new ArrayList<>();
 		allUnknownHexagons = new ArrayList<>();
 		
-		for (int i = 0 ; i < fragments.size() ; i++) {
+		for (int i = 0 ; i < patterns.size() ; i++) {
 			allPresentHexagons.add(new ArrayList<Integer>());
 			allAbsentHexagons.add(new ArrayList<Integer>());
 			allUnknownHexagons.add(new ArrayList<Integer>());
@@ -92,15 +92,15 @@ public class MultipleFragments3Module extends Module{
 		for (int i = 0 ; i < domainWithOutterHexagons.length ; i++)
 			domainWithOutterHexagons[i] = domainList.get(i);
 		
-		for (int i = 0 ; i < fragments.size() ; i++) {
+		for (int i = 0 ; i < patterns.size() ; i++) {
 			
-			Fragment fragment = fragments.get(i);
+			Pattern pattern = patterns.get(i);
 			
-			IntVar[] coronenoidCorrespondances = new IntVar[fragment.getNbNodes()];
+			IntVar[] coronenoidCorrespondances = new IntVar[pattern.getNbNodes()];
 			
-			for (int j = 0 ; j < fragment.getNbNodes() ; j++) {
+			for (int j = 0 ; j < pattern.getNbNodes() ; j++) {
 				
-				if (fragment.getLabel(j) == 2) 
+				if (pattern.getLabel(j) == 2) 
 					coronenoidCorrespondances[j] = generalModel.getProblem().intVar("cc_" + i + "_" + j, domain);
 				
 				else 
@@ -117,9 +117,9 @@ public class MultipleFragments3Module extends Module{
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		for (int i = 0 ; i < fragments.size() ; i++) {
+		for (int i = 0 ; i < patterns.size() ; i++) {
 			
-			Fragment fragment = fragments.get(i);
+			Pattern pattern = patterns.get(i);
 			
 			ArrayList<Integer> unknownHexagons = allUnknownHexagons.get(i);
 			ArrayList<Integer> presentHexagons = allPresentHexagons.get(i);
@@ -128,12 +128,12 @@ public class MultipleFragments3Module extends Module{
 			IntVar [] coronenoidCorrespondances = allCoronenoidCorrespondances.get(i);
 
 			/*
-			 * Settings fragments's labels
+			 * Settings patterns's labels
 			 */
 
-			for (int j = 0 ; j < fragment.getNbNodes() ; j++) {
+			for (int j = 0 ; j < pattern.getNbNodes() ; j++) {
 				
-				int labelI = fragment.getLabel(j);
+				int labelI = pattern.getLabel(j);
 				
 				if (labelI == 1)
 					unknownHexagons.add(j);
@@ -155,10 +155,10 @@ public class MultipleFragments3Module extends Module{
 			 * Table constraints for edges integrity
 			 */
 		
-			for (int j = 0 ; j < fragment.getNbNodes() ; j++) {
-				for (int k = (j + 1) ; k < fragment.getNbNodes() ; k++) {
+			for (int j = 0 ; j < pattern.getNbNodes() ; j++) {
+				for (int k = (j + 1) ; k < pattern.getNbNodes() ; k++) {
 					
-					if (fragment.getMatrix()[j][k] == 1) {
+					if (pattern.getMatrix()[j][k] == 1) {
 						
 						IntVar si = coronenoidCorrespondances[j];
 						IntVar sj = coronenoidCorrespondances[k];
@@ -239,7 +239,7 @@ public class MultipleFragments3Module extends Module{
 			}
 			
 			/*
-			 * Disjoints fragments
+			 * Disjoints patterns
 			 */
 			
 			int nbCorrespondances = 0;
@@ -368,10 +368,10 @@ public class MultipleFragments3Module extends Module{
 		
 		maxOrder = 0;
 		
-		for (Fragment fragment : fragments) {
+		for (Pattern pattern : patterns) {
 			
-			if (fragment.getOrder() > maxOrder)
-				maxOrder = fragment.getOrder();
+			if (pattern.getOrder() > maxOrder)
+				maxOrder = pattern.getOrder();
 		}
 	}
 	

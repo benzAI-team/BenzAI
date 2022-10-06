@@ -3,7 +3,7 @@ package generator;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 import molecules.Node;
 import utils.Couple;
 
@@ -17,7 +17,7 @@ public class Solution {
 	private Node[] coronenoidNodes;
 	private int nbCrowns;
 
-	private Fragment pattern;
+	private Pattern pattern;
 
 	public Solution(Node[] coronenoidNodes, int[] correspondancesHexagons, int[] hexagonsCorrespondances,
 			int[][] coordsMatrixCoronenoid, int coronenoidCenter, int nbCrowns, ArrayList<Integer> vertices) {
@@ -55,7 +55,7 @@ public class Solution {
 		return vertices.size();
 	}
 
-	public void setPattern(Fragment pattern) {
+	public void setPattern(Pattern pattern) {
 		this.pattern = pattern;
 	}
 
@@ -334,7 +334,7 @@ public class Solution {
 		 * Mirror rotations
 		 */
 
-		Fragment mirrorPattern = pattern.mirror();
+		Pattern mirrorPattern = pattern.mirror();
 		ArrayList<Integer> mirror = placePattern(mirrorPattern);
 
 		ArrayList<Integer> initialRotation2 = new ArrayList<>();
@@ -364,7 +364,7 @@ public class Solution {
 
 	}
 
-	private ArrayList<Integer> placePattern(Fragment pattern) {
+	private ArrayList<Integer> placePattern(Pattern pattern) {
 
 		/*
 		 * Trouver l'hexagone pr�sent du fragment le plus en haut � gauche

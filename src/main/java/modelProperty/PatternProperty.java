@@ -1,16 +1,15 @@
 package modelProperty;
 
-import modules.FragmentModule;
-import modules.Module;
+import modules.PatternModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxPatternCriterion;
 
-public class FragmentProperty extends ModelProperty {
+public class PatternProperty extends ModelProperty {
 
-	public FragmentProperty() {
-		super("fragment", "Pattern properties", new FragmentModule());
+	public PatternProperty() {
+		super("pattern", "Pattern properties", new PatternModule());
 	}
 
 	@Override

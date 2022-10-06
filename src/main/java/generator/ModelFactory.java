@@ -6,7 +6,7 @@ import java.util.Map;
 
 import generator.criterions.GeneratorCriterion;
 import generator.criterions.patterns.PatternGeneratorCriterion;
-import generator.fragments.FragmentResolutionInformations;
+import generator.patterns.PatternResolutionInformations;
 
 public class ModelFactory {
 
@@ -16,7 +16,7 @@ public class ModelFactory {
 
 	private ArrayList<GeneratorCriterion> criterions;
 	private Map<String, ArrayList<GeneratorCriterion>> criterionsMap;
-	private FragmentResolutionInformations patternsInformations;
+	private PatternResolutionInformations patternsInformations;
 
 	/*
 	 * Optimization variables

@@ -3,7 +3,7 @@ package view.filtering;
 import java.util.ArrayList;
 
 import application.BenzenoidApplication;
-import generator.fragments.FragmentResolutionInformations;
+import generator.patterns.PatternResolutionInformations;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -48,7 +48,7 @@ public class FilteringPane extends ScrollPane {
 	private ArrayList<HBoxFilteringCriterion> hBoxesCriterions;
 	private ChoiceBox<String> collectionChoiceBox;
 
-	private FragmentResolutionInformations fragmentsInformations;
+	private PatternResolutionInformations patternsInformations;
 
 	private Label titleLabel;
 
@@ -334,11 +334,11 @@ public class FilteringPane extends ScrollPane {
 		return application;
 	}
 
-	public void setFragmentResolutionInformations(FragmentResolutionInformations fragmentsInformations) {
-		this.fragmentsInformations = fragmentsInformations;
+	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
+		this.patternsInformations = patternsInformations;
 	}
 
-	public FragmentResolutionInformations getPatternInformations() {
-		return fragmentsInformations;
+	public PatternResolutionInformations getPatternInformations() {
+		return patternsInformations;
 	}
 }

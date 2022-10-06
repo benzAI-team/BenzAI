@@ -1,6 +1,6 @@
 package modules;
 
-public class FragmentModule extends Module {
+public class PatternModule extends Module {
 
 	@Override
 	public void buildVariables() {

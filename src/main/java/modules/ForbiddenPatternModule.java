@@ -10,34 +10,34 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
 import generator.GeneralModel;
-import generator.fragments.Fragment;
-import generator.fragments.FragmentOccurences;
+import generator.patterns.Pattern;
+import generator.patterns.PatternOccurences;
 
-public class ForbiddenFragmentModule extends Module{
+public class ForbiddenPatternModule extends Module{
 
 	private int mode = 3;
 	
-	private Fragment fragment;
+	private Pattern pattern;
 	
-	private ArrayList<Fragment> symmetricFragments;
+	private ArrayList<Pattern> symmetricPatterns;
 	
 	private ArrayList<Integer> presentHexagons, unknownHexagons, absentHexagons;
 	private BoolVar [] presences;
 	
-	private FragmentOccurences fragmentOccurences;
+	private PatternOccurences patternOccurences;
 	
-	public ForbiddenFragmentModule(Fragment fragment) {
+	public ForbiddenPatternModule(Pattern pattern) {
 		super();
-		this.fragment = fragment;
+		this.pattern = pattern;
 	}
 
 	@Override
 	public void buildVariables() {
 		
-		computeFragmentOccurences();
+		computePatternOccurences();
 		
 		if (mode < 3){
-			presences = new BoolVar[fragmentOccurences.getOccurences().size()];
+			presences = new BoolVar[patternOccurences.getOccurences().size()];
 			for (int i = 0 ; i < presences.length ; i++)
 				presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
 		}
@@ -46,9 +46,9 @@ public class ForbiddenFragmentModule extends Module{
 		absentHexagons = new ArrayList<>();
 		unknownHexagons = new ArrayList<>();
 		
-		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 			
-			int label = fragment.getLabel(i);
+			int label = pattern.getLabel(i);
 			
 			if (label == 1)
 				unknownHexagons.add(i);
@@ -65,7 +65,7 @@ public class ForbiddenFragmentModule extends Module{
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		ArrayList<Integer []> occurences = fragmentOccurences.getOccurences();
+		ArrayList<Integer []> occurences = patternOccurences.getOccurences();
 		
 		for (int i = 0 ; i < occurences.size() ; i++) {
 			
@@ -167,13 +167,13 @@ public class ForbiddenFragmentModule extends Module{
 	@Override
 	public void changeGraphVertices() { }
 	
-	private void computeFragmentOccurences() {
+	private void computePatternOccurences() {
 		
-		symmetricFragments = fragment.computeRotations();	
-		fragmentOccurences = new FragmentOccurences();
+		symmetricPatterns = pattern.computeRotations();	
+		patternOccurences = new PatternOccurences();
 		
-		for (Fragment f : symmetricFragments)
-			fragmentOccurences.addAll(getGeneralModel().computeTranslations(f));
+		for (Pattern f : symmetricPatterns)
+			patternOccurences.addAll(getGeneralModel().computeTranslations(f));
 	}
 
 }

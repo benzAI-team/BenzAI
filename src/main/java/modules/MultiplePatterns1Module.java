@@ -19,15 +19,15 @@ import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import generator.fragments.Fragment;
-import generator.fragments.FragmentOccurences;
-import generator.fragments.PatternsInterraction;
+import generator.patterns.Pattern;
+import generator.patterns.PatternOccurences;
+import generator.patterns.PatternsInterraction;
 import utils.Utils;
 
-public class MultipleFragments1Module extends Module {
+public class MultiplePatterns1Module extends Module {
 
-	private ArrayList<Fragment> fragments;
-	private ArrayList<FragmentOccurences> fragmentsOccurences;
+	private ArrayList<Pattern> patterns;
+	private ArrayList<PatternOccurences> patternsOccurences;
 
 	private ArrayList<BoolVar[]> allPresences;
 
@@ -39,17 +39,17 @@ public class MultipleFragments1Module extends Module {
 
 	private PatternsInterraction interraction;
 	
-	public MultipleFragments1Module(ArrayList<Fragment> fragments,
+	public MultiplePatterns1Module(ArrayList<Pattern> patterns,
 			VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		this.fragments = fragments;
+		this.patterns = patterns;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
 		this.orderStrategy = orderStrategy;
 	}
 
-	public MultipleFragments1Module(ArrayList<Fragment> fragments,
+	public MultiplePatterns1Module(ArrayList<Pattern> patterns,
 			VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy, PatternsInterraction interraction) {
-		this.fragments = fragments;
+		this.patterns = patterns;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
 		this.orderStrategy = orderStrategy;
@@ -59,7 +59,7 @@ public class MultipleFragments1Module extends Module {
 	@Override
 	public void buildVariables() {
 
-		computeFragmentOccurences();
+		computePatternOccurences();
 
 		if (interraction == null)
 			interraction = PatternsInterraction.DISJUNCT;
@@ -69,12 +69,12 @@ public class MultipleFragments1Module extends Module {
 		allPresentHexagons = new ArrayList<>();
 		allAbsentHexagons = new ArrayList<>();
 
-		for (int i = 0; i < fragments.size(); i++) {
+		for (int i = 0; i < patterns.size(); i++) {
 
-			Fragment fragment = fragments.get(i);
-			FragmentOccurences fragmentOccurences = fragmentsOccurences.get(i);
+			Pattern pattern = patterns.get(i);
+			PatternOccurences patternOccurences = patternsOccurences.get(i);
 
-			BoolVar[] presences = new BoolVar[fragmentOccurences.getOccurences().size()];
+			BoolVar[] presences = new BoolVar[patternOccurences.getOccurences().size()];
 			for (int j = 0; j < presences.length; j++)
 				presences[j] = getGeneralModel().getProblem().boolVar("presence_" + i + "_" + j);
 
@@ -84,9 +84,9 @@ public class MultipleFragments1Module extends Module {
 			ArrayList<Integer> absentHexagons = new ArrayList<>();
 			ArrayList<Integer> unknownHexagons = new ArrayList<>();
 
-			for (int j = 0; j < fragment.getNbNodes(); j++) {
+			for (int j = 0; j < pattern.getNbNodes(); j++) {
 
-				int label = fragment.getLabel(j);
+				int label = pattern.getLabel(j);
 
 				if (label == 1)
 					unknownHexagons.add(j);
@@ -110,16 +110,16 @@ public class MultipleFragments1Module extends Module {
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		for (int f = 0; f < fragments.size(); f++) {
+		for (int f = 0; f < patterns.size(); f++) {
 
-			FragmentOccurences fragmentOccurences = fragmentsOccurences.get(f);
+			PatternOccurences patternOccurences = patternsOccurences.get(f);
 			BoolVar[] presences = allPresences.get(f);
-			ArrayList<Integer[]> occurences = fragmentOccurences.getOccurences();
+			ArrayList<Integer[]> occurences = patternOccurences.getOccurences();
 
 			for (int i = 0; i < occurences.size(); i++) {
 
-				ArrayList<Integer> present = fragmentOccurences.getAllPresentHexagons().get(i);
-				ArrayList<Integer> absent = fragmentOccurences.getAllAbsentHexagons().get(i);
+				ArrayList<Integer> present = patternOccurences.getAllPresentHexagons().get(i);
+				ArrayList<Integer> absent = patternOccurences.getAllAbsentHexagons().get(i);
 
 				IntVar[] varClause = new IntVar[2];
 				IntIterableRangeSet[] valClause = new IntIterableRangeSet[2];
@@ -143,29 +143,29 @@ public class MultipleFragments1Module extends Module {
 			generalModel.getProblem().sum(presences, "=", 1).post();
 		}
 
-		for (int i = 0; i < fragmentsOccurences.size(); i++) {
-			for (int j = (i + 1); j < fragmentsOccurences.size(); j++) {
+		for (int i = 0; i < patternsOccurences.size(); i++) {
+			for (int j = (i + 1); j < patternsOccurences.size(); j++) {
 
 				if (i != j) {
 
-					FragmentOccurences fragmentOccurences1 = fragmentsOccurences.get(i);
-					FragmentOccurences fragmentOccurences2 = fragmentsOccurences.get(j);
+					PatternOccurences patternOccurences1 = patternsOccurences.get(i);
+					PatternOccurences patternOccurences2 = patternsOccurences.get(j);
 
 					BoolVar[] presences1 = allPresences.get(i);
 					BoolVar[] presences2 = allPresences.get(j);
 
-					for (int k = 0; k < fragmentOccurences1.size(); k++) {
-						for (int l = 0; l < fragmentOccurences2.size(); l++) {
+					for (int k = 0; k < patternOccurences1.size(); k++) {
+						for (int l = 0; l < patternOccurences2.size(); l++) {
 
-							ArrayList<Integer> presentHexagons1 = fragmentOccurences1.getAllPresentHexagons().get(k);
-							ArrayList<Integer> absentHexagons1 = fragmentOccurences1.getAllAbsentHexagons().get(k);
-							ArrayList<Integer> unknownHexagons1 = fragmentOccurences1.getAllUnknownHexagons().get(k);
-							ArrayList<Integer> outterHexagons1 = fragmentOccurences1.getAllOutterHexagons().get(k);
+							ArrayList<Integer> presentHexagons1 = patternOccurences1.getAllPresentHexagons().get(k);
+							ArrayList<Integer> absentHexagons1 = patternOccurences1.getAllAbsentHexagons().get(k);
+							ArrayList<Integer> unknownHexagons1 = patternOccurences1.getAllUnknownHexagons().get(k);
+							ArrayList<Integer> outterHexagons1 = patternOccurences1.getAllOutterHexagons().get(k);
 
-							ArrayList<Integer> presentHexagons2 = fragmentOccurences2.getAllPresentHexagons().get(l);
-							ArrayList<Integer> absentHexagons2 = fragmentOccurences2.getAllAbsentHexagons().get(l);
-							ArrayList<Integer> unknownHexagons2 = fragmentOccurences2.getAllUnknownHexagons().get(l);
-							ArrayList<Integer> outterHexagons2 = fragmentOccurences2.getAllOutterHexagons().get(l);
+							ArrayList<Integer> presentHexagons2 = patternOccurences2.getAllPresentHexagons().get(l);
+							ArrayList<Integer> absentHexagons2 = patternOccurences2.getAllAbsentHexagons().get(l);
+							ArrayList<Integer> unknownHexagons2 = patternOccurences2.getAllUnknownHexagons().get(l);
+							ArrayList<Integer> outterHexagons2 = patternOccurences2.getAllOutterHexagons().get(l);
 
 							ArrayList<Integer> set1 = new ArrayList<>();
 							set1.addAll(presentHexagons1);
@@ -361,23 +361,23 @@ public class MultipleFragments1Module extends Module {
 	public void changeGraphVertices() {
 	}
 
-	private void computeFragmentOccurences() {
+	private void computePatternOccurences() {
 		GeneralModel generalModel = getGeneralModel();
 
-		fragmentsOccurences = new ArrayList<>();
+		patternsOccurences = new ArrayList<>();
 
-		for (Fragment fragment : fragments) {
+		for (Pattern pattern : patterns) {
 
-			ArrayList<Fragment> symmetricFragments = fragment.computeRotations();
+			ArrayList<Pattern> symmetricPatterns = pattern.computeRotations();
 
-			FragmentOccurences fragmentOccurences = new FragmentOccurences();
+			PatternOccurences patternOccurences = new PatternOccurences();
 
-			for (Fragment f : symmetricFragments) {
-				FragmentOccurences translations = generalModel.computeTranslations(f);
-				fragmentOccurences.addAll(translations);
+			for (Pattern f : symmetricPatterns) {
+				PatternOccurences translations = generalModel.computeTranslations(f);
+				patternOccurences.addAll(translations);
 			}
 
-			fragmentsOccurences.add(fragmentOccurences);
+			patternsOccurences.add(patternOccurences);
 
 		}
 	}

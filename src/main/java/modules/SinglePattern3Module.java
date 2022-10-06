@@ -20,11 +20,11 @@ import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 
-public class SingleFragment3Module extends Module{
+public class SinglePattern3Module extends Module{
 
-	private Fragment fragment;
+	private Pattern pattern;
 	
 	ArrayList<Integer> absentHexagons;
 	ArrayList<Integer> presentHexagons;
@@ -36,8 +36,8 @@ public class SingleFragment3Module extends Module{
 	private ValueStrategy valueStrategy;
 	private OrderStrategy orderStrategy;
 	
-	public SingleFragment3Module(Fragment fragment, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
-		this.fragment = fragment;
+	public SinglePattern3Module(Pattern pattern, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
+		this.pattern = pattern;
 		this.variableStrategy = variableStrategy;
 		this.valueStrategy = valueStrategy;
 		this.orderStrategy = orderStrategy;
@@ -47,14 +47,14 @@ public class SingleFragment3Module extends Module{
 	public void buildVariables() {
 		GeneralModel generalModel = getGeneralModel();
 
-		generalModel.buildNeighborGraphWithOutterHexagons(fragment.getOrder());
+		generalModel.buildNeighborGraphWithOutterHexagons(pattern.getOrder());
 		generalModel.buildAdjacencyMatrixWithOutterHexagons();
 		
 		presentHexagons = new ArrayList<Integer>();
 		absentHexagons = new ArrayList<Integer>();
 		unknownHexagons = new ArrayList<Integer>();
 		
-		coronenoidCorrespondances = new IntVar[fragment.getNbNodes()];
+		coronenoidCorrespondances = new IntVar[pattern.getNbNodes()];
 	
 		ArrayList<Integer> domainList = new ArrayList<Integer>();
 		domainList.add(-1);
@@ -78,9 +78,9 @@ public class SingleFragment3Module extends Module{
 		for (int i = 0 ; i < domainWithOutterHexagons.length ; i++)
 			domainWithOutterHexagons[i] = domainList.get(i);
 		
-		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 		
-			if (fragment.getLabel(i) == 2) 
+			if (pattern.getLabel(i) == 2) 
 				coronenoidCorrespondances[i] = generalModel.getProblem().intVar("coronenoid_correspondances_" + i, domain);
 			
 			else  
@@ -95,9 +95,9 @@ public class SingleFragment3Module extends Module{
 		GeneralModel generalModel = getGeneralModel();
 
 		//Setting labels	
-		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
+		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 			
-			int labelI = fragment.getLabel(i);
+			int labelI = pattern.getLabel(i);
 			
 			if (labelI == 1) 
 				unknownHexagons.add(i);
@@ -115,10 +115,10 @@ public class SingleFragment3Module extends Module{
 		//table constraint for edges integrity
 		Tuples table = buildTable();
 		
-		for (int i = 0 ; i < fragment.getNbNodes() ; i++) {
-			for (int j = (i + 1) ; j < fragment.getNbNodes() ; j++) {
+		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
+			for (int j = (i + 1) ; j < pattern.getNbNodes() ; j++) {
 				
-				if (fragment.getMatrix()[i][j] == 1) {
+				if (pattern.getMatrix()[i][j] == 1) {
 					
 					IntVar si = coronenoidCorrespondances[i];
 					IntVar sj = coronenoidCorrespondances[j];

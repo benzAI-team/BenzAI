@@ -2,7 +2,7 @@ package view.patterns;
 
 import java.util.ArrayList;
 
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 import javafx.scene.Group;
 import molecules.Node;
 import utils.Couple;
@@ -244,7 +244,7 @@ public class PatternGroup extends Group {
 		this.degree = degree;
 	}
 
-	public Fragment exportFragment() {
+	public Pattern exportPattern() {
 
 		/*
 		 * Computing the number of hexagons
@@ -452,19 +452,19 @@ public class PatternGroup extends Group {
 		else
 			centerNode = nodes[0];
 
-		return new Fragment(matrix, labels, nodes, relativeMatrix, centerNode, dualGraph, degree);
+		return new Pattern(matrix, labels, nodes, relativeMatrix, centerNode, dualGraph, degree);
 	}
 
-	public void importFragment(Fragment fragment) {
+	public void importPattern(Pattern pattern) {
 
-		for (int i = 0; i < fragment.getNbNodes(); i++) {
+		for (int i = 0; i < pattern.getNbNodes(); i++) {
 
-			Node node = fragment.getNode(i);
+			Node node = pattern.getNode(i);
 
 			int x = node.getY();
 			int y = node.getX();
 
-			int label = fragment.getLabel(i);
+			int label = pattern.getLabel(i);
 
 			hexagons[x][y].setLabel(label);
 		}
@@ -668,4 +668,5 @@ public class PatternGroup extends Group {
 	public PatternHexagon[][] getHexagonsMatrix() {
 		return hexagons;
 	}
+
 }
