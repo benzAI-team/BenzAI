@@ -127,34 +127,34 @@ public class IrregularityModule extends Module {
 
 		for (PropertyExpression expression : this.getExpressionList()) {
 			IrregularityExpression irregularityExpression = (IrregularityExpression)expression;
-			if (irregularityExpression.getXi() >= 0) {
-				double decimalValue = (double)(irregularityExpression.getXi());
-				int finalValue = (int) (decimalValue * 100);
-				generalModel.getProblem().arithm(XI, irregularityExpression.getXiOperator(), finalValue).post();
+			if (irregularityExpression.getParameter() == "XI") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
+				generalModel.getProblem().arithm(XI, irregularityExpression.getOperator(), value).post();
 			}
-			if (irregularityExpression.getN0() >= 0) {
-				String operator = irregularityExpression.getN0Operator();
-				int value = irregularityExpression.getN0();
+			if (irregularityExpression.getParameter() == "N0") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
 				generalModel.getProblem().arithm(N0, operator, value).post();
 			}
-			if (irregularityExpression.getN1() >= 0) {
-				String operator = irregularityExpression.getN1Operator();
-				int value = irregularityExpression.getN1();
+			if (irregularityExpression.getParameter() == "N1") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
 				generalModel.getProblem().arithm(N1, operator, value).post();
 			}
-			if (irregularityExpression.getN2() >= 0) {
-				String operator = irregularityExpression.getN2Operator();
-				int value = irregularityExpression.getN2();
+			if (irregularityExpression.getParameter() == "N2") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
 				generalModel.getProblem().arithm(N2, operator, value).post();
 			}
-			if (irregularityExpression.getN3() >= 0) {
-				String operator = irregularityExpression.getN3Operator();
-				int value = irregularityExpression.getN3();
+			if (irregularityExpression.getParameter() == "N3") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
 				generalModel.getProblem().arithm(N3, operator, value).post();
 			}
-			if (irregularityExpression.getN4() >= 0) {
-				String operator = irregularityExpression.getN4Operator();
-				int value = irregularityExpression.getN4();
+			if (irregularityExpression.getParameter() == "N4") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
 				generalModel.getProblem().arithm(N4, operator, value).post();
 			}
 		}

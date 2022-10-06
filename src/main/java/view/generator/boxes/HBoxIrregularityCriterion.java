@@ -9,6 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.IrregularityExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -125,52 +127,19 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 
 		setWarningIcon(new ImageView(new Image("/resources/graphics/icon-warning.png")));
 
-		this.getChildren().addAll(irregularityChoiceBox, operatorChoiceBox, fieldValue, getWarningIcon(), deleteButton);
+		this.getChildren().addAll(irregularityChoiceBox, operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
 		checkValidity();
 	}
 
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
-
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
 		if (isValid()) {
-
-			String choiceBoxIrregValue = irregularityChoiceBox.getValue();
-
-			criterions.add(new GeneratorCriterion(Subject.VIEW_IRREG, Operator.NONE, ""));
-
-			if (!choiceBoxIrregValue.equals("Compute irregularity")) {
-
-				Subject subject;
-
-				if (choiceBoxIrregValue.equals("XI"))
-					subject = Subject.XI;
-
-				else if (choiceBoxIrregValue.equals("N0"))
-					subject = Subject.N0;
-
-				else if (choiceBoxIrregValue.equals("N1"))
-					subject = Subject.N1;
-
-				else if (choiceBoxIrregValue.equals("N2"))
-					subject = Subject.N2;
-
-				else if (choiceBoxIrregValue.equals("N3"))
-					subject = Subject.N3;
-
-				else
-					subject = Subject.N4;
-
-				Operator operator = GeneratorCriterion.getOperator(operatorChoiceBox.getValue());
-
-				String value = fieldValue.getText();
-
-				criterions.add(new GeneratorCriterion(subject, operator, value));
-			}
+			String parameter = irregularityChoiceBox.getValue();
+			String operator = operatorChoiceBox.getValue();
+			// 0 =< Xi =< 1 must be multiplied by 100 and converted to an int 
+			int value = parameter == "XI" ? (int)(Double.parseDouble(fieldValue.getText()) * 100) : Integer.parseInt(fieldValue.getText());
+			modelPropertySet.getById("irregularity").addExpression(new IrregularityExpression("irregularity", parameter, operator, value));
 		}
-
-		return criterions;
 	}
 
 }
