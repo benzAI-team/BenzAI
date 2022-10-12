@@ -76,25 +76,25 @@ public class ModelBuilder {
 		GeneralModel model = buildModel(modelPropertySet, nbCrowns);
 		
 		//  Patterns
-		if(modelPropertySet.has("pattern")) {
-			PatternProperty patternProperty = (PatternProperty) modelPropertySet.getById("pattern");
-			for(PropertyExpression expression : patternProperty.getExpressions()) {
-				if(expression.getId() == "SINGLE_PATTERN")
-					model.addModule(new SinglePattern1Module(model, patternsInformations.getPatterns().get(0),
-							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-			}
-			if (patternProperty.getExpressions().contains("SINGLE_PATTERN"))
-			model.addModule(new SinglePattern1Module(model, patternsInformations.getPatterns().get(0),
-					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-
-		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.MULTIPLE_PATTERNS))
-			model.addModule(new MultiplePatterns1Module(model, patternsInformations.getPatterns(),
-					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-
-		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.FORBIDDEN_PATTERN))
-			model.addModule(new ForbiddenPatternModule1(model, patternsInformations.getPatterns().get(0),
-					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-		}
+//		if(modelPropertySet.has("pattern")) {
+//			PatternProperty patternProperty = (PatternProperty) modelPropertySet.getById("pattern");
+//			for(PatternExpression expression : patternProperty.getExpressions()) {
+//				if(expression.getSubject() == "SINGLE_PATTERN")
+//					model.addModule(new SinglePattern1Module(patternsInformations.getPatterns().get(0),
+//							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+//			}
+//			if (patternProperty.getExpressions().contains("SINGLE_PATTERN"))
+//			model.addModule(new SinglePattern1Module(model, patternsInformations.getPatterns().get(0),
+//					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+//
+//		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.MULTIPLE_PATTERNS))
+//			model.addModule(new MultiplePatterns1Module(model, patternsInformations.getPatterns(),
+//					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+//
+//		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.FORBIDDEN_PATTERN))
+//			model.addModule(new ForbiddenPatternModule1(model, patternsInformations.getPatterns().get(0),
+//					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+//		}
 		return model;
 	}
 

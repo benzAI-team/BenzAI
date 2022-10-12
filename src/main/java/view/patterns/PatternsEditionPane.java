@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import generator.OrderStrategy;
+import generator.ValueStrategy;
+import generator.VariableStrategy;
 import generator.patterns.Pattern;
 import generator.patterns.PatternGenerationType;
 import generator.patterns.PatternResolutionInformations;
@@ -28,8 +31,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PatternExpression;
 import modelProperty.expression.PropertyExpression;
 import modelProperty.expression.SubjectExpression;
+import modules.ForbiddenPatternModule1;
+import modules.MultiplePatterns1Module;
+import modules.MultiplePatterns2Module;
+import modules.SinglePattern1Module;
+import modules.SinglePattern2Module;
 import molecules.Node;
 import utils.Utils;
 import view.generator.boxes.HBoxPatternCriterion;
@@ -283,52 +292,59 @@ public class PatternsEditionPane extends BorderPane {
 			}
 
 			PatternGenerationType type = null;
-			PropertyExpression expression = null;
-
+			String subject = "";
+			PatternResolutionInformations patternInformations = null; 
+			
 			if (boxItems.size() == 1) {
 
 				if (!disableItem.isSelected()) {
 					if (!Utils.isNumber(occurencesField.getText())) {
 						type = PatternGenerationType.SINGLE_PATTERN_1;
-						parent.refreshPatternInformations("SINGLE_PATTERN");
-						expression = new SubjectExpression("SINGLE_PATTERN");
+						subject = "SINGLE_PATTERN";
+						patternInformations = new PatternResolutionInformations(type, patterns);
+						parent.getPatternProperty().setModule(new SinglePattern2Module(patternInformations.getPatterns().get(0), false,
+								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 					}
 
 					else {
 						type = PatternGenerationType.PATTERN_OCCURENCES;
-						parent.refreshPatternInformations("OCCURENCES_PATTERN: " + occurencesField.getText());
-						expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=",
-								Integer.parseInt(occurencesField.getText()));
+						subject = "OCCURENCES_PATTERN: " + occurencesField.getText();
+//TODO
+						//expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=", Integer.parseInt(occurencesField.getText()));
 					}
 				}
 
 				else {
-					parent.refreshPatternInformations("FORBIDDEN_PATTERN");
 					type = PatternGenerationType.FORBIDDEN_PATTERN;
-					expression = new SubjectExpression("FORBIDDEN_PATTERN");
+					subject = "FORBIDDEN_PATTERN";
+					patternInformations = new PatternResolutionInformations(type, patterns);
+					parent.getPatternProperty().setModule(new ForbiddenPatternModule1(patternInformations.getPatterns().get(0),
+							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 				}
 			}
 
 			else if (itemUndisjunct.isSelected() || itemDisjunct.isSelected() || itemNNDisjunct.isSelected()) {
-				parent.refreshPatternInformations("MULTIPLE_PATTERNS");
 				type = PatternGenerationType.MULTIPLE_PATTERN_1;
-				expression = new SubjectExpression("MULTIPLE_PATTERNS");
+				subject = "MULTIPLE_PATTERNS";
+				patternInformations = new PatternResolutionInformations(type, patterns);
+				if (itemUndisjunct.isSelected()) 
+					patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
+				else if (itemDisjunct.isSelected())
+					patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
+				else if (itemNNDisjunct.isSelected())
+					patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
+
+				parent.getPatternProperty().setModule(new MultiplePatterns1Module(patternInformations.getPatterns(),
+						VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST, patternInformations.getInterraction()));
 			}
 
-			PatternResolutionInformations patternInformations = new PatternResolutionInformations(type, patterns);
 			parent.setPatternResolutionInformations(patternInformations);
-			parent.setExpression(expression);
+			parent.setExpression(new PatternExpression(subject, patternInformations));
 
 			
-			if (itemUndisjunct.isSelected()) 
-				patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
 			
-			else if (itemDisjunct.isSelected())
-				patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
-			
-			else if (itemNNDisjunct.isSelected())
-				patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
-			
+			parent.addPropertyExpression(parent.getPatternProperty().getModelPropertySet());
+			parent.refreshPatternInformations(subject);
 			hide();
 
 		});

@@ -8,7 +8,6 @@ import generator.GeneralModel;
 
 public class CatacondensedModule extends Module {
 
-
 	@Override
 	public void buildVariables() {
 	}

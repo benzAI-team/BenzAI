@@ -301,13 +301,6 @@ public class GeneralModel {
 
 		chocoModel.nbNodes(benzenoid, nbVertices).post();
 
-//		for (GeneratorCriterion criterion : hexagonsCriterions) {
-//
-//			String operator = criterion.getOperator();
-//			int value = criterion.getValue();
-//			chocoModel.arithm(nbVertices, operator, value).post();
-//		}
-
 	}
 
 	/*

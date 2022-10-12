@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import modelProperty.PatternProperty;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
+import modelProperty.expression.PatternExpression;
 import modelProperty.expression.SubjectExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
@@ -36,7 +37,7 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 
 	public HBoxPatternCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
 		super(generatorPane, choiceBoxCriterion);
-		patternProperty = (PatternProperty)modelProperty;
+		setPatternProperty((PatternProperty)modelProperty);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 
 		if (isValid())
-			modelPropertySet.getById("pattern").addExpression(new SubjectExpression("pattern"));
+			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText(), this.patternInformations));
 	}
 
 	public void displayPatternEditionWindows() {
@@ -157,5 +158,13 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 
 	public PatternResolutionInformations getPatternInformations() {
 		return patternInformations;
+	}
+
+	public PatternProperty getPatternProperty() {
+		return patternProperty;
+	}
+
+	public void setPatternProperty(PatternProperty patternProperty) {
+		this.patternProperty = patternProperty;
 	}
 }
