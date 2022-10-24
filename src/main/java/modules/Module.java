@@ -9,6 +9,14 @@ import modelProperty.expression.PropertyExpression;
 
 public abstract class Module {
 
+	public static final Module NOMODULE = new Module() {
+		public void buildVariables() {}	
+		public void postConstraints() {}
+		public void addVariables() {}
+		public void changeSolvingStrategy() {}
+		public void changeGraphVertices() {}
+
+	};
 	private GeneralModel generalModel;
 	ArrayList<PropertyExpression> expressionList;
 

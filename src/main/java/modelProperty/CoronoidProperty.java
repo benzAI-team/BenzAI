@@ -7,7 +7,7 @@ import modules.Module;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCoronoidCriterion;
-import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 
 public class CoronoidProperty extends ModelProperty {
 
@@ -16,7 +16,7 @@ public class CoronoidProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxCoronoidCriterion(parent, choiceBoxCriterion) ;
 	}
 
@@ -32,7 +32,7 @@ public class CoronoidProperty extends ModelProperty {
 //			nbMinHoles = 1;
 
 		int nbCrowns;
-		int hexagonUpperBound = this.getModelPropertySet().getHexagonNumberUpperBound();
+		int hexagonUpperBound = ((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound();
 		if (hexagonUpperBound > 4 * nbMinHoles)
 					nbCrowns = (hexagonUpperBound + 2 - 4 * nbMinHoles) / 2;
 		else

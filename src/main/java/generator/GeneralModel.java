@@ -17,6 +17,9 @@ import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import generator.patterns.Pattern;
 import generator.patterns.PatternOccurences;
 import generator.patterns.PatternResolutionInformations;
+import generator.properties.Property;
+import generator.properties.solver.SolverProperty;
+import generator.properties.solver.SolverPropertySet;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.ParameterizedExpression;
@@ -25,6 +28,7 @@ import nogood.NoGoodBorderRecorder;
 import nogood.NoGoodHorizontalAxisRecorder;
 import nogood.NoGoodNoneRecorder;
 import nogood.NoGoodRecorder;
+import nogood.NoGoodUniqueRecorder;
 import nogood.NoGoodVerticalAxisRecorder;
 import solution.BenzenoidSolution;
 import utils.Couple;
@@ -128,6 +132,7 @@ public class GeneralModel {
 
 	//private ArrayList<Module> modules = new ArrayList<Module>();
 	private ModelPropertySet modelPropertySet;
+	private SolverPropertySet solverPropertySet;
 
 	/*
 	 * Constructors
@@ -135,6 +140,7 @@ public class GeneralModel {
 
 	public GeneralModel(ModelPropertySet modelPropertySet) {
 		this.modelPropertySet = modelPropertySet;
+		solverPropertySet = new SolverPropertySet();
 
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
 		//System.out.println("H:" + nbMaxHexagons);
@@ -290,7 +296,7 @@ public class GeneralModel {
 	private void applyModelProperties() {
 		for (ModelProperty modelProperty : modelPropertySet)
 			if(modelPropertySet.has(modelProperty.getId())) {
-				applyModelProperty(modelProperty);
+				applyModelProperty((ModelProperty) modelProperty);
 			}
 
 		if (modelPropertySet.has("symmetry") || modelPropertySet.has("rectangle"))
@@ -572,20 +578,16 @@ public class GeneralModel {
 
 			noGoodRecorder = new NoGoodNoneRecorder(this, solution);
 
-			if (((ParameterizedExpression)modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator() == "SYMM_MIRROR")
+			if (((ParameterizedExpression)((ModelProperty) modelPropertySet.getById("symmetry")).getExpressions().get(0)).getOperator() == "SYMM_MIRROR")
 				noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
 
-			else if (((ParameterizedExpression)modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator() == "SYMM_VERTICAL")
+			else if (((ParameterizedExpression)((ModelProperty) modelPropertySet.getById("symmetry")).getExpressions().get(0)).getOperator() == "SYMM_VERTICAL")
 				//noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
 				noGoodRecorder = new NoGoodVerticalAxisRecorder(this, solution);
 				
 			else {
-//TODO
-//				if (GeneratorCriterion.containsSubject(criterions, "SINGLE_PATTERN")
-//						|| GeneratorCriterion.containsSubject(criterions, "MULTIPLE_PATTERNS")
-//						|| GeneratorCriterion.containsSubject(criterions, "FORBIDDEN_PATTERN"))
-//					noGoodRecorder = new NoGoodUniqueRecorder(this, solution);
-
+				if (modelPropertySet.has("pattern"))
+					noGoodRecorder = new NoGoodUniqueRecorder(this, solution);
 			}
 
 		}
@@ -599,9 +601,9 @@ public class GeneralModel {
 		applyModelProperties();
 		chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
 
-		for (ModelProperty modelProperty : modelPropertySet) {
-			if(modelProperty.hasExpressions())
-				modelProperty.getModule().changeSolvingStrategy();
+		for (Property modelProperty : modelPropertySet) {
+			if(((ModelProperty) modelProperty).hasExpressions())
+				((ModelProperty) modelProperty).getModule().changeSolvingStrategy();
 		}
 
 		solver = chocoModel.getSolver();
@@ -609,7 +611,10 @@ public class GeneralModel {
 			return Stopper.STOP;
 		});
 
-		//TODO
+		for(Property solverProperty : solverPropertySet)
+			if(((SolverProperty) solverProperty).hasExpression())
+				((SolverProperty) solverProperty).getSpecifier().apply(solver, ((SolverProperty) solverProperty).getExpression());
+		
 //		if (mapCriterions != null && mapCriterions.get("stop") != null) {
 //			for (GeneratorCriterion criterion : mapCriterions.get("stop")) {
 //

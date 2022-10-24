@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import generator.patterns.PatternResolutionInformations;
+import generator.properties.Property;
 import modules.CatacondensedModule;
 import modules.CatacondensedModule2;
 import modules.CoronenoidModule;
@@ -107,8 +108,8 @@ public class ModelBuilder {
 	 */
 	public static GeneralModel buildModel(ModelPropertySet modelPropertySet, int nbCrowns) {
 		GeneralModel model = new GeneralModel(modelPropertySet, nbCrowns);
-		for(ModelProperty modelProperty : modelPropertySet)
-			model.applyModelProperty(modelProperty);
+		for(Property modelProperty : modelPropertySet)
+			model.applyModelProperty((ModelProperty) modelProperty);
 		return model;
 	}
 }

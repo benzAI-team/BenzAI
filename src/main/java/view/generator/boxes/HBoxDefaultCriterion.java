@@ -1,10 +1,11 @@
 package view.generator.boxes;
 
+import generator.properties.PropertySet;
 import modelProperty.ModelPropertySet;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxDefaultCriterion extends HBoxCriterion {
+public class HBoxDefaultCriterion extends HBoxModelCriterion {
 
 	public HBoxDefaultCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
@@ -22,7 +23,6 @@ public class HBoxDefaultCriterion extends HBoxCriterion {
 
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
-
 	}
 
 	

@@ -3,6 +3,7 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,7 +16,7 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxRectangleCriterion extends HBoxCriterion {
+public class HBoxRectangleCriterion extends HBoxModelCriterion {
 
 	private GridPane gridPane;
 
@@ -156,7 +157,7 @@ public class HBoxRectangleCriterion extends HBoxCriterion {
 		if (isValid()) {
 			int height = heightTextField.getText().equals("Unspecified") ? -1 : Integer.decode(heightTextField.getText());
 			int width = widthTextField.getText().equals("Unspecified") ? -1 : Integer.decode(widthTextField.getText());
-			modelPropertySet.getById("rectangle").addExpression(new RectangleExpression("rectangle", heightChoiceBox.getValue(), height, widthChoiceBox.getValue(), width));
+			((ModelProperty) modelPropertySet.getById("rectangle")).addExpression(new RectangleExpression("rectangle", heightChoiceBox.getValue(), height, widthChoiceBox.getValue(), width));
 		}
 	}
 

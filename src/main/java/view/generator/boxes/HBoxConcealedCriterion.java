@@ -1,12 +1,13 @@
 package view.generator.boxes;
 
+import generator.properties.PropertySet;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.SubjectExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxConcealedCriterion extends HBoxCriterion {
+public class HBoxConcealedCriterion extends HBoxModelCriterion {
 
 	public HBoxConcealedCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(generatorPane, choiceBoxCriterion);

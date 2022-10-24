@@ -1,26 +1,9 @@
 package view.generator;
 
+import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.ChoiceBox;
-import modelProperty.builders.ModelPropertyBuilder;
-import modelProperty.expression.PropertyExpression;
-import utils.Utils;
-import view.generator.boxes.HBoxCatacondensedCriterion;
-import view.generator.boxes.HBoxConcealedCriterion;
-import view.generator.boxes.HBoxCoronenoidCriterion;
-import view.generator.boxes.HBoxCoronoidCriterion;
 import view.generator.boxes.HBoxCriterion;
-import view.generator.boxes.HBoxDiameterCriterion;
-import view.generator.boxes.HBoxIrregularityCriterion;
-import view.generator.boxes.HBoxNbCarbonsCriterion;
-import view.generator.boxes.HBoxHexagonNumberCriterion;
-import view.generator.boxes.HBoxNbHydrogensCriterion;
-import view.generator.boxes.HBoxNbKekuleStructuresCriterion;
-import view.generator.boxes.HBoxNbSolutionsCriterion;
-import view.generator.boxes.HBoxPatternCriterion;
-import view.generator.boxes.HBoxRectangleCriterion;
-import view.generator.boxes.HBoxRhombusCriterion;
-import view.generator.boxes.HBoxSymmetriesCriterion;
-import view.generator.boxes.HBoxTimeoutCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 import modelProperty.ModelPropertySet;
 
 public class ChoiceBoxCriterion extends ChoiceBox<String> {
@@ -28,46 +11,33 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 	private int index;
 	private GeneratorPane parent;
 	private ModelPropertySet modelPropertySet;
-	private PropertyExpression expression;
+	private SolverPropertySet solverPropertySet;
 
-	public ChoiceBoxCriterion(int index, GeneratorPane parent, ModelPropertySet modelPropertySet) {
+	
+	public ChoiceBoxCriterion(int index, GeneratorPane parent, ModelPropertySet modelPropertySet, SolverPropertySet solverPropertySet) {
 		super();
 		this.index = index;
 		this.parent = parent;
 		this.modelPropertySet = modelPropertySet;
+		this.solverPropertySet = solverPropertySet;
 		initialize();
 	}
 
 
 	private void initialize() {
-		for(Object name : modelPropertySet.getNames())
-			this.getItems().add((String)name);
-//		this.getItems().add("Number of hexagons");
-//		this.getItems().add("Number of carbons");
-//		this.getItems().add("Number of hydrogens");
-//		this.getItems().add("Coronenoid");
-//		this.getItems().add("Irregularity");
-//		this.getItems().add("Diameter");
-//		this.getItems().add("Coronoid");
-//		this.getItems().add("Rectangle");
-//		this.getItems().add("Rhombus");
-//		this.getItems().add("Catacondensed");
-//		this.getItems().add("Symmetries");
-//		this.getItems().add("Pattern properties");
-		
-		
+		for(String name : modelPropertySet.getNames())
+			this.getItems().add(name);		
+
 		//TODO
-		//for(String name : modelFilterSet.getNames())
-		//	this.getItems().add(name);
-		
-		
+//		for(String name : modelFilterSet.getNames())
+//			this.getItems().add(name);
+			
 //		this.getItems().add("Number of Kekulé structures");
 //		this.getItems().add("Concealed non Kekulean");
 		
 		
-		//TODO
-		//for(String name : solverPropertySet.getNames())
-		//	this.getItems().add(name);	
+		for(String name : solverPropertySet.getNames())
+			this.getItems().add(name);	
 		
 //		this.getItems().add("Number of solutions");
 //		this.getItems().add("Time limit");
@@ -79,58 +49,9 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 				String value = getValue();
 
 				System.out.println(value);
+				//TODO pas forcément le modelProperSet, le solverPropertySet aussi 
 				HBoxCriterion box = modelPropertySet.getHBoxCriterion(parent, this, value);
 				parent.setHBox(index, box);
-//				if (value.equals("Number of hexagons")) {
-//					HBoxCriterion box = new HBoxNbHexagonsCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Number of carbons")) {
-//					HBoxCriterion box = new HBoxNbCarbonsCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Number of hydrogens")) {
-//					HBoxCriterion box = new HBoxNbHydrogensCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Coronenoid")) {
-//					HBoxCriterion box = new HBoxCoronenoidCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Diameter")) {
-//					HBoxCriterion box = new HBoxDiameterCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Irregularity")) {
-//					HBoxCriterion box = new HBoxIrregularityCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Coronoid")) {
-//					HBoxCriterion box = new HBoxCoronoidCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Rectangle")) {
-//					HBoxCriterion box = new HBoxRectangleCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Rhombus")) {
-//					HBoxCriterion box = new HBoxRhombusCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Catacondensed")) {
-//					HBoxCriterion box = new HBoxCatacondensedCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
 //				else if (value.equals("Symmetries")) {
 //
 //					boolean existing = false;
@@ -148,11 +69,6 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 //					else {
 //						Utils.alert("Only one symmetry criterion");
 //					}
-//				}
-//
-//				else if (value.equals("Pattern properties")) {
-//					HBoxCriterion box = new HBoxPatternCriterion(parent, this);
-//					parent.setHBox(index, box);
 //				}
 //
 //				else if (value.equals("Number of solutions")) {
@@ -186,15 +102,6 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 
 	public void setIndex(int index) {
 		this.index = index;
-	}
-
-	public PropertyExpression getExpression() {
-		return expression;
-	}
-
-
-	public void setExpression(PropertyExpression expression) {
-		this.expression = expression;
 	}
 
 

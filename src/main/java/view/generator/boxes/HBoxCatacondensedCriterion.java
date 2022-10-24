@@ -3,13 +3,15 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import generator.properties.Property;
+import generator.properties.PropertySet;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.SubjectExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxCatacondensedCriterion extends HBoxCriterion {
+public class HBoxCatacondensedCriterion extends HBoxModelCriterion {
 
 	public HBoxCatacondensedCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
@@ -31,5 +33,4 @@ public class HBoxCatacondensedCriterion extends HBoxCriterion {
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		 modelPropertySet.getById("catacondensed").addExpression(new SubjectExpression("catacondensed"));
 	}
-
 }

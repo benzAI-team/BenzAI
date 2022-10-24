@@ -7,7 +7,7 @@ import modules.CarbonNumberModule;
 import modules.HydrogenNumberModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
-import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxNbCarbonsCriterion;
 import view.generator.boxes.HBoxNbHydrogensCriterion;
 
@@ -34,7 +34,7 @@ public class HydrogenNumberProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxNbHydrogensCriterion(parent, choiceBoxCriterion);
 	}
 

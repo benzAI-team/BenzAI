@@ -5,7 +5,7 @@ import modelProperty.expression.PropertyExpression;
 import modules.RhombusModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
-import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxRhombusCriterion;
 
 public class RhombusProperty extends ModelProperty {
@@ -15,7 +15,7 @@ public class RhombusProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxRhombusCriterion(parent, choiceBoxCriterion) ;
 	}
 

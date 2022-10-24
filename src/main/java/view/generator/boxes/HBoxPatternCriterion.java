@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import application.BenzenoidApplication;
 import generator.GeneratorCriterion;
 import generator.patterns.PatternResolutionInformations;
+import generator.properties.PropertySet;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,7 +23,7 @@ import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.patterns.PatternsEditionPane;
 
-public class HBoxPatternCriterion extends HBoxCriterion {
+public class HBoxPatternCriterion extends HBoxModelCriterion {
 
 	private PatternResolutionInformations patternInformations;
 	private PatternProperty patternProperty;

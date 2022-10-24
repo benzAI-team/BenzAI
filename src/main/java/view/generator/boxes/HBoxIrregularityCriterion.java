@@ -3,6 +3,7 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -15,7 +16,7 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxIrregularityCriterion extends HBoxCriterion {
+public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> irregularityChoiceBox;
 	private ChoiceBox<String> operatorChoiceBox;

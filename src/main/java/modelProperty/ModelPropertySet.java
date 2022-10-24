@@ -3,18 +3,19 @@ package modelProperty;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import generator.properties.Property;
+import generator.properties.PropertySet;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
-import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 
-public class ModelPropertySet implements Iterable<ModelProperty> {
-	private ArrayList<ModelProperty> modelPropertyList;
+public class ModelPropertySet extends PropertySet<ModelProperty> {
 	private int hexagonNumberUpperBound;
 	
 	
 	public ModelPropertySet() {
 		super();
-		modelPropertyList = new ArrayList<ModelProperty>();
+		setPropertyList(new ArrayList<ModelProperty>());
 		add(new HexagonNumberProperty());
 		add(new CarbonNumberProperty());
 		add(new HydrogenNumberProperty());
@@ -27,35 +28,8 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 		add(new RhombusProperty());
 		add(new SymmetryProperty());
 		add(new PatternProperty());
-	}
-
-	public void add(ModelProperty modelProperty) {
-		modelPropertyList.add(modelProperty);
-		modelProperty.setModelPropertySet(this);
-	}
-
-	/***
-	 * 
-	 * @param id
-	 * @return the model property with 'id'
-	 */
-	public ModelProperty getById(String id) {
-		for(ModelProperty modelProperty : modelPropertyList)
-			if(modelProperty.getId() == id)
-				return modelProperty;
-		return null;
-	}
-	
-	/***
-	 * 
-	 * @param name
-	 * @return
-	 */
-	private ModelProperty getByName(String name) {
-		for(ModelProperty modelProperty : modelPropertyList)
-			if(modelProperty.getName() == name)
-				return modelProperty;
-		return null;
+		add(new NbKekuleStructureProperty());
+		add(new ConcealedNonKekuleanProperty());
 	}
 
 	/***
@@ -64,32 +38,14 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 	 * @return true if the set contains a model property for this id
 	 */
 	public boolean has(String id) {
-		ModelProperty modelProperty = getById(id);
-		return modelProperty != null && modelProperty.getExpressions().size() > 0;
-	}
-	
-	@Override
-	public Iterator<ModelProperty> iterator() {
-		return modelPropertyList.iterator();
-	}
-
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
-		ModelProperty modelProperty = getByName(name);
-		return modelProperty.getHBoxCriterion(parent, choiceBoxCriterion);
-	}
-
-	public Object[] getNames() {
-		return (Object[]) modelPropertyList.stream().map(x -> x.getName()).toArray();
-	}
-	
-	public Object[] getIds() {
-		return (Object[]) modelPropertyList.stream().map(x -> x.getId()).toArray();
+		ModelProperty property =  getById(id);
+		return property != null && property.getExpressions().size() > 0;
 	}
 
 	public int computeHexagonNumberUpperBound() {
 		int upperBound = Integer.MAX_VALUE;
-		for(ModelProperty modelProperty : modelPropertyList) {
-			int bound = modelProperty.computeHexagonNumberUpperBound();
+		for(ModelProperty property : getPropertyList()) {
+			int bound = property.computeHexagonNumberUpperBound();
 			upperBound = upperBound < bound ? upperBound : bound;
 		}
 		hexagonNumberUpperBound =  upperBound;
@@ -102,10 +58,10 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 
 	public int computeNbCrowns() {
 		int nbCrowns = Integer.MAX_VALUE;
-		for(ModelProperty modelProperty : modelPropertyList) {
-			if(this.has(modelProperty.getId())) {
-				int bound = modelProperty.computeNbCrowns();
-				System.out.println(modelProperty.getId() + " " + bound);
+		for(ModelProperty property : getPropertyList()) {
+			if(this.has(property.getId())) {
+				int bound = property.computeNbCrowns();
+				System.out.println(property.getId() + " " + bound);
 				nbCrowns = nbCrowns < bound ? nbCrowns : bound;
 			}
 		}
@@ -114,14 +70,15 @@ public class ModelPropertySet implements Iterable<ModelProperty> {
 	}
 
 	public void clearPropertyExpressions() {
-		for(ModelProperty modelProperty : modelPropertyList)
-			modelProperty.clearExpressions();
+		for(ModelProperty property : getPropertyList())
+			property.clearExpressions();
 		
 	}
 
 	public boolean symmetryConstraintsAppliable() {
 		return this.has("rectangle");
 	}
+	
 	
 
 }

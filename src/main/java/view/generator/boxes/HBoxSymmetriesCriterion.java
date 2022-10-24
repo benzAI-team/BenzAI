@@ -3,6 +3,7 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
@@ -10,7 +11,7 @@ import modelProperty.expression.ParameterizedExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxSymmetriesCriterion extends HBoxCriterion {
+public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> symmetriesChoiceBox;
 
@@ -70,7 +71,7 @@ public class HBoxSymmetriesCriterion extends HBoxCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 
-		modelPropertySet.getById("symmetry").addExpression(new ParameterizedExpression("symmetry", symmetriesChoiceBox.getValue()));
+		((ModelProperty) modelPropertySet.getById("symmetry")).addExpression(new ParameterizedExpression("symmetry", symmetriesChoiceBox.getValue()));
 //		if (symmetriesChoiceBox.getValue().equals("C_2v(a) \"face-mirror\""))
 //			criterions.add(new GeneratorCriterion(Subject.SYMM_MIRROR, Operator.NONE, ""));
 //

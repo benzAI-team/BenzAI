@@ -7,7 +7,7 @@ import modelProperty.expression.RectangleExpression;
 import modules.RectangleModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
-import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxRectangleCriterion;
 
 public class RectangleProperty extends ModelProperty {
@@ -18,7 +18,7 @@ public class RectangleProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxRectangleCriterion(parent, choiceBoxCriterion);
 	}
 

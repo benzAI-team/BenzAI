@@ -1,17 +1,13 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.TextField;
-import modelProperty.ModelPropertySet;
+import modelProperty.expression.SubjectExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxNbSolutionsCriterion extends HBoxCriterion {
+public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 
 	private TextField nbSolutionsField;
 
@@ -23,14 +19,14 @@ public class HBoxNbSolutionsCriterion extends HBoxCriterion {
 	protected void checkValidity() {
 
 		if (!Utils.isNumber(nbSolutionsField.getText())) {
-			valid = false;
+			setValid(false);
 			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(getDeleteButton());
 			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 		}
 
 		else {
-			valid = true;
+			setValid(true);
 			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(getDeleteButton());
 			this.getChildren().add(getDeleteButton());
@@ -40,7 +36,7 @@ public class HBoxNbSolutionsCriterion extends HBoxCriterion {
 	@Override
 	protected void initialize() {
 
-		valid = false;
+		setValid(false);
 
 		nbSolutionsField = new TextField();
 		nbSolutionsField.setOnKeyReleased(e -> {
@@ -51,18 +47,12 @@ public class HBoxNbSolutionsCriterion extends HBoxCriterion {
 	}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+	public void setExpression(SolverPropertySet propertySet) {
 
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-		if (valid) {
-			Subject subject = Subject.NB_SOLUTIONS;
-			Operator operator = Operator.EQ;
+		if (isValid()) {
 			String value = nbSolutionsField.getText();
-			criterions.add(new GeneratorCriterion(subject, operator, value));
+			propertySet.getById("solutionNumber").setExpression(new SubjectExpression(value));
 		}
-
-		return criterions;
 	}
 
 	public void setNbSolutions(String nbSolutions) {

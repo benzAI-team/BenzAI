@@ -7,7 +7,7 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
+public abstract class ClassicalHBoxCriterion extends HBoxModelCriterion {
 
 	public ClassicalHBoxCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(generatorPane, choiceBoxCriterion);

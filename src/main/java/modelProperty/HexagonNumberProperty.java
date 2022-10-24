@@ -8,7 +8,7 @@ import modelProperty.expression.PropertyExpression;
 import modules.HexagonNumberModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
-import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxHexagonNumberCriterion;
 
 public class HexagonNumberProperty extends ModelProperty {
@@ -35,7 +35,7 @@ public class HexagonNumberProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxHexagonNumberCriterion(parent, choiceBoxCriterion);
 	}
 }

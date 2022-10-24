@@ -3,6 +3,8 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import generator.properties.Property;
+import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import modelProperty.ModelProperty;
@@ -16,9 +18,8 @@ import view.generator.GeneratorPane;
 public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 
 	
-	public HBoxNbKekuleStructuresCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
-		super(parent, choiceBoxCriterion, modelProperty);
-		operatorChoiceBox.getItems().addAll("Min", "Max");
+	public HBoxNbKekuleStructuresCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 	}
 
 	@Override
@@ -54,10 +55,9 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 		if (isValid()) {		
 				String operator = operatorChoiceBox.getValue();	
 				if (operator != "min" && operator != "max")
-					modelPropertySet.getById("kekuleNumber").addExpression(new BinaryNumericalExpression("kekuleNumber", operator, Integer.decode(fieldValue.getText())));			
+					modelPropertySet.getById("kekule").addExpression(new BinaryNumericalExpression("kekuleNumber", operator, Integer.decode(fieldValue.getText())));			
 				else 
-					modelPropertySet.getById("kekuleNumber").addExpression(new ParameterizedExpression("kekuleNumber", operator));
+					modelPropertySet.getById("kekule").addExpression(new ParameterizedExpression("kekuleNumber", operator));
 			}
 	}
-
 }

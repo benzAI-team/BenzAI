@@ -3,13 +3,12 @@ package modelProperty;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import modelProperty.builders.CarbonNumberPropertyBuilder;
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PropertyExpression;
 import modules.CarbonNumberModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
-import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxNbCarbonsCriterion;
 
 public class CarbonNumberProperty extends ModelProperty {
@@ -36,7 +35,7 @@ public class CarbonNumberProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxNbCarbonsCriterion(parent, choiceBoxCriterion);
 	}
 }

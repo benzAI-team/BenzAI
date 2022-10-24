@@ -3,6 +3,7 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,7 +14,7 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxCoronoidCriterion extends HBoxCriterion {
+public class HBoxCoronoidCriterion extends HBoxModelCriterion {
 
 	public HBoxCoronoidCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(generatorPane, choiceBoxCriterion);

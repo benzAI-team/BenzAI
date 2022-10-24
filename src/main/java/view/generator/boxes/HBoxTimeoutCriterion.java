@@ -3,16 +3,20 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import generator.properties.PropertySet;
+import generator.properties.solver.SolverProperty;
+import generator.properties.solver.SolverPropertySet;
+import generator.properties.solver.TimeLimitProperty;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.SubjectExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxTimeoutCriterion extends HBoxCriterion {
+public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 
 	private TextField timeField;
 	private ChoiceBox<String> timeUnitBox;
@@ -25,14 +29,14 @@ public class HBoxTimeoutCriterion extends HBoxCriterion {
 	protected void checkValidity() {
 
 		if (!Utils.isNumber(timeField.getText()) && timeUnitBox.getValue() != null) {
-			valid = false;
+			setValid(false);
 			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(getDeleteButton());
 			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 		}
 
 		else {
-			valid = true;
+			setValid(true);
 			this.getChildren().remove(getWarningIcon());
 			this.getChildren().remove(getDeleteButton());
 			this.getChildren().add(getDeleteButton());
@@ -42,7 +46,7 @@ public class HBoxTimeoutCriterion extends HBoxCriterion {
 	@Override
 	protected void initialize() {
 
-		valid = false;
+		setValid(false);
 		timeField = new TextField();
 		timeUnitBox = new ChoiceBox<String>();
 		timeUnitBox.getItems().addAll("milliseconds", "seconds", "minutes", "hours");
@@ -60,15 +64,10 @@ public class HBoxTimeoutCriterion extends HBoxCriterion {
 		checkValidity();
 	}
 
+
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
-
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		Operator operator = Operator.EQ;
-
-		if (valid) {
-			Subject subject = Subject.TIMEOUT;
-
+	public void setExpression(SolverPropertySet propertySet) {
+		if (isValid()) {
 			double time = Double.parseDouble(timeField.getText());
 
 			if (timeUnitBox.getValue().equals("milliseconds"))
@@ -85,11 +84,9 @@ public class HBoxTimeoutCriterion extends HBoxCriterion {
 
 			String value = Double.toString(time) + "s";
 
-			criterions.add(new GeneratorCriterion(subject, operator, value));
+			((SolverProperty)propertySet.getById("TIMEOUT")).setExpression(new SubjectExpression(value));
 
 		}
-
-		return criterions;
 	}
 
 	public void setTime(String time) {
@@ -101,4 +98,5 @@ public class HBoxTimeoutCriterion extends HBoxCriterion {
 		timeUnitBox.getSelectionModel().select(timeUnit);
 		checkValidity();
 	}
+
 }

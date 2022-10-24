@@ -30,6 +30,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PatternExpression;
 import modelProperty.expression.PropertyExpression;
@@ -343,7 +344,7 @@ public class PatternsEditionPane extends BorderPane {
 
 			
 			
-			parent.addPropertyExpression(parent.getPatternProperty().getModelPropertySet());
+			parent.addPropertyExpression((ModelPropertySet) parent.getPatternProperty().getPropertySet());
 			parent.refreshPatternInformations(subject);
 			hide();
 

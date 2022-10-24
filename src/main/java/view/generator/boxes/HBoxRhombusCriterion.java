@@ -3,6 +3,7 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,7 +14,7 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-public class HBoxRhombusCriterion extends HBoxCriterion {
+public class HBoxRhombusCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> dimensionChoiceBox;
 	private TextField dimensionTextField;
@@ -82,7 +83,7 @@ public class HBoxRhombusCriterion extends HBoxCriterion {
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {
 			int size = dimensionChoiceBox.getValue().equals("Unspecified") ? -1 : Integer.decode(dimensionTextField.getText());
-			modelPropertySet.getById("rhombus").addExpression(new BinaryNumericalExpression("rhombus", dimensionChoiceBox.getValue(), size));
+			((ModelProperty) modelPropertySet.getById("rhombus")).addExpression(new BinaryNumericalExpression("rhombus", dimensionChoiceBox.getValue(), size));
 		}
 	}
 

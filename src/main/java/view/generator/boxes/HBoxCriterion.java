@@ -4,13 +4,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
 import modelProperty.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 
-@SuppressWarnings("unused")
 public abstract class HBoxCriterion extends HBox {
 
 	private boolean valid;
@@ -46,7 +43,7 @@ public abstract class HBoxCriterion extends HBox {
 	protected abstract void checkValidity();
 	protected abstract void initialize();
 	
-	public abstract void addPropertyExpression(ModelPropertySet modelPropertySet);
+	//public abstract void addPropertyExpression(PropertySet<Property> propertySet);
 	
 
 	/***
