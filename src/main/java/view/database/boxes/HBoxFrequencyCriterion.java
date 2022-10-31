@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import database.BenzenoidCriterion;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import utils.Utils;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
@@ -21,7 +22,25 @@ public class HBoxFrequencyCriterion extends HBoxDatabaseCriterion{
 
 	@Override
 	protected void checkValidity() {
-		// TODO Auto-generated method stub
+		if (operatorChoiceBox.getSelectionModel().getSelectedItem().equals("IN")) {
+			
+		}
+		
+		else {
+			if (!Utils.isNumber(fieldValue1.getText()) || operatorChoiceBox.getValue() == null) {
+				valid = false;
+				this.getChildren().remove(warningIcon);
+				this.getChildren().remove(deleteButton);
+				this.getChildren().addAll(warningIcon, deleteButton);
+			}
+
+			else {
+				valid = true;
+				this.getChildren().remove(warningIcon);
+				this.getChildren().remove(deleteButton);
+				this.getChildren().add(deleteButton);
+			}
+		}
 		
 	}
 
