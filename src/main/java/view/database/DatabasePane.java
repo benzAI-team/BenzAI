@@ -115,8 +115,8 @@ public class DatabasePane extends ScrollPane {
 				Utils.alert("Invalid criterion(s)");
 			}
 		});
-    
-    ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
+
+		ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
 		closeButton = new Button();
 		closeButton.setGraphic(imageClose);
 		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
@@ -207,12 +207,12 @@ public class DatabasePane extends ScrollPane {
 			ArrayList<BenzenoidCriterion> criterions = getCriterions();
 
 			BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
-			
+
 			managerPane.log("Requesting database", true);
 			for (BenzenoidCriterion criterion : criterions)
 				managerPane.log(criterion.toString(), false);
-			
-			String jsonInputString = buildJsonInputString(criterions).replace("\"idBenzenoid\": \"\", ", "");
+
+			String jsonInputString = buildJsonInputString(criterions);
 			List<Map> results = Post.post("https://benzenoids.lis-lab.fr/find_ir/", jsonInputString);
 
 			molecules = new ArrayList<>();
@@ -380,11 +380,11 @@ public class DatabasePane extends ScrollPane {
 
 		}
 
-		String json = JSonStringBuilder.buildNewJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, opeId,
-				opeName, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity);
-		
+		String json = JSonStringBuilder.buildNewJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity,
+				opeId, opeName, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity);
+
 		System.out.println(json);
-		
+
 		return json;
 	}
 }
