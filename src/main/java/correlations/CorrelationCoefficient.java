@@ -38,7 +38,7 @@ public class CorrelationCoefficient {
 		 // use formula for calculating correlation 
 		 // coefficient.
 		 double corr = (double)(n * sum_XY - sum_X * sum_Y) / (double)(Math.sqrt((n * squareSum_X - sum_X * sum_X) * (n * squareSum_Y - sum_Y * sum_Y)));
-		 return corr;
+		 return Math.abs(corr);
 	 }
 	 
 	 public static void buildFiles() throws IOException {

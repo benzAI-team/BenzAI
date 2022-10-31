@@ -497,7 +497,7 @@ public class GeneralModel {
 	 * Solving methods
 	 */
 
-	public void displaySolution() {
+	public void displaySolution(Solver solver) {
 
 		for (int index = 0; index < channeling.length; index++) {
 			if (channeling[index].getValue() == 1)
@@ -512,6 +512,8 @@ public class GeneralModel {
 			else
 				System.out.println(x.getName() + " = " + (((IntVar) x).getValue()));
 
+		System.out.println(solver.getDecisionPath());
+		
 		if (!verbose)
 			System.out.println("");
 	}
@@ -721,7 +723,7 @@ public class GeneralModel {
 		solver.limitSearch(() -> {
 			return Stopper.STOP;
 		});
-
+		
 		if (mapCriterions != null && mapCriterions.get("stop") != null) {
 			for (GeneratorCriterion criterion : mapCriterions.get("stop")) {
 
@@ -774,8 +776,9 @@ public class GeneralModel {
 
 			resultSolver.addVerticesSolution(verticesSolution);
 
-			displaySolution();
-
+			displaySolution(solver);
+//			System.out.println(solver.getDecisionPath());
+			
 			if (verbose) {
 
 				System.out.println("NO-GOOD");
@@ -1492,7 +1495,8 @@ public class GeneralModel {
 
 			resultSolver.addVerticesSolution(verticesSolution);
 
-			displaySolution();
+			displaySolution(solver);
+			//System.out.println(solver.getDecisionPath());
 
 			if (verbose) {
 

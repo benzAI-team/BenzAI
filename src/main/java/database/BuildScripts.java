@@ -31,7 +31,7 @@ public class BuildScripts {
 	private static void initialize() throws IOException {
 
 		directory = "/home/adrien/Documents/old_log_files";
-		writer = new BufferedWriter(new FileWriter(new File(directory + "/insert.sql")));
+		writer = new BufferedWriter(new FileWriter(new File(directory + "/insert_with_inchi.sql")));
 		indexNames = 0;
 		indexIms2d = 0;
 		indexPoint = 0;
@@ -256,6 +256,8 @@ public class BuildScripts {
 	private static void treatMolecule(long id, File graphFile, File irFile, File nicsFile, File ims2dFile)
 			throws IOException {
 
+		
+		
 		String moleculeName = graphFile.getName().split(Pattern.quote("."))[0];
 		writer.write("# " + moleculeName + "\n\n");
 
@@ -263,6 +265,11 @@ public class BuildScripts {
 
 		insertBenzenoid(id, molecule);
 		insertIRSpectra(id, irFile, graphFile);
+		
+		if (ims2dFile.exists()) {
+			File pictureFile = new File(ims2dFile.getAbsolutePath().replace(".txt", ".png"));
+			insertIMS2D(id, ims2dFile, pictureFile);
+		}
 	}
 
 	private static void treatMolecules() throws IOException {
@@ -272,8 +279,11 @@ public class BuildScripts {
 		long id = 0;
 
 		for (File molFile : files) {
+			
 			if (molFile.getName().endsWith(".graph_coord")) {
 
+				System.out.println("treating " + molFile.getName().replace(".graph_coord", ""));
+				
 				File irFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".log"));
 				File nicsFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".nics"));
 				File ims2dFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".ims2d"));
@@ -282,21 +292,24 @@ public class BuildScripts {
 
 				id++;
 			}
+			
+			
+			
 		}
 	}
 
 	public static void main(String[] args) throws IOException {
 
 		initialize();
-		//treatMolecules();
+		treatMolecules();
 
-		File molFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0.graph_coord");
-		File ims2dFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0.ims2d");
-		File pictureFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0_ims2d_1a.png");
-		
-		Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
-		
-		insertIMS2D(0, ims2dFile, pictureFile);
+//		File molFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0.graph_coord");
+//		File ims2dFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0.ims2d");
+//		File pictureFile = new File("/home/adrien/Documents/old_log_files/5_hexagons0_ims2d_1a.png");
+//		
+//		Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
+//		
+//		insertIMS2D(0, ims2dFile, pictureFile);
 		
 		writer.close();
 	}

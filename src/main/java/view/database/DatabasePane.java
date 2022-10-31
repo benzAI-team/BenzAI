@@ -212,7 +212,7 @@ public class DatabasePane extends ScrollPane {
 			for (BenzenoidCriterion criterion : criterions)
 				managerPane.log(criterion.toString(), false);
 			
-			String jsonInputString = buildJsonInputString(criterions);
+			String jsonInputString = buildJsonInputString(criterions).replace("\"idBenzenoid\": \"\", ", "");
 			List<Map> results = Post.post("https://benzenoids.lis-lab.fr/find_ir/", jsonInputString);
 
 			molecules = new ArrayList<>();

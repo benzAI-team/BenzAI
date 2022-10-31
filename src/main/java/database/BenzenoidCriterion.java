@@ -3,11 +3,11 @@ package database;
 public class BenzenoidCriterion {
 
 	public enum Subject {
-		ID_MOLECULE, MOLECULE_NAME, NB_HEXAGONS, NB_CARBONS, NB_HYDROGENS, IRREGULARITY
+		ID_MOLECULE, MOLECULE_NAME, NB_HEXAGONS, NB_CARBONS, NB_HYDROGENS, IRREGULARITY, FREQUENCY, INTENSITY
 	}
 	
 	public enum Operator {
-		LEQ, LT, EQ, GT, GEQ, DIFF
+		LEQ, LT, EQ, GT, GEQ, DIFF, IN
 	}
 	
 	private Subject subject;
@@ -50,6 +50,9 @@ public class BenzenoidCriterion {
 			case DIFF:
 				return "<>";
 				
+			case IN:
+				return "IN";
+				
 			default:
 				return null;
 		}
@@ -75,6 +78,9 @@ public class BenzenoidCriterion {
 				
 			case DIFF:
 				return "dif";
+		
+			case IN:
+				return "in";
 				
 			default:
 				return null;
@@ -104,6 +110,9 @@ public class BenzenoidCriterion {
 		
 		else if (operatorString.equals("!=") || operatorString.equals("<>"))
 			return Operator.DIFF;
+		
+		else if (operatorString.toUpperCase().equals("IN"))
+			return Operator.IN;
 		
 		else 
 			return null;

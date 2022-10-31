@@ -32,6 +32,15 @@ public class InsertScriptFinal {
 		return "\"" + str + "\"";
 	}
 	
+	private static String getInchi(File inchiFile) throws IOException{
+		
+		BufferedReader r = new BufferedReader(new FileReader(inchiFile));
+		String line = r.readLine().replace("InChI=", "");
+		r.close();
+		
+		return line;
+	}
+	
 	public static String getGeometry(File comFile) throws IOException {
 		
 		BufferedReader reader = new BufferedReader(new FileReader(comFile));
@@ -160,7 +169,7 @@ public class InsertScriptFinal {
 	}
 	
 	// Fill the tables `benzenoid` and `name`
-	public static void insertBenzenoid(File molFile) throws IOException {
+	public static void insertBenzenoid(File molFile, File inchiFile) throws IOException {
 		
 		Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
 		
@@ -176,7 +185,7 @@ public class InsertScriptFinal {
 		int nbHexagons = molecule.getNbHexagons();
 		int nbCarbons = molecule.getNbNodes();
 		int nbHydrogens = molecule.getNbHydrogens();
-		String inchie = "unknown";
+		String inchie = getInchi(inchiFile);
 		double irregularity = irregBD.doubleValue();
 		String graphFileContent = fileToString(molFile);
 		String nics = "";
@@ -226,10 +235,9 @@ public class InsertScriptFinal {
 		double finalEnergy = log.getFinalEnergy().get(log.getFinalEnergy().size() - 1);
 		
 		StringBuilder insert = new StringBuilder();
+		
 		insert.append("INSERT INTO ir_spectra (idSpectra, idBenzenoid, frequencies, intensities, zeroPointEnergy, finalEnergy) VALUES (\n");
-		
 		insert.append(idSpectra + ", " + idBenzenoid + ", " + quote(frequencies.toString()) + ", " + quote(intensities.toString()) + ", " + zpe + ", " + finalEnergy);
-		
 		insert.append(");\n");
 		
 		out.write(insert.toString() + "\n");
@@ -251,10 +259,12 @@ public class InsertScriptFinal {
 		
 		for (File molFile : files) {
 			if (molFile.getName().endsWith(".graph_coord")) {
-				if (first) {
+				//if (first) {
 				System.out.println("Treating " + molFile.getName());
 				
-				insertBenzenoid(molFile);
+				File inchiFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_coord.cml.inchi"));
+				
+				insertBenzenoid(molFile, inchiFile);
 				insertIRSpectra(molFile);
 				
 				File ims2dTextFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_ims2d1a.txt"));
@@ -264,11 +274,13 @@ public class InsertScriptFinal {
 					insertIMS2D1A(ims2dTextFile, ims2dMapFile);
 				
 				idBenzenoid ++;
-				}
+				//}
 				
 				//first = false;
 			}
 		}
+		
+		System.out.println("Terminated, " + idIMS2D1A + "ims maps");
 		
 		out.close();
 	}
