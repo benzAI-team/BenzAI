@@ -23,7 +23,6 @@ import modelProperty.expression.BinaryNumericalExpression;
  * fulfilled by the benzenoid.
  */
 public abstract class ModelProperty extends Property {
-	private ArrayList<PropertyExpression> expressions = new ArrayList<PropertyExpression>();
 	private Module module; // for posting constraints on the model
 	private Checker checker; // for checking if a solution to the model has the other requirements
 
@@ -64,39 +63,16 @@ public abstract class ModelProperty extends Property {
 	 */
 	public int computeNbCrowns() {
 		//return (int) (Math.ceil(3.0 + Math.sqrt(12.0 * (double) this.getModelPropertySet().getHexagonNumberUpperBound() - 3.0)));
-		return (((ModelPropertySet)this.getPropertySet()).getHexagonNumberUpperBound() + 2) / 2;
+		return (((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound() + 2) / 2;
 	}
 
-	/***
-	 *  
-	 * @param expression
-	 */
-	public void addExpression(PropertyExpression expression) {
-		expressions.add(expression);
-	}
-	
-	public void removeExpression(PropertyExpression expression) {
-		expressions.remove(expression);
-	}
-	
-	public void clearExpressions() {
-		expressions.clear();
-		
-	}
-	/***
-	 * 
-	 * @return
-	 */
-	public boolean hasExpressions() {
-		return expressions.size() > 0;
-	}
 
 	/***
 	 * 
 	 * @return true iff any expression allows to limit the model size
 	 */
 	public boolean hasUpperBound() {
-		return expressions.stream().anyMatch(x -> x.hasUpperBound());
+		return getExpressions().stream().anyMatch(x -> x.hasUpperBound());
 	}
 	
 	/***
@@ -108,9 +84,6 @@ public abstract class ModelProperty extends Property {
 
 	public void setModule(Module module) {
 		this.module = module;
-	}
-	public ArrayList<PropertyExpression> getExpressions() {
-		return expressions;
 	}
 
 	public Checker getChecker() {

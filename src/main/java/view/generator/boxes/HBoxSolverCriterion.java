@@ -18,6 +18,6 @@ public abstract class HBoxSolverCriterion extends HBoxCriterion {
 	protected void initialize() {
 	}
 
-	abstract public void setExpression(SolverPropertySet propertySet);
+	abstract public void addPropertyExpression(SolverPropertySet propertySet);
 
 }

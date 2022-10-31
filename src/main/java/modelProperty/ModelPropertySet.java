@@ -9,13 +9,13 @@ import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
 
-public class ModelPropertySet extends PropertySet<ModelProperty> {
+public class ModelPropertySet extends PropertySet {
 	private int hexagonNumberUpperBound;
 	
 	
 	public ModelPropertySet() {
 		super();
-		setPropertyList(new ArrayList<ModelProperty>());
+		setPropertyList(new ArrayList<Property>());
 		add(new HexagonNumberProperty());
 		add(new CarbonNumberProperty());
 		add(new HydrogenNumberProperty());
@@ -32,20 +32,11 @@ public class ModelPropertySet extends PropertySet<ModelProperty> {
 		add(new ConcealedNonKekuleanProperty());
 	}
 
-	/***
-	 * 
-	 * @param id
-	 * @return true if the set contains a model property for this id
-	 */
-	public boolean has(String id) {
-		ModelProperty property =  getById(id);
-		return property != null && property.getExpressions().size() > 0;
-	}
 
 	public int computeHexagonNumberUpperBound() {
 		int upperBound = Integer.MAX_VALUE;
-		for(ModelProperty property : getPropertyList()) {
-			int bound = property.computeHexagonNumberUpperBound();
+		for(Property property : getPropertyList()) {
+			int bound = ((ModelProperty) property).computeHexagonNumberUpperBound();
 			upperBound = upperBound < bound ? upperBound : bound;
 		}
 		hexagonNumberUpperBound =  upperBound;
@@ -58,9 +49,9 @@ public class ModelPropertySet extends PropertySet<ModelProperty> {
 
 	public int computeNbCrowns() {
 		int nbCrowns = Integer.MAX_VALUE;
-		for(ModelProperty property : getPropertyList()) {
+		for(Property property : getPropertyList()) {
 			if(this.has(property.getId())) {
-				int bound = property.computeNbCrowns();
+				int bound = ((ModelProperty) property).computeNbCrowns();
 				System.out.println(property.getId() + " " + bound);
 				nbCrowns = nbCrowns < bound ? nbCrowns : bound;
 			}
@@ -70,7 +61,7 @@ public class ModelPropertySet extends PropertySet<ModelProperty> {
 	}
 
 	public void clearPropertyExpressions() {
-		for(ModelProperty property : getPropertyList())
+		for(Property property : getPropertyList())
 			property.clearExpressions();
 		
 	}

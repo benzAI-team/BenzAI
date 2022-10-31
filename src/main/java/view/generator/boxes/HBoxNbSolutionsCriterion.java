@@ -47,11 +47,11 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 	}
 
 	@Override
-	public void setExpression(SolverPropertySet propertySet) {
+	public void addPropertyExpression(SolverPropertySet propertySet) {
 
 		if (isValid()) {
 			String value = nbSolutionsField.getText();
-			propertySet.getById("solutionNumber").setExpression(new SubjectExpression(value));
+			propertySet.getById("solutionNumber").addExpression(new SubjectExpression(value));
 		}
 	}
 

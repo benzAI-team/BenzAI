@@ -6,12 +6,11 @@ import java.util.Iterator;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
-import view.generator.boxes.HBoxModelCriterion;
 
-public class PropertySet<P extends Property> implements Iterable<P> {
-	private ArrayList<P> propertyList;
+public class PropertySet implements Iterable<Property> {
+	private ArrayList<Property> propertyList;
 
-	public void add(P property) {
+	public void add(Property property) {
 		propertyList.add(property);
 		property.setPropertySet(this);
 	}
@@ -21,8 +20,8 @@ public class PropertySet<P extends Property> implements Iterable<P> {
 	 * @param id
 	 * @return the model property with 'id'
 	 */
-	public P getById(String id) {
-		for(P property : propertyList)
+	public Property getById(String id) {
+		for(Property property : propertyList)
 			if(property.getId() == id)
 				return property;
 		return null;
@@ -33,16 +32,16 @@ public class PropertySet<P extends Property> implements Iterable<P> {
 	 * @param name
 	 * @return
 	 */
-	public P getByName(String name) {
-		for(P property : propertyList)
+	public Property getByName(String name) {
+		for(Property property : propertyList)
 			if(property.getName() == name)
 				return property;
 		return null;
 	}
 	
 	@Override
-	public Iterator<P> iterator() {
-		return (Iterator<P>) propertyList.iterator();
+	public Iterator<Property> iterator() {
+		return (Iterator<Property>) propertyList.iterator();
 	}
 
 	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
@@ -62,11 +61,21 @@ public class PropertySet<P extends Property> implements Iterable<P> {
 		return (Object[]) propertyList.stream().map(x -> x.getId()).toArray();
 	}
 
-	public ArrayList<P> getPropertyList() {
+	/***
+	 * 
+	 * @param id
+	 * @return true if the set contains a model property for this id
+	 */
+	public boolean has(String id) {
+		Property property =  getById(id);
+		return property != null && property.getExpressions().size() > 0;
+	}
+
+	public ArrayList<Property> getPropertyList() {
 		return propertyList;
 	}
 
-	public void setPropertyList(ArrayList<P> propertyList) {
+	public void setPropertyList(ArrayList<Property> propertyList) {
 		this.propertyList = propertyList;
 	}
 	

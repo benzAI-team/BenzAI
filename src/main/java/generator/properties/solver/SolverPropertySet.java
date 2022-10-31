@@ -6,18 +6,13 @@ import generator.properties.Property;
 import generator.properties.PropertySet;
 import modelProperty.ModelProperty;
 
-public class SolverPropertySet extends PropertySet<SolverProperty> {
+public class SolverPropertySet extends PropertySet {
 
 	public SolverPropertySet(){
-		setPropertyList(new ArrayList<SolverProperty>());
+		setPropertyList(new ArrayList<Property>());
 		add(new TimeLimitProperty());
 		add(new SolutionNumberProperty());
 
-	}
-
-	public boolean has(String id) {
-		SolverProperty property =  getById(id);
-		return property != null && property.getExpression() != null;
 	}
 
 }

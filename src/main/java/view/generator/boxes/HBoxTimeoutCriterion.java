@@ -66,7 +66,7 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 
 
 	@Override
-	public void setExpression(SolverPropertySet propertySet) {
+	public void addPropertyExpression(SolverPropertySet propertySet) {
 		if (isValid()) {
 			double time = Double.parseDouble(timeField.getText());
 
@@ -84,7 +84,7 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 
 			String value = Double.toString(time) + "s";
 
-			((SolverProperty)propertySet.getById("TIMEOUT")).setExpression(new SubjectExpression(value));
+			((SolverProperty)propertySet.getById("TIMEOUT")).addExpression(new SubjectExpression(value));
 
 		}
 	}
@@ -98,5 +98,4 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 		timeUnitBox.getSelectionModel().select(timeUnit);
 		checkValidity();
 	}
-
 }

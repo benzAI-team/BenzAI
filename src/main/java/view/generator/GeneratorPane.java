@@ -27,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -87,6 +88,8 @@ public class GeneratorPane extends ScrollPane {
 	private Button stopButton;
 	private Button pauseButton;
 	private Button resumeButton;
+	private Label solutionTextLabel = new Label("Number of solutions already found:");
+	private Label solutionNumberLabel = new Label("0");
 
 
 	public GeneratorPane(BenzenoidApplication application) {
@@ -127,7 +130,7 @@ public class GeneratorPane extends ScrollPane {
 
 		checkSettings();
 
-		refresh();
+		placeComponents();
 	}
 
 	/***
@@ -174,7 +177,7 @@ public class GeneratorPane extends ScrollPane {
 
 				System.out.println(nbCriterions + " criterions");
 
-				refresh();
+				placeComponents();
 
 			}
 			else {
@@ -318,7 +321,7 @@ public class GeneratorPane extends ScrollPane {
 	/***
 	 * 
 	 */
-	public void refresh() {
+	public void placeComponents() {
 
 		gridPane.getChildren().clear();
 
@@ -347,6 +350,7 @@ public class GeneratorPane extends ScrollPane {
 			buttonsBox.getChildren().add(warningIcon);
 
 		gridPane.add(buttonsBox, 0, nbCriterions + 1);
+				
 
 	}
 
@@ -357,7 +361,7 @@ public class GeneratorPane extends ScrollPane {
 	 */
 	public void setHBox(int index, HBoxCriterion box) {
 		hBoxesCriterions.set(index, box);
-		refresh();
+		placeComponents();
 	}
 
 	/***
@@ -374,7 +378,7 @@ public class GeneratorPane extends ScrollPane {
 		for (int i = 0; i < nbCriterions; i++)
 			choiceBoxesCriterions.get(i).setIndex(i);
 
-		refresh();
+		placeComponents();
 	}
 	
 	/***
@@ -398,7 +402,7 @@ public class GeneratorPane extends ScrollPane {
 			if(box instanceof HBoxModelCriterion)
 				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
 			if(box instanceof HBoxSolverCriterion)
-				((HBoxSolverCriterion)box).setExpression(solverPropertySet);
+				((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
 		}
 		return true;
 	}
@@ -544,11 +548,11 @@ public class GeneratorPane extends ScrollPane {
 	public ArrayList<Molecule> filterMolecules(ArrayList<Molecule> molecules){
 		ArrayList<Molecule> filteredMolecules;
 		
-		for(ModelProperty property : modelPropertySet)
+		for(Property property : modelPropertySet)
 			if(property.hasExpressions()) {
 				filteredMolecules = new ArrayList<Molecule>();
 				for(Molecule molecule : molecules)
-					if(property.getChecker().checks(molecule, property)) {
+					if(((ModelProperty) property).getChecker().checks(molecule, (ModelProperty) property)) {
 						filteredMolecules.add(molecule);
 					}
 				molecules = filteredMolecules;
@@ -568,25 +572,18 @@ public class GeneratorPane extends ScrollPane {
 			buildModelPropertySet();
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
-//			for (GeneratorCriterion criterion : criterions) {
-//				application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
-//			}
 			for(Property modelProperty : modelPropertySet)
-				application.getBenzenoidCollectionsPane().log(modelProperty.getId(), false);
+				if(modelPropertySet.has(modelProperty.getId()))
+					application.getBenzenoidCollectionsPane().log(modelProperty.getId(), false);
 				
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
 
 			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(closeButton, loadIcon, pauseButton, stopButton);
-
-//			Iterator it = criterionsMap.entrySet().iterator();
-//			while (it.hasNext()) {
-//				Map.Entry pair = (Map.Entry) it.next();
-//				System.out.println(pair.getKey() + " = " + pair.getValue().toString());
-//			}
+			buttonsBox.getChildren().addAll(closeButton, loadIcon, solutionTextLabel, solutionNumberLabel, pauseButton, stopButton);
 
 			try {
 				model = ModelBuilder.buildModel(modelPropertySet, patternsInformations);
+				solutionNumberLabel.textProperty().bind(model.getNbTotalSolutions().asString());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -667,8 +664,9 @@ public class GeneratorPane extends ScrollPane {
 				return false;
 			if(box instanceof HBoxModelCriterion)
 				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
+			//TODO : retirer
 			if(box instanceof HBoxSolverCriterion)
-				((HBoxSolverCriterion)box).setExpression(solverPropertySet);
+				((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
 		}
 		return true;
 	}
@@ -825,7 +823,7 @@ public class GeneratorPane extends ScrollPane {
 
 			nbCriterions++;
 
-			refresh();
+			placeComponents();
 		}
 	}
 	
@@ -849,7 +847,7 @@ public class GeneratorPane extends ScrollPane {
 
 			nbCriterions++;
 
-			refresh();
+			placeComponents();
 		}
 	}
 

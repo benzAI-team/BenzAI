@@ -26,19 +26,8 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 
 	private void initialize() {
 		for(String name : modelPropertySet.getNames())
-			this.getItems().add(name);		
-
-		//TODO
-//		for(String name : modelFilterSet.getNames())
-//			this.getItems().add(name);
-			
-//		this.getItems().add("Number of Kekulé structures");
-//		this.getItems().add("Concealed non Kekulean");
-		
-		
-		for(String name : solverPropertySet.getNames())
-			this.getItems().add(name);	
-		
+			this.getItems().add(name);				
+				
 //		this.getItems().add("Number of solutions");
 //		this.getItems().add("Time limit");
 

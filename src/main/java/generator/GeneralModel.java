@@ -20,6 +20,8 @@ import generator.patterns.PatternResolutionInformations;
 import generator.properties.Property;
 import generator.properties.solver.SolverProperty;
 import generator.properties.solver.SolverPropertySet;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.ParameterizedExpression;
@@ -120,7 +122,7 @@ public class GeneralModel {
 	private ArrayList<Pattern> nogoodsFragments = new ArrayList<>();
 	private ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
 
-	private int nbTotalSolutions = 0;
+	private SimpleIntegerProperty nbTotalSolutions = new SimpleIntegerProperty(0);
 	private int indexSolution;
 
 	private ArrayList<Integer> topBorder;
@@ -294,7 +296,7 @@ public class GeneralModel {
 	 * Apply all the model properties to the model
 	 */
 	private void applyModelProperties() {
-		for (ModelProperty modelProperty : modelPropertySet)
+		for (Property modelProperty : modelPropertySet)
 			if(modelPropertySet.has(modelProperty.getId())) {
 				applyModelProperty((ModelProperty) modelProperty);
 			}
@@ -304,7 +306,7 @@ public class GeneralModel {
 
 		if (applyBorderConstraints)
 			ConstraintBuilder.postBordersConstraints(this);
-
+		//TODO deplacer l'instruction ci-dessous
 		chocoModel.nbNodes(benzenoid, nbVertices).post();
 
 	}
@@ -612,8 +614,8 @@ public class GeneralModel {
 		});
 
 		for(Property solverProperty : solverPropertySet)
-			if(((SolverProperty) solverProperty).hasExpression())
-				((SolverProperty) solverProperty).getSpecifier().apply(solver, ((SolverProperty) solverProperty).getExpression());
+			if(((SolverProperty) solverProperty).hasExpressions())
+				((SolverProperty) solverProperty).getSpecifier().apply(solver, ((SolverProperty) solverProperty).getExpressions().get(0));
 		
 //		if (mapCriterions != null && mapCriterions.get("stop") != null) {
 //			for (GeneratorCriterion criterion : mapCriterions.get("stop")) {
@@ -639,9 +641,9 @@ public class GeneralModel {
 		Stopper.STOP = false;
 
 		while (solver.solve() && !generatorRun.isPaused()) {
-
-			nbTotalSolutions++;
-
+			Platform.runLater(()->{
+				nbTotalSolutions.set(nbTotalSolutions.get() + 1);
+			});
 			recordNoGoods();
 
 			BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
@@ -688,7 +690,7 @@ public class GeneralModel {
 		long time = end - begin;
 
 		resultSolver.setTime(time);
-		resultSolver.setNbTotalSolution(nbTotalSolutions);
+		resultSolver.setNbTotalSolution(nbTotalSolutions.get());
 		resultSolver.setSolver(solver);
 
 		System.out.println(nbCrowns + " crowns");
@@ -1358,7 +1360,9 @@ public class GeneralModel {
 
 		while (solver.solve() && !generatorRun.isPaused()) {
 
-			nbTotalSolutions++;
+			Platform.runLater(()->{
+				nbTotalSolutions.set(nbTotalSolutions.get() + 1);
+			});
 
 			recordNoGoods();
 
@@ -1703,6 +1707,10 @@ public class GeneralModel {
 
 	public Model getChocoModel() {
 		return chocoModel;
+	}
+
+	public SimpleIntegerProperty getNbTotalSolutions() {
+		return nbTotalSolutions;
 	}
 
 	

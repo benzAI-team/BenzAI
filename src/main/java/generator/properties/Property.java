@@ -1,5 +1,8 @@
 package generator.properties;
 
+import java.util.ArrayList;
+
+import modelProperty.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
@@ -14,6 +17,7 @@ public abstract class Property {
 	private String id;
 	private String name;
 	private PropertySet propertySet;
+	private ArrayList<PropertyExpression> expressions = new ArrayList<PropertyExpression>();
 
 	/***
 	 * 
@@ -35,6 +39,29 @@ public abstract class Property {
 	 */
 	public abstract HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion);
 	
+	/***
+	 *  
+	 * @param expression
+	 */
+	public void addExpression(PropertyExpression expression) {
+		expressions.add(expression);
+	}
+	
+	public void removeExpression(PropertyExpression expression) {
+		expressions.remove(expression);
+	}
+	
+	public void clearExpressions() {
+		expressions.clear();
+		
+	}
+	/***
+	 * 
+	 * @return
+	 */
+	public boolean hasExpressions() {
+		return expressions.size() > 0;
+	}
 
 	/***
 	 * getters, setters
@@ -64,6 +91,11 @@ public abstract class Property {
 		this.propertySet = propertySet;
 	}
 
+	public ArrayList<PropertyExpression> getExpressions() {
+		return expressions;
+	}
 
-
+	public void setExpressions(ArrayList<PropertyExpression> expressions) {
+		this.expressions = expressions;
+	}
 }

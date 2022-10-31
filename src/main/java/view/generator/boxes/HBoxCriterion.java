@@ -1,5 +1,6 @@
 package view.generator.boxes;
 
+
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
