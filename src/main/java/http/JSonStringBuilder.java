@@ -17,8 +17,8 @@ public class JSonStringBuilder {
 	}
 
 	public static String buildNewJsonString(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens,
-			double irregularity, String opeId, String opeName, String opeHexagons, String opeCarbons,
-			String opeHydrogens, String opeIrregularity) {
+			double irregularity, String frequency, String intensity, String opeId, String opeName, String opeHexagons,
+			String opeCarbons, String opeHydrogens, String opeIrregularity, String opeFrequency, String opeIntensity) {
 
 		StringBuilder json = new StringBuilder();
 
@@ -53,6 +53,18 @@ public class JSonStringBuilder {
 			json.append("\"irregularity\": \"" + opeIrregularity + " " + irregularity + "\"");
 		else
 			json.append("\"irregularity\": \"\"");
+
+		// new criterions
+
+		if (!opeFrequency.equals(""))
+			json.append("\"frequency\": \"" + opeFrequency + " " + frequency + "\"");
+		else
+			json.append("\"frequency\": \"\"");
+
+		if (!opeIntensity.equals(""))
+			json.append("\"intensity\": \"" + opeIntensity + " " + intensity + "\"");
+		else
+			json.append("\"intensity\": \"\"");
 
 		json.append("}");
 

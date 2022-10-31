@@ -332,6 +332,8 @@ public class DatabasePane extends ScrollPane {
 		int nbCarbons = 0;
 		int nbHydrogens = 0;
 		double irregularity = -1.0;
+		String frequency = "";
+		String intensity = "";
 
 		String opeId = "";
 		String opeName = "";
@@ -339,6 +341,8 @@ public class DatabasePane extends ScrollPane {
 		String opeCarbons = "";
 		String opeHydrogens = "";
 		String opeIrregularity = "";
+		String opeFrequency = "";
+		String opeIntensity = "";
 
 		for (BenzenoidCriterion criterion : criterions) {
 
@@ -376,12 +380,23 @@ public class DatabasePane extends ScrollPane {
 				irregularity = Double.parseDouble(value);
 				opeIrregularity = operator;
 				break;
+
+			case FREQUENCY:
+				frequency = value;
+				opeFrequency = operator;
+				break;
+
+			case INTENSITY:
+				intensity = value;
+				opeIntensity = operator;
+				break;
 			}
 
 		}
 
 		String json = JSonStringBuilder.buildNewJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity,
-				opeId, opeName, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity);
+				frequency, intensity, opeId, opeName, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity,
+				opeFrequency, opeIntensity);
 
 		System.out.println(json);
 
