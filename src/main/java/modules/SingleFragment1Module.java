@@ -13,6 +13,7 @@ import org.chocosolver.solver.search.strategy.selectors.variables.VariableSelect
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.solver.variables.Variable;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
 import generator.GeneralModel;
@@ -114,10 +115,18 @@ public class SingleFragment1Module extends Module {
 			}
 		}
 
-		if (occurences.size() > 0)
+		if (occurences.size() > 0) {
 			generalModel.getProblem().sum(presences, "=", 1).post();
-		else
+			for (Variable x : presences) {
+				generalModel.increaseDegree(x.getName());
+			}
+
+		} else {
 			generalModel.getProblem().sum(generalModel.getChanneling(), "=", 0).post();
+			for (Variable x : generalModel.getChanneling()) {
+				generalModel.increaseDegree(x.getName());
+			}
+		}
 	}
 
 	@Override

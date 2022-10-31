@@ -3,6 +3,7 @@ package generator;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.chocosolver.solver.Model;
@@ -41,6 +42,8 @@ public class GeneralModel {
 	private Solver solver;
 	private ResultSolver resultSolver;
 	private GeneratorRun generatorRun = new GeneratorRun(this);
+
+	private HashMap<String, Integer> variablesDegrees = new HashMap<>();
 
 	/*
 	 * Application parameters
@@ -516,6 +519,9 @@ public class GeneralModel {
 		
 		if (!verbose)
 			System.out.println("");
+
+		System.out.println(this.getProblem().getSolver().getDecisionPath());
+		System.out.println(this.getProblem().getSolver().getFailCount() + " fails");
 	}
 
 	public String buildDescription(int index) {
@@ -807,6 +813,10 @@ public class GeneralModel {
 		solver.printStatistics();
 
 		resultSolver.setNogoodsFragments(nogoodsFragments);
+
+		System.out.println("------");
+		displayDegrees();
+
 		return resultSolver;
 
 	}
@@ -1812,4 +1822,24 @@ public class GeneralModel {
 		return hexagonsCriterions.toString();
 	}
 
+	public void increaseDegree(String variableName) {
+		if (variablesDegrees.get(variableName) == null)
+			variablesDegrees.put(variableName, 0);
+		int curentDegree = variablesDegrees.get(variableName);
+		variablesDegrees.remove(variableName);
+		variablesDegrees.put(variableName, curentDegree + 1);
+	}
+
+	public int getVariableDegree(String variableName) {
+		return variablesDegrees.get(variableName);
+	}
+
+	public void displayDegrees() {
+		for (Map.Entry<String, Integer> entry : variablesDegrees.entrySet()) {
+			String key = entry.getKey();
+			Object value = entry.getValue();
+
+			System.out.println("d(" + key + ") = " + value);
+		}
+	}
 }

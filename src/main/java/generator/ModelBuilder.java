@@ -22,7 +22,6 @@ import modules.RectangleModule;
 import modules.RectangleModule2;
 import modules.RhombusModule;
 import modules.SingleFragment1Module;
-import modules.SingleFragment2Module;
 import modules.SymmetriesModule;
 import solving_modes.SymmetryType;
 import utils.Utils;
@@ -429,8 +428,11 @@ public class ModelBuilder {
 //			model.addModule(new SingleFragment1Module(model, patternsInformations.getFragments().get(0),
 //					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 
-			model.addModule(new SingleFragment2Module(model, patternsInformations.getFragments().get(0), false,
-					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+			model.addModule(new SingleFragment1Module(model, patternsInformations.getFragments().get(0)/* , false */,
+					VariableStrategy.DOM_WDEG_REF, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+
+//			model.addModule(new SingleFragment3Module(model, patternsInformations.getFragments().get(0),
+//					VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 
 		if (GeneratorCriterion.containsSubject(map.get("patterns"), Subject.MULTIPLE_PATTERNS))
 			// for (GeneralModel model : models)

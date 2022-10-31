@@ -2,7 +2,9 @@ package view.database;
 
 import javafx.scene.control.ChoiceBox;
 import view.database.boxes.HBoxDatabaseCriterion;
+import view.database.boxes.HBoxFrequencyDatabaseCriterion;
 import view.database.boxes.HBoxIDDatabaseCriterion;
+import view.database.boxes.HBoxIntensityDatabaseCriterion;
 import view.database.boxes.HBoxIrregularityDatabaseCriterion;
 import view.database.boxes.HBoxNbCarbonsDatabaseCriterion;
 import view.database.boxes.HBoxNbHexagonsDatabaseCriterion;
@@ -27,6 +29,8 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 		this.getItems().add("Number of carbons");
 		this.getItems().add("Number of hydrogens");
 		this.getItems().add("Irregularity");
+		this.getItems().add("Frequency");
+		this.getItems().add("Intensity");
 
 		this.setOnAction(e -> {
 
@@ -61,6 +65,16 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 
 				else if (value.equals("Irregularity")) {
 					HBoxDatabaseCriterion box = new HBoxIrregularityDatabaseCriterion(parent, this);
+					parent.setHBox(index, box);
+				}
+
+				else if (value.equals("Frequency")) {
+					HBoxDatabaseCriterion box = new HBoxFrequencyDatabaseCriterion(parent, this);
+					parent.setHBox(index, box);
+				}
+
+				else if (value.equals("Intensity")) {
+					HBoxDatabaseCriterion box = new HBoxIntensityDatabaseCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
 

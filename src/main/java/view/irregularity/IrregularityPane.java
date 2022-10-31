@@ -136,6 +136,7 @@ public class IrregularityPane extends BorderPane {
 		xAxis.getCategories().setAll(categoriesNames);
 		xAxis.setLabel("Classes");
 		final NumberAxis yAxis = new NumberAxis(minY, maxY, 50);
+		// final LogarithmicAxis yAxis = new LogarithmicAxis(minY, maxY, 50);
 		yAxis.setLabel("");
 		chart = new BarChart(xAxis, yAxis);
 		chart.setTitle("Irregularity stats");
