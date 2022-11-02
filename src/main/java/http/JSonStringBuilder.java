@@ -25,14 +25,14 @@ public class JSonStringBuilder {
 		json.append("{");
 
 		if (!opeId.equals(""))
-			json.append("\"idBenzenoid\": \"" + opeId + " " + id + "\", ");
+			json.append("\"id\": \"" + opeId + " " + id + "\", ");
 		else
-			json.append("\"idBenzenoid\": \"\", ");
+			json.append("\"id\": \"\", ");
 
 		if (!opeName.equals(""))
-			json.append("\"inchie\": \"" + opeName + " " + name + "\", ");
+			json.append("\"name\": \"" + opeName + " " + name + "\", ");
 		else
-			json.append("\"inchie\": \"\", ");
+			json.append("\"name\": \"\", ");
 
 		if (!opeHexagons.equals(""))
 			json.append("\"nbHexagons\": \"" + opeHexagons + " " + nbHexagons + "\", ");
@@ -50,16 +50,16 @@ public class JSonStringBuilder {
 			json.append("\"nbHydrogens\": \"\", ");
 
 		if (!opeIrregularity.equals(""))
-			json.append("\"irregularity\": \"" + opeIrregularity + " " + irregularity + "\"");
+			json.append("\"irregularity\": \"" + opeIrregularity + " " + irregularity + "\", ");
 		else
-			json.append("\"irregularity\": \"\"");
+			json.append("\"irregularity\": \"\", ");
 
 		// new criterions
 
 		if (!opeFrequency.equals(""))
-			json.append("\"frequency\": \"" + opeFrequency + " " + frequency + "\"");
+			json.append("\"frequency\": \"" + opeFrequency + " " + frequency + "\", ");
 		else
-			json.append("\"frequency\": \"\"");
+			json.append("\"frequency\": \"\", ");
 
 		if (!opeIntensity.equals(""))
 			json.append("\"intensity\": \"" + opeIntensity + " " + intensity + "\"");
