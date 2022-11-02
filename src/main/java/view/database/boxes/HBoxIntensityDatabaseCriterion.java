@@ -7,7 +7,7 @@ import database.BenzenoidCriterion.Subject;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
-public class HBoxIntensityDatabaseCriterion extends HBoxIRDatabase {
+public class HBoxIntensityDatabaseCriterion extends HBoxInDatabase {
 
 	public HBoxIntensityDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);

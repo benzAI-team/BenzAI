@@ -16,9 +16,10 @@ public class JSonStringBuilder {
 		return json;
 	}
 
-	public static String buildNewJsonString(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens,
-			double irregularity, String frequency, String intensity, String opeId, String opeName, String opeHexagons,
-			String opeCarbons, String opeHydrogens, String opeIrregularity, String opeFrequency, String opeIntensity) {
+	public static String buildNewJsonString(Long id, String name, String nbHexagons, String nbCarbons,
+			String nbHydrogens, double irregularity, String frequency, String intensity, String opeId, String opeName,
+			String opeHexagons, String opeCarbons, String opeHydrogens, String opeIrregularity, String opeFrequency,
+			String opeIntensity) {
 
 		StringBuilder json = new StringBuilder();
 

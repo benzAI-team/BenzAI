@@ -7,7 +7,7 @@ import database.BenzenoidCriterion.Subject;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
-public class HBoxNbHexagonsDatabaseCriterion extends HBoxClassicDatabaseCriterion {
+public class HBoxNbHexagonsDatabaseCriterion extends HBoxInDatabase {
 
 	public HBoxNbHexagonsDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
@@ -18,8 +18,15 @@ public class HBoxNbHexagonsDatabaseCriterion extends HBoxClassicDatabaseCriterio
 		ArrayList<BenzenoidCriterion> criterions = new ArrayList<>();
 
 		if (valid) {
+
+			String value = fieldValue1.getText();
+			if (operatorChoiceBox.getSelectionModel().getSelectedItem().equals("IN"))
+				value = value + " " + fieldValue2.getText();
+
+			// String value = fieldValue1.getText() + " " + fieldValue2.getText();
 			criterions.add(new BenzenoidCriterion(Subject.NB_HEXAGONS,
-					BenzenoidCriterion.getOperator(operatorChoiceBox.getValue()), fieldValue.getText()));
+					BenzenoidCriterion.getOperator(operatorChoiceBox.getValue()), value));
+			System.out.println(criterions.get(0));
 		}
 
 		return criterions;

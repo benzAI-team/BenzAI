@@ -40,7 +40,7 @@ public class HBoxClassicDatabaseCriterion extends HBoxDatabaseCriterion {
 		valid = false;
 
 		operatorChoiceBox = new ChoiceBox<String>();
-		operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=", "!=", "IN");
+		operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=", "!=");
 		fieldValue = new TextField();
 
 		operatorChoiceBox.getSelectionModel().select(2);

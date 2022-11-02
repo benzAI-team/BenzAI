@@ -6,13 +6,13 @@ import utils.Utils;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
-public abstract class HBoxIRDatabase extends HBoxDatabaseCriterion {
+public abstract class HBoxInDatabase extends HBoxDatabaseCriterion {
 
 	protected ChoiceBox<String> operatorChoiceBox;
 	protected TextField fieldValue1;
 	protected TextField fieldValue2;
 
-	public HBoxIRDatabase(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
+	public HBoxInDatabase(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 

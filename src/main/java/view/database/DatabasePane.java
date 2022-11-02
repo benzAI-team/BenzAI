@@ -328,9 +328,9 @@ public class DatabasePane extends ScrollPane {
 
 		Long id = -1L;
 		String name = "none";
-		int nbHexagons = 0;
-		int nbCarbons = 0;
-		int nbHydrogens = 0;
+		String nbHexagons = "";
+		String nbCarbons = "";
+		String nbHydrogens = "";
 		double irregularity = -1.0;
 		String frequency = "";
 		String intensity = "";
@@ -362,17 +362,17 @@ public class DatabasePane extends ScrollPane {
 				break;
 
 			case NB_HEXAGONS:
-				nbHexagons = Integer.parseInt(value);
+				nbHexagons = value;
 				opeHexagons = operator;
 				break;
 
 			case NB_CARBONS:
-				nbCarbons = Integer.parseInt(value);
+				nbCarbons = value;
 				opeCarbons = operator;
 				break;
 
 			case NB_HYDROGENS:
-				nbHydrogens = Integer.parseInt(value);
+				nbHydrogens = value;
 				opeHydrogens = operator;
 				break;
 
