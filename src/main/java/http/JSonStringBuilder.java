@@ -17,7 +17,7 @@ public class JSonStringBuilder {
 	}
 
 	public static String buildNewJsonString(Long id, String name, String nbHexagons, String nbCarbons,
-			String nbHydrogens, double irregularity, String frequency, String intensity, String opeId, String opeName,
+			String nbHydrogens, String irregularity, String frequency, String intensity, String opeId, String opeName,
 			String opeHexagons, String opeCarbons, String opeHydrogens, String opeIrregularity, String opeFrequency,
 			String opeIntensity) {
 

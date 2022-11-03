@@ -331,7 +331,7 @@ public class DatabasePane extends ScrollPane {
 		String nbHexagons = "";
 		String nbCarbons = "";
 		String nbHydrogens = "";
-		double irregularity = -1.0;
+		String irregularity = "";
 		String frequency = "";
 		String intensity = "";
 
@@ -377,7 +377,7 @@ public class DatabasePane extends ScrollPane {
 				break;
 
 			case IRREGULARITY:
-				irregularity = Double.parseDouble(value);
+				irregularity = value;
 				opeIrregularity = operator;
 				break;
 
