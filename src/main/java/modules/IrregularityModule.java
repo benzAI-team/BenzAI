@@ -1,9 +1,11 @@
 package modules;
 
 import java.util.ArrayList;
+
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Subject;
@@ -243,6 +245,8 @@ public class IrregularityModule extends Module {
 
 	private static Tuples buildTable() {
 		Tuples table = new Tuples(true);
+
+		// new Tuples(true).;
 
 		table.add(1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0);
 		table.add(0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0);

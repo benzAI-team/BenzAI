@@ -1,7 +1,9 @@
 package expe;
 
 import org.chocosolver.solver.Model;
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
+import org.chocosolver.solver.Solver;
+import org.chocosolver.solver.constraints.extension.Tuples;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.IntVar;
@@ -12,28 +14,24 @@ public class TestModel {
 
 		Model model = new Model("debug");
 
-		IntVar[] tab = new IntVar[5];
+		IntVar x = model.intVar("x", 0, 1);
+		IntVar y = model.intVar("y", 0, 1);
+		IntVar z = model.intVar("z", 0, 2);
 
-		for (int i = 0; i < tab.length; i++)
-			tab[i] = model.intVar("tab_" + i, 0, 5);
+		Tuples table = new Tuples(true);
+		table.setUniversalValue(-1);
 
-		IntVar sum = model.intVar("sum", 0, 20);
+		table.add(-1, -1, 2);
 
-		model.sum(tab, "=", sum).post();
-		model.arithm(sum, "=", 20).post();
+		IntVar[] tuple = new IntVar[] { x, y, z };
 
-		model.getSolver().setSearch(new IntStrategy(tab, new FirstFail(model), new IntDomainMin()));
+		model.table(tuple, table, "CT+").post();
 
-		while (model.getSolver().solve()) {
+		Solver solver = model.getSolver();
+		solver.setSearch(new IntStrategy(tuple, new FirstFail(model), new IntDomainMax()));
 
-			for (IntVar x : tab)
-				System.out.println(x.getName() + " = " + x.getValue());
-
-			System.out.println(sum.getName() + " = " + sum.getValue());
-
-			System.out.println("");
+		while (solver.solve()) {
+			System.out.println("(x,y,z) = (" + x.getValue() + ", " + y.getValue() + ", " + z.getValue() + ")");
 		}
-
-		System.out.println(model);
 	}
 }
