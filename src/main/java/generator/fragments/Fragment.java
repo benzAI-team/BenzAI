@@ -637,4 +637,12 @@ public class Fragment {
 		int optNbCrowns = Fragment.getNbOptimizedCrowns(p);
 		System.out.println(optNbCrowns);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		for (Node node : nodesRefs)
+			builder.append(node.toString());
+		return builder.toString();
+	}
 }

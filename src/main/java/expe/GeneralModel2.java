@@ -11,7 +11,6 @@ import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
-
 import generator.fragments.Fragment;
 import molecules.Node;
 import utils.Couple;
@@ -34,9 +33,97 @@ public class GeneralModel2 {
 	 */
 	
 	private static Couple<Integer, Integer>[] coordsCorrespondance;
-	private static int [][] adjacencyMatrix;
+	private static int [][] adjacencyMatrix;	
 	private static int nbEdges;
+	
+	private static void buildAdjacencyMatrix() {
 
+		nbEdges = 0;
+		adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
+
+		for (int x = 0; x < diameter; x++) {
+			for (int y = 0; y < diameter; y++) {
+
+				if (coordsMatrix[x][y] != -1) {
+
+					int u = coordsMatrix[x][y];
+
+					if (x > 0 && y > 0) {
+
+						int v = coordsMatrix[x - 1][y - 1];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (y > 0) {
+
+						int v = coordsMatrix[x][y - 1];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (x + 1 < diameter) {
+
+						int v = coordsMatrix[x + 1][y];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (x + 1 < diameter && y + 1 < diameter) {
+
+						int v = coordsMatrix[x + 1][y + 1];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (y + 1 < diameter) {
+
+						int v = coordsMatrix[x][y + 1];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (x > 0) {
+
+						int v = coordsMatrix[x - 1][y];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	private static void buildCoordsCorrespondance() {
 
@@ -316,12 +403,34 @@ public class GeneralModel2 {
 
 		int nbSolutions = 0;
 		while (solver.solve()) {
+			
+			/*
+			 * Displaying solution
+			 */
 			for (int i = 0; i < nbHexagonsCoronenoid; i++) {
 				if (X[i].getValue() == 1)
 					System.out.print(i + " ");
-				
-				Fragment pattern = convertToPattern(X);
 			}
+			
+			/*
+			 * Nogood
+			 */
+			ArrayList<Integer> vertices = new ArrayList<>();
+			for (int i = 0; i < X.length; i++)
+				if (X[i].getValue() == 1)
+					vertices.add(i);
+			
+			Fragment pattern = convertToPattern(X);
+			ArrayList<Fragment> rotations = pattern.computeRotations();
+			
+			ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
+			for (Fragment rotation : rotations) {
+				
+			}
+			
+//			ArrayList<ArrayList<Integer>> borderTranslations = new ArrayList<>();
+//			ArrayList<ArrayList<Integer>> translations = allTranslations(vertices, pattern);
+			
 			System.out.println("");
 			nbSolutions++;
 		}
@@ -341,95 +450,10 @@ public class GeneralModel2 {
 		buildCoordsMatrix();
 		buildCoordsCorrespondance();
 		buildAdjacencyMatrix();
+		
 	}
 
-	private static void buildAdjacencyMatrix() {
-
-		nbEdges = 0;
-		adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
-
-		for (int x = 0; x < diameter; x++) {
-			for (int y = 0; y < diameter; y++) {
-
-				if (coordsMatrix[x][y] != -1) {
-
-					int u = coordsMatrix[x][y];
-
-					if (x > 0 && y > 0) {
-
-						int v = coordsMatrix[x - 1][y - 1];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
-
-					if (y > 0) {
-
-						int v = coordsMatrix[x][y - 1];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
-
-					if (x + 1 < diameter) {
-
-						int v = coordsMatrix[x + 1][y];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
-
-					if (x + 1 < diameter && y + 1 < diameter) {
-
-						int v = coordsMatrix[x + 1][y + 1];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
-
-					if (y + 1 < diameter) {
-
-						int v = coordsMatrix[x][y + 1];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
-
-					if (x > 0) {
-
-						int v = coordsMatrix[x - 1][y];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	
 	
 	private static String displayTable(Tuples table) {
 		return table.toString().replace("][", "]\n[").replace("Allowed tuples: {", "").replace("}", "");
