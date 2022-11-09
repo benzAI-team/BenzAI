@@ -11,6 +11,8 @@ import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
+
 import generator.fragments.Fragment;
 import molecules.Node;
 import utils.Couple;
@@ -270,7 +272,7 @@ public class GeneralModel2 {
 		table.add(tuple0);
 		table.add(tuple1);
 
-		for (int n = 2; n < nbHexagons; n++) {
+		for (int n = 2; n <= nbHexagons; n++) {
 			for (int position = 1; position <= nbNeighbors; position++) {
 				int[] tuple = new int[nbNeighbors + 1];
 				tuple[0] = n;
@@ -429,6 +431,12 @@ public class GeneralModel2 {
 			
 			ArrayList<IntVar[]> nogoods = computeNogoods(model, rotations, nbHexagons, X, nbHexagonsVar);
 			
+			for (IntVar [] nogood : nogoods) {
+				IntIterableRangeSet [] valClause = new IntIterableRangeSet[nogood.length];
+				for (int i = 0 ; i < valClause.length ; i++)
+					valClause[i] = new IntIterableRangeSet(0);
+				model.getClauseConstraint().addClause(nogood, valClause);
+			}
 		
 			System.out.println("");
 			nbSolutions++;
@@ -445,6 +453,10 @@ public class GeneralModel2 {
 				for (int yShift = 0 ; yShift <= diameter ; yShift ++) {
 					boolean valid = true;
 					for (Node node : rotation.getNodesRefs()) {
+						
+						if (node == null)
+							System.out.println("");
+						
 						int x = node.getX() + xShift;
 						int y = node.getY() + yShift;
 						
@@ -473,7 +485,7 @@ public class GeneralModel2 {
 	}
 	
 	private static void initializeValues(String[] args) {
-		nbHexagons = 3;
+		nbHexagons = 5;
 
 		nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
 
