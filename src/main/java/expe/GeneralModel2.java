@@ -365,6 +365,14 @@ public class GeneralModel2 {
 		return neighbors;
 	}
 
+//	private static Tuples countTable(int size) {
+//		
+//		Tuples table = new Tuples(true);
+//		
+//		
+//		return table;
+//	}
+	
 	private static void solve() {
 		model = new Model("GeneralModel #2");
 
@@ -376,14 +384,13 @@ public class GeneralModel2 {
 		for (int i = 0; i < nbHexagonsCoronenoid; i++)
 			Y[i] = model.intVar("y_" + i, 0, nbHexagons);
 
-		//model.sum(X, "=", nbHexagons).post();
-
-		IntVar nbHexagonsVar = model.intVar("nbHexagons", 0, nbHexagons);
+		IntVar nbHexagonsVar = model.intVar("nbHexagons", nbHexagons);
 		model.sum(X, "=", nbHexagonsVar).post();
 		model.arithm(nbHexagonsVar, "=", nbHexagons).post();
 		
 		model.count(1, Y, model.intVar("limit_count", 1)).post();
 
+		
 		for (int i = 0; i < nbHexagonsCoronenoid; i++)
 			model.ifOnlyIf(model.arithm(X[i], "=", 0), model.arithm(Y[i], "=", 0));
 
@@ -413,9 +420,19 @@ public class GeneralModel2 {
 			/*
 			 * Displaying solution
 			 */
+			String debug = "";
 			for (int i = 0; i < nbHexagonsCoronenoid; i++) {
-				if (X[i].getValue() == 1)
+				if (X[i].getValue() == 1) {
 					System.out.print(i + " ");
+					debug += i + " ";
+				}
+			}
+			
+			if (debug.contains("0 1 2 7 8")) {
+				System.out.println("");
+				for (int i = 0 ; i < nbHexagonsCoronenoid; i ++) {
+					System.out.println("Y" + i + " = " + Y[i].getValue());
+				}
 			}
 			
 			/*
