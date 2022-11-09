@@ -374,8 +374,12 @@ public class GeneralModel2 {
 		for (int i = 0; i < nbHexagonsCoronenoid; i++)
 			Y[i] = model.intVar("y_" + i, 0, nbHexagons);
 
-		model.sum(X, "=", nbHexagons).post();
+		//model.sum(X, "=", nbHexagons).post();
 
+		IntVar nbHexagonsVar = model.intVar("nbHexagons", 0, nbHexagons);
+		model.sum(X, "=", nbHexagonsVar).post();
+		model.arithm(nbHexagonsVar, "=", nbHexagons).post();
+		
 		model.count(1, Y, model.intVar("limit_count", 1)).post();
 
 		for (int i = 0; i < nbHexagonsCoronenoid; i++)
@@ -423,20 +427,51 @@ public class GeneralModel2 {
 			Fragment pattern = convertToPattern(X);
 			ArrayList<Fragment> rotations = pattern.computeRotations();
 			
-			ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
-			for (Fragment rotation : rotations) {
-				
-			}
+			ArrayList<IntVar[]> nogoods = computeNogoods(model, rotations, nbHexagons, X, nbHexagonsVar);
 			
-//			ArrayList<ArrayList<Integer>> borderTranslations = new ArrayList<>();
-//			ArrayList<ArrayList<Integer>> translations = allTranslations(vertices, pattern);
-			
+		
 			System.out.println("");
 			nbSolutions++;
 		}
 		System.out.println(nbSolutions + " solutions found");
 	}
 
+	private static ArrayList<IntVar[]> computeNogoods(Model model, ArrayList<Fragment> rotations, int nbHexagons, BoolVar[] X, IntVar nbHexagonsVar) {
+		
+		ArrayList<IntVar []> nogoods = new ArrayList<>();
+		
+		for (Fragment rotation : rotations) {
+			for (int xShift = 0 ; xShift <= diameter ; xShift ++) {
+				for (int yShift = 0 ; yShift <= diameter ; yShift ++) {
+					boolean valid = true;
+					for (Node node : rotation.getNodesRefs()) {
+						int x = node.getX() + xShift;
+						int y = node.getY() + yShift;
+						
+						if (x < 0 || x >= diameter || y < 0 || y >= diameter || coordsMatrix[x][y] == -1) {
+							valid = false;
+							break;
+						}
+					}
+					if (valid) {
+						IntVar [] nogood = new IntVar[nbHexagons + 1];
+						for (int i = 0 ; i < nbHexagons ; i++) {
+							int x = rotation.getNode(i).getX() + xShift;
+							int y = rotation.getNode(i).getY() + yShift;
+							
+							BoolVar var = X[coordsMatrix[x][y]];
+							nogood[i] = var;
+						}
+						nogood[nogood.length - 1] = model.arithm(nbHexagonsVar, "=", nbHexagons).reify();
+						nogoods.add(nogood);
+					}
+				}
+			}
+		}
+		
+		return nogoods;
+	}
+	
 	private static void initializeValues(String[] args) {
 		nbHexagons = 3;
 
