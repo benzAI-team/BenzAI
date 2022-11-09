@@ -12,6 +12,10 @@ import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
+import generator.fragments.Fragment;
+import molecules.Node;
+import utils.Couple;
+
 public class GeneralModel2 {
 
 	private static Model model;
@@ -25,6 +29,141 @@ public class GeneralModel2 {
 
 	private static final int star = -1;
 
+	/*/
+	 * 
+	 */
+	
+	private static Couple<Integer, Integer>[] coordsCorrespondance;
+	private static int [][] adjacencyMatrix;
+	private static int nbEdges;
+
+	@SuppressWarnings("unchecked")
+	private static void buildCoordsCorrespondance() {
+
+		coordsCorrespondance = new Couple[diameter * diameter];
+
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+
+				if (coordsMatrix[i][j] != -1)
+					coordsCorrespondance[coordsMatrix[i][j]] = new Couple<>(i, j);
+			}
+		}
+	}
+	
+	private static Fragment convertToPattern(IntVar [] X) {
+
+		ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
+
+		int[] correspondance = new int[diameter * diameter];
+
+		for (int i = 0; i < correspondance.length; i++)
+			correspondance[i] = -1;
+
+		for (int index = 0; index < X.length; index++) {
+			if (X[index] != null) {
+				if (X[index].getValue() == 1) {
+					hexagonsSolutions.add(index);
+					correspondance[index] = hexagonsSolutions.size() - 1;
+				}
+			}
+		}
+
+		int nbNodes = hexagonsSolutions.size();
+
+		/*
+		 * nodes
+		 */
+
+		Node[] nodes = new Node[nbNodes];
+
+		for (int i = 0; i < hexagonsSolutions.size(); i++) {
+
+			int hexagon = hexagonsSolutions.get(i);
+
+			Couple<Integer, Integer> couple = coordsCorrespondance[hexagon];
+
+			nodes[i] = new Node(couple.getY(), couple.getX(), i);
+		}
+
+		/*
+		 * matrix
+		 */
+
+		int[][] matrix = new int[nbNodes][nbNodes];
+		int[][] neighbors = new int[nbNodes][6];
+
+		for (int i = 0; i < nbNodes; i++)
+			for (int j = 0; j < 6; j++)
+				neighbors[i][j] = -1;
+
+		for (int i = 0; i < nbNodes; i++) {
+
+			int u = hexagonsSolutions.get(i);
+			Node n1 = nodes[i];
+
+			for (int j = (i + 1); j < nbNodes; j++) {
+
+				int v = hexagonsSolutions.get(j);
+				Node n2 = nodes[j];
+
+				if (adjacencyMatrix[u][v] == 1) {
+
+					// Setting matrix
+					matrix[i][j] = 1;
+					matrix[j][i] = 1;
+
+					// Setting neighbors
+					int x1 = n1.getX();
+					int y1 = n1.getY();
+					int x2 = n2.getX();
+					int y2 = n2.getY();
+
+					if (x2 == x1 && y2 == y1 - 1) {
+						neighbors[correspondance[u]][0] = correspondance[v];
+						neighbors[correspondance[v]][3] = correspondance[u];
+					}
+
+					else if (x2 == x1 + 1 && y2 == y1) {
+						neighbors[correspondance[u]][1] = correspondance[v];
+						neighbors[correspondance[v]][4] = correspondance[u];
+					}
+
+					else if (x2 == x1 + 1 && y2 == y1 + 1) {
+						neighbors[correspondance[u]][2] = correspondance[v];
+						neighbors[correspondance[v]][5] = correspondance[u];
+					}
+
+					else if (x2 == x1 && y2 == y1 + 1) {
+						neighbors[correspondance[u]][3] = correspondance[v];
+						neighbors[correspondance[v]][0] = correspondance[u];
+					}
+
+					else if (x2 == x1 - 1 && y2 == y1) {
+						neighbors[correspondance[u]][4] = correspondance[v];
+						neighbors[correspondance[v]][1] = correspondance[u];
+					}
+
+					else if (x2 == x1 - 1 && y2 == y1 - 1) {
+						neighbors[correspondance[u]][5] = correspondance[v];
+						neighbors[correspondance[v]][2] = correspondance[u];
+					}
+				}
+			}
+		}
+
+		/*
+		 * Label
+		 */
+
+		int[] labels = new int[nbNodes];
+
+		for (int i = 0; i < nbNodes; i++)
+			labels[i] = 2;
+
+		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
+	}
+	
 	private static Tuples buildTable(int nbNeighbors) {
 
 		Tuples table = new Tuples(true);
@@ -180,6 +319,8 @@ public class GeneralModel2 {
 			for (int i = 0; i < nbHexagonsCoronenoid; i++) {
 				if (X[i].getValue() == 1)
 					System.out.print(i + " ");
+				
+				Fragment pattern = convertToPattern(X);
 			}
 			System.out.println("");
 			nbSolutions++;
@@ -198,8 +339,98 @@ public class GeneralModel2 {
 		diameter = (2 * nbCrowns) - 1;
 
 		buildCoordsMatrix();
+		buildCoordsCorrespondance();
+		buildAdjacencyMatrix();
 	}
 
+	private static void buildAdjacencyMatrix() {
+
+		nbEdges = 0;
+		adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
+
+		for (int x = 0; x < diameter; x++) {
+			for (int y = 0; y < diameter; y++) {
+
+				if (coordsMatrix[x][y] != -1) {
+
+					int u = coordsMatrix[x][y];
+
+					if (x > 0 && y > 0) {
+
+						int v = coordsMatrix[x - 1][y - 1];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (y > 0) {
+
+						int v = coordsMatrix[x][y - 1];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (x + 1 < diameter) {
+
+						int v = coordsMatrix[x + 1][y];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (x + 1 < diameter && y + 1 < diameter) {
+
+						int v = coordsMatrix[x + 1][y + 1];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (y + 1 < diameter) {
+
+						int v = coordsMatrix[x][y + 1];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+
+					if (x > 0) {
+
+						int v = coordsMatrix[x - 1][y];
+						if (v != -1) {
+							if (adjacencyMatrix[u][v] == 0) {
+								adjacencyMatrix[u][v] = 1;
+								adjacencyMatrix[v][u] = 1;
+								nbEdges++;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	private static String displayTable(Tuples table) {
 		return table.toString().replace("][", "]\n[").replace("Allowed tuples: {", "").replace("}", "");
 	}
