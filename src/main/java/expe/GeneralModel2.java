@@ -13,9 +13,11 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
+import generator.GeneralModel;
 import generator.fragments.Fragment;
 import molecules.Node;
 import utils.Couple;
+import utils.Utils;
 
 public class GeneralModel2 {
 
@@ -36,11 +38,10 @@ public class GeneralModel2 {
 	
 	private static Couple<Integer, Integer>[] coordsCorrespondance;
 	private static int [][] adjacencyMatrix;	
-	private static int nbEdges;
+	private static ArrayList<Integer> border;
 	
 	private static void buildAdjacencyMatrix() {
 
-		nbEdges = 0;
 		adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
 
 		for (int x = 0; x < diameter; x++) {
@@ -57,7 +58,6 @@ public class GeneralModel2 {
 							if (adjacencyMatrix[u][v] == 0) {
 								adjacencyMatrix[u][v] = 1;
 								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
 							}
 						}
 					}
@@ -69,7 +69,6 @@ public class GeneralModel2 {
 							if (adjacencyMatrix[u][v] == 0) {
 								adjacencyMatrix[u][v] = 1;
 								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
 							}
 						}
 					}
@@ -81,7 +80,6 @@ public class GeneralModel2 {
 							if (adjacencyMatrix[u][v] == 0) {
 								adjacencyMatrix[u][v] = 1;
 								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
 							}
 						}
 					}
@@ -93,7 +91,6 @@ public class GeneralModel2 {
 							if (adjacencyMatrix[u][v] == 0) {
 								adjacencyMatrix[u][v] = 1;
 								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
 							}
 						}
 					}
@@ -105,7 +102,6 @@ public class GeneralModel2 {
 							if (adjacencyMatrix[u][v] == 0) {
 								adjacencyMatrix[u][v] = 1;
 								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
 							}
 						}
 					}
@@ -117,7 +113,6 @@ public class GeneralModel2 {
 							if (adjacencyMatrix[u][v] == 0) {
 								adjacencyMatrix[u][v] = 1;
 								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
 							}
 						}
 					}
@@ -364,14 +359,69 @@ public class GeneralModel2 {
 
 		return neighbors;
 	}
+	
+	private static boolean has6Neighbors(BoolVar[] neighbors) {
+		for (BoolVar x : neighbors)
+			if (x == null)
+				return false;
+		return true;
+	}
 
-//	private static Tuples countTable(int size) {
-//		
-//		Tuples table = new Tuples(true);
-//		
-//		
-//		return table;
-//	}
+	public static void postNoHolesOfSize1Constraint(BoolVar [] X) {
+
+		BoolVar[] varClause = new BoolVar[7];
+		IntIterableRangeSet[] valClause = new IntIterableRangeSet[7];
+
+		for (int i = 0; i < 6; i++)
+			valClause[i] = new IntIterableRangeSet(0);
+		valClause[6] = new IntIterableRangeSet(1);
+
+		for (int i = 1; i < diameter - 1; i++) {
+			for (int j = 1; j < diameter - 1; j++) {
+				if (coordsMatrix[i][j] != -1) {
+
+					BoolVar vertex = X[coordsMatrix[i][j]];
+					BoolVar[] neighbors = getNeighbors(i, j, X);
+
+					if (has6Neighbors(neighbors)) {
+						for (int l = 0; l < 6; l++)
+							varClause[l] = neighbors[l];
+						varClause[6] = vertex;
+						model.getClauseConstraint().addClause(varClause, valClause);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void postBordersConstraints(BoolVar [] X, Model model) {
+
+		if (nbHexagons > 1) {
+			
+			border = new ArrayList<>();
+			BoolVar[] borderVars = new BoolVar[diameter];
+			
+			IntIterableRangeSet [] valClause = new IntIterableRangeSet[diameter];
+			
+			for (int i = 0 ; i < diameter ; i++) {
+				int j = 0;
+				while(coordsMatrix[i][j] == -1)
+					j ++;
+				borderVars[i] = X[coordsMatrix[i][j]];
+				border.add(coordsMatrix[i][j]);
+				valClause[i] = new IntIterableRangeSet(1);
+			}
+			
+			model.getClauseConstraint().addClause(borderVars, valClause);
+
+			
+		}
+		
+		else {
+			model.arithm(X[0], "=", 1).post();
+		}
+		
+	}
 	
 	private static void solve() {
 		model = new Model("GeneralModel #2");
@@ -387,6 +437,9 @@ public class GeneralModel2 {
 		IntVar nbHexagonsVar = model.intVar("nbHexagons", nbHexagons);
 		model.sum(X, "=", nbHexagonsVar).post();
 		model.arithm(nbHexagonsVar, "=", nbHexagons).post();
+		
+		postNoHolesOfSize1Constraint(X);
+		postBordersConstraints(X, model);
 		
 		model.count(1, Y, model.intVar("limit_count", 1)).post();
 
@@ -412,7 +465,20 @@ public class GeneralModel2 {
 		}
 
 		Solver solver = model.getSolver();
-		solver.setSearch(new IntStrategy(X, new FirstFail(model), new IntDomainMax()));
+		
+		
+		IntVar[] branching = new IntVar[X.length + Y.length];
+		int index = 0;
+		for (IntVar x : X) {
+			branching[index] = x;
+			index ++;
+		}
+		for (IntVar y : Y) {
+			branching[index] = y;
+			index ++;
+		}
+		
+		solver.setSearch(new IntStrategy(branching, new FirstFail(model), new IntDomainMax()));
 
 		int nbSolutions = 0;
 		while (solver.solve()) {
@@ -420,24 +486,18 @@ public class GeneralModel2 {
 			/*
 			 * Displaying solution
 			 */
-			String debug = "";
 			for (int i = 0; i < nbHexagonsCoronenoid; i++) {
 				if (X[i].getValue() == 1) {
 					System.out.print(i + " ");
-					debug += i + " ";
 				}
 			}
 			
-			if (debug.contains("0 1 2 7 8")) {
-				System.out.println("");
-				for (int i = 0 ; i < nbHexagonsCoronenoid; i ++) {
-					System.out.println("Y" + i + " = " + Y[i].getValue());
-				}
-			}
+			System.out.println("(" + nbSolutions + ")");
 			
 			/*
 			 * Nogood
 			 */
+			
 			ArrayList<Integer> vertices = new ArrayList<>();
 			for (int i = 0; i < X.length; i++)
 				if (X[i].getValue() == 1)
@@ -455,9 +515,10 @@ public class GeneralModel2 {
 				model.getClauseConstraint().addClause(nogood, valClause);
 			}
 		
-			System.out.println("");
+			
 			nbSolutions++;
 		}
+		
 		System.out.println(nbSolutions + " solutions found");
 	}
 
@@ -477,12 +538,25 @@ public class GeneralModel2 {
 						int x = node.getX() + xShift;
 						int y = node.getY() + yShift;
 						
+
+						
 						if (x < 0 || x >= diameter || y < 0 || y >= diameter || coordsMatrix[x][y] == -1) {
 							valid = false;
 							break;
 						}
+						/*
+						int index = coordsMatrix[x][y];
+						
+						if (border.contains(index)) {
+							valid = false;
+							break;
+						}*/
 					}
 					if (valid) {
+						
+						boolean touchBorder = false;
+						//for ()
+						
 						IntVar [] nogood = new IntVar[nbHexagons + 1];
 						for (int i = 0 ; i < nbHexagons ; i++) {
 							int x = rotation.getNode(i).getX() + xShift;
@@ -492,6 +566,7 @@ public class GeneralModel2 {
 							nogood[i] = var;
 						}
 						nogood[nogood.length - 1] = model.arithm(nbHexagonsVar, "=", nbHexagons).reify();
+						
 						nogoods.add(nogood);
 					}
 				}
@@ -517,7 +592,51 @@ public class GeneralModel2 {
 		
 	}
 
-	
+	public static BoolVar[] getNeighbors(int i, int j, BoolVar [] X) {
+
+		if (coordsMatrix[i][j] != -1) {
+
+			BoolVar[] N = new BoolVar[6];
+
+			for (int k = 0; k < 6; k++)
+				N[k] = null;
+
+			if (i > 0) {
+				if (coordsMatrix[i - 1][j] != -1)
+					N[0] = X[coordsMatrix[i - 1][j]];
+			}
+
+			if (j + 1 < diameter) {
+				if (coordsMatrix[i][j + 1] != -1)
+					N[1] = X[coordsMatrix[i][j + 1]];
+			}
+
+			if (i + 1 < diameter && j + 1 < diameter) {
+				if (coordsMatrix[i + 1][j + 1] != -1) {
+					N[2] = X[coordsMatrix[i + 1][j + 1]];
+				}
+			}
+
+			if (i + 1 < diameter) {
+				if (coordsMatrix[i + 1][j] != -1)
+					N[3] = X[coordsMatrix[i + 1][j]];
+			}
+
+			if (j > 0) {
+				if (coordsMatrix[i][j - 1] != -1)
+					N[4] = X[coordsMatrix[i][j - 1]];
+			}
+
+			if (i > 0 && j > 0) {
+				if (coordsMatrix[i - 1][j - 1] != -1)
+					N[5] = X[coordsMatrix[i - 1][j - 1]];
+			}
+
+			return N;
+		}
+
+		return null;
+	}
 	
 	private static String displayTable(Tuples table) {
 		return table.toString().replace("][", "]\n[").replace("Allowed tuples: {", "").replace("}", "");
