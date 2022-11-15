@@ -40,7 +40,7 @@ import view.generator.Stopper;
 public class GeneralModel {
 
 	private Solver solver;
-	private ResultSolver resultSolver;
+	private SolverResults solverResults;
 	private GeneratorRun generatorRun = new GeneratorRun(this);
 
 	/*
@@ -598,7 +598,7 @@ public class GeneralModel {
 
 	}
 
-	public ResultSolver solve() {
+	public SolverResults solve() {
 
 		applyModelProperties();
 		chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
@@ -629,7 +629,7 @@ public class GeneralModel {
 //			}
 //		}
 
-		resultSolver = new ResultSolver();
+		solverResults = new SolverResults();
 
 		indexSolution = 0;
 
@@ -649,7 +649,7 @@ public class GeneralModel {
 			BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
 					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 			String description = buildDescription(indexSolution);
-			resultSolver.addSolution(solverSolution, description, nbCrowns);
+			solverResults.addSolution(solverSolution, description, nbCrowns);
 
 			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
 			ArrayList<Integer> verticesSolution = new ArrayList<>();
@@ -667,7 +667,7 @@ public class GeneralModel {
 					verticesSolution.add(0);
 			}
 
-			resultSolver.addVerticesSolution(verticesSolution);
+			solverResults.addVerticesSolution(verticesSolution);
 
 			displaySolution();
 
@@ -689,17 +689,17 @@ public class GeneralModel {
 		long end = System.currentTimeMillis();
 		long time = end - begin;
 
-		resultSolver.setTime(time);
-		resultSolver.setNbTotalSolution(nbTotalSolutions.get());
-		resultSolver.setSolver(solver);
+		solverResults.setTime(time);
+		solverResults.setNbTotalSolution(nbTotalSolutions.get());
+		solverResults.setSolver(solver);
 
 		System.out.println(nbCrowns + " crowns");
 		System.out.println(nogoods.size() + " no-good clauses");
 		System.out.println(nbClausesLexLead + " lex-lead clauses");
 		solver.printStatistics();
 
-		resultSolver.setNogoodsFragments(nogoodsFragments);
-		return resultSolver;
+		solverResults.setNogoodsFragments(nogoodsFragments);
+		return solverResults;
 
 	}
 
@@ -1332,8 +1332,8 @@ public class GeneralModel {
 		this.applySymmetriesConstraints = applySymmetriesConstraints;
 	}
 
-	public ResultSolver getResultSolver() {
-		return resultSolver;
+	public SolverResults getResultSolver() {
+		return solverResults;
 	}
 
 	public GeneratorRun getGeneratorRun() {
@@ -1369,7 +1369,7 @@ public class GeneralModel {
 			BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns,
 					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 			String description = buildDescription(indexSolution);
-			resultSolver.addSolution(solution, description, nbCrowns);
+			solverResults.addSolution(solution, description, nbCrowns);
 
 			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
 			ArrayList<Integer> verticesSolution = new ArrayList<>();
@@ -1387,7 +1387,7 @@ public class GeneralModel {
 					verticesSolution.add(0);
 			}
 
-			resultSolver.addVerticesSolution(verticesSolution);
+			solverResults.addVerticesSolution(verticesSolution);
 
 			displaySolution();
 

@@ -12,7 +12,7 @@ import generator.patterns.Pattern;
 import javafx.scene.Group;
 import solution.BenzenoidSolution;
 
-public class ResultSolver {
+public class SolverResults {
 
 	private Solver solver;
 
@@ -87,11 +87,11 @@ public class ResultSolver {
 	 * Class methods
 	 */
 
-	public void addResult(ResultSolver resultSolver) {
-		solutions.addAll(resultSolver.getSolutions());
-		descriptions.addAll(resultSolver.getDescriptions());
-		verticesSolutions.addAll(resultSolver.getVerticesSolutions());
-		nbCrowns.addAll(resultSolver.getNbCrowns());
+	public void addResult(SolverResults solverResults) {
+		solutions.addAll(solverResults.getSolutions());
+		descriptions.addAll(solverResults.getDescriptions());
+		verticesSolutions.addAll(solverResults.getVerticesSolutions());
+		nbCrowns.addAll(solverResults.getNbCrowns());
 	}
 
 	public int size() {

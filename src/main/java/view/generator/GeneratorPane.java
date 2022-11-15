@@ -7,7 +7,7 @@ import application.BenzenoidApplication;
 import application.Settings;
 import generator.GeneralModel;
 import generator.ModelBuilder;
-import generator.ResultSolver;
+import generator.SolverResults;
 import generator.patterns.PatternResolutionInformations;
 import generator.properties.Property;
 import generator.properties.solver.SolverPropertySet;
@@ -482,62 +482,75 @@ public class GeneratorPane extends ScrollPane {
 //		return map;
 //	}
 
-	private ArrayList<Molecule> buildMolecules(ResultSolver resultSolver, int beginIndex) {
+	private ArrayList<Molecule> buildMolecules(SolverResults solverResults, int beginIndex) {
 
 		int index = beginIndex;
 
 		ArrayList<Molecule> molecules = new ArrayList<Molecule>();
 
-		for (int i = 0; i < resultSolver.size(); i++) {
-
-			Molecule molecule = null;
-			ArrayList<Integer> verticesSolution = resultSolver.getVerticesSolution(i);
-
-			try {
-
-				String graphFilename = "tmp.graph";
-				String graphCoordFilename = "tmp.graph_coord";
-
-				GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
-						resultSolver.getCrown(i));
-
-				graphBuilder.buildGraphFile();
-
-				GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
-				graphCoordBuilder.convertInstance();
-
-				molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
-
-				File file = new File("tmp.graph");
-				file.delete();
-
-				file = new File("tmp.graph_coord");
-				file.delete();
-
-				molecule.setVerticesSolutions(verticesSolution);
-
-				String[] lines = resultSolver.getDescriptions().get(i).split("\n");
-				StringBuilder b = new StringBuilder();
-
-				b.append("solution_" + index + "\n");
-				for (int j = 1; j < lines.length; j++)
-					b.append(lines[j] + "\n");
-
-				molecule.setDescription(b.toString());
-
-				molecule.setNbCrowns(resultSolver.getNbCrowns().get(i));
-
-				molecules.add(molecule);
-
-				index++;
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+		for (int i = 0; i < solverResults.size(); i++) {
+			ArrayList<Integer> verticesSolution = solverResults.getVerticesSolution(i);
+			molecules.add(buildMolecule(solverResults, index, i, verticesSolution));
+			index++;
 		}
 
 		ArrayList<Molecule> filteredMolecules = filterMolecules(molecules);
 
 		return filteredMolecules;
+	}
+
+	private Molecule buildMolecule(SolverResults solverResults, int index, int i, ArrayList<Integer> verticesSolution) {
+		Molecule molecule = null;
+		try {
+			String graphFilename = "tmp.graph";
+			String graphCoordFilename = "tmp.graph_coord";
+
+			buildGraphFile(solverResults, i, verticesSolution, graphFilename);
+			convertGraphCoordFileInstance(graphFilename, graphCoordFilename);
+			molecule = buildMolecule(solverResults, index, i, verticesSolution, graphCoordFilename);
+			deleteTmpFiles(graphFilename, graphCoordFilename);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return molecule;
+	}
+
+	private Molecule buildMolecule(SolverResults solverResults, int index, int i, ArrayList<Integer> verticesSolution,
+			String graphCoordFilename) {
+		Molecule molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
+		molecule.setVerticesSolutions(verticesSolution);
+		molecule.setDescription(buildMoleculeDescription(solverResults.getDescriptions().get(i), index));
+		molecule.setNbCrowns(solverResults.getNbCrowns().get(i));
+		return molecule;
+	}
+
+	private String buildMoleculeDescription(String description, int index) {
+		String[] lines = description.split("\n");
+		StringBuilder b = new StringBuilder();
+
+		b.append("solution_" + index + "\n");
+		for (int j = 1; j < lines.length; j++)
+			b.append(lines[j] + "\n");
+		return b.toString();
+	}
+
+	private void deleteTmpFiles(String graphFilename, String graphCoordFilename) {
+		File file = new File(graphFilename);
+		file.delete();
+		file = new File(graphCoordFilename);
+		file.delete();
+	}
+
+	private void convertGraphCoordFileInstance(String graphFilename, String graphCoordFilename) {
+		GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
+		graphCoordBuilder.convertInstance();
+	}
+
+	private void buildGraphFile(SolverResults solverResults, int i, ArrayList<Integer> verticesSolution,
+			String graphFilename) throws IOException {
+		GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
+				solverResults.getCrown(i));
+		graphBuilder.buildGraphFile();
 	}
 
 	/***
@@ -769,9 +782,7 @@ public class GeneratorPane extends ScrollPane {
 
 			isRunning = false;
 
-			ResultSolver resultSolver = model.getResultSolver();
-
-			generatedMolecules = buildMolecules(resultSolver, generatedMolecules.size());
+			generatedMolecules = buildMolecules(model.getResultSolver(), generatedMolecules.size());
 
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);

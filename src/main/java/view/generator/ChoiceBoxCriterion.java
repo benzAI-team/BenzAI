@@ -23,7 +23,6 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 		initialize();
 	}
 
-
 	private void initialize() {
 		for(String name : modelPropertySet.getNames())
 			this.getItems().add(name);				

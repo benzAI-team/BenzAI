@@ -22,7 +22,7 @@ import database.PictureConverter;
 import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.ResultSolver;
+import generator.SolverResults;
 import generator.patterns.Pattern;
 import http.Post;
 import modelProperty.ModelPropertySet;
@@ -711,7 +711,7 @@ public class Molecule implements Comparable<Molecule> {
 			model.getProblem().arithm(model.getVG()[u], "=", 1).post();
 		}
 
-		ResultSolver result = model.solve();
+		SolverResults result = model.solve();
 
 		return result.getSolutions().get(0);
 	}

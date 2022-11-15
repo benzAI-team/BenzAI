@@ -3,6 +3,7 @@ package parsers;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -265,80 +266,22 @@ public class GraphParser {
 		return parseUndirectedGraph(file.getAbsolutePath(), null, false);
 	}
 
-	public static Molecule parseUndirectedGraph(String inputFileName, String fileWithNoCoords, boolean verbose) {
+	public static Molecule parseUndirectedGraph(String inputFileName, String fileWithNoCoordsName, boolean verbose) {
 
 		RelativeMatrix nodesMem = null;
-		int maxIndex = -1;
 
 		try {
-			BufferedReader r = new BufferedReader(new FileReader(new File(inputFileName)));
+			BufferedReader bufferedReaderInputFile = new BufferedReader(new FileReader(new File(inputFileName)));
 
-			ArrayList<String> file2 = new ArrayList<String>();
-
-			if (fileWithNoCoords != null) {
-
-				BufferedReader r2 = new BufferedReader(new FileReader(new File(fileWithNoCoords)));
-
-				String line = null;
-
-				while ((line = r2.readLine()) != null) {
-					String[] sl = line.split(" ");
-					if (!isCommentary(sl))
-						file2.add(line);
-				}
-
-				r2.close();
-
-				String l1 = null;
-				String l2 = null;
-
-				boolean firstLine = true;
-
-				int index = 0;
-				while ((l1 = r.readLine()) != null) {
-
-					l2 = file2.get(index);
-					index++;
-
-					String[] sl1 = l1.split(" ");
-					String[] sl2 = l2.split(" ");
-
-					if (!isCommentary(sl1)) {
-
-						if (firstLine) {
-							firstLine = false;
-
-							int nbHexagons = Integer.parseInt(sl1[4]);
-
-							nodesMem = new RelativeMatrix(8 * nbHexagons + 1, 16 * nbHexagons + 1, 4 * nbHexagons,
-									8 * nbHexagons);
-						}
-
-						if (sl1[0].equals("h")) {
-							for (int i = 1; i < sl1.length; i++) {
-								String[] ssl1 = sl1[i].split(Pattern.quote("_"));
-
-								int x = Integer.parseInt(ssl1[0]);
-								int y = Integer.parseInt(ssl1[1]);
-
-								int value = Integer.parseInt(sl2[i]);
-								nodesMem.set(x, y, value - 1);
-
-								if ((value - 1) > maxIndex) {
-									maxIndex = value - 1;
-								}
-
-							}
-						}
-					}
-				}
-				r.close();
+			if (fileWithNoCoordsName != null) {
+				ArrayList<String> fileWithNoCoordsLineList = buildFileWithNoCoordsLineList(fileWithNoCoordsName);
+				nodesMem = buildRelativeMatrix(bufferedReaderInputFile, fileWithNoCoordsLineList);
 			}
 
-			r = new BufferedReader(new FileReader(new File(inputFileName)));
+			bufferedReaderInputFile = new BufferedReader(new FileReader(new File(inputFileName)));
 
-			String line = null;
-			boolean firstLine = true;
+			String inputFileLine = null;
+			boolean isFirstLine = true;
 
 			int nbNodes = 0, nbEdges = 0, nbHexagons = 0;
 
@@ -354,19 +297,19 @@ public class GraphParser {
 			int nodeIndex = 0;
 			int edgeIndex = 0;
 
-			firstLine = true;
+			isFirstLine = true;
 
-			while ((line = r.readLine()) != null) {
-				String[] splittedLine = line.split(" ");
+			while ((inputFileLine = bufferedReaderInputFile.readLine()) != null) {
+				String[] lineWords = inputFileLine.split(" ");
 
-				if (!isCommentary(splittedLine)) {
+				if (!isCommentary(lineWords)) {
 
-					if (firstLine) {
+					if (isFirstLine) {
 
-						firstLine = false;
-						nbNodes = Integer.parseInt(splittedLine[2]);
-						nbEdges = Integer.parseInt(splittedLine[3]);
-						nbHexagons = Integer.parseInt(splittedLine[4]);
+						isFirstLine = false;
+						nbNodes = Integer.parseInt(lineWords[2]);
+						nbEdges = Integer.parseInt(lineWords[3]);
+						nbHexagons = Integer.parseInt(lineWords[4]);
 
 						nodes = new Node[nbNodes];
 						nodesCoord = new RelativeMatrix(8 * nbHexagons + 1, 16 * nbHexagons + 1, 4 * nbHexagons,
@@ -382,10 +325,10 @@ public class GraphParser {
 
 					else {
 
-						if (isEdge(splittedLine)) {
+						if (isEdge(lineWords)) {
 
-							String uStr = splittedLine[1];
-							String vStr = splittedLine[2];
+							String uStr = lineWords[1];
+							String vStr = lineWords[2];
 
 							String[] uSplit = uStr.split(Pattern.quote("_"));
 							String[] vSplit = vStr.split(Pattern.quote("_"));
@@ -424,23 +367,24 @@ public class GraphParser {
 							edgesMatrix.get(v).add(edgeIndex);
 							adjacencyMatrix[u][v] = 1;
 							adjacencyMatrix[v][u] = 1;
-							edgesStrings.add(line);
+							edgesStrings.add(inputFileLine);
 							edgeIndex++;
 						}
 
-						if (isHexagon(splittedLine)) {
+						if (isHexagon(lineWords)) {
 
-							hexagonsStrings.add(line);
+							hexagonsStrings.add(inputFileLine);
 						}
 					}
 
 				}
 			}
 
-			r.close();
+			bufferedReaderInputFile.close();
 
+			int maxValue = nodesMem == null ? -1 : nodesMem.maxValue();
 			return new Molecule(nbNodes, nbEdges, nbHexagons, edgesMatrix, adjacencyMatrix, edgesStrings,
-					hexagonsStrings, nodes, nodesCoord, nodesMem, maxIndex);
+					hexagonsStrings, nodes, nodesCoord, nodesMem, maxValue);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -448,4 +392,64 @@ public class GraphParser {
 		return null;
 	}
 
+	private static RelativeMatrix buildRelativeMatrix(BufferedReader bufferedReaderInputFile,
+			ArrayList<String> fileWithNoCoordsLineList) throws IOException {
+		String inputFileLine = null;
+		String fileWithNoCoordsLine = null;
+		RelativeMatrix nodesMem = null;
+
+		boolean isFirstLine = true;
+
+		int fileWithNoCoordsLineListIndex = 0;
+		while ((inputFileLine = bufferedReaderInputFile.readLine()) != null) {
+
+			fileWithNoCoordsLine = fileWithNoCoordsLineList.get(fileWithNoCoordsLineListIndex);
+			fileWithNoCoordsLineListIndex++;
+
+			String[] inputFileLineWords = inputFileLine.split(" ");
+			String[] fileWithNoCoordsLineWords = fileWithNoCoordsLine.split(" ");
+
+			if (!isCommentary(inputFileLineWords)) {
+
+				if (isFirstLine) {
+					isFirstLine = false;
+
+					int nbHexagons = Integer.parseInt(inputFileLineWords[4]);
+
+					nodesMem = new RelativeMatrix(8 * nbHexagons + 1, 16 * nbHexagons + 1, 4 * nbHexagons,
+							8 * nbHexagons);
+				}
+
+				if (inputFileLineWords[0].equals("h")) {
+					for (int i = 1; i < inputFileLineWords.length; i++) {
+						String[] ssl1 = inputFileLineWords[i].split(Pattern.quote("_"));
+
+						int x = Integer.parseInt(ssl1[0]);
+						int y = Integer.parseInt(ssl1[1]);
+
+						int value = Integer.parseInt(fileWithNoCoordsLineWords[i]);
+						nodesMem.set(x, y, value - 1);
+					}
+				}
+			}
+		}
+		bufferedReaderInputFile.close();
+		return nodesMem;
+	}
+
+	private static ArrayList<String> buildFileWithNoCoordsLineList(String fileWithNoCoordsName)
+			throws FileNotFoundException, IOException {
+		BufferedReader bufferedReaderFileWithNoCoords = new BufferedReader(new FileReader(new File(fileWithNoCoordsName)));
+		ArrayList<String> lineList = new ArrayList<String>();
+		String line = null;
+
+		while ((line = bufferedReaderFileWithNoCoords.readLine()) != null) {
+			String[] sl = line.split(" ");
+			if (!isCommentary(sl))
+				lineList.add(line);
+		}
+
+		bufferedReaderFileWithNoCoords.close();
+		return lineList;
+	}
 }

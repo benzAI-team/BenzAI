@@ -8,7 +8,7 @@ import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 import generator.ModelBuilder;
-import generator.ResultSolver;
+import generator.SolverResults;
 import modules.BenzenoidModule;
 import molecules.Molecule;
 import view.generator.GeneratorPane;
@@ -72,7 +72,7 @@ public class SymmetriesCriterion extends FilteringCriterion {
 
 		HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = GeneratorPane.buildCriterionsMap(criterions);
 
-		ResultSolver finalResultSolver = new ResultSolver();
+		SolverResults finalResultSolver = new SolverResults();
 
 		GeneralModel model = ModelBuilder.buildModel(criterions, criterionsMap, null);
 
@@ -80,16 +80,16 @@ public class SymmetriesCriterion extends FilteringCriterion {
 		int nbCrowns = model.getNbCrowns();
 		if (nbCrowns > -1) {
 			model.addModule(new BenzenoidModule(model, molecule));
-			ResultSolver resultSolver = model.solve();
-			finalResultSolver.addResult(resultSolver);
+			SolverResults solverResults = model.solve();
+			finalResultSolver.addResult(solverResults);
 		}
 
 		else {
 
 			model.addModule(new BenzenoidModule(model, molecule));
-			ResultSolver resultSolver = model.solve();
+			SolverResults solverResults = model.solve();
 
-			finalResultSolver.addResult(resultSolver);
+			finalResultSolver.addResult(solverResults);
 
 		}
 

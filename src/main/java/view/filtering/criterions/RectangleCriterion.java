@@ -8,7 +8,7 @@ import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 import generator.ModelBuilder;
-import generator.ResultSolver;
+import generator.SolverResults;
 import modules.BenzenoidModule;
 import molecules.Molecule;
 import view.generator.GeneratorPane;
@@ -36,7 +36,7 @@ public class RectangleCriterion extends FilteringCriterion {
 	@Override
 	public Boolean checksCriterion(Molecule molecule) {
 
-		ResultSolver resultSolver = null;
+		SolverResults solverResults = null;
 
 		if (operatorHeight == null && operatorWidth == null) {
 
@@ -53,7 +53,7 @@ public class RectangleCriterion extends FilteringCriterion {
 
 			model.addModule(new BenzenoidModule(model, molecule));
 
-			resultSolver = model.solve();
+			solverResults = model.solve();
 
 		}
 
@@ -82,11 +82,11 @@ public class RectangleCriterion extends FilteringCriterion {
 
 			model.addModule(new BenzenoidModule(model, molecule));
 
-			resultSolver = model.solve();
+			solverResults = model.solve();
 
 		}
 
-		return resultSolver.size() > 0;
+		return solverResults.size() > 0;
 	}
 
 	@Override

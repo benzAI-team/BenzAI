@@ -8,7 +8,7 @@ import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 import generator.ModelBuilder;
-import generator.ResultSolver;
+import generator.SolverResults;
 import modules.BenzenoidModule;
 import molecules.Molecule;
 import view.generator.GeneratorPane;
@@ -49,9 +49,9 @@ public class RhombusCriterion extends FilteringCriterion {
 
 		model.addModule(new BenzenoidModule(model, molecule));
 
-		ResultSolver resultSolver = model.solve();
+		SolverResults solverResults = model.solve();
 
-		return resultSolver.size() > 0;
+		return solverResults.size() > 0;
 	}
 
 	@Override
