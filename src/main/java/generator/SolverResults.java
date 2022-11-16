@@ -10,6 +10,7 @@ import org.chocosolver.solver.Solver;
 
 import generator.patterns.Pattern;
 import javafx.scene.Group;
+import molecules.Molecule;
 import solution.BenzenoidSolution;
 
 public class SolverResults {
@@ -20,7 +21,7 @@ public class SolverResults {
 	private ArrayList<String> descriptions = new ArrayList<String>();
 	private ArrayList<ArrayList<Integer>> verticesSolutions = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<Integer> nbCrowns = new ArrayList<Integer>();
-
+	private ArrayList<Molecule> molecules = new ArrayList<Molecule>();
 	private int[] hexagonsCorrespondances;
 	
 	private ArrayList<Pattern> nogoodsFragments = new ArrayList<>();
@@ -92,6 +93,7 @@ public class SolverResults {
 		descriptions.addAll(solverResults.getDescriptions());
 		verticesSolutions.addAll(solverResults.getVerticesSolutions());
 		nbCrowns.addAll(solverResults.getNbCrowns());
+		molecules.addAll(solverResults.getMolecules());
 	}
 
 	public int size() {
@@ -193,5 +195,18 @@ public class SolverResults {
 	
 	public ArrayList<Pattern> getNogoodsFragments() {
 		return nogoodsFragments;
+	}
+
+	public ArrayList<Molecule> getMolecules() {
+		return molecules;
+	}
+
+	public void setMolecules(ArrayList<Molecule> molecules) {
+		this.molecules = molecules;
+	}
+
+	public void addMolecule(Molecule molecule) {
+		molecules.add(molecule);
+		
 	}
 }

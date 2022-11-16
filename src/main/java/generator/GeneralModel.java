@@ -25,6 +25,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.ParameterizedExpression;
+import molecules.Molecule;
 import molecules.Node;
 import nogood.NoGoodBorderRecorder;
 import nogood.NoGoodHorizontalAxisRecorder;
@@ -35,6 +36,7 @@ import nogood.NoGoodVerticalAxisRecorder;
 import solution.BenzenoidSolution;
 import utils.Couple;
 import utils.Triplet;
+import view.generator.GeneratorPane;
 import view.generator.Stopper;
 
 public class GeneralModel {
@@ -641,49 +643,39 @@ public class GeneralModel {
 		Stopper.STOP = false;
 
 		while (solver.solve() && !generatorRun.isPaused()) {
-			Platform.runLater(()->{
-				nbTotalSolutions.set(nbTotalSolutions.get() + 1);
-			});
-			recordNoGoods();
-
-			BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
-					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
+			ArrayList<Integer> verticesSolution = buildVerticesSolution();
 			String description = buildDescription(indexSolution);
-			solverResults.addSolution(solverSolution, description, nbCrowns);
+			Molecule molecule = GeneratorPane.buildMolecule(description, nbCrowns, indexSolution, verticesSolution);
+			//TODO propertyset à déplacer
+			if(molecule.respectPostProcessing(GeneratorPane.getModelPropertySet())) {
+				solverResults.addMolecule(molecule);
+				Platform.runLater(()->{
+					nbTotalSolutions.set(nbTotalSolutions.get() + 1);
+				});
+				recordNoGoods();
 
-			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
-			ArrayList<Integer> verticesSolution = new ArrayList<>();
+				BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
+						chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 
-			for (int index = 0; index < benzenoidVertices.length; index++) {
+				solverResults.addSolution(solverSolution, description, nbCrowns);
+				solverResults.addVerticesSolution(verticesSolution);
 
-				if (benzenoidVertices[index] != null) {
-					verticesSolution.add(benzenoidVertices[index].getValue());
+				displaySolution();
 
-					if (benzenoidVertices[index].getValue() == 1) {
-						presentHexagons.add(benzenoidVertices[index]);
+				if (verbose) {
+
+					System.out.println("NO-GOOD");
+
+					for (ArrayList<Integer> ng : nogoods) {
+						for (Integer v : ng)
+							System.out.println(v + " ");
 					}
 
-				} else
-					verticesSolution.add(0);
-			}
-
-			solverResults.addVerticesSolution(verticesSolution);
-
-			displaySolution();
-
-			if (verbose) {
-
-				System.out.println("NO-GOOD");
-
-				for (ArrayList<Integer> ng : nogoods) {
-					for (Integer v : ng)
-						System.out.println(v + " ");
+					System.out.println("");
 				}
 
-				System.out.println("");
+				indexSolution++;
 			}
-
-			indexSolution++;
 		}
 
 		long end = System.currentTimeMillis();
@@ -701,6 +693,19 @@ public class GeneralModel {
 		solverResults.setNogoodsFragments(nogoodsFragments);
 		return solverResults;
 
+	}
+
+	private ArrayList<Integer> buildVerticesSolution() {
+		ArrayList<Integer> verticesSolution = new ArrayList<>();
+
+		for (int index = 0; index < benzenoidVertices.length; index++) {
+
+			if (benzenoidVertices[index] != null) {
+				verticesSolution.add(benzenoidVertices[index].getValue());
+			} else
+				verticesSolution.add(0);
+		}
+		return verticesSolution;
 	}
 
 	private void buildAdjacencyMatrix() {

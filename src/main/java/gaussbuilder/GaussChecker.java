@@ -132,7 +132,7 @@ public class GaussChecker {
 		for (int i = 0; i < carbons.length; i++) {
 			Triplet<Double, Double, Double> c1 = carbons[i];
 			for (int j = (i + 1); j < carbons.length; j++) {
-				if (molecule.getAdjacencyMatrix()[i][j] == 0) {
+				if (molecule.getEdgeMatrix()[i][j] == 0) {
 					Triplet<Double, Double, Double> c2 = carbons[j];
 					double distance = distance(c1, c2);
 
@@ -153,7 +153,7 @@ public class GaussChecker {
 		for (int i = 0; i < hydrogens.length; i++) {
 			Triplet<Double, Double, Double> c1 = hydrogens[i];
 			for (int j = (i + 1); j < hydrogens.length; j++) {
-				if (molecule.getAdjacencyMatrix()[i][j] == 0) {
+				if (molecule.getEdgeMatrix()[i][j] == 0) {
 					Triplet<Double, Double, Double> c2 = hydrogens[j];
 					double distance = distance(c1, c2);
 

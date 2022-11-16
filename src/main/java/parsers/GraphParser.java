@@ -77,7 +77,7 @@ public class GraphParser {
 
 	public static UndirPonderateGraph exportSolutionToPonderateGraph(Molecule graph, int[] edgesValues) {
 
-		int[][] adjacencyMatrix = new int[graph.getAdjacencyMatrix().length][graph.getAdjacencyMatrix()[0].length];
+		int[][] adjacencyMatrix = new int[graph.getEdgeMatrix().length][graph.getEdgeMatrix()[0].length];
 		ArrayList<String> edgesString = new ArrayList<String>();
 
 		for (int i = 0; i < adjacencyMatrix.length; i++) {
@@ -108,7 +108,7 @@ public class GraphParser {
 		}
 
 		return new UndirPonderateGraph(graph.getNbNodes(), graph.getNbEdges(), graph.getNbHexagons(),
-				graph.getEdgeMatrix(), adjacencyMatrix, edgesString, graph.getHexagonsString(), graph.getNodesRefs(),
+				graph.getEdgeLists(), adjacencyMatrix, edgesString, graph.getHexagonsString(), graph.getNodesRefs(),
 				graph.getNodesMem(), graph.getCoords(), graph.getMaxIndex());
 
 	}

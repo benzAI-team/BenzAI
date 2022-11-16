@@ -67,7 +67,7 @@ public class GeneratorPane extends ScrollPane {
 	private ArrayList<Molecule> generatedMolecules;
 	private int nbCriterions;
 	//ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-	private ModelPropertySet modelPropertySet = new ModelPropertySet();
+	private static ModelPropertySet modelPropertySet = new ModelPropertySet();
 	private SolverPropertySet solverPropertySet = new SolverPropertySet();
 
 	private PatternResolutionInformations patternsInformations;
@@ -482,7 +482,7 @@ public class GeneratorPane extends ScrollPane {
 //		return map;
 //	}
 
-	private ArrayList<Molecule> buildMolecules(SolverResults solverResults, int beginIndex) {
+	private static ArrayList<Molecule> buildMolecules(SolverResults solverResults, int beginIndex) {
 
 		int index = beginIndex;
 
@@ -490,24 +490,23 @@ public class GeneratorPane extends ScrollPane {
 
 		for (int i = 0; i < solverResults.size(); i++) {
 			ArrayList<Integer> verticesSolution = solverResults.getVerticesSolution(i);
-			molecules.add(buildMolecule(solverResults, index, i, verticesSolution));
+			molecules.add(buildMolecule(solverResults.getDescriptions().get(i), solverResults.getCrown(i), index,  verticesSolution));
 			index++;
 		}
-
 		ArrayList<Molecule> filteredMolecules = filterMolecules(molecules);
 
 		return filteredMolecules;
 	}
 
-	private Molecule buildMolecule(SolverResults solverResults, int index, int i, ArrayList<Integer> verticesSolution) {
+	public static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution) {
 		Molecule molecule = null;
 		try {
 			String graphFilename = "tmp.graph";
 			String graphCoordFilename = "tmp.graph_coord";
 
-			buildGraphFile(solverResults, i, verticesSolution, graphFilename);
+			buildGraphFile(nbCrowns, verticesSolution, graphFilename);
 			convertGraphCoordFileInstance(graphFilename, graphCoordFilename);
-			molecule = buildMolecule(solverResults, index, i, verticesSolution, graphCoordFilename);
+			molecule = buildMolecule(description, nbCrowns, index, verticesSolution, graphCoordFilename);
 			deleteTmpFiles(graphFilename, graphCoordFilename);
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -515,16 +514,16 @@ public class GeneratorPane extends ScrollPane {
 		return molecule;
 	}
 
-	private Molecule buildMolecule(SolverResults solverResults, int index, int i, ArrayList<Integer> verticesSolution,
+	private static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution,
 			String graphCoordFilename) {
 		Molecule molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
 		molecule.setVerticesSolutions(verticesSolution);
-		molecule.setDescription(buildMoleculeDescription(solverResults.getDescriptions().get(i), index));
-		molecule.setNbCrowns(solverResults.getNbCrowns().get(i));
+		molecule.setDescription(buildMoleculeDescription(description, index));
+		molecule.setNbCrowns(nbCrowns);
 		return molecule;
 	}
 
-	private String buildMoleculeDescription(String description, int index) {
+	private static String buildMoleculeDescription(String description, int index) {
 		String[] lines = description.split("\n");
 		StringBuilder b = new StringBuilder();
 
@@ -534,22 +533,22 @@ public class GeneratorPane extends ScrollPane {
 		return b.toString();
 	}
 
-	private void deleteTmpFiles(String graphFilename, String graphCoordFilename) {
+	private static void deleteTmpFiles(String graphFilename, String graphCoordFilename) {
 		File file = new File(graphFilename);
 		file.delete();
 		file = new File(graphCoordFilename);
 		file.delete();
 	}
 
-	private void convertGraphCoordFileInstance(String graphFilename, String graphCoordFilename) {
+	private static void convertGraphCoordFileInstance(String graphFilename, String graphCoordFilename) {
 		GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
 		graphCoordBuilder.convertInstance();
 	}
 
-	private void buildGraphFile(SolverResults solverResults, int i, ArrayList<Integer> verticesSolution,
+	private static void buildGraphFile(int nbCrowns, ArrayList<Integer> verticesSolution,
 			String graphFilename) throws IOException {
 		GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
-				solverResults.getCrown(i));
+				nbCrowns);
 		graphBuilder.buildGraphFile();
 	}
 
@@ -558,7 +557,8 @@ public class GeneratorPane extends ScrollPane {
 	 * @param molecules
 	 * @return molecules filtered 
 	 */
-	public ArrayList<Molecule> filterMolecules(ArrayList<Molecule> molecules){
+	//TODO obsolete
+	public static ArrayList<Molecule> filterMolecules(ArrayList<Molecule> molecules){
 		ArrayList<Molecule> filteredMolecules;
 		
 		for(Property property : modelPropertySet)
@@ -782,8 +782,9 @@ public class GeneratorPane extends ScrollPane {
 
 			isRunning = false;
 
-			generatedMolecules = buildMolecules(model.getResultSolver(), generatedMolecules.size());
-
+			//generatedMolecules = buildMolecules(model.getResultSolver(), generatedMolecules.size());
+			generatedMolecules = model.getResultSolver().getMolecules();
+			
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);
 
@@ -901,6 +902,14 @@ public class GeneratorPane extends ScrollPane {
 
 	public BenzenoidApplication getApplication() {
 		return application;
+	}
+
+	public static ModelPropertySet getModelPropertySet() {
+		return modelPropertySet;
+	}
+
+	public static void setModelPropertySet(ModelPropertySet modelPropertySet) {
+		GeneratorPane.modelPropertySet = modelPropertySet;
 	}
 
 

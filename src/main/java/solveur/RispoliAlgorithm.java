@@ -13,7 +13,7 @@ public class RispoliAlgorithm {
 	public static SubGraph removeCircuit(Molecule molecule, ArrayList<Integer> circuit, PerfectMatchingType type) {
 
 		int nbNodes = molecule.getNbNodes();
-		int[][] matrix = molecule.getAdjacencyMatrix();
+		int[][] matrix = molecule.getEdgeMatrix();
 		int[] disabledVertices = new int[molecule.getNbNodes()];
 
 		for (Integer i : circuit) {

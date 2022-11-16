@@ -66,7 +66,7 @@ public class MoleculeFilter {
 				int candidat = candidats.get(0);
 					
 				for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
-					if (molecule.getAdjacencyMatrix()[candidat][i] == 1 && checkedNodes[i] == 0) {
+					if (molecule.getEdgeMatrix()[candidat][i] == 1 && checkedNodes[i] == 0) {
 							
 						checkedNodes[i] = 1;
 						nbNeighbors ++;

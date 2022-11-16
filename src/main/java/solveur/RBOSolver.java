@@ -21,7 +21,7 @@ public class RBOSolver {
 
 		for (int i = 0; i < molecule.getNbNodes(); i++) {
 			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
-				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+				if (molecule.getEdgeMatrix()[i][j] == 1) {
 
 					ArrayList<Integer> toRemove = new ArrayList<>();
 					toRemove.add(i);

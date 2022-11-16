@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import utils.Couple;
 import utils.Utils;
 
@@ -94,7 +96,7 @@ public class GraphFileBuilder {
 		return neighborhood;
 	}
 	
-	private boolean isValid(int [] hexagon) {
+	private boolean isFull(int [] hexagon) {
 		
 		for (int i = 0 ; i < hexagon.length ; i++) {
 			if (hexagon[i] == -1) 
@@ -106,9 +108,8 @@ public class GraphFileBuilder {
 	
 	public void buildGraphFile() throws IOException {
 		int [] checkedHexagons = new int[diameter * diameter];
-		for (int i = 0 ; i < checkedHexagons.length ; i++) {
-			checkedHexagons[i] = -1;
-		}
+
+		Arrays.fill(checkedHexagons, -1);
 		
 		for (int i = 0 ; i < solution.size() ; i++) {
 			if (solution.get(i) == 1)
@@ -118,60 +119,17 @@ public class GraphFileBuilder {
 		int n = 0;
 		int indexNode = 0;
 		
-		int solutionSize = 0;
-		for (Integer i : solution)
-			if (i == 1)
-				solutionSize ++;
+		int solutionSize = solution.stream().reduce(0, (acc, x) -> acc + x);
 		
 		int [][] hexagons = new int [solution.size()][6];
 		for (int i = 0 ; i < hexagons.length ; i++) 
-			for(int j = 0 ; j < 6 ; j++)
-				hexagons[i][j] = -1;
-		
-		
+			Arrays.fill(hexagons[i], -1);
 		 
-		while (n < solutionSize) {
-			
+		while (n < solutionSize) {	
 			int hexagon = findCandidate(checkedHexagons);
 			int [] neighborhood = neighborhood(hexagon);
 			
-			for (int i = 0 ; i < neighborhood.length ; i++) {
-				
-				int neighbor = neighborhood[i];
-				
-				if (neighbor != -1 && checkedHexagons[neighbor] == 1) {
-					
-					if (i == 0) {
-						hexagons[hexagon][0] = hexagons[neighbor][4];
-						hexagons[hexagon][1] = hexagons[neighbor][3];			
-					}
-					
-					else if (i == 1) {
-						hexagons[hexagon][1] = hexagons[neighbor][5];
-						hexagons[hexagon][2] = hexagons[neighbor][4];
-					}
-					
-					else if (i == 2) {
-						hexagons[hexagon][2] = hexagons[neighbor][0];
-						hexagons[hexagon][3] = hexagons[neighbor][5];
-					}
-					
-					else if (i == 3) {
-						hexagons[hexagon][3] = hexagons[neighbor][1];
-						hexagons[hexagon][4] = hexagons[neighbor][0];
-					}
-					
-					else if (i == 4) {
-						hexagons[hexagon][5] = hexagons[neighbor][1];
-						hexagons[hexagon][4] = hexagons[neighbor][2];
-					}
-					
-					else if (i == 5) {		
-						hexagons[hexagon][0] = hexagons[neighbor][2];
-						hexagons[hexagon][5] = hexagons[neighbor][3];
-					}
-				}
-			}
+			makeNeighbors(checkedHexagons, hexagons, hexagon, neighborhood);
 			
 			for (int i = 0 ; i < neighborhood.length ; i++) {
 				if (hexagons[hexagon][i] == -1) {
@@ -184,20 +142,20 @@ public class GraphFileBuilder {
 			n++;
 		}
 		
-		int [][] matrix = new int[indexNode][indexNode];
+		int [][] edgeMatrix = new int[indexNode][indexNode];
 		int nbEdges = 0;
 		int nbHexagons = 0;
 		
 		for (int hexagon = 0 ; hexagon < hexagons.length ; hexagon++) {
-			if (isValid(hexagons[hexagon])) {
+			if (isFull(hexagons[hexagon])) {
 				nbHexagons ++;
 				for (int i = 0 ; i < 6 ; i++) {
 					int u = hexagons[hexagon][i];
 					int v = hexagons[hexagon][(i + 1) % 6];
 				
-					if (matrix[u][v] == 0) {
-						matrix[u][v] = 1;
-						matrix[v][u] = 1;
+					if (edgeMatrix[u][v] == 0) {
+						edgeMatrix[u][v] = 1;
+						edgeMatrix[v][u] = 1;
 						nbEdges ++;
 					}
 				}
@@ -208,17 +166,17 @@ public class GraphFileBuilder {
 		
 		writer.write("p DIMACS " + indexNode + " " + nbEdges + " " + nbHexagons + "\n");
 		
-		for (int i = 0 ; i < matrix.length ; i++) {
-			for (int j = (i+1) ; j < matrix[i].length ; j++) {
+		for (int i = 0 ; i < edgeMatrix.length ; i++) {
+			for (int j = (i+1) ; j < edgeMatrix[i].length ; j++) {
 				
-				if (matrix[i][j] == 1)
+				if (edgeMatrix[i][j] == 1)
 					writer.write("e " + i + " " + j + "\n");
 			}
 		}
 		
 		for (int hexagon = 0 ; hexagon < hexagons.length ; hexagon ++) {
 			
-			if (isValid(hexagons[hexagon])) {
+			if (isFull(hexagons[hexagon])) {
 				
 				writer.write("h ");
 				
@@ -230,6 +188,46 @@ public class GraphFileBuilder {
 			}
 		}
 		writer.close();
+	}
+
+	private void makeNeighbors(int[] checkedHexagons, int[][] hexagons, int hexagon, int[] neighborhood) {
+		for (int i = 0 ; i < neighborhood.length ; i++) {
+			
+			int neighbor = neighborhood[i];
+			
+			if (neighbor != -1 && checkedHexagons[neighbor] == 1) {
+				
+				if (i == 0) {
+					hexagons[hexagon][0] = hexagons[neighbor][4];
+					hexagons[hexagon][1] = hexagons[neighbor][3];			
+				}
+				
+				else if (i == 1) {
+					hexagons[hexagon][1] = hexagons[neighbor][5];
+					hexagons[hexagon][2] = hexagons[neighbor][4];
+				}
+				
+				else if (i == 2) {
+					hexagons[hexagon][2] = hexagons[neighbor][0];
+					hexagons[hexagon][3] = hexagons[neighbor][5];
+				}
+				
+				else if (i == 3) {
+					hexagons[hexagon][3] = hexagons[neighbor][1];
+					hexagons[hexagon][4] = hexagons[neighbor][0];
+				}
+				
+				else if (i == 4) {
+					hexagons[hexagon][5] = hexagons[neighbor][1];
+					hexagons[hexagon][4] = hexagons[neighbor][2];
+				}
+				
+				else if (i == 5) {		
+					hexagons[hexagon][0] = hexagons[neighbor][2];
+					hexagons[hexagon][5] = hexagons[neighbor][3];
+				}
+			}
+		}
 	}
 	
 	private void buildCoordsMatrix() {

@@ -41,7 +41,7 @@ public class KekuleStructureSolver {
 		
 		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
 			for (int j = (i + 1) ; j < molecule.getNbNodes() ; j++) {
-				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					edges[index] = model.boolVar("e_" + i + "_" + j);
 					edgesIndexes[i][j] = index;
 					edgesIndexes[j][i] = index;
@@ -58,7 +58,7 @@ public class KekuleStructureSolver {
 			BoolVar[] edgeSum = new BoolVar[adjacentEdges[i]];
 			index = 0;
 			for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
-				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					int edgeIndex = edgesIndexes[i][j];
 					edgeSum[index] = edges[edgeIndex];
 					index ++;
@@ -88,7 +88,7 @@ public class KekuleStructureSolver {
 			int [][] structure = new int[molecule.getNbNodes()][molecule.getNbNodes()];
 			for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
 				for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
-					if (molecule.getAdjacencyMatrix()[i][j] == 0)
+					if (molecule.getEdgeMatrix()[i][j] == 0)
 						structure[i][j] = -1;
 					else
 						structure[i][j] = 0;
