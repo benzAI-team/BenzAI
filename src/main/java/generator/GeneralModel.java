@@ -38,11 +38,15 @@ import utils.Couple;
 import utils.Triplet;
 import view.generator.GeneratorPane;
 import view.generator.Stopper;
+import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
+import view.generator.boxes.HBoxSolverCriterion;
 
 public class GeneralModel {
 
 	private Solver solver;
 	private SolverResults solverResults;
+
 	private GeneratorRun generatorRun = new GeneratorRun(this);
 
 	/*
@@ -55,8 +59,6 @@ public class GeneralModel {
 	private int nbMaxHexagons;
 
 	private int[][] neighborGraph;
-
-	//private GeneralModelMode mode;
 
 	private ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
 	private ArrayList<Integer> outterHexagonsIndexes = new ArrayList<>();
@@ -134,9 +136,8 @@ public class GeneralModel {
 	 * Modules
 	 */
 
-	//private ArrayList<Module> modules = new ArrayList<Module>();
-	private ModelPropertySet modelPropertySet;
-	private SolverPropertySet solverPropertySet;
+	private static ModelPropertySet modelPropertySet = new ModelPropertySet();
+	private static SolverPropertySet solverPropertySet = new SolverPropertySet();
 
 	/*
 	 * Constructors
@@ -646,8 +647,8 @@ public class GeneralModel {
 			ArrayList<Integer> verticesSolution = buildVerticesSolution();
 			String description = buildDescription(indexSolution);
 			Molecule molecule = GeneratorPane.buildMolecule(description, nbCrowns, indexSolution, verticesSolution);
-			//TODO propertyset à déplacer
-			if(molecule.respectPostProcessing(GeneratorPane.getModelPropertySet())) {
+
+			if(molecule.respectPostProcessing(modelPropertySet)) {
 				solverResults.addMolecule(molecule);
 				Platform.runLater(()->{
 					nbTotalSolutions.set(nbTotalSolutions.get() + 1);
@@ -1718,5 +1719,36 @@ public class GeneralModel {
 		return nbTotalSolutions;
 	}
 
-	
+	public static ModelPropertySet getModelPropertySet() {
+		return GeneralModel.modelPropertySet;
+	}
+
+	public static void setModelPropertySet(ModelPropertySet modelPropertySet) {
+		GeneralModel.modelPropertySet = modelPropertySet;
+	}
+
+	public static SolverPropertySet getSolverPropertySet() {
+		return GeneralModel.solverPropertySet;
+	}
+
+	public static void setSolverPropertySet(SolverPropertySet solverPropertySet) {
+		GeneralModel.solverPropertySet = solverPropertySet;
+	}
+
+	public static boolean buildPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
+		modelPropertySet.clearPropertyExpressions();
+		for (HBoxCriterion box : hBoxesCriterions) {
+			if (!box.isValid())
+				return false;
+			if(box instanceof HBoxModelCriterion)
+				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
+			//TODO : retirer
+			if(box instanceof HBoxSolverCriterion)
+				((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
+		}
+		return true;
+
+	}
+
+
 }

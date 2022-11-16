@@ -66,9 +66,6 @@ public class GeneratorPane extends ScrollPane {
 	private boolean isRunning;
 	private ArrayList<Molecule> generatedMolecules;
 	private int nbCriterions;
-	//ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-	private static ModelPropertySet modelPropertySet = new ModelPropertySet();
-	private SolverPropertySet solverPropertySet = new SolverPropertySet();
 
 	private PatternResolutionInformations patternsInformations;
 
@@ -120,7 +117,7 @@ public class GeneratorPane extends ScrollPane {
 
 		choiceBoxesCriterions = new ArrayList<>();
 		hBoxesCriterions = new ArrayList<>();
-		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, modelPropertySet, solverPropertySet);
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, model.getModelPropertySet(), model.getSolverPropertySet());
 		choiceBoxesCriterions.add(choiceBoxCriterion);
 		hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
@@ -170,7 +167,7 @@ public class GeneratorPane extends ScrollPane {
 			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
 
 			if (invalidIndexes.size() == 0) {
-				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, modelPropertySet, solverPropertySet);
+				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, model.getModelPropertySet(), model.getSolverPropertySet());
 				choiceBoxesCriterions.add(choiceBoxCriterion);
 				hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 				nbCriterions++;
@@ -400,9 +397,9 @@ public class GeneratorPane extends ScrollPane {
 			if (!box.isValid())
 				return false;
 			if(box instanceof HBoxModelCriterion)
-				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
+				((HBoxModelCriterion)box).addPropertyExpression(model.getModelPropertySet());
 			if(box instanceof HBoxSolverCriterion)
-				((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
+				((HBoxSolverCriterion)box).addPropertyExpression(model.getSolverPropertySet());
 		}
 		return true;
 	}
@@ -482,22 +479,6 @@ public class GeneratorPane extends ScrollPane {
 //		return map;
 //	}
 
-	private static ArrayList<Molecule> buildMolecules(SolverResults solverResults, int beginIndex) {
-
-		int index = beginIndex;
-
-		ArrayList<Molecule> molecules = new ArrayList<Molecule>();
-
-		for (int i = 0; i < solverResults.size(); i++) {
-			ArrayList<Integer> verticesSolution = solverResults.getVerticesSolution(i);
-			molecules.add(buildMolecule(solverResults.getDescriptions().get(i), solverResults.getCrown(i), index,  verticesSolution));
-			index++;
-		}
-		ArrayList<Molecule> filteredMolecules = filterMolecules(molecules);
-
-		return filteredMolecules;
-	}
-
 	public static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution) {
 		Molecule molecule = null;
 		try {
@@ -552,27 +533,7 @@ public class GeneratorPane extends ScrollPane {
 		graphBuilder.buildGraphFile();
 	}
 
-	/***
-	 * Filter the molecules thanks to the various checks according to the property set
-	 * @param molecules
-	 * @return molecules filtered 
-	 */
-	//TODO obsolete
-	public static ArrayList<Molecule> filterMolecules(ArrayList<Molecule> molecules){
-		ArrayList<Molecule> filteredMolecules;
-		
-		for(Property property : modelPropertySet)
-			if(property.hasExpressions()) {
-				filteredMolecules = new ArrayList<Molecule>();
-				for(Molecule molecule : molecules)
-					if(((ModelProperty) property).getChecker().checks(molecule, (ModelProperty) property)) {
-						filteredMolecules.add(molecule);
-					}
-				molecules = filteredMolecules;
-			}
-		return molecules;
 
-	}
 	
 	/***
 	 * 
@@ -582,11 +543,11 @@ public class GeneratorPane extends ScrollPane {
 		if (canStartGeneration) {
 
 			//criterions = buildCriterions();
-			buildModelPropertySet();
+			GeneralModel.buildPropertySet(hBoxesCriterions);
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
-			for(Property modelProperty : modelPropertySet)
-				if(modelPropertySet.has(modelProperty.getId()))
+			for(Property modelProperty : model.getModelPropertySet())
+				if(model.getModelPropertySet().has(modelProperty.getId()))
 					application.getBenzenoidCollectionsPane().log(modelProperty.getId(), false);
 				
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
@@ -595,7 +556,7 @@ public class GeneratorPane extends ScrollPane {
 			buttonsBox.getChildren().addAll(closeButton, loadIcon, solutionTextLabel, solutionNumberLabel, pauseButton, stopButton);
 
 			try {
-				model = ModelBuilder.buildModel(modelPropertySet, patternsInformations);
+				model = ModelBuilder.buildModel(model.getModelPropertySet(), patternsInformations);
 				solutionNumberLabel.textProperty().bind(model.getNbTotalSolutions().asString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -670,19 +631,6 @@ public class GeneratorPane extends ScrollPane {
 		}
 	}
 
-	private boolean buildModelPropertySet() {
-		modelPropertySet.clearPropertyExpressions();
-		for (HBoxCriterion box : hBoxesCriterions) {
-			if (!box.isValid())
-				return false;
-			if(box instanceof HBoxModelCriterion)
-				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
-			//TODO : retirer
-			if(box instanceof HBoxSolverCriterion)
-				((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
-		}
-		return true;
-	}
 
 
 	private void resumeGeneration() {
@@ -821,7 +769,7 @@ public class GeneratorPane extends ScrollPane {
 		Settings settings = application.getSettings();
 
 		if (settings.getGenerationTime() > 0 && settings.getTimeUnit() != null) {
-			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, modelPropertySet, solverPropertySet);
+			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, model.getModelPropertySet(), model.getSolverPropertySet());
 			choiceBoxesCriterions.add(choiceBoxCriterion);
 			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
@@ -846,7 +794,7 @@ public class GeneratorPane extends ScrollPane {
 		Settings settings = application.getSettings();
 		if (settings.getNbMaxSolutions() > 0) {
 
-			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, modelPropertySet, solverPropertySet);
+			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, model.getModelPropertySet(), model.getSolverPropertySet());
 			choiceBoxesCriterions.add(choiceBoxCriterion);
 			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
@@ -871,7 +819,7 @@ public class GeneratorPane extends ScrollPane {
 
 		boolean ok = buildPropertyExpressions();
 		canStartGeneration = false;
-
+		ModelPropertySet modelPropertySet = model.getModelPropertySet();
 		if (ok) {
 			if(((ModelProperty) modelPropertySet.getById("hexagons")).hasUpperBound()
 					|| ((ModelProperty) modelPropertySet.getById("carbons")).hasUpperBound()
@@ -903,14 +851,4 @@ public class GeneratorPane extends ScrollPane {
 	public BenzenoidApplication getApplication() {
 		return application;
 	}
-
-	public static ModelPropertySet getModelPropertySet() {
-		return modelPropertySet;
-	}
-
-	public static void setModelPropertySet(ModelPropertySet modelPropertySet) {
-		GeneratorPane.modelPropertySet = modelPropertySet;
-	}
-
-
 }
