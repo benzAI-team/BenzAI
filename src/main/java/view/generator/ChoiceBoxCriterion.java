@@ -27,9 +27,6 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 		for(String name : modelPropertySet.getNames())
 			this.getItems().add(name);				
 				
-//		this.getItems().add("Number of solutions");
-//		this.getItems().add("Time limit");
-
 		this.setOnAction(e -> {
 
 			if (getValue() != null) {

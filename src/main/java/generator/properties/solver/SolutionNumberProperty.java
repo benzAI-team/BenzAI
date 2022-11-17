@@ -9,7 +9,7 @@ import view.generator.boxes.HBoxNbSolutionsCriterion;
 public class SolutionNumberProperty extends SolverProperty {
 
 	public SolutionNumberProperty() {
-		super("SOLUTION_NUMBER", "Number of solutions", new SolutionNumberSpecifier());
+		super("solution_number", "Number of solutions", new SolutionNumberSpecifier());
 	}
 
 	@Override

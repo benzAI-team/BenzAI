@@ -144,8 +144,8 @@ public class GeneralModel {
 	 */
 
 	public GeneralModel(ModelPropertySet modelPropertySet) {
-		this.modelPropertySet = modelPropertySet;
-		solverPropertySet = new SolverPropertySet();
+		GeneralModel.modelPropertySet = modelPropertySet;
+		//solverPropertySet = new SolverPropertySet();
 
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
 		//System.out.println("H:" + nbMaxHexagons);
@@ -156,7 +156,7 @@ public class GeneralModel {
 	}
 
 	public GeneralModel(ModelPropertySet modelPropertySet, int nbCrowns) {
-		this.modelPropertySet = modelPropertySet;
+		GeneralModel.modelPropertySet = modelPropertySet;
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
 		this.nbCrowns = nbCrowns;
 		diameter = (2 * nbCrowns) - 1;
@@ -313,6 +313,27 @@ public class GeneralModel {
 		chocoModel.nbNodes(benzenoid, nbVertices).post();
 
 	}
+	
+	/***
+	 * Apply the solver property to the solver
+	 * @param modelProperty
+	 */
+	public void applySolverProperty(SolverProperty solverProperty) {
+		solverProperty.getSpecifier().apply(solver, solverProperty.getExpressions().get(0));
+	}
+
+	/***
+	 * Apply all the model properties to the model
+	 */
+	private void applySolverProperties() {
+		for (Property solverProperty : solverPropertySet) {
+			System.out.println(solverProperty.getId() + ":" + solverPropertySet.has(solverProperty.getId()));
+			if(solverPropertySet.has(solverProperty.getId())) {
+				applySolverProperty((SolverProperty) solverProperty);
+			}
+		}
+	}
+	
 
 	/*
 	 * Getters & Setters
@@ -616,21 +637,11 @@ public class GeneralModel {
 			return Stopper.STOP;
 		});
 
+		//applySolverProperties();
 		for(Property solverProperty : solverPropertySet)
 			if(((SolverProperty) solverProperty).hasExpressions())
 				((SolverProperty) solverProperty).getSpecifier().apply(solver, ((SolverProperty) solverProperty).getExpressions().get(0));
-		
-//		if (mapCriterions != null && mapCriterions.get("stop") != null) {
-//			for (GeneratorCriterion criterion : mapCriterions.get("stop")) {
-//
-//				if (criterion.getName() == "TIMEOUT")
-//					solver.limitTime(criterion.getValue());
-//
-//				else if (criterion.getName() == "NB_SOLUTIONS")
-//					solver.addStopCriterion(new SolutionCounter(chocoModel, (long)criterion.getValue()));
-//
-//			}
-//		}
+
 
 		solverResults = new SolverResults();
 
@@ -1735,20 +1746,21 @@ public class GeneralModel {
 		GeneralModel.solverPropertySet = solverPropertySet;
 	}
 
-	public static boolean buildPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
+	public static boolean buildSolverPropertySet(ArrayList<HBoxCriterion> hBoxesSolverCriterions) {
+		solverPropertySet.clearPropertyExpressions();;
+		for (HBoxCriterion box : hBoxesSolverCriterions) {
+			((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
+		}
+		return true;
+	}
+
+	public static boolean buildModelPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
 		modelPropertySet.clearPropertyExpressions();
 		for (HBoxCriterion box : hBoxesCriterions) {
 			if (!box.isValid())
 				return false;
-			if(box instanceof HBoxModelCriterion)
-				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
-			//TODO : retirer
-			if(box instanceof HBoxSolverCriterion)
-				((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
+			((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
 		}
 		return true;
-
 	}
-
-
 }
