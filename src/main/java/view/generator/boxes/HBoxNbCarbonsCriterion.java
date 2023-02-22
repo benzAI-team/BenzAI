@@ -10,11 +10,12 @@ import modelProperty.expression.ParameterizedExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxNbCarbonsCriterion extends ClassicalHBoxCriterion{
 
-	public HBoxNbCarbonsCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxNbCarbonsCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 		operatorChoiceBox.getItems().addAll("even", "odd");
 	}
 
@@ -45,7 +46,7 @@ public class HBoxNbCarbonsCriterion extends ClassicalHBoxCriterion{
 			this.getChildren().addAll(fieldValue, getDeleteButton());
 		}
 		
-		getGeneratorPane().refreshGenerationPossibility();
+		getPane().refreshGenerationPossibility();
 		
 	}
 	

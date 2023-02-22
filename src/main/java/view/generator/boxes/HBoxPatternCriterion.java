@@ -22,6 +22,7 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.patterns.PatternsEditionPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxPatternCriterion extends HBoxModelCriterion {
 
@@ -36,8 +37,8 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	//private GeneratorCriterion criterion;
 	
 
-	public HBoxPatternCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxPatternCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
+		super(parent, choiceBoxCriterion);
 		setPatternProperty((PatternProperty)modelProperty);
 	}
 
@@ -150,11 +151,11 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	}
 
 	public BenzenoidApplication getApplication() {
-		return getGeneratorPane().getApplication();
+		return ((GeneratorPane) getPane()).getApplication();
 	}
 
 	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
-		getGeneratorPane().setPatternResolutionInformations(patternsInformations);
+		((GeneratorPane) getPane()).setPatternResolutionInformations(patternsInformations);
 	}
 
 	public PatternResolutionInformations getPatternInformations() {

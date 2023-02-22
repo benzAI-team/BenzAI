@@ -4,6 +4,7 @@ import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxTimeoutCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class TimeLimitProperty extends SolverProperty {
 
@@ -12,7 +13,7 @@ public class TimeLimitProperty extends SolverProperty {
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxTimeoutCriterion(parent, choiceBoxCriterion);
 	}
 

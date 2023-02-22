@@ -110,7 +110,7 @@ public class PerfectMatchingMatrix {
 
 		Molecule molecule = GraphParser
 				.parseUndirectedGraph("C:\\Users\\adrie\\Desktop\\molecules_test\\coro_4.graph_coord", null, true);
-		PerfectMatchingMatrix matrix = PerfectMatchingMatrix.buildMatrix(molecule.getAdjacencyMatrix(),
+		PerfectMatchingMatrix matrix = PerfectMatchingMatrix.buildMatrix(molecule.getEdgeMatrix(),
 				molecule.getNbNodes());
 
 		System.out.print("[");
@@ -125,7 +125,7 @@ public class PerfectMatchingMatrix {
 		System.out.println("]");
 
 		SubMolecule subMolecule = new SubMolecule(molecule.getNbNodes(), molecule.getNbEdges(), molecule.getNbNodes(),
-				null, molecule.getAdjacencyMatrix());
+				null, molecule.getEdgeMatrix());
 
 		int n;
 

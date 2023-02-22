@@ -2,21 +2,23 @@ package modelProperty;
 
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PropertyExpression;
+import modelProperty.testers.CoronoidTester;
 import modules.CoronoidModule2;
 import modules.Module;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCoronoidCriterion;
 import view.generator.boxes.HBoxModelCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class CoronoidProperty extends ModelProperty {
 
 	public CoronoidProperty() {
-		super("coronoid", "Coronoid", new CoronoidModule2());
+		super("coronoid", "Coronoid", new CoronoidModule2(), new CoronoidTester());
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxCoronoidCriterion(parent, choiceBoxCriterion) ;
 	}
 

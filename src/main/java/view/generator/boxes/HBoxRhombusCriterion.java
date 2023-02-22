@@ -13,14 +13,15 @@ import modelProperty.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxRhombusCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> dimensionChoiceBox;
 	private TextField dimensionTextField;
 
-	public HBoxRhombusCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxRhombusCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 	}
 
 	@Override
@@ -65,14 +66,14 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 
 		dimensionChoiceBox.setOnAction(e -> {
 			checkValidity();
-			getGeneratorPane().refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 		});
 
 		dimensionTextField = new TextField();
 
 		dimensionTextField.setOnKeyReleased(e -> {
 			checkValidity();
-			getGeneratorPane().refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 		});
 
 		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, getWarningIcon(), getDeleteButton());

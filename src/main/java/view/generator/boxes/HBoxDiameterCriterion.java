@@ -9,11 +9,12 @@ import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxDiameterCriterion extends ClassicalHBoxCriterion{
 
-	public HBoxDiameterCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxDiameterCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 	}
 
 	@Override

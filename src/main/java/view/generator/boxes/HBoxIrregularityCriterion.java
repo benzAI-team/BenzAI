@@ -15,6 +15,7 @@ import modelProperty.expression.IrregularityExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 
@@ -22,7 +23,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 	private ChoiceBox<String> operatorChoiceBox;
 	private TextField fieldValue;
 
-	public HBoxIrregularityCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxIrregularityCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 

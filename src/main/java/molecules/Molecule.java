@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,11 @@ import database.PictureConverter;
 import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.ResultSolver;
+import generator.SolverResults;
 import generator.patterns.Pattern;
+import generator.properties.Property;
 import http.Post;
+import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import molecules.sort.MoleculeComparator;
@@ -40,6 +43,7 @@ import spectrums.ResultLogFile;
 import utils.Couple;
 import utils.Interval;
 import utils.RelativeMatrix;
+import utils.Utils;
 import view.groups.ClarCoverGroup;
 import view.groups.IMS2D1AGroup;
 import view.groups.RBOGroup;
@@ -52,8 +56,8 @@ public class Molecule implements Comparable<Molecule> {
 	private RelativeMatrix nodesMem; // DEBUG
 
 	private int nbNodes, nbEdges, nbHexagons, nbStraightEdges, maxIndex;
-	private ArrayList<ArrayList<Integer>> edgeMatrix;
-	private int[][] adjacencyMatrix;
+	private ArrayList<ArrayList<Integer>> edgeLists;
+	private int[][] edgeMatrix;
 	private ArrayList<String> edgesString;
 	private ArrayList<String> hexagonsString;
 	private Node[] nodesRefs;
@@ -108,7 +112,7 @@ public class Molecule implements Comparable<Molecule> {
 	 */
 
 	public Molecule(int nbNodes, int nbEdges, int nbHexagons, int[][] hexagons, Node[] nodesRefs,
-			int[][] adjacencyMatrix, RelativeMatrix coords) {
+			int[][] edgeMatrix, RelativeMatrix coords) {
     
 		comparator = new NbHexagonsComparator();
 
@@ -117,7 +121,7 @@ public class Molecule implements Comparable<Molecule> {
 		this.nbHexagons = nbHexagons;
 		this.hexagons = hexagons;
 		this.nodesRefs = nodesRefs;
-		this.adjacencyMatrix = adjacencyMatrix;
+		this.edgeMatrix = edgeMatrix;
 		this.coords = coords;
 
 		hexagonsString = new ArrayList<>();
@@ -143,15 +147,15 @@ public class Molecule implements Comparable<Molecule> {
 	}
 
 
-	public Molecule(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeMatrix,
-			int[][] adjacencyMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
+	public Molecule(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeLists,
+			int[][] edgeMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
 			RelativeMatrix coords, RelativeMatrix nodesMem, int maxIndex) {
 
 		this.nbNodes = nbNodes;
 		this.nbEdges = nbEdges;
 		this.nbHexagons = nbHexagons;
+		this.edgeLists = edgeLists;
 		this.edgeMatrix = edgeMatrix;
-		this.adjacencyMatrix = adjacencyMatrix;
 		this.edgesString = edgesString;
 		this.hexagonsString = hexagonsString;
 		this.nodesRefs = nodesRefs;
@@ -164,9 +168,9 @@ public class Molecule implements Comparable<Molecule> {
 
 		nbStraightEdges = 0;
 
-		for (int i = 0; i < adjacencyMatrix.length; i++) {
-			for (int j = (i + 1); j < adjacencyMatrix[i].length; j++) {
-				if (adjacencyMatrix[i][j] == 1) {
+		for (int i = 0; i < edgeMatrix.length; i++) {
+			for (int j = (i + 1); j < edgeMatrix[i].length; j++) {
+				if (edgeMatrix[i][j] == 1) {
 					Node u1 = nodesRefs[i];
 					Node u2 = nodesRefs[j];
 
@@ -180,6 +184,246 @@ public class Molecule implements Comparable<Molecule> {
 		computeDegrees();
 		buildHexagonsCoords2();
 	}
+	
+	/***
+	 * 
+	 * @param solution
+	 * @param nbCrowns
+	 * @return a molecule from a choco solver solution
+	 */
+	// TODO inutilisable pour l'instant
+	public static Molecule buildMolecule(ArrayList<Integer> solution, int nbCrowns) {
+		int diameter = nbCrowns * 2 - 1;
+		int [] checkedHexagons = new int[diameter * diameter];
+		int [][] coordsMatrix = buildCoordsMatrix(diameter);
+		
+		Arrays.fill(checkedHexagons, -1);
+		
+		for (int i = 0 ; i < solution.size() ; i++) {
+			if (solution.get(i) == 1)
+				checkedHexagons[i] = 0;
+		}
+		
+		int n = 0;
+		int indexNode = 0;
+		
+		int solutionSize = solution.stream().reduce(0, (acc, x) -> acc + x);
+		
+		int [][] hexagons = new int [solution.size()][6];
+		for (int i = 0 ; i < hexagons.length ; i++) 
+			Arrays.fill(hexagons[i], -1);
+		 
+		while (n < solutionSize) {	
+			int hexagon = findCandidate(checkedHexagons);
+			int [] neighborhood = neighborhood(hexagon, diameter, coordsMatrix, solution);
+			
+			makeNeighbors(checkedHexagons, hexagons, hexagon, neighborhood);
+			
+			for (int i = 0 ; i < neighborhood.length ; i++) {
+				if (hexagons[hexagon][i] == -1) {
+					hexagons[hexagon][i] = indexNode;
+					indexNode ++;
+				}
+			}
+			
+			checkedHexagons[hexagon] = 1;
+			n++;
+		}
+		
+		int [][] edgeMatrix = new int[indexNode][indexNode];
+		int nbEdges = 0;
+		int nbHexagons = 0;
+		
+		for (int hexagon = 0 ; hexagon < hexagons.length ; hexagon++) {
+			if (isFull(hexagons[hexagon])) {
+				nbHexagons ++;
+				for (int i = 0 ; i < 6 ; i++) {
+					int u = hexagons[hexagon][i];
+					int v = hexagons[hexagon][(i + 1) % 6];
+				
+					if (edgeMatrix[u][v] == 0) {
+						edgeMatrix[u][v] = 1;
+						edgeMatrix[v][u] = 1;
+						nbEdges ++;
+					}
+				}
+			}
+		}
+				//TODO corriger : deux params a calculer
+		return new Molecule(indexNode, nbEdges, nbHexagons, hexagons, null, edgeMatrix, null);
+	}
+
+	private static void makeNeighbors(int[] checkedHexagons, int[][] hexagons, int hexagon, int[] neighborhood) {
+		for (int i = 0 ; i < neighborhood.length ; i++) {
+			
+			int neighbor = neighborhood[i];
+			
+			if (neighbor != -1 && checkedHexagons[neighbor] == 1) {
+				
+				if (i == 0) {
+					hexagons[hexagon][0] = hexagons[neighbor][4];
+					hexagons[hexagon][1] = hexagons[neighbor][3];			
+				}
+				
+				else if (i == 1) {
+					hexagons[hexagon][1] = hexagons[neighbor][5];
+					hexagons[hexagon][2] = hexagons[neighbor][4];
+				}
+				
+				else if (i == 2) {
+					hexagons[hexagon][2] = hexagons[neighbor][0];
+					hexagons[hexagon][3] = hexagons[neighbor][5];
+				}
+				
+				else if (i == 3) {
+					hexagons[hexagon][3] = hexagons[neighbor][1];
+					hexagons[hexagon][4] = hexagons[neighbor][0];
+				}
+				
+				else if (i == 4) {
+					hexagons[hexagon][5] = hexagons[neighbor][1];
+					hexagons[hexagon][4] = hexagons[neighbor][2];
+				}
+				
+				else if (i == 5) {		
+					hexagons[hexagon][0] = hexagons[neighbor][2];
+					hexagons[hexagon][5] = hexagons[neighbor][3];
+				}
+			}
+		}
+	}
+
+	private static int findCandidate(int [] checkedHexagons) {
+		
+		for (int i = 0 ; i < checkedHexagons.length ; i++) {
+			if (checkedHexagons[i] == 0)
+				return i;
+		}
+		return -1;
+	}
+	
+	private static int [] neighborhood(int hexagon, int diameter, int[][] coordsMatrix, ArrayList<Integer> solution) {
+		
+		int [] neighborhood = new int[6];
+		for (int i = 0 ; i < 6 ; i++)
+			neighborhood[i] = -1;
+		
+		Couple<Integer, Integer> coords = Utils.getHexagonCoords(hexagon, diameter);
+		int x = coords.getX();
+		int y = coords.getY();
+		
+		//0 - HIGH-RIGHT
+		if (y > 0) {
+			int v = coordsMatrix[y - 1][x];
+			if (v != -1)
+				if (solution.get(v) == 1)
+					neighborhood[0] = v;
+		}
+		
+		//1 - RIGHT
+		if (x < diameter - 1) {
+			int v = coordsMatrix[y][x + 1];
+			if (v != -1)
+				if (solution.get(v) == 1)
+					neighborhood[1] = v;
+		}
+		
+		//2 - DOWN-RIGHT
+		if (x < diameter - 1 && y < diameter - 1) {
+			int v = coordsMatrix[y + 1][x + 1];
+			if (v != -1)
+				if (solution.get(v) == 1)
+					neighborhood[2] = v;
+		}
+		
+		//3 - DOWN-LEFT
+		if (y < diameter - 1) {
+			int v = coordsMatrix[y + 1][x];
+			if (v != -1)
+				if (solution.get(v) == 1)
+					neighborhood[3] = v;
+		}
+		
+		//4 - LEFT
+		if (x > 0) {
+			int v = coordsMatrix[y][x - 1];
+			if (v != -1)
+				if (solution.get(v) == 1)
+					neighborhood[4] = v;
+		}
+		
+		//5 - HIGH-LEFT
+		if (x > 0 && y > 0) {
+			int v = coordsMatrix[y - 1][x - 1];
+			if (v != -1)
+				if (solution.get(v) == 1)
+					neighborhood[5] = v;
+		}
+		
+		return neighborhood;
+	}
+	
+	private static boolean isFull(int [] hexagon) {
+		
+		for (int i = 0 ; i < hexagon.length ; i++) {
+			if (hexagon[i] == -1) 
+				return false;
+		}
+		
+		return true;
+	}
+	
+	private static int[][] buildCoordsMatrix(int diameter) {
+		
+		int[][] coordsMatrix = new int[diameter][diameter];
+		
+		for (int i = 0 ; i < diameter ; i++)
+			for (int j = 0 ; j < diameter ; j++)
+				coordsMatrix[i][j] = -1; 
+		
+		int index = 0;
+		int m = (diameter - 1) / 2;
+	
+		int shift = (diameter - 1) / 2;//TODO a verifier
+		
+		for (int i = 0 ; i < m ; i++) {
+			
+			for (int j = 0 ; j < diameter - shift ; j++) {
+				coordsMatrix[i][j] = index; 
+				index ++;
+			}
+			
+			for (int j = diameter - shift ; j < diameter ; j++)
+				index ++;
+			
+			shift --;
+		}
+		
+		for (int j = 0 ; j < diameter ; j++) {
+			coordsMatrix[m][j] = index;
+			index ++;
+		}
+		
+		shift = 1;
+		
+		for (int i = m + 1 ; i < diameter ; i++) {
+			
+			for (int j = 0 ; j < shift ; j++)
+				index ++;
+			
+			for (int j = shift ; j < diameter ; j++) {
+				coordsMatrix[i][j] = index;
+				index ++;
+			}
+			
+			shift ++;
+		}
+		
+		index = 0;
+		return coordsMatrix;
+	}
+
+
 
 	/**
 	 * Getters and setters
@@ -205,12 +449,12 @@ public class Molecule implements Comparable<Molecule> {
 		return maxIndex;
 	}
 
-	public ArrayList<ArrayList<Integer>> getEdgeMatrix() {
-		return edgeMatrix;
+	public ArrayList<ArrayList<Integer>> getEdgeLists() {
+		return edgeLists;
 	}
 
-	public int[][] getAdjacencyMatrix() {
-		return adjacencyMatrix;
+	public int[][] getEdgeMatrix() {
+		return edgeMatrix;
 	}
 
 	public ArrayList<String> getEdgesString() {
@@ -270,7 +514,7 @@ public class Molecule implements Comparable<Molecule> {
 			int degree = 0;
 			for (int j = 0; j < nbNodes; j++) {
 
-				if (adjacencyMatrix[i][j] == 1)
+				if (edgeMatrix[i][j] == 1)
 					degree++;
 			}
 
@@ -408,7 +652,7 @@ public class Molecule implements Comparable<Molecule> {
 				int degree = 0;
 				for (int j = 0; j < nbNodes; j++) {
 
-					if (adjacencyMatrix[i][j] == 1)
+					if (edgeMatrix[i][j] == 1)
 						degree++;
 				}
 
@@ -626,7 +870,7 @@ public class Molecule implements Comparable<Molecule> {
 
 		for (int i = 0; i < nbNodes; i++) {
 			for (int j = (i + 1); j < nbNodes; j++) {
-				if (adjacencyMatrix[i][j] == 1) {
+				if (edgeMatrix[i][j] == 1) {
 
 					Node u = nodesRefs[i];
 					Node v = nodesRefs[j];
@@ -711,7 +955,7 @@ public class Molecule implements Comparable<Molecule> {
 			model.getProblem().arithm(model.getVG()[u], "=", 1).post();
 		}
 
-		ResultSolver result = model.solve();
+		SolverResults result = model.solve();
 
 		return result.getSolutions().get(0);
 	}
@@ -853,7 +1097,7 @@ public class Molecule implements Comparable<Molecule> {
 				int candidat = candidats.get(0);
 
 				for (int i = 0; i < molecule.getNbNodes(); i++) {
-					if (molecule.getAdjacencyMatrix()[candidat][i] == 1 && checkedNodes[i] == 0) {
+					if (molecule.getEdgeMatrix()[candidat][i] == 1 && checkedNodes[i] == 0) {
 
 						checkedNodes[i] = 1;
 						nbNeighbors++;
@@ -900,7 +1144,7 @@ public class Molecule implements Comparable<Molecule> {
 			int[] disabledVertices = new int[getNbNodes()];
 			int[] degrees = getDegrees();
 
-			SubGraph subGraph = new SubGraph(getAdjacencyMatrix(), disabledVertices, degrees, PerfectMatchingType.DET);
+			SubGraph subGraph = new SubGraph(getEdgeMatrix(), disabledVertices, degrees, PerfectMatchingType.DET);
 
 			nbKekuleStructures = subGraph.getNbPerfectMatchings();
 		}
@@ -919,7 +1163,7 @@ public class Molecule implements Comparable<Molecule> {
 	}
 
 	public boolean edgeExists(int i, int j) {
-		return adjacencyMatrix[i][j] == 1;
+		return edgeMatrix[i][j] == 1;
 	}
 
 	public ArrayList<Couple<Integer, Integer>> getBoundsInvolved(int carbon) {
@@ -1681,5 +1925,13 @@ public class Molecule implements Comparable<Molecule> {
 
 	public void setKekuleStructures(ArrayList<int[][]> kekuleStructures) {
 		this.kekuleStructures = kekuleStructures;
+	}
+
+
+	public boolean respectPostProcessing(ModelPropertySet modelPropertySet) {
+		for(Property property : modelPropertySet)
+			if(property.hasExpressions() && !((ModelProperty) property).getChecker().checks(this, (ModelProperty) property))
+				return false;
+		return true;
 	}
 }

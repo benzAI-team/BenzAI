@@ -14,11 +14,12 @@ import modelProperty.expression.ParameterizedExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 
 	
-	public HBoxNbKekuleStructuresCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxNbKekuleStructuresCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 

@@ -5,15 +5,16 @@ import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxNbSolutionsCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class SolutionNumberProperty extends SolverProperty {
 
 	public SolutionNumberProperty() {
-		super("SOLUTION_NUMBER", "Number of solutions", new SolutionNumberSpecifier());
+		super("solution_number", "Number of solutions", new SolutionNumberSpecifier());
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxNbSolutionsCriterion(parent, choiceBoxCriterion);
 	}
 

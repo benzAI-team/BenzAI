@@ -2,16 +2,18 @@ package view.generator.boxes;
 
 import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.TextField;
+import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.SubjectExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 
 	private TextField nbSolutionsField;
 
-	public HBoxNbSolutionsCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxNbSolutionsCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 
@@ -51,7 +53,7 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 
 		if (isValid()) {
 			String value = nbSolutionsField.getText();
-			propertySet.getById("solutionNumber").addExpression(new SubjectExpression(value));
+			propertySet.getById("solution_number").addExpression(new BinaryNumericalExpression("solution_number", "=", Integer.parseInt(value)));
 		}
 	}
 

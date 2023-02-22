@@ -2,21 +2,23 @@ package modelProperty;
 
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PropertyExpression;
+import modelProperty.testers.DiameterTester;
 import modules.DiameterModule;
 import modules.Module;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 import view.generator.boxes.HBoxDiameterCriterion;
 
 public class DiameterProperty extends ModelProperty {
 
 	public DiameterProperty() {
-		super("diameter", "Diameter", new DiameterModule());
+		super("diameter", "Diameter", new DiameterModule(), new DiameterTester());
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxDiameterCriterion(parent, choiceBoxCriterion);
 	}
 

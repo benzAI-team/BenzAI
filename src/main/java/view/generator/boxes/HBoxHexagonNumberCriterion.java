@@ -9,11 +9,12 @@ import modelProperty.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
 	
-	public HBoxHexagonNumberCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxHexagonNumberCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
 			this.getChildren().add(getDeleteButton());
 		}
 		
-		getGeneratorPane().refreshGenerationPossibility();
+		getPane().refreshGenerationPossibility();
 	}
 	
 	@Override

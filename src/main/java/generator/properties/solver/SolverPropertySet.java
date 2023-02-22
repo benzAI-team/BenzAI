@@ -14,5 +14,9 @@ public class SolverPropertySet extends PropertySet {
 		add(new SolutionNumberProperty());
 
 	}
-
+	
+	public void clearPropertyExpressions() {
+		for(Property property : getPropertyList())
+			property.clearExpressions();
+	}
 }

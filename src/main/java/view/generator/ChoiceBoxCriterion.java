@@ -2,83 +2,34 @@ package view.generator;
 
 import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 import modelProperty.ModelPropertySet;
 
 public class ChoiceBoxCriterion extends ChoiceBox<String> {
 
 	private int index;
-	private GeneratorPane parent;
-	private ModelPropertySet modelPropertySet;
-	private SolverPropertySet solverPropertySet;
+	private ScrollPaneWithPropertyList parent;
 
 	
-	public ChoiceBoxCriterion(int index, GeneratorPane parent, ModelPropertySet modelPropertySet, SolverPropertySet solverPropertySet) {
+	public ChoiceBoxCriterion(int index, ScrollPaneWithPropertyList parent, ModelPropertySet modelPropertySet) {
 		super();
 		this.index = index;
 		this.parent = parent;
-		this.modelPropertySet = modelPropertySet;
-		this.solverPropertySet = solverPropertySet;
-		initialize();
+		initialize(modelPropertySet);
 	}
 
-
-	private void initialize() {
-		for(String name : modelPropertySet.getNames())
-			this.getItems().add(name);				
+	private void initialize(ModelPropertySet modelPropertySet) {
+		this.getItems().addAll(modelPropertySet.getNames());
 				
-//		this.getItems().add("Number of solutions");
-//		this.getItems().add("Time limit");
-
 		this.setOnAction(e -> {
-
 			if (getValue() != null) {
-
 				String value = getValue();
-
 				System.out.println(value);
-				//TODO pas forcément le modelProperSet, le solverPropertySet aussi 
 				HBoxCriterion box = modelPropertySet.getHBoxCriterion(parent, this, value);
 				parent.setHBox(index, box);
-//				else if (value.equals("Symmetries")) {
-//
-//					boolean existing = false;
-//
-//					for (HBoxCriterion box : parent.getHBoxesCriterions()) {
-//						if (box instanceof HBoxSymmetriesCriterion)
-//							existing = true;
-//					}
-//
-//					if (!existing) {
-//						HBoxCriterion box = new HBoxSymmetriesCriterion(parent, this);
-//						parent.setHBox(index, box);
-//					}
-//
-//					else {
-//						Utils.alert("Only one symmetry criterion");
-//					}
-//				}
-//
-//				else if (value.equals("Number of solutions")) {
-//					HBoxCriterion box = new HBoxNbSolutionsCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Number of Kekulé structures")) {
-//					HBoxCriterion box = new HBoxNbKekuleStructuresCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Concealed non Kekulean")) {
-//					HBoxCriterion box = new HBoxConcealedCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
-//
-//				else if (value.equals("Time limit")) {
-//					HBoxCriterion box = new HBoxTimeoutCriterion(parent, this);
-//					parent.setHBox(index, box);
-//				}
 			}
 		});
 	}

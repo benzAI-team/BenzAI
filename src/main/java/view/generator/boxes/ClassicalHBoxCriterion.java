@@ -6,11 +6,12 @@ import modelProperty.ModelProperty;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public abstract class ClassicalHBoxCriterion extends HBoxModelCriterion {
 
-	public ClassicalHBoxCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public ClassicalHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 	}
 
 	protected ChoiceBox<String> operatorChoiceBox;
@@ -34,7 +35,7 @@ public abstract class ClassicalHBoxCriterion extends HBoxModelCriterion {
 		}
 
 		if (isValid())
-			getGeneratorPane().refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 	}
 
 	@Override

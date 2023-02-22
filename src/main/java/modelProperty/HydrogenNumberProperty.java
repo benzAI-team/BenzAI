@@ -3,6 +3,7 @@ package modelProperty;
 import generator.GeneratorCriterion;
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PropertyExpression;
+import modelProperty.testers.HydrogenNumberTester;
 import modules.CarbonNumberModule;
 import modules.HydrogenNumberModule;
 import view.generator.ChoiceBoxCriterion;
@@ -10,10 +11,11 @@ import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxNbCarbonsCriterion;
 import view.generator.boxes.HBoxNbHydrogensCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HydrogenNumberProperty extends ModelProperty {
 	public HydrogenNumberProperty() {
-		super("hydrogens", "Number of hydrogens", new HydrogenNumberModule());
+		super("hydrogens", "Number of hydrogens", new HydrogenNumberModule(), new HydrogenNumberTester());
 	}
 
 	@Override
@@ -34,7 +36,7 @@ public class HydrogenNumberProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxNbHydrogensCriterion(parent, choiceBoxCriterion);
 	}
 

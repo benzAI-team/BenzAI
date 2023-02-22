@@ -13,13 +13,14 @@ import modelProperty.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxCoronenoidCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> operatorChoiceBox;
 	private TextField fieldValue;
 
-	public HBoxCoronenoidCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxCoronenoidCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 		// TODO Auto-generated constructor stub
 	}

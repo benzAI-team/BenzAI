@@ -1,14 +1,20 @@
 package modelProperty;
 
+import modules.CarbonNumberModule;
 import modules.Module;
+import molecules.Molecule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
+
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
 import generator.properties.Property;
 import modelProperty.expression.PropertyExpression;
+import modelProperty.testers.CarbonNumberTester;
+import modelProperty.testers.Tester;
 import modelProperty.checkers.Checker;
 import modelProperty.expression.BinaryNumericalExpression;
 
@@ -25,20 +31,22 @@ import modelProperty.expression.BinaryNumericalExpression;
 public abstract class ModelProperty extends Property {
 	private Module module; // for posting constraints on the model
 	private Checker checker; // for checking if a solution to the model has the other requirements
-
+	private Tester tester; // for testing if a molecule has the full property
+	
 	//model property with module and checker
-	public ModelProperty(String id, String name, Module module,	Checker checker) {
+	public ModelProperty(String id, String name, Module module,	Checker checker, Tester tester) {
 		super(id, name);
 		this.module = module;
 		this.checker = checker;
+		this.tester = tester;
 	}
 	// model property without checker
-	public ModelProperty(String id, String name, Module module) {
-		this(id, name, module, Checker.NOCHECKER);
+	public ModelProperty(String id, String name, Module module, Tester tester) {
+		this(id, name, module, Checker.NOCHECKER, tester);
 	}
 	// model property without module
-	public ModelProperty(String id, String name, Checker checker) {
-		this(id, name, Module.NOMODULE, checker);
+	public ModelProperty(String id, String name, Checker checker, Tester tester) {
+		this(id, name, Module.NOMODULE, checker, tester);
 	}
 
 	/***
@@ -47,7 +55,7 @@ public abstract class ModelProperty extends Property {
 	 * @param choiceBoxCriterion
 	 * @return the HBoxCriterion selected in choiceBoxCriterion
 	 */
-	public abstract HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion);
+	public abstract HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion);
 	
 	/***
 	 * Compute the maximal number of hexagons according to the property
@@ -92,6 +100,13 @@ public abstract class ModelProperty extends Property {
 
 	public void setChecker(Checker checker) {
 		this.checker = checker;
+	}
+	
+	public Tester getTester() {
+		return tester;
+	}
+	public void setTester(Tester tester) {
+		this.tester = tester;
 	}
 
 }

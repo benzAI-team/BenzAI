@@ -56,6 +56,8 @@ public class BenzenoidModule extends Module {
 			generalModel.getProblem().sum(generalModel.getChanneling(), "=", 0).post();
 		else
 			generalModel.getProblem().or(or).post();
+		this.getGeneralModel().getChocoModel().arithm(getGeneralModel().getNbVerticesVar(), "=", molecule.getNbHexagons()).post();
+
 	}
 
 	@Override

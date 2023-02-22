@@ -4,21 +4,22 @@ import java.util.ArrayList;
 
 import modelProperty.expression.PropertyExpression;
 import modelProperty.expression.RectangleExpression;
+import modelProperty.testers.RectangleTester;
 import modules.RectangleModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxRectangleCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class RectangleProperty extends ModelProperty {
 
 	public RectangleProperty() {
-		super("rectangle", "Rectangle", new RectangleModule());
-		// TODO Auto-generated constructor stub
+		super("rectangle", "Rectangle", new RectangleModule(), new RectangleTester());
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxRectangleCriterion(parent, choiceBoxCriterion);
 	}
 

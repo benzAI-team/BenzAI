@@ -7,10 +7,9 @@ import application.BenzenoidApplication;
 import application.Settings;
 import generator.GeneralModel;
 import generator.ModelBuilder;
-import generator.ResultSolver;
 import generator.patterns.PatternResolutionInformations;
 import generator.properties.Property;
-import generator.properties.solver.SolverPropertySet;
+import generator.properties.solver.SolverProperty;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,16 +26,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.RectangleProperty;
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.PropertyExpression;
-import modelProperty.expression.ParameterizedExpression;
 import molecules.Molecule;
 import parsers.GraphCoordFileBuilder;
 import parsers.GraphFileBuilder;
@@ -44,32 +39,24 @@ import parsers.GraphParser;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
-import view.filtering.criterions.ConcealedNonKekuleanCriterion;
-import view.filtering.criterions.FilteringOperator;
-import view.filtering.criterions.NbKekuleStructuresCriterion;
-import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
 import view.generator.boxes.HBoxNbCarbonsCriterion;
 import view.generator.boxes.HBoxHexagonNumberCriterion;
+import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxNbHydrogensCriterion;
 import view.generator.boxes.HBoxNbSolutionsCriterion;
 import view.generator.boxes.HBoxSolverCriterion;
 import view.generator.boxes.HBoxTimeoutCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
-
-public class GeneratorPane extends ScrollPane {
+public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 	private BenzenoidApplication application;
 	private GeneralModel model;
 	private boolean canStartGeneration;
 	private boolean isRunning;
 	private ArrayList<Molecule> generatedMolecules;
-	private int nbCriterions;
-	//ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-	private ModelPropertySet modelPropertySet = new ModelPropertySet();
-	private SolverPropertySet solverPropertySet = new SolverPropertySet();
-
 	private PatternResolutionInformations patternsInformations;
 
 	BenzenoidCollectionPane selectedCollectionTab;
@@ -78,8 +65,8 @@ public class GeneratorPane extends ScrollPane {
 	private ImageView loadIcon;
 	private ImageView warningIcon;
 	private GridPane gridPane;
-	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
-	private ArrayList<HBoxCriterion> hBoxesCriterions;
+	public ArrayList<HBoxCriterion> hBoxesSolverCriterions;
+	
 
 	private HBox buttonsBox;
 	private Button addButton;
@@ -95,21 +82,20 @@ public class GeneratorPane extends ScrollPane {
 	public GeneratorPane(BenzenoidApplication application) {
 		this.application = application;
 		isRunning = false;
-		nbCriterions = 1;
+		setNbCriterions(1);
 		initializePane();
 	}
 
 	private void initializePane() {
 
-		titleLabel = new Label("Generate benzenoids");
+		titleLabel = new Label("Benzenoids properties");
 		titleLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
 		this.setFitToHeight(true);
 		this.setFitToWidth(true);
 		this.setPrefWidth(1400);
 		this.setPrefWidth(this.getPrefWidth());
 
-		loadIcon = buildLoadIcon();
-		warningIcon = buildWarningIcon();
+		buildIcons();
 		
 		addButton = buildAddButton();
 		closeButton = buildCloseButton();
@@ -118,12 +104,16 @@ public class GeneratorPane extends ScrollPane {
 		resumeButton = buildResumeButton();
 		generateButton = buildGenerateButton();
 
-		choiceBoxesCriterions = new ArrayList<>();
-		hBoxesCriterions = new ArrayList<>();
-		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, modelPropertySet, solverPropertySet);
-		choiceBoxesCriterions.add(choiceBoxCriterion);
-		hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+		setChoiceBoxesCriterions(new ArrayList<>());
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, GeneralModel.getModelPropertySet());
 
+		setHBoxesCriterions(new ArrayList<>());
+		getChoiceBoxesCriterions().add(choiceBoxCriterion);
+		getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+
+		hBoxesSolverCriterions = new ArrayList<>();
+		for(Property property : GeneralModel.getSolverPropertySet())
+			hBoxesSolverCriterions.add(property.getHBoxCriterion(this, null));
 		gridPane = buildGridPane();
 
 		this.setContent(gridPane);
@@ -131,6 +121,11 @@ public class GeneratorPane extends ScrollPane {
 		checkSettings();
 
 		placeComponents();
+	}
+
+	private void buildIcons() {
+		loadIcon = buildLoadIcon();
+		warningIcon = buildWarningIcon();
 	}
 
 	/***
@@ -170,12 +165,12 @@ public class GeneratorPane extends ScrollPane {
 			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
 
 			if (invalidIndexes.size() == 0) {
-				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, modelPropertySet, solverPropertySet);
-				choiceBoxesCriterions.add(choiceBoxCriterion);
-				hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
-				nbCriterions++;
+				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(getNbCriterions(), this, GeneralModel.getModelPropertySet());
+				getChoiceBoxesCriterions().add(choiceBoxCriterion);
+				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+				setNbCriterions(getNbCriterions() + 1);
 
-				System.out.println(nbCriterions + " criterions");
+				System.out.println(getNbCriterions() + " criterions");
 
 				placeComponents();
 
@@ -310,8 +305,8 @@ public class GeneratorPane extends ScrollPane {
 
 		ArrayList<Integer> indexes = new ArrayList<>();
 
-		for (int i = 0; i < hBoxesCriterions.size(); i++) {
-			if (!hBoxesCriterions.get(i).isValid())
+		for (int i = 0; i < getHBoxesCriterions().size(); i++) {
+			if (!getHBoxesCriterions().get(i).isValid())
 				indexes.add(i);
 		}
 
@@ -329,12 +324,12 @@ public class GeneratorPane extends ScrollPane {
 
 		boolean valid = false;
 
-		for (int i = 0; i < nbCriterions; i++) {
-			GridPane.setValignment(choiceBoxesCriterions.get(i), VPos.TOP);
-			gridPane.add(choiceBoxesCriterions.get(i), 0, i + 1);
-			gridPane.add(hBoxesCriterions.get(i), 1, i + 1);
+		for (int i = 0; i < getNbCriterions(); i++) {
+			GridPane.setValignment(getChoiceBoxesCriterions().get(i), VPos.TOP);
+			gridPane.add(getChoiceBoxesCriterions().get(i), 0, i + 1);
+			gridPane.add(getHBoxesCriterions().get(i), 1, i + 1);
 
-			HBoxCriterion box = hBoxesCriterions.get(i);
+			HBoxCriterion box = getHBoxesCriterions().get(i);
 
 			if ((box instanceof HBoxHexagonNumberCriterion || box instanceof HBoxNbCarbonsCriterion
 					|| box instanceof HBoxNbHydrogensCriterion) && box.isValid()) {
@@ -345,42 +340,17 @@ public class GeneratorPane extends ScrollPane {
 
 		buttonsBox = new HBox(5.0);
 		buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-
 		if (!valid)
 			buttonsBox.getChildren().add(warningIcon);
 
-		gridPane.add(buttonsBox, 0, nbCriterions + 1);
-				
-
+		gridPane.add(buttonsBox, 0, getNbCriterions() + 1);
+		
+		gridPane.add(new Label("Solver properties:"), 0, getNbCriterions() + 2);
+		for(int i = 0; i < hBoxesSolverCriterions.size(); i++) {
+			gridPane.add(new Label(GeneralModel.getSolverPropertySet().getNames()[i]), 0, i + getNbCriterions() + 3);
+			gridPane.add(this.hBoxesSolverCriterions.get(i), 1, i + getNbCriterions() + 3);
+		}
 	}
-
-	/***
-	 * 
-	 * @param index
-	 * @param box
-	 */
-	public void setHBox(int index, HBoxCriterion box) {
-		hBoxesCriterions.set(index, box);
-		placeComponents();
-	}
-
-	/***
-	 * 
-	 * @param choiceBoxCriterion
-	 * @param hBoxCriterion
-	 */
-	public void removeCriterion(ChoiceBoxCriterion choiceBoxCriterion, HBoxCriterion hBoxCriterion) {
-
-		choiceBoxesCriterions.remove(choiceBoxCriterion);
-		hBoxesCriterions.remove(hBoxCriterion);
-		nbCriterions--;
-
-		for (int i = 0; i < nbCriterions; i++)
-			choiceBoxesCriterions.get(i).setIndex(i);
-
-		placeComponents();
-	}
-	
 	/***
 	 * 
 	 * @param patternsInformations
@@ -388,178 +358,78 @@ public class GeneratorPane extends ScrollPane {
 	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
 		this.patternsInformations = patternsInformations;
 	}
-
+	
+	@Override
+	protected boolean buildPropertyExpressions() {
+		for (HBoxCriterion box : hBoxesSolverCriterions) {
+			if(box instanceof HBoxSolverCriterion)
+				((HBoxSolverCriterion)box).addPropertyExpression(GeneralModel.getSolverPropertySet());
+		}
+		return super.buildPropertyExpressions();
+	}
 	/***
 	 * 
+	 * @param description
+	 * @param nbCrowns
+	 * @param index
+	 * @param verticesSolution
 	 * @return
 	 */
-	private boolean buildPropertyExpressions() {
+	public static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution) {
+		Molecule molecule = null;
+		try {
+			String graphFilename = "tmp.graph";
+			String graphCoordFilename = "tmp.graph_coord";
 
-		for (HBoxCriterion box : hBoxesCriterions) {
-
-			if (!box.isValid())
-				return false;
-			if(box instanceof HBoxModelCriterion)
-				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
-			if(box instanceof HBoxSolverCriterion)
-				((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
+			buildGraphFile(nbCrowns, verticesSolution, graphFilename);
+			convertGraphCoordFileInstance(graphFilename, graphCoordFilename);
+			molecule = buildMolecule(description, nbCrowns, index, verticesSolution, graphCoordFilename);
+			deleteTmpFiles(graphFilename, graphCoordFilename);
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
-		return true;
+		return molecule;
 	}
 
-//	public static HashMap<String, ArrayList<GeneratorCriterion>> buildCriterionsMap(
-//			ArrayList<GeneratorCriterion> criterions) {
-//
-//		HashMap<String, ArrayList<GeneratorCriterion>> map = new HashMap<>();
-//
-//		map.put("hexagons", new ArrayList<>());
-//		map.put("carbons", new ArrayList<>());
-//		map.put("hydrogens", new ArrayList<>());
-//		map.put("coronenoid", new ArrayList<>());
-//		map.put("irregularity", new ArrayList<>());
-//		map.put("diameter", new ArrayList<>());
-//		map.put("rectangle", new ArrayList<>());
-//		map.put("rhombus", new ArrayList<>());
-//		map.put("coronoid", new ArrayList<>());
-//		map.put("coronoid2", new ArrayList<>());
-//		map.put("catacondensed", new ArrayList<>());
-//		map.put("symmetries", new ArrayList<>());
-//		map.put("patterns", new ArrayList<>());
-//		map.put("stop", new ArrayList<>());
-//
-//		for (GeneratorCriterion criterion : criterions) {
-//
-//			Subject subject = criterion.getSubject();
-//
-//			if (subject == Subject.NB_HEXAGONS)
-//				map.get("hexagons").add(criterion);
-//
-//			else if (subject == Subject.NB_CARBONS)
-//				map.get("carbons").add(criterion);
-//
-//			else if (subject == Subject.NB_HYDROGENS)
-//				map.get("hydrogens").add(criterion);
-//
-//			else if (subject == Subject.CORONENOID || subject == Subject.NB_CROWNS)
-//				map.get("coronenoid").add(criterion);
-//
-//			else if (subject == Subject.XI || subject == Subject.N0 || subject == Subject.N1 || subject == Subject.N2
-//					|| subject == Subject.N3 || subject == Subject.N4)
-//				map.get("irregularity").add(criterion);
-//
-//			else if (subject == Subject.RECT_HEIGHT || subject == Subject.RECT_WIDTH)
-//				map.get("rectangle").add(criterion);
-//
-//			else if (subject == Subject.RHOMBUS || subject == Subject.RHOMBUS_DIMENSION)
-//				map.get("rhombus").add(criterion);
-//
-//			else if (subject == Subject.SYMM_MIRROR || subject == Subject.SYMM_ROT_60 || subject == Subject.SYMM_ROT_120
-//					|| subject == Subject.SYMM_ROT_180 || subject == Subject.SYMM_VERTICAL
-//					|| subject == Subject.SYMM_ROT_120_V || subject == Subject.SYMM_ROT_180_E)
-//
-//				map.get("symmetries").add(criterion);
-//
-//			else if (subject == Subject.DIAMETER)
-//				map.get("diameter").add(criterion);
-//
-//			else if (subject == Subject.CORONOID)
-//				map.get("coronoid").add(criterion);
-//
-//			else if (subject == Subject.CORONOID_2 || subject == Subject.NB_HOLES)
-//				map.get("coronoid2").add(criterion);
-//
-//			else if (subject == Subject.CATACONDENSED)
-//				map.get("catacondensed").add(criterion);
-//
-//			else if (subject == Subject.SINGLE_PATTERN || subject == Subject.MULTIPLE_PATTERNS
-//					|| subject == Subject.FORBIDDEN_PATTERN || subject == Subject.OCCURENCE_PATTERN)
-//				map.get("patterns").add(criterion);
-//
-//			else if (subject == Subject.TIMEOUT || subject == Subject.NB_SOLUTIONS)
-//				map.get("stop").add(criterion);
-//		}
-//
-//		return map;
-//	}
-
-	private ArrayList<Molecule> buildMolecules(ResultSolver resultSolver, int beginIndex) {
-
-		int index = beginIndex;
-
-		ArrayList<Molecule> molecules = new ArrayList<Molecule>();
-
-		for (int i = 0; i < resultSolver.size(); i++) {
-
-			Molecule molecule = null;
-			ArrayList<Integer> verticesSolution = resultSolver.getVerticesSolution(i);
-
-			try {
-
-				String graphFilename = "tmp.graph";
-				String graphCoordFilename = "tmp.graph_coord";
-
-				GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
-						resultSolver.getCrown(i));
-
-				graphBuilder.buildGraphFile();
-
-				GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
-				graphCoordBuilder.convertInstance();
-
-				molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
-
-				File file = new File("tmp.graph");
-				file.delete();
-
-				file = new File("tmp.graph_coord");
-				file.delete();
-
-				molecule.setVerticesSolutions(verticesSolution);
-
-				String[] lines = resultSolver.getDescriptions().get(i).split("\n");
-				StringBuilder b = new StringBuilder();
-
-				b.append("solution_" + index + "\n");
-				for (int j = 1; j < lines.length; j++)
-					b.append(lines[j] + "\n");
-
-				molecule.setDescription(b.toString());
-
-				molecule.setNbCrowns(resultSolver.getNbCrowns().get(i));
-
-				molecules.add(molecule);
-
-				index++;
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-
-		ArrayList<Molecule> filteredMolecules = filterMolecules(molecules);
-
-		return filteredMolecules;
+	private static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution,
+			String graphCoordFilename) {
+		Molecule molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
+		molecule.setVerticesSolutions(verticesSolution);
+		molecule.setDescription(buildMoleculeDescription(description, index));
+		molecule.setNbCrowns(nbCrowns);
+		return molecule;
 	}
 
-	/***
-	 * Filter the molecules thanks to the various checks according to the property set
-	 * @param molecules
-	 * @return molecules filtered 
-	 */
-	public ArrayList<Molecule> filterMolecules(ArrayList<Molecule> molecules){
-		ArrayList<Molecule> filteredMolecules;
-		
-		for(Property property : modelPropertySet)
-			if(property.hasExpressions()) {
-				filteredMolecules = new ArrayList<Molecule>();
-				for(Molecule molecule : molecules)
-					if(((ModelProperty) property).getChecker().checks(molecule, (ModelProperty) property)) {
-						filteredMolecules.add(molecule);
-					}
-				molecules = filteredMolecules;
-			}
-		return molecules;
+	private static String buildMoleculeDescription(String description, int index) {
+		String[] lines = description.split("\n");
+		StringBuilder b = new StringBuilder();
 
+		b.append("solution_" + index + "\n");
+		for (int j = 1; j < lines.length; j++)
+			b.append(lines[j] + "\n");
+		return b.toString();
 	}
+
+	private static void deleteTmpFiles(String graphFilename, String graphCoordFilename) {
+		File file = new File(graphFilename);
+		file.delete();
+		file = new File(graphCoordFilename);
+		file.delete();
+	}
+
+	private static void convertGraphCoordFileInstance(String graphFilename, String graphCoordFilename) {
+		GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
+		graphCoordBuilder.convertInstance();
+	}
+
+	private static void buildGraphFile(int nbCrowns, ArrayList<Integer> verticesSolution,
+			String graphFilename) throws IOException {
+		GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
+				nbCrowns);
+		graphBuilder.buildGraphFile();
+	}
+
+
 	
 	/***
 	 * 
@@ -567,13 +437,12 @@ public class GeneratorPane extends ScrollPane {
 	private void generateBenzenoids() {
 
 		if (canStartGeneration) {
-
-			//criterions = buildCriterions();
-			buildModelPropertySet();
+			GeneralModel.buildModelPropertySet(getHBoxesCriterions());
+			GeneralModel.buildSolverPropertySet(hBoxesSolverCriterions);
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
-			for(Property modelProperty : modelPropertySet)
-				if(modelPropertySet.has(modelProperty.getId()))
+			for(Property modelProperty : GeneralModel.getModelPropertySet())
+				if(GeneralModel.getModelPropertySet().has(modelProperty.getId()))
 					application.getBenzenoidCollectionsPane().log(modelProperty.getId(), false);
 				
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
@@ -582,7 +451,7 @@ public class GeneratorPane extends ScrollPane {
 			buttonsBox.getChildren().addAll(closeButton, loadIcon, solutionTextLabel, solutionNumberLabel, pauseButton, stopButton);
 
 			try {
-				model = ModelBuilder.buildModel(modelPropertySet, patternsInformations);
+				model = ModelBuilder.buildModel(GeneralModel.getModelPropertySet(), patternsInformations);
 				solutionNumberLabel.textProperty().bind(model.getNbTotalSolutions().asString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -657,19 +526,6 @@ public class GeneratorPane extends ScrollPane {
 		}
 	}
 
-	private boolean buildModelPropertySet() {
-		modelPropertySet.clearPropertyExpressions();
-		for (HBoxCriterion box : hBoxesCriterions) {
-			if (!box.isValid())
-				return false;
-			if(box instanceof HBoxModelCriterion)
-				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
-			//TODO : retirer
-			if(box instanceof HBoxSolverCriterion)
-				((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
-		}
-		return true;
-	}
 
 
 	private void resumeGeneration() {
@@ -769,10 +625,9 @@ public class GeneratorPane extends ScrollPane {
 
 			isRunning = false;
 
-			ResultSolver resultSolver = model.getResultSolver();
-
-			generatedMolecules = buildMolecules(resultSolver, generatedMolecules.size());
-
+			//generatedMolecules = buildMolecules(model.getResultSolver(), generatedMolecules.size());
+			generatedMolecules = model.getResultSolver().getMolecules();
+			
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);
 
@@ -797,9 +652,10 @@ public class GeneratorPane extends ScrollPane {
 	 * Add automatic stop criterions based on the settings
 	 */
 	private void checkSettings() {
-		System.out.println("Currently not checking the setting");
-		//checkGenerationTime();
-		//checkNbMaxSolutions();
+		//System.out.println("Currently not checking the setting");
+		checkGenerationTime();
+		checkNbMaxSolutions();
+		placeComponents();
 	}
 	
 	/***
@@ -809,21 +665,18 @@ public class GeneratorPane extends ScrollPane {
 		Settings settings = application.getSettings();
 
 		if (settings.getGenerationTime() > 0 && settings.getTimeUnit() != null) {
-			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, modelPropertySet, solverPropertySet);
-			choiceBoxesCriterions.add(choiceBoxCriterion);
-			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+//			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, GeneralModel.getModelPropertySet(), GeneralModel.getSolverPropertySet());
+//			choiceBoxesCriterions.add(choiceBoxCriterion);
+//			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+//
+//			choiceBoxCriterion.getSelectionModel().select("Time limit");
 
-			choiceBoxCriterion.getSelectionModel().select("Time limit");
-
-			HBoxTimeoutCriterion criterionBox = (HBoxTimeoutCriterion) hBoxesCriterions
-					.get(choiceBoxCriterion.getIndex());
-
-			criterionBox.setTime(Integer.toString(settings.getGenerationTime()));
-			criterionBox.setTimeUnit(settings.getTimeUnit());
-
-			nbCriterions++;
-
-			placeComponents();
+//			HBoxTimeoutCriterion criterionBox = (HBoxTimeoutCriterion) hBoxesCriterions.get(choiceBoxCriterion.getIndex());
+			for(HBoxCriterion hBoxCriterion : this.hBoxesSolverCriterions)
+				if(hBoxCriterion instanceof HBoxTimeoutCriterion) {
+					((HBoxTimeoutCriterion)hBoxCriterion).setTime(Integer.toString(settings.getGenerationTime()));
+					((HBoxTimeoutCriterion)hBoxCriterion).setTimeUnit(settings.getTimeUnit());
+				}
 		}
 	}
 	
@@ -834,20 +687,19 @@ public class GeneratorPane extends ScrollPane {
 		Settings settings = application.getSettings();
 		if (settings.getNbMaxSolutions() > 0) {
 
-			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, modelPropertySet, solverPropertySet);
-			choiceBoxesCriterions.add(choiceBoxCriterion);
-			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+//			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, GeneralModel.getModelPropertySet(), GeneralModel.getSolverPropertySet());
+//			choiceBoxesCriterions.add(choiceBoxCriterion);
+//			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+//
+//			choiceBoxCriterion.getSelectionModel().select("Number of solutions");
+//
+//			HBoxNbSolutionsCriterion criterionBox = (HBoxNbSolutionsCriterion) hBoxesCriterions
+//					.get(choiceBoxCriterion.getIndex());
+//			HBoxNbSolutionsCriterion criterionBox = new HBoxNbSolutionsCriterion(this, null);
+			for(HBoxCriterion hBoxCriterion : this.hBoxesSolverCriterions)
+				if(hBoxCriterion instanceof HBoxNbSolutionsCriterion)
+					((HBoxNbSolutionsCriterion)hBoxCriterion).setNbSolutions(Integer.toString(settings.getNbMaxSolutions()));
 
-			choiceBoxCriterion.getSelectionModel().select("Number of solutions");
-
-			HBoxNbSolutionsCriterion criterionBox = (HBoxNbSolutionsCriterion) hBoxesCriterions
-					.get(choiceBoxCriterion.getIndex());
-
-			criterionBox.setNbSolutions(Integer.toString(settings.getNbMaxSolutions()));
-
-			nbCriterions++;
-
-			placeComponents();
 		}
 	}
 
@@ -859,7 +711,7 @@ public class GeneratorPane extends ScrollPane {
 
 		boolean ok = buildPropertyExpressions();
 		canStartGeneration = false;
-
+		ModelPropertySet modelPropertySet = GeneralModel.getModelPropertySet();
 		if (ok) {
 			if(((ModelProperty) modelPropertySet.getById("hexagons")).hasUpperBound()
 					|| ((ModelProperty) modelPropertySet.getById("carbons")).hasUpperBound()
@@ -879,18 +731,7 @@ public class GeneratorPane extends ScrollPane {
 		}
 	}
 	
-	/***
-	 * getters, setters
-	 */
-
-	public ArrayList<HBoxCriterion> getHBoxesCriterions() {
-		return hBoxesCriterions;
-	}
-	
-
 	public BenzenoidApplication getApplication() {
 		return application;
 	}
-
-
 }

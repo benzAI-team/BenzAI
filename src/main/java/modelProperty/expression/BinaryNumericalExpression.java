@@ -25,5 +25,30 @@ public class BinaryNumericalExpression extends ParameterizedExpression {
 		return (getOperator() == ">" || getOperator() == "=" | getOperator() == ">=");
 	}
 
+	public boolean test(int x, String operator, int y) {
+		switch(operator) {
+		case "<=": return x <= y;
+		case "<" : return x < y;
+		case "=" : return x == y;
+		case "!=": return x != y;
+		case ">" : return x > y;
+		case ">=": return x >= y;
+		}
+		return true;
+
+	}
+
+	public boolean test(double x, String operator, int y) {
+		switch(operator) {
+		case "<=": return x <= y;
+		case "<" : return x < y;
+		case "=" : return x == y;
+		case "!=": return x != y;
+		case ">" : return x > y;
+		case ">=": return x >= y;
+		}
+		return true;
+
+	}
 
 }

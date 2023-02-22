@@ -536,7 +536,7 @@ public class CMLConverter {
 
 		for (int i = 0; i < molecule.getNbNodes(); i++) {
 			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
-				if (molecule.getAdjacencyMatrix()[i][j] == 1)
+				if (molecule.getEdgeMatrix()[i][j] == 1)
 					writer.write("\t\t<bond atomRefs2=\"" + "c" + (i + 1) + " c" + (j + 1) + "\" order=\"A\" />\n");
 			}
 		}

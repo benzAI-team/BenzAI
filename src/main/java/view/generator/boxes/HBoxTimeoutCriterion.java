@@ -15,13 +15,14 @@ import modelProperty.expression.SubjectExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 
 	private TextField timeField;
 	private ChoiceBox<String> timeUnitBox;
 
-	public HBoxTimeoutCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxTimeoutCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 
@@ -71,20 +72,20 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 			double time = Double.parseDouble(timeField.getText());
 
 			if (timeUnitBox.getValue().equals("milliseconds"))
-				time = time / 1000.0;
+				time = time;
 
 			else if (timeUnitBox.getValue().equals("seconds"))
-				time = time * 1.0;
+				time = time * 1000;
 
 			else if (timeUnitBox.getValue().equals("minutes"))
-				time = time * 60.0;
+				time = time * 60000;
 
 			else if (timeUnitBox.getValue().equals("hours"))
-				time = time * 3600;
+				time = time * 360000;
 
 			String value = Double.toString(time) + "s";
 
-			((SolverProperty)propertySet.getById("TIMEOUT")).addExpression(new SubjectExpression(value));
+			((SolverProperty)propertySet.getById("timeout")).addExpression(new BinaryNumericalExpression("timeout", "=", (int)time));
 
 		}
 	}

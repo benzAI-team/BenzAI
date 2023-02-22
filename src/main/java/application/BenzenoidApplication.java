@@ -46,6 +46,7 @@ import view.groups.AromaticityGroup;
 import view.help.HelpPane;
 import view.primaryStage.AboutPane;
 import view.primaryStage.Panes;
+import view.primaryStage.ScrollPaneWithPropertyList;
 import view.primaryStage.menus.*;
 
 public class BenzenoidApplication extends Application {
@@ -229,7 +230,7 @@ public class BenzenoidApplication extends Application {
 			Robot robot = new Robot();
 			robot.keyPress(KeyCode.ESCAPE);
 			robot.keyRelease(KeyCode.ESCAPE);
-			((FilteringPane) pane).refresh();
+			((FilteringPane) pane).placeComponents();
 		}
 		if(pane instanceof CollectionsOperationsPane)
 			((CollectionsOperationsPane) pane).refreshBoxes();

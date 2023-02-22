@@ -4,10 +4,11 @@ import generator.properties.PropertySet;
 import modelProperty.ModelPropertySet;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxDefaultCriterion extends HBoxModelCriterion {
 
-	public HBoxDefaultCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxDefaultCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 

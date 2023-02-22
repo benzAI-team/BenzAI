@@ -3,9 +3,11 @@ package generator.properties;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javafx.scene.control.ScrollPane;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class PropertySet implements Iterable<Property> {
 	private ArrayList<Property> propertyList;
@@ -44,7 +46,7 @@ public class PropertySet implements Iterable<Property> {
 		return (Iterator<Property>) propertyList.iterator();
 	}
 
-	public HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
+	public HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
 		Property property = getByName(name);
 		return property.getHBoxCriterion(parent, choiceBoxCriterion);
 	}

@@ -178,7 +178,7 @@ public class PerfectMatchingSolver {
 				}
 
 				for (int j = 0; j < molecule.getNbNodes(); j++) {
-					if (molecule.getAdjacencyMatrix()[u][j] != 0) {
+					if (molecule.getEdgeMatrix()[u][j] != 0) {
 
 						if (visitedNodes[j] == 0) {
 							visitedNodes[j] = 1;
@@ -208,13 +208,13 @@ public class PerfectMatchingSolver {
 		for (int i = 0; i < nodesSet.length; i++) {
 			if (nodesSet[i] == 1) {
 
-				int nbAdjacentEdges = molecule.getEdgeMatrix().get(i).size();
+				int nbAdjacentEdges = molecule.getEdgeLists().get(i).size();
 				int[] domain = new int[nbAdjacentEdges];
 
 				int indexDomain = 0;
 
 				for (int j = 0; j < molecule.getNbNodes(); j++) {
-					if (molecule.getAdjacencyMatrix()[i][j] != 0) {
+					if (molecule.getEdgeMatrix()[i][j] != 0) {
 						domain[indexDomain] = j;
 						indexDomain++;
 					}
@@ -259,7 +259,7 @@ public class PerfectMatchingSolver {
 		if (mode.equals("0")) {
 			System.out.println("method: determinant");
 			long begin = System.currentTimeMillis();
-			fg = new SubGraph(molecule.getAdjacencyMatrix(), d, molecule.getDegrees(), PerfectMatchingType.DET);
+			fg = new SubGraph(molecule.getEdgeMatrix(), d, molecule.getDegrees(), PerfectMatchingType.DET);
 			System.out.println(fg.getNbPerfectMatchings() + " matchings");
 			long end = System.currentTimeMillis();
 			time = end - begin;
@@ -275,7 +275,7 @@ public class PerfectMatchingSolver {
 			if (chocoMode.equals("0")) {
 				System.out.println("constraint: sum");
 				long begin = System.currentTimeMillis();
-				fg = new SubGraph(molecule.getAdjacencyMatrix(), d, molecule.getDegrees(), PerfectMatchingType.CHOCO);	
+				fg = new SubGraph(molecule.getEdgeMatrix(), d, molecule.getDegrees(), PerfectMatchingType.CHOCO);	
 				System.out.println(fg.getNbPerfectMatchings() + " matchings");
 				long end = System.currentTimeMillis();
 				time = end - begin;

@@ -25,6 +25,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import modelProperty.ModelProperty;
 import modelProperty.ModelPropertySet;
 import modelProperty.expression.ParameterizedExpression;
+import molecules.Molecule;
 import molecules.Node;
 import nogood.NoGoodBorderRecorder;
 import nogood.NoGoodHorizontalAxisRecorder;
@@ -35,12 +36,17 @@ import nogood.NoGoodVerticalAxisRecorder;
 import solution.BenzenoidSolution;
 import utils.Couple;
 import utils.Triplet;
+import view.generator.GeneratorPane;
 import view.generator.Stopper;
+import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
+import view.generator.boxes.HBoxSolverCriterion;
 
 public class GeneralModel {
 
 	private Solver solver;
-	private ResultSolver resultSolver;
+	private SolverResults solverResults;
+
 	private GeneratorRun generatorRun = new GeneratorRun(this);
 
 	/*
@@ -53,8 +59,6 @@ public class GeneralModel {
 	private int nbMaxHexagons;
 
 	private int[][] neighborGraph;
-
-	//private GeneralModelMode mode;
 
 	private ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
 	private ArrayList<Integer> outterHexagonsIndexes = new ArrayList<>();
@@ -132,17 +136,16 @@ public class GeneralModel {
 	 * Modules
 	 */
 
-	//private ArrayList<Module> modules = new ArrayList<Module>();
-	private ModelPropertySet modelPropertySet;
-	private SolverPropertySet solverPropertySet;
+	private static ModelPropertySet modelPropertySet = new ModelPropertySet();
+	private static SolverPropertySet solverPropertySet = new SolverPropertySet();
 
 	/*
 	 * Constructors
 	 */
 
 	public GeneralModel(ModelPropertySet modelPropertySet) {
-		this.modelPropertySet = modelPropertySet;
-		solverPropertySet = new SolverPropertySet();
+		GeneralModel.modelPropertySet = modelPropertySet;
+		//solverPropertySet = new SolverPropertySet();
 
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
 		//System.out.println("H:" + nbMaxHexagons);
@@ -153,7 +156,7 @@ public class GeneralModel {
 	}
 
 	public GeneralModel(ModelPropertySet modelPropertySet, int nbCrowns) {
-		this.modelPropertySet = modelPropertySet;
+		GeneralModel.modelPropertySet = modelPropertySet;
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
 		this.nbCrowns = nbCrowns;
 		diameter = (2 * nbCrowns) - 1;
@@ -226,23 +229,31 @@ public class GeneralModel {
 	}
 
 	private void initializeVariables() {
+		System.out.println("00 "+nbMaxHexagons);
 
 		nbHexagonsReifies = new BoolVar[nbMaxHexagons + 1];
+		System.out.println("1");
 
 		buildCoordsMatrix();
+		System.out.println("2");
 
 		GLB = BoundsBuilder.buildGLB2(this);
 		GUB = BoundsBuilder.buildGUB2(this);
 
 		indexOutterHexagon = diameter * diameter;
+		System.out.println("3");
 
 		buildAdjacencyMatrix();
 
 		benzenoid = chocoModel.graphVar("g", GLB, GUB);
 
+		System.out.println("4");
 		buildBenzenoidVertices();
+		System.out.println("5");
 		buildBenzenoidEdges();
+		System.out.println("6");
 		buildCoordsCorrespondance();
+		System.out.println("7");
 		buildNeighborGraph();
 
 		nbVertices = chocoModel.intVar("nbVertices", 1, nbHexagonsCoronenoid);
@@ -310,6 +321,27 @@ public class GeneralModel {
 		chocoModel.nbNodes(benzenoid, nbVertices).post();
 
 	}
+	
+	/***
+	 * Apply the solver property to the solver
+	 * @param modelProperty
+	 */
+	public void applySolverProperty(SolverProperty solverProperty) {
+		solverProperty.getSpecifier().apply(solver, solverProperty.getExpressions().get(0));
+	}
+
+	/***
+	 * Apply all the model properties to the model
+	 */
+	private void applySolverProperties() {
+		for (Property solverProperty : solverPropertySet) {
+			System.out.println(solverProperty.getId() + ":" + solverPropertySet.has(solverProperty.getId()));
+			if(solverPropertySet.has(solverProperty.getId())) {
+				applySolverProperty((SolverProperty) solverProperty);
+			}
+		}
+	}
+	
 
 	/*
 	 * Getters & Setters
@@ -598,7 +630,7 @@ public class GeneralModel {
 
 	}
 
-	public ResultSolver solve() {
+	public SolverResults solve() {
 
 		applyModelProperties();
 		chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
@@ -613,23 +645,13 @@ public class GeneralModel {
 			return Stopper.STOP;
 		});
 
+		//applySolverProperties();
 		for(Property solverProperty : solverPropertySet)
 			if(((SolverProperty) solverProperty).hasExpressions())
 				((SolverProperty) solverProperty).getSpecifier().apply(solver, ((SolverProperty) solverProperty).getExpressions().get(0));
-		
-//		if (mapCriterions != null && mapCriterions.get("stop") != null) {
-//			for (GeneratorCriterion criterion : mapCriterions.get("stop")) {
-//
-//				if (criterion.getName() == "TIMEOUT")
-//					solver.limitTime(criterion.getValue());
-//
-//				else if (criterion.getName() == "NB_SOLUTIONS")
-//					solver.addStopCriterion(new SolutionCounter(chocoModel, (long)criterion.getValue()));
-//
-//			}
-//		}
 
-		resultSolver = new ResultSolver();
+
+		solverResults = new SolverResults();
 
 		indexSolution = 0;
 
@@ -641,66 +663,69 @@ public class GeneralModel {
 		Stopper.STOP = false;
 
 		while (solver.solve() && !generatorRun.isPaused()) {
-			Platform.runLater(()->{
-				nbTotalSolutions.set(nbTotalSolutions.get() + 1);
-			});
-			recordNoGoods();
-
-			BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
-					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
+			ArrayList<Integer> verticesSolution = buildVerticesSolution();
 			String description = buildDescription(indexSolution);
-			resultSolver.addSolution(solverSolution, description, nbCrowns);
+			Molecule molecule = GeneratorPane.buildMolecule(description, nbCrowns, indexSolution, verticesSolution);
 
-			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
-			ArrayList<Integer> verticesSolution = new ArrayList<>();
+			if(molecule.respectPostProcessing(modelPropertySet)) {
+				solverResults.addMolecule(molecule);
+				Platform.runLater(()->{
+					nbTotalSolutions.set(nbTotalSolutions.get() + 1);
+				});
+				recordNoGoods();
 
-			for (int index = 0; index < benzenoidVertices.length; index++) {
+				BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
+						chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 
-				if (benzenoidVertices[index] != null) {
-					verticesSolution.add(benzenoidVertices[index].getValue());
+				solverResults.addSolution(solverSolution, description, nbCrowns);
+				solverResults.addVerticesSolution(verticesSolution);
 
-					if (benzenoidVertices[index].getValue() == 1) {
-						presentHexagons.add(benzenoidVertices[index]);
+				displaySolution();
+
+				if (verbose) {
+
+					System.out.println("NO-GOOD");
+
+					for (ArrayList<Integer> ng : nogoods) {
+						for (Integer v : ng)
+							System.out.println(v + " ");
 					}
 
-				} else
-					verticesSolution.add(0);
-			}
-
-			resultSolver.addVerticesSolution(verticesSolution);
-
-			displaySolution();
-
-			if (verbose) {
-
-				System.out.println("NO-GOOD");
-
-				for (ArrayList<Integer> ng : nogoods) {
-					for (Integer v : ng)
-						System.out.println(v + " ");
+					System.out.println("");
 				}
 
-				System.out.println("");
+				indexSolution++;
 			}
-
-			indexSolution++;
 		}
 
 		long end = System.currentTimeMillis();
 		long time = end - begin;
 
-		resultSolver.setTime(time);
-		resultSolver.setNbTotalSolution(nbTotalSolutions.get());
-		resultSolver.setSolver(solver);
+		solverResults.setTime(time);
+		solverResults.setNbTotalSolution(nbTotalSolutions.get());
+		solverResults.setSolver(solver);
 
 		System.out.println(nbCrowns + " crowns");
 		System.out.println(nogoods.size() + " no-good clauses");
 		System.out.println(nbClausesLexLead + " lex-lead clauses");
 		solver.printStatistics();
 
-		resultSolver.setNogoodsFragments(nogoodsFragments);
-		return resultSolver;
+		solverResults.setNogoodsFragments(nogoodsFragments);
+		return solverResults;
 
+	}
+
+	private ArrayList<Integer> buildVerticesSolution() {
+		ArrayList<Integer> verticesSolution = new ArrayList<>();
+
+		for (int index = 0; index < benzenoidVertices.length; index++) {
+
+			if (benzenoidVertices[index] != null) {
+				verticesSolution.add(benzenoidVertices[index].getValue());
+			} else
+				verticesSolution.add(0);
+		}
+		return verticesSolution;
 	}
 
 	private void buildAdjacencyMatrix() {
@@ -1332,8 +1357,8 @@ public class GeneralModel {
 		this.applySymmetriesConstraints = applySymmetriesConstraints;
 	}
 
-	public ResultSolver getResultSolver() {
-		return resultSolver;
+	public SolverResults getResultSolver() {
+		return solverResults;
 	}
 
 	public GeneratorRun getGeneratorRun() {
@@ -1369,7 +1394,7 @@ public class GeneralModel {
 			BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns,
 					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 			String description = buildDescription(indexSolution);
-			resultSolver.addSolution(solution, description, nbCrowns);
+			solverResults.addSolution(solution, description, nbCrowns);
 
 			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
 			ArrayList<Integer> verticesSolution = new ArrayList<>();
@@ -1387,7 +1412,7 @@ public class GeneralModel {
 					verticesSolution.add(0);
 			}
 
-			resultSolver.addVerticesSolution(verticesSolution);
+			solverResults.addVerticesSolution(verticesSolution);
 
 			displaySolution();
 
@@ -1713,5 +1738,37 @@ public class GeneralModel {
 		return nbTotalSolutions;
 	}
 
-	
+	public static ModelPropertySet getModelPropertySet() {
+		return GeneralModel.modelPropertySet;
+	}
+
+	public static void setModelPropertySet(ModelPropertySet modelPropertySet) {
+		GeneralModel.modelPropertySet = modelPropertySet;
+	}
+
+	public static SolverPropertySet getSolverPropertySet() {
+		return GeneralModel.solverPropertySet;
+	}
+
+	public static void setSolverPropertySet(SolverPropertySet solverPropertySet) {
+		GeneralModel.solverPropertySet = solverPropertySet;
+	}
+
+	public static boolean buildSolverPropertySet(ArrayList<HBoxCriterion> hBoxesSolverCriterions) {
+		solverPropertySet.clearPropertyExpressions();;
+		for (HBoxCriterion box : hBoxesSolverCriterions) {
+			((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
+		}
+		return true;
+	}
+
+	public static boolean buildModelPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
+		modelPropertySet.clearPropertyExpressions();
+		for (HBoxCriterion box : hBoxesCriterions) {
+			if (!box.isValid())
+				return false;
+			((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
+		}
+		return true;
+	}
 }

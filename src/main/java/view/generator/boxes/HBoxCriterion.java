@@ -1,6 +1,7 @@
 package view.generator.boxes;
 
 
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,6 +9,7 @@ import javafx.scene.layout.HBox;
 import modelProperty.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public abstract class HBoxCriterion extends HBox {
 
@@ -16,16 +18,16 @@ public abstract class HBoxCriterion extends HBox {
 	private DeleteButton deleteButton;
 	private ImageView warningIcon;
 	 
-	private GeneratorPane generatorPane;
+	private ScrollPaneWithPropertyList pane;
 	private ChoiceBoxCriterion choiceBoxCriterion;
 	
 	private PropertyExpression expression;
 
 	
-	public HBoxCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxCriterion(ScrollPaneWithPropertyList pane, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(5.0);
 		
-		this.generatorPane = generatorPane;
+		this.setPane(pane);
 		this.choiceBoxCriterion = choiceBoxCriterion;
 		
 		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
@@ -35,7 +37,7 @@ public abstract class HBoxCriterion extends HBox {
 		Tooltip.install(deleteButton, new Tooltip("Delete criterion"));
 		
 		deleteButton.setOnAction(e -> {
-			generatorPane.removeCriterion(choiceBoxCriterion, this);
+			pane.removeCriterion(choiceBoxCriterion, this);
 		});
 		
 		initialize();
@@ -67,13 +69,6 @@ public abstract class HBoxCriterion extends HBox {
 	}
 
 
-	public GeneratorPane getGeneratorPane() {
-		return generatorPane;
-	}
-
-	public void setGeneratorPane(GeneratorPane generatorPane) {
-		this.generatorPane = generatorPane;
-	}
 
 	public ChoiceBoxCriterion getChoiceBoxCriterion() {
 		return choiceBoxCriterion;
@@ -99,6 +94,14 @@ public abstract class HBoxCriterion extends HBox {
 
 	public void setValid(boolean valid) {
 		this.valid = valid;
+	}
+
+	public ScrollPaneWithPropertyList getPane() {
+		return pane;
+	}
+
+	public void setPane(ScrollPaneWithPropertyList pane) {
+		this.pane = pane;
 	}
 	
 

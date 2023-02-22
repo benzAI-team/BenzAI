@@ -10,10 +10,11 @@ import modelProperty.ModelPropertySet;
 import modelProperty.expression.SubjectExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxCatacondensedCriterion extends HBoxModelCriterion {
 
-	public HBoxCatacondensedCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxCatacondensedCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 		setValid(true);
 	}
@@ -21,7 +22,7 @@ public class HBoxCatacondensedCriterion extends HBoxModelCriterion {
 	@Override
 	protected void checkValidity() {
 		setValid(true);
-		getGeneratorPane().refreshGenerationPossibility();
+		getPane().refreshGenerationPossibility();
 	}
 
 	@Override

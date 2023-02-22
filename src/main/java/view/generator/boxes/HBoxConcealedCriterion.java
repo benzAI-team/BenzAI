@@ -6,18 +6,19 @@ import modelProperty.ModelPropertySet;
 import modelProperty.expression.SubjectExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxConcealedCriterion extends HBoxModelCriterion {
 
-	public HBoxConcealedCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxConcealedCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 		setValid(true);
 	}
 
 	@Override
 	protected void checkValidity() {
 		setValid(true);
-		getGeneratorPane().refreshGenerationPossibility();
+		getPane().refreshGenerationPossibility();
 	}
 
 	@Override

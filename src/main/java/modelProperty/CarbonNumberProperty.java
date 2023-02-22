@@ -3,18 +3,22 @@ package modelProperty;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
+import javafx.scene.control.ScrollPane;
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PropertyExpression;
+import modelProperty.testers.CarbonNumberTester;
 import modules.CarbonNumberModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxNbCarbonsCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class CarbonNumberProperty extends ModelProperty {
 
 	public CarbonNumberProperty() {
-		super("carbons", "Number of carbons", new CarbonNumberModule());
+		super("carbons", "Number of carbons", new CarbonNumberModule(), new CarbonNumberTester());
 	}
 
 	@Override
@@ -35,7 +39,7 @@ public class CarbonNumberProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxNbCarbonsCriterion(parent, choiceBoxCriterion);
 	}
 }

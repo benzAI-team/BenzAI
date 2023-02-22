@@ -1,0 +1,12 @@
+# Window's properties
+
+remember-window-size: true
+width: 1283.0
+height: 784.0
+home-window: false
+
+# Generation's properties
+
+generation-time-limit: 15 minutes
+generation-max-solutions: 10000
+

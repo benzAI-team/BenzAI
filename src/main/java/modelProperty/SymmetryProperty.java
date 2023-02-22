@@ -1,16 +1,18 @@
 package modelProperty;
 
 import modelProperty.expression.ParameterizedExpression;
+import modelProperty.testers.SymmetryTester;
 import modules.SymmetriesModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxSymmetriesCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class SymmetryProperty extends ModelProperty {
 
 	public SymmetryProperty() {
-		super("symmetry", "Symmetries", new SymmetriesModule());
+		super("symmetry", "Symmetries", new SymmetriesModule(), new SymmetryTester());
 	}
 	
 	@Override
@@ -33,7 +35,7 @@ public class SymmetryProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxSymmetriesCriterion(parent, choiceBoxCriterion);
 	}
 }

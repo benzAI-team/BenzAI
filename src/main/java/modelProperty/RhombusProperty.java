@@ -2,20 +2,22 @@ package modelProperty;
 
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PropertyExpression;
+import modelProperty.testers.RhombusTester;
 import modules.RhombusModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxRhombusCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class RhombusProperty extends ModelProperty {
 
 	public RhombusProperty() {
-		super("rhombus", "Rhombus", new RhombusModule());
+		super("rhombus", "Rhombus", new RhombusModule(), new RhombusTester());
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxRhombusCriterion(parent, choiceBoxCriterion) ;
 	}
 

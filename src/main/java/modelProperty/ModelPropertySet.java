@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import generator.properties.Property;
 import generator.properties.PropertySet;
+import modelProperty.testers.Tester;
+import molecules.Molecule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
@@ -70,6 +72,15 @@ public class ModelPropertySet extends PropertySet {
 		return this.has("rectangle");
 	}
 	
-	
+	public boolean testAll(Molecule molecule) {
+		for(Property property : this.getPropertyList())
+			if(property.hasExpressions()) {
+				Tester t = ((ModelProperty)property).getTester();
+				System.out.println(t);
+				if(!((ModelProperty)property).getTester().test(molecule, property.getExpressions()))
+					return false;
+			}
+		return true;
+	}
 
 }

@@ -5,16 +5,18 @@ import java.util.ArrayList;
 import generator.GeneratorCriterion;
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PropertyExpression;
+import modelProperty.testers.HexagonNumberTester;
 import modules.HexagonNumberModule;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 import view.generator.boxes.HBoxHexagonNumberCriterion;
 
 public class HexagonNumberProperty extends ModelProperty {
 
 	public HexagonNumberProperty() {
-		super("hexagons", "Number of hexagons", new HexagonNumberModule());
+		super("hexagons", "Number of hexagons", new HexagonNumberModule(), new HexagonNumberTester());
 	}
 
 	@Override
@@ -35,7 +37,7 @@ public class HexagonNumberProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxHexagonNumberCriterion(parent, choiceBoxCriterion);
 	}
 }

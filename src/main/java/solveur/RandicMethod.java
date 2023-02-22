@@ -265,10 +265,10 @@ public class RandicMethod {
 			if (vertices[u] == 0) {
 				for (int v = (u+1) ; v < molecule.getNbNodes() ; v++) {
 					if (vertices[v] == 0) {
-						newGraph[u][v] = molecule.getAdjacencyMatrix()[u][v];
-						newGraph[v][u] = molecule.getAdjacencyMatrix()[v][u];
+						newGraph[u][v] = molecule.getEdgeMatrix()[u][v];
+						newGraph[v][u] = molecule.getEdgeMatrix()[v][u];
 						
-						if (molecule.getAdjacencyMatrix()[u][v] == 1)
+						if (molecule.getEdgeMatrix()[u][v] == 1)
 							nbEdges ++;
 						
 						if (subGraphVertices[u] == 0) {
@@ -331,7 +331,7 @@ public class RandicMethod {
 			GUB.addNode(i);
 
 			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
-				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					GUB.addEdge(i, j);
 				}
 			}
@@ -345,7 +345,7 @@ public class RandicMethod {
 		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
 			for (int j = (i+1) ; j < molecule.getNbNodes() ; j++) {
 
-				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					boolEdges[index] = model.boolVar("(" + i + "--" + j + ")");
 					model.edgeChanneling(g, boolEdges[index], i, j).post();
 					firstVertices[index] = i;

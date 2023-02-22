@@ -10,13 +10,14 @@ import modelProperty.ModelPropertySet;
 import modelProperty.expression.ParameterizedExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> symmetriesChoiceBox;
 
-	public HBoxSymmetriesCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxSymmetriesCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import modelProperty.expression.RectangleExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxRectangleCriterion extends HBoxModelCriterion {
 
@@ -32,8 +33,8 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 	protected boolean valid1;
 	protected boolean valid2;
 
-	public HBoxRectangleCriterion(GeneratorPane generatorPane, ChoiceBoxCriterion choiceBoxCriterion) {
-		super(generatorPane, choiceBoxCriterion);
+	public HBoxRectangleCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+		super(parent, choiceBoxCriterion);
 	}
 
 	@Override
@@ -113,12 +114,12 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 
 		heightChoiceBox.setOnAction(e -> {
 			checkValidity();
-			getGeneratorPane().refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 		});
 
 		heightTextField.setOnKeyReleased(e -> {
 			checkValidity();
-			getGeneratorPane().refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 		});
 
 		hBoxHeight = new HBox(5.0);
@@ -132,12 +133,12 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 
 		widthChoiceBox.setOnAction(e -> {
 			checkValidity();
-			getGeneratorPane().refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 		});
 
 		widthTextField.setOnKeyReleased(e -> {
 			checkValidity();
-			getGeneratorPane().refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 		});
 
 		hBoxWidth = new HBox(5.0);

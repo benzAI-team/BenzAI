@@ -2,11 +2,13 @@ package generator.properties;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.ScrollPane;
 import modelProperty.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 /***
 *
@@ -37,7 +39,7 @@ public abstract class Property {
 	 * @param choiceBoxCriterion
 	 * @return the HBoxCriterion selected in choiceBoxCriterion
 	 */
-	public abstract HBoxCriterion getHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion);
+	public abstract HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion);
 	
 	/***
 	 *  
