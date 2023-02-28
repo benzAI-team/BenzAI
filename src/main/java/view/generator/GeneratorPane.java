@@ -83,26 +83,20 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		this.application = application;
 		isRunning = false;
 		setNbCriterions(1);
-		initializePane();
+		initialize();
 	}
 
-	private void initializePane() {
+	/***
+	 * 
+	 */
+	private void initialize() {
 
 		titleLabel = new Label("Benzenoids properties");
 		titleLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-		this.setFitToHeight(true);
-		this.setFitToWidth(true);
-		this.setPrefWidth(1400);
-		this.setPrefWidth(this.getPrefWidth());
+		setPaneDimensions();
 
 		buildIcons();
-		
-		addButton = buildAddButton();
-		closeButton = buildCloseButton();
-		stopButton = buildStopButton();
-		pauseButton = buildPauseButton();
-		resumeButton = buildResumeButton();
-		generateButton = buildGenerateButton();
+		buildButtons();
 
 		setChoiceBoxesCriterions(new ArrayList<>());
 		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, GeneralModel.getModelPropertySet());
@@ -122,7 +116,29 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 		placeComponents();
 	}
-
+/***
+ * 
+ */
+	private void setPaneDimensions() {
+		this.setFitToHeight(true);
+		this.setFitToWidth(true);
+		this.setPrefWidth(1400);
+		this.setPrefWidth(this.getPrefWidth());
+	}
+	/***
+	 * 
+	 */
+	private void buildButtons() {
+		addButton = buildAddButton();
+		closeButton = buildCloseButton();
+		stopButton = buildStopButton();
+		pauseButton = buildPauseButton();
+		resumeButton = buildResumeButton();
+		generateButton = buildGenerateButton();
+	}
+	/***
+	 * 
+	 */
 	private void buildIcons() {
 		loadIcon = buildLoadIcon();
 		warningIcon = buildWarningIcon();
