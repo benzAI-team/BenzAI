@@ -78,7 +78,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private Label solutionTextLabel = new Label("Number of solutions already found:");
 	private Label solutionNumberLabel = new Label("0");
 
-
+	
 	public GeneratorPane(BenzenoidApplication application) {
 		this.application = application;
 		isRunning = false;
