@@ -39,6 +39,7 @@ import parsers.GraphParser;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
+import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
 import view.generator.boxes.HBoxNbCarbonsCriterion;
@@ -57,6 +58,8 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private boolean canStartGeneration;
 	private boolean isRunning;
 	private ArrayList<Molecule> generatedMolecules;
+	private int nbCriterions;
+
 	private PatternResolutionInformations patternsInformations;
 
 	BenzenoidCollectionPane selectedCollectionTab;
@@ -65,7 +68,10 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private ImageView loadIcon;
 	private ImageView warningIcon;
 	private GridPane gridPane;
-	public ArrayList<HBoxCriterion> hBoxesSolverCriterions;
+
+	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
+	private ArrayList<HBoxCriterion> hBoxesCriterions;
+	private ArrayList<HBoxCriterion> hBoxesSolverCriterions;
 	
 
 	private HBox buttonsBox;
@@ -97,6 +103,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 		buildIcons();
 		buildButtons();
+
 
 		setChoiceBoxesCriterions(new ArrayList<>());
 		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, GeneralModel.getModelPropertySet());
@@ -185,6 +192,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 				getChoiceBoxesCriterions().add(choiceBoxCriterion);
 				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 				setNbCriterions(getNbCriterions() + 1);
+
 
 				System.out.println(getNbCriterions() + " criterions");
 
@@ -367,6 +375,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			gridPane.add(this.hBoxesSolverCriterions.get(i), 1, i + getNbCriterions() + 3);
 		}
 	}
+
 	/***
 	 * 
 	 * @param patternsInformations
