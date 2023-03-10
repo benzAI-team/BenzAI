@@ -13,9 +13,9 @@ import molecules.Molecule;
 import solution.ClarCoverSolution;
 import utils.Couple;
 
-public class ClarCoverSolver {
+public class ClarCoverForcedRadicalsSolver {
 
-	public static ArrayList<ClarCoverSolution> solve(Molecule molecule) {
+	public static ArrayList<ClarCoverSolution> solve(Molecule molecule, int nbRadicals) {
 
 		Model model = new Model("Clar Cover");
 
@@ -71,6 +71,8 @@ public class ClarCoverSolver {
 
 		model.sum(circles, "=", nbCircles).post();
 		model.sum(singleElectrons, "=", nbSingleElectrons).post();
+		model.arithm(nbSingleElectrons, "=", nbRadicals).post(); //SEULE DIFFERENCE AVEC ClarCoverSolver !!!
+
 		int ub = -100 * molecule.getNbHexagons();
 
 		IntVar OBJ = model.intVar("objectif", ub, 999);

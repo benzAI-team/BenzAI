@@ -26,6 +26,7 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -50,6 +51,7 @@ import parsers.ComConverter.ComType;
 import parsers.GraphParser;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity.RIType;
+import solveur.ClarCoverForcedRadicalsSolver;
 import solveur.ClarCoverSolver;
 import solveur.KekuleStructureSolver;
 import spectrums.IRSpectra;
@@ -400,6 +402,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		MenuItem radicalarStatsItem = new MenuItem("Radicalar statistics");
 
 		MenuItem ims2d1aItem = new MenuItem("IMS2D-1A");
+		
+		MenuItem clarCoverForcedRadicalsItem = new MenuItem("Clar cover with forced radicals");
+		MenuItem clarCoverForcedRadicalsStatsItem = new MenuItem("Forced radicals Statistics");
+		
 
 		exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
 
@@ -484,6 +490,25 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			clarCoverStatsFixed();
 		});
 
+		clarCoverForcedRadicalsItem.setOnAction(e -> {
+			TextInputDialog textInputDialog = new TextInputDialog("2");
+			textInputDialog.setHeaderText("Enter number of radicals:");
+			textInputDialog.showAndWait();
+            String textInput = textInputDialog.getEditor().getText();
+            int nbRadicals = Integer.parseInt(textInput);
+			clarCoverForcedRadicals(nbRadicals);
+		});
+		
+		clarCoverForcedRadicalsStatsItem.setOnAction(e -> {
+			TextInputDialog textInputDialog = new TextInputDialog("2");
+			textInputDialog.setHeaderText("Enter number of radicals:");
+			textInputDialog.showAndWait();
+            String textInput = textInputDialog.getEditor().getText();
+            int nbRadicals = Integer.parseInt(textInput);
+			forcedRadicalsStatistics(nbRadicals);
+		});
+		
+		
 		rboItem.setOnAction(e -> {
 			ringBoundOrder();
 		});
@@ -546,7 +571,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem,
 				checkDatabaseItem, new SeparatorMenuItem(), drawItem, new SeparatorMenuItem(), reLinItem, reLinFanItem,
 				clarItem, clarStatsItem, kekuleItem, rboItem, irregularityItem, irSpectraItem, radicalarStatsItem,
-				ims2d1aItem);
+				ims2d1aItem, clarCoverForcedRadicalsItem, clarCoverForcedRadicalsStatsItem);
 
 		this.setOnContextMenuRequested(e -> {
 
@@ -1016,6 +1041,124 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 
 								ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverSolver.solve(molecule);
+								if (clarCoverSolutions.size() > 0) {
+									ClarCoverSolution clarCoverSolution = clarCoverSolutions
+											.get(clarCoverSolutions.size() - 1);
+									molecule.setClarCoverSolution(clarCoverSolution);
+									benzenoidSetPane.addBenzenoid(molecule, DisplayType.CLAR_COVER);
+								}
+								indexClar++;
+								System.out.println(indexClar + " / " + size);
+
+								Platform.runLater(new Runnable() {
+									@Override
+									public void run() {
+										if (indexClar == 1) {
+											log(indexClar + " / " + size, false);
+											lineIndexClar = currentPane.getConsole().getNbLines() - 1;
+										} else
+											changeLineConsole(indexClar + " / " + size, lineIndexClar);
+									}
+								});
+
+							}
+						}
+
+						return null;
+					}
+
+				};
+			}
+		};
+
+		calculateServiceClarCover.stateProperty().addListener(new ChangeListener<State>() {
+
+			@SuppressWarnings("incomplete-switch")
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+
+				switch (newValue) {
+				case FAILED:
+					clarRunning = false;
+					Utils.alert("Failed");
+					break;
+
+				case CANCELLED:
+					clarRunning = false;
+					benzenoidSetPane.refresh();
+					tabPane.getSelectionModel().clearAndSelect(0);
+					addBenzenoidSetPane(benzenoidSetPane);
+					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+					application.removeTask("Clar cover");
+					break;
+
+				case SUCCEEDED:
+					clarRunning = false;
+					benzenoidSetPane.refresh();
+					tabPane.getSelectionModel().clearAndSelect(0);
+					addBenzenoidSetPane(benzenoidSetPane);
+					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+					application.removeTask("Clar cover");
+					break;
+				}
+			}
+		});
+
+		calculateServiceClarCover.start();
+	}
+
+	/**
+	 * @param nbRadicals *
+	 * 
+	 */
+	public void clarCoverForcedRadicals(int nbRadicals) {
+
+		BenzenoidCollectionPane currentPane = getSelectedTab();
+
+		if (currentPane.getBenzenoidPanes().size() == 0) {
+			Utils.alert("There is no benzenoid!");
+			return;
+		}
+		
+		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+
+		String name = "Clar cover";
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
+
+		application.addTask("Clar cover");
+
+		clarRunning = true;
+
+		if (selectedBenzenoidPanes.size() == 0) {
+			selectAll();
+		}
+
+		calculateServiceClarCover = new Service<Void>() {
+
+			@Override
+			protected Task<Void> createTask() {
+				return new Task<Void>() {
+
+					@Override
+					protected Void call() throws Exception {
+
+						ArrayList<BenzenoidPane> panes = new ArrayList<>();
+
+						for (BenzenoidPane pane : selectedBenzenoidPanes)
+							panes.add(pane);
+
+						indexClar = 0;
+						int size = panes.size();
+
+						System.out.println("Computing Clar Cover of " + size + "benzenoids");
+						log("Clar Cover (" + size + "benzenoids)", true);
+
+						for (BenzenoidPane benzenoidPane : panes) {
+							if (clarRunning) {
+								Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+
+								ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverForcedRadicalsSolver.solve(molecule, nbRadicals);
 								if (clarCoverSolutions.size() > 0) {
 									ClarCoverSolution clarCoverSolution = clarCoverSolutions
 											.get(clarCoverSolutions.size() - 1);
@@ -2200,4 +2343,124 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		calculateServiceRadicalar.start();
 	}
+	
+	/***
+	 * idem radicalStatistics mais sur ClarCoverForcedRadicalsSolver au lieu de ClarCoverSolver
+	 */
+	public void forcedRadicalsStatistics(int nbRadicals) {
+
+		BenzenoidCollectionPane currentPane = getSelectedTab();
+
+		if (currentPane.getBenzenoidPanes().size() == 0) {
+			Utils.alert("There is no benzenoid!");
+			return;
+		}
+				
+		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
+
+		String name = "Radicalar statistics";
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
+				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
+
+		application.addTask("Radicalar statistics");
+
+		clarRunning = true;
+
+		if (selectedBenzenoidPanes.size() == 0) {
+			selectAll();
+		}
+
+		calculateServiceRadicalar = new Service<Void>() {
+
+			@Override
+			protected Task<Void> createTask() {
+				return new Task<Void>() {
+
+					@Override
+					protected Void call() throws Exception {
+
+						ArrayList<BenzenoidPane> panes = new ArrayList<>();
+
+						for (BenzenoidPane pane : selectedBenzenoidPanes)
+							panes.add(pane);
+
+						indexClar = 0;
+						int size = panes.size();
+
+						System.out.println("Computing radicalar statistics of " + size + "benzenoids");
+						log("Radicalar statistics (" + size + "benzenoids)", true);
+
+						for (BenzenoidPane benzenoidPane : panes) {
+							if (clarRunning) {
+								Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+
+								ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverForcedRadicalsSolver.solve(molecule, nbRadicals);
+								if (clarCoverSolutions.size() > 0) {
+//									ClarCoverSolution clarCoverSolution = clarCoverSolutions
+//											.get(clarCoverSolutions.size() - 1);
+//									molecule.setClarCoverSolution(clarCoverSolution);
+//									benzenoidSetPane.addBenzenoid(molecule, DisplayType.CLAR_COVER);
+									molecule.setClarCoverSolutions(clarCoverSolutions);
+									benzenoidSetPane.addBenzenoid(molecule, DisplayType.RADICALAR);
+								}
+								indexClar++;
+								System.out.println(indexClar + " / " + size);
+
+								Platform.runLater(new Runnable() {
+									@Override
+									public void run() {
+										if (indexClar == 1) {
+											log(indexClar + " / " + size, false);
+											lineIndexClar = currentPane.getConsole().getNbLines() - 1;
+										} else
+											changeLineConsole(indexClar + " / " + size, lineIndexClar);
+									}
+								});
+
+							}
+						}
+
+						return null;
+					}
+
+				};
+			}
+		};
+
+		calculateServiceRadicalar.stateProperty().addListener(new ChangeListener<State>() {
+
+			@SuppressWarnings("incomplete-switch")
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+
+				switch (newValue) {
+				case FAILED:
+					clarRunning = false;
+					Utils.alert("Failed");
+					break;
+
+				case CANCELLED:
+					clarRunning = false;
+					benzenoidSetPane.refresh();
+					tabPane.getSelectionModel().clearAndSelect(0);
+					addBenzenoidSetPane(benzenoidSetPane);
+					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+					application.removeTask("Clar cover");
+					break;
+
+				case SUCCEEDED:
+					clarRunning = false;
+					benzenoidSetPane.refresh();
+					tabPane.getSelectionModel().clearAndSelect(0);
+					addBenzenoidSetPane(benzenoidSetPane);
+					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+					application.removeTask("Clar cover");
+					break;
+				}
+			}
+		});
+
+		calculateServiceRadicalar.start();
+	}
+
 }
