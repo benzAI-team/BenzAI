@@ -6,6 +6,7 @@ import java.util.List;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
+import org.chocosolver.solver.constraints.nary.cnf.LogOp;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
@@ -69,6 +70,15 @@ public class ClarCoverForcedRadicalsSolver {
 			model.sum(sum, "=", 1).post();
 		}
 
+		// Contrainte : deux radicaux ne doivent pas se jouxter (pour chaque carbone, s'il est un radical, ses voisins ne le sont pas)
+		for (int i = 0; i < molecule.getNbNodes(); i++)
+			for (int j = (i + 1); j < molecule.getNbNodes(); j++)
+				if (molecule.edgeExists(i, j)) {
+					model.addClauses(LogOp.nand(singleElectrons[i], singleElectrons[j]));
+					//System.out.println(i + "-" + j);
+				}
+
+		
 		model.sum(circles, "=", nbCircles).post();
 		model.sum(singleElectrons, "=", nbSingleElectrons).post();
 		model.arithm(nbSingleElectrons, "=", nbRadicals).post(); //SEULE DIFFERENCE AVEC ClarCoverSolver !!!
