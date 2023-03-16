@@ -26,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
 import molecules.Molecule;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
@@ -38,6 +39,7 @@ import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
+import modelProperty.testers.Tester;
 
 public class FilteringPane extends ScrollPaneWithPropertyList {
 
@@ -58,6 +60,8 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 	private int lineConsole;
 	private int indexFiltering;
+	
+	
 
 	public FilteringPane(BenzenoidApplication application, BenzenoidsCollectionsManagerPane collectionsPane) {
 		this.application = application;
@@ -80,7 +84,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 		setChoiceBoxesCriterions(new ArrayList<>());
 		setHBoxesCriterions(new ArrayList<>());
-		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, GeneralModel.getModelPropertySet());
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
 		Tooltip.install(addButton, new Tooltip("Add new criterion"));
 		getChoiceBoxesCriterions().add(choiceBoxCriterion);
 		getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
@@ -139,7 +143,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 			if (invalidIndexes.size() == 0) {
 
-				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, GeneralModel.getModelPropertySet());
+				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, getModelPropertySet());
 				getChoiceBoxesCriterions().add(choiceBoxCriterion);
 				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
@@ -222,8 +226,32 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 		int size = collectionPane.getMolecules().size();
 		
-		GeneralModel.buildModelPropertySet(getHBoxesCriterions());
+		getModelPropertySet().buildModelPropertySet(getHBoxesCriterions());
 
+		///////////////////////////////
+//		for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
+//
+//			indexFiltering = i;
+//
+//			Molecule molecule = collectionPane.getMolecules().get(i);
+//			if(Tester.testAll(molecule, getModelPropertySet())) {
+//				DisplayType displayType = collectionPane.getDisplayType(i);
+//				newCollectionPane.addBenzenoid(molecule, displayType);
+//			}
+//
+//			Platform.runLater(new Runnable() {
+//				@Override
+//				public void run() {
+//					if (indexFiltering == 1) {
+//						managerPane.log((indexFiltering+1) + " / " + size , false);
+//						lineConsole = collectionPane.getConsole().getNbLines() - 1;
+//					} else
+//						managerPane.changeLineConsole((indexFiltering+1) + " / " + size, lineConsole);
+//				}
+//			});
+//
+//		}
+		////////////////////////////
 		final Service<Void> calculateService = new Service<Void>() {
 
 			@Override
@@ -232,13 +260,12 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 					@Override
 					protected Void call() throws Exception {
-
 						for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
 
 							indexFiltering = i;
 
 							Molecule molecule = collectionPane.getMolecules().get(i);
-							if(GeneralModel.getModelPropertySet().testAll(molecule)) {
+							if(Tester.testAll(molecule, getModelPropertySet())) {
 								DisplayType displayType = collectionPane.getDisplayType(i);
 								newCollectionPane.addBenzenoid(molecule, displayType);
 							}

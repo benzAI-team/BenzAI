@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import generator.GeneralModel;
 import javafx.scene.control.ScrollPane;
+import modelProperty.ModelPropertySet;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
@@ -14,6 +15,7 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	private int nbCriterions;
 	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
 	private ArrayList<HBoxCriterion> hBoxesCriterions;
+	private ModelPropertySet modelPropertySet = new ModelPropertySet();
 
 	/***
 	 * 
@@ -53,7 +55,7 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 			if (!box.isValid())
 				return false;
 			if(box instanceof HBoxModelCriterion)
-				((HBoxModelCriterion)box).addPropertyExpression(GeneralModel.getModelPropertySet());
+				((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
 		}
 		return true;
 	}
@@ -86,5 +88,10 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	public void setHBoxesCriterions(ArrayList<HBoxCriterion> hBoxesCriterions) {
 		this.hBoxesCriterions = hBoxesCriterions;
 	}
+
+	public ModelPropertySet getModelPropertySet() {
+		return modelPropertySet;
+	}
+
 
 }

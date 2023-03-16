@@ -136,7 +136,7 @@ public class GeneralModel {
 	 * Modules
 	 */
 
-	private static ModelPropertySet modelPropertySet = new ModelPropertySet();
+	private ModelPropertySet modelPropertySet = new ModelPropertySet();
 	private static SolverPropertySet solverPropertySet = new SolverPropertySet();
 
 	/*
@@ -144,11 +144,8 @@ public class GeneralModel {
 	 */
 
 	public GeneralModel(ModelPropertySet modelPropertySet) {
-		GeneralModel.modelPropertySet = modelPropertySet;
-		//solverPropertySet = new SolverPropertySet();
-
+		this.modelPropertySet = modelPropertySet;
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
-		//System.out.println("H:" + nbMaxHexagons);
 		nbCrowns = modelPropertySet.computeNbCrowns();
 		diameter = (2 * nbCrowns) - 1;
 		applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
@@ -156,10 +153,11 @@ public class GeneralModel {
 	}
 
 	public GeneralModel(ModelPropertySet modelPropertySet, int nbCrowns) {
-		GeneralModel.modelPropertySet = modelPropertySet;
+		this.modelPropertySet = modelPropertySet;
 		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
 		this.nbCrowns = nbCrowns;
 		diameter = (2 * nbCrowns) - 1;
+		applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
 		initialize();
 	}
 
@@ -1738,12 +1736,12 @@ public class GeneralModel {
 		return nbTotalSolutions;
 	}
 
-	public static ModelPropertySet getModelPropertySet() {
-		return GeneralModel.modelPropertySet;
+	public ModelPropertySet getModelPropertySet() {
+		return this.modelPropertySet;
 	}
 
-	public static void setModelPropertySet(ModelPropertySet modelPropertySet) {
-		GeneralModel.modelPropertySet = modelPropertySet;
+	public void setModelPropertySet(ModelPropertySet modelPropertySet) {
+		this.modelPropertySet = modelPropertySet;
 	}
 
 	public static SolverPropertySet getSolverPropertySet() {
@@ -1762,13 +1760,4 @@ public class GeneralModel {
 		return true;
 	}
 
-	public static boolean buildModelPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
-		modelPropertySet.clearPropertyExpressions();
-		for (HBoxCriterion box : hBoxesCriterions) {
-			if (!box.isValid())
-				return false;
-			((HBoxModelCriterion)box).addPropertyExpression(modelPropertySet);
-		}
-		return true;
-	}
 }

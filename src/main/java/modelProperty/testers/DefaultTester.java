@@ -7,6 +7,8 @@ import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.ModelBuilder;
 import generator.SolverResults;
+import generator.properties.PropertySet;
+import modelProperty.ModelPropertySet;
 import modelProperty.expression.BinaryNumericalExpression;
 import modelProperty.expression.PropertyExpression;
 import modules.BenzenoidModule;
@@ -23,9 +25,9 @@ public class DefaultTester extends Tester {
 	}
 
 	@Override
-	public boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList) {
-		GeneralModel.getModelPropertySet().getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", molecule.getNbHexagons()));
-		GeneralModel model = ModelBuilder.buildModel(GeneralModel.getModelPropertySet(), molecule.getNbCrowns());
+	public boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
+		modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", molecule.getNbHexagons()));
+		GeneralModel model = ModelBuilder.buildModel(modelPropertySet, molecule.getNbCrowns());
 		module.build(model, propertyExpressionList);
 		(new BenzenoidModule(molecule)).build(model, propertyExpressionList);
 

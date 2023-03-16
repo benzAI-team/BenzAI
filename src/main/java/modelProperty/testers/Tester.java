@@ -10,16 +10,18 @@ import molecules.Molecule;
 
 public abstract class Tester {
 	public static Tester NO_TESTER = new Tester () {
-		public boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList) {
-			return true;
+		@Override
+		public boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList,
+				ModelPropertySet modelPropertySet) {
+			return false;
 		}
 	};
 	
-	public abstract boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList);
+	public abstract boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet);
 	
-	static boolean testAll(Molecule molecule, ModelPropertySet modelPropertySet) {
+	public static boolean testAll(Molecule molecule, ModelPropertySet modelPropertySet) {
 		for(Property modelProperty : modelPropertySet)
-			if(!((ModelProperty)modelProperty).getTester().test(molecule, modelProperty.getExpressions()))
+			if(((ModelProperty)modelProperty).hasExpressions() && !((ModelProperty)modelProperty).getTester().test(molecule, modelProperty.getExpressions(), modelPropertySet))
 				return false;
 		return true;
 	}

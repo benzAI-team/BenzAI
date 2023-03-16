@@ -106,7 +106,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 
 		setChoiceBoxesCriterions(new ArrayList<>());
-		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, GeneralModel.getModelPropertySet());
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
 
 		setHBoxesCriterions(new ArrayList<>());
 		getChoiceBoxesCriterions().add(choiceBoxCriterion);
@@ -188,7 +188,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
 
 			if (invalidIndexes.size() == 0) {
-				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(getNbCriterions(), this, GeneralModel.getModelPropertySet());
+				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(getNbCriterions(), this, getModelPropertySet());
 				getChoiceBoxesCriterions().add(choiceBoxCriterion);
 				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 				setNbCriterions(getNbCriterions() + 1);
@@ -462,12 +462,12 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private void generateBenzenoids() {
 
 		if (canStartGeneration) {
-			GeneralModel.buildModelPropertySet(getHBoxesCriterions());
+			getModelPropertySet().buildModelPropertySet(getHBoxesCriterions());
 			GeneralModel.buildSolverPropertySet(hBoxesSolverCriterions);
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
-			for(Property modelProperty : GeneralModel.getModelPropertySet())
-				if(GeneralModel.getModelPropertySet().has(modelProperty.getId()))
+			for(Property modelProperty : getModelPropertySet())
+				if(getModelPropertySet().has(modelProperty.getId()))
 					application.getBenzenoidCollectionsPane().log(modelProperty.getId(), false);
 				
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
@@ -476,7 +476,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			buttonsBox.getChildren().addAll(closeButton, loadIcon, solutionTextLabel, solutionNumberLabel, pauseButton, stopButton);
 
 			try {
-				model = ModelBuilder.buildModel(GeneralModel.getModelPropertySet(), patternsInformations);
+				model = ModelBuilder.buildModel(getModelPropertySet(), patternsInformations);
 				solutionNumberLabel.textProperty().bind(model.getNbTotalSolutions().asString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -736,14 +736,13 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 		boolean ok = buildPropertyExpressions();
 		canStartGeneration = false;
-		ModelPropertySet modelPropertySet = GeneralModel.getModelPropertySet();
 		if (ok) {
-			if(((ModelProperty) modelPropertySet.getById("hexagons")).hasUpperBound()
-					|| ((ModelProperty) modelPropertySet.getById("carbons")).hasUpperBound()
-					|| ((ModelProperty) modelPropertySet.getById("hydrogens")).hasUpperBound()
-					|| ((ModelProperty) modelPropertySet.getById("rhombus")).hasUpperBound())
+			if(((ModelProperty) getModelPropertySet().getById("hexagons")).hasUpperBound()
+					|| ((ModelProperty) getModelPropertySet().getById("carbons")).hasUpperBound()
+					|| ((ModelProperty) getModelPropertySet().getById("hydrogens")).hasUpperBound()
+					|| ((ModelProperty) getModelPropertySet().getById("rhombus")).hasUpperBound())
 				canStartGeneration = true;
-			if(((RectangleProperty)modelPropertySet.getById("rectangle")).hasUpperBounds())
+			if(((RectangleProperty)getModelPropertySet().getById("rectangle")).hasUpperBounds())
 				canStartGeneration = true;
 
 			buttonsBox.getChildren().remove(warningIcon);

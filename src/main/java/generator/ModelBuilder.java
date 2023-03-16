@@ -78,9 +78,11 @@ public class ModelBuilder {
 	public static GeneralModel buildModel(ModelPropertySet modelPropertySet, int nbCrowns) {
 		GeneralModel model = new GeneralModel(modelPropertySet, nbCrowns);
 		for(Property modelProperty : modelPropertySet)
-			model.applyModelProperty((ModelProperty) modelProperty);
-		for(Property solverProperty : GeneralModel.getSolverPropertySet())
-			model.applySolverProperty((SolverProperty)solverProperty);
+			if(modelProperty.hasExpressions())
+				model.applyModelProperty((ModelProperty) modelProperty);
+//		for(Property solverProperty : GeneralModel.getSolverPropertySet())
+//			if(solverProperty.hasExpressions())
+//				model.applySolverProperty((SolverProperty)solverProperty);
 		return model;
 	}
 }

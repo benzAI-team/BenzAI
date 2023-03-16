@@ -21,12 +21,13 @@ import modelProperty.expression.BinaryNumericalExpression;
 /***
  * A model property defines a property required by a benzenoid. This property is 
  * defined by:
- * - a constraint type that must be posted to the Choco solver model
- * - a checker type that checks if the molecule found by the solver meets other requirements 
+ * - a constraint that must be posted to the Choco solver model
+ * - a checker that checks if the molecule found by the solver meets other requirements 
  * to fulfill the property 
  * - a list of expressions. Each expression allows to instanciate a constraint+checker combo
  * that must be fulfilled by the molecule. The conjonction of all that is expressed must be
  * fulfilled by the benzenoid.
+ * - a tester that can be used to test if a molecule has the property
  */
 public abstract class ModelProperty extends Property {
 	private Module module; // for posting constraints on the model
