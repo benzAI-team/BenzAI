@@ -6,7 +6,7 @@ import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 import molecules.Molecule;
 import molecules.Node;
 
@@ -14,8 +14,7 @@ public class BenzenoidModule extends Module {
 
 	private Molecule molecule;
 
-	public BenzenoidModule(GeneralModel generalModel, Molecule molecule) {
-		super(generalModel);
+	public BenzenoidModule(Molecule molecule) {
 		this.molecule = molecule;
 	}
 
@@ -27,16 +26,16 @@ public class BenzenoidModule extends Module {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void postConstraints() {
-
+		GeneralModel generalModel = getGeneralModel();
 		int diameter = generalModel.getDiameter();
 		int[][] coordsMatrix = generalModel.getCoordsMatrix();
 
-		Fragment pattern = molecule.convertToPattern(0, 0);
+		Pattern pattern = molecule.convertToPattern(0, 0);
 
-		ArrayList<Fragment> rotations = pattern.computeRotations();
+		ArrayList<Pattern> rotations = pattern.computeRotations();
 		ArrayList<Integer[]> translations = new ArrayList<>();
 
-		for (Fragment f : rotations)
+		for (Pattern f : rotations)
 			translations.addAll(translations(f));
 
 		Constraint[] or = new Constraint[translations.size()];
@@ -57,6 +56,8 @@ public class BenzenoidModule extends Module {
 			generalModel.getProblem().sum(generalModel.getChanneling(), "=", 0).post();
 		else
 			generalModel.getProblem().or(or).post();
+		this.getGeneralModel().getChocoModel().arithm(getGeneralModel().getNbVerticesVar(), "=", molecule.getNbHexagons()).post();
+
 	}
 
 	@Override
@@ -74,12 +75,12 @@ public class BenzenoidModule extends Module {
 		// DO_NOTHING
 	}
 
-	private ArrayList<Integer[]> translations(Fragment pattern) {
+	private ArrayList<Integer[]> translations(Pattern pattern) {
 
 		ArrayList<Integer[]> translations = new ArrayList<>();
 
-		int diameter = generalModel.getDiameter();
-		int[][] coordsMatrix = generalModel.getCoordsMatrix();
+		int diameter = getGeneralModel().getDiameter();
+		int[][] coordsMatrix = getGeneralModel().getCoordsMatrix();
 
 		int xMin = Integer.MAX_VALUE;
 		int yMin = Integer.MAX_VALUE;

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import utils.Couple;
 
-public class CoronoidGeneratorCriterion extends GeneratorCriterion2 {
+public class CoronoidGeneratorCriterion extends GeneratorCriterion {
 
 	private ArrayList<Operator> holesOperators;
 	private ArrayList<String> holesValues;
@@ -77,7 +77,7 @@ public class CoronoidGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion>> criterionsMap) {
 		if (criterionsMap.get("coronoid") == null)
 			criterionsMap.put("coronoid", new ArrayList<>());
 		criterionsMap.get("coronoid").add(this);

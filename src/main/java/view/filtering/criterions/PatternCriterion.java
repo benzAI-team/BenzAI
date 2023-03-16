@@ -7,9 +7,9 @@ import generator.GeneralModel;
 import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
+import generator.patterns.PatternResolutionInformations;
 import generator.ModelBuilder;
-import generator.ResultSolver;
-import generator.fragments.FragmentResolutionInformations;
+import generator.SolverResults;
 import modules.BenzenoidModule;
 import molecules.Molecule;
 import view.generator.GeneratorPane;
@@ -17,9 +17,9 @@ import view.generator.GeneratorPane;
 public class PatternCriterion extends FilteringCriterion {
 
 	private GeneratorCriterion patternCriterion;
-	private FragmentResolutionInformations patternsInfos;
+	private PatternResolutionInformations patternsInfos;
 
-	public PatternCriterion(GeneratorCriterion patternCriterion, FragmentResolutionInformations patternsInfos) {
+	public PatternCriterion(GeneratorCriterion patternCriterion, PatternResolutionInformations patternsInfos) {
 		this.patternCriterion = patternCriterion;
 		this.patternsInfos = patternsInfos;
 	}
@@ -45,9 +45,9 @@ public class PatternCriterion extends FilteringCriterion {
 		}
 
 		System.out.println(molecule);
-		ResultSolver resultSolver = model.solve();
+		SolverResults solverResults = model.solve();
 
-		return resultSolver.size() > 0;
+		return solverResults.size() > 0;
 	}
 
 	@Override

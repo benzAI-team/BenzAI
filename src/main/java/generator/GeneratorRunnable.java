@@ -10,7 +10,7 @@ public class GeneratorRunnable implements Runnable {
 		terminated = false;
 	}
 
-	public ResultSolver getResultSolver() {
+	public SolverResults getResultSolver() {
 		return generalModel.getResultSolver();
 	}
 

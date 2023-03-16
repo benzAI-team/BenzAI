@@ -845,12 +845,12 @@ public class LinFanAlgorithm {
 			edges[i] = model.boolVar("edge " + (i + 1));
 		}
 
-		for (int i = 0; i < graph.getEdgeMatrix().size(); i++) {
-			int nbAdjacentEdges = graph.getEdgeMatrix().get(i).size();
+		for (int i = 0; i < graph.getEdgeLists().size(); i++) {
+			int nbAdjacentEdges = graph.getEdgeLists().get(i).size();
 			BoolVar[] adjacentEdges = new BoolVar[nbAdjacentEdges];
 
 			for (int j = 0; j < nbAdjacentEdges; j++) {
-				adjacentEdges[j] = edges[graph.getEdgeMatrix().get(i).get(j)];
+				adjacentEdges[j] = edges[graph.getEdgeLists().get(i).get(j)];
 			}
 
 			model.sum(adjacentEdges, "=", 1).post();

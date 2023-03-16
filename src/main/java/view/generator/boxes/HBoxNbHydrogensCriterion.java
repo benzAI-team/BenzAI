@@ -3,15 +3,19 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import generator.properties.PropertySet;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.ParameterizedExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 
-	public HBoxNbHydrogensCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxNbHydrogensCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 		operatorChoiceBox.getItems().addAll("EVEN", "ODD");
 	}
@@ -20,52 +24,40 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 	public void checkValidity() {
 		
 		if (operatorChoiceBox.getValue().equals("EVEN") || operatorChoiceBox.getValue().equals("ODD")) {
-			valid = true;
+			setValid(true);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().add(getDeleteButton());
 		}
 		
 		else if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
-			valid = false;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
+			setValid(false);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
 			this.getChildren().remove(fieldValue);
-			this.getChildren().addAll(fieldValue, warningIcon, deleteButton);
+			this.getChildren().addAll(fieldValue, getWarningIcon(), getDeleteButton());
 		}
 		
 		else {
-			valid = true;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
+			setValid(true);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
 			this.getChildren().remove(fieldValue);
-			this.getChildren().addAll(fieldValue, deleteButton);
+			this.getChildren().addAll(fieldValue, getDeleteButton());
 		}
 		
-		parent.refreshGenerationPossibility();
+		getPane().refreshGenerationPossibility();
 	}
 	
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-		
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		
-		if (valid) {
-			Subject subject = Subject.NB_HYDROGENS;
-			Operator operator = GeneratorCriterion.getOperator(operatorChoiceBox.getValue());
-			
-			if (operator != Operator.EVEN && operator != Operator.ODD) {
-				String value = fieldValue.getText();
-				criterions.add(new GeneratorCriterion(subject, operator, value));
-			}
-			
-			else {
-				String value = "";
-				criterions.add(new GeneratorCriterion(subject, operator, value));
-			}
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+		if (isValid()) {
+			String operator = operatorChoiceBox.getValue();	
+			if (operator != "even" && operator != "odd")
+				modelPropertySet.getById("hydrogens").addExpression(new BinaryNumericalExpression("hydrogens", operator, Integer.decode(fieldValue.getText())));			
+			else 
+				modelPropertySet.getById("hydrogens").addExpression(new ParameterizedExpression("hydrogens", operator));
 		}
-		
-		return criterions;
 	}
 }

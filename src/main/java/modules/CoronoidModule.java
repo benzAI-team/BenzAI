@@ -25,14 +25,11 @@ public class CoronoidModule extends Module{
 	
 	private IntVar [] benzenoidDegrees;
 	private IntVar [] holesDegrees;
-	
-	public CoronoidModule(GeneralModel generalModel) {
-		super(generalModel);
-	}
 
 	@Override
 	public void buildVariables() {
-		
+		GeneralModel generalModel = getGeneralModel();
+
 		holes = generalModel.getProblem().graphVar("holes", BoundsBuilder.buildGLB2(generalModel), BoundsBuilder.buildGUB2(generalModel));
 		
 		UndirectedGraph GLBCoronoid = BoundsBuilder.buildGLB2(generalModel);
@@ -62,7 +59,7 @@ public class CoronoidModule extends Module{
 	
 	
 	private void buildCoronoidVertices() {
-		
+		GeneralModel generalModel = getGeneralModel();
 		int diameter = generalModel.getDiameter();
 		int [][] coordsMatrix = generalModel.getCoordsMatrix();
 		int [] correspondancesHexagons = generalModel.getCorrespondancesHexagons();
@@ -91,7 +88,7 @@ public class CoronoidModule extends Module{
 	}
 	
 	private void buildHolesVertices() {
-		
+		GeneralModel generalModel = getGeneralModel();
 		int diameter = generalModel.getDiameter();
 		int [][] coordsMatrix = generalModel.getCoordsMatrix();
 		int [] correspondancesHexagons = generalModel.getCorrespondancesHexagons();
@@ -121,7 +118,7 @@ public class CoronoidModule extends Module{
 	
 	@Override
 	public void postConstraints() {
-		
+		GeneralModel generalModel = getGeneralModel();
 		//Remplace la contrainte subGraph
 		for (int i = 0 ; i < holesChanneling.length ; i++) {
 			generalModel.getProblem().ifThen(generalModel.getProblem().arithm(holesChanneling[i], "=", 1), 
@@ -142,6 +139,7 @@ public class CoronoidModule extends Module{
 	
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 		generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getChanneling(), new FirstFail(generalModel.getProblem()), new IntDomainMax()),
 				                                        new IntStrategy(holesChanneling, new FirstFail(generalModel.getProblem()), new IntDomainMax()));
 	}
@@ -150,6 +148,7 @@ public class CoronoidModule extends Module{
 	 * pose la contrainte qu'un hexagone ne peut être dans un trou que s'il est entouré de 6 hexagones dans le graphe
 	 */
 	private void postDiggableHexagonSurrounded() {
+		GeneralModel generalModel = getGeneralModel();
 	 	for(int i = 0; i < benzenoidDegrees.length ; i++) {
 	 		
 	 		BoolVar x = generalModel.getProblem().arithm(holesDegrees[i], ">", 0).reify();
@@ -174,6 +173,8 @@ public class CoronoidModule extends Module{
 	 * pose la contrainte que les sommets du benzenoides sont soit dans le coronoide soit dans les trous
 	 */
 	private void postBenzenoidIsCoronoidXORHoles() {	
+		GeneralModel generalModel = getGeneralModel();
+
 		for(int i = 0; i < generalModel.getChanneling().length ; i++) {
 	 			/*
 				generalModel.getProblem().addClauses(LogOp.implies(coronoidChanneling[i], generalModel.getChanneling()[i]));
@@ -206,6 +207,7 @@ public class CoronoidModule extends Module{
 
 	@Override 
 	public void changeGraphVertices() {
+		GeneralModel generalModel = getGeneralModel();
 		generalModel.setGraphVertices(coronoidVertices);
 		generalModel.setChanneling(coronoidChanneling);
 		generalModel.setGraphVar(coronoid);

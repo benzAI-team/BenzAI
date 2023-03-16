@@ -3,7 +3,7 @@ package generator.criterions;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class NbSolutionsGeneratorCriterion extends GeneratorCriterion2 {
+public class NbSolutionsGeneratorCriterion extends GeneratorCriterion {
 
 	public NbSolutionsGeneratorCriterion(Operator operator, String value) {
 		super(operator, value);
@@ -20,7 +20,7 @@ public class NbSolutionsGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion>> criterionsMap) {
 		if (criterionsMap.get("solutions") == null)
 			criterionsMap.put("solutions", new ArrayList<>());
 		criterionsMap.get("solutions").add(this);

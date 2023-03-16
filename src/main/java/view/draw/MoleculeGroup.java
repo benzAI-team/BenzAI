@@ -3,7 +3,7 @@ package view.draw;
 import java.util.ArrayList;
 import java.util.List;
 
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 import javafx.scene.Group;
 import molecules.Molecule;
 import molecules.Node;
@@ -940,7 +940,7 @@ public class MoleculeGroup extends Group {
 		return new Molecule(nbNodes, nbEdges, nbHexagons, finalHexagons, atoms, adjacencyMatrix, coordsMatrix);
 	}
 
-	public Fragment exportFragment() {
+	public Pattern exportFragment() {
 
 		/*
 		 * Computing the number of hexagons
@@ -1139,10 +1139,10 @@ public class MoleculeGroup extends Group {
 		else
 			centerNode = nodes[0];
 
-		return new Fragment(matrix, labels, nodes, relativeMatrix, centerNode, dualGraph, degree);
+		return new Pattern(matrix, labels, nodes, relativeMatrix, centerNode, dualGraph, degree);
 	}
 
-	public void importFragment(Fragment fragment) {
+	public void importFragment(Pattern fragment) {
 
 		for (int i = 0; i < fragment.getNbNodes(); i++) {
 

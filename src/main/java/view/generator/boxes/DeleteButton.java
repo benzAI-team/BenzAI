@@ -10,10 +10,10 @@ public class DeleteButton extends Button {
 
 	private HBoxCriterion parent;
 
-	public DeleteButton(HBoxCriterion parent) {
+	public DeleteButton(HBoxCriterion hBoxCriterion) {
 
 		super();
-		this.parent = parent;
+		this.parent = hBoxCriterion;
 		initialize();
 	}
 

@@ -11,7 +11,9 @@ import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PropertyExpression;
+import modelProperty.expression.RectangleExpression;
 
 public class RectangleModule extends Module {
 
@@ -21,7 +23,7 @@ public class RectangleModule extends Module {
 	 * Constraint programming variables
 	 */
 
-	private BoolVar zero = generalModel.getProblem().boolVar(false);
+	private BoolVar zero;
 
 	private BoolVar[][] C1;
 	private BoolVar[][] D1;
@@ -32,19 +34,14 @@ public class RectangleModule extends Module {
 	protected IntVar height;
 	protected IntVar width;
 
-	protected ArrayList<GeneratorCriterion> criterions;
-
-	public RectangleModule(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-
-		super(generalModel);
-		this.criterions = criterions;
-	}
 
 	@Override
 	public void buildVariables() {
-
+		zero  = getGeneralModel().getProblem().boolVar(false);
 		buildD1();
 		buildC1();
+		
+		GeneralModel generalModel = getGeneralModel();
 
 		cSum = new IntVar[generalModel.getDiameter()];
 		dSum = new IntVar[generalModel.getDiameter()];
@@ -86,6 +83,7 @@ public class RectangleModule extends Module {
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		/*
 		 * Connecting L/C to dSum/cSum
@@ -107,7 +105,6 @@ public class RectangleModule extends Module {
 					generalModel.getProblem().arithm(cSum[i], "=", width)).post();
 			generalModel.getProblem().or(generalModel.getProblem().arithm(dSum[i], "=", 0),
 					generalModel.getProblem().arithm(dSum[i], "=", height)).post();
-
 		}
 
 		/*
@@ -127,25 +124,18 @@ public class RectangleModule extends Module {
 		 * Constraints on number of lines and columns
 		 */
 
-		for (GeneratorCriterion criterion : criterions) {
+		for (PropertyExpression expression : this.getExpressionList()) {
+			RectangleExpression rectangleExpression = (RectangleExpression)expression;
 
-			Subject subject = criterion.getSubject();
-
-			if (subject == Subject.RECT_WIDTH || subject == Subject.RECT_HEIGHT) {
-
-				String operator = criterion.getOperatorString();
-				int value = Integer.parseInt(criterion.getValue());
-
-				if (subject == Subject.RECT_HEIGHT)
-					generalModel.getProblem().arithm(height, operator, value).post();
-
-				else
-					generalModel.getProblem().arithm(width, operator, value).post();
-			}
+			if(rectangleExpression.getHeight() >= 0)
+				generalModel.getProblem().arithm(getXH(), rectangleExpression.getHeightOperator(), rectangleExpression.getHeight()).post();
+			if(rectangleExpression.getWidth() >= 0)
+				generalModel.getProblem().arithm(getXW(), rectangleExpression.getWidthOperator(), rectangleExpression.getWidth()).post();
 		}
 
-		generalModel.getProblem().times(height, width, generalModel.getNbVerticesVar()).post(); // x * a = z
-		generalModel.getProblem().arithm(height, ">=", width).post(); // xH >= xw
+		generalModel.getProblem().times(getXH(), getXW(), generalModel.getNbVerticesVar()).post(); // x * a = z
+		generalModel.getProblem().arithm(getXH(), ">=", getXW()).post(); // xH >= xw
+
 		// generalModel.getProblem().arithm(generalModel.getChanneling()[0], "=",
 		// 1).post(); // The top-left hexagon must be present
 
@@ -155,15 +145,13 @@ public class RectangleModule extends Module {
 
 	@Override
 	public void addVariables() {
-//		generalModel.addWatchedVariable(generalModel.getChanneling());
-
-//		generalModel.addWatchedVariable(width);
-//		generalModel.addWatchedVariable(height);
-
+		GeneralModel generalModel = getGeneralModel();
+		generalModel.addVariable(getXW());
+		generalModel.addVariable(getXH());
 	}
 
 	private void buildD1() {
-
+		GeneralModel generalModel = getGeneralModel();
 		int diameter = generalModel.getDiameter();
 		int nbCrowns = generalModel.getNbCrowns();
 
@@ -242,6 +230,7 @@ public class RectangleModule extends Module {
 	}
 
 	private void buildC1() {
+		GeneralModel generalModel = getGeneralModel();
 
 		int diameter = generalModel.getDiameter();
 		int[][] coordsMatrix = generalModel.getCoordsMatrix();
@@ -267,6 +256,7 @@ public class RectangleModule extends Module {
 
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 
 		IntVar[] variables = new IntVar[generalModel.getChanneling().length];
 
@@ -285,5 +275,13 @@ public class RectangleModule extends Module {
 	@Override
 	public String toString() {
 		return "RectangleModule";
+	}
+
+	public IntVar getXW() {
+		return width;
+	}
+
+	public IntVar getXH() {
+		return height;
 	}
 }

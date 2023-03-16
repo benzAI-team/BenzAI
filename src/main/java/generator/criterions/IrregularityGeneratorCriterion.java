@@ -5,7 +5,7 @@ import java.util.Map;
 
 import utils.Couple;
 
-public class IrregularityGeneratorCriterion extends GeneratorCriterion2 {
+public class IrregularityGeneratorCriterion extends GeneratorCriterion {
 
 	private ArrayList<Operator> xiOperators;
 	private ArrayList<String> xiValues;
@@ -129,7 +129,7 @@ public class IrregularityGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion>> criterionsMap) {
 		if (criterionsMap.get("irregularity") == null)
 			criterionsMap.put("irregularity", new ArrayList<>());
 		criterionsMap.get("irregularity").add(this);

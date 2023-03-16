@@ -10,19 +10,17 @@ import org.chocosolver.util.objects.setDataStructures.SetType;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
 import generator.GeneralModel;
-import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PropertyExpression;
+import modelProperty.expression.ParameterizedExpression;
 
 public class CoronoidModule2 extends Module {
-
-	private ArrayList<GeneratorCriterion> criterions;
 
 	private ArrayList<Integer> border;
 
 	private int[] hexagonsCorrespondances, correspondancesHexagons;
 
-	private final UndirectedGraphVar holes;
+	private UndirectedGraphVar holes;
 	private BoolVar[] holesVertices;
 	private BoolVar[][] holesEdges;
 
@@ -30,30 +28,18 @@ public class CoronoidModule2 extends Module {
 
 	private int nbMaxHoles;
 
-	public CoronoidModule2(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-
-		super(generalModel);
-
-		this.criterions = criterions;
-
-		buildCorrespondancesHexagons();
-		buildBorder();
-
-		holes = holesGraphVar("holes");
-
-	}
 
 	@Override
 	public void buildVariables() {
+		GeneralModel generalModel = getGeneralModel();
 
-		for (GeneratorCriterion criterion : criterions) {
-
-			Operator operator = criterion.getOperator();
-
-			if (criterion.getSubject() == Subject.NB_HOLES
-					&& (operator == Operator.EQ || operator == Operator.LEQ || operator == Operator.LT)) {
-
-				int nbHoles = Integer.parseInt(criterion.getValue());
+		buildCorrespondancesHexagons();
+		buildBorder();
+		holes = holesGraphVar("holes");
+		for (PropertyExpression expression : this.getExpressionList()) {
+			String operator = ((ParameterizedExpression)expression).getOperator();
+			if (operator == "=" || operator == "<=" || operator == "<") {
+				int nbHoles = ((BinaryNumericalExpression)expression).getValue();
 				if (nbHoles > nbMaxHoles)
 					nbMaxHoles = nbHoles;
 			}
@@ -116,6 +102,7 @@ public class CoronoidModule2 extends Module {
 	}
 
 	private void buildCorrespondancesHexagons() {
+		GeneralModel generalModel = getGeneralModel();
 
 		hexagonsCorrespondances = new int[generalModel.getNbHexagonsCoronenoid() + 1];
 		int index = 0;
@@ -144,6 +131,7 @@ public class CoronoidModule2 extends Module {
 	}
 
 	private void buildBorder() {
+		GeneralModel generalModel = getGeneralModel();
 
 		border = new ArrayList<Integer>();
 		int diameter = generalModel.getDiameter();
@@ -177,6 +165,7 @@ public class CoronoidModule2 extends Module {
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		generalModel.getProblem().nodesChanneling(holes, holesVertices).post();
 
@@ -185,7 +174,7 @@ public class CoronoidModule2 extends Module {
 
 		generalModel.getProblem().nbConnectedComponents(holes, nbConnectedComponents).post();
 
-		if (criterions.size() == 1)
+		if (this.getExpressionList().size() == 1)
 			generalModel.getProblem().arithm(nbConnectedComponents, ">", 1).post();
 		else
 			generalModel.getProblem().arithm(nbConnectedComponents, ">=", 1).post();
@@ -194,15 +183,10 @@ public class CoronoidModule2 extends Module {
 
 		generalModel.getProblem().arithm(holesVertices[holesVertices.length - 1], "=", 1).post();
 
-		for (GeneratorCriterion criterion : criterions) {
-
-			if (criterion.getSubject() == Subject.NB_HOLES) {
-				String operator = criterion.getOperatorString();
-				int value = Integer.parseInt(criterion.getValue());
-
-				generalModel.getProblem().arithm(nbConnectedComponents, operator, value + 1).post();
-
-			}
+		for (PropertyExpression expression : this.getExpressionList()) {
+			String operator = ((BinaryNumericalExpression)expression).getOperator();
+			int value = ((BinaryNumericalExpression)expression).getValue();
+			generalModel.getProblem().arithm(nbConnectedComponents, operator, value + 1).post();
 		}
 
 		postHolesExternalFaceConnection();
@@ -227,6 +211,7 @@ public class CoronoidModule2 extends Module {
 	}
 
 	private UndirectedGraphVar holesGraphVar(String name) {
+		GeneralModel generalModel = getGeneralModel();
 
 		int[][] matrix = generalModel.getCoordsMatrix();
 		int diameter = generalModel.getDiameter();
@@ -317,6 +302,7 @@ public class CoronoidModule2 extends Module {
 	}
 
 	private void postBenzenoidXORHoles() {
+		GeneralModel generalModel = getGeneralModel();
 
 		for (int i = 0; i < generalModel.getNbHexagonsCoronenoid(); i++) {
 
@@ -359,7 +345,7 @@ public class CoronoidModule2 extends Module {
 			IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 					new IntIterableRangeSet(1) };
 
-			generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
+			getGeneralModel().getProblem().getClauseConstraint().addClause(varClause, valClause);
 
 		}
 	}

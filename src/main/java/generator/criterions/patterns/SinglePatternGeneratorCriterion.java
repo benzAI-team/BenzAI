@@ -1,10 +1,10 @@
 package generator.criterions.patterns;
 
-import generator.fragments.FragmentResolutionInformations;
+import generator.patterns.PatternResolutionInformations;
 
 public class SinglePatternGeneratorCriterion extends PatternGeneratorCriterion {
 
-	public SinglePatternGeneratorCriterion(FragmentResolutionInformations patternsInformations) {
+	public SinglePatternGeneratorCriterion(PatternResolutionInformations patternsInformations) {
 		super(patternsInformations);
 	}
 

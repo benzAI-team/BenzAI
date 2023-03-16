@@ -1,20 +1,19 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.TextField;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.SubjectExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
-public class HBoxNbSolutionsCriterion extends HBoxCriterion {
+public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 
 	private TextField nbSolutionsField;
 
-	public HBoxNbSolutionsCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxNbSolutionsCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 
@@ -22,46 +21,40 @@ public class HBoxNbSolutionsCriterion extends HBoxCriterion {
 	protected void checkValidity() {
 
 		if (!Utils.isNumber(nbSolutionsField.getText())) {
-			valid = false;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(warningIcon, deleteButton);
+			setValid(false);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 		}
 
 		else {
-			valid = true;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			setValid(true);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().add(getDeleteButton());
 		}
 	}
 
 	@Override
 	protected void initialize() {
 
-		valid = false;
+		setValid(false);
 
 		nbSolutionsField = new TextField();
 		nbSolutionsField.setOnKeyReleased(e -> {
 			checkValidity();
 		});
 
-		this.getChildren().addAll(nbSolutionsField, warningIcon, deleteButton);
+		this.getChildren().addAll(nbSolutionsField, getWarningIcon(), getDeleteButton());
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
+	public void addPropertyExpression(SolverPropertySet propertySet) {
 
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-		if (valid) {
-			Subject subject = Subject.NB_SOLUTIONS;
-			Operator operator = Operator.EQ;
+		if (isValid()) {
 			String value = nbSolutionsField.getText();
-			criterions.add(new GeneratorCriterion(subject, operator, value));
+			propertySet.getById("solution_number").addExpression(new BinaryNumericalExpression("solution_number", "=", Integer.parseInt(value)));
 		}
-
-		return criterions;
 	}
 
 	public void setNbSolutions(String nbSolutions) {

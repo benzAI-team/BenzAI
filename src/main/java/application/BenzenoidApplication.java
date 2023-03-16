@@ -23,15 +23,9 @@ import view.filtering.FilteringPane;
 import view.generator.GeneratorPane;
 import view.primaryStage.AboutPane;
 import view.primaryStage.Panes;
-import view.primaryStage.menus.CollectionsMenu;
-import view.primaryStage.menus.ComputationsMenu;
-import view.primaryStage.menus.FileMenu;
-import view.primaryStage.menus.FilterMenu;
-import view.primaryStage.menus.HelpMenu;
-import view.primaryStage.menus.InputMenu;
-import view.primaryStage.menus.PreferencesMenu;
-import view.primaryStage.menus.SortMenu;
-import view.primaryStage.menus.TasksMenu;
+import view.primaryStage.ScrollPaneWithPropertyList;
+import view.primaryStage.menus.*;
+
 
 public class BenzenoidApplication extends Application {
 
@@ -216,7 +210,7 @@ public class BenzenoidApplication extends Application {
 			Robot robot = new Robot();
 			robot.keyPress(KeyCode.ESCAPE);
 			robot.keyRelease(KeyCode.ESCAPE);
-			((FilteringPane) pane).refresh();
+			((FilteringPane) pane).placeComponents();
 		}
 		if (pane instanceof CollectionsOperationsPane)
 			((CollectionsOperationsPane) pane).refreshBoxes();

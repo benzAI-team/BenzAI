@@ -8,7 +8,7 @@ import generator.GeneratorCriterion;
 import generator.GeneratorCriterion.Operator;
 import generator.GeneratorCriterion.Subject;
 import generator.ModelBuilder;
-import generator.ResultSolver;
+import generator.SolverResults;
 import modules.BenzenoidModule;
 import molecules.Molecule;
 import view.generator.GeneratorPane;
@@ -18,11 +18,11 @@ public class CatacondensedCriterion extends FilteringCriterion {
 	@Override
 	public Boolean checksCriterion(Molecule molecule) {
 		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		GeneratorCriterion hexagonCriterion = new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ,
-				Integer.toString(molecule.getNbHexagons()));
+		GeneratorCriterion hexagonCriterion = new GeneratorCriterion("NB_HEXAGONS", "=",
+				molecule.getNbHexagons());
 
 		criterions.add(hexagonCriterion);
-		criterions.add(new GeneratorCriterion(Subject.CATACONDENSED, Operator.NONE, ""));
+		criterions.add(new GeneratorCriterion("CATACONDENSED", "", -1));
 
 		HashMap<String, ArrayList<GeneratorCriterion>> criterionsMap = GeneratorPane.buildCriterionsMap(criterions);
 
@@ -30,9 +30,9 @@ public class CatacondensedCriterion extends FilteringCriterion {
 
 		model.addModule(new BenzenoidModule(model, molecule));
 
-		ResultSolver resultSolver = model.solve();
+		SolverResults solverResults = model.solve();
 
-		return resultSolver.size() > 0;
+		return solverResults.size() > 0;
 	}
 
 	@Override

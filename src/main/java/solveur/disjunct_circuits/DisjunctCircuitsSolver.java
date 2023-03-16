@@ -103,7 +103,7 @@ public class DisjunctCircuitsSolver {
 
 				for (Integer n : cycle) {
 
-					if (molecule.getAdjacencyMatrix()[u][n] == 1) {
+					if (molecule.getEdgeMatrix()[u][n] == 1) {
 
 						if (nv1 == null)
 							nv1 = molecule.getNodeRef(n);
@@ -641,7 +641,7 @@ public class DisjunctCircuitsSolver {
 
 	public static SubGraph buildSubGraph(Molecule molecule) {
 
-		int[][] matrix = molecule.getAdjacencyMatrix();
+		int[][] matrix = molecule.getEdgeMatrix();
 		int[] disabledVertices = new int[molecule.getNbNodes()];
 
 		int[] degrees = new int[molecule.getNbNodes()];
@@ -667,7 +667,7 @@ public class DisjunctCircuitsSolver {
 			GUB.addNode(i);
 
 			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
-				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					GUB.addEdge(i, j);
 				}
 			}
@@ -681,7 +681,7 @@ public class DisjunctCircuitsSolver {
 		for (int i = 0; i < molecule.getNbNodes(); i++) {
 			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
 
-				if (molecule.getAdjacencyMatrix()[i][j] == 1) {
+				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					boolEdges[index] = model.boolVar("(" + i + "--" + j + ")");
 					model.edgeChanneling(g, boolEdges[index], i, j).post();
 					firstVertices[index] = i;

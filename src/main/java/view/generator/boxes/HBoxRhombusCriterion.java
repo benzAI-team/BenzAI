@@ -3,21 +3,24 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
-public class HBoxRhombusCriterion extends HBoxCriterion {
+public class HBoxRhombusCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> dimensionChoiceBox;
 	private TextField dimensionTextField;
 
-	public HBoxRhombusCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxRhombusCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 
@@ -27,29 +30,29 @@ public class HBoxRhombusCriterion extends HBoxCriterion {
 		String dimensionChoice = dimensionChoiceBox.getValue();
 
 		this.getChildren().remove(dimensionTextField);
-		this.getChildren().remove(warningIcon);
-		this.getChildren().remove(deleteButton);
+		this.getChildren().remove(getWarningIcon());
+		this.getChildren().remove(getDeleteButton());
 
 		if (dimensionChoice != null && dimensionChoice.contentEquals("Unspecified"))
-			valid = true;
+			setValid(true);
 
 		else {
 
 			if (dimensionChoice == null || !Utils.isNumber(dimensionTextField.getText())) {
-				valid = false;
+				setValid(false);
 				this.getChildren().add(dimensionTextField);
 			}
 
 			else {
-				valid = true;
+				setValid(true);
 				this.getChildren().add(dimensionTextField);
 			}
 		}
 
-		if (!valid)
-			this.getChildren().add(warningIcon);
+		if (!isValid())
+			this.getChildren().add(getWarningIcon());
 
-		this.getChildren().add(deleteButton);
+		this.getChildren().add(getDeleteButton());
 	}
 
 	@Override
@@ -63,34 +66,26 @@ public class HBoxRhombusCriterion extends HBoxCriterion {
 
 		dimensionChoiceBox.setOnAction(e -> {
 			checkValidity();
-			parent.refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 		});
 
 		dimensionTextField = new TextField();
 
 		dimensionTextField.setOnKeyReleased(e -> {
 			checkValidity();
-			parent.refreshGenerationPossibility();
+			getPane().refreshGenerationPossibility();
 		});
 
-		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, warningIcon, deleteButton);
+		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, getWarningIcon(), getDeleteButton());
 		checkValidity();
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-		if (valid) {
-			criterions.add(new GeneratorCriterion(Subject.RHOMBUS, Operator.NONE, ""));
-			if (!dimensionChoiceBox.getValue().equals("Unspecified")) {
-				criterions.add(new GeneratorCriterion(Subject.RHOMBUS_DIMENSION,
-						GeneratorCriterion.getOperator(dimensionChoiceBox.getValue()), dimensionTextField.getText()));
-			}
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+		if (isValid()) {
+			int size = dimensionChoiceBox.getValue().equals("Unspecified") ? -1 : Integer.decode(dimensionTextField.getText());
+			((ModelProperty) modelPropertySet.getById("rhombus")).addExpression(new BinaryNumericalExpression("rhombus", dimensionChoiceBox.getValue(), size));
 		}
-
-		return criterions;
 	}
 
 }

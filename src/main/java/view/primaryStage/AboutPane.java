@@ -25,10 +25,10 @@ public class AboutPane extends BorderPane {
 
 	private void initialize() {
 
-		ImageView logo = new ImageView(new Image("resources/graphics/icon-benzene.png"));
-		logo.resize(250, 250);
-		logo.setFitHeight(250);
-		logo.setFitWidth(250);
+		ImageView logo = new ImageView(new Image("resources/graphics/benzAI-image.png"));
+		logo.resize(277, 336);
+		logo.setFitHeight(277);
+		logo.setFitWidth(336);
 
 		Label benzaiLabel = new Label("BenzAI ");
 		Label softwareLabel = new Label("Software");

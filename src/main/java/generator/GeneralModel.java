@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
-import org.chocosolver.solver.search.limits.SolutionCounter;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
@@ -18,12 +17,18 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.solver.variables.Variable;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
-import generator.fragments.Fragment;
-import generator.fragments.FragmentOccurences;
-import generator.fragments.FragmentResolutionInformations;
-import modules.Module;
+import generator.patterns.Pattern;
+import generator.patterns.PatternOccurences;
+import generator.patterns.PatternResolutionInformations;
+import generator.properties.Property;
+import generator.properties.solver.SolverProperty;
+import generator.properties.solver.SolverPropertySet;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.ParameterizedExpression;
+import molecules.Molecule;
 import molecules.Node;
 import nogood.NoGoodBorderRecorder;
 import nogood.NoGoodHorizontalAxisRecorder;
@@ -32,15 +37,19 @@ import nogood.NoGoodRecorder;
 import nogood.NoGoodUniqueRecorder;
 import nogood.NoGoodVerticalAxisRecorder;
 import solution.BenzenoidSolution;
-import solving_modes.GeneralModelMode;
 import utils.Couple;
 import utils.Triplet;
+import view.generator.GeneratorPane;
 import view.generator.Stopper;
+import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxModelCriterion;
+import view.generator.boxes.HBoxSolverCriterion;
 
 public class GeneralModel {
 
 	private Solver solver;
-	private ResultSolver resultSolver;
+	private SolverResults solverResults;
+
 	private GeneratorRun generatorRun = new GeneratorRun(this);
 
 	private HashMap<String, Integer> variablesDegrees = new HashMap<>();
@@ -49,14 +58,12 @@ public class GeneralModel {
 	 * Application parameters
 	 */
 
-	private Map<String, ArrayList<GeneratorCriterion>> mapCriterions;
-	private ArrayList<GeneratorCriterion> hexagonsCriterions;
-	private ArrayList<GeneratorCriterion> criterions;
+	//private Map<String, ArrayList<GeneratorCriterion>> mapCriterions;
+	//private ArrayList<GeneratorCriterion> hexagonsCriterions;
+	//private ArrayList<GeneratorCriterion> criterions;
 	private int nbMaxHexagons;
 
 	private int[][] neighborGraph;
-
-	private GeneralModelMode mode;
 
 	private ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
 	private ArrayList<Integer> outterHexagonsIndexes = new ArrayList<>();
@@ -65,7 +72,7 @@ public class GeneralModel {
 
 	private Couple<Integer, Integer>[] coordsCorrespondance;
 
-	private FragmentResolutionInformations patternsInformations;
+	private PatternResolutionInformations patternsInformations;
 
 	/*
 	 * Parameters
@@ -73,13 +80,13 @@ public class GeneralModel {
 
 	// Don't used for regular solving
 	private boolean applySymmetriesConstraints = true;
+	private boolean applyBorderConstraints = true;
 
 	private int nbCrowns;
 	private int nbHexagons;
 	private int diameter;
 
 	private int nbEdges;
-	private boolean applyBorderConstraints = true;
 	private int nbClausesLexLead = 0;
 
 	boolean verbose = false;
@@ -90,7 +97,7 @@ public class GeneralModel {
 	 * Constraint programming variables
 	 */
 
-	Model chocoModel = new Model("Benzenoides");
+	private Model chocoModel = new Model("Benzenoides");
 
 	private Node[] nodesRefs;
 
@@ -106,17 +113,10 @@ public class GeneralModel {
 	private UndirectedGraph GUB;
 	private UndirectedGraph GLB;
 
-	// private UndirectedGraph watchedGUB;
-
 	private UndirectedGraphVar benzenoid;
 	private BoolVar[] channeling;
 	private BoolVar[] benzenoidVertices;
 	private BoolVar[][] benzenoidEdges;
-
-	// private UndirectedGraphVar watchedGraphVar;
-
-	// private BoolVar[] watchedChanneling;
-	// private BoolVar[] watchedBenzenoidVertices;
 
 	private ArrayList<Variable> variables = new ArrayList<Variable>();
 
@@ -128,178 +128,91 @@ public class GeneralModel {
 
 	ArrayList<BenzenoidSolution> benzenoidSolutions = new ArrayList<>();
 
-	private ArrayList<Fragment> nogoodsFragments = new ArrayList<>();
+	private ArrayList<Pattern> nogoodsFragments = new ArrayList<>();
 	private ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
 
-	private int nbTotalSolutions = 0;
+	private SimpleIntegerProperty nbTotalSolutions = new SimpleIntegerProperty(0);
 	private int indexSolution;
 
 	private ArrayList<Integer> topBorder;
 	private ArrayList<Integer> leftBorder;
 
 	/*
-	 * Modules
+	 * Properties
 	 */
 
-	private ArrayList<Module> modules = new ArrayList<>();
+	private ModelPropertySet modelPropertySet = new ModelPropertySet();
+	private static SolverPropertySet solverPropertySet = new SolverPropertySet();
 
 	/*
 	 * Constructors
 	 */
 
-	public GeneralModel(ArrayList<GeneratorCriterion> hexagonsCriterions, boolean applySymmetriesConstraints) {
-
-		this.hexagonsCriterions = hexagonsCriterions;
-		this.applySymmetriesConstraints = applySymmetriesConstraints;
-
-		nbMaxHexagons = 0;
-
-		for (GeneratorCriterion criterion : hexagonsCriterions) {
-
-			Operator operator = criterion.getOperator();
-
-			if (operator == Operator.EQ || operator == Operator.LT || operator == Operator.LEQ) {
-
-				int value = Integer.parseInt(criterion.getValue());
-
-				if (value > nbMaxHexagons)
-					nbMaxHexagons = value;
-			}
-
-		}
-
-		nbCrowns = (int) Math.floor((((double) ((double) nbMaxHexagons + 1)) / 2.0) + 1.0);
-
-		if (nbMaxHexagons % 2 == 1)
-			nbCrowns--;
-
+	public GeneralModel(ModelPropertySet modelPropertySet) {
+		this.modelPropertySet = modelPropertySet;
+		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
+		nbCrowns = modelPropertySet.computeNbCrowns();
 		diameter = (2 * nbCrowns) - 1;
-
+		applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
 		initialize();
 	}
 
-	public GeneralModel(ArrayList<GeneratorCriterion> hexagonsCriterions, ArrayList<GeneratorCriterion> criterions,
-			Map<String, ArrayList<GeneratorCriterion>> mapCriterions) {
-
-		this.hexagonsCriterions = hexagonsCriterions;
-		this.criterions = criterions;
-		this.mapCriterions = mapCriterions;
-
-		nbMaxHexagons = 0;
-
-		for (GeneratorCriterion criterion : hexagonsCriterions) {
-
-			Operator operator = criterion.getOperator();
-
-			if (operator == Operator.EQ || operator == Operator.LT || operator == Operator.LEQ) {
-
-				int value = Integer.parseInt(criterion.getValue());
-
-				if (value > nbMaxHexagons)
-					nbMaxHexagons = value;
-			}
-
-		}
-
-		nbCrowns = (int) Math.floor((((double) ((double) nbMaxHexagons + 1)) / 2.0) + 1.0);
-
-		if (nbMaxHexagons % 2 == 1)
-			nbCrowns--;
-
-		diameter = (2 * nbCrowns) - 1;
-
-		if (GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
-			applySymmetriesConstraints = false;
-
-		initialize();
-	}
-
-	public GeneralModel(ArrayList<GeneratorCriterion> hexagonsCriterions, ArrayList<GeneratorCriterion> criterions,
-			Map<String, ArrayList<GeneratorCriterion>> mapCriterions, int nbCrowns) {
-
-		this.hexagonsCriterions = hexagonsCriterions;
-		this.criterions = criterions;
-		this.mapCriterions = mapCriterions;
-
-		nbMaxHexagons = 0;
-
-		for (GeneratorCriterion criterion : hexagonsCriterions) {
-
-			Operator operator = criterion.getOperator();
-
-			if (operator == Operator.EQ || operator == Operator.LT || operator == Operator.LEQ) {
-
-				int value = Integer.parseInt(criterion.getValue());
-
-				if (value > nbMaxHexagons)
-					nbMaxHexagons = value;
-			}
-
-		}
-
+	public GeneralModel(ModelPropertySet modelPropertySet, int nbCrowns) {
+		this.modelPropertySet = modelPropertySet;
+		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
 		this.nbCrowns = nbCrowns;
-
 		diameter = (2 * nbCrowns) - 1;
-
+		applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
 		initialize();
 	}
 
-	public GeneralModel(int nbCrowns, int nbHexagons) {
+//	public GeneralModel(int nbCrowns, int nbHexagons) {
+//
+//		mode = GeneralModelMode.BOTH;
+//
+//		this.nbCrowns = nbCrowns;
+//		this.nbHexagons = nbHexagons;
+//		nbMaxHexagons = nbHexagons;
+//		diameter = (2 * nbCrowns) - 1;
+//
+//		hexagonsCriterions = new ArrayList<>();
+//		hexagonsCriterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
+//
+//		initialize();
+//	}
 
-		mode = GeneralModelMode.BOTH;
-
-		this.nbCrowns = nbCrowns;
-		this.nbHexagons = nbHexagons;
-		nbMaxHexagons = nbHexagons;
-		diameter = (2 * nbCrowns) - 1;
-
-		hexagonsCriterions = new ArrayList<>();
-		hexagonsCriterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
-
+	public GeneralModel(NbCrowns nbCrowns) {
+		this.nbCrowns = nbCrowns.getValue();
+		nbHexagons = -1;		
+		diameter = (2 * this.nbCrowns) - 1;
 		initialize();
 	}
-
-	public GeneralModel(int n, GeneralModelMode mode) {
-
-		this.mode = mode;
-
-		switch (mode) {
-
-		case NB_CROWNS:
-			nbCrowns = n;
-			nbHexagons = -1;
-			break;
-
-		case NB_HEXAGONS:
-
-			nbHexagons = n;
-			nbMaxHexagons = n;
-
-			nbCrowns = (int) Math.floor((((double) ((double) n + 1)) / 2.0) + 1.0);
-
-			if (n % 2 == 1)
-				nbCrowns--;
-
-			diameter = (2 * nbCrowns) - 1;
-
-			hexagonsCriterions = new ArrayList<>();
-			hexagonsCriterions
-					.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
-
-			break;
-
-		default:
-			break;
-		}
-
-		diameter = (2 * nbCrowns) - 1;
-
-		initialize();
-	}
-
+	
+//	public GeneralModel(NbHexagons nbHexagons) {
+//
+//		this.nbHexagons = nbHexagons.getValue();
+//		nbMaxHexagons = this.nbHexagons;
+//
+//		nbCrowns = (int) Math.floor((((double) ((double) this.nbHexagons + 1)) / 2.0) + 1.0);
+//
+//		if (this.nbHexagons % 2 == 1)
+//			nbCrowns--;
+//
+//		diameter = (2 * nbCrowns) - 1;
+//
+//		hexagonsCriterions = new ArrayList<GeneratorCriterion>();
+//		hexagonsCriterions.add(GeneratorCriterionFactory.build("hexagons", "=", this.nbHexagons));
+//
+//		diameter = (2 * nbCrowns) - 1;
+//
+//		initialize();
+//	}
+	
 	/*
 	 * Initialization methods
 	 */
+
+
 
 	private void initialize() {
 		initializeMatrix();
@@ -319,31 +232,32 @@ public class GeneralModel {
 	}
 
 	private void initializeVariables() {
+		System.out.println("00 "+nbMaxHexagons);
 
 		nbHexagonsReifies = new BoolVar[nbMaxHexagons + 1];
+		System.out.println("1");
 
 		buildCoordsMatrix();
+		System.out.println("2");
 
 		GLB = BoundsBuilder.buildGLB2(this);
 		GUB = BoundsBuilder.buildGUB2(this);
 
 		indexOutterHexagon = diameter * diameter;
+		System.out.println("3");
 
 		buildAdjacencyMatrix();
 
-		// setWatchedGUB(GUB);
 
 		benzenoid = chocoModel.graphVar("g", GLB, GUB);
 
+		System.out.println("4");
 		buildBenzenoidVertices();
+		System.out.println("5");
 		buildBenzenoidEdges();
-
-		// watchedGraphVar = benzenoid;
-
-		// watchedBenzenoidVertices = benzenoidVertices;
-		// watchedChanneling = channeling;
-
+		System.out.println("6");
 		buildCoordsCorrespondance();
+		System.out.println("7");
 		buildNeighborGraph();
 
 		nbVertices = chocoModel.intVar("nbVertices", 1, nbHexagonsCoronenoid);
@@ -385,44 +299,58 @@ public class GeneralModel {
 			addVariable(variable);
 	}
 
-	public void addModule(Module module) {
-		modules.add(module);
+	/***
+	 * Apply the model property to the model
+	 * @param modelProperty
+	 */
+	public void applyModelProperty(ModelProperty modelProperty) {
+		modelProperty.getModule().build(this, modelProperty.getExpressions());
 	}
 
-	private void applyModules() {
+	/***
+	 * Apply all the model properties to the model
+	 */
+	private void applyModelProperties() {
+		for (Property modelProperty : modelPropertySet)
+			if(modelPropertySet.has(modelProperty.getId())) {
+				applyModelProperty((ModelProperty) modelProperty);
+			}
 
-		for (Module module : modules) {
-			module.buildVariables();
-			module.postConstraints();
-			module.addVariables();
-			module.changeGraphVertices();
-		}
 
-		if (GeneratorCriterion.containsSymmetry(criterions)
-				|| GeneratorCriterion.containsSubject(criterions, Subject.RECTANGLE))
+		if (modelPropertySet.has("symmetry") || modelPropertySet.has("rectangle"))
 			applyBorderConstraints = false;
 
 		if (applyBorderConstraints)
 			ConstraintBuilder.postBordersConstraints(this);
-
+		//TODO deplacer l'instruction ci-dessous
 		chocoModel.nbNodes(benzenoid, nbVertices).post();
 
-		for (GeneratorCriterion criterion : hexagonsCriterions) {
-
-			String operator = criterion.getOperatorString();
-			int value = Integer.parseInt(criterion.getValue());
-			chocoModel.arithm(nbVertices, operator, value).post();
-		}
-
 	}
+	
+	/***
+	 * Apply the solver property to the solver
+	 * @param modelProperty
+	 */
+	public void applySolverProperty(SolverProperty solverProperty) {
+		solverProperty.getSpecifier().apply(solver, solverProperty.getExpressions().get(0));
+	}
+
+	/***
+	 * Apply all the model properties to the model
+	 */
+	private void applySolverProperties() {
+		for (Property solverProperty : solverPropertySet) {
+			System.out.println(solverProperty.getId() + ":" + solverPropertySet.has(solverProperty.getId()));
+			if(solverPropertySet.has(solverProperty.getId())) {
+				applySolverProperty((SolverProperty) solverProperty);
+			}
+		}
+	}
+	
 
 	/*
 	 * Getters & Setters
 	 */
-
-	public GeneralModelMode getMode() {
-		return mode;
-	}
 
 	public int getNbCrowns() {
 		return nbCrowns;
@@ -557,7 +485,7 @@ public class GeneralModel {
 		}
 	}
 
-	private Fragment convertToPattern() {
+	private Pattern convertToPattern() {
 
 		ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
 
@@ -667,7 +595,7 @@ public class GeneralModel {
 		for (int i = 0; i < nbNodes; i++)
 			labels[i] = 2;
 
-		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
+		return new Pattern(matrix, labels, nodes, null, null, neighbors, 0);
 	}
 
 	private void recordNoGoods() {
@@ -684,7 +612,7 @@ public class GeneralModel {
 
 		NoGoodRecorder noGoodRecorder = null;
 
-		if (!GeneratorCriterion.containsSymmetry(criterions)) {
+		if (!modelPropertySet.has("symmetry")) {
 
 			solution.setPattern(convertToPattern());
 			noGoodRecorder = new NoGoodBorderRecorder(this, solution, topBorder, leftBorder);
@@ -694,20 +622,15 @@ public class GeneralModel {
 
 			noGoodRecorder = new NoGoodNoneRecorder(this, solution);
 
-			if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_MIRROR))
+			if (((ParameterizedExpression)((ModelProperty) modelPropertySet.getById("symmetry")).getExpressions().get(0)).getOperator() == "SYMM_MIRROR")
 				noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
-
-			else if (GeneratorCriterion.containsSubject(criterions, Subject.SYMM_VERTICAL))
-				// noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
+			else if (((ParameterizedExpression)((ModelProperty) modelPropertySet.getById("symmetry")).getExpressions().get(0)).getOperator() == "SYMM_VERTICAL")
+				//noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
 				noGoodRecorder = new NoGoodVerticalAxisRecorder(this, solution);
 
 			else {
-
-				if (GeneratorCriterion.containsSubject(criterions, Subject.SINGLE_PATTERN)
-						|| GeneratorCriterion.containsSubject(criterions, Subject.MULTIPLE_PATTERNS)
-						|| GeneratorCriterion.containsSubject(criterions, Subject.FORBIDDEN_PATTERN))
+				if (modelPropertySet.has("pattern"))
 					noGoodRecorder = new NoGoodUniqueRecorder(this, solution);
-
 			}
 
 		}
@@ -716,33 +639,27 @@ public class GeneralModel {
 
 	}
 
-	public ResultSolver solve() {
+	public SolverResults solve() {
 
-		applyModules();
+		applyModelProperties();
 		chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
 
-		for (Module module : modules) {
-			module.changeSolvingStrategy();
+		for (Property modelProperty : modelPropertySet) {
+			if(((ModelProperty) modelProperty).hasExpressions())
+				((ModelProperty) modelProperty).getModule().changeSolvingStrategy();
 		}
 
 		solver = chocoModel.getSolver();
 		solver.limitSearch(() -> {
 			return Stopper.STOP;
 		});
-		
-		if (mapCriterions != null && mapCriterions.get("stop") != null) {
-			for (GeneratorCriterion criterion : mapCriterions.get("stop")) {
 
-				if (criterion.getSubject() == Subject.TIMEOUT)
-					solver.limitTime(criterion.getValue());
+		//applySolverProperties();
+		for(Property solverProperty : solverPropertySet)
+			if(((SolverProperty) solverProperty).hasExpressions())
+				((SolverProperty) solverProperty).getSpecifier().apply(solver, ((SolverProperty) solverProperty).getExpressions().get(0));
 
-				else if (criterion.getSubject() == Subject.NB_SOLUTIONS)
-					solver.addStopCriterion(new SolutionCounter(chocoModel, Long.parseLong(criterion.getValue())));
-
-			}
-		}
-
-		resultSolver = new ResultSolver();
+		solverResults = new SolverResults();
 
 		indexSolution = 0;
 
@@ -754,33 +671,38 @@ public class GeneralModel {
 		Stopper.STOP = false;
 
 		while (solver.solve() && !generatorRun.isPaused()) {
-
-			nbTotalSolutions++;
-
-			recordNoGoods();
-
-			BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
-					chocoModel.getName() + indexSolution, hexagonsCorrespondances);
+			ArrayList<Integer> verticesSolution = buildVerticesSolution();
 			String description = buildDescription(indexSolution);
-			resultSolver.addSolution(solverSolution, description, nbCrowns);
+			Molecule molecule = GeneratorPane.buildMolecule(description, nbCrowns, indexSolution, verticesSolution);
 
-			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
-			ArrayList<Integer> verticesSolution = new ArrayList<>();
+			if(molecule.respectPostProcessing(modelPropertySet)) {
+				solverResults.addMolecule(molecule);
+				Platform.runLater(()->{
+					nbTotalSolutions.set(nbTotalSolutions.get() + 1);
+				});
+				recordNoGoods();
 
-			for (int index = 0; index < benzenoidVertices.length; index++) {
+				BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
+						chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 
-				if (benzenoidVertices[index] != null) {
-					verticesSolution.add(benzenoidVertices[index].getValue());
+				solverResults.addSolution(solverSolution, description, nbCrowns);
+				solverResults.addVerticesSolution(verticesSolution);
 
-					if (benzenoidVertices[index].getValue() == 1) {
-						presentHexagons.add(benzenoidVertices[index]);
+				displaySolution(solver);
+
+				if (verbose) {
+
+					System.out.println("NO-GOOD");
+
+					for (ArrayList<Integer> ng : nogoods) {
+						for (Integer v : ng)
+							System.out.println(v + " ");
 					}
-
 				} else
 					verticesSolution.add(0);
 			}
 
-			resultSolver.addVerticesSolution(verticesSolution);
+			solverResults.addVerticesSolution(verticesSolution);
 
 			displaySolution(solver);
 //			System.out.println(solver.getDecisionPath());
@@ -794,31 +716,41 @@ public class GeneralModel {
 						System.out.println(v + " ");
 				}
 
-				System.out.println("");
+				indexSolution++;
 			}
-
-			indexSolution++;
 		}
 
 		long end = System.currentTimeMillis();
 		long time = end - begin;
 
-		resultSolver.setTime(time);
-		resultSolver.setNbTotalSolution(nbTotalSolutions);
-		resultSolver.setSolver(solver);
+		solverResults.setTime(time);
+		solverResults.setNbTotalSolution(nbTotalSolutions.get());
+		solverResults.setSolver(solver);
 
 		System.out.println(nbCrowns + " crowns");
 		System.out.println(nogoods.size() + " no-good clauses");
 		System.out.println(nbClausesLexLead + " lex-lead clauses");
 		solver.printStatistics();
 
-		resultSolver.setNogoodsFragments(nogoodsFragments);
-
+		solverResults.setNogoodsFragments(nogoodsFragments);
 		System.out.println("------");
 		displayDegrees();
+		return solverResults;
 
-		return resultSolver;
 
+	}
+
+	private ArrayList<Integer> buildVerticesSolution() {
+		ArrayList<Integer> verticesSolution = new ArrayList<>();
+
+		for (int index = 0; index < benzenoidVertices.length; index++) {
+
+			if (benzenoidVertices[index] != null) {
+				verticesSolution.add(benzenoidVertices[index].getValue());
+			} else
+				verticesSolution.add(0);
+		}
+		return verticesSolution;
 	}
 
 	private void buildAdjacencyMatrix() {
@@ -929,9 +861,9 @@ public class GeneralModel {
 		return outterHexagonsIndexes;
 	}
 
-	public ArrayList<Module> getModules() {
-		return modules;
-	}
+//	public ArrayList<Module> getModules() {
+//		return modules;
+//	}
 
 	public void buildNeighborGraphWithOutterHexagons(int order) {
 
@@ -1442,7 +1374,7 @@ public class GeneralModel {
 		return nbVertices;
 	}
 
-	public void setPatternsInformations(FragmentResolutionInformations patternsInformations) {
+	public void setPatternsInformations(PatternResolutionInformations patternsInformations) {
 		this.patternsInformations = patternsInformations;
 	}
 
@@ -1450,8 +1382,8 @@ public class GeneralModel {
 		this.applySymmetriesConstraints = applySymmetriesConstraints;
 	}
 
-	public ResultSolver getResultSolver() {
-		return resultSolver;
+	public SolverResults getResultSolver() {
+		return solverResults;
 	}
 
 	public GeneratorRun getGeneratorRun() {
@@ -1478,14 +1410,16 @@ public class GeneralModel {
 
 		while (solver.solve() && !generatorRun.isPaused()) {
 
-			nbTotalSolutions++;
+			Platform.runLater(()->{
+				nbTotalSolutions.set(nbTotalSolutions.get() + 1);
+			});
 
 			recordNoGoods();
 
 			BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns, chocoModel.getName() + indexSolution,
 					hexagonsCorrespondances);
 			String description = buildDescription(indexSolution);
-			resultSolver.addSolution(solution, description, nbCrowns);
+			solverResults.addSolution(solution, description, nbCrowns);
 
 			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
 			ArrayList<Integer> verticesSolution = new ArrayList<>();
@@ -1503,7 +1437,7 @@ public class GeneralModel {
 					verticesSolution.add(0);
 			}
 
-			resultSolver.addVerticesSolution(verticesSolution);
+			solverResults.addVerticesSolution(verticesSolution);
 
 			displaySolution(solver);
 			//System.out.println(solver.getDecisionPath());
@@ -1540,7 +1474,7 @@ public class GeneralModel {
 
 	}
 
-	private boolean isValid(Couple<Integer, Integer> coord, Fragment fragment, int index) {
+	private boolean isValid(Couple<Integer, Integer> coord, Pattern fragment, int index) {
 
 		if (coord.getX() < 0 || coord.getX() >= diameter || coord.getY() < 0 || coord.getY() >= diameter
 				|| coordsMatrix[coord.getY()][coord.getX()] == -1) {
@@ -1561,9 +1495,9 @@ public class GeneralModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public FragmentOccurences computeTranslations(Fragment fragment) {
+	public PatternOccurences computeTranslations(Pattern fragment) {
 
-		FragmentOccurences fragmentOccurences = new FragmentOccurences();
+		PatternOccurences fragmentOccurences = new PatternOccurences();
 
 		/*
 		 * Trouver l'hexagone pr�sent du fragment le plus en haut � gauche
@@ -1817,9 +1751,41 @@ public class GeneralModel {
 		nbHexagonsReifies[index] = value;
 	}
 
-	@Override
-	public String toString() {
-		return hexagonsCriterions.toString();
+//	@Override
+//	public String toString() {
+//		return hexagonsCriterions.toString();
+//	}
+
+	public Model getChocoModel() {
+		return chocoModel;
+	}
+
+	public SimpleIntegerProperty getNbTotalSolutions() {
+		return nbTotalSolutions;
+	}
+
+	public ModelPropertySet getModelPropertySet() {
+		return this.modelPropertySet;
+	}
+
+	public void setModelPropertySet(ModelPropertySet modelPropertySet) {
+		this.modelPropertySet = modelPropertySet;
+	}
+
+	public static SolverPropertySet getSolverPropertySet() {
+		return GeneralModel.solverPropertySet;
+	}
+
+	public static void setSolverPropertySet(SolverPropertySet solverPropertySet) {
+		GeneralModel.solverPropertySet = solverPropertySet;
+	}
+
+	public static boolean buildSolverPropertySet(ArrayList<HBoxCriterion> hBoxesSolverCriterions) {
+		solverPropertySet.clearPropertyExpressions();;
+		for (HBoxCriterion box : hBoxesSolverCriterions) {
+			((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
+		}
+		return true;
 	}
 
 	public void increaseDegree(String variableName) {

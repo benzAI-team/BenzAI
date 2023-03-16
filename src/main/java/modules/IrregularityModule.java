@@ -1,14 +1,13 @@
 package modules;
 
-import java.util.ArrayList;
 
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
-import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.expression.IrregularityExpression;
+import modelProperty.expression.PropertyExpression;
 
 public class IrregularityModule extends Module {
 
@@ -24,15 +23,10 @@ public class IrregularityModule extends Module {
 	private IntVar XI;
 	private IntVar V1, V2;
 
-	private ArrayList<GeneratorCriterion> criterions;
-
-	public IrregularityModule(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-		super(generalModel);
-		this.criterions = criterions;
-	}
 
 	@Override
 	public void buildVariables() {
+		GeneralModel generalModel = getGeneralModel();
 
 		zero = generalModel.getProblem().boolVar(false);
 
@@ -74,6 +68,7 @@ public class IrregularityModule extends Module {
 
 	@Override
 	public void postConstraints() {
+		GeneralModel generalModel = getGeneralModel();
 
 		/*
 		 * Table constraints
@@ -132,47 +127,37 @@ public class IrregularityModule extends Module {
 		 * Parameters constraints
 		 */
 
-		for (GeneratorCriterion criterion : criterions) {
-
-			if (criterion.getSubject() == Subject.XI) {
-				double decimalValue = Double.parseDouble(criterion.getValue());
-				int finalValue = (int) (decimalValue * 100);
-				generalModel.getProblem().arithm(XI, criterion.getOperatorString(), finalValue).post();
+		for (PropertyExpression expression : this.getExpressionList()) {
+			IrregularityExpression irregularityExpression = (IrregularityExpression)expression;
+			if (irregularityExpression.getParameter() == "XI") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
+				generalModel.getProblem().arithm(XI, irregularityExpression.getOperator(), value).post();
 			}
-
-			else {
-
-				IntVar subject = null;
-				String operator = criterion.getOperatorString();
-				int value = Integer.parseInt(criterion.getValue());
-
-				switch (criterion.getSubject()) {
-
-				case N0:
-					subject = N0;
-					break;
-
-				case N1:
-					subject = N1;
-					break;
-
-				case N2:
-					subject = N2;
-					break;
-
-				case N3:
-					subject = N3;
-					break;
-
-				case N4:
-					subject = N4;
-					break;
-
-				default:
-					break;
-				}
-
-				generalModel.getProblem().arithm(subject, operator, value).post();
+			if (irregularityExpression.getParameter() == "N0") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
+				generalModel.getProblem().arithm(N0, operator, value).post();
+			}
+			if (irregularityExpression.getParameter() == "N1") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
+				generalModel.getProblem().arithm(N1, operator, value).post();
+			}
+			if (irregularityExpression.getParameter() == "N2") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
+				generalModel.getProblem().arithm(N2, operator, value).post();
+			}
+			if (irregularityExpression.getParameter() == "N3") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
+				generalModel.getProblem().arithm(N3, operator, value).post();
+			}
+			if (irregularityExpression.getParameter() == "N4") {
+				String operator = irregularityExpression.getOperator();
+				int value = irregularityExpression.getValue();
+				generalModel.getProblem().arithm(N4, operator, value).post();
 			}
 		}
 
@@ -183,6 +168,7 @@ public class IrregularityModule extends Module {
 	}
 
 	private void buildXN() {
+		GeneralModel generalModel = getGeneralModel();
 
 		xN = new BoolVar[generalModel.getDiameter() * generalModel.getDiameter()][6];
 
@@ -198,6 +184,7 @@ public class IrregularityModule extends Module {
 	}
 
 	private void buildDualGraph() {
+		GeneralModel generalModel = getGeneralModel();
 
 		dualGraph = new int[generalModel.getDiameter() * generalModel.getDiameter()][6];
 

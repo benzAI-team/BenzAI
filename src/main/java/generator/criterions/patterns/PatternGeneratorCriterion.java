@@ -3,19 +3,19 @@ package generator.criterions.patterns;
 import java.util.ArrayList;
 import java.util.Map;
 
-import generator.criterions.GeneratorCriterion2;
-import generator.fragments.FragmentResolutionInformations;
+import generator.criterions.GeneratorCriterion;
+import generator.patterns.PatternResolutionInformations;
 
-public abstract class PatternGeneratorCriterion extends GeneratorCriterion2 {
+public abstract class PatternGeneratorCriterion extends GeneratorCriterion {
 
-	protected FragmentResolutionInformations patternsInformations;
+	protected PatternResolutionInformations patternsInformations;
 
-	public PatternGeneratorCriterion(FragmentResolutionInformations patternsInformations) {
+	public PatternGeneratorCriterion(PatternResolutionInformations patternsInformations) {
 		super(Operator.NONE, "");
 		this.patternsInformations = patternsInformations;
 	}
 
-	public FragmentResolutionInformations getPatternsInformations() {
+	public PatternResolutionInformations getPatternsInformations() {
 		return patternsInformations;
 	}
 
@@ -30,7 +30,7 @@ public abstract class PatternGeneratorCriterion extends GeneratorCriterion2 {
 	}
 
 	@Override
-	public void buildMap(Map<String, ArrayList<GeneratorCriterion2>> criterionsMap) {
+	public void buildMap(Map<String, ArrayList<GeneratorCriterion>> criterionsMap) {
 		if (criterionsMap.get("pattern") == null)
 			criterionsMap.put("pattern", new ArrayList<>());
 		criterionsMap.get("pattern").add(this);

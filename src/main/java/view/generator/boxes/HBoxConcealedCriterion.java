@@ -1,36 +1,34 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import generator.properties.PropertySet;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.SubjectExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
-public class HBoxConcealedCriterion extends HBoxCriterion {
+public class HBoxConcealedCriterion extends HBoxModelCriterion {
 
-	public HBoxConcealedCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxConcealedCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
-		valid = true;
+		setValid(true);
 	}
 
 	@Override
 	protected void checkValidity() {
-		valid = true;
-		parent.refreshGenerationPossibility();
+		setValid(true);
+		getPane().refreshGenerationPossibility();
 	}
 
 	@Override
 	protected void initialize() {
-		this.getChildren().add(deleteButton);
+		this.getChildren().add(getDeleteButton());
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-		criterions.add(new GeneratorCriterion(Subject.CONCEALED, Operator.NONE, ""));
-		return criterions;
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+		modelPropertySet.getById("concealed").addExpression(new SubjectExpression("concealed"));
 	}
 
 }

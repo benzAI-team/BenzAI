@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import application.BenzenoidApplication;
 import generator.GeneratorCriterion;
-import generator.fragments.FragmentResolutionInformations;
+import generator.patterns.PatternResolutionInformations;
+import generator.properties.PropertySet;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,61 +13,65 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import modelProperty.PatternProperty;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.PatternExpression;
+import modelProperty.expression.SubjectExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.patterns.PatternsEditionPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
-public class HBoxPatternCriterion extends HBoxCriterion {
+public class HBoxPatternCriterion extends HBoxModelCriterion {
 
-	private PatternsEditionPane fragmentPane;
-	private FragmentResolutionInformations patternInformations;
+	private PatternResolutionInformations patternInformations;
+	private PatternProperty patternProperty;
 
+	private PatternsEditionPane patternPane;
 	private Stage patternStage;
-
 	private Button editButton;
-
 	private TextField patternInformationField;
 
-	private GeneratorCriterion criterion;
+	//private GeneratorCriterion criterion;
+	
 
-	public HBoxPatternCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxPatternCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
 		super(parent, choiceBoxCriterion);
+		setPatternProperty((PatternProperty)modelProperty);
 	}
 
 	@Override
 	protected void checkValidity() {
 
-		valid = true;
+		setValid(true);
 
-		this.getChildren().remove(warningIcon);
+		this.getChildren().remove(getWarningIcon());
 		this.getChildren().remove(editButton);
-		this.getChildren().remove(deleteButton);
+		this.getChildren().remove(getDeleteButton());
 
 		if (patternInformationField.getText().equals("NO_PROPERTY")) {
-			valid = false;
-			this.getChildren().add(warningIcon);
+			setValid(false);
+			this.getChildren().add(getWarningIcon());
 		}
 
-		this.getChildren().addAll(editButton, deleteButton);
+		this.getChildren().addAll(editButton, getDeleteButton());
 	}
 
 	@Override
 	protected void initialize() {
 		initializeEditButton();
 
-		valid = false;
+		setValid(false);
 
 		patternInformationField = new TextField();
 		patternInformationField.setEditable(false);
 		patternInformationField.setText("NO_PROPERTY");
 
-		this.getChildren().addAll(patternInformationField, warningIcon, editButton, deleteButton);
+		this.getChildren().addAll(patternInformationField, getWarningIcon(), editButton, getDeleteButton());
 	}
 
-	public void setCriterion(GeneratorCriterion criterion) {
-		this.criterion = criterion;
-	}
 
 	private void initializeEditButton() {
 
@@ -92,21 +97,17 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-		if (valid)
-			criterions.add(criterion);
-
-		return criterions;
+		if (isValid())
+			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText(), this.patternInformations));
 	}
 
 	public void displayPatternEditionWindows() {
 
-		if (fragmentPane == null) {
+		if (patternPane == null) {
 
-			fragmentPane = new PatternsEditionPane(this);
+			patternPane = new PatternsEditionPane(this);
 
 			patternStage = new Stage();
 
@@ -114,7 +115,7 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 
 			patternStage.setTitle("Add pattern properties");
 
-			Scene scene = new Scene(fragmentPane);
+			Scene scene = new Scene(patternPane);
 			scene.getStylesheets().add("/resources/style/application.css");
 
 			patternStage.setScene(scene);
@@ -129,16 +130,16 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 		checkValidity();
 	}
 
-	public void hideFragmentStage() {
+	public void hidePatternStage() {
 		patternStage.hide();
 	}
 
 	public PatternsEditionPane getPatternPane() {
-		return fragmentPane;
+		return patternPane;
 	}
 
 	public void setPatternPane(PatternsEditionPane patternPane) {
-		this.fragmentPane = patternPane;
+		this.patternPane = patternPane;
 	}
 
 	public Stage getPatternStage() {
@@ -150,14 +151,22 @@ public class HBoxPatternCriterion extends HBoxCriterion {
 	}
 
 	public BenzenoidApplication getApplication() {
-		return parent.getApplication();
+		return ((GeneratorPane) getPane()).getApplication();
 	}
 
-	public void setFragmentResolutionInformations(FragmentResolutionInformations fragmentsInformations) {
-		parent.setFragmentResolutionInformations(fragmentsInformations);
+	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
+		((GeneratorPane) getPane()).setPatternResolutionInformations(patternsInformations);
 	}
 
-	public FragmentResolutionInformations getPatternInformations() {
+	public PatternResolutionInformations getPatternInformations() {
 		return patternInformations;
+	}
+
+	public PatternProperty getPatternProperty() {
+		return patternProperty;
+	}
+
+	public void setPatternProperty(PatternProperty patternProperty) {
+		this.patternProperty = patternProperty;
 	}
 }

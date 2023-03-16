@@ -4,13 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
-import generator.fragments.Fragment;
-import generator.fragments.FragmentGenerationType;
-import generator.fragments.FragmentResolutionInformations;
-import generator.fragments.PatternsInterraction;
+import generator.OrderStrategy;
+import generator.ValueStrategy;
+import generator.VariableStrategy;
+import generator.patterns.Pattern;
+import generator.patterns.PatternGenerationType;
+import generator.patterns.PatternResolutionInformations;
+import generator.patterns.PatternsInterraction;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -30,6 +30,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PatternExpression;
+import modelProperty.expression.PropertyExpression;
+import modelProperty.expression.SubjectExpression;
+import modules.ForbiddenPatternModule1;
+import modules.MultiplePatterns1Module;
+import modules.MultiplePatterns2Module;
+import modules.SinglePattern1Module;
+import modules.SinglePattern2Module;
 import molecules.Node;
 import utils.Utils;
 import view.generator.boxes.HBoxPatternCriterion;
@@ -52,13 +62,13 @@ public class PatternsEditionPane extends BorderPane {
 	private CheckMenuItem disableItem;
 	private TextField occurencesField;
 	private TextField fieldName;
-  private int colorLabel;   // the label of the last color assign to a hexagon
+	private int colorLabel;   // the label of the last color assign to a hexagon
 
 	public PatternsEditionPane(HBoxPatternCriterion parent) {
 		super();
 		this.parent = parent;
 		initialize();
-    colorLabel = 0;
+		colorLabel = 0;
 	}
 
 	private void initialize() {
@@ -81,7 +91,7 @@ public class PatternsEditionPane extends BorderPane {
 			File file = fileChooser.showSaveDialog(parent.getApplication().getStage());
 
 			if (file != null) {
-				Fragment pattern = selectedPatternGroup.exportFragment();
+				Pattern pattern = selectedPatternGroup.exportPattern();
 				try {
 					pattern.export(file);
 				} catch (IOException e1) {
@@ -97,10 +107,10 @@ public class PatternsEditionPane extends BorderPane {
 			if (file != null) {
 				boolean ok = true;
 
-				Fragment pattern = null;
+				Pattern pattern = null;
 
 				try {
-					pattern = Fragment.importFragment(file);
+					pattern = Pattern.importPattern(file);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					ok = false;
@@ -131,7 +141,7 @@ public class PatternsEditionPane extends BorderPane {
 					addEntry();
 
 					PatternGroup group = new PatternGroup(this, maxColumn, index);
-					group.importFragment(pattern);
+					group.importPattern(pattern);
 					patternGroups.set(index, group);
 					select(index);
 
@@ -277,58 +287,65 @@ public class PatternsEditionPane extends BorderPane {
 		addButton.setPrefWidth(125);
 
 		applyButton.setOnAction(e -> {
-			ArrayList<Fragment> fragments = new ArrayList<>();
+			ArrayList<Pattern> patterns = new ArrayList<>();
 			for (PatternGroup group : patternGroups) {
-				fragments.add(buildPattern(group));
+				patterns.add(buildPattern(group));
 			}
 
-			FragmentGenerationType type = null;
-			GeneratorCriterion criterion = null;
-
+			PatternGenerationType type = null;
+			String subject = "";
+			PatternResolutionInformations patternInformations = null; 
+			
 			if (boxItems.size() == 1) {
 
 				if (!disableItem.isSelected()) {
 					if (!Utils.isNumber(occurencesField.getText())) {
-						type = FragmentGenerationType.SINGLE_FRAGMENT_1;
-						parent.refreshPatternInformations("SINGLE_PATTERN");
-						criterion = new GeneratorCriterion(Subject.SINGLE_PATTERN, Operator.NONE, "");
+						type = PatternGenerationType.SINGLE_PATTERN_1;
+						subject = "SINGLE_PATTERN";
+						patternInformations = new PatternResolutionInformations(type, patterns);
+						parent.getPatternProperty().setModule(new SinglePattern2Module(patternInformations.getPatterns().get(0), false,
+								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 					}
 
 					else {
-						type = FragmentGenerationType.FRAGMENT_OCCURENCES;
-						parent.refreshPatternInformations("OCCURENCES_PATTERN: " + occurencesField.getText());
-						criterion = new GeneratorCriterion(Subject.OCCURENCE_PATTERN, Operator.EQ,
-								occurencesField.getText());
+						type = PatternGenerationType.PATTERN_OCCURENCES;
+						subject = "OCCURENCES_PATTERN: " + occurencesField.getText();
+//TODO
+						//expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=", Integer.parseInt(occurencesField.getText()));
 					}
 				}
 
 				else {
-					parent.refreshPatternInformations("FORBIDDEN_PATTERN");
-					type = FragmentGenerationType.FORBIDDEN_FRAGMENT;
-					criterion = new GeneratorCriterion(Subject.FORBIDDEN_PATTERN, Operator.NONE, "");
+					type = PatternGenerationType.FORBIDDEN_PATTERN;
+					subject = "FORBIDDEN_PATTERN";
+					patternInformations = new PatternResolutionInformations(type, patterns);
+					parent.getPatternProperty().setModule(new ForbiddenPatternModule1(patternInformations.getPatterns().get(0),
+							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 				}
 			}
 
 			else if (itemUndisjunct.isSelected() || itemDisjunct.isSelected() || itemNNDisjunct.isSelected()) {
-				parent.refreshPatternInformations("MULTIPLE_PATTERNS");
-				type = FragmentGenerationType.MULTIPLE_FRAGMENT_1;
-				criterion = new GeneratorCriterion(Subject.MULTIPLE_PATTERNS, Operator.NONE, "");
+				type = PatternGenerationType.MULTIPLE_PATTERN_1;
+				subject = "MULTIPLE_PATTERNS";
+				patternInformations = new PatternResolutionInformations(type, patterns);
+				if (itemUndisjunct.isSelected()) 
+					patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
+				else if (itemDisjunct.isSelected())
+					patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
+				else if (itemNNDisjunct.isSelected())
+					patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
+
+				parent.getPatternProperty().setModule(new MultiplePatterns1Module(patternInformations.getPatterns(),
+						VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST, patternInformations.getInterraction()));
 			}
 
-			FragmentResolutionInformations patternInformations = new FragmentResolutionInformations(type, fragments);
-			parent.setFragmentResolutionInformations(patternInformations);
-			parent.setCriterion(criterion);
+			parent.setPatternResolutionInformations(patternInformations);
+			parent.setExpression(new PatternExpression(subject, patternInformations));
 
 			
-			if (itemUndisjunct.isSelected()) 
-				patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
 			
-			else if (itemDisjunct.isSelected())
-				patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
-			
-			else if (itemNNDisjunct.isSelected())
-				patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
-			
+			parent.addPropertyExpression((ModelPropertySet) parent.getPatternProperty().getPropertySet());
+			parent.refreshPatternInformations(subject);
 			hide();
 
 		});
@@ -363,7 +380,7 @@ public class PatternsEditionPane extends BorderPane {
 
 	public void addEntry() {
 
-		Label label = new Label("unknown_fragment");
+		Label label = new Label("unknown_pattern");
 
 		PatternCloseButton button = new PatternCloseButton(this, patternGroups.size());
 
@@ -476,8 +493,8 @@ public class PatternsEditionPane extends BorderPane {
 		}
 	}
 
-	public static Fragment buildPattern(PatternGroup group) {
-		return group.exportFragment();
+	public static Pattern buildPattern(PatternGroup group) {
+		return group.exportPattern();
 	}
 
 	private void unselectAllMenus(CheckMenuItem... items) {
@@ -496,6 +513,6 @@ public class PatternsEditionPane extends BorderPane {
   }
 
 	private void hide() {
-		parent.hideFragmentStage();
+		parent.hidePatternStage();
 	}
 }

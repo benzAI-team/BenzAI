@@ -4,19 +4,17 @@ import java.util.ArrayList;
 
 import generator.GeneralModel;
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Subject;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.PropertyExpression;
 
 public class RhombusModule extends RectangleModule2 {
-
-	public RhombusModule(GeneralModel generalModel, ArrayList<GeneratorCriterion> criterions) {
-		super(generalModel, criterions);
-	}
 
 	@Override
 	public void postConstraints() {
 
 		super.postConstraints();
 
+<<<<<<< HEAD
 		for (GeneratorCriterion criterion : criterions) {
 
 			if (criterion.getSubject() == Subject.RHOMBUS_DIMENSION) {
@@ -27,5 +25,13 @@ public class RhombusModule extends RectangleModule2 {
 
 		// ~ generalModel.getProblem().arithm(rotation, "=", 1).post();
 		generalModel.getProblem().arithm(height, "=", width).post();
+=======
+		for (PropertyExpression binaryNumericalExpression : this.getExpressionList()) {
+			String operator = ((BinaryNumericalExpression)binaryNumericalExpression).getOperator();
+			int value = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();
+			getGeneralModel().getProblem().arithm(getXW(), operator, value).post();
+		}
+		getGeneralModel().getProblem().arithm(getXH(), "=", getXW()).post();
+>>>>>>> refactoringGenerator
 	}
 }

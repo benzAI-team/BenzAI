@@ -59,4 +59,16 @@ public class RelativeMatrix {
 		}
 		return null;
 	}
+	
+	public int maxValue() {
+		int maxValue = - 1;
+		for (int i = 0 ; i < width ; i++) {
+			for (int j = 0 ; j < height ; j++) {
+				if (M[i][j] > maxValue)
+					maxValue = M[i][j];
+			}
+		}
+		return maxValue;
+		
+	}
 }

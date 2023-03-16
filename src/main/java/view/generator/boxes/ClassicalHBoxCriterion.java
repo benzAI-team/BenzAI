@@ -2,13 +2,15 @@ package view.generator.boxes;
 
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import modelProperty.ModelProperty;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
-public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
+public abstract class ClassicalHBoxCriterion extends HBoxModelCriterion {
 
-	public ClassicalHBoxCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public ClassicalHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 
@@ -19,27 +21,27 @@ public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
 	protected void checkValidity() {
 
 		if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
-			valid = false;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().addAll(warningIcon, deleteButton);
+			setValid(false);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 		}
 
 		else {
-			valid = true;
-			this.getChildren().remove(warningIcon);
-			this.getChildren().remove(deleteButton);
-			this.getChildren().add(deleteButton);
+			setValid(true);
+			this.getChildren().remove(getWarningIcon());
+			this.getChildren().remove(getDeleteButton());
+			this.getChildren().add(getDeleteButton());
 		}
 
-		if (valid)
-			parent.refreshGenerationPossibility();
+		if (isValid())
+			getPane().refreshGenerationPossibility();
 	}
 
 	@Override
 	protected void initialize() {
 
-		valid = false;
+		setValid(false);
 
 		operatorChoiceBox = new ChoiceBox<String>();
 		operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=");
@@ -55,7 +57,7 @@ public abstract class ClassicalHBoxCriterion extends HBoxCriterion {
 			checkValidity();
 		});
 
-		this.getChildren().addAll(operatorChoiceBox, fieldValue, warningIcon, deleteButton);
+		this.getChildren().addAll(operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
 
 	}
 

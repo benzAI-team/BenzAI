@@ -3,23 +3,27 @@ package view.generator.boxes;
 import java.util.ArrayList;
 
 import generator.GeneratorCriterion;
-import generator.GeneratorCriterion.Operator;
-import generator.GeneratorCriterion.Subject;
+import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import modelProperty.ModelProperty;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
+import modelProperty.expression.IrregularityExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
+import view.primaryStage.ScrollPaneWithPropertyList;
 
-public class HBoxIrregularityCriterion extends HBoxCriterion {
+public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> irregularityChoiceBox;
 	private ChoiceBox<String> operatorChoiceBox;
 	private TextField fieldValue;
 
-	public HBoxIrregularityCriterion(GeneratorPane parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxIrregularityCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 
@@ -32,10 +36,10 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 
 		if (irregularityValue != null && irregularityValue.equals("Compute irregularity")) {
 
-			valid = true;
+			setValid(true);
 			this.getChildren().remove(operatorChoiceBox);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(warningIcon);
+			this.getChildren().remove(getWarningIcon());
 		}
 
 		else {
@@ -46,9 +50,9 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 			
 			if ((split.length == 2 && Utils.isNumber(split[0]) && Utils.isNumber(split[1]))) {
 				
-				valid = true;
-				this.getChildren().remove(warningIcon);
-				this.getChildren().remove(deleteButton);
+				setValid(true);
+				this.getChildren().remove(getWarningIcon());
+				this.getChildren().remove(getDeleteButton());
 
 				if (!this.getChildren().contains(operatorChoiceBox))
 					this.getChildren().add(operatorChoiceBox);
@@ -58,16 +62,16 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 
 				fieldValue.setText(split[0] + "." + split[1]);
 				
-				this.getChildren().addAll(deleteButton);
+				this.getChildren().addAll(getDeleteButton());
 			}
 			
 			else {
 			
 				if (irregularityValue == null || operatorValue == null || !Utils.isNumber(fieldStr)) {
 
-					valid = false;
-					this.getChildren().remove(warningIcon);
-					this.getChildren().remove(deleteButton);
+					setValid(false);
+					this.getChildren().remove(getWarningIcon());
+					this.getChildren().remove(getDeleteButton());
 
 					if (!this.getChildren().contains(operatorChoiceBox))
 						this.getChildren().add(operatorChoiceBox);
@@ -75,14 +79,14 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 					if (!this.getChildren().contains(fieldValue))
 						this.getChildren().add(fieldValue);
 
-					this.getChildren().addAll(warningIcon, deleteButton);
+					this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 				}
 
 				else if (!irregularityValue.equals("Compute irregularity")) {
 				
-					valid = true;
-					this.getChildren().remove(warningIcon);
-					this.getChildren().remove(deleteButton);
+					setValid(true);
+					this.getChildren().remove(getWarningIcon());
+					this.getChildren().remove(getDeleteButton());
 
 					if (!this.getChildren().contains(operatorChoiceBox))
 						this.getChildren().add(operatorChoiceBox);
@@ -90,7 +94,7 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 					if (!this.getChildren().contains(fieldValue))
 						this.getChildren().add(fieldValue);
 
-					this.getChildren().addAll(deleteButton);
+					this.getChildren().addAll(getDeleteButton());
 				}
 			}
 		}
@@ -123,54 +127,21 @@ public class HBoxIrregularityCriterion extends HBoxCriterion {
 
 		//deleteButton = new DeleteButton(this);
 
-		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
+		setWarningIcon(new ImageView(new Image("/resources/graphics/icon-warning.png")));
 
-		this.getChildren().addAll(irregularityChoiceBox, operatorChoiceBox, fieldValue, warningIcon, deleteButton);
+		this.getChildren().addAll(irregularityChoiceBox, operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
 		checkValidity();
 	}
 
 	@Override
-	public ArrayList<GeneratorCriterion> buildCriterions() {
-
-		ArrayList<GeneratorCriterion> criterions = new ArrayList<>();
-
-		if (valid) {
-
-			String choiceBoxIrregValue = irregularityChoiceBox.getValue();
-
-			criterions.add(new GeneratorCriterion(Subject.VIEW_IRREG, Operator.NONE, ""));
-
-			if (!choiceBoxIrregValue.equals("Compute irregularity")) {
-
-				Subject subject;
-
-				if (choiceBoxIrregValue.equals("XI"))
-					subject = Subject.XI;
-
-				else if (choiceBoxIrregValue.equals("N0"))
-					subject = Subject.N0;
-
-				else if (choiceBoxIrregValue.equals("N1"))
-					subject = Subject.N1;
-
-				else if (choiceBoxIrregValue.equals("N2"))
-					subject = Subject.N2;
-
-				else if (choiceBoxIrregValue.equals("N3"))
-					subject = Subject.N3;
-
-				else
-					subject = Subject.N4;
-
-				Operator operator = GeneratorCriterion.getOperator(operatorChoiceBox.getValue());
-
-				String value = fieldValue.getText();
-
-				criterions.add(new GeneratorCriterion(subject, operator, value));
-			}
+	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+		if (isValid()) {
+			String parameter = irregularityChoiceBox.getValue();
+			String operator = operatorChoiceBox.getValue();
+			// 0 =< Xi =< 1 must be multiplied by 100 and converted to an int 
+			int value = parameter == "XI" ? (int)(Double.parseDouble(fieldValue.getText()) * 100) : Integer.parseInt(fieldValue.getText());
+			modelPropertySet.getById("irregularity").addExpression(new IrregularityExpression("irregularity", parameter, operator, value));
 		}
-
-		return criterions;
 	}
 
 }

@@ -3,7 +3,8 @@ package view.filtering;
 import java.util.ArrayList;
 
 import application.BenzenoidApplication;
-import generator.fragments.FragmentResolutionInformations;
+import generator.GeneralModel;
+import generator.patterns.PatternResolutionInformations;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,6 +25,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import modelProperty.ModelPropertySet;
+import modelProperty.expression.BinaryNumericalExpression;
 import molecules.Molecule;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
@@ -32,29 +35,34 @@ import view.collections.BenzenoidsCollectionsManagerPane;
 import view.filtering.boxes.HBoxDefaultFilteringCriterion;
 import view.filtering.boxes.HBoxFilteringCriterion;
 import view.filtering.criterions.FilteringCriterion;
+import view.generator.ChoiceBoxCriterion;
+import view.generator.boxes.HBoxCriterion;
+import view.generator.boxes.HBoxDefaultCriterion;
+import view.primaryStage.ScrollPaneWithPropertyList;
+import modelProperty.testers.Tester;
 
-public class FilteringPane extends ScrollPane {
+public class FilteringPane extends ScrollPaneWithPropertyList {
 
 	private BenzenoidApplication application;
 	private BenzenoidsCollectionsManagerPane collectionsPane;
 
 	private Button addButton;
-  private Button closeButton;
+	private Button closeButton;
 	private Button filterButton;
 
 	private GridPane gridPane;
 
-	private ArrayList<ChoiceBoxFilteringCriterion> choiceBoxesCriterions;
-	private ArrayList<HBoxFilteringCriterion> hBoxesCriterions;
 	private ChoiceBox<String> collectionChoiceBox;
 
-	private FragmentResolutionInformations fragmentsInformations;
+	private PatternResolutionInformations patternsInformations;
 
 	private Label titleLabel;
 
 	private int lineConsole;
 	private int indexFiltering;
 	
+	
+
 	public FilteringPane(BenzenoidApplication application, BenzenoidsCollectionsManagerPane collectionsPane) {
 		this.application = application;
 		this.collectionsPane = collectionsPane;
@@ -67,25 +75,57 @@ public class FilteringPane extends ScrollPane {
 		titleLabel = new Label("Filter a collection");
 		titleLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
 
-		choiceBoxesCriterions = new ArrayList<>();
-		hBoxesCriterions = new ArrayList<>();
 
-		initializeButtons();
+		buildButtons();
 		initializeGridPane();
 
 		this.setPrefWidth(this.getPrefWidth());
 		this.setContent(gridPane);
 
-		ChoiceBoxFilteringCriterion choiceBoxCriterion = new ChoiceBoxFilteringCriterion(0, this);
-    Tooltip.install(addButton, new Tooltip("Add new criterion"));
-		choiceBoxesCriterions.add(choiceBoxCriterion);
-		hBoxesCriterions.add(new HBoxDefaultFilteringCriterion(this, choiceBoxCriterion));
+		setChoiceBoxesCriterions(new ArrayList<>());
+		setHBoxesCriterions(new ArrayList<>());
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
+		Tooltip.install(addButton, new Tooltip("Add new criterion"));
+		getChoiceBoxesCriterions().add(choiceBoxCriterion);
+		getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
-		refresh();
+		placeComponents();
 	}
 
-	private void initializeButtons() {
+	private void buildButtons() {
+		buildAddButton();
+		buildCloseButton();
+		buildFilterButton();
+	}
 
+	private void buildFilterButton() {
+		filterButton = new Button("Filter");
+
+		filterButton.setOnAction(e -> {
+
+			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
+
+			if (invalidIndexes.size() == 0)
+				filter();
+			else
+				Utils.alert("Please, select at least one criterion");
+		});
+	}
+
+	private void buildCloseButton() {
+		ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
+		closeButton = new Button();
+		closeButton.setGraphic(imageClose);
+		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
+		closeButton.resize(30, 30);
+		closeButton.setStyle("-fx-background-color: transparent;");
+
+		closeButton.setOnAction(e -> {
+			application.switchMode(application.getPanes().getCollectionsPane());
+		});
+	}
+
+	private void buildAddButton() {
 		ImageView image = new ImageView(new Image("/resources/graphics/icon-add.png"));
 
 		addButton = new Button();
@@ -97,50 +137,27 @@ public class FilteringPane extends ScrollPane {
 
 		addButton.setOnAction(e -> {
 
-			int nbCriterions = choiceBoxesCriterions.size();
+			int nbCriterions = getChoiceBoxesCriterions().size();
 
 			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
 
 			if (invalidIndexes.size() == 0) {
 
-				ChoiceBoxFilteringCriterion choiceBoxCriterion = new ChoiceBoxFilteringCriterion(nbCriterions, this);
-				choiceBoxesCriterions.add(choiceBoxCriterion);
-				hBoxesCriterions.add(new HBoxDefaultFilteringCriterion(this, choiceBoxCriterion));
+				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, getModelPropertySet());
+				getChoiceBoxesCriterions().add(choiceBoxCriterion);
+				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
 				nbCriterions++;
 
 				System.out.println(nbCriterions + " criterions");
 
-				refresh();
+				placeComponents();
 
 			}
 
 			else {
 				Utils.alert("Invalid criterion(s)");
 			}
-		});
-    
-    ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
-		closeButton = new Button();
-		closeButton.setGraphic(imageClose);
-		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
-		closeButton.resize(30, 30);
-		closeButton.setStyle("-fx-background-color: transparent;");
-
-		closeButton.setOnAction(e -> {
-			application.switchMode(application.getPanes().getCollectionsPane());
-		});
-
-		filterButton = new Button("Filter");
-
-		filterButton.setOnAction(e -> {
-
-			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
-
-			if (invalidIndexes.size() == 0)
-        filter(getCriterions());
-      else
-        Utils.alert("Please, select at least one criterion");
 		});
 	}
 
@@ -153,22 +170,23 @@ public class FilteringPane extends ScrollPane {
 		gridPane.setVgap(5);
 	}
 
-	public void setHBox(int index, HBoxFilteringCriterion hBox) {
-		hBoxesCriterions.set(index, hBox);
-		refresh();
+	public void setHBox(int index, HBoxCriterion hBox) {
+		getHBoxesCriterions().set(index, hBox);
+		placeComponents();
 	}
 
-	public void refresh() {
+	@Override
+	public void placeComponents() {
 
-		int nbCriterions = hBoxesCriterions.size();
+		int nbCriterions = getHBoxesCriterions().size();
 		gridPane.getChildren().clear();
 
 		gridPane.add(titleLabel, 0, 0, 2, 1);
 
 		for (int i = 0; i < nbCriterions; i++) {
-			GridPane.setValignment(hBoxesCriterions.get(i), VPos.TOP);
-			gridPane.add(choiceBoxesCriterions.get(i), 0, i + 1);
-			gridPane.add(hBoxesCriterions.get(i), 1, i + 1);
+			GridPane.setValignment(getHBoxesCriterions().get(i), VPos.TOP);
+			gridPane.add(getChoiceBoxesCriterions().get(i), 0, i + 1);
+			gridPane.add(getHBoxesCriterions().get(i), 1, i + 1);
 		}
 
 		collectionChoiceBox = new ChoiceBox<>();
@@ -188,18 +206,9 @@ public class FilteringPane extends ScrollPane {
 
 	}
 
-	private ArrayList<FilteringCriterion> getCriterions() {
-
-		ArrayList<FilteringCriterion> criterions = new ArrayList<>();
-    
-    for (HBoxFilteringCriterion hBoxCriterion : hBoxesCriterions) {
-      criterions.addAll(hBoxCriterion.buildCriterions());
-		}
-
-		return criterions;
-	}
-
-	private void filter(ArrayList<FilteringCriterion> criterions) {
+/**
+ */
+	private void filter() {
 
 		BenzenoidsCollectionsManagerPane managerPane = collectionsPane;
 
@@ -211,12 +220,38 @@ public class FilteringPane extends ScrollPane {
 				managerPane.getNbCollectionPanes(), managerPane.getNextCollectionPaneLabel(collectionPane.getName() + "(filter)"));
 
 		managerPane.log("Filtering collection: " + collectionPane.getName(), true);
-		for (FilteringCriterion criterion : criterions) 
+		for (HBoxCriterion criterion : this.getHBoxesCriterions()) 
 			managerPane.log(criterion.toString(), false);
-		
-		
+
+
 		int size = collectionPane.getMolecules().size();
 		
+		getModelPropertySet().buildModelPropertySet(getHBoxesCriterions());
+
+		///////////////////////////////
+//		for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
+//
+//			indexFiltering = i;
+//
+//			Molecule molecule = collectionPane.getMolecules().get(i);
+//			if(Tester.testAll(molecule, getModelPropertySet())) {
+//				DisplayType displayType = collectionPane.getDisplayType(i);
+//				newCollectionPane.addBenzenoid(molecule, displayType);
+//			}
+//
+//			Platform.runLater(new Runnable() {
+//				@Override
+//				public void run() {
+//					if (indexFiltering == 1) {
+//						managerPane.log((indexFiltering+1) + " / " + size , false);
+//						lineConsole = collectionPane.getConsole().getNbLines() - 1;
+//					} else
+//						managerPane.changeLineConsole((indexFiltering+1) + " / " + size, lineConsole);
+//				}
+//			});
+//
+//		}
+		////////////////////////////
 		final Service<Void> calculateService = new Service<Void>() {
 
 			@Override
@@ -225,14 +260,12 @@ public class FilteringPane extends ScrollPane {
 
 					@Override
 					protected Void call() throws Exception {
-						
 						for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
 
 							indexFiltering = i;
-							
-							Molecule molecule = collectionPane.getMolecules().get(i);
-							if (FilteringCriterion.checksCriterions(molecule, criterions)) {
 
+							Molecule molecule = collectionPane.getMolecules().get(i);
+							if(Tester.testAll(molecule, getModelPropertySet())) {
 								DisplayType displayType = collectionPane.getDisplayType(i);
 								newCollectionPane.addBenzenoid(molecule, displayType);
 							}
@@ -247,7 +280,7 @@ public class FilteringPane extends ScrollPane {
 										managerPane.changeLineConsole((indexFiltering+1) + " / " + size, lineConsole);
 								}
 							});
-							
+
 						}
 
 						return null;
@@ -255,7 +288,7 @@ public class FilteringPane extends ScrollPane {
 				};
 			}
 		};
-		
+
 		calculateService.stateProperty().addListener(new ChangeListener<State>() {
 
 			@Override
@@ -263,19 +296,18 @@ public class FilteringPane extends ScrollPane {
 
 				switch (newValue) {
 				case FAILED:
-					
+
 					Utils.alert("Filtering failed.");
 					break;
 				case CANCELLED:
-					
+
 					Utils.alert("Filtering canceled");
 					break;
-				case SUCCEEDED:
-					
-          if (newCollectionPane.getMolecules().size() == 0) {
-            Utils.alert("There is no remaining benzenoids after filtering ");
-            return;
-          }
+				case SUCCEEDED:					
+					if (newCollectionPane.getMolecules().size() == 0) {
+						Utils.alert("There is no remaining benzenoids after filtering ");
+						return;
+					}
 					newCollectionPane.refresh();
 
 					managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
@@ -283,7 +315,7 @@ public class FilteringPane extends ScrollPane {
 					managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
 
 					collectionsPane.log("Filtering collection " + collectionPane.getName(), true);
-					for (FilteringCriterion criterion : criterions) {
+					for (HBoxCriterion criterion : getHBoxesCriterions()) {
 						application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
 					}
 					collectionsPane.log("-> " + newCollectionPane.getName(), false);
@@ -300,34 +332,33 @@ public class FilteringPane extends ScrollPane {
 			}
 
 		});
-		
+
 		calculateService.start();
-		
+
 	}
 
 	private ArrayList<Integer> containsInvalidCriterion() {
 
 		ArrayList<Integer> indexes = new ArrayList<>();
 
-		for (int i = 0; i < hBoxesCriterions.size(); i++) {
-			if (!hBoxesCriterions.get(i).isValid())
+		for (int i = 0; i < getHBoxesCriterions().size(); i++) {
+			if (!getHBoxesCriterions().get(i).isValid())
 				indexes.add(i);
 		}
-
 		return indexes;
 	}
 
-	public void removeCriterion(ChoiceBoxFilteringCriterion choiceBoxCriterion, HBoxFilteringCriterion hBoxCriterion) {
+	public void removeCriterion(ChoiceBoxCriterion choiceBoxCriterion, HBoxCriterion hBoxCriterion) {
 
-		choiceBoxesCriterions.remove(choiceBoxCriterion);
-		hBoxesCriterions.remove(hBoxCriterion);
+		getChoiceBoxesCriterions().remove(choiceBoxCriterion);
+		getHBoxesCriterions().remove(hBoxCriterion);
 
-		int nbCriterions = hBoxesCriterions.size();
+		int nbCriterions = getHBoxesCriterions().size();
 
 		for (int i = 0; i < nbCriterions; i++)
-			choiceBoxesCriterions.get(i).setIndex(i);
+			getChoiceBoxesCriterions().get(i).setIndex(i);
 
-		refresh();
+		placeComponents();
 	}
 
 	public void selectChoiceBox(BenzenoidCollectionPane collectionPane) {
@@ -338,11 +369,19 @@ public class FilteringPane extends ScrollPane {
 		return application;
 	}
 
-	public void setFragmentResolutionInformations(FragmentResolutionInformations fragmentsInformations) {
-		this.fragmentsInformations = fragmentsInformations;
+	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
+		this.patternsInformations = patternsInformations;
 	}
 
-	public FragmentResolutionInformations getPatternInformations() {
-		return fragmentsInformations;
+	public PatternResolutionInformations getPatternInformations() {
+		return patternsInformations;
 	}
+
+	@Override
+	public void refreshGenerationPossibility() {
+		// TODO Auto-generated method stub
+
+	}
+
+
 }
