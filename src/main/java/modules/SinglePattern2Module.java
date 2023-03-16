@@ -282,8 +282,9 @@ public class SinglePattern2Module extends Module {
 
 	@Override
 	public void changeSolvingStrategy() {
+		GeneralModel generalModel = getGeneralModel();
 
-		IntVar[] branchingVariables = new IntVar[generalModel.getChanneling().length + fragmentCorrespondances.length];
+		IntVar[] branchingVariables = new IntVar[generalModel.getChanneling().length + patternCorrespondances.length];
 
 		int index = 0;
 
@@ -296,7 +297,7 @@ public class SinglePattern2Module extends Module {
 				index++;
 			}
 
-			for (IntVar x : fragmentCorrespondances) {
+			for (IntVar x : patternCorrespondances) {
 				System.out.println(index + " " + x.toString());
 				branchingVariables[index] = x;
 				index++;
@@ -306,7 +307,7 @@ public class SinglePattern2Module extends Module {
 
 		case CHANNELING_LAST:
 
-			for (IntVar x : fragmentCorrespondances) {
+			for (IntVar x : patternCorrespondances) {
 				branchingVariables[index] = x;
 				index++;
 			}

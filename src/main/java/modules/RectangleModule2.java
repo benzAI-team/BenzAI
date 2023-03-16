@@ -19,8 +19,8 @@ public class RectangleModule2 extends Module {
 	private BoolVar[][] lines;
 	private BoolVar[][] columns;
 
-	protected IntVar width;
-	protected IntVar height;
+	private IntVar width;
+	private IntVar height;
 
 	private BoolVar zero;
 
@@ -248,6 +248,14 @@ public class RectangleModule2 extends Module {
 	public void changeGraphVertices() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public IntVar getWidth() {
+		return width;
+	}
+
+	public IntVar getHeight() {
+		return height;
 	}
 
 }

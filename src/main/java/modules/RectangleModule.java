@@ -31,8 +31,8 @@ public class RectangleModule extends Module {
 	private IntVar[] cSum;
 	private IntVar[] dSum;
 
-	protected IntVar height;
-	protected IntVar width;
+	private IntVar height;
+	private IntVar width;
 
 
 	@Override
@@ -128,13 +128,13 @@ public class RectangleModule extends Module {
 			RectangleExpression rectangleExpression = (RectangleExpression)expression;
 
 			if(rectangleExpression.getHeight() >= 0)
-				generalModel.getProblem().arithm(getXH(), rectangleExpression.getHeightOperator(), rectangleExpression.getHeight()).post();
+				generalModel.getProblem().arithm(getHeight(), rectangleExpression.getHeightOperator(), rectangleExpression.getHeight()).post();
 			if(rectangleExpression.getWidth() >= 0)
-				generalModel.getProblem().arithm(getXW(), rectangleExpression.getWidthOperator(), rectangleExpression.getWidth()).post();
+				generalModel.getProblem().arithm(getWidth(), rectangleExpression.getWidthOperator(), rectangleExpression.getWidth()).post();
 		}
 
-		generalModel.getProblem().times(getXH(), getXW(), generalModel.getNbVerticesVar()).post(); // x * a = z
-		generalModel.getProblem().arithm(getXH(), ">=", getXW()).post(); // xH >= xw
+		generalModel.getProblem().times(getHeight(), getWidth(), generalModel.getNbVerticesVar()).post(); // x * a = z
+		generalModel.getProblem().arithm(getHeight(), ">=", getWidth()).post(); // xH >= xw
 
 		// generalModel.getProblem().arithm(generalModel.getChanneling()[0], "=",
 		// 1).post(); // The top-left hexagon must be present
@@ -146,8 +146,8 @@ public class RectangleModule extends Module {
 	@Override
 	public void addVariables() {
 		GeneralModel generalModel = getGeneralModel();
-		generalModel.addVariable(getXW());
-		generalModel.addVariable(getXH());
+		generalModel.addVariable(getWidth());
+		generalModel.addVariable(getHeight());
 	}
 
 	private void buildD1() {
@@ -277,11 +277,11 @@ public class RectangleModule extends Module {
 		return "RectangleModule";
 	}
 
-	public IntVar getXW() {
+	public IntVar getWidth() {
 		return width;
 	}
 
-	public IntVar getXH() {
+	public IntVar getHeight() {
 		return height;
 	}
 }
