@@ -249,9 +249,87 @@ public class InsertScriptFinal {
 		
 		
 	}
-	
+
+	private static String buildAmesFormat(File molFile, ResultLogFile log, File comFile) throws IOException {
+
+		if (!molFile.exists() || !comFile.exists())
+			return "unknown";
+
+		Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
+		Irregularity irregularity = molecule.getIrregularity();
+		String geometry = getGeometry(comFile);
+		String [] geometries = geometry.split(" ");
+		ArrayList<Double> frequencies = log.getFrequencies();
+		ArrayList<Double> intensities = log.getIntensities();
+
+
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("<specie uid=\"???\">\n");
+
+		builder.append("<comments>\n");
+		builder.append("<comment type=\"generic\"># b3lyp/6-31g opt freq</comment>\n");
+		builder.append("</comments>\n");
+
+		builder.append("<formula>C" + molecule.getNbNodes() + "H" + molecule.getNbHydrogens() + "</formula>\n");
+		builder.append("<charge>unknown</charge>\n");
+		builder.append("<method>B3LYP</method>\n");
+
+		builder.append("<n_solo>" + irregularity.getGroup(0) + "</n_solo>\n");
+		builder.append("<n_duo>" + irregularity.getGroup(1) + "</n_duo>\n");
+		builder.append("<n_trio>" + irregularity.getGroup(2) + "</n_trio>\n");
+		builder.append("<n_quartet>" + irregularity.getGroup(3) + "</n_quarter>\n");
+		builder.append("<n_quintet>" + 0 + "</n_quintet>\n");
+
+		builder.append("<geometry>\n");
+		int position = 1;
+
+		for (int i = 0 ; i < geometries.length ; i+=4) {
+			String atom = geometries[i];
+			String x = geometries[i+1];
+			String y = geometries[i+2];
+			String z = geometries[i+3];
+
+			String atomType;
+			if (atom.equals("C"))
+				atomType = "6";
+			else
+				atomType = "1";
+
+			builder.append("<atom>\n");
+			builder.append("<position>" + position + "</position>\n");
+			builder.append("<x>" + x + "</x>\n");
+			builder.append("<y>" + y + "</y>\n");
+			builder.append("<z>" + z + "</z>\n");
+			builder.append("<type>" + atomType + "</type>");
+			builder.append("</atom>\n");
+
+			position ++;
+		}
+
+		builder.append("</geometry>\n");
+
+		builder.append("<transitions>\n");
+		for (int i = 0 ; i < frequencies.size() ; i++) {
+			Double frequency = frequencies.get(i);
+			Double intensity = intensities.get(i);
+
+			builder.append("<mode>\n");
+			builder.append("<frequency scale=\"\">" + frequency + "</frequency>\n");
+			builder.append("<intensity>" + intensity + "</intensity>\n");
+			builder.append("<symmetry>unknown</symmetry>\n");
+			builder.append("</mode>\n");
+		}
+
+		builder.append("</transitions>\n");
+
+		builder.append("</specie>\n");
+
+		return builder.toString();
+	}
+
 	//fill ir_spectra table
-	public static void insertIRSpectra(File molFile) throws IOException {
+	public static void insertIRSpectra(File molFile, File comFile) throws IOException {
 		File logFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".log"));
 		
 		ResultLogFile log = SpectrumsComputer.parseLogFile(logFile.getAbsolutePath());
@@ -269,7 +347,9 @@ public class InsertScriptFinal {
 		double finalEnergy = log.getFinalEnergy().get(log.getFinalEnergy().size() - 1);
 		
 		StringBuilder insert = new StringBuilder();
-		
+
+		String amesFormat = buildAmesFormat(molFile, log, comFile);
+
 		insert.append("INSERT INTO ir_spectra (idSpectra, idBenzenoid, frequencies, intensities, zeroPointEnergy, finalEnergy) VALUES (\n");
 		insert.append(idSpectra + ", " + idBenzenoid + ", " + quote(frequencies.toString()) + ", " + quote(intensities.toString()) + ", " + zpe + ", " + finalEnergy);
 		insert.append(");\n");
@@ -310,9 +390,10 @@ public class InsertScriptFinal {
 				System.out.println("Treating " + molFile.getName());
 				
 				File inchiFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_coord.cml.inchi"));
-				
+				File comFile = new File(molFile.getName().replace(".graph_coord", ".com"));
+
 				insertBenzenoid(molFile, inchiFile);
-				insertIRSpectra(molFile);
+				insertIRSpectra(molFile, comFile);
 				
 				File ims2dTextFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_ims2d1a.txt"));
 				File ims2dMapFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_ims2d1a.png"));

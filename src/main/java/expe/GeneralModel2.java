@@ -13,11 +13,9 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
-import generator.GeneralModel;
 import generator.fragments.Fragment;
 import molecules.Node;
 import utils.Couple;
-import utils.Utils;
 
 public class GeneralModel2 {
 
@@ -32,14 +30,15 @@ public class GeneralModel2 {
 
 	private static final int star = -1;
 
-	/*/
+	/*
+	 * /
 	 * 
 	 */
-	
+
 	private static Couple<Integer, Integer>[] coordsCorrespondance;
-	private static int [][] adjacencyMatrix;	
+	private static int[][] adjacencyMatrix;
 	private static ArrayList<Integer> border;
-	
+
 	private static void buildAdjacencyMatrix() {
 
 		adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
@@ -120,7 +119,7 @@ public class GeneralModel2 {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static void buildCoordsCorrespondance() {
 
@@ -134,8 +133,8 @@ public class GeneralModel2 {
 			}
 		}
 	}
-	
-	private static Fragment convertToPattern(IntVar [] X) {
+
+	private static Fragment convertToPattern(IntVar[] X) {
 
 		ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
 
@@ -247,7 +246,7 @@ public class GeneralModel2 {
 
 		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
 	}
-	
+
 	private static Tuples buildTable(int nbNeighbors) {
 
 		Tuples table = new Tuples(true);
@@ -359,7 +358,7 @@ public class GeneralModel2 {
 
 		return neighbors;
 	}
-	
+
 	private static boolean has6Neighbors(BoolVar[] neighbors) {
 		for (BoolVar x : neighbors)
 			if (x == null)
@@ -367,7 +366,7 @@ public class GeneralModel2 {
 		return true;
 	}
 
-	public static void postNoHolesOfSize1Constraint(BoolVar [] X) {
+	public static void postNoHolesOfSize1Constraint(BoolVar[] X) {
 
 		BoolVar[] varClause = new BoolVar[7];
 		IntIterableRangeSet[] valClause = new IntIterableRangeSet[7];
@@ -393,37 +392,40 @@ public class GeneralModel2 {
 			}
 		}
 	}
-	
-	public static void postBordersConstraints(BoolVar [] X, Model model) {
+
+	public static void postBordersConstraints(BoolVar[] X, Model model) {
 
 		if (nbHexagons > 1) {
-			
+
 			border = new ArrayList<>();
 			BoolVar[] borderVars = new BoolVar[diameter];
-			
-			IntIterableRangeSet [] valClause = new IntIterableRangeSet[diameter];
-			
-			for (int i = 0 ; i < diameter ; i++) {
+
+			IntIterableRangeSet[] valClause = new IntIterableRangeSet[diameter];
+
+			for (int i = 0; i < diameter; i++) {
 				int j = 0;
-				while(coordsMatrix[i][j] == -1)
-					j ++;
+				while (coordsMatrix[i][j] == -1)
+					j++;
 				borderVars[i] = X[coordsMatrix[i][j]];
 				border.add(coordsMatrix[i][j]);
 				valClause[i] = new IntIterableRangeSet(1);
 			}
-			
-			model.getClauseConstraint().addClause(borderVars, valClause);
 
-			
+			model.getClauseConstraint().addClause(borderVars, valClause);
 		}
-		
+
 		else {
 			model.arithm(X[0], "=", 1).post();
 		}
-		
+
 	}
-	
+
+//	public boolean touchBorder(A) {
+//		
+//	}
+
 	private static void solve() {
+
 		model = new Model("GeneralModel #2");
 
 		BoolVar[] X = new BoolVar[nbHexagonsCoronenoid];
@@ -437,13 +439,12 @@ public class GeneralModel2 {
 		IntVar nbHexagonsVar = model.intVar("nbHexagons", nbHexagons);
 		model.sum(X, "=", nbHexagonsVar).post();
 		model.arithm(nbHexagonsVar, "=", nbHexagons).post();
-		
+
 		postNoHolesOfSize1Constraint(X);
 		postBordersConstraints(X, model);
-		
+
 		model.count(1, Y, model.intVar("limit_count", 1)).post();
 
-		
 		for (int i = 0; i < nbHexagonsCoronenoid; i++)
 			model.ifOnlyIf(model.arithm(X[i], "=", 0), model.arithm(Y[i], "=", 0));
 
@@ -465,24 +466,23 @@ public class GeneralModel2 {
 		}
 
 		Solver solver = model.getSolver();
-		
-		
+
 		IntVar[] branching = new IntVar[X.length + Y.length];
 		int index = 0;
 		for (IntVar x : X) {
 			branching[index] = x;
-			index ++;
+			index++;
 		}
 		for (IntVar y : Y) {
 			branching[index] = y;
-			index ++;
+			index++;
 		}
-		
+
 		solver.setSearch(new IntStrategy(branching, new FirstFail(model), new IntDomainMax()));
 
 		int nbSolutions = 0;
 		while (solver.solve()) {
-			
+
 			/*
 			 * Displaying solution
 			 */
@@ -491,93 +491,94 @@ public class GeneralModel2 {
 					System.out.print(i + " ");
 				}
 			}
-			
+
 			System.out.println("(" + nbSolutions + ")");
-			
+
 			/*
 			 * Nogood
 			 */
-			
+
 			ArrayList<Integer> vertices = new ArrayList<>();
 			for (int i = 0; i < X.length; i++)
 				if (X[i].getValue() == 1)
 					vertices.add(i);
-			
+
 			Fragment pattern = convertToPattern(X);
 			ArrayList<Fragment> rotations = pattern.computeRotations();
-			
+
 			ArrayList<IntVar[]> nogoods = computeNogoods(model, rotations, nbHexagons, X, nbHexagonsVar);
-			
-			for (IntVar [] nogood : nogoods) {
-				IntIterableRangeSet [] valClause = new IntIterableRangeSet[nogood.length];
-				for (int i = 0 ; i < valClause.length ; i++)
+
+			for (IntVar[] nogood : nogoods) {
+				IntIterableRangeSet[] valClause = new IntIterableRangeSet[nogood.length];
+				for (int i = 0; i < valClause.length; i++)
 					valClause[i] = new IntIterableRangeSet(0);
 				model.getClauseConstraint().addClause(nogood, valClause);
 			}
-		
-			
+
 			nbSolutions++;
 		}
-		
+
 		System.out.println(nbSolutions + " solutions found");
 	}
 
-	private static ArrayList<IntVar[]> computeNogoods(Model model, ArrayList<Fragment> rotations, int nbHexagons, BoolVar[] X, IntVar nbHexagonsVar) {
-		
-		ArrayList<IntVar []> nogoods = new ArrayList<>();
-		
+	private static ArrayList<IntVar[]> computeNogoods(Model model, ArrayList<Fragment> rotations, int nbHexagons,
+			BoolVar[] X, IntVar nbHexagonsVar) {
+
+		ArrayList<IntVar[]> nogoods = new ArrayList<>();
+
 		for (Fragment rotation : rotations) {
-			for (int xShift = 0 ; xShift <= diameter ; xShift ++) {
-				for (int yShift = 0 ; yShift <= diameter ; yShift ++) {
+			for (int xShift = 0; xShift <= diameter; xShift++) {
+				for (int yShift = 0; yShift <= diameter; yShift++) {
 					boolean valid = true;
 					for (Node node : rotation.getNodesRefs()) {
-						
+
 						if (node == null)
 							System.out.println("");
-						
+
 						int x = node.getX() + xShift;
 						int y = node.getY() + yShift;
-						
 
-						
 						if (x < 0 || x >= diameter || y < 0 || y >= diameter || coordsMatrix[x][y] == -1) {
 							valid = false;
 							break;
 						}
 						/*
-						int index = coordsMatrix[x][y];
-						
-						if (border.contains(index)) {
-							valid = false;
-							break;
-						}*/
+						 * int index = coordsMatrix[x][y];
+						 * 
+						 * if (border.contains(index)) { valid = false; break; }
+						 */
 					}
 					if (valid) {
-						
+
 						boolean touchBorder = false;
-						//for ()
-						
-						IntVar [] nogood = new IntVar[nbHexagons + 1];
-						for (int i = 0 ; i < nbHexagons ; i++) {
+						// for ()
+
+						IntVar[] nogood = new IntVar[nbHexagons + 1];
+						for (int i = 0; i < nbHexagons; i++) {
 							int x = rotation.getNode(i).getX() + xShift;
 							int y = rotation.getNode(i).getY() + yShift;
-							
+
 							BoolVar var = X[coordsMatrix[x][y]];
+
+							if (border.contains(coordsMatrix[x][y]))
+								touchBorder = true;
+
 							nogood[i] = var;
 						}
-						nogood[nogood.length - 1] = model.arithm(nbHexagonsVar, "=", nbHexagons).reify();
-						
-						nogoods.add(nogood);
+						if (touchBorder) {
+							nogood[nogood.length - 1] = model.arithm(nbHexagonsVar, "=", nbHexagons).reify();
+							nogoods.add(nogood);
+						}
 					}
 				}
 			}
 		}
-		
+
 		return nogoods;
 	}
-	
+
 	private static void initializeValues(String[] args) {
-		nbHexagons = 5;
+		nbHexagons = 6;
 
 		nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
 
@@ -589,10 +590,10 @@ public class GeneralModel2 {
 		buildCoordsMatrix();
 		buildCoordsCorrespondance();
 		buildAdjacencyMatrix();
-		
+
 	}
 
-	public static BoolVar[] getNeighbors(int i, int j, BoolVar [] X) {
+	public static BoolVar[] getNeighbors(int i, int j, BoolVar[] X) {
 
 		if (coordsMatrix[i][j] != -1) {
 
@@ -637,7 +638,7 @@ public class GeneralModel2 {
 
 		return null;
 	}
-	
+
 	private static String displayTable(Tuples table) {
 		return table.toString().replace("][", "]\n[").replace("Allowed tuples: {", "").replace("}", "");
 	}
@@ -645,7 +646,11 @@ public class GeneralModel2 {
 	public static void main(String[] args) {
 
 		initializeValues(args);
+		long begin = System.currentTimeMillis();
 		solve();
+		long end = System.currentTimeMillis();
+		long time = end - begin;
+		System.out.println(time + " ms.");
 
 	}
 }
