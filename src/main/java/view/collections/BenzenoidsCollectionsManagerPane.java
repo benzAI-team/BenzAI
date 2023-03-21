@@ -96,23 +96,22 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 	private Service<Void> calculateServiceLin;
 	private boolean linRunning;
+	private int indexLin;
+	private int lineIndexLin;
 
 	private Service<Void> calculateServiceClarCover;
 	private boolean clarRunning;
+	private int indexClar;
+	private int lineIndexClar;
 
 	private Service<Void> calculateServiceRadicalar;
 	private boolean radicalarRunning;
 
 	private Service<Void> calculateServiceRBO;
 	private boolean rboRunning;
-
-	private int indexLin;
-	private int indexClar;
 	private int indexRBO;
-
-	private int lineIndexLin;
-	private int lineIndexClar;
 	private int lineIndexRBO;
+
 
 	private int indexDatabase;
 	private int lineIndexDatabase;
@@ -403,8 +402,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		MenuItem ims2d1aItem = new MenuItem("IMS2D-1A");
 		
-		MenuItem clarCoverForcedRadicalsItem = new MenuItem("Clar cover with forced radicals");
-		MenuItem clarCoverForcedRadicalsStatsItem = new MenuItem("Forced radicals Statistics");
+		MenuItem clarCoverForcedSinglesItem = new MenuItem("Clar cover with forced singles");
+		MenuItem clarCoverForcedSinglesStatsItem = new MenuItem("Forced singles Statistics");
 		
 
 		exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
@@ -490,18 +489,18 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			clarCoverStatsFixed();
 		});
 
-		clarCoverForcedRadicalsItem.setOnAction(e -> {
+		clarCoverForcedSinglesItem.setOnAction(e -> {
 			TextInputDialog textInputDialog = new TextInputDialog("2");
-			textInputDialog.setHeaderText("Enter number of radicals:");
+			textInputDialog.setHeaderText("Enter number of singles:");
 			textInputDialog.showAndWait();
             String textInput = textInputDialog.getEditor().getText();
             int nbRadicals = Integer.parseInt(textInput);
 			clarCoverForcedRadicals(nbRadicals);
 		});
 		
-		clarCoverForcedRadicalsStatsItem.setOnAction(e -> {
+		clarCoverForcedSinglesStatsItem.setOnAction(e -> {
 			TextInputDialog textInputDialog = new TextInputDialog("2");
-			textInputDialog.setHeaderText("Enter number of radicals:");
+			textInputDialog.setHeaderText("Enter number of singles:");
 			textInputDialog.showAndWait();
             String textInput = textInputDialog.getEditor().getText();
             int nbRadicals = Integer.parseInt(textInput);
@@ -571,7 +570,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 				renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem,
 				checkDatabaseItem, new SeparatorMenuItem(), drawItem, new SeparatorMenuItem(), reLinItem, reLinFanItem,
 				clarItem, clarStatsItem, kekuleItem, rboItem, irregularityItem, irSpectraItem, radicalarStatsItem,
-				ims2d1aItem, clarCoverForcedRadicalsItem, clarCoverForcedRadicalsStatsItem);
+				ims2d1aItem, clarCoverForcedSinglesItem, clarCoverForcedSinglesStatsItem);
 
 		this.setOnContextMenuRequested(e -> {
 

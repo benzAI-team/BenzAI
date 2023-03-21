@@ -14,7 +14,6 @@ public class RhombusModule extends RectangleModule2 {
 
 		super.postConstraints();
 
-
 		for (PropertyExpression binaryNumericalExpression : this.getExpressionList()) {
 			String operator = ((BinaryNumericalExpression)binaryNumericalExpression).getOperator();
 			int value = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();

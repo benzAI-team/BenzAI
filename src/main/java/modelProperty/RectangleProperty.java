@@ -6,6 +6,7 @@ import modelProperty.expression.PropertyExpression;
 import modelProperty.expression.RectangleExpression;
 import modelProperty.testers.RectangleTester;
 import modules.RectangleModule;
+import modules.RectangleModule2;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxModelCriterion;
