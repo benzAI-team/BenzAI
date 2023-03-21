@@ -3,13 +3,14 @@ package database;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import classifier.Irregularity;
 import molecules.Molecule;
 import parsers.GraphParser;
@@ -24,9 +25,11 @@ public class InsertScriptFinal {
 	private static int idName;
 	private static int idSpectra;
 	private static int idIMS2D1A;
-	
-	
+	private static int nbNics;
 	private static BufferedWriter out;
+	private static BufferedWriter updateNICS;
+	private static BufferedWriter updateClar;
+	private static BufferedWriter missingIms;
 	
 	public static String quote(String str) {
 		return "\"" + str + "\"";
@@ -83,7 +86,6 @@ public class InsertScriptFinal {
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = new BufferedReader(new FileReader(nicsFile));
 		String line;
-		
 		while((line = reader.readLine()) != null) {
 			builder.append(line + " ");
 		}
@@ -190,9 +192,39 @@ public class InsertScriptFinal {
 		String graphFileContent = fileToString(molFile);
 		String nics = "";
 		
+		/*
+		 * Writing NICS
+		 */
+		
 		File nicsFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".nics"));
-		if (nicsFile.exists())
+		if (nicsFile.exists()) {
 			nics = nicsFileToString(nicsFile);
+		
+			StringBuilder majNICS = new StringBuilder();
+			
+			majNICS.append("UPDATE benzenoid SET nics = " + quote(nics).replace("  ", " ") + " WHERE idBenzenoid = " + idBenzenoid + ";");
+			
+			updateNICS.write(majNICS.toString() + "\n");
+			
+		}
+		
+		if (!nics.equals(""))
+			nbNics ++;
+		
+		/*
+		 * Writing clar cover
+		 */
+		
+		File clarFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_clar.png"));
+		if (clarFile.exists()) {
+			
+			String picture = PictureConverter.pngToString(clarFile.getAbsolutePath());
+			StringBuilder majClar = new StringBuilder();
+			majClar.append("UPDATE benzenoid SET clar_cover = " + quote(picture) + " WHERE idBenzenoid = " + idBenzenoid + ";\n");
+			updateClar.write(majClar.toString() + "\n");
+
+		}
+		
 		
 		File comFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".com"));
 		
@@ -214,6 +246,8 @@ public class InsertScriptFinal {
 		
 		out.write(insertBenzenoid.toString() + "\n");
 		out.write(insertNames.toString() + "\n");
+		
+		
 	}
 	
 	//fill ir_spectra table
@@ -245,17 +279,30 @@ public class InsertScriptFinal {
 		idSpectra ++;
 	}
 	
+	public static String insertNICS(File molFile, File nicsFile) throws IOException{
+		
+		return "unknown";
+	}
+	
 	public static void main(String [] args) throws IOException {
 		
 		File dir = new File("/home/adrien/Documents/old_log_files");
 		out = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/new_insert.sql")));
+		updateNICS = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/update_nics.sql")));
+		updateClar = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/update_clar.sql")));
+		missingIms = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/cp_missing_ims.sh")));
+
 		File [] files = dir.listFiles();
 		
 		idBenzenoid = 0;
 		idName = 0;
 		idIMS2D1A = 0;
 		
+		nbNics = 0;
+		
 		boolean first = true;
+		
+		missingIms.write("mkdir missing_ims\n");
 		
 		for (File molFile : files) {
 			if (molFile.getName().endsWith(".graph_coord")) {
@@ -272,6 +319,18 @@ public class InsertScriptFinal {
 				
 				if (ims2dTextFile.exists() && ims2dMapFile.exists())
 					insertIMS2D1A(ims2dTextFile, ims2dMapFile);
+				else {
+					
+					if (molFile.getName().contains("hexagons")) {
+						String nbHexagons = molFile.getName().split(Pattern.quote("_"))[0];
+						missingIms.write("cp " + nbHexagons + "_hexagons/" + molFile.getName().replace(".graph_coord", ".com") + " missing_ims/\n");
+					}
+					
+					else {
+						missingIms.write("cp 1_4_hexagons/" + molFile.getName().replace(".graph_coord", ".com") + " missing_ims/\n");
+					}
+					
+				}
 				
 				idBenzenoid ++;
 				//}
@@ -281,8 +340,12 @@ public class InsertScriptFinal {
 		}
 		
 		System.out.println("Terminated, " + idIMS2D1A + "ims maps");
+		System.out.println(nbNics + " nics");
 		
 		out.close();
+		updateNICS.close();
+		updateClar.close();
+		missingIms.close();
 	}
 
 	
