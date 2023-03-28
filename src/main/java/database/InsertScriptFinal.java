@@ -30,7 +30,9 @@ public class InsertScriptFinal {
 	private static BufferedWriter updateNICS;
 	private static BufferedWriter updateClar;
 	private static BufferedWriter missingIms;
-	
+
+	private static BufferedWriter updateAmes;
+
 	public static String quote(String str) {
 		return "\"" + str + "\"";
 	}
@@ -265,30 +267,41 @@ public class InsertScriptFinal {
 
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("<specie uid=\"???\">\n");
+		builder.append("<specie>");
 
-		builder.append("<comments>\n");
-		builder.append("<comment type=\"generic\"># b3lyp/6-31g opt freq</comment>\n");
-		builder.append("</comments>\n");
+		builder.append("<comments>");
+		builder.append("<comment># b3lyp/6-31g opt freq</comment>");
+		builder.append("</comments>");
 
-		builder.append("<formula>C" + molecule.getNbNodes() + "H" + molecule.getNbHydrogens() + "</formula>\n");
-		builder.append("<charge>unknown</charge>\n");
-		builder.append("<method>B3LYP</method>\n");
+		builder.append("<formula>C" + molecule.getNbNodes() + "H" + molecule.getNbHydrogens() + "</formula>");
+		builder.append("<charge>unknown</charge>");
+		builder.append("<method>B3LYP</method>");
 
-		builder.append("<n_solo>" + irregularity.getGroup(0) + "</n_solo>\n");
-		builder.append("<n_duo>" + irregularity.getGroup(1) + "</n_duo>\n");
-		builder.append("<n_trio>" + irregularity.getGroup(2) + "</n_trio>\n");
-		builder.append("<n_quartet>" + irregularity.getGroup(3) + "</n_quarter>\n");
-		builder.append("<n_quintet>" + 0 + "</n_quintet>\n");
+		if (irregularity != null) {
+			builder.append("<n_solo>" + irregularity.getGroup(0) + "</n_solo>");
+			builder.append("<n_duo>" + irregularity.getGroup(1) + "</n_duo>");
+			builder.append("<n_trio>" + irregularity.getGroup(2) + "</n_trio>");
+			builder.append("<n_quartet>" + irregularity.getGroup(3) + "</n_quarter>");
+			builder.append("<n_quintet>" + 0 + "</n_quintet>");
+		}
 
-		builder.append("<geometry>\n");
+		else {
+			builder.append("<n_solo>" + 0 + "</n_solo>");
+			builder.append("<n_duo>" + 0 + "</n_duo>");
+			builder.append("<n_trio>" + 0 + "</n_trio>");
+			builder.append("<n_quartet>" + 0 + "</n_quarter>");
+			builder.append("<n_quintet>" + 0 + "</n_quintet>");
+		}
+
+		builder.append("<geometry>");
 		int position = 1;
 
-		for (int i = 0 ; i < geometries.length ; i+=4) {
-			String atom = geometries[i];
-			String x = geometries[i+1];
-			String y = geometries[i+2];
-			String z = geometries[i+3];
+		for (String geometryStr : geometries) {
+			String [] split = geometryStr.split(Pattern.quote("_"));
+			String atom = split[0];
+			String x = split[1];
+			String y = split[2];
+			String z = split[3];
 
 			String atomType;
 			if (atom.equals("C"))
@@ -296,37 +309,39 @@ public class InsertScriptFinal {
 			else
 				atomType = "1";
 
-			builder.append("<atom>\n");
-			builder.append("<position>" + position + "</position>\n");
-			builder.append("<x>" + x + "</x>\n");
-			builder.append("<y>" + y + "</y>\n");
-			builder.append("<z>" + z + "</z>\n");
+			builder.append("<atom>");
+			builder.append("<position>" + position + "</position>");
+			builder.append("<x>" + x + "</x>");
+			builder.append("<y>" + y + "</y>");
+			builder.append("<z>" + z + "</z>");
 			builder.append("<type>" + atomType + "</type>");
-			builder.append("</atom>\n");
+			builder.append("</atom>");
 
 			position ++;
 		}
 
-		builder.append("</geometry>\n");
+		builder.append("</geometry>");
 
-		builder.append("<transitions>\n");
+		builder.append("<transitions>");
 		for (int i = 0 ; i < frequencies.size() ; i++) {
 			Double frequency = frequencies.get(i);
 			Double intensity = intensities.get(i);
 
-			builder.append("<mode>\n");
-			builder.append("<frequency scale=\"\">" + frequency + "</frequency>\n");
-			builder.append("<intensity>" + intensity + "</intensity>\n");
-			builder.append("<symmetry>unknown</symmetry>\n");
-			builder.append("</mode>\n");
+			builder.append("<mode>");
+			builder.append("<frequency>" + frequency + "</frequency>");
+			builder.append("<intensity>" + intensity + "</intensity>");
+			builder.append("<symmetry>unknown</symmetry>");
+			builder.append("</mode>");
 		}
 
-		builder.append("</transitions>\n");
+		builder.append("</transitions>");
 
-		builder.append("</specie>\n");
+		builder.append("</specie>");
 
 		return builder.toString();
 	}
+
+
 
 	//fill ir_spectra table
 	public static void insertIRSpectra(File molFile, File comFile) throws IOException {
@@ -350,10 +365,14 @@ public class InsertScriptFinal {
 
 		String amesFormat = buildAmesFormat(molFile, log, comFile);
 
+		updateAmes.write("UPDATE ir_spectra SET amesFormat = " + quote(amesFormat) + " WHERE idSpectra = " + idSpectra + ";\n");
+
 		insert.append("INSERT INTO ir_spectra (idSpectra, idBenzenoid, frequencies, intensities, zeroPointEnergy, finalEnergy) VALUES (\n");
 		insert.append(idSpectra + ", " + idBenzenoid + ", " + quote(frequencies.toString()) + ", " + quote(intensities.toString()) + ", " + zpe + ", " + finalEnergy);
 		insert.append(");\n");
-		
+
+
+
 		out.write(insert.toString() + "\n");
 		
 		idSpectra ++;
@@ -371,6 +390,7 @@ public class InsertScriptFinal {
 		updateNICS = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/update_nics.sql")));
 		updateClar = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/update_clar.sql")));
 		missingIms = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/cp_missing_ims.sh")));
+		updateAmes = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/update_ames_format.sql")));
 
 		File [] files = dir.listFiles();
 		
@@ -390,7 +410,7 @@ public class InsertScriptFinal {
 				System.out.println("Treating " + molFile.getName());
 				
 				File inchiFile = new File(molFile.getAbsolutePath().replace(".graph_coord", "_coord.cml.inchi"));
-				File comFile = new File(molFile.getName().replace(".graph_coord", ".com"));
+				File comFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".com"));
 
 				insertBenzenoid(molFile, inchiFile);
 				insertIRSpectra(molFile, comFile);
@@ -427,6 +447,7 @@ public class InsertScriptFinal {
 		updateNICS.close();
 		updateClar.close();
 		missingIms.close();
+		updateAmes.close();
 	}
 
 	

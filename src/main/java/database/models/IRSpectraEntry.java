@@ -26,13 +26,15 @@ public class IRSpectraEntry {
 	private ArrayList<Double> intensities;
 	private double zeroPointEnergy;
 
+	private String amesFormat;
+
 	/*
 	 * Constructor
 	 */
 
 	public IRSpectraEntry(int idMolecule, String moleculeName, int nbHexagons, int nbCarbons, int nbHydrogens,
 			double irregularity, int idGaussianResult, ArrayList<Double> finalEnergies, ArrayList<Double> frequencies,
-			ArrayList<Double> intensities, double zeroPointEnergy) {
+			ArrayList<Double> intensities, double zeroPointEnergy, String amesFormat) {
 
 		this.idMolecule = idMolecule;
 		this.moleculeName = moleculeName;
@@ -45,6 +47,7 @@ public class IRSpectraEntry {
 		this.frequencies = frequencies;
 		this.intensities = intensities;
 		this.zeroPointEnergy = zeroPointEnergy;
+		this.amesFormat = amesFormat;
 	}
 
 	/*
@@ -95,6 +98,8 @@ public class IRSpectraEntry {
 		return nbCarbons;
 	}
 
+	public String getAmesFormat() {return amesFormat;}
+
 	/*
 	 * Class methods
 	 */
@@ -115,6 +120,7 @@ public class IRSpectraEntry {
 		String intensitiesString = (String) result.get("intensities");
 		double finalEnergy = (double) result.get("finalEnergy");
 		double zeroPointEnergy = (double) result.get("zeroPointEnergy");
+		String amesFormat = (String) result.get("amesFormat");
 
 		// Récupérer le nom
 		String url = "https://benzenoids.lis-lab.fr/find_name/";
@@ -154,7 +160,7 @@ public class IRSpectraEntry {
 //			finalEnergies.add(Double.parseDouble(energy));
 
 		return new IRSpectraEntry(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idSpectrum,
-				finalEnergies, frequencies, intensities, zeroPointEnergy);
+				finalEnergies, frequencies, intensities, zeroPointEnergy, amesFormat);
 	}
 
 	public static IRSpectraEntry buildQueryContent(ArrayList<String> result) {
@@ -171,6 +177,8 @@ public class IRSpectraEntry {
 		ArrayList<Double> frequencies = new ArrayList<>();
 		ArrayList<Double> intensities = new ArrayList<>();
 		double zeroPointEnergy = -1.0;
+
+		String amesFormat = "";
 
 		for (String line : result) {
 
@@ -223,10 +231,13 @@ public class IRSpectraEntry {
 
 			else if (splittedLine[0].equals("zero_point_energy"))
 				zeroPointEnergy = Double.parseDouble(splittedLine[1]);
+
+			else if (splittedLine[0].equals("amesFormat"))
+				amesFormat = splittedLine[1];
 		}
 
 		return new IRSpectraEntry(idMolecule, moleculeName, nbHexagons, nbCarbons, nbHydrogens, irregularity,
-				idGaussianResult, finalEnergies, frequencies, intensities, zeroPointEnergy);
+				idGaussianResult, finalEnergies, frequencies, intensities, zeroPointEnergy, amesFormat);
 	}
 
 	public Molecule buildMolecule() throws IOException {
