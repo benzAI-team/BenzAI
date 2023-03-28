@@ -87,6 +87,8 @@ public class Molecule implements Comparable<Molecule> {
 
 	private String ims2d1a;
 
+	private String amesFormat = "unknown";
+
 	/**
 	 * Constructors
 	 */
@@ -1489,6 +1491,7 @@ public class Molecule implements Comparable<Molecule> {
 
 			if (results.size() > 0) {
 				IRSpectraEntry content = IRSpectraEntry.buildQueryContent(results.get(0));
+				amesFormat = content.getAmesFormat();
 				nicsResult = content.buildResultLogFile();
 				System.out.println(nicsResult);
 				return nicsResult;
@@ -1636,5 +1639,9 @@ public class Molecule implements Comparable<Molecule> {
 
 	public void setKekuleStructures(ArrayList<int[][]> kekuleStructures) {
 		this.kekuleStructures = kekuleStructures;
+	}
+
+	public String getAmesFormat() {
+		return amesFormat;
 	}
 }

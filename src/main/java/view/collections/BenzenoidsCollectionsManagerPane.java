@@ -2002,6 +2002,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			ArrayList<ResultLogFile> classResults = new ArrayList<>();
 			HashMap<String, Double> finalEnergies = new HashMap<>();
 			HashMap<String, Double> irregularities = new HashMap<>();
+			ArrayList<String> amesFormats = new ArrayList<>();
 
 			for (Molecule molecule : moleculesClasses) {
 
@@ -2015,12 +2016,15 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					irregularities.put(molecule.getNames().get(0), -1.0);
 				else
 					irregularities.put(molecule.getNames().get(0), irregularity.getXI());
+
+				amesFormats.add(molecule.getAmesFormat());
 			}
 
 			try {
 				IRSpectra spectraData = SpectrumsComputer.buildSpectraData(key, moleculesClasses, parameter);
 				spectraData.setFinalEnergies(finalEnergies);
 				spectraData.setIrregularities(irregularities);
+				spectraData.setAmesFormats(amesFormats);
 				spectraDatas.add(spectraData);
 
 			} catch (IOException e) {
