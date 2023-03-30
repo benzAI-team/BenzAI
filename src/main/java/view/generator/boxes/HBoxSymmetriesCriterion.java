@@ -47,7 +47,7 @@ public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 		symmetriesChoiceBox.getItems().add("C_2v(a) \"face-mirror\"");
 		symmetriesChoiceBox.getItems().add("C_6h \"(face)-60-rotation\"");
 		symmetriesChoiceBox.getItems().add("C_3h(i) \"face-120-rotation\"");
-		symmetriesChoiceBox.getItems().add("C_2h(i) \"vertex_180-rotation\"");
+		symmetriesChoiceBox.getItems().add("C_2h(i) \"face-180-rotation\"");
 		symmetriesChoiceBox.getItems().add("C_2v(b) \"edge-mirror\"");
 		symmetriesChoiceBox.getItems().add("C_3h(ii) \"vertex-120-rotation\"");
 		symmetriesChoiceBox.getItems().add("C_2h(ii) \"edge-180-rotation\"");
@@ -58,6 +58,7 @@ public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 		symmetriesChoiceBox.getItems().add("D_3h(ib) \"face-120-rotation+edge-mirror\"");
 		symmetriesChoiceBox.getItems().add("D_2h(ii) \"edge-180-rotation+edge-mirror\"");
 		symmetriesChoiceBox.getItems().add("D_2h(i) \"face-180-rotation+edge-mirror\"");
+		symmetriesChoiceBox.getItems().add("C_s \"no-symmetry\"");
 
 		symmetriesChoiceBox.getSelectionModel().selectFirst();
 

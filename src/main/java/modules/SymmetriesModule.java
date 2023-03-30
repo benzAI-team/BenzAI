@@ -5,6 +5,7 @@ import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeS
 
 import generator.GeneralModel;
 import solving_modes.SymmetryType;
+import utils.Coords;
 import utils.Utils;
 import modelProperty.expression.ParameterizedExpression;
 
@@ -23,7 +24,7 @@ public class SymmetriesModule extends Module {
 		switch (((ParameterizedExpression)this.getExpressionList().get(0)).getOperator()) {
 
 		case "C_2v(a) \"face-mirror\"":
-			postHasMirrorSymmetry();
+			postHasHexagonAxisSymmetry();
 			break;
 			
 		case "C_6h \"(face)-60-rotation\"" : 
@@ -34,12 +35,12 @@ public class SymmetriesModule extends Module {
 			postHasRot120Symmetry();
 			break;
 
-		case "C_2h(i) \"vertex_180-rotation\"": 
+		case "C_2h(i) \"face-180-rotation\"": 
 			postHasRot180Symmetry();
 			break;
 
 		case "C_2v(b) \"edge-mirror\"" : 
-			postHasVerticalSymmetry();
+			postHasEdgeAxisSymmetry();
 			break;
 
 		case "C_3h(ii) \"vertex-120-rotation\"" : 
@@ -51,78 +52,50 @@ public class SymmetriesModule extends Module {
 			break;
 
 		case "D_6h \"(vertex)-60-rotation+(edge)-mirror\"" : 
-			postHasMirrorSymmetry();
+			postHasHexagonAxisSymmetry();
 			postHasRot60Symmetry();
 			break;
 			
 		case "D_3h(ii) \"vertex-120-rotation+(edge)-mirror\"" :
 			postHasRot120VertexSymmetry();
-			postHasVerticalSymmetry();
+			postHasEdgeAxisSymmetry();
 			break;
 			
 		case "D_3h(ia) \"face-120-rotation+face-mirror\"" :
 			postHasRot120Symmetry();
-			postHasMirrorSymmetry();
+			postHasHexagonAxisSymmetry();
 			break;
 			
 		case "D_3h(ib) \"face-120-rotation+edge-mirror\"" :
 			postHasRot120Symmetry();
-			postHasVerticalSymmetry();
+			postHasEdgeAxisSymmetry();
 			break;
 			
 		case "D_2h(ii) \"edge-180-rotation+edge-mirror\"" :
 			postHasRot180EdgeSymmetry();
-			postHasVerticalSymmetry();
+			postHasEdgeAxisSymmetry();
 			break;
 			
 		case "D_2h(i) \"face-180-rotation+edge-mirror\"" : 
 			postHasRot180Symmetry();
-			postHasMirrorSymmetry();
+			postHasHexagonAxisSymmetry();
 			break;
 			
-//		case "MIRROR":
-//			postHasMirrorSymmetry();
-//			break;
-//
-//		case "ROT_60":
-//			this.postHasRot60Symmetry();
-//			break;
-//
-//		case "ROT_120":
-//			postHasRot120Symmetry();
-//			break;
-//
-//		case "ROT_180":
-//			postHasRot180Symmetry();
-//			break;
-//
-//		case "VERTICAL":
-//			postHasVerticalSymmetry();
-//			break;
-//
-//		case "ROT_120_VERTEX":
-//			postHasRot120VertexSymmetry();
-//			break;
-//
-//		case "ROT_180_EDGE":
-//			postHasRot180EdgeSymmetry();
-//			break;
+		case "C_s \"no-symmetry\"" :
+			break;
 		}
 	}
 
 	@Override
 	public void addVariables() {
-
 	}
 
 	@Override
 	public void changeSolvingStrategy() {
-
 	}
 
 	@Override
 	public void changeGraphVertices() {
-
 	}
 
 	private boolean inCoronenoid(int x, int y) {
@@ -181,58 +154,59 @@ public class SymmetriesModule extends Module {
 					}
 	}
 
-	private void postHasMirrorSymmetry() {
+	private void postHasHexagonAxisSymmetry() {
 		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
-			public int from(int i) {
-				return diag(i);
+			@Override
+			public Coords from(Coords point) {
+				return hexAxis(point);
 			}
 		});
 	}
 
 	private void postHasRot60Symmetry() {
 		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns(), 1) {
-			public int from(int i) {
-				return rot(i);
+			public Coords from(Coords point) {
+				return rot(point);
 			}
 		});
 	}
 
 	private void postHasRot120Symmetry() {
 		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns(), 2) {
-			public int from(int i) {
-				return rot(i);
+			public Coords from(Coords point) {
+				return rot(point);
 			}
 		});
 	}
 
 	private void postHasRot180Symmetry() {
 		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns(), 3) {
-			public int from(int i) {
-				return rot(i);
+			public Coords from(Coords point) {
+				return rot(point);
 			}
 		});
 	}
 
-	private void postHasVerticalSymmetry() {
+	private void postHasEdgeAxisSymmetry() {
 		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
-			public int from(int i) {
-				return vert(i);
+			public Coords from(Coords point) {
+				return edgeAxis(point);
 			}
 		});
 	}
 
 	private void postHasRot120VertexSymmetry() {
 		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
-			public int from(int i) {
-				return rot120vertex(i);
+			public Coords from(Coords point) {
+				return rot120vertex(point);
 			}
 		});
 	}
 
 	private void postHasRot180EdgeSymmetry() {
 		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
-			public int from(int i) {
-				return rot180edge(i);
+			public Coords from(Coords point) {
+				return rot180edge(point);
 			}
 		});
 	}

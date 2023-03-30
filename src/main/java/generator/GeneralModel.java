@@ -58,9 +58,6 @@ public class GeneralModel {
 	 * Application parameters
 	 */
 
-	//private Map<String, ArrayList<GeneratorCriterion>> mapCriterions;
-	//private ArrayList<GeneratorCriterion> hexagonsCriterions;
-	//private ArrayList<GeneratorCriterion> criterions;
 	private int nbMaxHexagons;
 
 	private int[][] neighborGraph;
@@ -166,53 +163,25 @@ public class GeneralModel {
 		initialize();
 	}
 
-//	public GeneralModel(int nbCrowns, int nbHexagons) {
+
+//	public GeneralModel(NbCrowns nbCrowns) {
+//		this.nbCrowns = nbCrowns.getValue();
+//		nbHexagons = -1;		
+//		diameter = (2 * this.nbCrowns) - 1;
+//		initialize();
+//	}
 //
-//		mode = GeneralModelMode.BOTH;
-//
-//		this.nbCrowns = nbCrowns;
-//		this.nbHexagons = nbHexagons;
-//		nbMaxHexagons = nbHexagons;
-//		diameter = (2 * nbCrowns) - 1;
-//
-//		hexagonsCriterions = new ArrayList<>();
-//		hexagonsCriterions.add(new GeneratorCriterion(Subject.NB_HEXAGONS, Operator.EQ, Integer.toString(nbHexagons)));
-//
+//	public GeneralModel(NbHexagons nbHexagons) {
+//		this.nbHexagons = nbHexagons.getValue();		
+//		this.nbCrowns = (this.nbHexagons + 1) / 2;
+//		diameter = this.nbHexagons;
 //		initialize();
 //	}
 
-	public GeneralModel(NbCrowns nbCrowns) {
-		this.nbCrowns = nbCrowns.getValue();
-		nbHexagons = -1;		
-		diameter = (2 * this.nbCrowns) - 1;
-		initialize();
-	}
-	
-//	public GeneralModel(NbHexagons nbHexagons) {
-//
-//		this.nbHexagons = nbHexagons.getValue();
-//		nbMaxHexagons = this.nbHexagons;
-//
-//		nbCrowns = (int) Math.floor((((double) ((double) this.nbHexagons + 1)) / 2.0) + 1.0);
-//
-//		if (this.nbHexagons % 2 == 1)
-//			nbCrowns--;
-//
-//		diameter = (2 * nbCrowns) - 1;
-//
-//		hexagonsCriterions = new ArrayList<GeneratorCriterion>();
-//		hexagonsCriterions.add(GeneratorCriterionFactory.build("hexagons", "=", this.nbHexagons));
-//
-//		diameter = (2 * nbCrowns) - 1;
-//
-//		initialize();
-//	}
 	
 	/*
 	 * Initialization methods
 	 */
-
-
 
 	private void initialize() {
 		initializeMatrix();
@@ -700,24 +669,13 @@ public class GeneralModel {
 					}
 				} else
 					verticesSolution.add(0);
-			}
-
-			solverResults.addVerticesSolution(verticesSolution);
-
-			displaySolution(solver);
-//			System.out.println(solver.getDecisionPath());
-			
-			if (verbose) {
-
-				System.out.println("NO-GOOD");
-
-				for (ArrayList<Integer> ng : nogoods) {
-					for (Integer v : ng)
-						System.out.println(v + " ");
-				}
-
+				
 				indexSolution++;
 			}
+
+			//displaySolution(solver);
+//			System.out.println(solver.getDecisionPath());
+
 		}
 
 		long end = System.currentTimeMillis();

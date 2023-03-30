@@ -3,6 +3,7 @@ package view.primaryStage;
 import java.util.ArrayList;
 
 import generator.GeneralModel;
+import generator.patterns.PatternResolutionInformations;
 import javafx.scene.control.ScrollPane;
 import modelProperty.ModelPropertySet;
 import view.generator.ChoiceBoxCriterion;
@@ -16,6 +17,8 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
 	private ArrayList<HBoxCriterion> hBoxesCriterions;
 	private ModelPropertySet modelPropertySet = new ModelPropertySet();
+
+	private PatternResolutionInformations patternsInformations;
 
 	/***
 	 * 
@@ -91,6 +94,14 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 
 	public ModelPropertySet getModelPropertySet() {
 		return modelPropertySet;
+	}
+
+	public PatternResolutionInformations getPatternsInformations() {
+		return patternsInformations;
+	}
+
+	public void setPatternsInformations(PatternResolutionInformations patternsInformations) {
+		this.patternsInformations = patternsInformations;
 	}
 
 

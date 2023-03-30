@@ -36,11 +36,11 @@ import modelProperty.expression.PropertyExpression;
 import modelProperty.expression.SubjectExpression;
 import molecules.Node;
 import utils.Utils;
-import view.filtering.boxes.HBoxPatternFilteringCriterion;
+import view.generator.boxes.HBoxPatternCriterion;
 
 public class PatternsEditionPane extends BorderPane {
 
-	private HBoxPatternFilteringCriterion parent;
+	private HBoxPatternCriterion parent;
 	private MenuBar menuBar;
 	private BorderPane borderPane;
 	private ListView<GridPane> listView;
@@ -57,7 +57,7 @@ public class PatternsEditionPane extends BorderPane {
 	private TextField occurencesField;
 	private TextField fieldName;
 
-	public PatternsEditionPane(HBoxPatternFilteringCriterion parent) {
+	public PatternsEditionPane(HBoxPatternCriterion parent) {
 		super();
 		this.parent = parent;
 		initialize();
