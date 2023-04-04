@@ -508,6 +508,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			application.addTask("Benzenoid generation");
 
 			generatedMolecules = new ArrayList<>();
+			//model.solve();
 
 			final Service<Void> calculateService = new Service<Void>() {
 

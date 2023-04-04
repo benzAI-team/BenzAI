@@ -30,6 +30,7 @@ import modelProperty.ModelPropertySet;
 import modelProperty.expression.ParameterizedExpression;
 import molecules.Molecule;
 import molecules.Node;
+import nogood.NoGoodAllRecorder;
 import nogood.NoGoodBorderRecorder;
 import nogood.NoGoodHorizontalAxisRecorder;
 import nogood.NoGoodNoneRecorder;
@@ -601,8 +602,10 @@ public class GeneralModel {
 				if (modelPropertySet.has("pattern"))
 					noGoodRecorder = new NoGoodUniqueRecorder(this, solution);
 			}
-
 		}
+		///////////////////////////////////////// REMOVE
+		solution.setPattern(convertToPattern());
+		noGoodRecorder = new NoGoodAllRecorder(this, solution);
 
 		noGoodRecorder.record();
 
@@ -665,7 +668,8 @@ public class GeneralModel {
 
 					for (ArrayList<Integer> ng : nogoods) {
 						for (Integer v : ng)
-							System.out.println(v + " ");
+							System.out.print(v + " ");
+						System.out.println();
 					}
 				} else
 					verticesSolution.add(0);

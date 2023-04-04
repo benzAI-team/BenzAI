@@ -13,7 +13,7 @@ public class NoGoodVerticalAxisRecorder extends NoGoodRecorder {
 
 	@Override
 	protected ArrayList<ArrayList<Integer>> computeOccurences() {
-		return solution.translationsEdgeMirror();
+		return getSolution().translationsEdgeMirror();
 	}
 
 }

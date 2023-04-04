@@ -13,6 +13,6 @@ public class NoGoodHorizontalAxisRecorder extends NoGoodRecorder {
 
 	@Override
 	protected ArrayList<ArrayList<Integer>> computeOccurences() {
-		return solution.translationsFaceMirror();
+		return getSolution().translationsFaceMirror();
 	}
 }
