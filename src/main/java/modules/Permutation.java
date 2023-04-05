@@ -128,7 +128,6 @@ public abstract class Permutation {
 	 * @return
 	 */
 	public Coords edgeAxis(Coords point){
-		System.out.println("EdgeAxis:");
 		for(int j = 0; j < iteration; j++)
 			point = rot120topVertex(point);
 		point =  new Coords(
