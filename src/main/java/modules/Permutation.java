@@ -130,10 +130,11 @@ public abstract class Permutation {
 	public Coords edgeAxis(Coords point){
 		System.out.println("EdgeAxis:");
 		for(int j = 0; j < iteration; j++)
-			point = rot120vertex(point);
-		point =  new Coords(- point.getX() + 2 * center.getX() - center.getY() + point.getY(), point.getY());
+			point = rot120topVertex(point);
+		point =  new Coords(
+				- point.getX() + 2 * center.getX() - center.getY() + point.getY(), point.getY());
 		for(int j = 0; j < iteration; j++)
-			point = rot120vertex(rot120vertex(point));
+			point = rot120topVertex(rot120topVertex(point));
 		return point;
 	}
 
@@ -151,7 +152,17 @@ public abstract class Permutation {
 	 * @param point
 	 * @return
 	 */
-	public Coords rot120vertex(Coords point){
+	public Coords rot120bottomVertex(Coords point){
+		return new Coords(point.getY() - center.getY() - point.getX() + 2 * center.getX(), - point.getX() + center.getX() + 1 + center.getY());
+	}
+
+	/***
+	 * Apply a 120 rotation around the vertex at the top of the center
+	 * @param center
+	 * @param point
+	 * @return
+	 */
+	public Coords rot120topVertex(Coords point){
 		return new Coords(point.getY() - center.getY() - point.getX() + 2 * center.getX(), - point.getX() + center.getX() - 1 + center.getY());
 	}
 

@@ -198,7 +198,7 @@ public class SymmetriesModule extends Module {
 	private void postHasRot120VertexSymmetry() {
 		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
 			public Coords from(Coords point) {
-				return rot120vertex(point);
+				return rot120topVertex(point);
 			}
 		});
 	}

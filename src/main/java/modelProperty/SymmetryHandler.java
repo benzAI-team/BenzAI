@@ -86,7 +86,7 @@ public class SymmetryHandler {
 
 
 	public static boolean hasEdgeAxisSymmetry(ArrayList<Integer> moleculeIndices, int couronnes) {
-		for(int x = - couronnes ; x < 2 * couronnes - 1; x++)
+		for(int x = - couronnes ; x < 3 * couronnes - 1; x++)
 			for(int direction = 0; direction < 3; direction++)
 				if(hasSymmetry(moleculeIndices, new Permutation(new Coords(x, x), direction) {
 					@Override
@@ -95,7 +95,7 @@ public class SymmetryHandler {
 					}
 				}, couronnes))
 					return true;
-		for(int x = -couronnes ; x < 2 * couronnes - 1; x++)
+		for(int x = -couronnes ; x < 3 * couronnes - 1; x++)
 			for(int direction = 1; direction < 3; direction++)
 				if(hasSymmetry(moleculeIndices, new Permutation(new Coords(x, x + 1), direction) {
 					@Override
@@ -113,7 +113,16 @@ public class SymmetryHandler {
 			if(hasSymmetry(moleculeIndices, new Permutation(new Coords(x, y)) {
 				@Override
 				public Coords from(Coords point) {
-					return rot120vertex(point);
+					return rot120topVertex(point);
+				}
+			}, couronnes))
+				return true;
+		for(int x = 0; x < 2 * couronnes - 1; x++)
+			for(int y = 0; y < 2 * couronnes - 1; y++)
+			if(hasSymmetry(moleculeIndices, new Permutation(new Coords(x, y)) {
+				@Override
+				public Coords from(Coords point) {
+					return rot120bottomVertex(point);
 				}
 			}, couronnes))
 				return true;
