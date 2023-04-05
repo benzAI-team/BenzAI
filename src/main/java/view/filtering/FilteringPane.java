@@ -32,9 +32,6 @@ import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidsCollectionsManagerPane;
-import view.filtering.boxes.HBoxDefaultFilteringCriterion;
-import view.filtering.boxes.HBoxFilteringCriterion;
-import view.filtering.criterions.FilteringCriterion;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
@@ -53,8 +50,6 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	private GridPane gridPane;
 
 	private ChoiceBox<String> collectionChoiceBox;
-
-	private PatternResolutionInformations patternsInformations;
 
 	private Label titleLabel;
 
@@ -367,14 +362,6 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 	public BenzenoidApplication getApplication() {
 		return application;
-	}
-
-	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
-		this.patternsInformations = patternsInformations;
-	}
-
-	public PatternResolutionInformations getPatternInformations() {
-		return patternsInformations;
 	}
 
 	@Override

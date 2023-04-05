@@ -5,6 +5,7 @@ import org.chocosolver.solver.constraints.nary.cnf.LogOp;
 import org.chocosolver.solver.variables.BoolVar;
 
 import modules.Permutation;
+import utils.Coords;
 
 public class OldLexLead {
 
@@ -65,22 +66,22 @@ public class OldLexLead {
 		BoolVar y = generalModel.getProblem().boolVar();
 		postSymmetryBreakingConstraints(new Permutation(generalModel.getNbCrowns(), 0) {
 			@Override
-			public int from(int indice) {
-				return diag(indice);
+			public Coords from(Coords indice) {
+				return hexAxis(indice);
 			}
 		}, y, generalModel);
 
 		for (i = 1; i < 6; i++) {
 			postSymmetryBreakingConstraints(new Permutation(generalModel.getNbCrowns(), i) {
 				@Override
-				public int from(int indice) {
+				public Coords from(Coords indice) {
 					return rot(indice);
 				}
 			}, y, generalModel);
 			postSymmetryBreakingConstraints(new Permutation(generalModel.getNbCrowns(), i) {
 				@Override
-				public int from(int indice) {
-					return diag(rot(indice));
+				public Coords from(Coords indice) {
+					return hexAxis(rot(indice));
 				}
 			}, y, generalModel);
 		}

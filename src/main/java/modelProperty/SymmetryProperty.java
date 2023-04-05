@@ -1,5 +1,6 @@
 package modelProperty;
 
+import modelProperty.checkers.SymmetryChecker;
 import modelProperty.expression.ParameterizedExpression;
 import modelProperty.testers.SymmetryTester;
 import modules.SymmetriesModule;
@@ -12,7 +13,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 public class SymmetryProperty extends ModelProperty {
 
 	public SymmetryProperty() {
-		super("symmetry", "Symmetries", new SymmetriesModule(), new SymmetryTester());
+		super("symmetry", "Symmetries", new SymmetriesModule(), new SymmetryChecker(),new SymmetryTester());
 	}
 	
 	@Override

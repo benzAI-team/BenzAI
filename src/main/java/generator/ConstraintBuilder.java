@@ -5,6 +5,7 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
 import modules.Permutation;
+import utils.Coords;
 import utils.Utils;
 
 public class ConstraintBuilder {
@@ -231,8 +232,8 @@ public class ConstraintBuilder {
 		nbClauses += postSymmetryBreakingConstraints(model.getProblem(), model.getDiameter(), model.getNbCrowns(),
 				model.getVG(), new Permutation(model.getNbCrowns(), 0) {
 					@Override
-					public int from(int indice) {
-						return diag(indice);
+					public Coords from(Coords indice) {
+						return hexAxis(indice);
 					}
 				}, y);
 
@@ -241,16 +242,16 @@ public class ConstraintBuilder {
 			nbClauses += postSymmetryBreakingConstraints(model.getProblem(), model.getDiameter(), model.getNbCrowns(),
 					model.getVG(), new Permutation(model.getNbCrowns(), i) {
 						@Override
-						public int from(int indice) {
-							return rot(indice);
+						public Coords from(Coords point) {
+							return rot(point);
 						}
 					}, y);
 
 			nbClauses += postSymmetryBreakingConstraints(model.getProblem(), model.getDiameter(), model.getNbCrowns(),
 					model.getVG(), new Permutation(model.getNbCrowns(), i) {
 						@Override
-						public int from(int indice) {
-							return diag(rot(indice));
+						public Coords from(Coords point) {
+							return hexAxis(rot(point));
 						}
 					}, y);
 		}

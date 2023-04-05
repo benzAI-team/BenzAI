@@ -10,8 +10,8 @@ import generator.Solution;
 
 public abstract class NoGoodRecorder {
 
-	protected GeneralModel model;
-	protected Solution solution;
+	private GeneralModel model;
+	private Solution solution;
 
 	public NoGoodRecorder(GeneralModel model, Solution solution) {
 		this.model = model;
@@ -24,12 +24,12 @@ public abstract class NoGoodRecorder {
 
 		ArrayList<ArrayList<Integer>> translations = computeOccurences();
 
-		BoolVar reified = model.getNbHexagonsReified(solution.getNbNodes());
+		BoolVar reified = model.getNbHexagonsReified(getSolution().getNbNodes());
 
 		if (reified == null) {
-			BoolVar newVariable = model.getProblem().arithm(model.getNbVerticesVar(), "=", solution.getNbNodes())
+			BoolVar newVariable = model.getProblem().arithm(model.getNbVerticesVar(), "=", getSolution().getNbNodes())
 					.reify();
-			model.setNbHexagonsReified(solution.getNbNodes(), newVariable);
+			model.setNbHexagonsReified(getSolution().getNbNodes(), newVariable);
 			reified = newVariable;
 		}
 
@@ -76,6 +76,10 @@ public abstract class NoGoodRecorder {
 			}
 		}
 
+	}
+
+	public Solution getSolution() {
+		return solution;
 	}
 
 }

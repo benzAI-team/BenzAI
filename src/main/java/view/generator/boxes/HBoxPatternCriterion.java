@@ -155,7 +155,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	}
 
 	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
-		((GeneratorPane) getPane()).setPatternResolutionInformations(patternsInformations);
+		((ScrollPaneWithPropertyList) getPane()).setPatternsInformations(patternsInformations);
 	}
 
 	public PatternResolutionInformations getPatternInformations() {

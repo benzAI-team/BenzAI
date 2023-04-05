@@ -19,7 +19,7 @@ public class NoGoodBorderRecorder extends NoGoodRecorder {
 
 	@Override
 	protected ArrayList<ArrayList<Integer>> computeOccurences() {
-		return solution.borderTranslations(topBorder, leftBorder);
+		return getSolution().borderTranslations(topBorder, leftBorder);
 	}
 
 }

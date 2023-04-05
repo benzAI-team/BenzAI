@@ -171,6 +171,8 @@ public class Molecule implements Comparable<Molecule> {
 		buildHexagonsCoords2();
 	}
 	
+
+
 	/***
 	 * 
 	 * @param solution
@@ -178,66 +180,66 @@ public class Molecule implements Comparable<Molecule> {
 	 * @return a molecule from a choco solver solution
 	 */
 	// TODO inutilisable pour l'instant
-	public static Molecule buildMolecule(ArrayList<Integer> solution, int nbCrowns) {
-		int diameter = nbCrowns * 2 - 1;
-		int [] checkedHexagons = new int[diameter * diameter];
-		int [][] coordsMatrix = buildCoordsMatrix(diameter);
-		
-		Arrays.fill(checkedHexagons, -1);
-		
-		for (int i = 0 ; i < solution.size() ; i++) {
-			if (solution.get(i) == 1)
-				checkedHexagons[i] = 0;
-		}
-		
-		int n = 0;
-		int indexNode = 0;
-		
-		int solutionSize = solution.stream().reduce(0, (acc, x) -> acc + x);
-		
-		int [][] hexagons = new int [solution.size()][6];
-		for (int i = 0 ; i < hexagons.length ; i++) 
-			Arrays.fill(hexagons[i], -1);
-		 
-		while (n < solutionSize) {	
-			int hexagon = findCandidate(checkedHexagons);
-			int [] neighborhood = neighborhood(hexagon, diameter, coordsMatrix, solution);
-			
-			makeNeighbors(checkedHexagons, hexagons, hexagon, neighborhood);
-			
-			for (int i = 0 ; i < neighborhood.length ; i++) {
-				if (hexagons[hexagon][i] == -1) {
-					hexagons[hexagon][i] = indexNode;
-					indexNode ++;
-				}
-			}
-			
-			checkedHexagons[hexagon] = 1;
-			n++;
-		}
-		
-		int [][] edgeMatrix = new int[indexNode][indexNode];
-		int nbEdges = 0;
-		int nbHexagons = 0;
-		
-		for (int hexagon = 0 ; hexagon < hexagons.length ; hexagon++) {
-			if (isFull(hexagons[hexagon])) {
-				nbHexagons ++;
-				for (int i = 0 ; i < 6 ; i++) {
-					int u = hexagons[hexagon][i];
-					int v = hexagons[hexagon][(i + 1) % 6];
-				
-					if (edgeMatrix[u][v] == 0) {
-						edgeMatrix[u][v] = 1;
-						edgeMatrix[v][u] = 1;
-						nbEdges ++;
-					}
-				}
-			}
-		}
-				//TODO corriger : deux params a calculer
-		return new Molecule(indexNode, nbEdges, nbHexagons, hexagons, null, edgeMatrix, null);
-	}
+//	public static Molecule buildMolecule(ArrayList<Integer> solution, int nbCrowns) {
+//		int diameter = nbCrowns * 2 - 1;
+//		int [] checkedHexagons = new int[diameter * diameter];
+//		int [][] coordsMatrix = buildCoordsMatrix(diameter);
+//		
+//		Arrays.fill(checkedHexagons, -1);
+//		
+//		for (int i = 0 ; i < solution.size() ; i++) {
+//			if (solution.get(i) == 1)
+//				checkedHexagons[i] = 0;
+//		}
+//		
+//		int n = 0;
+//		int indexNode = 0;
+//		
+//		int solutionSize = solution.stream().reduce(0, (acc, x) -> acc + x);
+//		
+//		int [][] hexagons = new int [solution.size()][6];
+//		for (int i = 0 ; i < hexagons.length ; i++) 
+//			Arrays.fill(hexagons[i], -1);
+//		 
+//		while (n < solutionSize) {	
+//			int hexagon = findCandidate(checkedHexagons);
+//			int [] neighborhood = neighborhood(hexagon, diameter, coordsMatrix, solution);
+//			
+//			makeNeighbors(checkedHexagons, hexagons, hexagon, neighborhood);
+//			
+//			for (int i = 0 ; i < neighborhood.length ; i++) {
+//				if (hexagons[hexagon][i] == -1) {
+//					hexagons[hexagon][i] = indexNode;
+//					indexNode ++;
+//				}
+//			}
+//			
+//			checkedHexagons[hexagon] = 1;
+//			n++;
+//		}
+//		
+//		int [][] edgeMatrix = new int[indexNode][indexNode];
+//		int nbEdges = 0;
+//		int nbHexagons = 0;
+//		
+//		for (int hexagon = 0 ; hexagon < hexagons.length ; hexagon++) {
+//			if (isFull(hexagons[hexagon])) {
+//				nbHexagons ++;
+//				for (int i = 0 ; i < 6 ; i++) {
+//					int u = hexagons[hexagon][i];
+//					int v = hexagons[hexagon][(i + 1) % 6];
+//				
+//					if (edgeMatrix[u][v] == 0) {
+//						edgeMatrix[u][v] = 1;
+//						edgeMatrix[v][u] = 1;
+//						nbEdges ++;
+//					}
+//				}
+//			}
+//		}
+//				//TODO corriger : deux params a calculer
+//		return new Molecule(indexNode, nbEdges, nbHexagons, hexagons, null, edgeMatrix, null);
+//	}
 
 	private static void makeNeighbors(int[] checkedHexagons, int[][] hexagons, int hexagon, int[] neighborhood) {
 		for (int i = 0 ; i < neighborhood.length ; i++) {
@@ -1887,7 +1889,11 @@ public class Molecule implements Comparable<Molecule> {
 		this.kekuleStructures = kekuleStructures;
 	}
 
-
+	/***
+	 * 
+	 * @param modelPropertySet
+	 * @return
+	 */
 	public boolean respectPostProcessing(ModelPropertySet modelPropertySet) {
 		for(Property property : modelPropertySet)
 			if(property.hasExpressions() && !((ModelProperty) property).getChecker().checks(this, (ModelProperty) property))

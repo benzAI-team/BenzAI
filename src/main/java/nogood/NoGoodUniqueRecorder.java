@@ -15,7 +15,7 @@ public class NoGoodUniqueRecorder extends NoGoodRecorder {
 	@Override
 	protected ArrayList<ArrayList<Integer>> computeOccurences() {
 		ArrayList<ArrayList<Integer>> translations = new ArrayList<>();
-		translations.add(solution.getVertices());
+		translations.add(getSolution().getVertices());
 		return translations;
 	}
 

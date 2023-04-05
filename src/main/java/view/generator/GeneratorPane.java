@@ -60,8 +60,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private ArrayList<Molecule> generatedMolecules;
 	private int nbCriterions;
 
-	private PatternResolutionInformations patternsInformations;
-
 	BenzenoidCollectionPane selectedCollectionTab;
 
 	private Label titleLabel;
@@ -375,13 +373,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		}
 	}
 
-	/***
-	 * 
-	 * @param patternsInformations
-	 */
-	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
-		this.patternsInformations = patternsInformations;
-	}
 	
 	@Override
 	protected boolean buildPropertyExpressions() {
@@ -415,140 +406,15 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		return molecule;
 	}
 
-//<<<<<<< HEAD
-//	private ArrayList<Molecule> buildMolecules(ResultSolver resultSolver, int beginIndex) {
-//
-//		int index = beginIndex;
-//
-//		NbKekuleStructuresCriterion kekuleFilteringCriterion = null;
-//		GeneratorCriterion kekuleGeneratorCriterion = null;
-//		boolean concealed = false;
-//
-//		for (GeneratorCriterion criterion : criterions) {
-//			if (criterion.getSubject() == Subject.NB_KEKULE_STRUCTURES) {
-//				kekuleGeneratorCriterion = criterion;
-//				if (criterion.getOperator() != Operator.MIN && criterion.getOperator() != Operator.MAX) {
-//					FilteringOperator operator = FilteringOperator.getOperator(criterion.getOperatorString());
-//					kekuleFilteringCriterion = new NbKekuleStructuresCriterion(operator,
-//							Double.parseDouble(criterion.getValue()));
-//				}
-//
-//				break;
-//			}
-//
-//			else if (criterion.getSubject() == Subject.CONCEALED)
-//				concealed = true;
-//		}
-//
-//		ArrayList<Molecule> molecules = new ArrayList<>();
-//
-//		for (int i = 0; i < resultSolver.size(); i++) {
-//
-//			Molecule molecule = null;
-//			ArrayList<Integer> verticesSolution = resultSolver.getVerticesSolution(i);
-//
-//			try {
-//
-//				String graphFilename = "tmp.graph";
-//				String graphCoordFilename = "tmp.graph_coord";
-//
-//				GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
-//						resultSolver.getCrown(i));
-//
-//				graphBuilder.buildGraphFile();
-//
-//				GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
-//				graphCoordBuilder.convertInstance();
-//
-//				molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
-//
-//				File file = new File("tmp.graph");
-//				file.delete();
-//
-//				file = new File("tmp.graph_coord");
-//				file.delete();
-//
-//				molecule.setVerticesSolutions(verticesSolution);
-//
-//				String[] lines = resultSolver.getDescriptions().get(i).split("\n");
-//				StringBuilder b = new StringBuilder();
-//
-//				b.append("solution_" + (index + 1) + "\n");
-//				for (int j = 1; j < lines.length; j++)
-//					b.append(lines[j] + "\n");
-//
-//				molecule.setDescription(b.toString());
-//
-//				molecule.setNbCrowns(resultSolver.getNbCrowns().get(i));
-//
-//				molecules.add(molecule);
-//
-//				index++;
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			}
-//		}
-//
-//		ArrayList<Molecule> filteredMolecules = molecules;
-//
-//		if (kekuleFilteringCriterion != null) {
-//			ArrayList<Molecule> kekuleMolecules = new ArrayList<>();
-//
-//			for (Molecule molecule : molecules) {
-//				if (kekuleFilteringCriterion.checksCriterion(molecule))
-//					kekuleMolecules.add(molecule);
-//			}
-//			filteredMolecules = kekuleMolecules;
-//		}
-//
-//		else if (kekuleGeneratorCriterion != null) {
-//
-//			ArrayList<Molecule> minMolecules = new ArrayList<>();
-//			ArrayList<Molecule> maxMolecules = new ArrayList<>();
-//
-//			double nbMinKekuleStructures = Double.MAX_VALUE;
-//			double nbMaxKekuleStructures = -1.0;
-//
-//			for (Molecule molecule : molecules) {
-//				double nbKekuleStructures = molecule.getNbKekuleStructures();
-//
-//				if (nbKekuleStructures >= nbMaxKekuleStructures) {
-//					if (nbKekuleStructures > nbMaxKekuleStructures) {
-//						maxMolecules.clear();
-//					}
-//					maxMolecules.add(molecule);
-//					nbMaxKekuleStructures = nbKekuleStructures;
-//				}
-//
-//				if (nbKekuleStructures <= nbMinKekuleStructures) {
-//					if (nbKekuleStructures < nbMinKekuleStructures) {
-//						minMolecules.clear();
-//					}
-//					minMolecules.add(molecule);
-//					nbMinKekuleStructures = nbKekuleStructures;
-//				}
-//			}
-//
-//			if (kekuleGeneratorCriterion.getOperator() == Operator.MIN)
-//				filteredMolecules = minMolecules;
-//			else
-//				filteredMolecules = maxMolecules;
-//		}
-//
-//		if (concealed) {
-//			ConcealedNonKekuleanCriterion concealedCriterion = new ConcealedNonKekuleanCriterion();
-//			ArrayList<Molecule> concealeds = new ArrayList<>();
-//
-//			for (Molecule molecule : filteredMolecules) {
-//				if (concealedCriterion.checksCriterion(molecule))
-//					concealeds.add(molecule);
-//			}
-//
-//			filteredMolecules = concealeds;
-//		}
-//
-//		return filteredMolecules;
-//=======
+	/***
+	 * 
+	 * @param description
+	 * @param nbCrowns
+	 * @param index
+	 * @param verticesSolution
+	 * @param graphCoordFilename
+	 * @return
+	 */
 	private static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution,
 			String graphCoordFilename) {
 		Molecule molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
@@ -556,9 +422,14 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		molecule.setDescription(buildMoleculeDescription(description, index));
 		molecule.setNbCrowns(nbCrowns);
 		return molecule;
-//>>>>>>> refactoringGenerator
 	}
 
+	/***
+	 * 
+	 * @param description
+	 * @param index
+	 * @return
+	 */
 	private static String buildMoleculeDescription(String description, int index) {
 		String[] lines = description.split("\n");
 		StringBuilder b = new StringBuilder();
@@ -569,6 +440,11 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		return b.toString();
 	}
 
+	/***
+	 * 
+	 * @param graphFilename
+	 * @param graphCoordFilename
+	 */
 	private static void deleteTmpFiles(String graphFilename, String graphCoordFilename) {
 		File file = new File(graphFilename);
 		file.delete();
@@ -576,11 +452,23 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		file.delete();
 	}
 
+	/***
+	 * 
+	 * @param graphFilename
+	 * @param graphCoordFilename
+	 */
 	private static void convertGraphCoordFileInstance(String graphFilename, String graphCoordFilename) {
 		GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
 		graphCoordBuilder.convertInstance();
 	}
 
+	/***
+	 * 
+	 * @param nbCrowns
+	 * @param verticesSolution
+	 * @param graphFilename
+	 * @throws IOException
+	 */
 	private static void buildGraphFile(int nbCrowns, ArrayList<Integer> verticesSolution,
 			String graphFilename) throws IOException {
 		GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
@@ -610,7 +498,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			buttonsBox.getChildren().addAll(closeButton, loadIcon, solutionTextLabel, solutionNumberLabel, pauseButton, stopButton);
 
 			try {
-				model = ModelBuilder.buildModel(getModelPropertySet(), patternsInformations);
+				model = ModelBuilder.buildModel(getModelPropertySet(), getPatternsInformations());
 				solutionNumberLabel.textProperty().bind(model.getNbTotalSolutions().asString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -620,6 +508,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			application.addTask("Benzenoid generation");
 
 			generatedMolecules = new ArrayList<>();
+			//model.solve();
 
 			final Service<Void> calculateService = new Service<Void>() {
 

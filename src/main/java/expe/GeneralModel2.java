@@ -13,7 +13,7 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 import molecules.Node;
 import utils.Couple;
 
@@ -140,7 +140,7 @@ public class GeneralModel2 {
 		}
 	}
 	
-	private static Fragment convertToPattern(IntVar [] X) {
+	private static Pattern convertToPattern(IntVar [] X) {
 
 		ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
 
@@ -250,7 +250,7 @@ public class GeneralModel2 {
 		for (int i = 0; i < nbNodes; i++)
 			labels[i] = 2;
 
-		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
+		return new Pattern(matrix, labels, nodes, null, null, neighbors, 0);
 	}
 	
 	private static Tuples buildTable(int nbNeighbors) {
@@ -443,8 +443,8 @@ public class GeneralModel2 {
 				if (X[i].getValue() == 1)
 					vertices.add(i);
 			
-			Fragment pattern = convertToPattern(X);
-			ArrayList<Fragment> rotations = pattern.computeRotations();
+			Pattern pattern = convertToPattern(X);
+			ArrayList<Pattern> rotations = pattern.computeRotations();
 			
 			ArrayList<IntVar[]> nogoods = computeNogoods(model, rotations, nbHexagons, X, nbHexagonsVar);
 			
@@ -461,11 +461,11 @@ public class GeneralModel2 {
 		System.out.println(nbSolutions + " solutions found");
 	}
 
-	private static ArrayList<IntVar[]> computeNogoods(Model model, ArrayList<Fragment> rotations, int nbHexagons, BoolVar[] X, IntVar nbHexagonsVar) {
+	private static ArrayList<IntVar[]> computeNogoods(Model model, ArrayList<Pattern> rotations, int nbHexagons, BoolVar[] X, IntVar nbHexagonsVar) {
 		
 		ArrayList<IntVar []> nogoods = new ArrayList<>();
 		
-		for (Fragment rotation : rotations) {
+		for (Pattern rotation : rotations) {
 			for (int xShift = 0 ; xShift <= diameter ; xShift ++) {
 				for (int yShift = 0 ; yShift <= diameter ; yShift ++) {
 					boolean valid = true;
