@@ -7,7 +7,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.RenameCollectionPane;
 
 public class CollectionsMenu {
@@ -16,7 +16,7 @@ public class CollectionsMenu {
 		// TODO Auto-generated constructor stub
 	}
 	public static Menu build(BenzenoidApplication app) {
-		BenzenoidsCollectionsManagerPane collectionsPane = (BenzenoidsCollectionsManagerPane) app.getPanes().getCollectionsPane();
+		BenzenoidCollectionsManagerPane collectionsPane = (BenzenoidCollectionsManagerPane) app.getPanes().getCollectionsPane();
 
 		final Menu collectionsMenu = new Menu("_Collections");
 

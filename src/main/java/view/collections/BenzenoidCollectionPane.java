@@ -54,7 +54,7 @@ public class BenzenoidCollectionPane extends Tab {
 		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED, KEKULE, CLAR_RE
 	};
 
-	private BenzenoidsCollectionsManagerPane parent;
+	private BenzenoidCollectionsManagerPane parent;
 
 	private int index;
 
@@ -91,7 +91,7 @@ public class BenzenoidCollectionPane extends Tab {
 
 	private boolean lock;
 
-	public BenzenoidCollectionPane(BenzenoidsCollectionsManagerPane parent, int index, String name) {
+	public BenzenoidCollectionPane(BenzenoidCollectionsManagerPane parent, int index, String name) {
 
 		super(name);
 		this.index = index;
@@ -617,7 +617,7 @@ public class BenzenoidCollectionPane extends Tab {
 		parent.setCollectionPropertiesText(collectionProperties.toString());
 	}
 
-	public BenzenoidsCollectionsManagerPane getParent() {
+	public BenzenoidCollectionsManagerPane getParent() {
 		return parent;
 	}
 

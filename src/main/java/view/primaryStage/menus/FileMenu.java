@@ -7,7 +7,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.DirectoryChooser;
 import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class FileMenu {
 
@@ -15,7 +15,7 @@ public class FileMenu {
 		// TODO Auto-generated constructor stub
 	}
 public static Menu build(BenzenoidApplication app) {
-		BenzenoidsCollectionsManagerPane collectionsPane = (BenzenoidsCollectionsManagerPane) app.getPanes().getCollectionsPane();
+		BenzenoidCollectionsManagerPane collectionsPane = (BenzenoidCollectionsManagerPane) app.getPanes().getCollectionsPane();
 		Menu fileMenu = new Menu("_File");
 		Menu exportBenzenoidMenu = new Menu("Export benzenoid(s)");
 		MenuItem exportGraph = new MenuItem(".graph");
@@ -34,19 +34,19 @@ public static Menu build(BenzenoidApplication app) {
 		});
 
 		exportGraph.setOnAction(e -> {
-			((BenzenoidsCollectionsManagerPane) collectionsPane).exportGraph();
+			((BenzenoidCollectionsManagerPane) collectionsPane).exportGraph();
 		});
 
 		exportPng.setOnAction(e -> {
-			((BenzenoidsCollectionsManagerPane) collectionsPane).exportPng();
+			((BenzenoidCollectionsManagerPane) collectionsPane).exportPng();
 		});
 
 		exportCml.setOnAction(e -> {
-			((BenzenoidsCollectionsManagerPane) collectionsPane).exportCML();
+			((BenzenoidCollectionsManagerPane) collectionsPane).exportCML();
 		});
 
 		exportCom.setOnAction(e -> {
-			((BenzenoidsCollectionsManagerPane) collectionsPane).exportCOM();
+			((BenzenoidCollectionsManagerPane) collectionsPane).exportCOM();
 		});
 
 		importCollection.setOnAction(e -> {
@@ -54,7 +54,7 @@ public static Menu build(BenzenoidApplication app) {
 			File directory = directoryChooser.showDialog(app.getStage());
 
 			if (directory != null) {
-				((BenzenoidsCollectionsManagerPane) collectionsPane).importCollection(directory);
+				((BenzenoidCollectionsManagerPane) collectionsPane).importCollection(directory);
 			}
 		});
 
@@ -63,7 +63,7 @@ public static Menu build(BenzenoidApplication app) {
 			File directory = directoryChooser.showDialog(app.getStage());
 
 			if (directory != null) {
-				BenzenoidCollectionPane currentPane = ((BenzenoidsCollectionsManagerPane) collectionsPane)
+				BenzenoidCollectionPane currentPane = ((BenzenoidCollectionsManagerPane) collectionsPane)
 						.getSelectedTab();
 				currentPane.export(directory);
 			}

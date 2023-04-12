@@ -13,14 +13,14 @@ import molecules.Molecule;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
 import utils.HexagonAromaticity;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class AromaticityGroup extends MoleculeGroup {
 
 	public static AromaticityDisplayType aromaticityDisplayType;
 	
 	@SuppressWarnings("unused")
-	private BenzenoidsCollectionsManagerPane pane;
+	private BenzenoidCollectionsManagerPane pane;
 
 	private Color[] paletteLocalScale;
 	private Color[] paletteGlobalScale;
@@ -28,7 +28,7 @@ public class AromaticityGroup extends MoleculeGroup {
 	private Aromaticity aromaticity;
 	
 	
-	public AromaticityGroup(BenzenoidsCollectionsManagerPane pane, Molecule molecule, Aromaticity aromaticity)
+	public AromaticityGroup(BenzenoidCollectionsManagerPane pane, Molecule molecule, Aromaticity aromaticity)
 			throws IOException {
 
 		super(molecule);

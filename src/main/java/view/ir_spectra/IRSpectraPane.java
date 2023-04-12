@@ -25,11 +25,11 @@ import spectrums.IRSpectra;
 import spectrums.Parameter;
 import spectrums.ResultLogFile;
 import utils.Couple;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class IRSpectraPane extends GridPane {
 
-	private BenzenoidsCollectionsManagerPane parent;
+	private BenzenoidCollectionsManagerPane parent;
 
 	private Parameter parameter;
 	private ArrayList<ComputedPlotPane> panes;
@@ -38,7 +38,7 @@ public class IRSpectraPane extends GridPane {
 
 	ListView<String> listView = new ListView<String>();
 
-	public IRSpectraPane(ArrayList<ComputedPlotPane> panes, BenzenoidsCollectionsManagerPane parent,
+	public IRSpectraPane(ArrayList<ComputedPlotPane> panes, BenzenoidCollectionsManagerPane parent,
 			Parameter parameter) {
 		this.panes = panes;
 		this.parent = parent;

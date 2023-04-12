@@ -11,7 +11,7 @@ import molecules.Molecule;
 import parsers.GraphParser;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.draw.DrawBenzenoidPane;
 
@@ -21,7 +21,7 @@ public class InputMenu {
 		// TODO Auto-generated constructor stub
 	}
 	public static Menu build(BenzenoidApplication app) {
-		BenzenoidsCollectionsManagerPane collectionsPane =  (BenzenoidsCollectionsManagerPane) app.getPanes().getCollectionsPane();
+		BenzenoidCollectionsManagerPane collectionsPane =  (BenzenoidCollectionsManagerPane) app.getPanes().getCollectionsPane();
 		final Menu inputMenu = new Menu("_Input");
 
 		inputMenu.setOnShowing(e -> {

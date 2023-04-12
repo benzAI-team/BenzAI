@@ -10,12 +10,12 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import molecules.Molecule;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class RBOGroup extends MoleculeGroup {
 
 	@SuppressWarnings("unused")
-	private BenzenoidsCollectionsManagerPane pane;
+	private BenzenoidCollectionsManagerPane pane;
 	private RBO RBO;
 
 	private Color[] palette;

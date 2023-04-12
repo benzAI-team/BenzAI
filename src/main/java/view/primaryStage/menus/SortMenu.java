@@ -9,7 +9,7 @@ import molecules.sort.NbHexagonsComparator;
 import molecules.sort.NbHydrogensComparator;
 import molecules.sort.NbKekuleStructuresComparator;
 import molecules.sort.ResonanceEnergyComparator;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class SortMenu {
 
@@ -17,7 +17,7 @@ public class SortMenu {
 		// TODO Auto-generated constructor stub
 	}
 	public static Menu build(BenzenoidApplication app) {
-		BenzenoidsCollectionsManagerPane collectionsPane =  (BenzenoidsCollectionsManagerPane) app.getPanes().getCollectionsPane();
+		BenzenoidCollectionsManagerPane collectionsPane =  (BenzenoidCollectionsManagerPane) app.getPanes().getCollectionsPane();
 
 		Menu sortMenu = new Menu("_Sort");
 		Menu nbCarbonsItem = new Menu("Number of carbons");

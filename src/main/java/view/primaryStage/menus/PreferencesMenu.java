@@ -8,7 +8,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import solveur.Aromaticity.RIType;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.IRSpectraParameterPane;
 import view.groups.AromaticityDisplayType;
 import view.groups.AromaticityGroup;
@@ -19,7 +19,7 @@ public class PreferencesMenu {
 		// TODO Auto-generated constructor stub
 	}
 	public static Menu build(BenzenoidApplication app) {
-		BenzenoidsCollectionsManagerPane collectionsPane =  (BenzenoidsCollectionsManagerPane) app.getPanes().getCollectionsPane();
+		BenzenoidCollectionsManagerPane collectionsPane =  (BenzenoidCollectionsManagerPane) app.getPanes().getCollectionsPane();
 		
 		Menu preferencesMenu = new Menu("P_references");
 		Menu aromaticityDisplayMenu = new Menu("Resonance energy display");

@@ -1,6 +1,5 @@
 package view.collections;
 
-import java.util.Iterator;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,11 +14,11 @@ import utils.Utils;
 
 public class RenameCollectionPane extends GridPane {
 
-	private BenzenoidsCollectionsManagerPane parent;
+	private BenzenoidCollectionsManagerPane parent;
 
 	private TextField fieldCollectionName;
 
-	public RenameCollectionPane(BenzenoidsCollectionsManagerPane parent) {
+	public RenameCollectionPane(BenzenoidCollectionsManagerPane parent) {
 		this.parent = parent;
 		initialize();
 	}

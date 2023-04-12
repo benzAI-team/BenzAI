@@ -13,16 +13,16 @@ import javafx.stage.Stage;
 import molecules.Molecule;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 
 public class AddToNewCollectionPane extends GridPane {
 
 	private Molecule molecule;
-	private BenzenoidsCollectionsManagerPane parent;
+	private BenzenoidCollectionsManagerPane parent;
 	private TextField fieldCollectionName;
 
-	public AddToNewCollectionPane(BenzenoidsCollectionsManagerPane parent, Molecule molecule) {
+	public AddToNewCollectionPane(BenzenoidCollectionsManagerPane parent, Molecule molecule) {
 
 		this.parent = parent;
 		this.molecule = molecule;

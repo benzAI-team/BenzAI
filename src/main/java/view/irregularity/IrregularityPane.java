@@ -37,11 +37,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import molecules.Molecule;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class IrregularityPane extends BorderPane {
 
-	private BenzenoidsCollectionsManagerPane parent;
+	private BenzenoidCollectionsManagerPane parent;
 
 	private ArrayList<Molecule> molecules;
 	private ArrayList<PAHClass> classes;
@@ -57,7 +57,7 @@ public class IrregularityPane extends BorderPane {
 
 	private TextField stepField;
 
-	public IrregularityPane(BenzenoidsCollectionsManagerPane parent, ArrayList<Molecule> molecules, double step)
+	public IrregularityPane(BenzenoidCollectionsManagerPane parent, ArrayList<Molecule> molecules, double step)
 			throws IOException {
 		super();
 		this.parent = parent;

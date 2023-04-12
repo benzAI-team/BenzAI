@@ -3,7 +3,7 @@ package view.primaryStage.menus;
 import application.BenzenoidApplication;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class FilterMenu {
 
@@ -11,7 +11,7 @@ public class FilterMenu {
 		// TODO Auto-generated constructor stub
 	}
 	public static Menu build(BenzenoidApplication app) {
-		BenzenoidsCollectionsManagerPane collectionsPane =  (BenzenoidsCollectionsManagerPane) app.getPanes().getCollectionsPane();
+		BenzenoidCollectionsManagerPane collectionsPane =  (BenzenoidCollectionsManagerPane) app.getPanes().getCollectionsPane();
 		
 		Menu filterMenu = new Menu("Fi_lter");
 

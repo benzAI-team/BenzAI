@@ -6,7 +6,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import view.collections.BenzenoidsCollectionsManagerPane;
 import view.help.HelpPane;
 
 public class HelpMenu {

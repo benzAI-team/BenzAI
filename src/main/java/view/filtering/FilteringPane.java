@@ -3,8 +3,6 @@ package view.filtering;
 import java.util.ArrayList;
 
 import application.BenzenoidApplication;
-import generator.GeneralModel;
-import generator.patterns.PatternResolutionInformations;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,7 +14,6 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,13 +22,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.BinaryNumericalExpression;
 import molecules.Molecule;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
@@ -41,7 +36,7 @@ import modelProperty.testers.Tester;
 public class FilteringPane extends ScrollPaneWithPropertyList {
 
 	private BenzenoidApplication application;
-	private BenzenoidsCollectionsManagerPane collectionsPane;
+	private BenzenoidCollectionsManagerPane collectionsPane;
 
 	private Button addButton;
 	private Button closeButton;
@@ -58,7 +53,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	
 	
 
-	public FilteringPane(BenzenoidApplication application, BenzenoidsCollectionsManagerPane collectionsPane) {
+	public FilteringPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) {
 		this.application = application;
 		this.collectionsPane = collectionsPane;
 		initialize();
@@ -205,7 +200,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
  */
 	private void filter() {
 
-		BenzenoidsCollectionsManagerPane managerPane = collectionsPane;
+		BenzenoidCollectionsManagerPane managerPane = collectionsPane;
 
 		int index = collectionChoiceBox.getSelectionModel().getSelectedIndex();
 		BenzenoidCollectionPane collectionPane = collectionsPane.getBenzenoidSetPanes()

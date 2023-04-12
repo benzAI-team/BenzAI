@@ -10,16 +10,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import utils.Utils;
-import view.generator.ChoiceBoxCriterion;
 
 public class CreateCollectionPane extends GridPane {
 
-	private BenzenoidsCollectionsManagerPane parent;
+	private BenzenoidCollectionsManagerPane parent;
 	
 	private TextField fieldCollectionName;
 
-	public CreateCollectionPane(BenzenoidsCollectionsManagerPane parent) {
+	public CreateCollectionPane(BenzenoidCollectionsManagerPane parent) {
 		this.parent = parent;
 		initialize();
 	}

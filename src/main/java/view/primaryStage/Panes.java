@@ -3,7 +3,7 @@ package view.primaryStage;
 import application.BenzenoidApplication;
 import javafx.scene.layout.Region;
 import view.catalog.CatalogPane;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections_operations.CollectionsOperationsPane;
 import view.draw.DrawBenzenoidPane;
 import view.filtering.FilteringPane;
@@ -20,12 +20,12 @@ public class Panes {
 	private Region generationPreferencesPane;
 
 	public Panes(BenzenoidApplication app) {
-		collectionsPane = new BenzenoidsCollectionsManagerPane(app);
+		collectionsPane = new BenzenoidCollectionsManagerPane(app);
 		generatorPane = new GeneratorPane(app);
-		drawPane = new DrawBenzenoidPane(app, (BenzenoidsCollectionsManagerPane) collectionsPane);
+		drawPane = new DrawBenzenoidPane(app, (BenzenoidCollectionsManagerPane) collectionsPane);
 		databasePane = new CatalogPane(app);
-		filteringPane = new FilteringPane(app, (BenzenoidsCollectionsManagerPane) collectionsPane);
-		operationPane = new CollectionsOperationsPane(app, (BenzenoidsCollectionsManagerPane) collectionsPane);
+		filteringPane = new FilteringPane(app, (BenzenoidCollectionsManagerPane) collectionsPane);
+		operationPane = new CollectionsOperationsPane(app, (BenzenoidCollectionsManagerPane) collectionsPane);
 		generationPreferencesPane = new GeneratorPreferencesPane(app);
 
 	}

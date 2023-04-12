@@ -32,7 +32,7 @@ import molecules.Molecule;
 import spectrums.ResultLogFile;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane.DisplayType;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.database.boxes.HBoxDatabaseCriterion;
 import view.database.boxes.HBoxDefaultDatabaseCriterion;
 
@@ -193,7 +193,7 @@ public class DatabasePane extends ScrollPane {
 	}
 
 	private void updateGUI() {
-		BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
+		BenzenoidCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
 		managerPane.log("-> " + managerPane.getSelectedTab().getName(), false);
 		managerPane.getSelectedTab().refresh();
 		application.switchMode(application.getPanes().getCollectionsPane());
@@ -206,7 +206,7 @@ public class DatabasePane extends ScrollPane {
 
 			ArrayList<BenzenoidCriterion> criterions = getCriterions();
 
-			BenzenoidsCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
+			BenzenoidCollectionsManagerPane managerPane = application.getBenzenoidCollectionsPane();
 
 			managerPane.log("Requesting database", true);
 			for (BenzenoidCriterion criterion : criterions)

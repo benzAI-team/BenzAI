@@ -3,7 +3,7 @@ package view.primaryStage.menus;
 import application.BenzenoidApplication;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class ComputationsMenu {
 
@@ -12,7 +12,7 @@ public class ComputationsMenu {
 	}
 
 	public static Menu build(BenzenoidApplication app) {
-		BenzenoidsCollectionsManagerPane collectionsPane = (BenzenoidsCollectionsManagerPane) app.getPanes()
+		BenzenoidCollectionsManagerPane collectionsPane = (BenzenoidCollectionsManagerPane) app.getPanes()
 				.getCollectionsPane();
 		Menu computationsMenu = new Menu("C_omputations");
 

@@ -1,7 +1,5 @@
 package collection_operations;
 
-import java.util.ArrayList;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,8 +9,11 @@ import javafx.concurrent.Worker.State;
 import molecules.Molecule;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
+import view.collections.BenzenoidPane;
+import view.collections.BenzenoidCollectionsManagerPane;
+
+import java.util.ArrayList;
 
 public class LinCollectionTask extends CollectionTask {
 
@@ -23,7 +24,7 @@ public class LinCollectionTask extends CollectionTask {
 
 	@Override
 	public void execute() {
-		BenzenoidCollectionPane currentPane = getSelectedTab();
+		BenzenoidCollectionPane currentPane = getCollectionManagerPane().getSelectedTab();
 
 		if (currentPane.getBenzenoidPanes().size() == 0) {
 			Utils.alert("There is no benzenoid!");
@@ -34,13 +35,13 @@ public class LinCollectionTask extends CollectionTask {
 		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
 		String name = "RE Lin";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
-				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
+		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(getCollectionManagerPane(), getCollectionManagerPane().getBenzenoidSetPanes().size(),
+				getCollectionManagerPane().getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
-		application.addTask("RE Lin");
+		getCollectionManagerPane().getApplication().addTask("RE Lin");
 
 		if (selectedBenzenoidPanes.size() == 0)
-			selectAll();
+			getCollectionManagerPane().selectAll();
 
 		setCalculateService(new Service<Void>() {
 
@@ -60,7 +61,7 @@ public class LinCollectionTask extends CollectionTask {
 						int size = panes.size();
 
 						System.out.println("Computing resonance energy of " + size + " benzenoids.");
-						log("RE Lin (" + size + " benzenoids)", true);
+						getCollectionManagerPane().log("RE Lin (" + size + " benzenoids)", true);
 
 						for (BenzenoidPane benzenoidPane : panes) {
 							if (isRunning()) {
@@ -74,10 +75,10 @@ public class LinCollectionTask extends CollectionTask {
 									@Override
 									public void run() {
 										if (getIndex() == 1) {
-											log(getIndex() + " / " + size, false);
+											getCollectionManagerPane().log(getIndex() + " / " + size, false);
 											setLineIndex(currentPane.getConsole().getNbLines() - 1);
 										} else
-											changeLineConsole(getIndex() + " / " + size, getLineIndex());
+											getCollectionManagerPane().changeLineConsole(getIndex() + " / " + size, getLineIndex());
 									}
 								});
 							}
@@ -95,29 +96,21 @@ public class LinCollectionTask extends CollectionTask {
 			@SuppressWarnings("incomplete-switch")
 			@Override
 			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-
+				BenzenoidCollectionsManagerPane managerPane = getCollectionManagerPane();
 				switch (newValue) {
 				case FAILED:
 					Utils.alert("No selected benzenoid");
 					setRunning(false);
 					break;
 
-				case CANCELLED:
-					// Utils.alert("No selected benzenoid");
+					case CANCELLED:
+					case SUCCEEDED:
+						// Utils.alert("No selected benzenoid");
 					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("RE Lin");
-					setRunning(false);
-					break;
-
-				case SUCCEEDED:
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("RE Lin");
+					managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
+					managerPane.addBenzenoidSetPane(benzenoidSetPane);
+					managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
+					managerPane.getApplication().removeTask("RE Lin");
 					setRunning(false);
 					break;
 				}

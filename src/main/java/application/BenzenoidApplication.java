@@ -15,7 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections_operations.CollectionsOperationsPane;
 import view.database.DatabasePane;
 import view.draw.DrawBenzenoidPane;
@@ -23,7 +23,6 @@ import view.filtering.FilteringPane;
 import view.generator.GeneratorPane;
 import view.primaryStage.AboutPane;
 import view.primaryStage.Panes;
-import view.primaryStage.ScrollPaneWithPropertyList;
 import view.primaryStage.menus.*;
 
 
@@ -71,16 +70,16 @@ public class BenzenoidApplication extends Application {
 
 			panes = new Panes(this);
 
-			((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("BenzAI started", true);
+			((BenzenoidCollectionsManagerPane) panes.getCollectionsPane()).log("BenzAI started", true);
 
 			if (database)
-				((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane())
+				((BenzenoidCollectionsManagerPane) panes.getCollectionsPane())
 						.log("Connection to database established", true);
 			else
-				((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("Connection to database failed",
+				((BenzenoidCollectionsManagerPane) panes.getCollectionsPane()).log("Connection to database failed",
 						true);
 
-			((BenzenoidsCollectionsManagerPane) panes.getCollectionsPane()).log("", false);
+			((BenzenoidCollectionsManagerPane) panes.getCollectionsPane()).log("", false);
 
 			tasksBoxes = new ArrayList<>();
 
@@ -220,8 +219,8 @@ public class BenzenoidApplication extends Application {
 	/***
 	 * getters, setters
 	 */
-	public BenzenoidsCollectionsManagerPane getBenzenoidCollectionsPane() {
-		return (BenzenoidsCollectionsManagerPane) panes.getCollectionsPane();
+	public BenzenoidCollectionsManagerPane getBenzenoidCollectionsPane() {
+		return (BenzenoidCollectionsManagerPane) panes.getCollectionsPane();
 	}
 
 	public DrawBenzenoidPane getDrawPane() {

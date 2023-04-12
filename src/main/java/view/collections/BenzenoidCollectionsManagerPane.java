@@ -12,11 +12,8 @@ import application.BenzenoidApplication;
 import classifier.Irregularity;
 import classifier.MoleculeInformation;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker.State;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
@@ -64,9 +61,9 @@ import view.ir_spectra.ComputedPlotPane;
 import view.ir_spectra.IRSpectraPane;
 import view.irregularity.IrregularityPane;
 
-public class BenzenoidsCollectionsManagerPane extends BorderPane {
+public class BenzenoidCollectionsManagerPane extends BorderPane {
 
-	private BenzenoidApplication application;
+	private final BenzenoidApplication application;
 
 	private TabPane tabPane;
 
@@ -105,7 +102,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	private int lineIndexClar;
 
 	private Service<Void> calculateServiceRadicalar;
-	private boolean radicalarRunning;
+
 
 	private Service<Void> calculateServiceRBO;
 	private boolean rboRunning;
@@ -116,7 +113,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 	private int indexDatabase;
 	private int lineIndexDatabase;
 
-	public BenzenoidsCollectionsManagerPane(BenzenoidApplication parent) {
+	public BenzenoidCollectionsManagerPane(BenzenoidApplication parent) {
 
 		selectAll = false;
 
@@ -249,14 +246,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					unselectAll();
 				}
 
-			} else if (e.getButton() == MouseButton.SECONDARY) {
-
 			}
 		});
 
-		tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-			getSelectedTab().refreshCollectionProperties();
-		});
+		tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> getSelectedTab().refreshCollectionProperties());
 	}
 
 	public void addBenzenoidSetPane(BenzenoidCollectionPane benzenoidSetPane) {
@@ -284,12 +277,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		moveItemMenu = new Menu("Move");
 
-		moveItemMenu.setOnAction(e -> {
-			refreshMoveItem();
-		});
-		moveItemMenu.setOnMenuValidation(e -> {
-			refreshMoveItem();
-		});
+		moveItemMenu.setOnAction(e -> refreshMoveItem());
+		moveItemMenu.setOnMenuValidation(e -> refreshMoveItem());
 
 		CollectionMenuItem menuItem = new CollectionMenuItem(0, "(none)");
 		moveItemMenu.getItems().addAll(menuItem);
@@ -311,8 +300,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		// returns true if name is the label of an existing pane
 		Iterator<BenzenoidCollectionPane> iter = benzenoidSetPanes.iterator();
 
-		while ((iter.hasNext()) && (!iter.next().getName().equals(name))) {
-		}
+		while ((iter.hasNext()) && (!iter.next().getName().equals(name)));
 
 		return iter.hasNext();
 	}
@@ -427,67 +415,41 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		});
 
-		kekuleItem.setOnAction(e -> {
-			kekuleStructures();
-		});
+		kekuleItem.setOnAction(e -> kekuleStructures());
 
-		ims2d1aItem.setOnAction(e -> {
-			ims2d1a();
-		});
+		ims2d1aItem.setOnAction(e -> ims2d1a());
 
-		radicalarStatsItem.setOnAction(e -> {
-			radicalarStatistics();
-		});
+		radicalarStatsItem.setOnAction(e -> radicalarStatistics());
 
-		exportPropertiesItem.setOnAction(e -> {
-			exportProperties();
-		});
+		exportPropertiesItem.setOnAction(e -> exportProperties());
 
-		exportGraph.setOnAction(e -> {
-			exportGraph();
-		});
+		exportGraph.setOnAction(e -> exportGraph());
 
-		exportPng.setOnAction(e -> {
-			exportPng();
-		});
+		exportPng.setOnAction(e -> exportPng());
 
-		exportCml.setOnAction(e -> {
-			exportCML();
-		});
+		exportCml.setOnAction(e -> exportCML());
 
-		exportCom.setOnAction(e -> {
-			exportCOM();
-		});
+		exportCom.setOnAction(e -> exportCOM());
 
 		copyItem.setOnAction(e -> {
 			originBenzenoidCollectionPane = getSelectedTab();
 			originBenzenoidCollectionPane.copy();
 		});
 
-		pasteItem.setOnAction(e -> {
-			paste();
-		});
+		pasteItem.setOnAction(e -> paste());
 
 		deleteItem.setOnAction(e -> {
 			BenzenoidCollectionPane currentPane = getSelectedTab();
 			currentPane.removeBenzenoidPanes(currentPane.getSelectedBenzenoidPanes());
 		});
 
-		reLinItem.setOnAction(e -> {
-			resonanceEnergyLin();
-		});
+		reLinItem.setOnAction(e -> resonanceEnergyLin());
 
-		reLinFanItem.setOnAction(e -> {
-			resonanceEnergyLinFan();
-		});
+		reLinFanItem.setOnAction(e -> resonanceEnergyLinFan());
 
-		clarItem.setOnAction(e -> {
-			clarCover();
-		});
+		clarItem.setOnAction(e -> clarCover());
 
-		clarStatsItem.setOnAction(e -> {
-			clarCoverStatsFixed();
-		});
+		clarStatsItem.setOnAction(e -> clarCoverStatsFixed());
 
 		clarCoverForcedSinglesItem.setOnAction(e -> {
 			TextInputDialog textInputDialog = new TextInputDialog("2");
@@ -508,25 +470,15 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		});
 		
 		
-		rboItem.setOnAction(e -> {
-			ringBoundOrder();
-		});
+		rboItem.setOnAction(e -> ringBoundOrder());
 
-		irregularityItem.setOnAction(e -> {
-			irregularityStatistics();
-		});
+		irregularityItem.setOnAction(e -> irregularityStatistics());
 
-		selectAllItem.setOnAction(e -> {
-			selectAll();
-		});
+		selectAllItem.setOnAction(e -> selectAll());
 
-		unselectAllItem.setOnAction(e -> {
-			unselectAll();
-		});
+		unselectAllItem.setOnAction(e -> unselectAll());
 
-		drawItem.setOnAction(e -> {
-			draw();
-		});
+		drawItem.setOnAction(e -> draw());
 
 		importCollectionItem.setOnAction(e -> {
 
@@ -558,13 +510,9 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		});
 
-		irSpectraItem.setOnAction(e -> {
-			IRSpectra();
-		});
+		irSpectraItem.setOnAction(e -> IRSpectra());
 
-		checkDatabaseItem.setOnAction(e -> {
-			checkDatabase();
-		});
+		checkDatabaseItem.setOnAction(e -> checkDatabase());
 
 		contextMenu.getItems().addAll(exportMenu, importCollectionItem, exportCollectionItem, new SeparatorMenuItem(),
 				renameMenu, deleteItem, copyItem, pasteItem, moveItem, selectAllItem, unselectAllItem,
@@ -591,13 +539,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					CollectionMenuItem menuItem = new CollectionMenuItem(collectionPane.getIndex(),
 							collectionPane.getName());
 
-					menuItem.setOnAction(e2 -> {
-
-						BenzenoidCollectionPane setPaneOrigin = currentPane;
-						BenzenoidCollectionPane setPaneDestination = collectionPane;
-
-						move(setPaneOrigin, setPaneDestination);
-					});
+					menuItem.setOnAction(e2 -> move(currentPane, collectionPane));
 
 					items.add(menuItem);
 				}
@@ -694,19 +636,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		if (selectedBenzenoidPanes.size() == 0)
 			selectAll();
 
-		calculateServiceLin = new Service<Void>() {
+		calculateServiceLin = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 
-						ArrayList<BenzenoidPane> panes = new ArrayList<>();
-
-						for (BenzenoidPane pane : selectedBenzenoidPanes)
-							panes.add(pane);
+						ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
 
 						indexLin = 0;
 						int size = panes.size();
@@ -722,15 +661,12 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								indexLin++;
 								System.out.println(indexLin + " / " + size);
 
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										if (indexLin == 1) {
-											log(indexLin + " / " + size, false);
-											lineIndexLin = currentPane.getConsole().getNbLines() - 1;
-										} else
-											changeLineConsole(indexLin + " / " + size, lineIndexLin);
-									}
+								Platform.runLater(() -> {
+									if (indexLin == 1) {
+										log(indexLin + " / " + size, false);
+										lineIndexLin = currentPane.getConsole().getNbLines() - 1;
+									} else
+										changeLineConsole(indexLin + " / " + size, lineIndexLin);
 								});
 							}
 						}
@@ -742,37 +678,24 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		};
 
-		calculateServiceLin.stateProperty().addListener(new ChangeListener<State>() {
+		calculateServiceLin.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-			@SuppressWarnings("incomplete-switch")
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+			switch (newValue) {
+			case FAILED:
+				Utils.alert("No selected benzenoid");
+				linRunning = false;
+				break;
 
-				switch (newValue) {
-				case FAILED:
-					Utils.alert("No selected benzenoid");
-					linRunning = false;
-					break;
-
-				case CANCELLED:
-					// Utils.alert("No selected benzenoid");
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("RE Lin");
-					linRunning = false;
-					break;
-
+			case CANCELLED:
 				case SUCCEEDED:
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("RE Lin");
-					linRunning = false;
-					break;
-				}
+					// Utils.alert("No selected benzenoid");
+				benzenoidSetPane.refresh();
+				tabPane.getSelectionModel().clearAndSelect(0);
+				addBenzenoidSetPane(benzenoidSetPane);
+				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+				application.removeTask("RE Lin");
+				linRunning = false;
+				break;
 			}
 		});
 
@@ -827,10 +750,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			selectAll();
 		}
 
-		ArrayList<BenzenoidPane> panes = new ArrayList<>();
-
-		for (BenzenoidPane pane : selectedBenzenoidPanes)
-			panes.add(pane);
+		ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
 
 		indexClar = 0;
 		int size = panes.size();
@@ -969,10 +889,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
 				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
-		ArrayList<BenzenoidPane> panes = new ArrayList<>();
-
-		for (BenzenoidPane pane : selectedBenzenoidPanes)
-			panes.add(pane);
+		ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
 
 		indexClar = 0;
 		// int size = panes.size();
@@ -1015,19 +932,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			selectAll();
 		}
 
-		calculateServiceClarCover = new Service<Void>() {
+		calculateServiceClarCover = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 
-						ArrayList<BenzenoidPane> panes = new ArrayList<>();
-
-						for (BenzenoidPane pane : selectedBenzenoidPanes)
-							panes.add(pane);
+						ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
 
 						indexClar = 0;
 						int size = panes.size();
@@ -1049,15 +963,12 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								indexClar++;
 								System.out.println(indexClar + " / " + size);
 
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										if (indexClar == 1) {
-											log(indexClar + " / " + size, false);
-											lineIndexClar = currentPane.getConsole().getNbLines() - 1;
-										} else
-											changeLineConsole(indexClar + " / " + size, lineIndexClar);
-									}
+								Platform.runLater(() -> {
+									if (indexClar == 1) {
+										log(indexClar + " / " + size, false);
+										lineIndexClar = currentPane.getConsole().getNbLines() - 1;
+									} else
+										changeLineConsole(indexClar + " / " + size, lineIndexClar);
 								});
 
 							}
@@ -1070,36 +981,24 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		};
 
-		calculateServiceClarCover.stateProperty().addListener(new ChangeListener<State>() {
+		calculateServiceClarCover.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-			@SuppressWarnings("incomplete-switch")
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+			switch (newValue) {
+			case FAILED:
+				clarRunning = false;
+				Utils.alert("Failed");
+				break;
 
-				switch (newValue) {
-				case FAILED:
-					clarRunning = false;
-					Utils.alert("Failed");
-					break;
-
-				case CANCELLED:
-					clarRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Clar cover");
-					break;
+			case CANCELLED:
 
 				case SUCCEEDED:
 					clarRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Clar cover");
-					break;
-				}
+				benzenoidSetPane.refresh();
+				tabPane.getSelectionModel().clearAndSelect(0);
+				addBenzenoidSetPane(benzenoidSetPane);
+				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+				application.removeTask("Clar cover");
+				break;
 			}
 		});
 
@@ -1133,19 +1032,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			selectAll();
 		}
 
-		calculateServiceClarCover = new Service<Void>() {
+		calculateServiceClarCover = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 
-						ArrayList<BenzenoidPane> panes = new ArrayList<>();
-
-						for (BenzenoidPane pane : selectedBenzenoidPanes)
-							panes.add(pane);
+						ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
 
 						indexClar = 0;
 						int size = panes.size();
@@ -1167,15 +1063,12 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								indexClar++;
 								System.out.println(indexClar + " / " + size);
 
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										if (indexClar == 1) {
-											log(indexClar + " / " + size, false);
-											lineIndexClar = currentPane.getConsole().getNbLines() - 1;
-										} else
-											changeLineConsole(indexClar + " / " + size, lineIndexClar);
-									}
+								Platform.runLater(() -> {
+									if (indexClar == 1) {
+										log(indexClar + " / " + size, false);
+										lineIndexClar = currentPane.getConsole().getNbLines() - 1;
+									} else
+										changeLineConsole(indexClar + " / " + size, lineIndexClar);
 								});
 
 							}
@@ -1188,36 +1081,24 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		};
 
-		calculateServiceClarCover.stateProperty().addListener(new ChangeListener<State>() {
+		calculateServiceClarCover.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-			@SuppressWarnings("incomplete-switch")
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+			switch (newValue) {
+			case FAILED:
+				clarRunning = false;
+				Utils.alert("Failed");
+				break;
 
-				switch (newValue) {
-				case FAILED:
-					clarRunning = false;
-					Utils.alert("Failed");
-					break;
-
-				case CANCELLED:
-					clarRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Clar cover");
-					break;
+			case CANCELLED:
 
 				case SUCCEEDED:
 					clarRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Clar cover");
-					break;
-				}
+				benzenoidSetPane.refresh();
+				tabPane.getSelectionModel().clearAndSelect(0);
+				addBenzenoidSetPane(benzenoidSetPane);
+				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+				application.removeTask("Clar cover");
+				break;
 			}
 		});
 
@@ -1239,8 +1120,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
 				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
-		BenzenoidsCollectionsManagerPane manager = this;
-
 		application.addTask("Ring Bond Order");
 
 		rboRunning = true;
@@ -1249,19 +1128,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			selectAll();
 		}
 
-		calculateServiceRBO = new Service<Void>() {
+		calculateServiceRBO = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 
-						ArrayList<BenzenoidPane> panes = new ArrayList<>();
-
-						for (BenzenoidPane pane : selectedBenzenoidPanes)
-							panes.add(pane);
+						ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
 
 						indexRBO = 0;
 						int size = panes.size();
@@ -1277,15 +1153,12 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								indexRBO++;
 								System.out.println(indexRBO + " / " + size);
 
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										if (indexRBO == 1) {
-											log(indexRBO + " / " + size, true);
-											lineIndexRBO = currentPane.getConsole().getNbLines() - 1;
-										} else
-											changeLineConsole(indexRBO + " / " + size, lineIndexRBO);
-									}
+								Platform.runLater(() -> {
+									if (indexRBO == 1) {
+										log(indexRBO + " / " + size, true);
+										lineIndexRBO = currentPane.getConsole().getNbLines() - 1;
+									} else
+										changeLineConsole(indexRBO + " / " + size, lineIndexRBO);
 								});
 
 							}
@@ -1298,36 +1171,24 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		};
 
-		calculateServiceRBO.stateProperty().addListener(new ChangeListener<State>() {
+		calculateServiceRBO.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-			@SuppressWarnings("incomplete-switch")
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+			switch (newValue) {
+			case FAILED:
+				rboRunning = false;
+				Utils.alert("Failed");
+				break;
 
-				switch (newValue) {
-				case FAILED:
-					rboRunning = false;
-					Utils.alert("Failed");
-					break;
-
-				case CANCELLED:
-					rboRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Ring Bond Order");
-					break;
+			case CANCELLED:
 
 				case SUCCEEDED:
 					rboRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Ring Bond Order");
-					break;
-				}
+				benzenoidSetPane.refresh();
+				tabPane.getSelectionModel().clearAndSelect(0);
+				addBenzenoidSetPane(benzenoidSetPane);
+				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+				application.removeTask("Ring Bond Order");
+				break;
 			}
 		});
 
@@ -1556,10 +1417,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		}
 	}
 
-	public ArrayList<BenzenoidPane> getCopiedBenzenoidPanes() {
-		return copiedBenzenoidPanes;
-	}
-
 	public void refreshColorScales() {
 		for (BenzenoidCollectionPane collectionPane : benzenoidSetPanes)
 			collectionPane.refreshColorScales();
@@ -1570,10 +1427,6 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		if (comparator instanceof ResonanceEnergyComparator) {
 			selectAll();
 			resonanceEnergyLin();
-
-//			BenzenoidCollectionPane curentPane = getSelectedTab();
-//			for (Molecule molecule : curentPane.getMolecules())
-//				molecule.getAromaticity();
 		}
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
@@ -1603,8 +1456,8 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 			File[] listOfFiles = directory.listFiles();
 
-			for (int i = 0; i < listOfFiles.length; i++) {
-				File file = listOfFiles[i];
+			assert listOfFiles != null;
+			for (File file : listOfFiles) {
 				if (file.isFile() && file.getName().contains(".graph")) {
 					Molecule molecule = GraphParser.parseUndirectedGraph(file);
 					molecule.setDescription(file.getName());
@@ -1619,7 +1472,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			ok = false;
 		}
 
-		if (ok && collectionPane != null) {
+		if (ok) {
 			tabPane.getSelectionModel().clearAndSelect(0);
 			addBenzenoidSetPane(collectionPane);
 			tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
@@ -1874,14 +1727,14 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		log("Requesting database (" + currentPane.getName() + ", " + currentPane.getSelectedBenzenoidPanes().size()
 				+ " benzenoids)", true);
 
-		Service<Void> calculateService = new Service<Void>() {
+		Service<Void> calculateService = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 
 						indexDatabase = 1;
 						int size = currentPane.getSelectedBenzenoidPanes().size();
@@ -1894,28 +1747,22 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								if (molecule.getIRSpectraResult() != null) {
 									System.out.println(molecule);
 
-									Platform.runLater(new Runnable() {
-										@Override
-										public void run() {
-											Image image = new Image("/resources/graphics/icon-database.png");
-											ImageView imgView = new ImageView(image);
-											imgView.resize(30, 30);
-											Tooltip.install(imgView,
-													new Tooltip("This molecule exists in the database"));
-											pane.getDescriptionBox().getChildren().add(imgView);
+									Platform.runLater(() -> {
+										Image image = new Image("/resources/graphics/icon-database.png");
+										ImageView imgView = new ImageView(image);
+										imgView.resize(30, 30);
+										Tooltip.install(imgView,
+												new Tooltip("This molecule exists in the database"));
+										pane.getDescriptionBox().getChildren().add(imgView);
 
-											if (indexDatabase == 1) {
-												log(indexDatabase + "/" + size, false);
-												lineIndexDatabase = currentPane.getConsole().getNbLines() - 1;
-											}
-
-											else {
-												changeLineConsole(indexDatabase + "/" + size, lineIndexDatabase);
-											}
-
-											indexDatabase++;
+										if (indexDatabase == 1) {
+											log(indexDatabase + "/" + size, false);
+											lineIndexDatabase = currentPane.getConsole().getNbLines() - 1;
+										} else {
+											changeLineConsole(indexDatabase + "/" + size, lineIndexDatabase);
 										}
 
+										indexDatabase++;
 									});
 
 									pane.buildFrequencies();
@@ -1932,26 +1779,21 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		};
 
-		calculateService.stateProperty().addListener(new ChangeListener<State>() {
+		calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-			@SuppressWarnings("incomplete-switch")
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+			switch (newValue) {
+			case FAILED:
+				System.out.println("failed");
+				break;
 
-				switch (newValue) {
-				case FAILED:
-					System.out.println("failed");
-					break;
+			case CANCELLED:
+				System.out.println("canceled");
+				break;
 
-				case CANCELLED:
-					System.out.println("canceled");
-					break;
-
-				case SUCCEEDED:
-					System.out.println("succeeded");
-					unselectAll();
-					break;
-				}
+			case SUCCEEDED:
+				System.out.println("succeeded");
+				unselectAll();
+				break;
 			}
 		});
 
@@ -1967,17 +1809,10 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
 				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
-		if (currentPane.getSelectedBenzenoidPanes().size() == 0) {
-			Utils.alert("Please, select at least one benzenoid having less than 10 hexagons");
-			return;
-		}
-
 		if (currentPane.getSelectedBenzenoidPanes().size() == 0)
 			selectAll();
 
-		ArrayList<BenzenoidPane> panes = new ArrayList<>();
-		for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes())
-			panes.add(pane);
+		ArrayList<BenzenoidPane> panes = new ArrayList<>(currentPane.getSelectedBenzenoidPanes());
 
 		int nbNotAvailable = 0; // the number of benzenoids for which the map is not available
 		for (BenzenoidPane pane : panes) {
@@ -2019,18 +1854,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			return;
 		}
 
-		ArrayList<BenzenoidPane> panes = new ArrayList<>();
-		for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes())
-			panes.add(pane);
+		ArrayList<BenzenoidPane> panes = new ArrayList<>(currentPane.getSelectedBenzenoidPanes());
 
-		Service<Void> calculateService = new Service<Void>() {
+		Service<Void> calculateService = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 
 						indexDatabase = 1;
 						int size = panes.size();
@@ -2043,28 +1876,22 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 								if (molecule.getIRSpectraResult() != null) {
 									System.out.println(molecule);
 
-									Platform.runLater(new Runnable() {
-										@Override
-										public void run() {
-											Image image = new Image("/resources/graphics/icon-database.png");
-											ImageView imgView = new ImageView(image);
-											imgView.resize(30, 30);
-											Tooltip.install(imgView,
-													new Tooltip("This molecule exists in the database"));
-											pane.getDescriptionBox().getChildren().add(imgView);
+									Platform.runLater(() -> {
+										Image image = new Image("/resources/graphics/icon-database.png");
+										ImageView imgView = new ImageView(image);
+										imgView.resize(30, 30);
+										Tooltip.install(imgView,
+												new Tooltip("This molecule exists in the database"));
+										pane.getDescriptionBox().getChildren().add(imgView);
 
-											if (indexDatabase == 1) {
-												log(indexDatabase + "/" + size, false);
-												lineIndexDatabase = currentPane.getConsole().getNbLines() - 1;
-											}
-
-											else {
-												changeLineConsole(indexDatabase + "/" + size, lineIndexDatabase);
-											}
-
-											indexDatabase++;
+										if (indexDatabase == 1) {
+											log(indexDatabase + "/" + size, false);
+											lineIndexDatabase = currentPane.getConsole().getNbLines() - 1;
+										} else {
+											changeLineConsole(indexDatabase + "/" + size, lineIndexDatabase);
 										}
 
+										indexDatabase++;
 									});
 
 									pane.buildFrequencies();
@@ -2081,27 +1908,22 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		};
 
-		calculateService.stateProperty().addListener(new ChangeListener<State>() {
+		calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-			@SuppressWarnings("incomplete-switch")
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+			switch (newValue) {
+			case FAILED:
+				System.out.println("failed");
+				break;
 
-				switch (newValue) {
-				case FAILED:
-					System.out.println("failed");
-					break;
+			case CANCELLED:
+				System.out.println("canceled");
+				break;
 
-				case CANCELLED:
-					System.out.println("canceled");
-					break;
-
-				case SUCCEEDED:
-					System.out.println("succeeded");
-					unselectAll();
-					displayIRSpectra(panes, currentPane);
-					break;
-				}
+			case SUCCEEDED:
+				System.out.println("succeeded");
+				unselectAll();
+				displayIRSpectra(panes, currentPane);
+				break;
 			}
 		});
 
@@ -2122,7 +1944,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 		log("IR Spectra (" + currentPane.getName() + ", " + moleculesInDB.size() + " benzenoids)", true);
 
-		HashMap<String, MoleculeInformation> moleculesInformations = new HashMap<String, MoleculeInformation>();
+		HashMap<String, MoleculeInformation> moleculesInformations = new HashMap<>();
 
 		for (Molecule molecule : moleculesInDB) {
 			MoleculeInformation information = new MoleculeInformation(molecule.toString(), molecule);
@@ -2212,13 +2034,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					CollectionMenuItem menuItem = new CollectionMenuItem(collectionPane.getIndex(),
 							collectionPane.getName());
 
-					menuItem.setOnAction(e2 -> {
-
-						BenzenoidCollectionPane setPaneOrigin = currentPane;
-						BenzenoidCollectionPane setPaneDestination = collectionPane;
-
-						move(setPaneOrigin, setPaneDestination);
-					});
+					menuItem.setOnAction(e2 -> move(currentPane, collectionPane));
 
 					items.add(menuItem);
 				}
@@ -2250,19 +2066,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			selectAll();
 		}
 
-		calculateServiceRadicalar = new Service<Void>() {
+		calculateServiceRadicalar = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 
-						ArrayList<BenzenoidPane> panes = new ArrayList<>();
-
-						for (BenzenoidPane pane : selectedBenzenoidPanes)
-							panes.add(pane);
+						ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
 
 						indexClar = 0;
 						int size = panes.size();
@@ -2276,25 +2089,18 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 								ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverSolver.solve(molecule);
 								if (clarCoverSolutions.size() > 0) {
-//									ClarCoverSolution clarCoverSolution = clarCoverSolutions
-//											.get(clarCoverSolutions.size() - 1);
-//									molecule.setClarCoverSolution(clarCoverSolution);
-//									benzenoidSetPane.addBenzenoid(molecule, DisplayType.CLAR_COVER);
 									molecule.setClarCoverSolutions(clarCoverSolutions);
 									benzenoidSetPane.addBenzenoid(molecule, DisplayType.RADICALAR);
 								}
 								indexClar++;
 								System.out.println(indexClar + " / " + size);
 
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										if (indexClar == 1) {
-											log(indexClar + " / " + size, false);
-											lineIndexClar = currentPane.getConsole().getNbLines() - 1;
-										} else
-											changeLineConsole(indexClar + " / " + size, lineIndexClar);
-									}
+								Platform.runLater(() -> {
+									if (indexClar == 1) {
+										log(indexClar + " / " + size, false);
+										lineIndexClar = currentPane.getConsole().getNbLines() - 1;
+									} else
+										changeLineConsole(indexClar + " / " + size, lineIndexClar);
 								});
 
 							}
@@ -2307,36 +2113,24 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		};
 
-		calculateServiceRadicalar.stateProperty().addListener(new ChangeListener<State>() {
+		calculateServiceRadicalar.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-			@SuppressWarnings("incomplete-switch")
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+			switch (newValue) {
+			case FAILED:
+				clarRunning = false;
+				Utils.alert("Failed");
+				break;
 
-				switch (newValue) {
-				case FAILED:
-					clarRunning = false;
-					Utils.alert("Failed");
-					break;
-
-				case CANCELLED:
-					clarRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Clar cover");
-					break;
+			case CANCELLED:
 
 				case SUCCEEDED:
 					clarRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Clar cover");
-					break;
-				}
+				benzenoidSetPane.refresh();
+				tabPane.getSelectionModel().clearAndSelect(0);
+				addBenzenoidSetPane(benzenoidSetPane);
+				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+				application.removeTask("Clar cover");
+				break;
 			}
 		});
 
@@ -2369,19 +2163,16 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			selectAll();
 		}
 
-		calculateServiceRadicalar = new Service<Void>() {
+		calculateServiceRadicalar = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 
-						ArrayList<BenzenoidPane> panes = new ArrayList<>();
-
-						for (BenzenoidPane pane : selectedBenzenoidPanes)
-							panes.add(pane);
+						ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
 
 						indexClar = 0;
 						int size = panes.size();
@@ -2395,25 +2186,18 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 								ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverForcedRadicalsSolver.solve(molecule, nbRadicals);
 								if (clarCoverSolutions.size() > 0) {
-//									ClarCoverSolution clarCoverSolution = clarCoverSolutions
-//											.get(clarCoverSolutions.size() - 1);
-//									molecule.setClarCoverSolution(clarCoverSolution);
-//									benzenoidSetPane.addBenzenoid(molecule, DisplayType.CLAR_COVER);
 									molecule.setClarCoverSolutions(clarCoverSolutions);
 									benzenoidSetPane.addBenzenoid(molecule, DisplayType.RADICALAR);
 								}
 								indexClar++;
 								System.out.println(indexClar + " / " + size);
 
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										if (indexClar == 1) {
-											log(indexClar + " / " + size, false);
-											lineIndexClar = currentPane.getConsole().getNbLines() - 1;
-										} else
-											changeLineConsole(indexClar + " / " + size, lineIndexClar);
-									}
+								Platform.runLater(() -> {
+									if (indexClar == 1) {
+										log(indexClar + " / " + size, false);
+										lineIndexClar = currentPane.getConsole().getNbLines() - 1;
+									} else
+										changeLineConsole(indexClar + " / " + size, lineIndexClar);
 								});
 
 							}
@@ -2426,36 +2210,24 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 			}
 		};
 
-		calculateServiceRadicalar.stateProperty().addListener(new ChangeListener<State>() {
+		calculateServiceRadicalar.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-			@SuppressWarnings("incomplete-switch")
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+			switch (newValue) {
+			case FAILED:
+				clarRunning = false;
+				Utils.alert("Failed");
+				break;
 
-				switch (newValue) {
-				case FAILED:
-					clarRunning = false;
-					Utils.alert("Failed");
-					break;
-
-				case CANCELLED:
-					clarRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Clar cover");
-					break;
+			case CANCELLED:
 
 				case SUCCEEDED:
 					clarRunning = false;
-					benzenoidSetPane.refresh();
-					tabPane.getSelectionModel().clearAndSelect(0);
-					addBenzenoidSetPane(benzenoidSetPane);
-					tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-					application.removeTask("Clar cover");
-					break;
-				}
+				benzenoidSetPane.refresh();
+				tabPane.getSelectionModel().clearAndSelect(0);
+				addBenzenoidSetPane(benzenoidSetPane);
+				tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
+				application.removeTask("Clar cover");
+				break;
 			}
 		});
 

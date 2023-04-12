@@ -23,9 +23,9 @@ import spectrums.Parameter;
 public class IRSpectraParameterPane extends ScrollPane {
 
 	private VBox mainBox = new VBox();
-	private BenzenoidsCollectionsManagerPane catalogPane;
+	private BenzenoidCollectionsManagerPane catalogPane;
 
-	public IRSpectraParameterPane(BenzenoidsCollectionsManagerPane catalogPane) {
+	public IRSpectraParameterPane(BenzenoidCollectionsManagerPane catalogPane) {
 		super();
 		this.catalogPane = catalogPane;
 		initWindowContents();

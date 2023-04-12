@@ -24,7 +24,7 @@ import parsers.GraphParser;
 import utils.Couple;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.CollectionMenuItem;
 
@@ -35,7 +35,7 @@ public class DrawBenzenoidPane extends BorderPane {
 	}
 
 	private BenzenoidApplication application;
-	private BenzenoidsCollectionsManagerPane collectionsPane;
+	private BenzenoidCollectionsManagerPane collectionsPane;
 	
 	private MenuBar menuBar;
 	private HBox buttonBar;
@@ -46,7 +46,7 @@ public class DrawBenzenoidPane extends BorderPane {
 
 	private int nbCrowns;
 
-	public DrawBenzenoidPane(BenzenoidApplication application, BenzenoidsCollectionsManagerPane collectionsPane) {
+	public DrawBenzenoidPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) {
 
 		this.application = application;
 		this.collectionsPane = collectionsPane;

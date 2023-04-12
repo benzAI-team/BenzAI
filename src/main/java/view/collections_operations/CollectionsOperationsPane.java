@@ -16,17 +16,16 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
 import molecules.Molecule;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
-import view.collections.BenzenoidsCollectionsManagerPane;
+import view.collections.BenzenoidCollectionsManagerPane;
 
 public class CollectionsOperationsPane extends GridPane {
 
 	private BenzenoidApplication application;
-	private BenzenoidsCollectionsManagerPane collectionsPane;
+	private BenzenoidCollectionsManagerPane collectionsPane;
 
 	private ChoiceBox<String> collectionBox1;
 	private ChoiceBox<String> collectionBox2;
@@ -41,7 +40,7 @@ public class CollectionsOperationsPane extends GridPane {
 
 	private Button applyButton;
 
-	public CollectionsOperationsPane(BenzenoidApplication application, BenzenoidsCollectionsManagerPane collectionsPane) {
+	public CollectionsOperationsPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) {
 		this.application = application;
 		this.collectionsPane = collectionsPane;
 		initialize();
@@ -125,7 +124,7 @@ public class CollectionsOperationsPane extends GridPane {
 
 			if (molecules != null) {
 
-				BenzenoidsCollectionsManagerPane managerPane = collectionsPane;
+				BenzenoidCollectionsManagerPane managerPane = collectionsPane;
 
 				String name;
 
