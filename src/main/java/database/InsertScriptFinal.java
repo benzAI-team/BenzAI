@@ -267,14 +267,14 @@ public class InsertScriptFinal {
 
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("<specie>");
+		builder.append("<specie uid=\"" + idBenzenoid + "\">");
 
 		builder.append("<comments>");
 		builder.append("<comment># b3lyp/6-31g opt freq</comment>");
 		builder.append("</comments>");
 
 		builder.append("<formula>C" + molecule.getNbNodes() + "H" + molecule.getNbHydrogens() + "</formula>");
-		builder.append("<charge>unknown</charge>");
+		builder.append("<charge>0</charge>");
 		builder.append("<method>B3LYP</method>");
 
 		if (irregularity != null) {
