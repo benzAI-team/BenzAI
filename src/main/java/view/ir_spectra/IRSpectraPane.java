@@ -338,7 +338,7 @@ public class IRSpectraPane extends GridPane {
 
 			writer.write("<pahdatabase database=\"theoretical\" version=\"3.00\" date=\"2017-08-18\" full=\"false\"/>\n");
 
-			writer.write("<comment></comment>\n");
+			writer.write("<comment>This file was generated with BenzAI software.</comment>\n");
 
 			writer.write("<species>\n");
 			for (String amesFormat : amesFormats) {
