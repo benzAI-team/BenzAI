@@ -335,11 +335,16 @@ public class IRSpectraPane extends GridPane {
 			File file = new File(directory.getAbsolutePath() + "/" + result.getClassName() + ".xml");
 
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-			writer.write("<species>");
+
+			writer.write("<pahdatabase database=\"theoretical\" version=\"3.00\" date=\"2017-08-18\" full=\"false\"/>\n");
+
+			writer.write("<comment></comment>\n");
+
+			writer.write("<species>\n");
 			for (String amesFormat : amesFormats) {
 				writer.write(amesFormat + "\n");
 			}
-			writer.write("</species>");
+			writer.write("</species>\n");
 			writer.close();
 
 		}
