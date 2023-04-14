@@ -3,9 +3,8 @@ package collection_operations;
 import javafx.concurrent.Service;
 
 public abstract class CollectionTask extends CollectionComputation {
-
-	private Service<Void> calculateService;
-	private boolean isRunning;
+    private boolean operationIsRunning;
+    private Service<Void> calculateService;
 	private int index;
 	private int lineIndex;
 
@@ -21,12 +20,12 @@ public abstract class CollectionTask extends CollectionComputation {
 		this.calculateService = calculateService;
 	}
 
-	public boolean isRunning() {
-		return isRunning;
+	public boolean operationIsRunning() {
+		return operationIsRunning;
 	}
 
-	public void setRunning(boolean isRunning) {
-		this.isRunning = isRunning;
+	public void setOperationIsRunning(boolean isRunning) {
+		this.operationIsRunning = isRunning;
 	}
 
 	public int getIndex() {
@@ -44,6 +43,4 @@ public abstract class CollectionTask extends CollectionComputation {
 	public void setLineIndex(int lineIndex) {
 		this.lineIndex = lineIndex;
 	}
-
-
 }
