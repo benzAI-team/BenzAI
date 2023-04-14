@@ -47,16 +47,9 @@ public class CollectionOperationSet {
 		collectionOperationSet.addAll(collectionIOSet);
 	}
 
-	public static ArrayList<MenuItem> getMenuItems(){
-		ArrayList<MenuItem> menuItemList = new ArrayList<>();
-		for(CollectionOperation operation : collectionOperationSet)
-			menuItemList.add(operation.getMenuItem());
-		return menuItemList;
-	}
-
 	public static MenuItem getMenuItemByName(String name){
 		for(CollectionOperation operation : collectionOperationSet)
-			if(operation.getMenuItem().getText() == name)
+			if(name == operation.getMenuItem().getText())
 				return operation.getMenuItem();
 		return null;
 	}
