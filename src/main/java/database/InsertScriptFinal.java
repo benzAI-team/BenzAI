@@ -267,7 +267,9 @@ public class InsertScriptFinal {
 
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("<specie uid=\"" + idBenzenoid + "\">");
+		String test = "<specie uid=\\\"" + idBenzenoid + "\\\">";
+		
+		builder.append("<specie uid=\\\"" + idBenzenoid + "\\\">");
 
 		builder.append("<comments>");
 		builder.append("<comment># b3lyp/6-31g opt freq</comment>");
@@ -289,7 +291,7 @@ public class InsertScriptFinal {
 			builder.append("<n_solo>" + 0 + "</n_solo>");
 			builder.append("<n_duo>" + 0 + "</n_duo>");
 			builder.append("<n_trio>" + 0 + "</n_trio>");
-			builder.append("<n_quartet>" + 0 + "</n_quarter>");
+			builder.append("<n_quartet>" + 0 + "</n_quartet>");
 			builder.append("<n_quintet>" + 0 + "</n_quintet>");
 		}
 
