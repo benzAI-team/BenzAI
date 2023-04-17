@@ -281,7 +281,7 @@ public class InsertScriptFinal {
 			builder.append("<n_solo>" + irregularity.getGroup(0) + "</n_solo>");
 			builder.append("<n_duo>" + irregularity.getGroup(1) + "</n_duo>");
 			builder.append("<n_trio>" + irregularity.getGroup(2) + "</n_trio>");
-			builder.append("<n_quartet>" + irregularity.getGroup(3) + "</n_quarter>");
+			builder.append("<n_quartet>" + irregularity.getGroup(3) + "</n_quartet>");
 			builder.append("<n_quintet>" + 0 + "</n_quintet>");
 		}
 
