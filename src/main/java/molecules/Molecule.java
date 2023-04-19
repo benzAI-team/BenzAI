@@ -169,8 +169,6 @@ public class Molecule implements Comparable<Molecule> {
 
 	/***
 	 * 
-	 * @param solution
-	 * @param nbCrowns
 	 * @return a molecule from a choco solver solution
 	 */
 	// TODO inutilisable pour l'instant

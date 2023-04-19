@@ -298,7 +298,6 @@ public class GeneralModel {
 	
 	/***
 	 * Apply the solver property to the solver
-	 * @param modelProperty
 	 */
 	public void applySolverProperty(SolverProperty solverProperty) {
 		solverProperty.getSpecifier().apply(solver, solverProperty.getExpressions().get(0));

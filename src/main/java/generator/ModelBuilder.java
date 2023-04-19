@@ -18,7 +18,6 @@ public class ModelBuilder {
 	
 	/***
 	 * Checks if any given model property allows to fix the model size
-	 * @param map
 	 */
 	private static boolean noLimitingProperties(ModelPropertySet modelPropertySet) {
 		return !(modelPropertySet.has("hexagons") || modelPropertySet.has("carbons")
@@ -43,8 +42,6 @@ public class ModelBuilder {
 
 	/***
 	 * 
-	 * @param criterions
-	 * @param map
 	 * @param nbCrowns
 	 * @return
 	 */
