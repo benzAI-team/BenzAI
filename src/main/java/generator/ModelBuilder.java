@@ -1,36 +1,9 @@
 package generator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import generator.patterns.PatternResolutionInformations;
 import generator.properties.Property;
-import generator.properties.solver.SolverProperty;
-import modules.CatacondensedModule;
-import modules.CatacondensedModule2;
-import modules.CoronenoidModule;
-import modules.CoronoidModule;
-import modules.CoronoidModule2;
-import modules.DiameterModule;
-import modules.ForbiddenPatternModule1;
-import modules.IrregularityModule;
-import modules.MultiplePatterns1Module;
-import modules.CarbonNumberModule;
-import modules.HydrogenNumberModule;
-import modules.RectangleModule;
-import modules.RectangleModule2;
-import modules.RhombusModule;
-import modules.SinglePattern1Module;
-import modules.SymmetriesModule;
-import solving_modes.SymmetryType;
-import utils.Utils;
-import modelProperty.HexagonNumberProperty;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.PatternProperty;
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.PropertyExpression;
+import generator.properties.model.ModelProperty;
+import generator.properties.model.ModelPropertySet;
 
 
 public class ModelBuilder {

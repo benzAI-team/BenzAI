@@ -25,9 +25,9 @@ import generator.properties.solver.SolverProperty;
 import generator.properties.solver.SolverPropertySet;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.ParameterizedExpression;
+import generator.properties.model.ModelProperty;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.ParameterizedExpression;
 import molecules.Molecule;
 import molecules.Node;
 import nogood.NoGoodAllRecorder;
@@ -43,7 +43,6 @@ import utils.Triplet;
 import view.generator.GeneratorPane;
 import view.generator.Stopper;
 import view.generator.boxes.HBoxCriterion;
-import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxSolverCriterion;
 
 public class GeneralModel {

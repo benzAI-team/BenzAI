@@ -147,7 +147,7 @@ Section 2) in object code or executable form under the terms of Sections 1 and
 
 The source code for a work means the preferred form of the work for making
 modifications to it.  For an executable work, complete source code means all
-the source code for all modules it contains, plus any associated interface
+the source code for all constraints it contains, plus any associated interface
 definition files, plus the scripts used to control compilation and installation
 of the executable.  However, as a special exception, the source code
 distributed need not include anything that is normally distributed (in either
@@ -331,13 +331,13 @@ only where Oracle has expressly included in the particular source file's header
 the words "Oracle designates this particular file as subject to the "Classpath"
 exception as provided by Oracle in the LICENSE file that accompanied this code."
 
-    Linking this library statically or dynamically with other modules is making
+    Linking this library statically or dynamically with other constraints is making
     a combined work based on this library.  Thus, the terms and conditions of
     the GNU General Public License cover the whole combination.
 
     As a special exception, the copyright holders of this library give you
-    permission to link this library with independent modules to produce an
-    executable, regardless of the license terms of these independent modules,
+    permission to link this library with independent constraints to produce an
+    executable, regardless of the license terms of these independent constraints,
     and to copy and distribute the resulting executable under terms of your
     choice, provided that you also meet, for each linked independent module,
     the terms and conditions of the license of that module.  An independent

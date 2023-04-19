@@ -1,17 +1,7 @@
 package view.generator.boxes;
 
-import generator.properties.Property;
-import generator.properties.PropertySet;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.PropertyExpression;
+import generator.properties.model.ModelPropertySet;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 @SuppressWarnings("unused")

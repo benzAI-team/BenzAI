@@ -1,11 +1,8 @@
 package view.generator.boxes;
 
-import generator.properties.PropertySet;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.SubjectExpression;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.SubjectExpression;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxConcealedCriterion extends HBoxModelCriterion {

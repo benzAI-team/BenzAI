@@ -2,9 +2,8 @@ package generator.properties.solver;
 
 import org.chocosolver.solver.Solver;
 
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.PropertyExpression;
-import modelProperty.expression.SubjectExpression;
+import generator.properties.model.expression.BinaryNumericalExpression;
+import generator.properties.model.expression.PropertyExpression;
 
 public class TimeLimitSpecifier implements SolverSpecifier {
 	@Override

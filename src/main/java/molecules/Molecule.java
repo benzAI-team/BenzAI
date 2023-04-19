@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +13,13 @@ import java.util.Map;
 import classifier.Irregularity;
 import database.models.IRSpectraEntry;
 import generator.GeneralModel;
-import generator.GeneratorCriterion;
 import generator.SolverResults;
 import generator.patterns.Pattern;
 import generator.properties.Property;
 import http.Post;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.BinaryNumericalExpression;
+import generator.properties.model.ModelProperty;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.BinaryNumericalExpression;
 import molecules.sort.MoleculeComparator;
 import molecules.sort.NbHexagonsComparator;
 import solution.BenzenoidSolution;
@@ -35,10 +33,6 @@ import utils.Couple;
 import utils.Interval;
 import utils.RelativeMatrix;
 import utils.Utils;
-import view.groups.ClarCoverGroup;
-import view.groups.IMS2D1AGroup;
-import view.groups.RBOGroup;
-import view.groups.RadicalarClarCoverGroup;
 
 public class Molecule implements Comparable<Molecule> {
 

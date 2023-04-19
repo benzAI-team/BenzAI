@@ -1,14 +1,8 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
-import generator.properties.PropertySet;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.BinaryNumericalExpression;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.BinaryNumericalExpression;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxDiameterCriterion extends ClassicalHBoxCriterion{

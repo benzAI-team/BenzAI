@@ -4,7 +4,7 @@ import org.chocosolver.solver.Model;
 import org.chocosolver.solver.constraints.nary.cnf.LogOp;
 import org.chocosolver.solver.variables.BoolVar;
 
-import modules.Permutation;
+import constraints.Permutation;
 import utils.Coords;
 
 public class OldLexLead {

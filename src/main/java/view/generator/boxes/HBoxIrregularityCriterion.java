@@ -1,20 +1,13 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
-import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.IrregularityExpression;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.IrregularityExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxIrregularityCriterion extends HBoxModelCriterion {

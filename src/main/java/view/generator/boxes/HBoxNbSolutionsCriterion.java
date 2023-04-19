@@ -2,11 +2,9 @@ package view.generator.boxes;
 
 import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.TextField;
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.SubjectExpression;
+import generator.properties.model.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {

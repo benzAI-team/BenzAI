@@ -1,18 +1,12 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
-import generator.properties.PropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.BinaryNumericalExpression;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxCoronoidCriterion extends HBoxModelCriterion {

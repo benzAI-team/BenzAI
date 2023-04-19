@@ -4,7 +4,7 @@ import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
-import modules.Permutation;
+import constraints.Permutation;
 import utils.Coords;
 import utils.Utils;
 

@@ -3,9 +3,8 @@ package generator.properties.solver;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.search.limits.SolutionCounter;
 
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.PropertyExpression;
-import modelProperty.expression.SubjectExpression;
+import generator.properties.model.expression.BinaryNumericalExpression;
+import generator.properties.model.expression.PropertyExpression;
 
 public class SolutionNumberSpecifier implements SolverSpecifier {
 

@@ -1,12 +1,9 @@
 package view.generator;
 
-import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ScrollPane;
 import view.generator.boxes.HBoxCriterion;
-import view.generator.boxes.HBoxModelCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
-import modelProperty.ModelPropertySet;
+import generator.properties.model.ModelPropertySet;
 
 public class ChoiceBoxCriterion extends ChoiceBox<String> {
 

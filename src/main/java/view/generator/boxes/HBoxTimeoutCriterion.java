@@ -1,20 +1,12 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
-import generator.properties.PropertySet;
 import generator.properties.solver.SolverProperty;
 import generator.properties.solver.SolverPropertySet;
-import generator.properties.solver.TimeLimitProperty;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.SubjectExpression;
+import generator.properties.model.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxTimeoutCriterion extends HBoxSolverCriterion {

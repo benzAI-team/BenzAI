@@ -2,12 +2,9 @@ package generator.properties;
 
 import java.util.ArrayList;
 
-import javafx.scene.control.ScrollPane;
-import modelProperty.expression.PropertyExpression;
+import generator.properties.model.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
-import view.generator.boxes.HBoxModelCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 /***
@@ -30,7 +27,6 @@ public abstract class Property {
 		super();
 		this.id = id;
 		this.name = name;
-
 	}
 	
 	/***

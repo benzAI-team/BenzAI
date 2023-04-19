@@ -1,19 +1,10 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
-import generator.GeneratorCriterion;
-import generator.properties.Property;
-import generator.properties.PropertySet;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.ParameterizedExpression;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.BinaryNumericalExpression;
+import generator.properties.model.expression.ParameterizedExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {

@@ -1,9 +1,7 @@
 package view.generator.boxes;
 
-import generator.properties.PropertySet;
-import modelProperty.ModelPropertySet;
+import generator.properties.model.ModelPropertySet;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxDefaultCriterion extends HBoxModelCriterion {

@@ -4,10 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.mysql.cj.x.protobuf.MysqlxExpr.Operator;
-
-import database.BenzenoidCriterion.Subject;
-import generator.GeneratorCriterion;
 import generator.patterns.Pattern;
 import generator.patterns.PatternGenerationType;
 import generator.patterns.PatternResolutionInformations;
@@ -31,9 +27,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.PropertyExpression;
-import modelProperty.expression.SubjectExpression;
+import generator.properties.model.expression.BinaryNumericalExpression;
+import generator.properties.model.expression.PropertyExpression;
+import generator.properties.model.expression.SubjectExpression;
 import molecules.Node;
 import utils.Utils;
 import view.generator.boxes.HBoxPatternCriterion;

@@ -1,14 +1,12 @@
 package view.generator.boxes;
 
 
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import modelProperty.expression.PropertyExpression;
+import generator.properties.model.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public abstract class HBoxCriterion extends HBox {

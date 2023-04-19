@@ -2,14 +2,12 @@ package view.primaryStage;
 
 import java.util.ArrayList;
 
-import generator.GeneralModel;
 import generator.patterns.PatternResolutionInformations;
 import javafx.scene.control.ScrollPane;
-import modelProperty.ModelPropertySet;
+import generator.properties.model.ModelPropertySet;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
-import view.generator.boxes.HBoxSolverCriterion;
 
 public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 

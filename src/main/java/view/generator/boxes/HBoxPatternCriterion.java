@@ -1,11 +1,7 @@
 package view.generator.boxes;
 
-import java.util.ArrayList;
-
 import application.BenzenoidApplication;
-import generator.GeneratorCriterion;
 import generator.patterns.PatternResolutionInformations;
-import generator.properties.PropertySet;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,11 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import modelProperty.PatternProperty;
-import modelProperty.ModelProperty;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.PatternExpression;
-import modelProperty.expression.SubjectExpression;
+import generator.properties.model.PatternProperty;
+import generator.properties.model.ModelProperty;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.PatternExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;

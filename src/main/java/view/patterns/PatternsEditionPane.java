@@ -30,16 +30,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import modelProperty.ModelPropertySet;
-import modelProperty.expression.BinaryNumericalExpression;
-import modelProperty.expression.PatternExpression;
-import modelProperty.expression.PropertyExpression;
-import modelProperty.expression.SubjectExpression;
-import modules.ForbiddenPatternModule1;
-import modules.MultiplePatterns1Module;
-import modules.MultiplePatterns2Module;
-import modules.SinglePattern1Module;
-import modules.SinglePattern2Module;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.PatternExpression;
+import constraints.ForbiddenPatternConstraint1;
+import constraints.MultiplePatterns1Constraint;
+import constraints.SinglePattern2Constraint;
 import molecules.Node;
 import utils.Utils;
 import view.generator.boxes.HBoxPatternCriterion;
@@ -303,7 +298,7 @@ public class PatternsEditionPane extends BorderPane {
 						type = PatternGenerationType.SINGLE_PATTERN_1;
 						subject = "SINGLE_PATTERN";
 						patternInformations = new PatternResolutionInformations(type, patterns);
-						parent.getPatternProperty().setModule(new SinglePattern2Module(patternInformations.getPatterns().get(0), false,
+						parent.getPatternProperty().setModule(new SinglePattern2Constraint(patternInformations.getPatterns().get(0), false,
 								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 					}
 
@@ -319,7 +314,7 @@ public class PatternsEditionPane extends BorderPane {
 					type = PatternGenerationType.FORBIDDEN_PATTERN;
 					subject = "FORBIDDEN_PATTERN";
 					patternInformations = new PatternResolutionInformations(type, patterns);
-					parent.getPatternProperty().setModule(new ForbiddenPatternModule1(patternInformations.getPatterns().get(0),
+					parent.getPatternProperty().setModule(new ForbiddenPatternConstraint1(patternInformations.getPatterns().get(0),
 							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 				}
 			}
@@ -335,7 +330,7 @@ public class PatternsEditionPane extends BorderPane {
 				else if (itemNNDisjunct.isSelected())
 					patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
 
-				parent.getPatternProperty().setModule(new MultiplePatterns1Module(patternInformations.getPatterns(),
+				parent.getPatternProperty().setModule(new MultiplePatterns1Constraint(patternInformations.getPatterns(),
 						VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST, patternInformations.getInterraction()));
 			}
 

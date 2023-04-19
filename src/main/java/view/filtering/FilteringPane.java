@@ -31,7 +31,7 @@ import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
-import modelProperty.testers.Tester;
+import generator.properties.model.filters.Filter;
 
 public class FilteringPane extends ScrollPaneWithPropertyList {
 
@@ -224,7 +224,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 //			indexFiltering = i;
 //
 //			Molecule molecule = collectionPane.getMolecules().get(i);
-//			if(Tester.testAll(molecule, getModelPropertySet())) {
+//			if(Filter.testAll(molecule, getModelPropertySet())) {
 //				DisplayType displayType = collectionPane.getDisplayType(i);
 //				newCollectionPane.addBenzenoid(molecule, displayType);
 //			}
@@ -255,7 +255,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 							indexFiltering = i;
 
 							Molecule molecule = collectionPane.getMolecules().get(i);
-							if(Tester.testAll(molecule, getModelPropertySet())) {
+							if(Filter.testAll(molecule, getModelPropertySet())) {
 								DisplayType displayType = collectionPane.getDisplayType(i);
 								newCollectionPane.addBenzenoid(molecule, displayType);
 							}
