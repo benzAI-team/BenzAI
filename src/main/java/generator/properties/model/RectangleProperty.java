@@ -1,20 +1,20 @@
 package generator.properties.model;
 
-import java.util.ArrayList;
-
+import constraints.RectangleConstraint2;
 import generator.properties.model.expression.PropertyExpression;
 import generator.properties.model.expression.RectangleExpression;
 import generator.properties.model.filters.RectangleFilter;
-import constraints.RectangleConstraint;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxRectangleCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
+import java.util.ArrayList;
+
 public class RectangleProperty extends ModelProperty {
 
 	public RectangleProperty() {
-		super("rectangle", "Rectangle", new RectangleConstraint(), new RectangleFilter());
+		super("rectangle", "Rectangle", new RectangleConstraint2(), new RectangleFilter());
 	}
 
 	@Override
@@ -29,13 +29,13 @@ public class RectangleProperty extends ModelProperty {
 		for(PropertyExpression expression : expressions)
 			if(((RectangleExpression)expression).hasWidthUpperBound()) {
 				int bound = ((RectangleExpression)expression).getWidth();
-				widthBound = widthBound < bound ? widthBound : bound;
+				widthBound = Math.min(widthBound, bound);
 			}
 		int heightBound = Integer.MAX_VALUE;
 		for(PropertyExpression expression : expressions)
 			if(((RectangleExpression)expression).hasHeightUpperBound()) {
 				int bound = ((RectangleExpression)expression).getHeight();
-				heightBound = heightBound < bound ? heightBound : bound;
+				heightBound = Math.min(heightBound, bound);
 			}
 		return widthBound != Integer.MAX_VALUE && heightBound != Integer.MAX_VALUE ? widthBound * heightBound : Integer.MAX_VALUE;
 	}

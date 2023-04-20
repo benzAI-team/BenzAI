@@ -59,17 +59,11 @@ public class RectangleConstraint2 extends BenzAIConstraint {
 			int li = i;
 			int j = 0;
 
-			while (true) {
-
+			do {
 				line.add(coordsMatrix[li][j]);
-
 				li++;
 				j++;
-
-				if (li >= diameter || j >= diameter)
-					break;
-
-			}
+			} while (li < diameter && j < diameter);
 
 			lines.add(line);
 		}
@@ -81,16 +75,11 @@ public class RectangleConstraint2 extends BenzAIConstraint {
 			int i = 0;
 			int lj = j;
 
-			while (true) {
-
+			do {
 				line.add(coordsMatrix[i][lj]);
-
 				i++;
 				lj++;
-
-				if (lj >= diameter || i >= diameter)
-					break;
-			}
+			} while (lj < diameter && i < diameter);
 
 			while (line.size() < diameter)
 				line.add(-1);

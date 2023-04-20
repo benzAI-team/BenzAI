@@ -51,7 +51,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 			break;
 
 		case "D_6h \"(face)-60-rotation+(edge)-mirror\"" : 
-			postHasEdgeAxisSymmetry();//??
+			postHasEdgeAxisSymmetry();
 			postHasRot60Symmetry();
 			break;
 			

@@ -16,11 +16,11 @@ public class SymmetryHandler {
     public static boolean hasSymmetry(ArrayList<Integer> moleculeIndices, Permutation p, int couronnes) {
         for (Integer index : moleculeIndices) {
             Coords image = p.from(new Coords(index % (2 * couronnes - 1), index / (2 * couronnes - 1)));
-            System.out.println("center : " + p.getCenter()+ " : " + index + "(" + index % (2 * couronnes - 1) + "," + index / (2 * couronnes - 1) + ")->" + (image.getX() + image.getY() * (2 * couronnes - 1)) + "" + image);
+            //System.out.println("center : " + p.getCenter()+ " : " + index + "(" + index % (2 * couronnes - 1) + "," + index / (2 * couronnes - 1) + ")->" + (image.getX() + image.getY() * (2 * couronnes - 1)) + "" + image);
             if (!moleculeIndices.contains(image.getX() + image.getY() * (2 * couronnes - 1)))
                 return false;
         }
-        System.out.println("ok");
+        //System.out.println("ok");
         return true;
     }
 

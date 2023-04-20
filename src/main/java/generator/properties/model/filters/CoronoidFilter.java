@@ -1,11 +1,11 @@
 package generator.properties.model.filters;
 
-import constraints.CoronoidConstraint;
+import constraints.CoronoidConstraint2;
 
 public class CoronoidFilter extends DefaultFilter {
 
 	public CoronoidFilter() {
-		super(new CoronoidConstraint());
+		super(new CoronoidConstraint2());
 	}
 
 }

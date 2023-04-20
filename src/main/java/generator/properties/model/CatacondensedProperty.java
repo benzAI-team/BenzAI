@@ -1,5 +1,6 @@
 package generator.properties.model;
 
+import constraints.CatacondensedConstraint2;
 import generator.properties.model.filters.CatacondensedFilter;
 import constraints.CatacondensedConstraint;
 import view.generator.ChoiceBoxCriterion;
@@ -10,7 +11,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 public class CatacondensedProperty extends ModelProperty {
 
 	public CatacondensedProperty() {
-		super("catacondensed", "Catacondensed", new CatacondensedConstraint(), new CatacondensedFilter());
+		super("catacondensed", "Catacondensed", new CatacondensedConstraint2(), new CatacondensedFilter());
 	}
 
 	@Override

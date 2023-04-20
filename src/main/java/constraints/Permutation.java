@@ -54,7 +54,7 @@ public abstract class Permutation {
 	}
 
 	/***
-	 * Apply an axis projection to hex with axis passing through the center of an hexagon
+	 * Apply an axis projection to hex with axis passing through the center of a hexagon
 	 */
 	public Coords hexAxis(Coords hex){
 		for(int j = 0; j < iteration; j++)
@@ -97,7 +97,7 @@ public abstract class Permutation {
 	 * Apply a 180 rotation around the left edge of the hexagon center
 	 */
 	public Coords rot180edge(Coords hex){
-		return new Coords(-1 - hex.getX() + 2 * center.getX(), - hex.getY() + 2 * center.getY());
+		return new Coords(-1 - hex.getX() + 2 * center.getX(), -2 - hex.getY() + 2 * center.getY());
 	}
 
 	/***

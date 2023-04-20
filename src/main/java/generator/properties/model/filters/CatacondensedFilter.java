@@ -1,9 +1,9 @@
 package generator.properties.model.filters;
 
-import constraints.CatacondensedConstraint;
+import constraints.CatacondensedConstraint2;
 
 public class CatacondensedFilter extends DefaultFilter {
 	public CatacondensedFilter(){
-		super(new CatacondensedConstraint());
+		super(new CatacondensedConstraint2());
 	}
 }
