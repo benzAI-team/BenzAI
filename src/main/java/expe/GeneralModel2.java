@@ -1,6 +1,7 @@
 package expe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.chocosolver.solver.Model;
@@ -13,7 +14,7 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
-import generator.fragments.Fragment;
+import generator.patterns.Pattern;
 import molecules.Node;
 import utils.Couple;
 
@@ -134,14 +135,13 @@ public class GeneralModel2 {
 		}
 	}
 
-	private static Fragment convertToPattern(IntVar[] X) {
+	private static Pattern convertToPattern(IntVar[] X) {
 
 		ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
 
 		int[] correspondance = new int[diameter * diameter];
 
-		for (int i = 0; i < correspondance.length; i++)
-			correspondance[i] = -1;
+		Arrays.fill(correspondance, -1);
 
 		for (int index = 0; index < X.length; index++) {
 			if (X[index] != null) {
@@ -177,8 +177,7 @@ public class GeneralModel2 {
 		int[][] neighbors = new int[nbNodes][6];
 
 		for (int i = 0; i < nbNodes; i++)
-			for (int j = 0; j < 6; j++)
-				neighbors[i][j] = -1;
+			Arrays.fill(neighbors[i], -1);
 
 		for (int i = 0; i < nbNodes; i++) {
 
@@ -241,10 +240,9 @@ public class GeneralModel2 {
 
 		int[] labels = new int[nbNodes];
 
-		for (int i = 0; i < nbNodes; i++)
-			labels[i] = 2;
+		Arrays.fill(labels, 2);
 
-		return new Fragment(matrix, labels, nodes, null, null, neighbors, 0);
+		return new Pattern(matrix, labels, nodes, null, null, neighbors, 0);
 	}
 
 	private static Tuples buildTable(int nbNeighbors) {
@@ -287,9 +285,7 @@ public class GeneralModel2 {
 
 		coordsMatrix = new int[diameter][diameter];
 		for (int i = 0; i < diameter; i++) {
-			for (int j = 0; j < diameter; j++) {
-				coordsMatrix[i][j] = -1;
-			}
+			Arrays.fill(coordsMatrix[i], -1);
 		}
 
 		int index = 0;
@@ -503,8 +499,8 @@ public class GeneralModel2 {
 				if (X[i].getValue() == 1)
 					vertices.add(i);
 
-			Fragment pattern = convertToPattern(X);
-			ArrayList<Fragment> rotations = pattern.computeRotations();
+			Pattern pattern = convertToPattern(X);
+			ArrayList<Pattern> rotations = pattern.computeRotations();
 
 			ArrayList<IntVar[]> nogoods = computeNogoods(model, rotations, nbHexagons, X, nbHexagonsVar);
 
@@ -521,19 +517,19 @@ public class GeneralModel2 {
 		System.out.println(nbSolutions + " solutions found");
 	}
 
-	private static ArrayList<IntVar[]> computeNogoods(Model model, ArrayList<Fragment> rotations, int nbHexagons,
+	private static ArrayList<IntVar[]> computeNogoods(Model model, ArrayList<Pattern> rotations, int nbHexagons,
 			BoolVar[] X, IntVar nbHexagonsVar) {
 
 		ArrayList<IntVar[]> nogoods = new ArrayList<>();
 
-		for (Fragment rotation : rotations) {
+		for (Pattern rotation : rotations) {
 			for (int xShift = 0; xShift <= diameter; xShift++) {
 				for (int yShift = 0; yShift <= diameter; yShift++) {
 					boolean valid = true;
 					for (Node node : rotation.getNodesRefs()) {
 
 						if (node == null)
-							System.out.println("");
+							System.out.println();
 
 						int x = node.getX() + xShift;
 						int y = node.getY() + yShift;
