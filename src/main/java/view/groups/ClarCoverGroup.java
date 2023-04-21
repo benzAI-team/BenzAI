@@ -9,7 +9,7 @@ import utils.Couple;
 
 public class ClarCoverGroup extends MoleculeGroup {
 
-	private ClarCoverSolution clarCoverSolution;
+	private final ClarCoverSolution clarCoverSolution;
 
 	public ClarCoverGroup(Molecule molecule, ClarCoverSolution clarCoverSolution) {
 		super(molecule);

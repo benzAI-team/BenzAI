@@ -96,7 +96,7 @@ public class CarbonNumberConstraint extends BenzAIConstraint {
 					for (Variable x : tuple2) {
 						System.out.print(x.getName() + "\t");
 					}
-					System.out.println("");
+					System.out.println();
 				}
 			}
 		}

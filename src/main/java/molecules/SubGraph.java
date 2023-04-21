@@ -11,14 +11,14 @@ public class SubGraph {
 
 	private Molecule molecule;
 
-	private int nbNodes;
+	private final int nbNodes;
 	private int nbEdges;
 
 	private int nbEnabledNodes;
 
-	private int[][] matrix;
-	private int[] disabledVertices;
-	private int[] degrees;
+	private final int[][] matrix;
+	private final int[] disabledVertices;
+	private final int[] degrees;
 
 	private int[] disabledHexagons;
 	private int nbDisabledHexagons;

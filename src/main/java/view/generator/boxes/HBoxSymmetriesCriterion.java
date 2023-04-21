@@ -60,7 +60,7 @@ public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
-		((ModelProperty) modelPropertySet.getById("symmetry")).addExpression(new ParameterizedExpression("symmetry", symmetriesChoiceBox.getValue()));
+		modelPropertySet.getById("symmetry").addExpression(new ParameterizedExpression("symmetry", symmetriesChoiceBox.getValue()));
 	}
 
 }

@@ -182,7 +182,7 @@ public class LinAlgorithm {
 				globalEnergy[j] += circuits[i][j];
 			}
 
-			System.out.println("");
+			System.out.println();
 		}
 
 		System.out.print("\nGLOBAL ENERGY: ");
@@ -484,10 +484,7 @@ public class LinAlgorithm {
 		else
 			type = PerfectMatchingType.CHOCO;
 
-		if (args.length >= 3 && (args[2].equals("-v") || args[2].equals("--verbose")))
-			verbose = true;
-		else
-			verbose = false;
+		verbose = args.length >= 3 && (args[2].equals("-v") || args[2].equals("--verbose"));
 
 		printHeader(path, type);
 

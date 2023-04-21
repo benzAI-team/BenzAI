@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class PatternResolutionInformations {
 
-	private PatternGenerationType type;
-	private ArrayList<Pattern> patterns;
+	private final PatternGenerationType type;
+	private final ArrayList<Pattern> patterns;
 	private PatternsInterraction interraction;
 	private boolean enabled;
 	

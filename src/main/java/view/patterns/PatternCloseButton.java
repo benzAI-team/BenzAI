@@ -9,7 +9,7 @@ import utils.Utils;
 public class PatternCloseButton extends Button {
 
 	@SuppressWarnings("unused")
-	private PatternsEditionPane parent;
+	private final PatternsEditionPane parent;
 	private int index;
 
 	public PatternCloseButton(PatternsEditionPane parent, int index) {

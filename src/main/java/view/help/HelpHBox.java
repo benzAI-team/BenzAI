@@ -7,9 +7,9 @@ import javafx.scene.layout.HBox;
 
 public class HelpHBox extends HBox {
 
-	private HelpPane parent;
+	private final HelpPane parent;
 
-	private String name;
+	private final String name;
 	private ArrayList<SubHelpHBox> subBoxes;
 
 	private OpenButton openButton;

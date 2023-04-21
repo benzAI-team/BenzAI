@@ -47,7 +47,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class GeneratorPane extends ScrollPaneWithPropertyList {
 
-	private BenzenoidApplication application;
+	private final BenzenoidApplication application;
 	private GeneralModel model;
 	private boolean canStartGeneration;
 	private boolean isRunning;
@@ -73,8 +73,8 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private Button stopButton;
 	private Button pauseButton;
 	private Button resumeButton;
-	private Label solutionTextLabel = new Label("Number of solutions already found:");
-	private Label solutionNumberLabel = new Label("0");
+	private final Label solutionTextLabel = new Label("Number of solutions already found:");
+	private final Label solutionNumberLabel = new Label("0");
 
 
 	public GeneratorPane(BenzenoidApplication application) {

@@ -41,9 +41,9 @@ import view.collections.BenzenoidCollectionsManagerPane;
 
 public class IrregularityPane extends BorderPane {
 
-	private BenzenoidCollectionsManagerPane parent;
+	private final BenzenoidCollectionsManagerPane parent;
 
-	private ArrayList<Molecule> molecules;
+	private final ArrayList<Molecule> molecules;
 	private ArrayList<PAHClass> classes;
 	@SuppressWarnings("rawtypes")
 	private BarChart chart;

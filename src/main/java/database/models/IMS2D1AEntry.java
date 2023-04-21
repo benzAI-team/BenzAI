@@ -6,34 +6,34 @@ import java.util.Map;
 public class IMS2D1AEntry {
 
 	// benzenoid
-	private Long id;
-	private String name;
-	private int nbHexagons;
-	private int nbCarbons;
-	private int nbHydrogens;
-	private double irregularity;
+	private final Long id;
+	private final String name;
+	private final int nbHexagons;
+	private final int nbCarbons;
+	private final int nbHydrogens;
+	private final double irregularity;
 
 	// coords atoms
-	private Long idAtom;
-	private double x;
-	private double y;
-	private double z;
-	private String label;
+	private final Long idAtom;
+	private final double x;
+	private final double y;
+	private final double z;
+	private final String label;
 
 	// ims2d1a
-	private Long idIMS2D1A;
-	private String xVector;
-	private String yVector;
-	private int nbPointsX;
-	private int nbPointsY;
-	private double originX;
-	private double originY;
-	private double originZ;
+	private final Long idIMS2D1A;
+	private final String xVector;
+	private final String yVector;
+	private final int nbPointsX;
+	private final int nbPointsY;
+	private final double originX;
+	private final double originY;
+	private final double originZ;
 
 	// point_ims2d1a
-	private Long idPoint;
-	private int numPoint;
-	private double value;
+	private final Long idPoint;
+	private final int numPoint;
+	private final double value;
 
 	public IMS2D1AEntry(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity,
 			Long idAtom, double x, double y, double z, String label, Long idIMS2D1A, String xVector, String yVector,

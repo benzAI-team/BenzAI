@@ -25,7 +25,7 @@ import generator.patterns.Pattern;
 
 public class SinglePattern3Constraint extends BenzAIConstraint {
 
-	private Pattern pattern;
+	private final Pattern pattern;
 	
 	ArrayList<Integer> absentHexagons;
 	ArrayList<Integer> presentHexagons;
@@ -33,9 +33,9 @@ public class SinglePattern3Constraint extends BenzAIConstraint {
 
 	private IntVar[] coronenoidCorrespondances;
 
-	private VariableStrategy variableStrategy;
-	private ValueStrategy valueStrategy;
-	private OrderStrategy orderStrategy;
+	private final VariableStrategy variableStrategy;
+	private final ValueStrategy valueStrategy;
+	private final OrderStrategy orderStrategy;
 	
 	public SinglePattern3Constraint(Pattern pattern, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		this.pattern = pattern;

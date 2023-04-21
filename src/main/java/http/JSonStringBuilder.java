@@ -69,7 +69,7 @@ public class JSonStringBuilder {
 
 		json.append("}");
 
-		System.out.println(json.toString());
+		System.out.println(json);
 		return json.toString();
 	}
 }

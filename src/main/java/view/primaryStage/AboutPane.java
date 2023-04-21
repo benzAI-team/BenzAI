@@ -15,7 +15,7 @@ import javafx.scene.text.FontWeight;
 
 public class AboutPane extends BorderPane {
 
-	private BenzenoidApplication application;
+	private final BenzenoidApplication application;
 
 	public AboutPane(BenzenoidApplication application) {
 		super();

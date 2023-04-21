@@ -15,9 +15,9 @@ import generator.patterns.PatternOccurences;
 
 public class ForbiddenPatternConstraint extends BenzAIConstraint {
 
-	private int mode = 3;
+	private final int mode = 3;
 	
-	private Pattern pattern;
+	private final Pattern pattern;
 	
 	private ArrayList<Pattern> symmetricPatterns;
 	

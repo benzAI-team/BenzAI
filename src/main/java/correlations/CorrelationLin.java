@@ -29,7 +29,7 @@ public class CorrelationLin {
 		Double[] RI = new Double[4];
 		Double[] RIopt = new Double [] { 0.869, 0.246, 0.100, 0.041};
 		for (int i = 0 ; i < 4 ; i ++) {
-			double denom = (double)((i + 1) * (i + 1));
+			double denom = (i + 1) * (i + 1);
 			RI[i] = 1.0 / denom;
 		}
 		

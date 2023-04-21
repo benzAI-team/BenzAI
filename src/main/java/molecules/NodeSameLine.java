@@ -2,8 +2,8 @@ package molecules;
 
 public class NodeSameLine implements Comparable<NodeSameLine>{
 
-	private int index;
-	private int x;
+	private final int index;
+	private final int x;
 	
 	public NodeSameLine(int index, int x) {
 		this.index = index;

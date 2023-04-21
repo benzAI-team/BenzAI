@@ -16,7 +16,7 @@ import utils.Utils;
 
 public class GeneratorPreferencesPane extends GridPane {
 
-	private BenzenoidApplication application;
+	private final BenzenoidApplication application;
 
 	private TextField timeField;
 	private ChoiceBox<String> timeUnitBox;

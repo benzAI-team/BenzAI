@@ -3,7 +3,7 @@ package generator.properties.model.expression;
 import generator.patterns.PatternResolutionInformations;
 
 public class PatternExpression extends SubjectExpression {
-	private PatternResolutionInformations patternsInformations;
+	private final PatternResolutionInformations patternsInformations;
 
 	public PatternExpression(String subject, PatternResolutionInformations patternsInformations) {
 		super(subject);

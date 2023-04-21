@@ -12,7 +12,7 @@ import utils.HexagonAromaticity;
 
 public class ClarCoverREGroup extends MoleculeGroup {
 
-	private int[] clarValues;
+	private final int[] clarValues;
 
 	private Color[] paletteLocalScale;
 	private Color[] paletteGlobalScale;

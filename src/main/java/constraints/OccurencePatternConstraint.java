@@ -24,8 +24,8 @@ import generator.patterns.PatternOccurences;
 
 public class OccurencePatternConstraint extends BenzAIConstraint {
 
-	private Pattern pattern;
-	private int nbOccurences;
+	private final Pattern pattern;
+	private final int nbOccurences;
 	
 	private ArrayList<Pattern> symmetricPatterns;
 	private ArrayList<Integer> presentHexagons, unknownHexagons, absentHexagons;
@@ -36,9 +36,9 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 	
 	private PatternOccurences patternOccurences;
 	
-	private VariableStrategy variablesStrategy;
-	private ValueStrategy valueStrategy;
-	private OrderStrategy orderStrategy;
+	private final VariableStrategy variablesStrategy;
+	private final ValueStrategy valueStrategy;
+	private final OrderStrategy orderStrategy;
 	
 	public OccurencePatternConstraint(Pattern pattern, int nbOccurences, VariableStrategy variablesStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		this.pattern = pattern;

@@ -7,7 +7,7 @@ public class MoleculeInformation {
 
 	private Molecule molecule;
 	
-	private String moleculeName;
+	private final String moleculeName;
 	private String pathToGraphFile = "NONE";
 	private String pathToLogFile = "NONE";
 	

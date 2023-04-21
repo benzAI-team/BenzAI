@@ -9,10 +9,10 @@ import utils.SubMolecule;
 
 public class PerfectMatchingMatrix {
 
-	private ArrayList<Integer> columns;
-	private ArrayList<Integer> lines;
+	private final ArrayList<Integer> columns;
+	private final ArrayList<Integer> lines;
 
-	private double[][] matrix;
+	private final double[][] matrix;
 
 	public PerfectMatchingMatrix(ArrayList<Integer> columns, ArrayList<Integer> lines, double[][] matrix) {
 		super();
@@ -78,8 +78,10 @@ public class PerfectMatchingMatrix {
 
 			boolean end = true;
 			for (Integer i : checkedCarbons)
-				if (i == 0)
+				if (i == 0) {
 					end = false;
+					break;
+				}
 
 			if (end)
 				break;

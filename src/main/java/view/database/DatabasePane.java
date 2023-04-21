@@ -38,7 +38,7 @@ import view.database.boxes.HBoxDefaultDatabaseCriterion;
 
 public class DatabasePane extends ScrollPane {
 
-	private BenzenoidApplication application;
+	private final BenzenoidApplication application;
 	private GridPane gridPane;
 
 	private int nbCriterions;

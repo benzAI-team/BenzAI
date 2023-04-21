@@ -10,10 +10,10 @@ public class PatternHexagon extends Polygon {
 
 	private final Color[] COLORS = new Color[] { Color.WHITE, Color.ORANGE, Color.GREEN, Color.RED };
 
-	private PatternGroup group;
+	private final PatternGroup group;
 
-	private Couple<Integer, Integer> coords;
-	private ArrayList<Double> points;
+	private final Couple<Integer, Integer> coords;
+	private final ArrayList<Double> points;
 
 	private int label;
 	private boolean isCenter;

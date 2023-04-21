@@ -38,9 +38,9 @@ public class BuildInsertScript3 {
 				ArrayList<String> names = molecule.getNames();
 				
 				if (irregularity != null)
-					irregbd = new BigDecimal(irregularity.getXI()).setScale(3, RoundingMode.HALF_UP);
+					irregbd = BigDecimal.valueOf(irregularity.getXI()).setScale(3, RoundingMode.HALF_UP);
 				else
-					irregbd = new BigDecimal(-1.0).setScale(3, RoundingMode.HALF_UP);
+					irregbd = BigDecimal.valueOf(-1.0).setScale(3, RoundingMode.HALF_UP);
 				
 				String name = molecule.toString();
 

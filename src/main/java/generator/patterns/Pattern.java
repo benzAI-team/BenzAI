@@ -17,15 +17,15 @@ public class Pattern {
 	 * Label : 1 = neutral, 2 = positive, 3 = negative
 	 */
 
-	private int nbNodes;
+	private final int nbNodes;
 	private int order;
-	private int[][] matrix;
-	private int[] labels;
-	private Node[] nodesRefs;
-	private RelativeMatrix relativeMatrix;
-	private int[][] neighborGraph;
+	private final int[][] matrix;
+	private final int[] labels;
+	private final Node[] nodesRefs;
+	private final RelativeMatrix relativeMatrix;
+	private final int[][] neighborGraph;
 
-	private Node center;
+	private final Node center;
 
 	public Pattern(int[][] matrix, int[] labels, Node[] nodesRefs, RelativeMatrix relativeMatrix, Node center,
 			int[][] neighborGraph, int order) {
@@ -492,7 +492,7 @@ public class Pattern {
 			if (pattern.getLabel(i) == 2)
 				nbPositiveHexagons++;
 
-		int nbCrowns = (int) Math.floor((((double) ((double) nbPositiveHexagons + 1)) / 2.0) + 1.0);
+		int nbCrowns = (int) Math.floor((((double) nbPositiveHexagons + 1) / 2.0) + 1.0);
 
 		if (nbPositiveHexagons % 2 == 1)
 			nbCrowns--;
@@ -577,9 +577,7 @@ public class Pattern {
 		int[][] newNeighborGraph = new int[nbNodes][6];
 
 		for (int i = 0; i < nbNodes; i++) {
-			for (int j = 0; j < 6; j++) {
-				newNeighborGraph[i][j] = neighborGraphSymmetry[i][j];
-			}
+			System.arraycopy(neighborGraphSymmetry[i], 0, newNeighborGraph[i], 0, 6);
 		}
 
 		return buildPattern(newNeighborGraph, labels, order);

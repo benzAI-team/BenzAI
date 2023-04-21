@@ -9,12 +9,12 @@ public class MatrixInversion {
 	 * @param args command line arguments; unused
 	 */
 	public static void main (String[] args) {
-		double matrix[][] = {
+		double[][] matrix = {
 				{100, 100, 100,},
 				{-100, 300, -100,},
 				{-100, -100, 300,},
 		};
-		double invertedMatrix[][] = MatrixOperations.invertMatrix (matrix);
+		double[][] invertedMatrix = MatrixOperations.invertMatrix (matrix);
 		MatrixOperations.printMatrix (invertedMatrix, 4);
 	}
 }

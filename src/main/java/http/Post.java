@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +35,11 @@ public class Post {
 		con.setDoOutput(true);
 
 		try (OutputStream os = con.getOutputStream()) {
-			byte[] input = jsonInputString.getBytes("utf-8");
+			byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
 			os.write(input, 0, input.length);
 		}
 
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
 			StringBuilder response = new StringBuilder();
 			String responseLine = null;
 			while ((responseLine = br.readLine()) != null) {
@@ -88,12 +89,8 @@ public class Post {
 			Utils.alert("Unable to connect to the database");
 		}
 
-		if (isDatabaseConnected) {
-			// System.out.println("Connection to database established");
-			return true;
-		}
-
-		return false;
+		// System.out.println("Connection to database established");
+		return isDatabaseConnected;
 	}
 
 	/*

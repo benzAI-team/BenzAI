@@ -12,7 +12,7 @@ import utils.RelativeMatrix;
 
 public class MoleculeGroup extends Group {
 
-	private int nbCrowns;
+	private final int nbCrowns;
 	private int diameter;
 
 	private int[][] displayedHexagons;
@@ -22,7 +22,7 @@ public class MoleculeGroup extends Group {
 
 	private int degree;
 
-	private DrawBenzenoidPane drawPane;
+	private final DrawBenzenoidPane drawPane;
 
 	private ArrayList<HexagonDraw> border;
 	private ArrayList<HexagonDraw> extendedBorder;
@@ -152,7 +152,7 @@ public class MoleculeGroup extends Group {
 
 		int nCurrent = n;
 
-		for (int x = 0; x < (int) ((diameter - 1) / 2); x++) {
+		for (int x = 0; x < ((diameter - 1) / 2); x++) {
 			for (int i = nCurrent; i >= 1; i--) {
 				// enlever les i derniers
 				for (int j = diameter - 1; j > diameter - 1 - i; j--)
@@ -163,7 +163,7 @@ public class MoleculeGroup extends Group {
 
 		nCurrent = 1;
 
-		for (int x = (int) ((diameter - 1) / 2) + 1; x < diameter; x++) {
+		for (int x = ((diameter - 1) / 2) + 1; x < diameter; x++) {
 			for (int i = 0; i < nCurrent; i++) {
 				displayedHexagons[x][i] = -1;
 			}
@@ -180,13 +180,13 @@ public class MoleculeGroup extends Group {
 
 		centers.add(new Couple<Double, Double>(x, y));
 
-		for (int line = 1; line <= (int) ((diameter - 1) / 2); line++) {
+		for (int line = 1; line <= ((diameter - 1) / 2); line++) {
 			x -= 26.0;
 			y += 43.5;
 			centers.add(new Couple<Double, Double>(x, y));
 		}
 
-		for (int line = (int) ((diameter - 1) / 2) + 1; line < diameter; line++) {
+		for (int line = ((diameter - 1) / 2) + 1; line < diameter; line++) {
 			x += 26.0;
 			y += 43.5;
 			centers.add(new Couple<Double, Double>(x, y));

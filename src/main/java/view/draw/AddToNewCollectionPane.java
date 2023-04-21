@@ -18,8 +18,8 @@ import view.collections.BenzenoidCollectionPane.DisplayType;
 
 public class AddToNewCollectionPane extends GridPane {
 
-	private Molecule molecule;
-	private BenzenoidCollectionsManagerPane parent;
+	private final Molecule molecule;
+	private final BenzenoidCollectionsManagerPane parent;
 	private TextField fieldCollectionName;
 
 	public AddToNewCollectionPane(BenzenoidCollectionsManagerPane parent, Molecule molecule) {

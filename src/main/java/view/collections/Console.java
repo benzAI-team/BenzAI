@@ -59,7 +59,7 @@ public class Console extends TextArea {
 		for (String str : split)
 			builder.append(str + "\n");
 
-		this.appendText(builder.toString() + "\n");
+		this.appendText(builder + "\n");
 		this.setScrollTop(Double.MAX_VALUE);
 	}
 

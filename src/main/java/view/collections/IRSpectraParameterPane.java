@@ -22,8 +22,8 @@ import spectrums.Parameter;
 
 public class IRSpectraParameterPane extends ScrollPane {
 
-	private VBox mainBox = new VBox();
-	private BenzenoidCollectionsManagerPane catalogPane;
+	private final VBox mainBox = new VBox();
+	private final BenzenoidCollectionsManagerPane catalogPane;
 
 	public IRSpectraParameterPane(BenzenoidCollectionsManagerPane catalogPane) {
 		super();
@@ -125,7 +125,7 @@ public class IRSpectraParameterPane extends ScrollPane {
 					double factor = Double.parseDouble(splittedKb.split(" ")[0]);
 					int exponent = Integer.parseInt(splittedKb.split(" ")[1]);
 
-					parameter.setKb(factor * ((double) Math.pow(10, exponent)));
+					parameter.setKb(factor * Math.pow(10, exponent));
 
 					VMinField.setText(Integer.toString(parameter.getVMin()));
 					VMaxField.setText(Integer.toString(parameter.getVMax()));
@@ -164,7 +164,7 @@ public class IRSpectraParameterPane extends ScrollPane {
 				double factor = Double.parseDouble(KBField1.getText());
 				int exponent = Integer.parseInt(KBField2.getText());
 
-				parameter.setKb(factor * ((double) Math.pow(10, exponent)));
+				parameter.setKb(factor * Math.pow(10, exponent));
 
 				Stage stage = (Stage) this.getScene().getWindow();
 				stage.close();
@@ -176,7 +176,7 @@ public class IRSpectraParameterPane extends ScrollPane {
 
 			if (ok) {
 				catalogPane.setIRSpectraParameter(parameter);
-				System.out.println(parameter.toString());
+				System.out.println(parameter);
 			}
 		});
 

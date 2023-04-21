@@ -34,19 +34,19 @@ public static Menu build(BenzenoidApplication app) {
 		});
 
 		exportGraph.setOnAction(e -> {
-			((BenzenoidCollectionsManagerPane) collectionsPane).exportGraph();
+			collectionsPane.exportGraph();
 		});
 
 		exportPng.setOnAction(e -> {
-			((BenzenoidCollectionsManagerPane) collectionsPane).exportPng();
+			collectionsPane.exportPng();
 		});
 
 		exportCml.setOnAction(e -> {
-			((BenzenoidCollectionsManagerPane) collectionsPane).exportCML();
+			collectionsPane.exportCML();
 		});
 
 		exportCom.setOnAction(e -> {
-			((BenzenoidCollectionsManagerPane) collectionsPane).exportCOM();
+			collectionsPane.exportCOM();
 		});
 
 		importCollection.setOnAction(e -> {
@@ -54,7 +54,7 @@ public static Menu build(BenzenoidApplication app) {
 			File directory = directoryChooser.showDialog(app.getStage());
 
 			if (directory != null) {
-				((BenzenoidCollectionsManagerPane) collectionsPane).importCollection(directory);
+				collectionsPane.importCollection(directory);
 			}
 		});
 
@@ -63,7 +63,7 @@ public static Menu build(BenzenoidApplication app) {
 			File directory = directoryChooser.showDialog(app.getStage());
 
 			if (directory != null) {
-				BenzenoidCollectionPane currentPane = ((BenzenoidCollectionsManagerPane) collectionsPane)
+				BenzenoidCollectionPane currentPane = collectionsPane
 						.getSelectedTab();
 				currentPane.export(directory);
 			}

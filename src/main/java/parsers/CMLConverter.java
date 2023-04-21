@@ -22,11 +22,8 @@ public class CMLConverter {
 				|| (u.getX() == v.getX() + 1 && u.getY() == v.getY() + 1))
 			return true;
 
-		else if ((u.getX() == v.getX() - 1 && u.getY() == v.getY() + 1)
-				|| (u.getX() == v.getX() + 1 && u.getY() == v.getY() - 1))
-			return true;
-
-		return false;
+		else return (u.getX() == v.getX() - 1 && u.getY() == v.getY() + 1)
+					|| (u.getX() == v.getX() + 1 && u.getY() == v.getY() - 1);
 	}
 
 	public static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
@@ -118,8 +115,10 @@ public class CMLConverter {
 						for (Couple<Integer, Integer> couple : invalidsCarbons) {
 
 							if ((couple.getX() == i && couple.getY() == j)
-									|| (couple.getX() == j && couple.getY() == i))
+									|| (couple.getX() == j && couple.getY() == i)) {
 								alreadyExists = true;
+								break;
+							}
 
 						}
 
@@ -207,11 +206,11 @@ public class CMLConverter {
 
 				if (index == 0) {
 					if (carbons[u] == null) {
-						xu = (double) molecule.getNodesRefs()[u].getX();
-						yu = (double) molecule.getNodesRefs()[u].getY();
+						xu = molecule.getNodesRefs()[u].getX();
+						yu = molecule.getNodesRefs()[u].getY();
 					} else {
-						xu = (double) carbons[u].getX();
-						yu = (double) carbons[u].getY();
+						xu = carbons[u].getX();
+						yu = carbons[u].getY();
 					}
 
 					xv = xu + 1.2145;
@@ -221,11 +220,11 @@ public class CMLConverter {
 				else if (index == 1) {
 
 					if (carbons[u] == null) {
-						xu = (double) molecule.getNodesRefs()[u].getX();
-						yu = (double) molecule.getNodesRefs()[u].getY();
+						xu = molecule.getNodesRefs()[u].getX();
+						yu = molecule.getNodesRefs()[u].getY();
 					} else {
-						xu = (double) carbons[u].getX();
-						yu = (double) carbons[u].getY();
+						xu = carbons[u].getX();
+						yu = carbons[u].getY();
 					}
 
 					xv = xu;
@@ -235,11 +234,11 @@ public class CMLConverter {
 
 				else if (index == 2) {
 					if (carbons[u] == null) {
-						xu = (double) molecule.getNodesRefs()[u].getX();
-						yu = (double) molecule.getNodesRefs()[u].getY();
+						xu = molecule.getNodesRefs()[u].getX();
+						yu = molecule.getNodesRefs()[u].getY();
 					} else {
-						xu = (double) carbons[u].getX();
-						yu = (double) carbons[u].getY();
+						xu = carbons[u].getX();
+						yu = carbons[u].getY();
 					}
 
 					xv = xu - 1.2145;
@@ -250,11 +249,11 @@ public class CMLConverter {
 				else if (index == 3) {
 
 					if (carbons[u] == null) {
-						xu = (double) molecule.getNodesRefs()[u].getX();
-						yu = (double) molecule.getNodesRefs()[u].getY();
+						xu = molecule.getNodesRefs()[u].getX();
+						yu = molecule.getNodesRefs()[u].getY();
 					} else {
-						xu = (double) carbons[u].getX();
-						yu = (double) carbons[u].getY();
+						xu = carbons[u].getX();
+						yu = carbons[u].getY();
 					}
 
 					xv = xu - 1.2145;
@@ -265,11 +264,11 @@ public class CMLConverter {
 				else if (index == 4) {
 
 					if (carbons[u] == null) {
-						xu = (double) molecule.getNodesRefs()[u].getX();
-						yu = (double) (molecule.getNodesRefs()[u].getY());
+						xu = molecule.getNodesRefs()[u].getX();
+						yu = molecule.getNodesRefs()[u].getY();
 					} else {
-						xu = (double) carbons[u].getX();
-						yu = (double) carbons[u].getY();
+						xu = carbons[u].getX();
+						yu = carbons[u].getY();
 					}
 
 					xv = xu;
@@ -279,11 +278,11 @@ public class CMLConverter {
 				else if (index == 5) {
 
 					if (carbons[u] == null) {
-						xu = (double) molecule.getNodesRefs()[u].getX();
-						yu = (double) molecule.getNodesRefs()[u].getY();
+						xu = molecule.getNodesRefs()[u].getX();
+						yu = molecule.getNodesRefs()[u].getY();
 					} else {
-						xu = (double) carbons[u].getX();
-						yu = (double) carbons[u].getY();
+						xu = carbons[u].getX();
+						yu = carbons[u].getY();
 					}
 
 					xv = xu + 1.2145;

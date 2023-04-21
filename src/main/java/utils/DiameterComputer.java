@@ -4,12 +4,11 @@ public class DiameterComputer {
 
 	final static int INF = 99999, V = 4;
 
-	public static int[][] floydWarshall(int graph[][]) {
-		int dist[][] = new int[V][V];
+	public static int[][] floydWarshall(int[][] graph) {
+		int[][] dist = new int[V][V];
 
 		for (int i = 0; i < V; i++)
-			for (int j = 0; j < V; j++)
-				dist[i][j] = graph[i][j];
+            System.arraycopy(graph[i], 0, dist[i], 0, V);
 
 		for (int k = 0; k < V; k++) {
 			// Pick all vertices as source one by one
@@ -35,7 +34,7 @@ public class DiameterComputer {
 		 * Let us create the following weighted graph 10 (0)------->(3) | /|\ 5 | | | |
 		 * 1 \|/ | (1)------->(2) 3
 		 */
-		int graph[][] = { { 0, 5, INF, 10 }, { INF, 0, 3, INF }, { INF, INF, 0, 1 }, { INF, INF, INF, 0 } };
+		int[][] graph = { { 0, 5, INF, 10 }, { INF, 0, 3, INF }, { INF, INF, 0, 1 }, { INF, INF, INF, 0 } };
 		int[][] dist = floydWarshall(graph);
 		System.out.print("");
 	}

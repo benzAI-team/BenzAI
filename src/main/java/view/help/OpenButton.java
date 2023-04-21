@@ -8,7 +8,7 @@ import utils.Utils;
 
 public class OpenButton extends Button {
 
-	private HelpHBox parent;
+	private final HelpHBox parent;
 
 	public OpenButton(HelpHBox parent) {
 		super();

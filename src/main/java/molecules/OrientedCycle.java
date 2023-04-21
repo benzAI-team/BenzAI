@@ -3,8 +3,8 @@ package molecules;
 public class OrientedCycle {
 
 	private int size;
-	private int [] nodes;
-	private int [][] matrix;
+	private final int [] nodes;
+	private final int [][] matrix;
 	
 	public OrientedCycle(Molecule molecule) {
 		size = 0;

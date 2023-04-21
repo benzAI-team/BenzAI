@@ -42,7 +42,7 @@ public class ComputeCorrelations {
 				
 				if (linFile.getName().contains("14") || linFile.getName().contains("15") || linFile.getName().contains("16") || linFile.getName().contains("17")
 					|| linFile.getName().contains("18") || linFile.getName().contains("19") || linFile.getName().contains("20"))
-					System.out.println("");
+					System.out.println();
 				
 				//System.out.println("treating " + linFile.getName().replace("_lin_opt.dat", ""));
 				

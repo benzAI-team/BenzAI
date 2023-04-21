@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class ClarCoverSolution {
 
-	private int[] circles;
-	private int[][] bonds;
-	private int[] singleElectrons;
+	private final int[] circles;
+	private final int[][] bonds;
+	private final int[] singleElectrons;
 
 	/*
 	 * Constructors

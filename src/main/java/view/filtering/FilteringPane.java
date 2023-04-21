@@ -35,8 +35,8 @@ import generator.properties.model.filters.Filter;
 
 public class FilteringPane extends ScrollPaneWithPropertyList {
 
-	private BenzenoidApplication application;
-	private BenzenoidCollectionsManagerPane collectionsPane;
+	private final BenzenoidApplication application;
+	private final BenzenoidCollectionsManagerPane collectionsPane;
 
 	private Button addButton;
 	private Button closeButton;

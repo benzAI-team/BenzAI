@@ -41,7 +41,7 @@ import view.generator.boxes.HBoxPatternCriterion;
 
 public class PatternsEditionPane extends BorderPane {
 
-	private HBoxPatternCriterion parent;
+	private final HBoxPatternCriterion parent;
 	private MenuBar menuBar;
 	private BorderPane borderPane;
 	private ListView<GridPane> listView;

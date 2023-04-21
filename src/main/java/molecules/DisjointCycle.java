@@ -2,9 +2,9 @@ package molecules;
 
 public class DisjointCycle {
 
-	private int [][] matrix;
-	private int vertexPart1;
-	private int vertexPart2;
+	private final int [][] matrix;
+	private final int vertexPart1;
+	private final int vertexPart2;
 	
 	public DisjointCycle(int [][] matrix, int vertexPart1, int vertexPart2) {
 		this.matrix = matrix;

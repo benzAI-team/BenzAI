@@ -59,7 +59,7 @@ public class DisjunctCircuitsSolver {
 			checkedNodes[i] = 0;
 
 		EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
-		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(molecule, subGraph, cycle,
+		ArrayList<Interval> intervals = computeIntervals(molecule, subGraph, cycle,
 				verticalEdges);
 		Collections.sort(intervals);
 
@@ -262,7 +262,7 @@ public class DisjunctCircuitsSolver {
 		for (ArrayList<Integer> cycle : curentCycles) {
 
 			EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
-			ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(molecule, subGraph, cycle,
+			ArrayList<Interval> intervals = computeIntervals(molecule, subGraph, cycle,
 					verticalEdges);
 			Collections.sort(intervals);
 
@@ -284,7 +284,7 @@ public class DisjunctCircuitsSolver {
 	@SuppressWarnings("unchecked")
 	private static void removeHexagons(Molecule molecule, ArrayList<Integer> cycle) {
 		EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
-		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(molecule, subGraph, cycle,
+		ArrayList<Interval> intervals = computeIntervals(molecule, subGraph, cycle,
 				verticalEdges);
 		Collections.sort(intervals);
 

@@ -6,13 +6,13 @@ import utils.Couple;
 
 public class PatternOccurences {
 
-	private ArrayList<Integer[]> occurences;
-	private ArrayList<Couple<Integer, Integer>[]> coordinates;
+	private final ArrayList<Integer[]> occurences;
+	private final ArrayList<Couple<Integer, Integer>[]> coordinates;
 
-	private ArrayList<ArrayList<Integer>> allOutterHexagons;
-	private ArrayList<ArrayList<Integer>> allPresentHexagons;
-	private ArrayList<ArrayList<Integer>> allAbsentHexagons;
-	private ArrayList<ArrayList<Integer>> allUnknownHexagons;
+	private final ArrayList<ArrayList<Integer>> allOutterHexagons;
+	private final ArrayList<ArrayList<Integer>> allPresentHexagons;
+	private final ArrayList<ArrayList<Integer>> allAbsentHexagons;
+	private final ArrayList<ArrayList<Integer>> allUnknownHexagons;
 
 	public PatternOccurences() {
 		occurences = new ArrayList<>();

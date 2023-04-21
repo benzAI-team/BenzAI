@@ -5,8 +5,8 @@ import java.math.RoundingMode;
 
 public class Irregularity {
 
-	private int[] groups;
-	private double XI;
+	private final int[] groups;
+	private final double XI;
 
 	public Irregularity(int[] groups, double XI) {
 		this.groups = groups;

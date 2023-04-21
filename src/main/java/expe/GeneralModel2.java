@@ -429,7 +429,7 @@ public class GeneralModel2 {
 			}
 			
 			if (debug.contains("0 1 2 7 8")) {
-				System.out.println("");
+				System.out.println();
 				for (int i = 0 ; i < nbHexagonsCoronenoid; i ++) {
 					System.out.println("Y" + i + " = " + Y[i].getValue());
 				}
@@ -455,7 +455,7 @@ public class GeneralModel2 {
 				model.getClauseConstraint().addClause(nogood, valClause);
 			}
 		
-			System.out.println("");
+			System.out.println();
 			nbSolutions++;
 		}
 		System.out.println(nbSolutions + " solutions found");
@@ -472,7 +472,7 @@ public class GeneralModel2 {
 					for (Node node : rotation.getNodesRefs()) {
 						
 						if (node == null)
-							System.out.println("");
+							System.out.println();
 						
 						int x = node.getX() + xShift;
 						int y = node.getY() + yShift;
@@ -504,7 +504,7 @@ public class GeneralModel2 {
 	private static void initializeValues(String[] args) {
 		nbHexagons = 5;
 
-		nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
+		nbCrowns = (int) Math.floor((((double) nbHexagons + 1) / 2.0) + 1.0);
 
 		if (nbHexagons % 2 == 1)
 			nbCrowns--;

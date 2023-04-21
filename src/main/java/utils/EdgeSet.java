@@ -6,8 +6,8 @@ import molecules.Node;
 
 public class EdgeSet {
 
-	private List<Node> firstVertices;
-	private List<Node> secondVertices;
+	private final List<Node> firstVertices;
+	private final List<Node> secondVertices;
 	
 	public EdgeSet(List<Node> firstVertices, List<Node> secondVertices) {
 		this.firstVertices = firstVertices;

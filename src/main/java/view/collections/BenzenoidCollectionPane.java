@@ -1,30 +1,13 @@
 package view.collections;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker.State;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -34,849 +17,762 @@ import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
 import solveur.LinFanAlgorithm;
 import utils.Utils;
-import view.groups.AromaticityGroup;
-import view.groups.ClarCoverFixedBondGroup;
-import view.groups.ClarCoverGroup;
-import view.groups.ClarCoverREGroup;
-import view.groups.IMS2D1AGroup;
-import view.groups.KekuleStructureGroup;
-import view.groups.MoleculeGroup;
-import view.groups.RBOGroup;
-import view.groups.RadicalarClarCoverGroup;
+import view.groups.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class BenzenoidCollectionPane extends Tab {
 
-	public enum DisplayedProperty {
-		PROPERTIES, FREQUENCIES, INTENSITIES, ENERGIES
-	};
+    public enum DisplayedProperty {
+        PROPERTIES, FREQUENCIES, INTENSITIES, ENERGIES
+    }
 
-	public enum DisplayType {
-		BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED, KEKULE, CLAR_RE
-	};
+    public enum DisplayType {
+        BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED, KEKULE, CLAR_RE
+    }
 
-	private BenzenoidCollectionsManagerPane parent;
+    private final BenzenoidCollectionsManagerPane parent;
 
-	private int index;
+    private int index;
 
-	private GridPane gridPane;
+    private GridPane gridPane;
 
-	private DisplayedProperty displayedProperty = DisplayedProperty.PROPERTIES;
-	private TextArea benzenoidPropertiesArea;
-	private Console console;
+    private DisplayedProperty displayedProperty = DisplayedProperty.PROPERTIES;
+    private TextArea benzenoidPropertiesArea;
+    private Console console;
 
-	private TextArea frequenciesArea;
-	private TextArea intensitiesArea;
-	private TextArea energiesArea;
-	private Button previousButton;
-	private Button nextButton;
+    private TextArea frequenciesArea;
+    private TextArea intensitiesArea;
+    private TextArea energiesArea;
+    private Button previousButton;
+    private Button nextButton;
 
-	private Label propertiesLabel;
-	private Label frequenciesLabel;
+    private Label propertiesLabel;
+    private Label frequenciesLabel;
 
-	private TextArea selectedArea;
-	private BorderPane borderPane;
+    private TextArea selectedArea;
+    private BorderPane borderPane;
 
-	private ArrayList<DisplayType> displayTypes;
+    private ArrayList<DisplayType> displayTypes;
 
-	private ArrayList<BenzenoidPane> benzenoidPanes;
-	private ArrayList<BenzenoidPane> selectedBenzenoidPanes;
+    private ArrayList<BenzenoidPane> benzenoidPanes;
+    private ArrayList<BenzenoidPane> selectedBenzenoidPanes;
 
-	private ArrayList<Molecule> molecules;
-	private ArrayList<Molecule> selectedMolecules;
+    private ArrayList<Molecule> molecules;
+    private ArrayList<Molecule> selectedMolecules;
 
-	private ScrollPane scrollPane;
-	private FlowPane flowPane;
+    private FlowPane flowPane;
 
-	private BenzenoidPane hoveringPane;
+    private BenzenoidPane hoveringPane;
 
-	private boolean lock;
+    private boolean lock;
 
-	public BenzenoidCollectionPane(BenzenoidCollectionsManagerPane parent, int index, String name) {
+    public BenzenoidCollectionPane(BenzenoidCollectionsManagerPane parent, int index, String name) {
 
-		super(name);
-		this.index = index;
-		this.parent = parent;
-		initialize();
-	}
+        super(name);
+        this.index = index;
+        this.parent = parent;
+        initialize();
+    }
 
-	private void initialize() {
+    private void initialize() {
 
-		this.setOnCloseRequest(e -> {
-			parent.remove(this);
-		});
+        this.setOnCloseRequest(e -> parent.remove(this));
 
-		lock = false;
+        lock = false;
 
-		propertiesLabel = new Label("Benzenoid's properties");
-		frequenciesLabel = new Label("IR Spectra");
+        propertiesLabel = new Label("Benzenoid's properties");
+        frequenciesLabel = new Label("IR Spectra");
 
-		propertiesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-		propertiesLabel.setMaxWidth(Double.MAX_VALUE);
-		propertiesLabel.setAlignment(Pos.CENTER);
+        propertiesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
+        propertiesLabel.setMaxWidth(Double.MAX_VALUE);
+        propertiesLabel.setAlignment(Pos.CENTER);
 
-		frequenciesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-		frequenciesLabel.setMaxWidth(Double.MAX_VALUE);
-		frequenciesLabel.setAlignment(Pos.CENTER);
+        frequenciesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
+        frequenciesLabel.setMaxWidth(Double.MAX_VALUE);
+        frequenciesLabel.setAlignment(Pos.CENTER);
 
-		console = new Console();
-		benzenoidPropertiesArea = new TextArea();
-		frequenciesArea = new TextArea();
-		intensitiesArea = new TextArea();
-		energiesArea = new TextArea();
+        console = new Console();
+        benzenoidPropertiesArea = new TextArea();
+        frequenciesArea = new TextArea();
+        intensitiesArea = new TextArea();
+        energiesArea = new TextArea();
 
-		selectedArea = benzenoidPropertiesArea;
+        selectedArea = benzenoidPropertiesArea;
 
-		previousButton = new Button("<");
-		nextButton = new Button(">");
+        previousButton = new Button("<");
+        nextButton = new Button(">");
 
-		nextButton.setOnAction(e -> {
+        nextButton.setOnAction(e -> {
 
-			switch (displayedProperty) {
-			case PROPERTIES:
-				displayedProperty = DisplayedProperty.FREQUENCIES;
-				gridPane.getChildren().remove(borderPane);
-				gridPane.getChildren().remove(selectedArea);
-				selectedArea = frequenciesArea;
+            switch (displayedProperty) {
+                case PROPERTIES:
+                    displayedProperty = DisplayedProperty.FREQUENCIES;
+                    gridPane.getChildren().remove(borderPane);
+                    gridPane.getChildren().remove(selectedArea);
+                    selectedArea = frequenciesArea;
 
-				borderPane = new BorderPane();
-				borderPane.setLeft(previousButton);
-				borderPane.setCenter(frequenciesLabel);
-				borderPane.setRight(nextButton);
+                    borderPane = new BorderPane();
+                    borderPane.setLeft(previousButton);
+                    borderPane.setCenter(frequenciesLabel);
+                    borderPane.setRight(nextButton);
 
-				gridPane.add(borderPane, 1, 0);
-				gridPane.add(selectedArea, 1, 1);
+                    gridPane.add(borderPane, 1, 0);
+                    gridPane.add(selectedArea, 1, 1);
 
-				break;
+                    break;
 
-			case FREQUENCIES:
-				displayedProperty = DisplayedProperty.PROPERTIES;
-				gridPane.getChildren().remove(borderPane);
-				gridPane.getChildren().remove(selectedArea);
-				selectedArea = benzenoidPropertiesArea;
+                case FREQUENCIES:
+                    displayedProperty = DisplayedProperty.PROPERTIES;
+                    gridPane.getChildren().remove(borderPane);
+                    gridPane.getChildren().remove(selectedArea);
+                    selectedArea = benzenoidPropertiesArea;
 
-				borderPane = new BorderPane();
-				borderPane.setLeft(previousButton);
-				borderPane.setCenter(propertiesLabel);
-				borderPane.setRight(nextButton);
+                    borderPane = new BorderPane();
+                    borderPane.setLeft(previousButton);
+                    borderPane.setCenter(propertiesLabel);
+                    borderPane.setRight(nextButton);
 
-				gridPane.add(borderPane, 1, 0);
-				gridPane.add(selectedArea, 1, 1);
-				break;
+                    gridPane.add(borderPane, 1, 0);
+                    gridPane.add(selectedArea, 1, 1);
+                    break;
 
-			default:
-				// DO_NOTHING
-				break;
-			}
+                default:
+                    // DO_NOTHING
+                    break;
+            }
 
-		});
+        });
 
-		previousButton.setOnAction(e -> {
-			switch (displayedProperty) {
+        previousButton.setOnAction(e -> {
+            switch (displayedProperty) {
 
-			case PROPERTIES:
-				displayedProperty = DisplayedProperty.FREQUENCIES;
-				gridPane.getChildren().remove(borderPane);
-				gridPane.getChildren().remove(selectedArea);
-				selectedArea = frequenciesArea;
+                case PROPERTIES:
+                    displayedProperty = DisplayedProperty.FREQUENCIES;
+                    gridPane.getChildren().remove(borderPane);
+                    gridPane.getChildren().remove(selectedArea);
+                    selectedArea = frequenciesArea;
 
-				borderPane = new BorderPane();
-				borderPane.setLeft(previousButton);
-				borderPane.setCenter(frequenciesLabel);
-				borderPane.setRight(nextButton);
+                    borderPane = new BorderPane();
+                    borderPane.setLeft(previousButton);
+                    borderPane.setCenter(frequenciesLabel);
+                    borderPane.setRight(nextButton);
 
-				gridPane.add(borderPane, 1, 0);
-				gridPane.add(selectedArea, 1, 1);
-				break;
+                    gridPane.add(borderPane, 1, 0);
+                    gridPane.add(selectedArea, 1, 1);
+                    break;
 
-			case FREQUENCIES:
-				displayedProperty = DisplayedProperty.PROPERTIES;
-				gridPane.getChildren().remove(borderPane);
-				gridPane.getChildren().remove(selectedArea);
-				selectedArea = benzenoidPropertiesArea;
+                case FREQUENCIES:
+                    displayedProperty = DisplayedProperty.PROPERTIES;
+                    gridPane.getChildren().remove(borderPane);
+                    gridPane.getChildren().remove(selectedArea);
+                    selectedArea = benzenoidPropertiesArea;
 
-				borderPane = new BorderPane();
-				borderPane.setLeft(previousButton);
-				borderPane.setCenter(propertiesLabel);
-				borderPane.setRight(nextButton);
+                    borderPane = new BorderPane();
+                    borderPane.setLeft(previousButton);
+                    borderPane.setCenter(propertiesLabel);
+                    borderPane.setRight(nextButton);
 
-				gridPane.add(borderPane, 1, 0);
-				gridPane.add(selectedArea, 1, 1);
-				break;
+                    gridPane.add(borderPane, 1, 0);
+                    gridPane.add(selectedArea, 1, 1);
+                    break;
 
-			default:
-				// DO_NOTHING
-				break;
+                default:
+                    // DO_NOTHING
+                    break;
 
-			}
-		});
+            }
+        });
 
-		displayTypes = new ArrayList<>();
+        displayTypes = new ArrayList<>();
 
-		benzenoidPanes = new ArrayList<>();
-		selectedBenzenoidPanes = new ArrayList<>();
+        benzenoidPanes = new ArrayList<>();
+        selectedBenzenoidPanes = new ArrayList<>();
 
-		molecules = new ArrayList<>();
-		selectedMolecules = new ArrayList<>();
+        molecules = new ArrayList<>();
+        selectedMolecules = new ArrayList<>();
 
-		refresh();
-	}
+        refresh();
+    }
 
-	public void addBenzenoid(Molecule molecule, DisplayType displayType) {
-		molecules.add(molecule);
-		displayTypes.add(displayType);
-		selectedBenzenoidPanes.clear();
-	}
+    public void addBenzenoid(Molecule molecule, DisplayType displayType) {
+        molecules.add(molecule);
+        displayTypes.add(displayType);
+        selectedBenzenoidPanes.clear();
+    }
 
-	public void addSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
-		selectedBenzenoidPanes.add(benzenoidPane);
-	}
+    public void addSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
+        selectedBenzenoidPanes.add(benzenoidPane);
+    }
 
-	public void removeSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
-		selectedBenzenoidPanes.remove(benzenoidPane);
-	}
+    public void removeSelectedBenzenoidPane(BenzenoidPane benzenoidPane) {
+        selectedBenzenoidPanes.remove(benzenoidPane);
+    }
 
-	public void setDescription(String description) {
-		benzenoidPropertiesArea.setText(description);
-	}
+    public void setDescription(String description) {
+        benzenoidPropertiesArea.setText(description);
+    }
 
-	public String getName() {
-		return this.getText();
-	}
+    public String getName() {
+        return this.getText();
+    }
 
-	public void refresh() {
+    public void refresh() {
 
-		System.out.println("refresh() 2 !");
+        System.out.println("refresh() 2 !");
 
-		gridPane = new GridPane();
+        gridPane = new GridPane();
 
-		gridPane.setPadding(new Insets(20));
-		gridPane.setHgap(25);
-		gridPane.setVgap(15);
+        gridPane.setPadding(new Insets(20));
+        gridPane.setHgap(25);
+        gridPane.setVgap(15);
 
-		ColumnConstraints col1 = new ColumnConstraints();
-		col1.setPercentWidth(85);
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(85);
 
-		ColumnConstraints col2 = new ColumnConstraints();
-		col2.setPercentWidth(15);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(15);
 
-		gridPane.getColumnConstraints().addAll(col1, col2);
+        gridPane.getColumnConstraints().addAll(col1, col2);
 
-		RowConstraints row1 = new RowConstraints();
-		row1.setPercentHeight(5);
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(5);
 
-		RowConstraints row2 = new RowConstraints();
-		row2.setPercentHeight(55);
+        RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight(55);
 
-		RowConstraints row3 = new RowConstraints();
-		row3.setPercentHeight(5);
+        RowConstraints row3 = new RowConstraints();
+        row3.setPercentHeight(5);
 
-		RowConstraints row4 = new RowConstraints();
-		row4.setPercentHeight(35);
+        RowConstraints row4 = new RowConstraints();
+        row4.setPercentHeight(35);
 
-		gridPane.getRowConstraints().addAll(row1, row2, row3, row4);
+        gridPane.getRowConstraints().addAll(row1, row2, row3, row4);
 
-		scrollPane = new ScrollPane();
+        ScrollPane scrollPane = new ScrollPane();
 
-		scrollPane.setFitToHeight(true);
-		scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
 
-		flowPane = new FlowPane();
+        flowPane = new FlowPane();
 
-		flowPane.getChildren().clear();
+        flowPane.getChildren().clear();
 
-		flowPane.setHgap(20);
-		flowPane.setVgap(20);
-		flowPane.setPadding(new Insets(10));
+        flowPane.setHgap(20);
+        flowPane.setVgap(20);
+        flowPane.setPadding(new Insets(10));
 
-		benzenoidPanes.clear();
+        benzenoidPanes.clear();
 
-		BenzenoidCollectionPane collectionPane = this;
+        BenzenoidCollectionPane collectionPane = this;
 
-		final Service<Void> calculateService = new Service<Void>() {
+        final Service<Void> calculateService = new Service<>() {
 
-			@Override
-			protected Task<Void> createTask() {
-				return new Task<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<>() {
 
-					@Override
-					protected Void call() throws Exception {
+                    @Override
+                    protected Void call() {
 
-						int index = 0;
+                        int index = 0;
 
-						for (int i = 0; i < molecules.size(); i++) {
+                        for (int i = 0; i < molecules.size(); i++) {
 
-							Molecule molecule = molecules.get(i);
-							DisplayType displayType = displayTypes.get(i);
+                            Molecule molecule = molecules.get(i);
+                            DisplayType displayType = displayTypes.get(i);
 
-							MoleculeGroup group;
-							String description = molecule.getDescription();
+                            MoleculeGroup group;
+                            String description = molecule.getDescription();
 
-							try {
+                            try {
 
-								switch (displayType) {
-								case RE_LIN: {
-									Aromaticity aromaticity = molecule.getAromaticity();
+                                switch (displayType) {
+                                    case RE_LIN: {
+                                        Aromaticity aromaticity = molecule.getAromaticity();
 
-									double[][] circuits = aromaticity.getLocalCircuits();
+                                        double[][] circuits = aromaticity.getLocalCircuits();
 
-									for (int j = 0; j < circuits.length; j++) {
-										System.out.print("H" + j + " : ");
-										for (int k = 0; k < circuits[j].length; k++) {
-											System.out.print(circuits[j][k] + " ");
-										}
-										System.out.println("");
-									}
+                                        for (int j = 0; j < circuits.length; j++) {
+                                            System.out.print("H" + j + " : ");
+                                            for (int k = 0; k < circuits[j].length; k++) {
+                                                System.out.print(circuits[j][k] + " ");
+                                            }
+                                            System.out.println();
+                                        }
 
-									for (int j = 0; j < molecule.getNbHexagons(); j++) {
-										System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
-									}
+                                        for (int j = 0; j < molecule.getNbHexagons(); j++) {
+                                            System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
+                                        }
 
-									group = new AromaticityGroup(parent, molecule, aromaticity);
-								}
-									break;
+                                        group = new AromaticityGroup(parent, molecule, aromaticity);
+                                    }
+                                    break;
 
-								case RE_LIN_FAN: {
-									Aromaticity aromaticity = LinFanAlgorithm.computeEnergy(molecule);
-									aromaticity.normalize(molecule.getNbKekuleStructures());
+                                    case RE_LIN_FAN: {
+                                        Aromaticity aromaticity = LinFanAlgorithm.computeEnergy(molecule);
+                                        aromaticity.normalize(molecule.getNbKekuleStructures());
 
-									double[][] circuits = aromaticity.getLocalCircuits();
+                                        double[][] circuits = aromaticity.getLocalCircuits();
 
-									for (int j = 0; j < circuits.length; j++) {
-										System.out.print("H" + j + " : ");
-										for (int k = 0; k < circuits[j].length; k++) {
-											System.out.print(circuits[j][k] + " ");
-										}
-										System.out.println("");
-									}
+                                        for (int j = 0; j < circuits.length; j++) {
+                                            System.out.print("H" + j + " : ");
+                                            for (int k = 0; k < circuits[j].length; k++) {
+                                                System.out.print(circuits[j][k] + " ");
+                                            }
+                                            System.out.println();
+                                        }
 
-									for (int j = 0; j < molecule.getNbHexagons(); j++) {
-										System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
-									}
+                                        for (int j = 0; j < molecule.getNbHexagons(); j++) {
+                                            System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
+                                        }
 
-									group = new AromaticityGroup(parent, molecule, aromaticity);
-								}
-									break;
+                                        group = new AromaticityGroup(parent, molecule, aromaticity);
+                                    }
+                                    break;
 
-								case CLAR_COVER:
-									group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
+                                    case CLAR_COVER:
+                                        group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
 
-									break;
+                                        break;
 
-								case KEKULE:
-									int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
+                                    case KEKULE:
+                                        int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
 
-									group = new KekuleStructureGroup(molecule, kekuleStructure);
+                                        group = new KekuleStructureGroup(molecule, kekuleStructure);
 
-									description += "structure " + (index + 1);
+                                        description += "structure " + (index + 1);
 
-									break;
+                                        break;
 
-								case CLAR_COVER_FIXED:
+                                    case CLAR_COVER_FIXED:
 
-									group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(),
-											molecule.getFixedBonds(), molecule.getFixedCircles());
+                                        group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(),
+                                                molecule.getFixedBonds(), molecule.getFixedCircles());
 
-									break;
+                                        break;
 
-								case RBO:
+                                    case RBO:
 
-									group = new RBOGroup(molecule);
+                                        group = new RBOGroup(molecule);
 
-									break;
+                                        break;
 
-								case RADICALAR:
+                                    case RADICALAR:
 
-									group = new RadicalarClarCoverGroup(molecule);
+                                        group = new RadicalarClarCoverGroup(molecule);
 
-									break;
+                                        break;
 
-								case IMS2D1A:
+                                    case IMS2D1A:
 
-									group = new IMS2D1AGroup(molecule);
+                                        group = new IMS2D1AGroup(molecule);
 
-									break;
+                                        break;
 
-								case CLAR_RE:
-									group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
-									break;
+                                    case CLAR_RE:
+                                        group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
+                                        break;
 
-								default:
+                                    default:
 
-									group = new MoleculeGroup(molecule);
+                                        group = new MoleculeGroup(molecule);
 
-									break;
-								}
+                                        break;
+                                }
 
-								BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group,
-										description, molecule.getVerticesSolutions(), index, false);
-								benzenoidPanes.add(benzenoidPane);
+                                BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group,
+                                        description, molecule.getVerticesSolutions(), index, false);
+                                benzenoidPanes.add(benzenoidPane);
 
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
-							index++;
-						}
+                            index++;
+                        }
 
-						return null;
-					}
+                        return null;
+                    }
 
-				};
-			}
-		};
+                };
+            }
+        };
 
-		calculateService.stateProperty().addListener(new ChangeListener<State>() {
+        calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
+            switch (newValue) {
+                case FAILED:
+                case CANCELLED:
+                case SUCCEEDED:
+                    flowPane.getChildren().clear();
+                    for (BenzenoidPane pane : benzenoidPanes) {
+                        flowPane.getChildren().add(pane);
+                    }
+                    break;
 
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+                default:
+                    break;
+            }
 
-				switch (newValue) {
-				case FAILED:
-					flowPane.getChildren().clear();
-					for (BenzenoidPane pane : benzenoidPanes) {
-						flowPane.getChildren().add(pane);
-					}
-					break;
-				case CANCELLED:
-					flowPane.getChildren().clear();
-					for (BenzenoidPane pane : benzenoidPanes) {
-						flowPane.getChildren().add(pane);
-					}
-					break;
-				case SUCCEEDED:
-					flowPane.getChildren().clear();
-					for (BenzenoidPane pane : benzenoidPanes) {
-						flowPane.getChildren().add(pane);
-					}
-					break;
+        });
 
-				default:
-					break;
-				}
+        calculateService.start();
 
-			}
+        gridPane.setPrefWidth(1400);
 
-		});
+        gridPane.setPadding(new Insets(20));
+        gridPane.setHgap(25);
+        gridPane.setVgap(15);
 
-		calculateService.start();
+        gridPane.setPrefWidth(gridPane.getPrefWidth());
 
-		gridPane.setPrefWidth(1400);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
 
-		gridPane.setPadding(new Insets(20));
-		gridPane.setHgap(25);
-		gridPane.setVgap(15);
+        scrollPane.setPrefWidth(1400);
 
-		gridPane.setPrefWidth(gridPane.getPrefWidth());
+        scrollPane.setContent(flowPane);
+        gridPane.add(scrollPane, 0, 0, 1, 4);
 
-		scrollPane.setFitToHeight(true);
-		scrollPane.setFitToWidth(true);
+        // propertiesBox = new HBox(3.0);
+        borderPane = new BorderPane();
+        selectedArea = null;
 
-		scrollPane.setPrefWidth(1400);
+        switch (displayedProperty) {
+            case PROPERTIES:
+                // propertiesBox.getChildren().addAll(previousButton, propertiesLabel,
+                // nextButton);
+                borderPane.setLeft(previousButton);
+                borderPane.setCenter(propertiesLabel);
+                borderPane.setRight(nextButton);
 
-		scrollPane.setContent(flowPane);
-		gridPane.add(scrollPane, 0, 0, 1, 4);
+                selectedArea = benzenoidPropertiesArea;
+                break;
 
-		// propertiesBox = new HBox(3.0);
-		borderPane = new BorderPane();
-		selectedArea = null;
+            case FREQUENCIES:
+                // propertiesBox.getChildren().addAll(previousButton, frequenciesLabel,
+                // nextButton);
+                borderPane.setLeft(previousButton);
+                borderPane.setCenter(frequenciesLabel);
+                borderPane.setRight(nextButton);
 
-		switch (displayedProperty) {
-		case PROPERTIES:
-			// propertiesBox.getChildren().addAll(previousButton, propertiesLabel,
-			// nextButton);
-			borderPane.setLeft(previousButton);
-			borderPane.setCenter(propertiesLabel);
-			borderPane.setRight(nextButton);
+                selectedArea = frequenciesArea;
+                break;
 
-			selectedArea = benzenoidPropertiesArea;
-			break;
+            default:
+                // DO_NOTHING
+                break;
+        }
 
-		case FREQUENCIES:
-			// propertiesBox.getChildren().addAll(previousButton, frequenciesLabel,
-			// nextButton);
-			borderPane.setLeft(previousButton);
-			borderPane.setCenter(frequenciesLabel);
-			borderPane.setRight(nextButton);
+        Label logsLabel = new Label("Logs");
 
-			selectedArea = frequenciesArea;
-			break;
+        Button clearButton = new Button();
 
-		default:
-			// DO_NOTHING
-			break;
-		}
+        clearButton.resize(30, 30);
+        clearButton.setStyle("-fx-background-color: transparent;");
 
-		Label logsLabel = new Label("Logs");
+        Image imageAddButton;
 
-		Button clearButton = new Button();
+        imageAddButton = new Image("/resources/graphics/icon-delete.png");
 
-		clearButton.resize(30, 30);
-		clearButton.setStyle("-fx-background-color: transparent;");
+        ImageView view = new ImageView(imageAddButton);
+        clearButton.setPadding(new Insets(0));
+        clearButton.setGraphic(view);
 
-		Image imageAddButton;
+        clearButton.setOnAction(e -> parent.clearConsoles());
 
-		imageAddButton = new Image("/resources/graphics/icon-delete.png");
+        HBox logBox = new HBox(3.0);
+        logBox.getChildren().addAll(logsLabel, clearButton);
 
-		ImageView view = new ImageView(imageAddButton);
-		clearButton.setPadding(new Insets(0));
-		clearButton.setGraphic(view);
+        logBox.setAlignment(Pos.CENTER);
 
-		clearButton.setOnAction(e -> {
-			parent.clearConsoles();
-		});
+        logsLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
+        logsLabel.setMaxWidth(Double.MAX_VALUE);
+        logsLabel.setAlignment(Pos.CENTER);
 
-		HBox logBox = new HBox(3.0);
-		logBox.getChildren().addAll(logsLabel, clearButton);
+        benzenoidPropertiesArea.setEditable(false);
 
-		logBox.setAlignment(Pos.CENTER);
+        refreshCollectionProperties();
 
-		logsLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-		logsLabel.setMaxWidth(Double.MAX_VALUE);
-		logsLabel.setAlignment(Pos.CENTER);
+        gridPane.add(borderPane, 1, 0);
+        gridPane.add(selectedArea, 1, 1);
 
-		benzenoidPropertiesArea.setEditable(false);
+        gridPane.add(logBox, 1, 2);
+        gridPane.add(console, 1, 3);
 
-		refreshCollectionProperties();
+        GridPane.setFillHeight(benzenoidPropertiesArea, true);
 
-		gridPane.add(borderPane, 1, 0);
-		gridPane.add(selectedArea, 1, 1);
+        this.setContent(gridPane);
+    }
 
-		gridPane.add(logBox, 1, 2);
-		gridPane.add(console, 1, 3);
+    public void refreshCollectionProperties() {
 
-		GridPane.setFillHeight(benzenoidPropertiesArea, true);
+        StringBuilder collectionProperties = new StringBuilder();
+        collectionProperties.append(molecules.size()).append(" benzenoid");
+        if (molecules.size() > 1)
+            collectionProperties.append("s");
 
-		this.setContent(gridPane);
-	}
+        collectionProperties.append(", ").append(selectedBenzenoidPanes.size()).append(" selected benzenoid");
+        if (selectedBenzenoidPanes.size() > 1)
+            collectionProperties.append("s");
 
-	public void refreshCollectionProperties() {
+        int nbClassic = 0;
+        int nbRe = 0;
+        int nbClar = 0;
+        int nbRBO = 0;
 
-		StringBuilder collectionProperties = new StringBuilder();
-		collectionProperties.append(molecules.size() + " benzenoid");
-		if (molecules.size() > 1)
-			collectionProperties.append("s");
+        for (DisplayType type : displayTypes) {
+            switch (type) {
+                case RE_LIN:
+                case RE_LIN_FAN:
+                    nbRe++;
+                    break;
+                case CLAR_COVER:
+                    nbClar++;
+                    break;
+                case RBO:
+                    nbRBO++;
+                    break;
+                default:
+                    nbClassic++;
+                    break;
+            }
+        }
 
-		collectionProperties.append(", " + selectedBenzenoidPanes.size() + " selected benzenoid");
-		if (selectedBenzenoidPanes.size() > 1)
-			collectionProperties.append("s");
+        if (nbClassic > 0) {
+            collectionProperties.append(", ").append(nbClassic).append(" normal view");
+            if (nbClassic > 1)
+                collectionProperties.append("s");
+        }
 
-		int nbClassic = 0;
-		int nbRe = 0;
-		int nbClar = 0;
-		int nbRBO = 0;
+        if (nbRe > 0) {
+            collectionProperties.append(", ").append(nbRe).append(" RE view");
+            if (nbRe > 1)
+                collectionProperties.append("s");
+        }
 
-		for (DisplayType type : displayTypes) {
-			switch (type) {
+        if (nbClar > 0) {
+            collectionProperties.append(", ").append(nbClar).append(" Clar cover view");
+            if (nbClar > 1)
+                collectionProperties.append("s");
+        }
 
-			case RE_LIN:
-				nbRe++;
-				break;
+        if (nbRBO > 0) {
+            collectionProperties.append(", ").append(nbRBO).append(" RBO view");
+            if (nbRBO > 1)
+                collectionProperties.append("s");
+        }
 
-			case RE_LIN_FAN:
-				nbRe++;
-				break;
+        parent.setCollectionPropertiesText(collectionProperties.toString());
+    }
 
-			case CLAR_COVER:
-				nbClar++;
-				break;
+    public BenzenoidCollectionsManagerPane getParent() {
+        return parent;
+    }
 
-			case RBO:
-				nbRBO++;
-				break;
+    public int getIndex() {
+        return index;
+    }
 
-			default:
-				nbClassic++;
-				break;
-			}
-		}
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
-		if (nbClassic > 0) {
-			collectionProperties.append(", " + nbClassic + " normal view");
-			if (nbClassic > 1)
-				collectionProperties.append("s");
-		}
+    public void removeBenzenoidPanes(ArrayList<BenzenoidPane> benzenoidPanesRemove) {
 
-		if (nbRe > 0) {
-			collectionProperties.append(", " + nbRe + " RE view");
-			if (nbRe > 1)
-				collectionProperties.append("s");
-		}
+        System.out.println("removeBenzenoidPanes(): " + selectedBenzenoidPanes.size() + " selections");
 
-		if (nbClar > 0) {
-			collectionProperties.append(", " + nbClar + " Clar cover view");
-			if (nbClar > 1)
-				collectionProperties.append("s");
-		}
+        ArrayList<Molecule> moleculesToRemove = new ArrayList<>();
+        ArrayList<BenzenoidPane> panesToRemove = new ArrayList<>();
+        ArrayList<Integer> displayTypesToRemove = new ArrayList<>();
 
-		if (nbRBO > 0) {
-			collectionProperties.append(", " + nbRBO + " RBO view");
-			if (nbRBO > 1)
-				collectionProperties.append("s");
-		}
+        for (BenzenoidPane pane : benzenoidPanesRemove) {
 
-		parent.setCollectionPropertiesText(collectionProperties.toString());
-	}
+            moleculesToRemove.add(molecules.get(pane.getIndex()));
+            displayTypesToRemove.add(pane.getIndex());
+            panesToRemove.add(pane);
+        }
 
-	public BenzenoidCollectionsManagerPane getParent() {
-		return parent;
-	}
+        for (Integer i : displayTypesToRemove) {
+            displayTypes.set(i, null);
+        }
 
-	public int getIndex() {
-		return index;
-	}
+        for (int i = 0; i < displayTypes.size(); i++) {
+            if (displayTypes.get(i) == null) {
+                displayTypes.remove(i);
+                i--;
+            }
+        }
 
-	public void setIndex(int index) {
-		this.index = index;
-	}
+        for (int i = 0; i < moleculesToRemove.size(); i++) {
 
-	public void removeBenzenoidPanes(ArrayList<BenzenoidPane> benzenoidPanesRemove) {
+            Molecule molecule = moleculesToRemove.get(i);
+            BenzenoidPane pane = panesToRemove.get(i);
 
-		System.out.println("removeBenzenoidPanes(): " + selectedBenzenoidPanes.size() + " selections");
+            molecules.remove(molecule);
+            selectedMolecules.remove(molecule);
+            benzenoidPanes.remove(pane);
+        }
 
-		ArrayList<Molecule> moleculesToRemove = new ArrayList<>();
-		ArrayList<BenzenoidPane> panesToRemove = new ArrayList<>();
-		ArrayList<Integer> displayTypesToRemove = new ArrayList<>();
+        selectedBenzenoidPanes.clear();
 
-		for (BenzenoidPane pane : benzenoidPanesRemove) {
+        refresh();
+    }
 
-			moleculesToRemove.add(molecules.get(pane.getIndex()));
-			displayTypesToRemove.add(pane.getIndex());
-			panesToRemove.add(pane);
-		}
+    public Molecule getMolecule(int index) {
+        return molecules.get(index);
+    }
 
-		for (Integer i : displayTypesToRemove) {
-			displayTypes.set(i, null);
-		}
+    @Override
+    public String toString() {
+        return "BenzenoidSetPane::" + getName();
+    }
 
-		for (int i = 0; i < displayTypes.size(); i++) {
-			if (displayTypes.get(i) == null) {
-				displayTypes.remove(i);
-				i--;
-			}
-		}
+    public void copy() {
+        if (selectedBenzenoidPanes.size() > 0)
+            parent.copy(selectedBenzenoidPanes);
+        else if (hoveringPane != null) {
+            ArrayList<BenzenoidPane> selection = new ArrayList<>();
+            selection.add(hoveringPane);
+            parent.copy(selection);
+        }
+    }
 
-		for (int i = 0; i < moleculesToRemove.size(); i++) {
+    public ArrayList<BenzenoidPane> getSelectedBenzenoidPanes() {
+        return selectedBenzenoidPanes;
+    }
 
-			Molecule molecule = moleculesToRemove.get(i);
-			BenzenoidPane pane = panesToRemove.get(i);
+    public DisplayType getDisplayType(int index) {
+        return displayTypes.get(index);
+    }
 
-			molecules.remove(molecule);
-			selectedMolecules.remove(molecule);
-			benzenoidPanes.remove(pane);
-		}
+    public void setPropertiesArea(String properties) {
+        benzenoidPropertiesArea.setText(properties);
+    }
 
-		selectedBenzenoidPanes.clear();
+    public ArrayList<BenzenoidPane> getBenzenoidPanes() {
+        return benzenoidPanes;
+    }
 
-		refresh();
-	}
+    public BenzenoidPane getHoveringPane() {
+        return hoveringPane;
+    }
 
-	public void removeBenzenoidPane(BenzenoidPane benzenoidPane) {
-		benzenoidPanes.remove(benzenoidPane);
-		selectedBenzenoidPanes.remove(benzenoidPane);
+    public void setHoveringPane(BenzenoidPane hoveringPane) {
+        this.hoveringPane = hoveringPane;
+    }
 
-		System.out.println("molecules.size() = " + molecules.size());
+    public void unselectAll() {
 
-		Molecule molecule = molecules.get(benzenoidPane.getIndex());
-		molecules.remove(benzenoidPane.getIndex());
-		selectedMolecules.remove(molecule);
-		refresh();
-	}
+        for (BenzenoidPane benzenoidPane : benzenoidPanes) {
 
-	public Molecule getMolecule(int index) {
-		return molecules.get(index);
-	}
+            if (benzenoidPane.isSelected())
+                benzenoidPane.unselect();
+        }
+    }
 
-	public BenzenoidPane getBenzenoidPane(int index) {
-		return benzenoidPanes.get(index);
-	}
+    public boolean isLock() {
+        return lock;
+    }
 
-	@Override
-	public String toString() {
-		return "BenzenoidSetPane::" + getName();
-	}
+    public void setLock(boolean lock) {
+        this.lock = lock;
+    }
 
-	public void copy() {
-		if (selectedBenzenoidPanes.size() > 0)
-			parent.copy(selectedBenzenoidPanes);
-		else if (hoveringPane != null) {
-			ArrayList<BenzenoidPane> selection = new ArrayList<>();
-			selection.add(hoveringPane);
-			parent.copy(selection);
-		}
-	}
+    public void refreshColorScales() {
+        for (int i = 0; i < benzenoidPanes.size(); i++) {
+            DisplayType displayType = displayTypes.get(i);
+            BenzenoidPane benzenoidPane = benzenoidPanes.get(i);
 
-	public void paste() {
-		parent.paste();
-	}
+            if (displayType == DisplayType.RE_LIN || displayType == DisplayType.RE_LIN_FAN) {
+                AromaticityGroup aromaticityGroup = (AromaticityGroup) benzenoidPane.getBenzenoidDraw();
+                aromaticityGroup.refreshColors();
+            }
+        }
+    }
 
-	public void move(BenzenoidCollectionPane originPane, BenzenoidCollectionPane destinationPane) {
-		parent.move(originPane, destinationPane);
-	}
-
-	public void resonanceEnergyLin() {
-		parent.resonanceEnergyLin();
-	}
-
-	public void resonanceEnergyLinFan() {
-		parent.resonanceEnergyLinFan();
-	}
-
-	public void clarCover() {
-		parent.clarCover();
-	}
-
-	public void ringBoundOrder() {
-		parent.ringBoundOrder();
-	}
-
-	public void irregularityStatistics() {
-		parent.irregularityStatistics();
-	}
-
-	public ArrayList<BenzenoidPane> getSelectedBenzenoidPanes() {
-		return selectedBenzenoidPanes;
-	}
-
-	public ArrayList<Molecule> getSelectedMolecules() {
-		return selectedMolecules;
-	}
-
-	public void addSelectedMolecule(int index) {
-		selectedMolecules.add(molecules.get(index));
-	}
-
-	public void removeSelectedMolecule(int index) {
-		selectedMolecules.remove(index);
-	}
-
-	public DisplayType getDisplayType(int index) {
-		return displayTypes.get(index);
-	}
-
-	public void setPropertiesArea(String properties) {
-		benzenoidPropertiesArea.setText(properties);
-	}
-
-	public ArrayList<BenzenoidPane> getBenzenoidPanes() {
-		return benzenoidPanes;
-	}
-
-	public BenzenoidPane getHoveringPane() {
-		return hoveringPane;
-	}
-
-	public void setHoveringPane(BenzenoidPane hoveringPane) {
-		this.hoveringPane = hoveringPane;
-	}
-
-	public void unselectAll() {
-
-		for (BenzenoidPane benzenoidPane : benzenoidPanes) {
-
-			if (benzenoidPane.isSelected())
-				benzenoidPane.unselect();
-		}
-	}
-
-	public boolean isLock() {
-		return lock;
-	}
-
-	public void setLock(boolean lock) {
-		this.lock = lock;
-	}
-
-	public void refreshColorScales() {
-		for (int i = 0; i < benzenoidPanes.size(); i++) {
-			DisplayType displayType = displayTypes.get(i);
-			BenzenoidPane benzenoidPane = benzenoidPanes.get(i);
-
-			if (displayType == DisplayType.RE_LIN || displayType == DisplayType.RE_LIN_FAN) {
-				AromaticityGroup aromaticityGroup = (AromaticityGroup) benzenoidPane.getBenzenoidDraw();
-				aromaticityGroup.refreshColors();
-			}
-		}
-	}
-
-	public void setComparator(MoleculeComparator comparator) {
+    public void setComparator(MoleculeComparator comparator) {
 
 //		if (comparator instanceof ResonanceEnergyComparator) {
 //			for (Molecule molecule : molecules)
 //				molecule.getAromaticity();
 //		}
 
-		for (Molecule molecule : molecules)
-			molecule.setComparator(comparator);
-	}
+        for (Molecule molecule : molecules)
+            molecule.setComparator(comparator);
+    }
 
-	public void sort(boolean ascending) {
-		unselectAll();
-		if (ascending)
-			Collections.sort(molecules, Collections.reverseOrder());
-		else
-			Collections.sort(molecules);
-		refresh();
-	}
+    public void sort(boolean ascending) {
+        unselectAll();
+        if (ascending)
+            molecules.sort(Collections.reverseOrder());
+        else
+            Collections.sort(molecules);
+        refresh();
+    }
 
-	public ArrayList<Molecule> getMolecules() {
-		return molecules;
-	}
+    public ArrayList<Molecule> getMolecules() {
+        return molecules;
+    }
 
-	public void export(File directory) {
+    public void export(File directory) {
 
-		int index = 0;
-		for (int i = 0; i < molecules.size(); i++) {
+        int index = 0;
+        for (int i = 0; i < molecules.size(); i++) {
 
-			Molecule molecule = molecules.get(i);
+            Molecule molecule = molecules.get(i);
 
-			String separator;
+            String separator;
 
-			if (Utils.onWindows())
-				separator = "\\";
-			else
-				separator = "/";
+            if (Utils.onWindows())
+                separator = "\\";
+            else
+                separator = "/";
 
-			String filename;
-			if (!benzenoidPanes.get(i).getName().equals(""))
-				filename = benzenoidPanes.get(i).getName().split("\n")[0];
-			else {
-				filename = "unknown_molecule_" + index;
-				index++;
-			}
+            String filename;
+            if (!benzenoidPanes.get(i).getName().equals(""))
+                filename = benzenoidPanes.get(i).getName().split("\n")[0];
+            else {
+                filename = "unknown_molecule_" + index;
+                index++;
+            }
 
-			if (!filename.endsWith(".graph"))
-				filename += ".graph";
+            if (!filename.endsWith(".graph"))
+                filename += ".graph";
 
-			File file = new File(directory.getAbsolutePath() + separator + filename);
-			try {
-				molecule.exportToGraphFile(file);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+            File file = new File(directory.getAbsolutePath() + separator + filename);
+            try {
+                molecule.exportToGraphFile(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	public void refreshRIType(RIType type) {
-		for (BenzenoidPane benzenoidPane : benzenoidPanes) {
-			benzenoidPane.refreshRIType(type);
-		}
-	}
+    public void refreshRIType(RIType type) {
+        for (BenzenoidPane benzenoidPane : benzenoidPanes) {
+            benzenoidPane.refreshRIType(type);
+        }
+    }
 
-	public void setFrequencies(String frequencies) {
-		frequenciesArea.setText(frequencies);
-	}
+    public void setFrequencies(String frequencies) {
+        frequenciesArea.setText(frequencies);
+    }
 
-	public void setEnergies(String energies) {
-		if (energies.contains("-"))
-			System.out.print("");
-		energiesArea.setText(energies);
-	}
+    public void setEnergies(String energies) {
+        if (energies.contains("-"))
+            System.out.print("");
+        energiesArea.setText(energies);
+    }
 
-	public void setIntensities(String intensities) {
-		intensitiesArea.setText(intensities);
-	}
+    public void setIntensities(String intensities) {
+        intensitiesArea.setText(intensities);
+    }
 
-	public Console getConsole() {
-		return console;
-	}
+    public Console getConsole() {
+        return console;
+    }
 }

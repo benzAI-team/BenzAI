@@ -11,16 +11,16 @@ import javafx.scene.layout.GridPane;
 
 public class BenzenoidPane extends GridPane{
 
-	private CatalogPane catalogPane;
+	private final CatalogPane catalogPane;
 	
-	private int nbCrowns;
-	private String solution;
-	private Group benzenoidDraw;
-	private String description;
+	private final int nbCrowns;
+	private final String solution;
+	private final Group benzenoidDraw;
+	private final String description;
 	
-	private boolean isSelected;
+	private final boolean isSelected;
 	
-	private ArrayList<Integer> verticesSolution;
+	private final ArrayList<Integer> verticesSolution;
 	
 	public BenzenoidPane(CatalogPane catalogPane, int nbCrowns, String solution, Group benzenoidDraw, String description, ArrayList<Integer> verticesSolution) {
 		

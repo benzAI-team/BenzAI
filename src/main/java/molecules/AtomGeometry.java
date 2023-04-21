@@ -4,8 +4,8 @@ import utils.Triplet;
 
 public class AtomGeometry {
 
-	private String label;
-	private Triplet<Double, Double, Double> geometry;
+	private final String label;
+	private final Triplet<Double, Double, Double> geometry;
 
 	public AtomGeometry(String label, double x, double y, double z) {
 		this.label = label;

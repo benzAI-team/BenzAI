@@ -44,7 +44,7 @@ import view.groups.MoleculeGroup;
 
 public class CatalogPane extends GridPane {
 
-	private BenzenoidApplication app;
+	private final BenzenoidApplication app;
 
 	private ArrayList<BenzenoidCriterion> criterions;
 
@@ -53,7 +53,7 @@ public class CatalogPane extends GridPane {
 
 	private FlowPane flowPane;
 
-	private ScrollPane scrollPane = new ScrollPane();
+	private final ScrollPane scrollPane = new ScrollPane();
 
 	ArrayList<Molecule> molecules;
 
@@ -397,7 +397,7 @@ public class CatalogPane extends GridPane {
 
 						MoleculeGroup benzenoidDraw = new MoleculeGroup(molecule);
 
-						String description = molecule.toString() + "(" + content.getIdMolecule() + ")\n"
+						String description = molecule + "(" + content.getIdMolecule() + ")\n"
 								+ content.getNbHexagons() + " hexagons\n" + content.getNbCarbons() + " carbons\n"
 								+ content.getNbHydrogens() + " hydrogens\n" + "XI = " + content.getIrregularity();
 
@@ -523,7 +523,7 @@ public class CatalogPane extends GridPane {
 						}
 					}
 
-					System.out.println("");
+					System.out.println();
 
 					if (ok) {
 
@@ -533,7 +533,7 @@ public class CatalogPane extends GridPane {
 							System.out.println(PAHClass.getTitle());
 							for (String name : PAHClass.getMoleculesNames())
 								System.out.println(name);
-							System.out.println("");
+							System.out.println();
 						}
 
 						ArrayList<ResultSpectrums> results = new ArrayList<ResultSpectrums>();
@@ -586,7 +586,7 @@ public class CatalogPane extends GridPane {
 								e1.printStackTrace();
 							}
 
-							System.out.println("");
+							System.out.println();
 
 						}
 
@@ -733,7 +733,7 @@ public class CatalogPane extends GridPane {
 		double factor = 1.380649;
 		int exponent = -23;
 
-		parameter.setKb(factor * ((double) Math.pow(10, exponent)));
+		parameter.setKb(factor * Math.pow(10, exponent));
 
 		return parameter;
 	}

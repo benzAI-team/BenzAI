@@ -2,8 +2,8 @@ package utils;
 
 public class HexagonAromaticity implements Comparable<HexagonAromaticity>{
 
-	private int index;
-	private Double aromaticity;
+	private final int index;
+	private final Double aromaticity;
 	
 	public HexagonAromaticity(int index, Double aromaticity) {
 		super();

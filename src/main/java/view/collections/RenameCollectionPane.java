@@ -14,7 +14,7 @@ import utils.Utils;
 
 public class RenameCollectionPane extends GridPane {
 
-	private BenzenoidCollectionsManagerPane parent;
+	private final BenzenoidCollectionsManagerPane parent;
 
 	private TextField fieldCollectionName;
 

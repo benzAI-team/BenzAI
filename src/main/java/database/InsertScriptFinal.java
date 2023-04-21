@@ -155,15 +155,13 @@ public class InsertScriptFinal {
 		reader.close();
 		
 		String picture = PictureConverter.pngToString(mapFile.getAbsolutePath());
+
+        String insert = "INSERT INTO ims2d_1a (idIms2d1a, idBenzenoid, vectorX, vectorY, nbPointsX, nbPointsY, origin, points, picture) VALUES (\n" +
+                idIMS2D1A + ", " + idBenzenoid + ", " + quote(v1Str) + ", " + quote(v2Str) + ", " + nbPointsX + ", " + nbPointsY + ", " + quote(originStr) + ", " +
+                quote(pointsStr.toString()) + ", " + quote(picture) +
+                ");";
 		
-		StringBuilder insert = new StringBuilder();
-		
-		insert.append("INSERT INTO ims2d_1a (idIms2d1a, idBenzenoid, vectorX, vectorY, nbPointsX, nbPointsY, origin, points, picture) VALUES (\n");
-		insert.append(idIMS2D1A + ", " + idBenzenoid + ", " + quote(v1Str) + ", " + quote(v2Str) + ", " + nbPointsX + ", " + nbPointsY + ", " + quote(originStr) + ", " + 
-		quote(pointsStr.toString()) + ", " + quote(picture));
-		insert.append(");");
-		
-		out.write(insert.toString());
+		out.write(insert);
 		
 		idIMS2D1A ++;
 	}
@@ -178,9 +176,9 @@ public class InsertScriptFinal {
 		Irregularity irreg = Utils.computeParameterOfIrregularity(molecule);
 		
 		if (irreg == null)
-			irregBD = new BigDecimal(-1.0).setScale(3, RoundingMode.HALF_UP);
+			irregBD = BigDecimal.valueOf(-1.0).setScale(3, RoundingMode.HALF_UP);
 		else
-			irregBD = new BigDecimal(irreg.getXI()).setScale(3, RoundingMode.HALF_UP);
+			irregBD = BigDecimal.valueOf(irreg.getXI()).setScale(3, RoundingMode.HALF_UP);
 		
 		int nbHexagons = molecule.getNbHexagons();
 		int nbCarbons = molecule.getNbNodes();
@@ -199,11 +197,10 @@ public class InsertScriptFinal {
 		String geometry = getGeometry(comFile);
 		
 		ArrayList<String> names = molecule.getNames();
-		
-		StringBuilder insertBenzenoid = new StringBuilder();
-		insertBenzenoid.append("INSERT INTO benzenoid (idBenzenoid, nbHexagons, nbCarbons, nbHydrogens, inchie, irregularity, graphFile, nics, geometry) VALUES (\n");
-		insertBenzenoid.append(idBenzenoid + ", " + nbHexagons + ", " + nbCarbons + ", " + nbHydrogens + ", " + quote(inchie) + ", " + irregularity + ", ");
-		insertBenzenoid.append(quote(graphFileContent) + ", " + quote(nics) + ", " + quote(geometry) + "\n);");
+
+        String insertBenzenoid = "INSERT INTO benzenoid (idBenzenoid, nbHexagons, nbCarbons, nbHydrogens, inchie, irregularity, graphFile, nics, geometry) VALUES (\n" +
+                idBenzenoid + ", " + nbHexagons + ", " + nbCarbons + ", " + nbHydrogens + ", " + quote(inchie) + ", " + irregularity + ", " +
+                quote(graphFileContent) + ", " + quote(nics) + ", " + quote(geometry) + "\n);";
 		
 		StringBuilder insertNames = new StringBuilder();
 		
@@ -212,8 +209,8 @@ public class InsertScriptFinal {
 			idName ++;
 		}
 		
-		out.write(insertBenzenoid.toString() + "\n");
-		out.write(insertNames.toString() + "\n");
+		out.write(insertBenzenoid + "\n");
+		out.write(insertNames + "\n");
 	}
 	
 	//fill ir_spectra table
@@ -233,14 +230,12 @@ public class InsertScriptFinal {
 		double zpe = log.getZeroPointEnergy();
 		
 		double finalEnergy = log.getFinalEnergy().get(log.getFinalEnergy().size() - 1);
+
+        String insert = "INSERT INTO ir_spectra (idSpectra, idBenzenoid, frequencies, intensities, zeroPointEnergy, finalEnergy) VALUES (\n" +
+                idSpectra + ", " + idBenzenoid + ", " + quote(frequencies.toString()) + ", " + quote(intensities.toString()) + ", " + zpe + ", " + finalEnergy +
+                ");\n";
 		
-		StringBuilder insert = new StringBuilder();
-		
-		insert.append("INSERT INTO ir_spectra (idSpectra, idBenzenoid, frequencies, intensities, zeroPointEnergy, finalEnergy) VALUES (\n");
-		insert.append(idSpectra + ", " + idBenzenoid + ", " + quote(frequencies.toString()) + ", " + quote(intensities.toString()) + ", " + zpe + ", " + finalEnergy);
-		insert.append(");\n");
-		
-		out.write(insert.toString() + "\n");
+		out.write(insert + "\n");
 		
 		idSpectra ++;
 	}

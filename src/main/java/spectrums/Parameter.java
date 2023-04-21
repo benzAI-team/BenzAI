@@ -92,19 +92,17 @@ public class Parameter {
 	@Override
 	public String toString() {
 
-		StringBuilder builder = new StringBuilder();
+        String builder = "VMin" + " " + VMin + "\n" +
+                "VMax" + " " + VMax + "\n" +
+                "step" + " " + step + "\n" +
+                "FWHM" + " " + FWHM + "\n" +
+                "ZT" + " " + ZT + "\n" +
+                "gi" + " " + gi + "\n" +
+                "N" + " " + N + "\n" +
+                "T" + " " + T + "\n" +
+                "Kb" + " " + kb + "\n";
 
-		builder.append("VMin" + " " + VMin + "\n");
-		builder.append("VMax" + " " + VMax + "\n");
-		builder.append("step" + " " + step + "\n");
-		builder.append("FWHM" + " " + FWHM + "\n");
-		builder.append("ZT" + " " + ZT + "\n");
-		builder.append("gi" + " " + gi + "\n");
-		builder.append("N" + " " + N + "\n");
-		builder.append("T" + " " + T + "\n");
-		builder.append("Kb" + " " + kb + "\n");
-
-		return builder.toString();
+		return builder;
 	}
 
 	public static Parameter defaultParameter() {

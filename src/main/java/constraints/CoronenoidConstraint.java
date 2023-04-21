@@ -38,7 +38,7 @@ public class CoronenoidConstraint extends BenzAIConstraint {
 					nbHexagons[i]);
 			Constraint diameterCstr = generalModel.getProblem().arithm(diameter, "=", diameters[i]);
 
-			constraints[i] = generalModel.getProblem().and(new Constraint[] { hexagonsCstr, diameterCstr });
+			constraints[i] = generalModel.getProblem().and(hexagonsCstr, diameterCstr);
 		}
 
 		generalModel.getProblem().or(constraints).post();

@@ -14,10 +14,10 @@ import javafx.scene.layout.HBox;
 
 public class SubHelpHBox extends HBox {
 
-	private HelpPane parent;
+	private final HelpPane parent;
 
-	private String name;
-	private String filename;
+	private final String name;
+	private final String filename;
 	private String text;
 
 	public SubHelpHBox(String name, String filename, HelpPane parent) {

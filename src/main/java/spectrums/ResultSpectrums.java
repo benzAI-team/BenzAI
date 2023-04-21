@@ -8,8 +8,8 @@ import utils.Couple;
 
 public class ResultSpectrums {
 
-	private Parameter parameter;
-	private PAHClass PAHClass;
+	private final Parameter parameter;
+	private final PAHClass PAHClass;
 
 	private HashMap<String, Double> irregularities;
 	private HashMap<String, Double> finalEnergies;

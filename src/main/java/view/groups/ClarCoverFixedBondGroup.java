@@ -9,9 +9,9 @@ import utils.Couple;
 
 public class ClarCoverFixedBondGroup extends MoleculeGroup {
 
-	private ClarCoverSolution clarCoverSolution;
-	private int[][] bonds;
-	private int[] circles;
+	private final ClarCoverSolution clarCoverSolution;
+	private final int[][] bonds;
+	private final int[] circles;
 
 	public ClarCoverFixedBondGroup(Molecule molecule, ClarCoverSolution clarCoverSolution, int[][] bonds,
 			int[] circles) {

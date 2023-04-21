@@ -12,10 +12,10 @@ import utils.Utils;
 
 public class GraphFileBuilder {
 
-	private ArrayList<Integer> solution;
-	private String outputFilename;
+	private final ArrayList<Integer> solution;
+	private final String outputFilename;
 	
-	private int nbCrowns;
+	private final int nbCrowns;
 	private int diameter;
 	private int [][] coordsMatrix;
 	

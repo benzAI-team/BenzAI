@@ -13,7 +13,7 @@ import view.database.boxes.HBoxNbHydrogensDatabaseCriterion;
 public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 
 	private int index;
-	private DatabasePane parent;
+	private final DatabasePane parent;
 
 	public ChoiceBoxDatabaseCriterion(int index, DatabasePane parent) {
 		super();

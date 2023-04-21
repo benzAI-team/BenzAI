@@ -22,7 +22,7 @@ import generator.patterns.Pattern;
 
 public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
-	private ArrayList<Pattern> patterns;
+	private final ArrayList<Pattern> patterns;
 	private int[][] neighborGraph;
 
 	private ArrayList<ArrayList<Integer>> allAbsentHexagons;
@@ -43,9 +43,9 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
 	private ArrayList<Integer[][]> matricesTables;
 
-	private VariableStrategy variableStrategy;
-	private ValueStrategy valueStrategy;
-	private OrderStrategy orderStrategy;
+	private final VariableStrategy variableStrategy;
+	private final ValueStrategy valueStrategy;
+	private final OrderStrategy orderStrategy;
 	
 	public MultiplePatterns2Constraint(ArrayList<Pattern> patterns, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		this.patterns = patterns;
@@ -91,8 +91,10 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 		for (int i = 0; i < generalModel.getNeighborGraphOutterHexagons().size(); i++) {
 			boolean hasNeighbor = false;
 			for (int j = 0; j < 6; j++)
-				if (generalModel.getNeighborGraphOutterHexagons().get(i).get(j) != -1)
+				if (generalModel.getNeighborGraphOutterHexagons().get(i).get(j) != -1) {
 					hasNeighbor = true;
+					break;
+				}
 
 			if (hasNeighbor)
 				nbTotalHexagons++;
@@ -523,9 +525,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 					int[] tuple = new int[8];
 					tuple[0] = i;
 
-					for (int j = 0; j < 6; j++) {
-						tuple[j + 1] = newNeighborGraph[i][j];
-					}
+					System.arraycopy(newNeighborGraph[i], 0, tuple, 1, 6);
 
 					tuple[7] = 0;
 
@@ -568,9 +568,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 					int[] tuple = new int[8];
 					tuple[0] = i;
 
-					for (int j = 0; j < 6; j++) {
-						tuple[j + 1] = newNeighborGraph[i][j];
-					}
+					System.arraycopy(newNeighborGraph[i], 0, tuple, 1, 6);
 
 					tuple[7] = 1;
 
@@ -613,7 +611,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
 		if (table.nbTuples() == 0) {
 			for (int i = 0; i < pattern.getNbNodes(); i++)
-				table.add(new int[] { i, 0 });
+				table.add(i, 0);
 		}
 
 		return table;
@@ -665,7 +663,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 		
 		if (table.nbTuples() == 0) {
 			for (int i = 0 ; i < pattern.getNbNodes() ; i++)
-				table.add(new int [] {i, 0});
+				table.add(i, 0);
 		}
 		
 		return table;
@@ -708,7 +706,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
 		if (table.nbTuples() == 0) {
 			for (int i = 0; i < pattern.getNbNodes(); i++)
-				table.add(new int[] { i, 0 });
+				table.add(i, 0);
 		}
 
 		return table;

@@ -2,7 +2,7 @@ package generator;
 
 public class GeneratorRun {
 
-	private GeneralModel model;
+	private final GeneralModel model;
 	private boolean isStopped;
 	private boolean isPaused;
 

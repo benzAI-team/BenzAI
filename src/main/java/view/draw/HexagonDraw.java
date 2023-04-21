@@ -10,10 +10,10 @@ public class HexagonDraw extends Polygon {
 
 	private final Color[] COLORS = new Color[] { Color.WHITE, Color.DARKGRAY };
 
-	private MoleculeGroup group;
+	private final MoleculeGroup group;
 
-	private Couple<Integer, Integer> coords;
-	private ArrayList<Double> points;
+	private final Couple<Integer, Integer> coords;
+	private final ArrayList<Double> points;
 
 	private int label;
 	private boolean isCenter;

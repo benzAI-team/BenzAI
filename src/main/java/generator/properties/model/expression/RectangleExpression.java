@@ -1,8 +1,10 @@
 package generator.properties.model.expression;
 
 public class RectangleExpression extends PropertyExpression {
-	private int height, width;
-	private String heightOperator, widthOperator;
+	private final int height;
+    private final int width;
+	private final String heightOperator;
+    private final String widthOperator;
 
 	
 	public RectangleExpression(String id, String heightOperator, int height, String widthOperator, int width) {

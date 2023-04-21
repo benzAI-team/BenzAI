@@ -9,21 +9,23 @@ import java.util.regex.Pattern;
 import utils.RelativeMatrix;
 
 public class UndirPonderateGraph {
-private int nbNodes, nbEdges, nbHexagons;
+private final int nbNodes;
+    private final int nbEdges;
+    private final int nbHexagons;
 	
-	private RelativeMatrix coords;
+	private final RelativeMatrix coords;
 	
-	private int maxIndex;
+	private final int maxIndex;
 	
-	private ArrayList<ArrayList<Integer>> edgeMatrix;
-	private int [][] adjacencyMatrix;
+	private final ArrayList<ArrayList<Integer>> edgeMatrix;
+	private final int [][] adjacencyMatrix;
 	
-	private ArrayList<String> edgesString;
-	private ArrayList<String> hexagonsString;
+	private final ArrayList<String> edgesString;
+	private final ArrayList<String> hexagonsString;
 	
-	private Node [] nodesRefs;
+	private final Node [] nodesRefs;
 	
-	private int [][] hexagons;
+	private final int [][] hexagons;
 	
 	private int [][] dualGraph;
 	

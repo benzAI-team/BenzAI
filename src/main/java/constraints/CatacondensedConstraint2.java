@@ -31,7 +31,7 @@ public class CatacondensedConstraint2 extends BenzAIConstraint {
 			getGeneralModel().getProblem().getClauseConstraint().addClause(triangle, valClause);
 		}
 		
-		System.out.println("");
+		System.out.println();
 	}
 
 	@Override

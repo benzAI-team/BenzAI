@@ -79,7 +79,7 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {
 			int size = dimensionChoiceBox.getValue().equals("Unspecified") ? -1 : Integer.decode(dimensionTextField.getText());
-			((ModelProperty) modelPropertySet.getById("rhombus")).addExpression(new BinaryNumericalExpression("rhombus", dimensionChoiceBox.getValue(), size));
+			modelPropertySet.getById("rhombus").addExpression(new BinaryNumericalExpression("rhombus", dimensionChoiceBox.getValue(), size));
 		}
 	}
 

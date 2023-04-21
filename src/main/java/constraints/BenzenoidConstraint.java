@@ -12,7 +12,7 @@ import molecules.Node;
 
 public class BenzenoidConstraint extends BenzAIConstraint {
 
-	private Molecule molecule;
+	private final Molecule molecule;
 
 	public BenzenoidConstraint(Molecule molecule) {
 		this.molecule = molecule;

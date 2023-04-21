@@ -4,15 +4,15 @@ import java.util.Map;
 
 public class NICSEntry {
 
-	private Long id;
-	private String name;
-	private int nbHexagons;
-	private int nbCarbons;
-	private int nbHydrogens;
-	private double irregularity;
+	private final Long id;
+	private final String name;
+	private final int nbHexagons;
+	private final int nbCarbons;
+	private final int nbHydrogens;
+	private final double irregularity;
 
-	private int idHexagon;
-	private double value;
+	private final int idHexagon;
+	private final double value;
 
 	public NICSEntry(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity,
 			int idHexagon, double value) {

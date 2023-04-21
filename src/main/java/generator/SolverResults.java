@@ -17,10 +17,10 @@ public class SolverResults {
 
 	private Solver solver;
 
-	private ArrayList<BenzenoidSolution> solutions = new ArrayList<BenzenoidSolution>();
-	private ArrayList<String> descriptions = new ArrayList<String>();
-	private ArrayList<ArrayList<Integer>> verticesSolutions = new ArrayList<ArrayList<Integer>>();
-	private ArrayList<Integer> nbCrowns = new ArrayList<Integer>();
+	private final ArrayList<BenzenoidSolution> solutions = new ArrayList<BenzenoidSolution>();
+	private final ArrayList<String> descriptions = new ArrayList<String>();
+	private final ArrayList<ArrayList<Integer>> verticesSolutions = new ArrayList<ArrayList<Integer>>();
+	private final ArrayList<Integer> nbCrowns = new ArrayList<Integer>();
 	private ArrayList<Molecule> molecules = new ArrayList<Molecule>();
 	private int[] hexagonsCorrespondances;
 	

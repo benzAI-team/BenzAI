@@ -2,9 +2,9 @@ package database.models;
 
 public class IMS2D1APoint {
 
-	private double x;
-	private double y;
-	private double value;
+	private final double x;
+	private final double y;
+	private final double value;
 	
 	public IMS2D1APoint(double x, double y, double value) {
 

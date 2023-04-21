@@ -8,7 +8,7 @@ import generator.properties.model.expression.PropertyExpression;
 public class TimeLimitSpecifier implements SolverSpecifier {
 	@Override
 	public void apply(Solver solver, PropertyExpression propertyExpression) {
-		long limit = (long)((BinaryNumericalExpression)propertyExpression).getValue();
+		long limit = ((BinaryNumericalExpression)propertyExpression).getValue();
 		solver.limitTime(limit);
 	}
 

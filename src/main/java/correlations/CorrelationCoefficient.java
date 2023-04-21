@@ -37,7 +37,7 @@ public class CorrelationCoefficient {
 
 		 // use formula for calculating correlation 
 		 // coefficient.
-		 double corr = (double)(n * sum_XY - sum_X * sum_Y) / (double)(Math.sqrt((n * squareSum_X - sum_X * sum_X) * (n * squareSum_Y - sum_Y * sum_Y)));
+		 double corr = (n * sum_XY - sum_X * sum_Y) / Math.sqrt((n * squareSum_X - sum_X * sum_X) * (n * squareSum_Y - sum_Y * sum_Y));
 		 return Math.abs(corr);
 	 }
 	 
@@ -154,9 +154,11 @@ public class CorrelationCoefficient {
 			 File [] value = entry.getValue();
 			    
 			 boolean ok = true;
-			 for (int i = 0 ; i < value.length ; i++) 
-				 if (value[i] == null)
-					 ok = false;
+			 for (int i = 0 ; i < value.length ; i++)
+                 if (value[i] == null) {
+                     ok = false;
+                     break;
+                 }
 			 
 			 if (ok) {
 			 

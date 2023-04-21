@@ -34,8 +34,8 @@ public class DrawBenzenoidPane extends BorderPane {
 		GRAPH, CML, COM
 	}
 
-	private BenzenoidApplication application;
-	private BenzenoidCollectionsManagerPane collectionsPane;
+	private final BenzenoidApplication application;
+	private final BenzenoidCollectionsManagerPane collectionsPane;
 	
 	private MenuBar menuBar;
 	private HBox buttonBar;
@@ -255,8 +255,10 @@ public class DrawBenzenoidPane extends BorderPane {
 			isEmbedded = true;
 
 			for (Couple<Integer, Integer> coord : coords) {
-				if (coord.getX() >= nbCrowns || coord.getY() >= nbCrowns)
+				if (coord.getX() >= nbCrowns || coord.getY() >= nbCrowns) {
 					isEmbedded = false;
+					break;
+				}
 			}
 
 			if (isEmbedded)

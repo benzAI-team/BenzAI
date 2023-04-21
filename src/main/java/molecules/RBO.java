@@ -2,9 +2,9 @@ package molecules;
 
 public class RBO {
 
-	private Molecule molecule;
-	private double [][] statistics;
-	private double [] RBO;
+	private final Molecule molecule;
+	private final double [][] statistics;
+	private final double [] RBO;
 	
 	public RBO(Molecule molecule, double[][] statistics, double[] rBO) {
 		this.molecule = molecule;

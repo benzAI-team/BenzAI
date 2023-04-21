@@ -34,12 +34,12 @@ import view.groups.AromaticityGroup;
 
 public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPane> {
 
-	private BenzenoidCollectionPane benzenoidSetPane;
+	private final BenzenoidCollectionPane benzenoidSetPane;
 
 	@SuppressWarnings("unused")
-	private String solution;
+	private final String solution;
 
-	private Group benzenoidDraw;
+	private final Group benzenoidDraw;
 	private String name;
 
 	private String description;
@@ -52,9 +52,9 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 	private boolean isSelected;
 
-	private ArrayList<Integer> verticesSolution;
+	private final ArrayList<Integer> verticesSolution;
 
-	private boolean isDrawMolecule;
+	private final boolean isDrawMolecule;
 
 	private BenzenoidSolution benzenoidSolution;
 	private int[] hexagonsCorrespondances;
@@ -308,23 +308,23 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			}
 
 			if (molecule.getNbKekuleStructures() > 1.0)
-				builder.append(new String(new String(nbKekuleStructures + " Kekulé structures").getBytes(),
+				builder.append(new String((nbKekuleStructures + " Kekulé structures").getBytes(),
 						StandardCharsets.UTF_8) + "\n");
 			else
-				builder.append(new String(new String(nbKekuleStructures + " Kekulé structure").getBytes(),
+				builder.append(new String((nbKekuleStructures + " Kekulé structure").getBytes(),
 						StandardCharsets.UTF_8) + "\n");
 
 			Irregularity irregularity = molecule.getIrregularity();
 
 			if (irregularity != null)
-				builder.append(irregularity.toString() + "\n");
+				builder.append(irregularity + "\n");
 			else
 				builder.append("XI = UNKNOWN");
 
 			if (molecule.isAromaticitySet()) {
 				Aromaticity aromaticity = molecule.getAromaticity();
 				for (int i = 0; i < aromaticity.getLocalAromaticity().length; i++) {
-					BigDecimal bd = new BigDecimal(aromaticity.getLocalAromaticity()[i]).setScale(2,
+					BigDecimal bd = BigDecimal.valueOf(aromaticity.getLocalAromaticity()[i]).setScale(2,
 							RoundingMode.HALF_UP);
 					builder.append("E(H_" + i + ")\t" + bd.doubleValue() + "\n");
 				}

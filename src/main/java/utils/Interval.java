@@ -4,11 +4,16 @@ import molecules.Node;
 
 public class Interval implements Comparable<Interval>{
 
-	private Node u1, v1, u2, v2;
+	private final Node u1;
+    private final Node v1;
+    private final Node u2;
+    private final Node v2;
 	
-	private int x1, x2;
-	private int y1, y2;
-	private int size;
+	private final int x1;
+    private final int x2;
+	private final int y1;
+    private final int y2;
+	private final int size;
 	
 	public Interval(Node u1, Node v1, Node u2, Node v2) {
 		this.u1 = u1;

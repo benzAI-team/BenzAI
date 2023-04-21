@@ -12,7 +12,7 @@ import molecules.Molecule;
 
 public class IMS2D1AGroup extends MoleculeGroup {
 
-	private String pictureData;
+	private final String pictureData;
 
 	public IMS2D1AGroup(Molecule molecule) {
 		super(molecule);

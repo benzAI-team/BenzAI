@@ -22,7 +22,7 @@ public class CircuitModel extends Model {
 	 * Benzenoid's attributes
 	 */
 
-	private SubGraph subGraph;
+	private final SubGraph subGraph;
 
 	private int[] firstVertices;
 	private int[] secondVertices;
@@ -34,7 +34,7 @@ public class CircuitModel extends Model {
 	 * Model's attributes
 	 */
 
-	private String name;
+	private final String name;
 
 	private Solver solver;
 	private UndirectedGraphVar graphVariable;

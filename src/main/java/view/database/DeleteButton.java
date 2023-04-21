@@ -9,7 +9,7 @@ import view.database.boxes.HBoxDatabaseCriterion;
 
 public class DeleteButton extends Button {
 
-	private HBoxDatabaseCriterion parent;
+	private final HBoxDatabaseCriterion parent;
 
 	public DeleteButton(HBoxDatabaseCriterion parent) {
 		super();

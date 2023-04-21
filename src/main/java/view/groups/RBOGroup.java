@@ -16,7 +16,7 @@ public class RBOGroup extends MoleculeGroup {
 
 	@SuppressWarnings("unused")
 	private BenzenoidCollectionsManagerPane pane;
-	private RBO RBO;
+	private final RBO RBO;
 
 	private Color[] palette;
 
@@ -36,7 +36,7 @@ public class RBOGroup extends MoleculeGroup {
 			
 			
 			Hexagon2 hexagon = hexagons[i];
-			BigDecimal bd = new BigDecimal(RBO.getRBO()[i]).setScale(2, RoundingMode.HALF_UP);
+			BigDecimal bd = BigDecimal.valueOf(RBO.getRBO()[i]).setScale(2, RoundingMode.HALF_UP);
 
 			Text text = new Text(Double.toString(bd.doubleValue()));
 			text.setX(centersCoords[i].getX() + xShift - 15.0);
@@ -60,7 +60,7 @@ public class RBOGroup extends MoleculeGroup {
 		RBOResult rboResult = new RBOResult();
 
 		for (int i = 0; i < RBO.getRBO().length; i++) {
-			BigDecimal bd = new BigDecimal(RBO.getRBO()[i]).setScale(2, RoundingMode.HALF_UP);
+			BigDecimal bd = BigDecimal.valueOf(RBO.getRBO()[i]).setScale(2, RoundingMode.HALF_UP);
 			rboResult.add(bd.doubleValue(), i);
 		}
 

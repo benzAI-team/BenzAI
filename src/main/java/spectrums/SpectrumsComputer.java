@@ -71,10 +71,10 @@ public class SpectrumsComputer {
 
 		double Vi = result.getFrequency(i);
 		double Ii = result.getIntensity(i);
-		double alpha = 1.0 / (double) (2.0 * FWHM * FWHM);
+		double alpha = 1.0 / (2.0 * FWHM * FWHM);
 		// double alpha = 1.0 / (double)(2.0 * FWHM);
 
-		double g = Ii * Math.exp((-1.0 * alpha) * (((double) V - (double) Vi) * ((double) V - (double) Vi)));
+		double g = Ii * Math.exp((-1.0 * alpha) * (((double) V - Vi) * ((double) V - Vi)));
 
 		return g;
 	}
@@ -385,7 +385,7 @@ public class SpectrumsComputer {
 		double factor = Double.parseDouble(splittedKb.split(" ")[0]);
 		int exponent = Integer.parseInt(splittedKb.split(" ")[1]);
 
-		parameter.setKb(factor * ((double) Math.pow(10, exponent)));
+		parameter.setKb(factor * Math.pow(10, exponent));
 
 		return parameter;
 	}
@@ -483,15 +483,15 @@ public class SpectrumsComputer {
 	public static void displayUsage() {
 
 		System.out.println("# Computation of optical spectrums");
-		System.out.println("");
+		System.out.println();
 		System.out.println("# Compute the optical spectrums of a given class of PAH");
-		System.out.println("");
+		System.out.println();
 		System.out.println("# USAGE: java -jar SpectrumsComputer.jar ${inputFileName} ${parametersFileName}");
-		System.out.println("");
+		System.out.println();
 		System.out.println("## ${inputFileName} must contains one .log file per line");
 		System.out.println(
 				"## ${parametersFileName} must contains all the parameters required by the computation (you can use ls *.log > ${parametersFilename} to generate it)");
-		System.out.println("");
+		System.out.println();
 		System.out.println("# Syntax of ${parametersFileName} : ");
 		System.out.println("#\t VMin = ${VMin}");
 		System.out.println("#\t VMax = ${VMax}");
@@ -502,7 +502,7 @@ public class SpectrumsComputer {
 		System.out.println("#\t N = ${N}");
 		System.out.println("#\t T = ${T}");
 		System.out.println("#\t kb = ${factor} ${exponent} => ${factor} * 10 ^ ${exponent}");
-		System.out.println("");
+		System.out.println();
 		System.out.println("# outputs : ");
 		System.out.println("#\t spectrums -> ./spectres.txt");
 		System.out.println("#\t final results -> ./results.txt");

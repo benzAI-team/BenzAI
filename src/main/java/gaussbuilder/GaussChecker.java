@@ -179,13 +179,8 @@ public class GaussChecker {
 		int nbCarbonsGot = geometry.getCarbons().length;
 		boolean nbCarbons;
 
-		
-		if (nbCarbonsExpected == nbCarbonsGot) {
-			nbCarbons = true;
-		}
-		else {
-			nbCarbons = false;
-		}
+
+        nbCarbons = nbCarbonsExpected == nbCarbonsGot;
 		
 		/*
 		 * Nb hydrogens
@@ -195,11 +190,8 @@ public class GaussChecker {
 		int nbHydrogensGot = geometry.getHydrogens().size();
 		boolean nbHydrogens;
 
-		
-		if (nbHydrogensExpected == nbHydrogensGot)
-			nbHydrogens = true;
-		else
-			nbHydrogens = false;
+
+        nbHydrogens = nbHydrogensExpected == nbHydrogensGot;
 		
 		
 		/*
@@ -209,12 +201,9 @@ public class GaussChecker {
 		int nbCyclesExpected = molecule.getNbHexagons();
 		int nbCyclesGot = getCycles(geometry.getCarbons()).size();
 		boolean nbCycles;
-		
-		
-		if (nbCyclesExpected == nbCyclesGot)
-			nbCycles = true;
-		else
-			nbCycles = false;
+
+
+        nbCycles = nbCyclesExpected == nbCyclesGot;
 		
 		
 		
@@ -242,7 +231,7 @@ public class GaussChecker {
 		else
 			System.out.println("[ERROR]");
 		
-		System.out.println("");
+		System.out.println();
 	}
 	
 }

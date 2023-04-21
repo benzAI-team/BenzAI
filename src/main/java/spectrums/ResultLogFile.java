@@ -5,12 +5,12 @@ import java.util.regex.Pattern;
 
 public class ResultLogFile {
 
-	private String filename;
+	private final String filename;
 	
-	private ArrayList<Double> frequencies;
-	private ArrayList<Double> intensities;
-	private ArrayList<Double> finalEnergies;
-	private double zeroPointEnergy;
+	private final ArrayList<Double> frequencies;
+	private final ArrayList<Double> intensities;
+	private final ArrayList<Double> finalEnergies;
+	private final double zeroPointEnergy;
 	
 	public ResultLogFile(String filename, ArrayList<Double> frequencies, ArrayList<Double> intensities, ArrayList<Double> finalEnergies, double zeroPointEnergy) {
 		this.frequencies = frequencies;

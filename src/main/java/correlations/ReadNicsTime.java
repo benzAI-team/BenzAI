@@ -45,7 +45,7 @@ public class ReadNicsTime {
 					name2 = splittedLine[0].split(Pattern.quote("."))[0].replace("_opt", "");
 					
 					if (!name1.equals(name2))
-						System.out.println("");
+						System.out.println();
 					
 					time[0] += Double.parseDouble(timeStr[0]);
 					time[1] += Double.parseDouble(timeStr[2]);

@@ -7,8 +7,8 @@ import generator.Solution;
 
 public class NoGoodBorderRecorder extends NoGoodRecorder {
 
-	private ArrayList<Integer> topBorder;
-	private ArrayList<Integer> leftBorder;
+	private final ArrayList<Integer> topBorder;
+	private final ArrayList<Integer> leftBorder;
 
 	public NoGoodBorderRecorder(GeneralModel model, Solution solution, ArrayList<Integer> topBorder,
 			ArrayList<Integer> leftBorder) {

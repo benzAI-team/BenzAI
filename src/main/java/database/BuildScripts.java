@@ -45,9 +45,9 @@ public class BuildScripts {
 		ArrayList<String> names = molecule.getNames();
 
 		if (molecule.getIrregularity() != null)
-			irregbd = new BigDecimal(molecule.getIrregularity().getXI()).setScale(3, RoundingMode.HALF_UP);
+			irregbd = BigDecimal.valueOf(molecule.getIrregularity().getXI()).setScale(3, RoundingMode.HALF_UP);
 		else
-			irregbd = new BigDecimal(-1.0).setScale(3, RoundingMode.HALF_UP);
+			irregbd = BigDecimal.valueOf(-1.0).setScale(3, RoundingMode.HALF_UP);
 
 		writer.write("INSERT INTO benzenoid (id, irregularity, nbCarbons, nbHexagons, nbHydrogens)\n");
 		writer.write("\tVALUES (" + id + ", " + irregbd.doubleValue() + ", " + molecule.getNbNodes() + ", "

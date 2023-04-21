@@ -6,15 +6,15 @@ import java.util.Map.Entry;
 
 public class NICS {
 
-	private Long moleculeId;
-	private String name;
+	private final Long moleculeId;
+	private final String name;
 
-	private int nbHexagons;
-	private int nbCarbons;
-	private int nbHydrogens;
-	private double irregularity;
+	private final int nbHexagons;
+	private final int nbCarbons;
+	private final int nbHydrogens;
+	private final double irregularity;
 
-	private Double[] nicsValues;
+	private final Double[] nicsValues;
 
 	public NICS(Long moleculeId, String name, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity) {
 		this.moleculeId = moleculeId;

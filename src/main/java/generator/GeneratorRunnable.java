@@ -2,7 +2,7 @@ package generator;
 
 public class GeneratorRunnable implements Runnable {
 
-	private GeneralModel generalModel;
+	private final GeneralModel generalModel;
 	private boolean terminated;
 
 	public GeneratorRunnable(GeneralModel generalModel) {

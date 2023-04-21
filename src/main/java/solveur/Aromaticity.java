@@ -6,16 +6,13 @@ public class Aromaticity {
 
 	public enum RIType {
 		NORMAL, OPTIMIZED
-	};
-
-	private final int MAX_CYCLE_SIZE = 20;
-
+	}
 	private double[] Ri;
-	private double[] optimizedRi = new double[] { 0.869, 0.246, 0.100, 0.041 };
+	private final double[] optimizedRi = new double[] { 0.869, 0.246, 0.100, 0.041 };
 
 	private Molecule molecule;
 
-	private double[][] localCircuits;
+	private final double[][] localCircuits;
 	private double[] globalCircuits;
 
 	private double[] localAromaticity;
@@ -36,7 +33,7 @@ public class Aromaticity {
 	}
 
 	private void initializeRi() {
-
+		final int MAX_CYCLE_SIZE = 20;
 		Ri = new double[MAX_CYCLE_SIZE];
 
 		for (int i = 0; i < MAX_CYCLE_SIZE; i++) {
@@ -74,7 +71,7 @@ public class Aromaticity {
 
 		for (int i = 0; i < localCircuits.length; i++) {
 			for (int j = 0; j < localCircuits[i].length; j++) {
-				localAromaticity[i] += (double) (localCircuits[i][j] * chosenRi[j]);
+				localAromaticity[i] += localCircuits[i][j] * chosenRi[j];
 				globalAromaticity += localCircuits[i][j] * chosenRi[j];
 			}
 		}

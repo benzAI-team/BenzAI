@@ -24,8 +24,8 @@ import view.collections.BenzenoidCollectionsManagerPane;
 
 public class CollectionsOperationsPane extends GridPane {
 
-	private BenzenoidApplication application;
-	private BenzenoidCollectionsManagerPane collectionsPane;
+	private final BenzenoidApplication application;
+	private final BenzenoidCollectionsManagerPane collectionsPane;
 
 	private ChoiceBox<String> collectionBox1;
 	private ChoiceBox<String> collectionBox2;

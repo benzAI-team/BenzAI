@@ -2,7 +2,8 @@ package molecules;
 
 public class Edge {
 
-	private int u, v;
+	private final int u;
+	private final int v;
 	
 	public Edge(int u, int v) {
 		this.u = u;

@@ -212,7 +212,7 @@ public class Parser {
 		
 		for (int i = 0 ; i < 4 ; i++) {
 			
-			double d = (double)(i+1);
+			double d = i+1;
 			RI[i] = 1.0 / (d * d);
 		}
 		

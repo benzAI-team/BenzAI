@@ -45,9 +45,9 @@ public class AmpacBuilder {
 			double y = carbon.getY();
 			double z = carbon.getZ();
 			
-			String xStr = formatter.format(x).toString().replace(",", ".");
-			String yStr = formatter.format(y).toString().replace(",", ".");
-			String zStr = formatter.format(z).toString().replace(",", ".");
+			String xStr = formatter.format(x).replace(",", ".");
+			String yStr = formatter.format(y).replace(",", ".");
+			String zStr = formatter.format(z).replace(",", ".");
 			    
 			
 			writer.write(" C\t" + xStr + "\t1\t" + yStr + "\t1\t" + zStr + "\t1 #   \n");
@@ -58,9 +58,9 @@ public class AmpacBuilder {
 			double y = hydrogen.getY();
 			double z = hydrogen.getZ();
 			
-			String xStr = formatter.format(x).toString().replace(",", ".");
-			String yStr = formatter.format(y).toString().replace(",", ".");
-			String zStr = formatter.format(z).toString().replace(",", ".");
+			String xStr = formatter.format(x).replace(",", ".");
+			String yStr = formatter.format(y).replace(",", ".");
+			String zStr = formatter.format(z).replace(",", ".");
 			
 			writer.write(" H\t" + xStr + "\t1\t" + yStr + "\t1\t" + zStr + "\t1 #   \n");
 		}

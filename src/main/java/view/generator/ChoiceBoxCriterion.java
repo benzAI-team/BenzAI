@@ -8,7 +8,7 @@ import generator.properties.model.ModelPropertySet;
 public class ChoiceBoxCriterion extends ChoiceBox<String> {
 
 	private int index;
-	private ScrollPaneWithPropertyList parent;
+	private final ScrollPaneWithPropertyList parent;
 
 	
 	public ChoiceBoxCriterion(int index, ScrollPaneWithPropertyList parent, ModelPropertySet modelPropertySet) {

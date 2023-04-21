@@ -11,7 +11,7 @@ public class MatrixDeterminant {
 	 */
 public static void main (String[] args) {
 double determinant;
-double x[][] = {
+double[][] x = {
 				{10, 15, 7,},
 				{20, 57, 30,},
 				{37, 56, 85,},

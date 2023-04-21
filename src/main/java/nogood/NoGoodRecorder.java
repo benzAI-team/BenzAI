@@ -10,8 +10,8 @@ import generator.Solution;
 
 public abstract class NoGoodRecorder {
 
-	private GeneralModel model;
-	private Solution solution;
+	private final GeneralModel model;
+	private final Solution solution;
 
 	public NoGoodRecorder(GeneralModel model, Solution solution) {
 		this.model = model;

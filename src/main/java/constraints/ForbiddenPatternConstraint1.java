@@ -23,7 +23,7 @@ import generator.patterns.PatternOccurences;
 
 public class ForbiddenPatternConstraint1 extends BenzAIConstraint {
 	
-	private Pattern pattern;
+	private final Pattern pattern;
 	
 	private ArrayList<Pattern> symmetricPatterns;
 	
@@ -32,9 +32,9 @@ public class ForbiddenPatternConstraint1 extends BenzAIConstraint {
 	
 	private PatternOccurences patternOccurences;
 	
-	private VariableStrategy variableStrategy;
-	private ValueStrategy valueStrategy;
-	private OrderStrategy orderStrategy;
+	private final VariableStrategy variableStrategy;
+	private final ValueStrategy valueStrategy;
+	private final OrderStrategy orderStrategy;
 	
 	public ForbiddenPatternConstraint1(Pattern pattern, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		super();

@@ -75,9 +75,9 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 			else if (timeUnitBox.getValue().equals("hours"))
 				time = time * 360000;
 
-			String value = Double.toString(time) + "s";
+			String value = time + "s";
 
-			((SolverProperty)propertySet.getById("timeout")).addExpression(new BinaryNumericalExpression("timeout", "=", (int)time));
+			propertySet.getById("timeout").addExpression(new BinaryNumericalExpression("timeout", "=", (int)time));
 
 		}
 	}

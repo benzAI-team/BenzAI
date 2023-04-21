@@ -2,7 +2,9 @@ package molecules;
 
 public class Node implements Comparable<Node>{
 
-	private int x, y, index;
+	private final int x;
+	private final int y;
+	private int index;
 	
 	public Node(int x, int y, int index) {
 		this.x = x;

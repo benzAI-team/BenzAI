@@ -9,13 +9,13 @@ import utils.Couple;
 
 public class Solution {
 
-	private ArrayList<Integer> vertices;
-	private int[] correspondancesHexagons; // avec variables hors coro -> sans
-	private int[] hexagonsCorrespondances;// sans variables hors coro -> avec
-	private int[][] coordsMatrixCoronenoid;
-	private int coronenoidCenter;
-	private Node[] coronenoidNodes;
-	private int nbCrowns;
+	private final ArrayList<Integer> vertices;
+	private final int[] correspondancesHexagons; // avec variables hors coro -> sans
+	private final int[] hexagonsCorrespondances;// sans variables hors coro -> avec
+	private final int[][] coordsMatrixCoronenoid;
+	private final int coronenoidCenter;
+	private final Node[] coronenoidNodes;
+	private final int nbCrowns;
 
 	private Pattern pattern;
 
@@ -527,13 +527,9 @@ public class Solution {
 
 		int diameter = coordsMatrixCoronenoid.length;
 
-		if (coord.getX() < 0 || coord.getX() >= diameter || coord.getY() < 0 || coord.getY() >= diameter
-				|| coordsMatrixCoronenoid[coord.getY()][coord.getX()] == -1) {
-			return false;
-		}
-
-		return true;
-	}
+        return coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0 && coord.getY() < diameter
+                && coordsMatrixCoronenoid[coord.getY()][coord.getX()] != -1;
+    }
 
 	public static int rotation60(int diameter, int nbCrowns, int i) {
 		return diameter * (nbCrowns - 1) - (i % diameter) * diameter + (i / diameter) * (diameter + 1);

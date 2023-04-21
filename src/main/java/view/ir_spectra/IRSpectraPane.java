@@ -29,10 +29,10 @@ import view.collections.BenzenoidCollectionsManagerPane;
 
 public class IRSpectraPane extends GridPane {
 
-	private BenzenoidCollectionsManagerPane parent;
+	private final BenzenoidCollectionsManagerPane parent;
 
-	private Parameter parameter;
-	private ArrayList<ComputedPlotPane> panes;
+	private final Parameter parameter;
+	private final ArrayList<ComputedPlotPane> panes;
 	private ComputedPlotPane selectedPlotPane;
 	private int index;
 
@@ -160,10 +160,7 @@ public class IRSpectraPane extends GridPane {
 				String directoryPath = file.getAbsolutePath();
 				boolean unix;
 
-				if (directoryPath.split(Pattern.quote("\\")).length > 0)
-					unix = false;
-				else
-					unix = true;
+				unix = directoryPath.split(Pattern.quote("\\")).length <= 0;
 
 				for (int i = 0; i < panes.size(); i++) {
 

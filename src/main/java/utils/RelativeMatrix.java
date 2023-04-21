@@ -4,8 +4,11 @@ import java.awt.Point;
 
 public class RelativeMatrix {
 
-	private int [][] M;
-	private int width, height, xCenter, yCenter;
+	private final int [][] M;
+	private final int width;
+    private final int height;
+    private final int xCenter;
+    private final int yCenter;
 	
 	public RelativeMatrix(int width, int height, int xCenter, int yCenter) {
 		M = new int[width][height];

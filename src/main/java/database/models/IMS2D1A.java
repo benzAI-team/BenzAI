@@ -9,12 +9,12 @@ import molecules.AtomGeometry;
 
 public class IMS2D1A {
 
-	private Long moleculeId;
-	private String name;
-	private int nbHexagons;
-	private int nbCarbons;
-	private int nbHydrogens;
-	private double irregularity;
+	private final Long moleculeId;
+	private final String name;
+	private final int nbHexagons;
+	private final int nbCarbons;
+	private final int nbHydrogens;
+	private final double irregularity;
 
 	private ArrayList<AtomGeometry> geometry;
 	private ArrayList<IMS2D1APoint> points;
@@ -129,7 +129,7 @@ public class IMS2D1A {
 				
 				int y = 0;
 				
-				while (y * nbPointsX < idPoint)
+				while ((long) y * nbPointsX < idPoint)
 					y++;
 				y--;
 				

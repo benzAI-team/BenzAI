@@ -8,11 +8,11 @@ import utils.Couple;
 
 public class Hexagon2 extends Polygon {
 
-	private Couple<Integer, Integer> coords;
-	private ArrayList<Double> points;
+	private final Couple<Integer, Integer> coords;
+	private final ArrayList<Double> points;
 	private Couple<Double, Double> center;
 
-	private int index;
+	private final int index;
 	
 	public Hexagon2(Couple<Integer, Integer> coords, ArrayList<Double> points, int index) {
 		super();

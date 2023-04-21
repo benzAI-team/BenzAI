@@ -10,7 +10,7 @@ import solution.ClarCoverSolution;
 
 public class RadicalarClarCoverGroup extends MoleculeGroup {
 
-	private ArrayList<ClarCoverSolution> clarCoverSolutions;
+	private final ArrayList<ClarCoverSolution> clarCoverSolutions;
 
 	public RadicalarClarCoverGroup(Molecule molecule) {
 		super(molecule);

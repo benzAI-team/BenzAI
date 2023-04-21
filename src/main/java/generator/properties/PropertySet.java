@@ -43,7 +43,7 @@ public class PropertySet implements Iterable<Property> {
 	
 	@Override
 	public Iterator<Property> iterator() {
-		return (Iterator<Property>) propertyList.iterator();
+		return propertyList.iterator();
 	}
 
 	public HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
@@ -60,7 +60,7 @@ public class PropertySet implements Iterable<Property> {
 	}
 	
 	public Object[] getIds() {
-		return (Object[]) propertyList.stream().map(x -> x.getId()).toArray();
+		return propertyList.stream().map(x -> x.getId()).toArray();
 	}
 
 	/***

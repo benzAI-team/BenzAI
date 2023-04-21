@@ -123,11 +123,8 @@ public class Utils {
 
 		String[] property = System.getProperty("os.name").split(" ");
 
-		if (contains(property, "Windows"))
-			return true;
-
-		return false;
-	}
+        return contains(property, "Windows");
+    }
 
 	public static boolean contains(Integer[] T, Integer v) {
 		for (Integer s : T)
@@ -185,7 +182,7 @@ public class Utils {
 			for (int j = 0; j < M[i].length; j++) {
 				System.out.print(M[i][j] + "\t");
 			}
-			System.out.println("");
+			System.out.println();
 		}
 	}
 
@@ -212,42 +209,37 @@ public class Utils {
 
 	public static boolean checkSize(ArrayList<Interval> intervals, int s1) {
 		if (intervals.size() == 1) {
-			if (intervals.get(0).size() == s1)
-				return true;
+            return intervals.get(0).size() == s1;
 		}
 		return false;
 	}
 
 	public static boolean checkSize(ArrayList<Interval> intervals, int s1, int s2) {
 		if (intervals.size() == 2) {
-			if (intervals.get(0).size() == s1 && intervals.get(1).size() == s2)
-				return true;
+            return intervals.get(0).size() == s1 && intervals.get(1).size() == s2;
 		}
 		return false;
 	}
 
 	public static boolean checkSize(ArrayList<Interval> intervals, int s1, int s2, int s3) {
 		if (intervals.size() == 3) {
-			if (intervals.get(0).size() == s1 && intervals.get(1).size() == s2 && intervals.get(2).size() == s3)
-				return true;
+            return intervals.get(0).size() == s1 && intervals.get(1).size() == s2 && intervals.get(2).size() == s3;
 		}
 		return false;
 	}
 
 	public static boolean checkSize(ArrayList<Interval> intervals, int s1, int s2, int s3, int s4) {
 		if (intervals.size() == 4) {
-			if (intervals.get(0).size() == s1 && intervals.get(1).size() == s2 && intervals.get(2).size() == s3
-					&& intervals.get(3).size() == s4)
-				return true;
+            return intervals.get(0).size() == s1 && intervals.get(1).size() == s2 && intervals.get(2).size() == s3
+                    && intervals.get(3).size() == s4;
 		}
 		return false;
 	}
 
 	public static boolean checkSize(ArrayList<Interval> intervals, int s1, int s2, int s3, int s4, int s5) {
 		if (intervals.size() == 5) {
-			if (intervals.get(0).size() == s1 && intervals.get(1).size() == s2 && intervals.get(2).size() == s3
-					&& intervals.get(3).size() == s4 && intervals.get(4).size() == s5)
-				return true;
+            return intervals.get(0).size() == s1 && intervals.get(1).size() == s2 && intervals.get(2).size() == s3
+                    && intervals.get(3).size() == s4 && intervals.get(4).size() == s5;
 		}
 		return false;
 	}

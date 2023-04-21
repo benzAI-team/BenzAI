@@ -26,16 +26,16 @@ import utils.Utils;
 
 public class MultiplePatterns1Constraint extends BenzAIConstraint {
 
-	private ArrayList<Pattern> patterns;
+	private final ArrayList<Pattern> patterns;
 	private ArrayList<PatternOccurences> patternsOccurences;
 
 	private ArrayList<BoolVar[]> allPresences;
 
 	private ArrayList<ArrayList<Integer>> allPresentHexagons, allAbsentHexagons, allUnknownHexagons;
 
-	private VariableStrategy variableStrategy;
-	private ValueStrategy valueStrategy;
-	private OrderStrategy orderStrategy;
+	private final VariableStrategy variableStrategy;
+	private final ValueStrategy valueStrategy;
+	private final OrderStrategy orderStrategy;
 
 	private PatternsInterraction interraction;
 	

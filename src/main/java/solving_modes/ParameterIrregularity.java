@@ -5,9 +5,9 @@ public class ParameterIrregularity {
 	public enum Subject { XI, N0, N1, N2, N3, N4 }
 	public enum Operator{L, LEQ, EQ, GEQ, G}
 	
-	private Subject subject;
-	private Operator operator;
-	private int value;
+	private final Subject subject;
+	private final Operator operator;
+	private final int value;
 	
 	public ParameterIrregularity(Subject subject, Operator operator, int value) {
 		this.subject = subject;

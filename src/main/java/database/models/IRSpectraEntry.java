@@ -13,18 +13,18 @@ import spectrums.ResultLogFile;
 
 public class IRSpectraEntry {
 
-	private int idMolecule;
-	private String moleculeName;
-	private int nbHexagons;
-	private int nbCarbons;
-	private int nbHydrogens;
+	private final int idMolecule;
+	private final String moleculeName;
+	private final int nbHexagons;
+	private final int nbCarbons;
+	private final int nbHydrogens;
 
-	private double irregularity;
-	private int idGaussianResult;
-	private ArrayList<Double> finalEnergies;
-	private ArrayList<Double> frequencies;
-	private ArrayList<Double> intensities;
-	private double zeroPointEnergy;
+	private final double irregularity;
+	private final int idGaussianResult;
+	private final ArrayList<Double> finalEnergies;
+	private final ArrayList<Double> frequencies;
+	private final ArrayList<Double> intensities;
+	private final double zeroPointEnergy;
 
 	/*
 	 * Constructor

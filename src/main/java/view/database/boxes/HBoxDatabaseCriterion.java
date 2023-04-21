@@ -19,7 +19,7 @@ public abstract class HBoxDatabaseCriterion extends HBox {
 	protected ImageView warningIcon;
 
 	protected DatabasePane parent;
-	private ChoiceBoxDatabaseCriterion choiceBoxCriterion;
+	private final ChoiceBoxDatabaseCriterion choiceBoxCriterion;
 
 	public HBoxDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
 		super(5.0);

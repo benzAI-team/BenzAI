@@ -9,10 +9,10 @@ import utils.Utils;
 public class DeleteButton extends Button {
 
 	@SuppressWarnings("unused")
-	private CatalogPane parent;
+	private final CatalogPane parent;
 
 	@SuppressWarnings("unused")
-	private int index;
+	private final int index;
 
 	public DeleteButton(CatalogPane parent, int index) {
 		this.parent = parent;

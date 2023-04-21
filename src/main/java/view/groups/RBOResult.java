@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class RBOResult {
 
-	private HashMap<Double, ArrayList<Integer>> map;
+	private final HashMap<Double, ArrayList<Integer>> map;
 
 	public RBOResult() {
 		map = new HashMap<>();

@@ -21,7 +21,7 @@ public abstract class Filter {
 	
 	public static boolean testAll(Molecule molecule, ModelPropertySet modelPropertySet) {
 		for(Property modelProperty : modelPropertySet)
-			if(((ModelProperty)modelProperty).hasExpressions() && !((ModelProperty)modelProperty).getFilter().test(molecule, modelProperty.getExpressions(), modelPropertySet))
+			if(modelProperty.hasExpressions() && !((ModelProperty)modelProperty).getFilter().test(molecule, modelProperty.getExpressions(), modelPropertySet))
 				return false;
 		return true;
 	}

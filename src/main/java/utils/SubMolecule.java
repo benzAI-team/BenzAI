@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class SubMolecule {
 
-	private int nbNodes, nbEdges, nbTotalNodes;
-	private int[] vertices;
-	private int[][] adjacencyMatrix;
+	private final int nbNodes;
+    private final int nbEdges;
+    private final int nbTotalNodes;
+	private final int[] vertices;
+	private final int[][] adjacencyMatrix;
 
 	// debug
 	private ArrayList<String> edgesNames;

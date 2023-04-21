@@ -34,7 +34,7 @@ public class CarbonHydrogenClassifier extends Classifier{
 	    while (it.hasNext()) {
 	    	
 	        @SuppressWarnings("rawtypes")
-			Map.Entry pair = (Map.Entry)it.next();
+			Map.Entry pair = it.next();
 	        
 	        MoleculeInformation moleculeInformation = (MoleculeInformation) pair.getValue();
 	        

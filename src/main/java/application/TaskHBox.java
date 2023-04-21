@@ -10,8 +10,8 @@ import javafx.scene.paint.Color;
 
 public class TaskHBox extends HBox {
 
-	private BenzenoidApplication application;
-	private String task;
+	private final BenzenoidApplication application;
+	private final String task;
 
 	public TaskHBox(BenzenoidApplication application, String task) {
 		super(3.0);

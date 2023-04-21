@@ -105,11 +105,7 @@ public class PreferencesMenu {
 
 		rememberResizeItem.setOnAction(e -> {
 
-			if (rememberResizeItem.isSelected())
-				app.getSettings().setRemembersSize(true);
-
-			else
-				app.getSettings().setRemembersSize(false);
+			app.getSettings().setRemembersSize(rememberResizeItem.isSelected());
 
 			app.getSettings().save();
 		});

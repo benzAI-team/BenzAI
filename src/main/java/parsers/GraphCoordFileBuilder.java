@@ -14,8 +14,8 @@ import utils.RelativeMatrix;
 
 public class GraphCoordFileBuilder {
 
-	private String inputFileName;
-	private String outputFileName;
+	private final String inputFileName;
+	private final String outputFileName;
 
 	//Constants
 	private final int H = 0;
@@ -149,7 +149,7 @@ public class GraphCoordFileBuilder {
 				adjacencyMatrix[hexagons[0][5]][hexagons[0][0]] = 1;
 				adjacencyMatrix[hexagons[0][0]][hexagons[0][5]] = 1;
 
-				hexagonsString.add(new String("h 0_0 1_1 1_2 0_3 -1_2 -1_1"));
+				hexagonsString.add("h 0_0 1_1 1_2 0_3 -1_2 -1_1");
 						
 				hexagonsCovered[0] = 1;
 	}

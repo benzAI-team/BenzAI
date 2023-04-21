@@ -1,7 +1,7 @@
 package generator;
 
 public class NbCrowns {
-	private int value;
+	private final int value;
 
 	
 	public NbCrowns(int value) {

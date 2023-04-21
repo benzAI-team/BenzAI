@@ -20,7 +20,7 @@ public class Corelations extends Application {
 	// int DATA_SIZE = 1000;
 	// int data[] = new int[DATA_SIZE];
 	ArrayList<Double> data;
-	int group[] = new int[10];
+	int[] group = new int[10];
 
 	@Override
 	public void start(Stage primaryStage) {

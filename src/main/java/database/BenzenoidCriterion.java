@@ -10,9 +10,9 @@ public class BenzenoidCriterion {
 		LEQ, LT, EQ, GT, GEQ, DIFF, IN
 	}
 
-	private Subject subject;
-	private Operator operator;
-	private String value;
+	private final Subject subject;
+	private final Operator operator;
+	private final String value;
 
 	public BenzenoidCriterion(Subject subject, Operator operator, String value) {
 		super();
@@ -111,7 +111,7 @@ public class BenzenoidCriterion {
 		else if (operatorString.equals("!=") || operatorString.equals("<>"))
 			return Operator.DIFF;
 
-		else if (operatorString.toUpperCase().equals("IN"))
+		else if (operatorString.equalsIgnoreCase("IN"))
 			return Operator.IN;
 
 		else

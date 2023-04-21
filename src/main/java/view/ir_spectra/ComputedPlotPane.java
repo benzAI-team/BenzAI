@@ -16,7 +16,7 @@ import spectrums.IRSpectra;
 
 public class ComputedPlotPane extends PlotPane {
 
-	private IRSpectra result;
+	private final IRSpectra result;
 	private LineChart<Number, Number> lineChart;
 
 	public ComputedPlotPane(IRSpectra result) {

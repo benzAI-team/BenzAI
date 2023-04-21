@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 public class PAHClass {
 
-	private String title;
-	private ArrayList<String> moleculesNames;
-	private HashMap<String, MoleculeInformation> moleculesInformations;
+	private final String title;
+	private final ArrayList<String> moleculesNames;
+	private final HashMap<String, MoleculeInformation> moleculesInformations;
 
 	public PAHClass(String title, HashMap<String, MoleculeInformation> moleculesInformations) {
 		this.title = title;

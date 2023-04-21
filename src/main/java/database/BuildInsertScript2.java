@@ -41,7 +41,7 @@ public class BuildInsertScript2 {
 			ResultLogFile log = SpectrumsComputer.parseLogFile(logFile.getAbsolutePath());
 
 			Irregularity irregularity = Utils.computeParameterOfIrregularity(molecule);
-			BigDecimal irregbd = new BigDecimal(irregularity.getXI()).setScale(3, RoundingMode.HALF_UP);
+			BigDecimal irregbd = BigDecimal.valueOf(irregularity.getXI()).setScale(3, RoundingMode.HALF_UP);
 
 			String name = molecule.toString();
 

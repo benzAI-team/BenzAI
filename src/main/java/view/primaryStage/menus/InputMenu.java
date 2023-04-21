@@ -81,7 +81,7 @@ public class InputMenu {
 		});
 
 		drawMenu.setOnAction(e -> {
-			((DrawBenzenoidPane) app.getPanes().getDrawPane()).refreshMenuBar();
+			app.getPanes().getDrawPane().refreshMenuBar();
 			app.switchMode(app.getPanes().getDrawPane());
 		});
 

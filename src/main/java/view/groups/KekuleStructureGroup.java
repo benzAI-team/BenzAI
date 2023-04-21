@@ -5,7 +5,7 @@ import molecules.Molecule;
 
 public class KekuleStructureGroup extends MoleculeGroup {
 
-	private int[][] bonds;
+	private final int[][] bonds;
 
 	public KekuleStructureGroup(Molecule molecule, int[][] bonds) {
 		super(molecule);

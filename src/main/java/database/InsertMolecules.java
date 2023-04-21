@@ -23,8 +23,8 @@ import utils.Utils;
 public class InsertMolecules {
 
 	private Connection connect = null;
-	private Statement statement = null;
-	private ResultSet resultSet = null;
+	private final Statement statement = null;
+	private final ResultSet resultSet = null;
 
 	private void insert(String graphFile, String logFile, int index) throws Exception {
 
@@ -37,7 +37,7 @@ public class InsertMolecules {
 			ResultLogFile log = SpectrumsComputer.parseLogFile(logFile);
 
 			Irregularity irregularity = Utils.computeParameterOfIrregularity(molecule);
-			BigDecimal irregbd = new BigDecimal(irregularity.getXI()).setScale(3, RoundingMode.HALF_UP);
+			BigDecimal irregbd = BigDecimal.valueOf(irregularity.getXI()).setScale(3, RoundingMode.HALF_UP);
 
 			String name = molecule.toString();
 
@@ -74,18 +74,13 @@ public class InsertMolecules {
 			BufferedWriter w = new BufferedWriter(new FileWriter(
 					new File("C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\insert.sql"), true));
 
-			StringBuilder insertMolecule = new StringBuilder();
-			insertMolecule.append(
-					"INSERT INTO molecule (id_molecule, irregularity, molecule_name, nb_carbons, nb_hexagons, nb_hydrogens)\n");
-			insertMolecule.append(
-					"\tVALUES (" + index + ", " + irregbd.doubleValue() + ", '" + name + "', " + molecule.getNbNodes()
-							+ ", " + molecule.getNbHexagons() + ", " + molecule.getNbHydrogens() + ");");
+            String insertMolecule = "INSERT INTO molecule (id_molecule, irregularity, molecule_name, nb_carbons, nb_hexagons, nb_hydrogens)\n" +
+                    "\tVALUES (" + index + ", " + irregbd.doubleValue() + ", '" + name + "', " + molecule.getNbNodes()
+                    + ", " + molecule.getNbHexagons() + ", " + molecule.getNbHydrogens() + ");";
 
-			StringBuilder insertResult = new StringBuilder();
-			insertResult.append(
-					"INSERT INTO gaussian_result (final_energies, frequencies, id_molecule, intensities, zero_point_energy)\n");
-			insertResult.append("\tVALUES ('" + finalEnergies + "', '" + frequencies + "', " + index + ", '"
-					+ intensities + "', '" + log.getZeroPointEnergy() + "');");
+            String insertResult = "INSERT INTO gaussian_result (final_energies, frequencies, id_molecule, intensities, zero_point_energy)\n" +
+                    "\tVALUES ('" + finalEnergies + "', '" + frequencies + "', " + index + ", '"
+                    + intensities + "', '" + log.getZeroPointEnergy() + "');";
 
 			// statement = connect.createStatement();
 			// statement.executeUpdate(insertMolecule.toString());

@@ -13,7 +13,7 @@ import molecules.Molecule;
 
 public class IrregularityClassifier extends Classifier {
 
-	private double step;
+	private final double step;
 
 	public IrregularityClassifier(HashMap<String, MoleculeInformation> moleculesInformations, double step)
 			throws IOException {
@@ -49,7 +49,7 @@ public class IrregularityClassifier extends Classifier {
 			if (i < nbClasses - 1)
 				bdXiMax = new BigDecimal(xiMax).setScale(1, RoundingMode.HALF_UP);
 			else
-				bdXiMax = new BigDecimal(1.0).setScale(1, RoundingMode.HALF_UP);
+				bdXiMax = new BigDecimal("1.0").setScale(1, RoundingMode.HALF_UP);
 
 			String title;
 			if (i == 0)
@@ -70,7 +70,7 @@ public class IrregularityClassifier extends Classifier {
 		while (it.hasNext()) {
 
 			@SuppressWarnings("rawtypes")
-			Map.Entry pair = (Map.Entry) it.next();
+			Map.Entry pair = it.next();
 
 			MoleculeInformation moleculeInformation = (MoleculeInformation) pair.getValue();
 

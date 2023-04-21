@@ -14,7 +14,7 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	private int nbCriterions;
 	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
 	private ArrayList<HBoxCriterion> hBoxesCriterions;
-	private ModelPropertySet modelPropertySet = new ModelPropertySet();
+	private final ModelPropertySet modelPropertySet = new ModelPropertySet();
 
 	private PatternResolutionInformations patternsInformations;
 

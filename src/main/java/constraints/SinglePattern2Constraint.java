@@ -23,9 +23,9 @@ import generator.patterns.Pattern;
 
 public class SinglePattern2Constraint extends BenzAIConstraint {
 
-	private boolean useSymmetries;
+	private final boolean useSymmetries;
 	
-	private Pattern pattern;
+	private final Pattern pattern;
 	private int [][] neighborGraph;
 
 	ArrayList<Integer> absentHexagons;
@@ -37,13 +37,13 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 	
 	private BoolVar symmetry;
 
-	private boolean verbose = false;
+	private final boolean verbose = false;
 
 	private int[][] matrixTable;
 
-	private VariableStrategy variableStrategy;
-	private ValueStrategy valueStrategy;
-	private OrderStrategy orderStrategy;
+	private final VariableStrategy variableStrategy;
+	private final ValueStrategy valueStrategy;
+	private final OrderStrategy orderStrategy;
 	
 	public SinglePattern2Constraint(Pattern pattern, boolean useSymmetries, VariableStrategy variableStrategy, ValueStrategy strategy, OrderStrategy orderStrategy) {
 		this.pattern = pattern;
@@ -272,7 +272,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 		}
 
 		if (verbose)
-			System.out.println(tableConstraints.toString());
+			System.out.println(tableConstraints);
 	}
 
 	@Override
@@ -403,7 +403,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 
 		if (table.nbTuples() == 0) {
 			for (int i = 0 ; i < pattern.getNbNodes() ; i++)
-				table.add(new int [] {i, 0});
+				table.add(i, 0);
 		}
 
 		return table;
@@ -438,9 +438,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 				int [] tuple = new int[7];
 				tuple[0] = i;
 
-				for (int j = 0; j < 6; j++) {
-					tuple[j + 1] = newNeighborGraph[i][j];
-				}
+				System.arraycopy(newNeighborGraph[i], 0, tuple, 1, 6);
 
 				// tuple[7] = 0;
 
@@ -450,16 +448,14 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 
 				table.add(tuple);
 
-				for (int j = 0; j < tuple.length; j++) {
-					matrixTable[index][j] = tuple[j];
-				}
+				System.arraycopy(tuple, 0, matrixTable[index], 0, tuple.length);
 
 				index++;
 			}
 		}
 
 		if (verbose)
-			System.out.println(tableString.toString() + "\n\n");
+			System.out.println(tableString + "\n\n");
 	}
 
 	private void buildMatrixTable() {		
@@ -490,9 +486,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 				int [] tuple = new int[8];
 				tuple[0] = i;
 
-				for (int j = 0; j < 6; j++) {
-					tuple[j + 1] = newNeighborGraph[i][j];
-				}
+				System.arraycopy(newNeighborGraph[i], 0, tuple, 1, 6);
 
 				tuple[7] = 0;
 
@@ -502,9 +496,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 
 				table.add(tuple);
 
-				for (int j = 0; j < tuple.length; j++) {
-					matrixTable[index][j] = tuple[j];
-				}
+				System.arraycopy(tuple, 0, matrixTable[index], 0, tuple.length);
 
 				index++;
 			}
@@ -543,9 +535,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 				int [] tuple = new int[8];
 				tuple[0] = i;
 
-				for (int j = 0; j < 6; j++) {
-					tuple[j + 1] = newNeighborGraph[i][j];
-				}
+				System.arraycopy(newNeighborGraph[i], 0, tuple, 1, 6);
 
 				tuple[7] = 1;
 
@@ -561,7 +551,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 		}
 
 		if (verbose)
-			System.out.println(tableString.toString() + "\n\n");
+			System.out.println(tableString + "\n\n");
 	}
 	
 	private  void buildNeighborGraph() {

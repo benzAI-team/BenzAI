@@ -35,7 +35,7 @@ public class GraphParser {
 
 		int nbHexagons = splittedCode.length;
 
-		int nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
+		int nbCrowns = (int) Math.floor((((double) nbHexagons + 1) / 2.0) + 1.0);
 
 		if (nbHexagons % 2 == 1)
 			nbCrowns--;
@@ -438,7 +438,7 @@ public class GraphParser {
 	}
 
 	private static ArrayList<String> buildFileWithNoCoordsLineList(String fileWithNoCoordsName)
-			throws FileNotFoundException, IOException {
+			throws IOException {
 		BufferedReader bufferedReaderFileWithNoCoords = new BufferedReader(new FileReader(new File(fileWithNoCoordsName)));
 		ArrayList<String> lineList = new ArrayList<String>();
 		String line = null;

@@ -45,7 +45,7 @@ public class MatrixOperations {
 	 * @return determinant of given matrix
 	 */
 	public static double matrixDeterminant(double[][] matrix) {
-		double temporary[][];
+		double[][] temporary;
 		double result = 0;
 		if (matrix.length == 1) {
 			result = matrix[0][0];
@@ -66,7 +66,7 @@ public class MatrixOperations {
 					}
 				}
 			}
-			result += matrix[0][i] * Math.pow(-1, (double) i) * matrixDeterminant(temporary);
+			result += matrix[0][i] * Math.pow(-1, i) * matrixDeterminant(temporary);
 		}
 		return (result);
 	}
@@ -151,10 +151,10 @@ public class MatrixOperations {
 	 * @param id     what does the matrix contain?
 	 */
 	public static void printMatrix(int[][] matrix, int id) {
-		double doubleMatrix[][] = new double[matrix.length][matrix[0].length];
+		double[][] doubleMatrix = new double[matrix.length][matrix[0].length];
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[i].length; j++) {
-				doubleMatrix[i][j] = (double) matrix[i][j];
+				doubleMatrix[i][j] = matrix[i][j];
 			}
 		}
 		printMatrix(doubleMatrix, id);

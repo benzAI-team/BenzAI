@@ -2,27 +2,27 @@ package database;
 
 public class IRSpectrumResult {
 
-	private Long id;
+	private final Long id;
 
-	private String name;
+	private final String name;
 
-	private int nbHexagons;
+	private final int nbHexagons;
 
-	private int nbCarbons;
+	private final int nbCarbons;
 
-	private int nbHydrogens;
+	private final int nbHydrogens;
 
-	private double irregularity;
+	private final double irregularity;
 
-	private Long idSpectrum;
+	private final Long idSpectrum;
 
-	private String frequencies;
+	private final String frequencies;
 
-	private String intensities;
+	private final String intensities;
 
-	private String finalEnergies;
+	private final String finalEnergies;
 
-	private double zeroPointEnergy;
+	private final double zeroPointEnergy;
 
 	public IRSpectrumResult(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity,
 			Long idSpectrum, String frequencies, String intensities, String finalEnergies, double zeroPointEnergy) {

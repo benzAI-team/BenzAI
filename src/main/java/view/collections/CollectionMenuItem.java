@@ -4,8 +4,8 @@ import javafx.scene.control.MenuItem;
 
 public class CollectionMenuItem extends MenuItem{
 
-	private int index;
-	private String name;
+	private final int index;
+	private final String name;
 	
 	public CollectionMenuItem(int index, String name) {
 		super(name);

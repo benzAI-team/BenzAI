@@ -1,7 +1,7 @@
 package generator;
 
 public class NbHexagons {
-	private int value;
+	private final int value;
 
 	public NbHexagons(int value) {
 		super();

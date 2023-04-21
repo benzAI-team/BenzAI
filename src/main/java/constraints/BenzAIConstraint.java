@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import generator.GeneralModel;
 import generator.properties.model.expression.PropertyExpression;
 
+@SuppressWarnings("unused")
 public abstract class BenzAIConstraint {
 
 	public static final BenzAIConstraint NOCONSTRAINT = new BenzAIConstraint() {
@@ -39,10 +40,6 @@ public abstract class BenzAIConstraint {
 	
 	public GeneralModel getGeneralModel() {
 		return generalModel;
-	}
-
-	public void setGeneralModel(GeneralModel generalModel) {
-		this.generalModel = generalModel;
 	}
 
 	public ArrayList<PropertyExpression> getExpressionList() {

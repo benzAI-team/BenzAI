@@ -23,7 +23,7 @@ public class LinFanAlgorithm {
 	private static int indexStructure = 0;
 
 	private static final int MAX_CIRCUIT_SIZE = 20;
-	private static double [] rCount = new double[MAX_CIRCUIT_SIZE];
+	private static final double [] rCount = new double[MAX_CIRCUIT_SIZE];
 	private static double [][] localAromaticity;
 
 	public static boolean containsNode(ArrayList<Edge> path, int v) {
@@ -609,13 +609,7 @@ public class LinFanAlgorithm {
 
 		if (l1 != 0 && l2 != 0 && l3 != 0 && l4 != 0) {
 
-			if (l1 + l2 <= l3 + l4 - 2) {
-				path1 = true;
-			}
-
-			else {
-				path1 = false;
-			}
+			path1 = l1 + l2 <= l3 + l4 - 2;
 		}
 
 		if (path1) {
@@ -883,7 +877,7 @@ public class LinFanAlgorithm {
 		double energy = 0;
 		for (int index = 0; index < rCount.length; index++) {
 			//System.out.print("(" + rCount[index] + " * R" + (index + 1) + ")");
-			energy += (double) (rCount[index] * (1 / ((index + 1) * (index + 1))));
+			energy += rCount[index] * (1 / ((index + 1) * (index + 1)));
 		}
 		energy = energy / (double) (indexStructure);
 
@@ -914,7 +908,7 @@ public class LinFanAlgorithm {
 			System.out.print("H" + i + " : ");
 			for (Double d : aro.getLocalCircuits()[i])
 				System.out.print(d + " ");
-			System.out.println("");
+			System.out.println();
 		}
 		
 		System.out.println("\nkekule_structures : " + molecule.getNbKekuleStructures() + "\n");

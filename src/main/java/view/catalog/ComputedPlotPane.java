@@ -14,7 +14,7 @@ import spectrums.ResultSpectrums;
 
 public class ComputedPlotPane extends PlotPane{
 
-	private ResultSpectrums result;
+	private final ResultSpectrums result;
 	private LineChart<Number, Number> lineChart;
 	
 	public ComputedPlotPane(ResultSpectrums result) {

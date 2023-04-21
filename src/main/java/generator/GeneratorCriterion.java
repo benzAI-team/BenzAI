@@ -174,7 +174,7 @@ public class GeneratorCriterion {
 
 	@Override
 	public String toString() {
-		return name.toString() + " " + operator + " " + value;
+		return name + " " + operator + " " + value;
 	}
 
 	/***

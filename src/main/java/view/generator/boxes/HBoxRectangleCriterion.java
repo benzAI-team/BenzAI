@@ -153,7 +153,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		if (isValid()) {
 			int height = heightTextField.getText().equals("Unspecified") ? -1 : Integer.decode(heightTextField.getText());
 			int width = widthTextField.getText().equals("Unspecified") ? -1 : Integer.decode(widthTextField.getText());
-			((ModelProperty) modelPropertySet.getById("rectangle")).addExpression(new RectangleExpression("rectangle", heightChoiceBox.getValue(), height, widthChoiceBox.getValue(), width));
+			modelPropertySet.getById("rectangle").addExpression(new RectangleExpression("rectangle", heightChoiceBox.getValue(), height, widthChoiceBox.getValue(), width));
 		}
 	}
 

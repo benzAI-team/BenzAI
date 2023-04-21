@@ -20,12 +20,12 @@ public class AromaticityGroup extends MoleculeGroup {
 	public static AromaticityDisplayType aromaticityDisplayType;
 	
 	@SuppressWarnings("unused")
-	private BenzenoidCollectionsManagerPane pane;
+	private final BenzenoidCollectionsManagerPane pane;
 
 	private Color[] paletteLocalScale;
 	private Color[] paletteGlobalScale;
 	
-	private Aromaticity aromaticity;
+	private final Aromaticity aromaticity;
 	
 	
 	public AromaticityGroup(BenzenoidCollectionsManagerPane pane, Molecule molecule, Aromaticity aromaticity)
@@ -53,7 +53,7 @@ public class AromaticityGroup extends MoleculeGroup {
 
 			if (writeText) {
 
-				BigDecimal bd = new BigDecimal(aromaticity.getLocalAromaticity()[i]).setScale(2, RoundingMode.HALF_UP);
+				BigDecimal bd = BigDecimal.valueOf(aromaticity.getLocalAromaticity()[i]).setScale(2, RoundingMode.HALF_UP);
 
 				builder.append(": " + bd.doubleValue());
 				

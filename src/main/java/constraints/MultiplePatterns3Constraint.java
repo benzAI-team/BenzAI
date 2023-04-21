@@ -25,7 +25,7 @@ import generator.patterns.Pattern;
 
 public class MultiplePatterns3Constraint extends BenzAIConstraint {
 
-	private ArrayList<Pattern> patterns;
+	private final ArrayList<Pattern> patterns;
 	
 	ArrayList<ArrayList<Integer>> allAbsentHexagons;
 	ArrayList<ArrayList<Integer>> allPresentHexagons;
@@ -37,9 +37,9 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 	
 	private Tuples table;
 	
-	private VariableStrategy variableStrategy;
-	private ValueStrategy valueStrategy;
-	private OrderStrategy orderStrategy;
+	private final VariableStrategy variableStrategy;
+	private final ValueStrategy valueStrategy;
+	private final OrderStrategy orderStrategy;
 	
 	public MultiplePatterns3Constraint(ArrayList<Pattern> patterns, VariableStrategy variableStrategy, ValueStrategy valueStrategy, OrderStrategy orderStrategy) {
 		this.patterns = patterns;

@@ -8,7 +8,7 @@ import utils.Utils;
 
 public class DeleteButton extends Button {
 
-	private HBoxCriterion parent;
+	private final HBoxCriterion parent;
 
 	public DeleteButton(HBoxCriterion hBoxCriterion) {
 

@@ -40,14 +40,18 @@ public class Molecule implements Comparable<Molecule> {
 
 	private RelativeMatrix nodesMem; // DEBUG
 
-	private int nbNodes, nbEdges, nbHexagons, nbStraightEdges, maxIndex;
+	private final int nbNodes;
+	private final int nbEdges;
+	private final int nbHexagons;
+	private int nbStraightEdges;
+	private int maxIndex;
 	private ArrayList<ArrayList<Integer>> edgeLists;
-	private int[][] edgeMatrix;
+	private final int[][] edgeMatrix;
 	private ArrayList<String> edgesString;
-	private ArrayList<String> hexagonsString;
-	private Node[] nodesRefs;
-	private RelativeMatrix coords;
-	private int[][] hexagons;
+	private final ArrayList<String> hexagonsString;
+	private final Node[] nodesRefs;
+	private final RelativeMatrix coords;
+	private final int[][] hexagons;
 	private int[][] dualGraph;
 	private int[] degrees;
 
@@ -642,7 +646,7 @@ public class Molecule implements Comparable<Molecule> {
 
 		if (name == null) {
 
-			int nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
+			int nbCrowns = (int) Math.floor((((double) nbHexagons + 1) / 2.0) + 1.0);
 
 			if (nbHexagons % 2 == 1)
 				nbCrowns--;
@@ -880,7 +884,7 @@ public class Molecule implements Comparable<Molecule> {
 		String nbKekuleStructures = Double.toString(getNbKekuleStructures()).split(java.util.regex.Pattern.quote("."))[0];
 
 		writer.write(
-				new String(new String("nb_kekule_structures\t" + nbKekuleStructures).getBytes(), StandardCharsets.UTF_8)
+				new String(("nb_kekule_structures\t" + nbKekuleStructures).getBytes(), StandardCharsets.UTF_8)
 						+ "\n");
 
 		getIrregularity();
@@ -1520,7 +1524,7 @@ public class Molecule implements Comparable<Molecule> {
 
 		names = new ArrayList<>();
 
-		int nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
+		int nbCrowns = (int) Math.floor((((double) nbHexagons + 1) / 2.0) + 1.0);
 
 		if (nbHexagons % 2 == 1)
 			nbCrowns--;

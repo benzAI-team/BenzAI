@@ -101,8 +101,7 @@ public class ConstraintBuilder {
 					BoolVar[] neighbors = model.getNeighbors(i, j);
 
 					if (has6Neighbors(neighbors)) {
-						for (int l = 0; l < 6; l++)
-							varClause[l] = neighbors[l];
+                        System.arraycopy(neighbors, 0, varClause, 0, 6);
 						varClause[6] = vertex;
 						model.getProblem().getClauseConstraint().addClause(varClause, valClause);
 					}
