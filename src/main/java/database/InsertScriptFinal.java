@@ -275,6 +275,12 @@ public class InsertScriptFinal {
 		builder.append("<comment># b3lyp/6-31g opt freq</comment>");
 		builder.append("</comments>");
 
+		double finalEnergy = log.getFinalEnergy().get(log.getFinalEnergy().size() - 1);
+
+		builder.append("<weight>" + log.getMolecularMass() + "</weight>");
+		builder.append("<total_e>" + finalEnergy + "</total_e>");
+		builder.append("<vib_e>" + log.getZeroPointEnergy() + "</vib_e>");
+
 		builder.append("<formula>C" + molecule.getNbNodes() + "H" + molecule.getNbHydrogens() + "</formula>");
 		builder.append("<charge>0</charge>");
 		builder.append("<method>B3LYP</method>");
