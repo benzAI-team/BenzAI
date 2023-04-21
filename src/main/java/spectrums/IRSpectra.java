@@ -16,6 +16,8 @@ public class IRSpectra {
 	private String className;
 	private ArrayList<Molecule> molecules;
 
+	private ArrayList<String> amesFormats;
+
 	/*
 	 * Données spectres
 	 */
@@ -129,5 +131,13 @@ public class IRSpectra {
 		}
 
 		return builder.toString();
+	}
+
+	public void setAmesFormats(ArrayList<String> amesFormats) {
+		this.amesFormats = amesFormats;
+	}
+
+	public ArrayList<String> getAmesFormats() {
+		return amesFormats;
 	}
 }

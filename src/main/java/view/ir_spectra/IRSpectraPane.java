@@ -78,6 +78,24 @@ public class IRSpectraPane extends GridPane {
 		Button exportAllButton = new Button("Export all");
 		Button saveDataButton = new Button("Save data");
 
+		Button exportAmesButton = new Button("Export Ames Formats");
+
+		exportAmesButton.setOnAction(e -> {
+			//exportAmesFormats();
+
+			DirectoryChooser directoryChooser = new DirectoryChooser();
+			directoryChooser.setTitle("Select directory");
+			File file = directoryChooser.showDialog(parent.getApplication().getStage());
+
+			if (file != null) {
+				try {
+					exportAmesFormats(file);
+				} catch (IOException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+		});
+
 		beginButton.setOnAction(e -> {
 			index = 0;
 			updatePane();
@@ -182,7 +200,7 @@ public class IRSpectraPane extends GridPane {
 		});
 
 		HBox buttonsHBox = new HBox(5);
-		buttonsHBox.getChildren().addAll(beginButton, prevButton, nextButton, endButton, exportButton, exportAllButton,
+		buttonsHBox.getChildren().addAll(beginButton, prevButton, nextButton, endButton, exportButton, exportAmesButton, exportAllButton,
 				saveDataButton);
 		buttonsHBox.setAlignment(Pos.CENTER);
 
@@ -303,6 +321,32 @@ public class IRSpectraPane extends GridPane {
 			writer.write(pane.getResult().intensitiesToString() + "\n");
 
 		writer.close();
+	}
+
+	private void exportAmesFormats(File directory) throws IOException{
+
+		for (ComputedPlotPane pane : panes) {
+			ArrayList<String> amesFormats = pane.getAmesFormat();
+			IRSpectra result = pane.getResult();
+
+			File file = new File(directory.getAbsolutePath() + "/" + result.getClassName() + ".xml");
+
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+			writer.write("<pahdatabase database=\"theoretical\" version=\"3.00\" date=\"2017-08-18\" full=\"false\"/>\n");
+
+			writer.write("<comment>This file was generated with BenzAI software.</comment>\n");
+
+			writer.write("<species>\n");
+			for (String amesFormat : amesFormats) {
+				writer.write(amesFormat + "\n");
+			}
+			writer.write("</species>\n");
+			writer.close();
+
+		}
+
+
 	}
 
 	private void updatePane() {
