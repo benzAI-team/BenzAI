@@ -1,13 +1,5 @@
 package view.ir_spectra;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.LineChart;
@@ -15,6 +7,12 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.WritableImage;
 import spectrums.IRSpectra;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class ComputedPlotPane extends PlotPane {
 
@@ -48,7 +46,7 @@ public class ComputedPlotPane extends PlotPane {
 		xAxis.setAnimated(false);
 		yAxis.setAnimated(false);
 
-		lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+		lineChart = new LineChart<>(xAxis, yAxis);
 		lineChart.setTitle(result.getClassName());
 
 		XYChart.Series series = new XYChart.Series();

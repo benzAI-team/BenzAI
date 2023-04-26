@@ -1,6 +1,7 @@
 package view.patterns;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import generator.patterns.Pattern;
 import javafx.scene.Group;
@@ -36,7 +37,7 @@ public class PatternGroup extends Group {
 
 	private ArrayList<Double> getHexagonPoints(double xCenter, double yCenter) {
 
-		ArrayList<Double> points = new ArrayList<Double>();
+		ArrayList<Double> points = new ArrayList<>();
 
 		points.add(xCenter);
 		points.add(yCenter - 29.5);
@@ -118,9 +119,7 @@ public class PatternGroup extends Group {
 
 		displayedHexagons = new int[diameter][diameter];
 
-		int n = diameter - nbCrowns;
-
-		int nCurrent = n;
+		int nCurrent = diameter - nbCrowns;
 
 		for (int x = 0; x < ((diameter - 1) / 2); x++) {
 			for (int i = nCurrent; i >= 1; i--) {
@@ -134,32 +133,30 @@ public class PatternGroup extends Group {
 		nCurrent = 1;
 
 		for (int x = ((diameter - 1) / 2) + 1; x < diameter; x++) {
-			for (int i = 0; i < nCurrent; i++) {
-				displayedHexagons[x][i] = -1;
-			}
+			Arrays.fill(displayedHexagons[x], -1);
 			nCurrent++;
 		}
 	}
 
 	private ArrayList<Couple<Double, Double>> getFirstCenters() {
 
-		ArrayList<Couple<Double, Double>> centers = new ArrayList<Couple<Double, Double>>();
+		ArrayList<Couple<Double, Double>> centers = new ArrayList<>();
 
 		double x = 26 * nbCrowns + 50.0;
 		double y = 26 * nbCrowns + 50.0;
 
-		centers.add(new Couple<Double, Double>(x, y));
+		centers.add(new Couple<>(x, y));
 
 		for (int line = 1; line <= ((diameter - 1) / 2); line++) {
 			x -= 26.0;
 			y += 43.5;
-			centers.add(new Couple<Double, Double>(x, y));
+			centers.add(new Couple<>(x, y));
 		}
 
 		for (int line = ((diameter - 1) / 2) + 1; line < diameter; line++) {
 			x += 26.0;
 			y += 43.5;
-			centers.add(new Couple<Double, Double>(x, y));
+			centers.add(new Couple<>(x, y));
 		}
 
 		return centers;
@@ -179,7 +176,7 @@ public class PatternGroup extends Group {
 				if (displayedHexagons[line][column] == 0) {
 
 					ArrayList<Double> points = getHexagonPoints(xCenter, yCenter);
-					Couple<Integer, Integer> coords = new Couple<Integer, Integer>(column, line);
+					Couple<Integer, Integer> coords = new Couple<>(column, line);
 					PatternHexagon hexagon = new PatternHexagon(this, coords, points);
 
 					hexagons[line][column] = hexagon;
@@ -191,10 +188,10 @@ public class PatternGroup extends Group {
 	}
 
 	private void drawHexagons(PatternHexagon[][] hexagons) {
-		for (int i = 0; i < hexagons.length; i++) {
+		for (PatternHexagon[] hexagon : hexagons) {
 			for (int j = 0; j < hexagons.length; j++) {
-				if (hexagons[i][j] != null)
-					this.getChildren().add(hexagons[i][j]);
+				if (hexagon[j] != null)
+					this.getChildren().add(hexagon[j]);
 			}
 		}
 	}
@@ -272,15 +269,14 @@ public class PatternGroup extends Group {
 		int index = 0;
 
 		for (int i = 0; i < diameter; i++)
-			for (int j = 0; j < diameter; j++)
-				hexagonCoordinates[i][j] = -1;
+			Arrays.fill(hexagonCoordinates[i], -1);
 
 		for (int y = 0; y < diameter; y++) {
 			for (int x = 0; x < diameter; x++) {
 				if (hexagons[y][x] != null) {
 					if (hexagons[y][x].getLabel() != 0) {
 						hexagonCoordinates[x][y] = index;
-						coordsArray.add(new Couple<Integer, Integer>(x, y));
+						coordsArray.add(new Couple<>(x, y));
 						index++;
 					}
 				}
@@ -395,8 +391,7 @@ public class PatternGroup extends Group {
 
 					int u = hexagonCoordinates[i][j];
 
-					for (int k = 0; k < 6; k++)
-						dualGraph[u][k] = -1;
+					Arrays.fill(dualGraph[u], -1);
 
 					if (j > 0)
 						dualGraph[u][0] = hexagonCoordinates[i][j - 1];
@@ -474,7 +469,7 @@ public class PatternGroup extends Group {
 	@SuppressWarnings("unchecked")
 	public void fill() {
 
-		ArrayList<PatternHexagon> hexagonsList = new ArrayList<PatternHexagon>();
+		ArrayList<PatternHexagon> hexagonsList = new ArrayList<>();
 
 		for (int y = 0; y < diameter; y++) {
 			for (int x = 0; x < diameter; x++) {
@@ -549,9 +544,8 @@ public class PatternGroup extends Group {
 			}
 		}
 
-		for (int i = 0; i < toCheck.length; i++) {
+		for (Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> check : toCheck) {
 
-			Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> check = toCheck[i];
 			if (check != null) {
 
 				int x1 = check.getX().getX();

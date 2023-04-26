@@ -53,8 +53,8 @@ public class RandicMethod {
 	
 	private static EdgeSet computeStraightEdges(Molecule molecule, int [][] cycle) {
 		
-		List<Node> firstVertices = new ArrayList<Node>();
-		List<Node> secondVertices = new ArrayList<Node>();
+		List<Node> firstVertices = new ArrayList<>();
+		List<Node> secondVertices = new ArrayList<>();
 		
 		for (int i = 0 ; i < cycle.length ; i ++) {
 			for (int j = (i + 1) ; j < cycle[i].length ; j++) {
@@ -75,9 +75,9 @@ public class RandicMethod {
 		return new EdgeSet(firstVertices, secondVertices);
 	}
 	
-	private static List<Interval> computeIntervals(Molecule molecule, EdgeSet edges){
+	private static List<Interval> computeIntervals(EdgeSet edges){
 		
-		List<Interval> intervals = new ArrayList<Interval>();
+		List<Interval> intervals = new ArrayList<>();
 	
 		int [] edgesOK = new int [edges.size()];
 		
@@ -90,7 +90,7 @@ public class RandicMethod {
 				int y1 = Math.min(u1.getY(), v1.getY());
 				int y2 = Math.max(u1.getY(), v1.getY());
 				
-				List<NodeSameLine> sameLineNodes = new ArrayList<NodeSameLine>();
+				List<NodeSameLine> sameLineNodes = new ArrayList<>();
 				
 				for (int j = (i+1) ; j < edges.size() ; j++) {
 					if (edgesOK[j] == 0) {
@@ -134,10 +134,10 @@ public class RandicMethod {
 	private static ArrayList<Integer> getHexagons(Molecule molecule, int [][] cycle) {
 		
 		EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
-		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(molecule, verticalEdges);
+		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(verticalEdges);
 		Collections.sort(intervals);
 		
-		ArrayList<Integer> hexagons = new ArrayList<Integer>();
+		ArrayList<Integer> hexagons = new ArrayList<>();
 
 		for (Interval interval : intervals){
 
@@ -252,9 +252,8 @@ public class RandicMethod {
 		
 		for (Integer hexagon : hexagons) {
 			int [] nodes = molecule.getHexagons()[hexagon];
-			
-			for (int i = 0 ; i < nodes.length ; i++)
-				vertices[nodes[i]] = 1;
+
+			for (int node : nodes) vertices[node] = 1;
 		}
 		
 		int subGraphNbNodes = 0;
@@ -285,13 +284,13 @@ public class RandicMethod {
 			}
 		}
 		
-		return new SubMolecule(subGraphNbNodes, nbEdges, molecule.getNbNodes(), subGraphVertices, newGraph);
+		return new SubMolecule(subGraphNbNodes, nbEdges, molecule.getNbNodes(), newGraph);
 	}
 	
 	private static void treatCycle(Molecule molecule, int [][] cycle) {
 		
 		EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
-		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(molecule, verticalEdges);
+		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(verticalEdges);
 		Collections.sort(intervals);
 		int cycleConfiguration = Utils.identifyCycle(molecule, intervals);
 		int dependantCycleConfiguration = Utils.identifyDependantCycle(molecule, intervals);
@@ -424,6 +423,7 @@ public class RandicMethod {
 		else {
 		
 			Molecule molecule = GraphParser.parseUndirectedGraph(args[0], null, false);
+			assert molecule != null;
 			solve(molecule);
 		}
 	}

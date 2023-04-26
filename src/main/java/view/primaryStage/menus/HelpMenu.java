@@ -32,9 +32,7 @@ public class HelpMenu {
 				stage.show();
 			});
 
-			aboutItem.setOnAction(e -> {
-				app.displayAboutWindow();
-			});
+			aboutItem.setOnAction(e -> app.displayAboutWindow());
 
 			helpMenu.getItems().addAll(helpItem, aboutItem);
 

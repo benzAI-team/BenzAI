@@ -9,7 +9,7 @@ public class GraphConversion {
         int k = 0;
         int i, j;
         int haut, hautdroit, basdroit, bas, basgauche, hautgauche;
-        SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+        SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<>(DefaultEdge.class);
         
         for(j = 0 ; j < largeur ; j++)
             for(i = 0 ; i < largeur ; i++){

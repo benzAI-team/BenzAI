@@ -1,8 +1,6 @@
 package solveur;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import molecules.Molecule;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
@@ -11,12 +9,12 @@ import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
-
-import molecules.Molecule;
-import molecules.UndirPonderateGraph;
-import parsers.GraphParser;
 import solution.ClarCoverSolution;
 import utils.Couple;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class KekuleStructureSolver {
 
@@ -34,9 +32,7 @@ public class KekuleStructureSolver {
 		int index = 0;
 		
 		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
-			for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
-				edgesIndexes[i][j] = -1;
-			}
+			Arrays.fill(edgesIndexes[i], -1);
 		}
 		
 		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {

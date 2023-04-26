@@ -82,14 +82,6 @@ public class Settings {
 		this.nbMaxSolutions = nbMaxSolutions;
 	}
 
-	public boolean isRememberSize() {
-		return rememberSize;
-	}
-
-	public void setRememberSize(boolean rememberSize) {
-		this.rememberSize = rememberSize;
-	}
-
 	public boolean isDisplayHomeWindow() {
 		return displayHomeWindow;
 	}
@@ -117,8 +109,8 @@ public class Settings {
 
 				String[] splittedLine = line.split(Pattern.quote(": "));
 
-				double width = -1.0;
-				double height = -1.0;
+				double width;
+				double height;
 				boolean rememberSize;
 
 				if (splittedLine[0].equals("remember-window-size")) {

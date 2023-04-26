@@ -27,6 +27,7 @@ public class RadicalarClarCoverGroup extends MoleculeGroup {
 
 			for (int i = 0; i < nbCarbons; i++) {
 
+				assert radicalarStats != null;
 				double stat = radicalarStats[i];
 
 				if (stat > 0.0) {
@@ -55,41 +56,8 @@ public class RadicalarClarCoverGroup extends MoleculeGroup {
 	}
 
 	private double getRadius(double coeff) {
-		
-		if(0.0 >= coeff && coeff < 0.1)
-			return 2.0;
-		
-		else if (0.1 >= coeff && coeff < 0.2)
-			return 3.0;
-		
-		else if (0.2 >= coeff && coeff < 0.3)
-			return 4.0;
-		
-		else if (0.3 >= coeff && coeff < 0.4)
-			return 5.0;
-		
-		else if (0.4 >= coeff && coeff < 0.5)
-			return 6.0;
-		
-		else if (0.5 >= coeff && coeff < 0.6)
-			return 7.0;
-		
-		else if (0.6 >= coeff && coeff < 0.7)
-			return 8.0;
-		
-		else if (0.7 >= coeff && coeff < 0.8)
-			return 9.0;
-		
-		else if (0.8 >= coeff && coeff < 0.9)
-			return 10.0;
-		
-		else if (0.9 >= coeff && coeff < 1.0)
-			return 11.0;
-		
-		else if (coeff == 1.0)
-			return 12.0;
-		
+		if (0.0 <= coeff && coeff <= 1.0)
+			return 2.0 + Math.floor(coeff * 10.0);
 		return -1.0;
 	}
-	
 }

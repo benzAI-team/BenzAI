@@ -1,22 +1,12 @@
 package view.ir_spectra;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
@@ -27,6 +17,14 @@ import spectrums.ResultLogFile;
 import utils.Couple;
 import view.collections.BenzenoidCollectionsManagerPane;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
+
 public class IRSpectraPane extends GridPane {
 
 	private final BenzenoidCollectionsManagerPane parent;
@@ -36,7 +34,7 @@ public class IRSpectraPane extends GridPane {
 	private ComputedPlotPane selectedPlotPane;
 	private int index;
 
-	ListView<String> listView = new ListView<String>();
+	ListView<String> listView = new ListView<>();
 
 	public IRSpectraPane(ArrayList<ComputedPlotPane> panes, BenzenoidCollectionsManagerPane parent,
 			Parameter parameter) {
@@ -178,7 +176,7 @@ public class IRSpectraPane extends GridPane {
 				String directoryPath = file.getAbsolutePath();
 				boolean unix;
 
-				unix = directoryPath.split(Pattern.quote("\\")).length <= 0;
+				unix = directoryPath.split(Pattern.quote("\\")).length == 0;
 
 				for (int i = 0; i < panes.size(); i++) {
 
@@ -212,7 +210,7 @@ public class IRSpectraPane extends GridPane {
 		listView.setMinSize(249, 447);
 		listView.setMaxSize(249, 447);
 
-		ArrayList<String> listString = new ArrayList<String>();
+		ArrayList<String> listString = new ArrayList<>();
 		for (ComputedPlotPane pane : panes)
 			listString.add(pane.getResult().getClassName());
 
@@ -220,20 +218,16 @@ public class IRSpectraPane extends GridPane {
 
 		listView.setItems(items);
 
-		listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		listView.setOnMouseClicked(event -> {
+			String selection = listView.getSelectionModel().getSelectedItem();
 
-			@Override
-			public void handle(MouseEvent event) {
-				String selection = listView.getSelectionModel().getSelectedItem();
+			for (int i = 0; i < panes.size(); i++) {
 
-				for (int i = 0; i < panes.size(); i++) {
-
-					ComputedPlotPane pane = panes.get(i);
-					if (pane.getResult().getClassName().equals(selection)) {
-						index = i;
-						updatePane();
-						break;
-					}
+				ComputedPlotPane pane = panes.get(i);
+				if (pane.getResult().getClassName().equals(selection)) {
+					index = i;
+					updatePane();
+					break;
 				}
 			}
 		});

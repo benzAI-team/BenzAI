@@ -10,9 +10,9 @@ import org.jgrapht.graph.SimpleGraph;
 
 public class BenzenoidSolution {
 
-	private SimpleGraph<Integer, DefaultEdge> hexagonGraph;
-	private SimpleGraph<Integer, DefaultEdge> carbonGraph;
-	private int nbCouronnes;
+	private final SimpleGraph<Integer, DefaultEdge> hexagonGraph;
+	private final SimpleGraph<Integer, DefaultEdge> carbonGraph;
+	private final int nbCouronnes;
 	private String name;
 
 	private int[] hexagonsCorrespondances;
@@ -34,14 +34,12 @@ public class BenzenoidSolution {
 	}
 /***
  * 
- * @param chocoGraph
- * @param hexagonsCorrespondances
  * @return translate a ChocoGraph graph to a SimpleGraph
  */
 	public static SimpleGraph<Integer, DefaultEdge> choco2JGraphT(UndirectedGraph chocoGraph,
 			int[] hexagonsCorrespondances) {
 
-		SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+		SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
 		for (int vertex : chocoGraph.getNodes()) {
 			graph.addVertex(hexagonsCorrespondances[vertex]);
 		}
@@ -55,8 +53,6 @@ public class BenzenoidSolution {
 	}
 /***
  * Saves the solution as a CML files
- * @param number
- * @param path
  */
 	public void saveCML(int number, String path) {
 		File fichier = new File(path + "/" + name + "-" + number + ".cml");
@@ -76,24 +72,12 @@ public class BenzenoidSolution {
 		return nbCouronnes;
 	}
 
-	public void setNbCouronnes(int nbCouronnes) {
-		this.nbCouronnes = nbCouronnes;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String nameBase) {
 		this.name = nameBase;
-	}
-
-	public void setHexagonGraph(SimpleGraph<Integer, DefaultEdge> hexagonGraph) {
-		this.hexagonGraph = hexagonGraph;
-	}
-
-	public void setCarbonGraph(SimpleGraph<Integer, DefaultEdge> carbonGraph) {
-		this.carbonGraph = carbonGraph;
 	}
 
 	public SimpleGraph<Integer, DefaultEdge> getHexagonGraph() {

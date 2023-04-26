@@ -47,7 +47,6 @@ public class IrregularityPane extends BorderPane {
 	private ArrayList<PAHClass> classes;
 	@SuppressWarnings("rawtypes")
 	private BarChart chart;
-	private GridPane gridPane;
 
 	private double step;
 
@@ -185,7 +184,7 @@ public class IrregularityPane extends BorderPane {
 
 	private void buildPane() {
 
-		gridPane = new GridPane();
+		GridPane gridPane = new GridPane();
 		gridPane.setPadding(new Insets(10));
 
 		gridPane.add(chart, 0, 0, 1, 2);
@@ -196,8 +195,8 @@ public class IrregularityPane extends BorderPane {
 
 		String[] titles = new String[categoriesNames.length];
 
-		String min = "0.0";
-		String max = categoriesNames[0];
+		String min;
+		String max;
 
 		for (int i = 0; i < categoriesNames.length; i++) {
 
@@ -223,7 +222,7 @@ public class IrregularityPane extends BorderPane {
 		StringBuilder builder = new StringBuilder();
 
 		for (int i = 0; i < classes.size(); i++) {
-			builder.append(titles[i] + " : " + classes.get(i).size() + "\n");
+			builder.append(titles[i]).append(" : ").append(classes.get(i).size()).append("\n");
 		}
 
 		area.setText(builder.toString());

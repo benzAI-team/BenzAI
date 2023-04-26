@@ -29,25 +29,15 @@ public static Menu build(BenzenoidApplication app) {
 		fileMenu.getItems().addAll(exportBenzenoidMenu, exportCollection, importCollection);
 		exportBenzenoidMenu.getItems().addAll(exportGraph, exportPng, exportCml, exportCom);
 
-		fileMenu.setOnShowing(e -> {
-			app.switchMode(collectionsPane);
-		});
+		fileMenu.setOnShowing(e -> app.switchMode(collectionsPane));
 
-		exportGraph.setOnAction(e -> {
-			collectionsPane.exportGraph();
-		});
+		exportGraph.setOnAction(e -> collectionsPane.exportGraph());
 
-		exportPng.setOnAction(e -> {
-			collectionsPane.exportPng();
-		});
+		exportPng.setOnAction(e -> collectionsPane.exportPng());
 
-		exportCml.setOnAction(e -> {
-			collectionsPane.exportCML();
-		});
+		exportCml.setOnAction(e -> collectionsPane.exportCML());
 
-		exportCom.setOnAction(e -> {
-			collectionsPane.exportCOM();
-		});
+		exportCom.setOnAction(e -> collectionsPane.exportCOM());
 
 		importCollection.setOnAction(e -> {
 			DirectoryChooser directoryChooser = new DirectoryChooser();

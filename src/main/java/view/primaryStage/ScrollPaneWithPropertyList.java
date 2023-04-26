@@ -19,9 +19,7 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	private PatternResolutionInformations patternsInformations;
 
 	/***
-	 * 
-	 * @param index
-	 * @param box
+	 *
 	 */
 	public void setHBox(int index, HBoxCriterion box) {
 		getHBoxesCriterions().set(index, box);
@@ -31,9 +29,7 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	protected abstract void placeComponents();
 
 	/***
-	 * 
-	 * @param choiceBoxCriterion
-	 * @param hBoxCriterion
+	 *
 	 */
 	public void removeCriterion(ChoiceBoxCriterion choiceBoxCriterion, HBoxCriterion hBoxCriterion) {
 	
@@ -48,8 +44,7 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	}
 
 	/***
-	 * 
-	 * @return
+	 *
 	 */
 	protected boolean buildPropertyExpressions() {
 		for (HBoxCriterion box : getHBoxesCriterions()) {

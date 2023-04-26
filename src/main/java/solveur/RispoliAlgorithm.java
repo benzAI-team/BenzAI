@@ -109,9 +109,6 @@ public class RispoliAlgorithm {
 			System.out.print("");
 		}
 
-		// System.out.println(lines);
-		// System.out.println(columns);
-
 		double[][] matrix = new double[lines.size()][columns.size()];
 
 		for (int i = 0; i < lines.size(); i++) {
@@ -203,6 +200,7 @@ public class RispoliAlgorithm {
 
 //		Circuit coro-3 bug
 
+		assert molecule != null;
 		for (Integer u : molecule.getHexagons()[16])
 			if (!circuit.contains(u))
 				circuit.add(u);

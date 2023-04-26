@@ -38,9 +38,7 @@ public class PreferencesMenu {
 		localColorScaleItem.setSelected(true);
 		AromaticityGroup.aromaticityDisplayType = AromaticityDisplayType.LOCAL_COLOR_SCALE;
 
-		preferencesMenu.setOnShowing(e -> {
-			app.switchMode(collectionsPane);
-		});
+		preferencesMenu.setOnShowing(e -> app.switchMode(collectionsPane));
 
 		localColorScaleItem.setOnAction(e -> {
 
@@ -93,9 +91,7 @@ public class PreferencesMenu {
 		});
 
 		MenuItem generationPreferencesItem = new MenuItem("Generation preferences");
-		generationPreferencesItem.setOnAction(e -> {
-			app.switchMode(app.getPanes().getGenerationPreferencesPane());
-		});
+		generationPreferencesItem.setOnAction(e -> app.switchMode(app.getPanes().getGenerationPreferencesPane()));
 
 		aromaticityDisplayMenu.getItems().addAll(localColorScaleItem, globalColorScaleItem);
 		preferencesMenu.getItems().addAll(aromaticityDisplayMenu, riMenu, irSpectraParameterItem, windowMenu,

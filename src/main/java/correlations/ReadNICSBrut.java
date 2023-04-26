@@ -8,7 +8,7 @@ public class ReadNICSBrut{
 
 	public static void main(String [] args) throws IOException {
 		
-		BufferedReader r = new BufferedReader(new FileReader(new File("/home/adrien/Documents/comparaisons_constraints/nics_brut.txt")));
+		BufferedReader r = new BufferedReader(new FileReader("/home/adrien/Documents/comparaisons_constraints/nics_brut.txt"));
 		String line;
 		ArrayList<String> lines = new ArrayList<>();
 		

@@ -308,7 +308,7 @@ public class BenzenoidCollectionPane extends Tab {
                                             System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
                                         }
 
-                                        group = new AromaticityGroup(parent, molecule, aromaticity);
+                                        group = new AromaticityGroup(molecule, aromaticity);
                                     }
                                     break;
 
@@ -330,7 +330,7 @@ public class BenzenoidCollectionPane extends Tab {
                                             System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
                                         }
 
-                                        group = new AromaticityGroup(parent, molecule, aromaticity);
+                                        group = new AromaticityGroup(molecule, aromaticity);
                                     }
                                     break;
 

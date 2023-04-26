@@ -27,9 +27,7 @@ public class SortMenu {
 		Menu irregularityItem = new Menu("Irregularity");
 		Menu reItem = new Menu("Global Resonance Energy");
 		
-		sortMenu.setOnShowing(e -> {
-			app.switchMode(collectionsPane);
-		});
+		sortMenu.setOnShowing(e -> app.switchMode(collectionsPane));
 
 		/*
 		 * Nb Carbons
@@ -38,13 +36,9 @@ public class SortMenu {
 		MenuItem nbCarbonsIncreasing = new MenuItem("Increasing");
 		MenuItem nbCarbonsDecreasing = new MenuItem("Decreasing");
 
-		nbCarbonsIncreasing.setOnAction(e -> {
-			collectionsPane.sort(new NbCarbonsComparator(), false);
-		});
+		nbCarbonsIncreasing.setOnAction(e -> collectionsPane.sort(new NbCarbonsComparator(), false));
 
-		nbCarbonsDecreasing.setOnAction(e -> {
-			collectionsPane.sort(new NbCarbonsComparator(), true);
-		});
+		nbCarbonsDecreasing.setOnAction(e -> collectionsPane.sort(new NbCarbonsComparator(), true));
 
 		nbCarbonsItem.getItems().addAll(nbCarbonsIncreasing, nbCarbonsDecreasing);
 
@@ -55,13 +49,9 @@ public class SortMenu {
 		MenuItem nbHydrogensIncreasing = new MenuItem("Increasing");
 		MenuItem nbHydrogensDecreasing = new MenuItem("Decreasing");
 
-		nbHydrogensIncreasing.setOnAction(e -> {
-			collectionsPane.sort(new NbHydrogensComparator(), false);
-		});
+		nbHydrogensIncreasing.setOnAction(e -> collectionsPane.sort(new NbHydrogensComparator(), false));
 
-		nbHydrogensDecreasing.setOnAction(e -> {
-			collectionsPane.sort(new NbHydrogensComparator(), true);
-		});
+		nbHydrogensDecreasing.setOnAction(e -> collectionsPane.sort(new NbHydrogensComparator(), true));
 
 		nbHydrogensItem.getItems().addAll(nbHydrogensIncreasing, nbHydrogensDecreasing);
 
@@ -72,13 +62,9 @@ public class SortMenu {
 		MenuItem nbHexagonsIncreasing = new MenuItem("Increasing");
 		MenuItem nbHexagonsDecreasing = new MenuItem("Decreasing");
 
-		nbHexagonsIncreasing.setOnAction(e -> {
-			collectionsPane.sort(new NbHexagonsComparator(), false);
-		});
+		nbHexagonsIncreasing.setOnAction(e -> collectionsPane.sort(new NbHexagonsComparator(), false));
 
-		nbHexagonsDecreasing.setOnAction(e -> {
-			collectionsPane.sort(new NbHexagonsComparator(), true);
-		});
+		nbHexagonsDecreasing.setOnAction(e -> collectionsPane.sort(new NbHexagonsComparator(), true));
 
 		nbHexagonsItem.getItems().addAll(nbHexagonsIncreasing, nbHexagonsDecreasing);
 
@@ -89,13 +75,9 @@ public class SortMenu {
 		MenuItem nbKekuleStructuresIncreasing = new MenuItem("Increasing");
 		MenuItem nbKekuleStructuresDecreasing = new MenuItem("Decreasing");
 
-		nbKekuleStructuresIncreasing.setOnAction(e -> {
-			collectionsPane.sort(new NbKekuleStructuresComparator(), false);
-		});
+		nbKekuleStructuresIncreasing.setOnAction(e -> collectionsPane.sort(new NbKekuleStructuresComparator(), false));
 
-		nbKekuleStructuresDecreasing.setOnAction(e -> {
-			collectionsPane.sort(new NbKekuleStructuresComparator(), true);
-		});
+		nbKekuleStructuresDecreasing.setOnAction(e -> collectionsPane.sort(new NbKekuleStructuresComparator(), true));
 
 		nbKekuleStructuresItem.getItems().addAll(nbKekuleStructuresIncreasing, nbKekuleStructuresDecreasing);
 
@@ -106,13 +88,9 @@ public class SortMenu {
 		MenuItem irregularityIncreasing = new MenuItem("Increasing");
 		MenuItem irregularityDecreasing = new MenuItem("Decreasing");
 
-		irregularityIncreasing.setOnAction(e -> {
-			collectionsPane.sort(new IrregularityComparator(), false);
-		});
+		irregularityIncreasing.setOnAction(e -> collectionsPane.sort(new IrregularityComparator(), false));
 
-		irregularityDecreasing.setOnAction(e -> {
-			collectionsPane.sort(new IrregularityComparator(), true);
-		});
+		irregularityDecreasing.setOnAction(e -> collectionsPane.sort(new IrregularityComparator(), true));
 
 		irregularityItem.getItems().addAll(irregularityIncreasing, irregularityDecreasing);
 
@@ -123,13 +101,9 @@ public class SortMenu {
 		MenuItem reIncreasingItem = new MenuItem("Increasing");
 		MenuItem reDecreasingItem = new MenuItem("Decreasing");
 		
-		reIncreasingItem.setOnAction(e -> {
-			collectionsPane.sort(new ResonanceEnergyComparator(), false);
-		});
+		reIncreasingItem.setOnAction(e -> collectionsPane.sort(new ResonanceEnergyComparator(), false));
 		
-		reDecreasingItem.setOnAction(e -> {
-			collectionsPane.sort(new ResonanceEnergyComparator(), true);
-		});
+		reDecreasingItem.setOnAction(e -> collectionsPane.sort(new ResonanceEnergyComparator(), true));
 		
 		reItem.getItems().addAll(reIncreasingItem, reDecreasingItem);
 		

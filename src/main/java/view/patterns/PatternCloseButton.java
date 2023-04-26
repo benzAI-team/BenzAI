@@ -8,13 +8,10 @@ import utils.Utils;
 
 public class PatternCloseButton extends Button {
 
-	@SuppressWarnings("unused")
-	private final PatternsEditionPane parent;
 	private int index;
 
 	public PatternCloseButton(PatternsEditionPane parent, int index) {
 
-		this.parent = parent;
 		this.index = index;
 
 		Image image;

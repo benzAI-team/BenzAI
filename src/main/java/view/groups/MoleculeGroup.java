@@ -41,13 +41,13 @@ public class MoleculeGroup extends Group {
 
 		int[] checkedHexagons = new int[molecule.getNbHexagons()];
 
-		ArrayList<Integer> candidates = new ArrayList<Integer>();
+		ArrayList<Integer> candidates = new ArrayList<>();
 		candidates.add(0);
 
 		checkedHexagons[0] = 1;
-		hexagonsCoords[0] = new Couple<Integer, Integer>(0, 0);
+		hexagonsCoords[0] = new Couple<>(0, 0);
 
-		centersCoords[0] = new Couple<Double, Double>(40.0, 40.0);
+		centersCoords[0] = new Couple<>(40.0, 40.0);
 
 		while (candidates.size() > 0) {
 
@@ -67,8 +67,7 @@ public class MoleculeGroup extends Group {
 
 						if (i == 0) {
 
-							x += 0;
-							y += -1;
+							y -= 1;
 
 							xCenter += 26.0;
 							yCenter -= 43.5;
@@ -77,7 +76,6 @@ public class MoleculeGroup extends Group {
 						else if (i == 1) {
 
 							x += 1;
-							y += 0;
 
 							xCenter += 52.0;
 							yCenter += 0.0;
@@ -94,7 +92,6 @@ public class MoleculeGroup extends Group {
 
 						else if (i == 3) {
 
-							x += 0;
 							y += 1;
 
 							xCenter -= 26.0;
@@ -103,8 +100,7 @@ public class MoleculeGroup extends Group {
 
 						else if (i == 4) {
 
-							x += -1;
-							y += 0;
+							x -= 1;
 
 							xCenter -= 52.0;
 							yCenter += 0.0;
@@ -112,16 +108,16 @@ public class MoleculeGroup extends Group {
 
 						else if (i == 5) {
 
-							x += -1;
-							y += -1;
+							x -= 1;
+							y -= 1;
 
 							xCenter -= 26.0;
 							yCenter -= 43.5;
 						}
 
 						checkedHexagons[n] = 1;
-						hexagonsCoords[n] = new Couple<Integer, Integer>(x, y);
-						centersCoords[n] = new Couple<Double, Double>(xCenter, yCenter);
+						hexagonsCoords[n] = new Couple<>(x, y);
+						centersCoords[n] = new Couple<>(xCenter, yCenter);
 						candidates.add(n);
 					}
 				}
@@ -130,10 +126,10 @@ public class MoleculeGroup extends Group {
 			candidates.remove(candidates.get(0));
 		}
 
-		ArrayList<ArrayList<Double>> points = new ArrayList<ArrayList<Double>>();
-		for (int i = 0; i < centersCoords.length; i++) {
+		ArrayList<ArrayList<Double>> points = new ArrayList<>();
+		for (Couple<Double, Double> centersCoord : centersCoords) {
 
-			points.add(getHexagonPoints(centersCoords[i].getX(), centersCoords[i].getY()));
+			points.add(getHexagonPoints(centersCoord.getX(), centersCoord.getY()));
 		}
 
 		double xMin = Double.MAX_VALUE;
@@ -142,9 +138,7 @@ public class MoleculeGroup extends Group {
 		double yMin = Double.MAX_VALUE;
 		double yMax = Double.MIN_VALUE;
 
-		for (int i = 0; i < points.size(); i++) {
-
-			ArrayList<Double> point = points.get(i);
+		for (ArrayList<Double> point : points) {
 
 			for (int j = 0; j < point.size(); j++) {
 
@@ -156,9 +150,7 @@ public class MoleculeGroup extends Group {
 
 					if (u > xMax)
 						xMax = u;
-				}
-
-				else { // y
+				} else { // y
 					if (u < yMin)
 						yMin = u;
 
@@ -177,9 +169,8 @@ public class MoleculeGroup extends Group {
 		if (yMin < 0)
 			yShift = -yMin + 15.0;
 
-		for (int i = 0; i < points.size(); i++) {
+		for (ArrayList<Double> point : points) {
 
-			ArrayList<Double> point = points.get(i);
 			for (int j = 0; j < point.size(); j++) {
 
 				if (j % 2 == 0) // x
@@ -195,13 +186,13 @@ public class MoleculeGroup extends Group {
 		this.resize(width, height);
 
 		for (int i = 0; i < centersCoords.length; i++) {
-			hexagons[i] = new Hexagon2(hexagonsCoords[i], points.get(i), i);
+			hexagons[i] = new Hexagon2(hexagonsCoords[i], points.get(i));
 		}
 	}
 
 	private ArrayList<Double> getHexagonPoints(double xCenter, double yCenter) {
 
-		ArrayList<Double> points = new ArrayList<Double>();
+		ArrayList<Double> points = new ArrayList<>();
 
 		points.add(xCenter);
 		points.add(yCenter - 29.5);

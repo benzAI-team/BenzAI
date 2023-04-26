@@ -1,7 +1,5 @@
 package view.primaryStage.menus;
 
-import java.io.File;
-
 import application.BenzenoidApplication;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -11,9 +9,10 @@ import molecules.Molecule;
 import parsers.GraphParser;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
-import view.draw.DrawBenzenoidPane;
+import view.collections.BenzenoidCollectionsManagerPane;
+
+import java.io.File;
 
 public class InputMenu {
 
@@ -24,9 +23,7 @@ public class InputMenu {
 		BenzenoidCollectionsManagerPane collectionsPane =  (BenzenoidCollectionsManagerPane) app.getPanes().getCollectionsPane();
 		final Menu inputMenu = new Menu("_Input");
 
-		inputMenu.setOnShowing(e -> {
-			app.switchMode(app.getPanes().getCollectionsPane());
-		});
+		inputMenu.setOnShowing(e -> app.switchMode(app.getPanes().getCollectionsPane()));
 
 		MenuItem generatorMenu = new MenuItem("Generator");
 		MenuItem databaseMenu = new MenuItem("Database");
@@ -72,13 +69,9 @@ public class InputMenu {
 
 		importMenu.getItems().addAll(importBenzenoidItem, importCollectionItem);
 
-		databaseMenu.setOnAction(e -> {
-			app.switchMode(app.getPanes().getDatabasePane());
-		});
+		databaseMenu.setOnAction(e -> app.switchMode(app.getPanes().getDatabasePane()));
 
-		generatorMenu.setOnAction(e -> {
-			app.switchMode(app.getPanes().getGeneratorPane());
-		});
+		generatorMenu.setOnAction(e -> app.switchMode(app.getPanes().getGeneratorPane()));
 
 		drawMenu.setOnAction(e -> {
 			app.getPanes().getDrawPane().refreshMenuBar();

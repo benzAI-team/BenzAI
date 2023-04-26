@@ -12,7 +12,7 @@ public abstract class Classifier {
 	
 	protected HashMap<String, MoleculeInformation> moleculesInformations;
 	
-	public Classifier(HashMap<String, MoleculeInformation> moleculesInformations) throws IOException {
+	public Classifier(HashMap<String, MoleculeInformation> moleculesInformations) {
 		this.moleculesInformations = moleculesInformations;
 	}
 	

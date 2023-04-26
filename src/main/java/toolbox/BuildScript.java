@@ -6,7 +6,7 @@ public class BuildScript {
 
 	private static void buildScript(String filename) throws IOException {
 		
-		BufferedReader r = new BufferedReader(new FileReader(new File(filename)));
+		BufferedReader r = new BufferedReader(new FileReader(filename));
 		String line;
 		
 		System.out.println("#! /bin/bash\n");

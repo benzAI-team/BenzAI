@@ -2,15 +2,9 @@ package generator;
 
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
-import utils.Utils;
  
 public class BoundsBuilder {
 
-	public static UndirectedGraph buildGLB(GeneralModel model) {
-		//return new UndirectedGraph(model.getProblem(), model.getDiameter() * model.getDiameter(), SetType.BITSET, false);
-		return new UndirectedGraph(model.getProblem(), model.getDiameter() * model.getDiameter(), SetType.LINKED_LIST, false);
-	}
-	
 	public static UndirectedGraph buildGLB2(GeneralModel model) {
 		return new UndirectedGraph(model.getProblem(), model.getNbHexagonsCoronenoid(), SetType.LINKED_LIST, false);
 	}
@@ -25,11 +19,11 @@ public class BoundsBuilder {
 		/*
 		 * Building nodes
 		 */
-		
-		for (int i = 0 ; i < matrix.length ; i++) {
-			for (int j = 0 ; j < matrix.length ; j++) {
-				if (matrix[i][j] != -1) {
-					GUB.addNode(model.getCorrespondancesHexagons()[matrix[i][j]]);
+
+		for (int[] ints : matrix) {
+			for (int j = 0; j < matrix.length; j++) {
+				if (ints[j] != -1) {
+					GUB.addNode(model.getCorrespondancesHexagons()[ints[j]]);
 				}
 			}
 		} 
@@ -93,74 +87,5 @@ public class BoundsBuilder {
 		
 		return GUB;
 	}
-	
-	public static UndirectedGraph buildGUBGeneralModel(GeneralModel model) {
-		
-		//UndirectedGraph GUB = new UndirectedGraph(model.getProblem(), model.getDiameter() * model.getDiameter(), SetType.BITSET, false);
-		UndirectedGraph GUB = new UndirectedGraph(model.getProblem(), model.getDiameter() * model.getDiameter(), SetType.LINKED_LIST, false);
-		
-		int i, j;
-		for(j = 0; j < model.getNbCrowns(); j++) {
-			for(i = 0; i < model.getNbCrowns(); i++) {
-				
-				GUB.addNode(Utils.getHexagonID(i,j, model.getDiameter()));
-				GUB.addNode(Utils.getHexagonID(model.getNbCrowns() - 1 + i,model.getNbCrowns() - 1 + j, model.getDiameter()));
-				
-				model.getCoordsMatrix()[j][i] = Utils.getHexagonID(i, j, model.getDiameter());
-				model.getCoordsMatrix()[model.getNbCrowns() - 1 + j][model.getNbCrowns() - 1 + i] = Utils.getHexagonID(model.getNbCrowns() - 1 + i,model.getNbCrowns() - 1 + j, model.getDiameter());
-			}
-		}
-		for(j = 0; j < model.getNbCrowns() - 2; j++) {
-			for(i = 0; i < j + 1; i++) {
-				
-				GUB.addNode(Utils.getHexagonID(model.getNbCrowns() - 1 + i+1,j+1, model.getDiameter()));
-				model.getCoordsMatrix()[j+1][model.getNbCrowns() - 1 + i+1] = Utils.getHexagonID(model.getNbCrowns() - 1 + i+1,j+1, model.getDiameter());
-			}
-		}
-		for(j = 0; j < model.getNbCrowns() - 1; j++) {
-			for(i = j; i < model.getNbCrowns() - 2 ; i++) {
-				
-				GUB.addNode(Utils.getHexagonID(i+1,model.getNbCrowns() - 1 + j+1, model.getDiameter()));
-				model.getCoordsMatrix()[model.getNbCrowns() - 1 + j+1][i+1] = Utils.getHexagonID(i+1,model.getNbCrowns() - 1 + j+1, model.getDiameter());
-			}
-		}
-		
-		for(j = 0; j < model.getNbCrowns() - 1; j++) {
-			for(i = 0; i < model.getNbCrowns() - 1; i++) {
-				
-				GUB.addEdge(Utils.getHexagonID(i,j, model.getDiameter()), Utils.getHexagonID(i+1,j, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(i,j, model.getDiameter()), Utils.getHexagonID(i,j+1, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(i,j, model.getDiameter()), Utils.getHexagonID(i+1,j+1, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(model.getNbCrowns() - 1 + i,model.getNbCrowns() - 1 + j, model.getDiameter()), Utils.getHexagonID(model.getNbCrowns() - 1 + i+1,model.getNbCrowns() - 1 + j, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(model.getNbCrowns() - 1 + i,model.getNbCrowns() - 1 + j, model.getDiameter()), Utils.getHexagonID(model.getNbCrowns() - 1 + i,model.getNbCrowns() - 1 + j+1, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(model.getNbCrowns() - 1 + i,model.getNbCrowns() - 1 + j, model.getDiameter()), Utils.getHexagonID(model.getNbCrowns() - 1 + i+1,model.getNbCrowns() - 1 + j+1, model.getDiameter()));
-			
-			}
-		}
-		for(j = 0; j < model.getNbCrowns() - 1; j++) {
-			for(i = 0; i < j + 1; i++) {
-				
-				GUB.addEdge(Utils.getHexagonID(model.getNbCrowns() - 1 + i,j, model.getDiameter()), Utils.getHexagonID(model.getNbCrowns() - 1 + i,j + 1, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(model.getNbCrowns() - 1 + i,j, model.getDiameter()), Utils.getHexagonID(model.getNbCrowns() - 1 + i+1,j+1, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(model.getNbCrowns() - 1 + i,j+1, model.getDiameter()), Utils.getHexagonID(model.getNbCrowns() - 1 + i+1,j+1, model.getDiameter()));
-			}
-		}
-		
-		for(j = 0; j < model.getNbCrowns() - 1; j++) {
-			for(i = j; i < model.getNbCrowns() - 1; i++) {
-				
-				GUB.addEdge(Utils.getHexagonID(i,model.getNbCrowns() - 1 + j, model.getDiameter()), Utils.getHexagonID(i+1,model.getNbCrowns() - 1 + j, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(i,model.getNbCrowns() - 1 + j, model.getDiameter()), Utils.getHexagonID(i+1,model.getNbCrowns() - 1 + j+1, model.getDiameter()));
-				GUB.addEdge(Utils.getHexagonID(i+1,model.getNbCrowns() - 1 + j, model.getDiameter()), Utils.getHexagonID(i+1,model.getNbCrowns() - 1 + j+1, model.getDiameter()));
-			}
-		}
-		
-		for(j = 0; j < model.getNbCrowns() - 1; j++) {
-			
-			GUB.addEdge(Utils.getHexagonID(model.getDiameter() - 1,model.getNbCrowns() - 1 + j, model.getDiameter()), Utils.getHexagonID(model.getDiameter() - 1,model.getNbCrowns() + j, model.getDiameter()));
-			GUB.addEdge(Utils.getHexagonID(model.getNbCrowns() - 1 + j,model.getDiameter() - 1, model.getDiameter()), Utils.getHexagonID(model.getNbCrowns() + j,model.getDiameter() - 1, model.getDiameter()));
-		}
-		
-		return GUB;
-	}
+
 }

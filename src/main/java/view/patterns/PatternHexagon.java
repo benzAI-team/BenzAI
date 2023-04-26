@@ -56,7 +56,7 @@ public class PatternHexagon extends Polygon {
     }
     else
       label = lastLabel;
-		this.setFill(COLORS[label]);
+	this.setFill(COLORS[label]);
 	}
 
 	public void setLabel(int label) {

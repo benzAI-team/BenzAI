@@ -17,7 +17,7 @@ public class MoleculeFilter {
 
 	private static Couple<Integer, Integer> countCarbonsAndHydrogens(Molecule molecule) {
 		
-		return new Couple<Integer, Integer>(molecule.getNbNodes(), molecule.getNbHydrogens());
+		return new Couple<>(molecule.getNbNodes(), molecule.getNbHydrogens());
 	}
 	
 	private static Irregularity computeParameterOfIrregularity(Molecule molecule) {
@@ -28,7 +28,7 @@ public class MoleculeFilter {
 		int [] N = new int [4];
 		int [] checkedNodes = new int [molecule.getNbNodes()];
 			
-		ArrayList<Integer> V = new ArrayList<Integer>();
+		ArrayList<Integer> V = new ArrayList<>();
 			
 		for (int u = 0 ; u < molecule.getNbNodes() ; u++) {
 			int degree = molecule.degree(u);
@@ -41,7 +41,7 @@ public class MoleculeFilter {
 				checkedNodes[u] = -1;
 		}
 				
-		ArrayList<Integer> candidats = new ArrayList<Integer>();
+		ArrayList<Integer> candidats = new ArrayList<>();
 			
 		while (true) {
 				
@@ -96,16 +96,16 @@ public class MoleculeFilter {
 			System.out.println(filename + " " + nbCarbons + " " + nbHydrogens + " " + irregularity);
 	}
 	
-	private static void readFile(String filename) throws IOException{
+	private static void readFile(String filename) {
 		Molecule molecule = GraphParser.parseUndirectedGraph(filename, null, false);
 		check(molecule, filename);
 	}
 	
 	private static void readAllFiles(String filename) throws IOException {
 		
-		BufferedWriter log = new BufferedWriter(new FileWriter(new File("log")));
+		BufferedWriter log = new BufferedWriter(new FileWriter("log"));
 		
-		BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
+		BufferedReader reader = new BufferedReader(new FileReader(filename));
 		String line;
 		
 		while((line = reader.readLine()) != null) {

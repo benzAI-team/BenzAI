@@ -1,16 +1,10 @@
 package correlations;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 import molecules.Molecule;
 import parsers.GraphParser;
+
+import java.io.*;
+import java.util.regex.Pattern;
 
 public class CorrelationLinFan {
 
@@ -30,7 +24,7 @@ public class CorrelationLinFan {
 		String dir = args[1];
 		
 		BufferedReader r = new BufferedReader(new FileReader(listFile));
-		String line = "";
+		String line;
 		
 		while((line = r.readLine()) != null) {
 			

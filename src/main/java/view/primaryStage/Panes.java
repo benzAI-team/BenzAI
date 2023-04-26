@@ -11,13 +11,13 @@ import view.generator.GeneratorPane;
 import view.generator.preferences.GeneratorPreferencesPane;
 
 public class Panes {
-	private Region generatorPane;
-	private Region collectionsPane;
-	private DrawBenzenoidPane drawPane;
-	private Region filteringPane;
+	private final Region generatorPane;
+	private final Region collectionsPane;
+	private final DrawBenzenoidPane drawPane;
+	private final Region filteringPane;
 	private Region databasePane;
-	private Region operationPane;
-	private Region generationPreferencesPane;
+	private final Region operationPane;
+	private final Region generationPreferencesPane;
 
 	public Panes(BenzenoidApplication app) {
 		collectionsPane = new BenzenoidCollectionsManagerPane(app);
@@ -34,32 +34,16 @@ public class Panes {
 		return generatorPane;
 	}
 
-	public void setGeneratorPane(Region generatorPane) {
-		this.generatorPane = generatorPane;
-	}
-
 	public Region getCollectionsPane() {
 		return collectionsPane;
-	}
-
-	public void setCollectionsPane(Region collectionsPane) {
-		this.collectionsPane = collectionsPane;
 	}
 
 	public DrawBenzenoidPane getDrawPane() {
 		return drawPane;
 	}
 
-	public void setDrawPane(DrawBenzenoidPane drawPane) {
-		this.drawPane = drawPane;
-	}
-
 	public Region getFilteringPane() {
 		return filteringPane;
-	}
-
-	public void setFilteringPane(Region filteringPane) {
-		this.filteringPane = filteringPane;
 	}
 
 	public Region getDatabasePane() {
@@ -74,16 +58,8 @@ public class Panes {
 		return operationPane;
 	}
 
-	public void setOperationPane(Region operationPane) {
-		this.operationPane = operationPane;
-	}
-
 	public Region getGenerationPreferencesPane() {
 		return generationPreferencesPane;
 	}
 
-	public void setGenerationPreferencesPane(Region generationPreferencesPane) {
-		this.generationPreferencesPane = generationPreferencesPane;
-	}
-	
 }

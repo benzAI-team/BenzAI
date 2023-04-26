@@ -19,7 +19,7 @@ public abstract class PlotPane extends GridPane {
 	protected abstract void buildLineChart();
 	
 	public void exportAsPDF(File file) {
-		
+		//TODO linechart never assigned
 		WritableImage wi = lineChart.snapshot(new SnapshotParameters(), new WritableImage(501, 408));
 		BufferedImage awtImage = new BufferedImage((int)wi.getWidth(), (int)wi.getHeight(), BufferedImage.TYPE_INT_RGB);
 		

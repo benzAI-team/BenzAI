@@ -9,7 +9,7 @@ public class GraphConversion {
 
 	public static SimpleGraph<Integer, DefaultEdge> buildCarbonGraph(Molecule molecule) {
 		
-		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<>(DefaultEdge.class);
 		
 		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
 			carbonGraph.addVertex(i);
@@ -29,7 +29,7 @@ public class GraphConversion {
 	public static SimpleGraph<Integer, DefaultEdge> buildHexagonGraph(Molecule molecule) {
 		
 		int [][] dualGraph = molecule.getDualGraph();
-		SimpleGraph<Integer, DefaultEdge> hexagonGraph = new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+		SimpleGraph<Integer, DefaultEdge> hexagonGraph = new SimpleGraph<>(DefaultEdge.class);
 		
 		for (int i = 0 ; i < molecule.getNbHexagons() ; i++) {
 			hexagonGraph.addVertex(i);
@@ -60,7 +60,7 @@ public class GraphConversion {
 		int k = 0;
 		int i, j;
 		int haut, hautdroit, basdroit, bas, basgauche, hautgauche;
-		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<>(DefaultEdge.class);
 
 		for (j = 0; j < largeur; j++)
 			for (i = 0; i < largeur; i++) {
@@ -117,9 +117,9 @@ public class GraphConversion {
 		int k = 0;
 		int i, j;
 		int haut, hautdroit, basdroit, bas, basgauche, hautgauche;
-		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
-		String CMLVerticesString = "";
-		String CMLEdgesString = "";
+		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<>(DefaultEdge.class);
+		StringBuilder CMLVerticesString = new StringBuilder();
+		StringBuilder CMLEdgesString = new StringBuilder();
 		double dx = Math.sqrt(3.0) / 2.0;
 		double facteur = 1.5;
 
@@ -157,35 +157,29 @@ public class GraphConversion {
 				double ycentre = 1.5 * j * facteur;
 
 				if (hexagonGraph.containsVertex(i + largeur * j)) {
-					CMLVerticesString = CMLVerticesString
-							+ maybeNewCarbon(carbonGraph, haut, xcentre, ycentre - facteur);
+					CMLVerticesString.append(maybeNewCarbon(carbonGraph, haut, xcentre, ycentre - facteur));
 					carbonGraph.addVertex(haut);
-					CMLVerticesString = CMLVerticesString
-							+ maybeNewCarbon(carbonGraph, hautdroit, xcentre + facteur * dx, ycentre - 0.5 * facteur);
+					CMLVerticesString.append(maybeNewCarbon(carbonGraph, hautdroit, xcentre + facteur * dx, ycentre - 0.5 * facteur));
 					carbonGraph.addVertex(hautdroit);
-					CMLVerticesString = CMLVerticesString
-							+ maybeNewCarbon(carbonGraph, basdroit, xcentre + facteur * dx, ycentre + 0.5 * facteur);
+					CMLVerticesString.append(maybeNewCarbon(carbonGraph, basdroit, xcentre + facteur * dx, ycentre + 0.5 * facteur));
 					carbonGraph.addVertex(basdroit);
-					CMLVerticesString = CMLVerticesString
-							+ maybeNewCarbon(carbonGraph, bas, xcentre, ycentre + facteur);
+					CMLVerticesString.append(maybeNewCarbon(carbonGraph, bas, xcentre, ycentre + facteur));
 					carbonGraph.addVertex(bas);
-					CMLVerticesString = CMLVerticesString
-							+ maybeNewCarbon(carbonGraph, basgauche, xcentre - dx * facteur, ycentre + 0.5 * facteur);
+					CMLVerticesString.append(maybeNewCarbon(carbonGraph, basgauche, xcentre - dx * facteur, ycentre + 0.5 * facteur));
 					carbonGraph.addVertex(basgauche);
-					CMLVerticesString = CMLVerticesString
-							+ maybeNewCarbon(carbonGraph, hautgauche, xcentre - dx * facteur, ycentre - 0.5 * facteur);
+					CMLVerticesString.append(maybeNewCarbon(carbonGraph, hautgauche, xcentre - dx * facteur, ycentre - 0.5 * facteur));
 					carbonGraph.addVertex(hautgauche);
-					CMLEdgesString = CMLEdgesString + maybeNewBond(carbonGraph, haut, hautdroit);
+					CMLEdgesString.append(maybeNewBond(carbonGraph, haut, hautdroit));
 					carbonGraph.addEdge(haut, hautdroit);
-					CMLEdgesString = CMLEdgesString + maybeNewBond(carbonGraph, hautdroit, basdroit);
+					CMLEdgesString.append(maybeNewBond(carbonGraph, hautdroit, basdroit));
 					carbonGraph.addEdge(hautdroit, basdroit);
-					CMLEdgesString = CMLEdgesString + maybeNewBond(carbonGraph, basdroit, bas);
+					CMLEdgesString.append(maybeNewBond(carbonGraph, basdroit, bas));
 					carbonGraph.addEdge(basdroit, bas);
-					CMLEdgesString = CMLEdgesString + maybeNewBond(carbonGraph, bas, basgauche);
+					CMLEdgesString.append(maybeNewBond(carbonGraph, bas, basgauche));
 					carbonGraph.addEdge(bas, basgauche);
-					CMLEdgesString = CMLEdgesString + maybeNewBond(carbonGraph, basgauche, hautgauche);
+					CMLEdgesString.append(maybeNewBond(carbonGraph, basgauche, hautgauche));
 					carbonGraph.addEdge(basgauche, hautgauche);
-					CMLEdgesString = CMLEdgesString + maybeNewBond(carbonGraph, hautgauche, haut);
+					CMLEdgesString.append(maybeNewBond(carbonGraph, hautgauche, haut));
 					carbonGraph.addEdge(hautgauche, haut);
 				}
 				k = k + 6;

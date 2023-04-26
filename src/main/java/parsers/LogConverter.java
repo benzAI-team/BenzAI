@@ -31,14 +31,12 @@ public class LogConverter {
 				line = reader.readLine();
 				ArrayList<String> geometry = new ArrayList<>();
 
-				while (true) {
+				do {
 
 					geometry.add(line);
 
 					line = reader.readLine();
-					if (line.contains("Rotational constants"))
-						break;
-				}
+				} while (!line.contains("Rotational constants"));
 
 				geometries.add(geometry);
 			}

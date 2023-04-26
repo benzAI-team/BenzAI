@@ -43,9 +43,7 @@ public class AboutPane extends BorderPane {
 
 		Hyperlink releases = new Hyperlink("releases");
 
-		releases.setOnAction(e -> {
-			application.getHostServices().showDocument("https://github.com/benzAI-team/BenzAI/releases");
-		});
+		releases.setOnAction(e -> application.getHostServices().showDocument("https://github.com/benzAI-team/BenzAI/releases"));
 
 		HBox boxVersion = new HBox(3.0);
 		boxVersion.getChildren().addAll(versionLabel, releases);
@@ -55,9 +53,7 @@ public class AboutPane extends BorderPane {
 
 		Hyperlink website = new Hyperlink("Visit our website");
 
-		website.setOnAction(e -> {
-			application.getHostServices().showDocument("https://benzai-team.github.io/");
-		});
+		website.setOnAction(e -> application.getHostServices().showDocument("https://benzai-team.github.io/"));
 
 		Label teamLabel = new Label("Developed by benzAI-team ");
 

@@ -13,7 +13,6 @@ public class HelpPane extends GridPane {
 	private ArrayList<HelpHBox> helpBoxes;
 
 	private GridPane gridPane;
-	private ScrollPane leftScrollPane;
 
 	private TextArea curentArea;
 
@@ -24,7 +23,7 @@ public class HelpPane extends GridPane {
 
 	private void initialize() {
 		gridPane = new GridPane();
-		leftScrollPane = new ScrollPane();
+		ScrollPane leftScrollPane = new ScrollPane();
 
 		leftScrollPane.setContent(gridPane);
 

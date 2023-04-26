@@ -12,13 +12,10 @@ public class Hexagon2 extends Polygon {
 	private final ArrayList<Double> points;
 	private Couple<Double, Double> center;
 
-	private final int index;
-	
-	public Hexagon2(Couple<Integer, Integer> coords, ArrayList<Double> points, int index) {
+	public Hexagon2(Couple<Integer, Integer> coords, ArrayList<Double> points) {
 		super();
 		this.coords = coords;
 		this.points = points;
-		this.index = index;
 		initialize();
 	}
 

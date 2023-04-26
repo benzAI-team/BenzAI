@@ -12,8 +12,6 @@ public class HelpHBox extends HBox {
 	private final String name;
 	private ArrayList<SubHelpHBox> subBoxes;
 
-	private OpenButton openButton;
-
 	private boolean open;
 
 	public HelpHBox(String name, HelpPane parent) {
@@ -27,7 +25,7 @@ public class HelpHBox extends HBox {
 	private void initialize() {
 		open = false;
 		subBoxes = new ArrayList<>();
-		openButton = new OpenButton(this);
+		OpenButton openButton = new OpenButton(this);
 
 		Label label = new Label(name);
 

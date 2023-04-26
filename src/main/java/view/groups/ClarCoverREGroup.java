@@ -15,7 +15,6 @@ public class ClarCoverREGroup extends MoleculeGroup {
 	private final int[] clarValues;
 
 	private Color[] paletteLocalScale;
-	private Color[] paletteGlobalScale;
 
 	public ClarCoverREGroup(Molecule molecule, int[] clarValues) throws IOException {
 		super(molecule);
@@ -39,7 +38,7 @@ public class ClarCoverREGroup extends MoleculeGroup {
 		}
 	}
 
-	private void buildPalette() throws IOException {
+	private void buildPalette() {
 
 		int[][] rgb = new int[][] { { 2, 3, 68 }, { 3, 9, 73 }, { 5, 15, 78 }, { 6, 22, 83 }, { 7, 28, 88 },
 				{ 9, 34, 93 }, { 10, 40, 98 }, { 11, 47, 103 }, { 12, 53, 108 }, { 14, 59, 113 }, { 15, 65, 118 },
@@ -49,7 +48,7 @@ public class ClarCoverREGroup extends MoleculeGroup {
 				{ 37, 172, 203 }, { 39, 178, 208 }, { 40, 184, 213 } };
 
 		paletteLocalScale = new Color[rgb.length];
-		paletteGlobalScale = new Color[10];
+		Color[] paletteGlobalScale = new Color[10];
 
 		System.out.println(rgb.length + " colors");
 
@@ -70,7 +69,7 @@ public class ClarCoverREGroup extends MoleculeGroup {
 	private void coloringHexagons() {
 
 		// double[] localAromaticity = aromaticity.getLocalAromaticity();
-		ArrayList<HexagonAromaticity> aromaticities = new ArrayList<HexagonAromaticity>();
+		ArrayList<HexagonAromaticity> aromaticities = new ArrayList<>();
 
 		for (int i = 0; i < clarValues.length; i++)
 			aromaticities.add(new HexagonAromaticity(i, (double) clarValues[i]));
@@ -80,7 +79,7 @@ public class ClarCoverREGroup extends MoleculeGroup {
 		int nbColors = 0;
 		double curentValue = -1.0;
 
-		ArrayList<Double> values = new ArrayList<Double>();
+		ArrayList<Double> values = new ArrayList<>();
 
 		for (HexagonAromaticity aromaticity : aromaticities) {
 			if (aromaticity.getAromaticity() != curentValue) {

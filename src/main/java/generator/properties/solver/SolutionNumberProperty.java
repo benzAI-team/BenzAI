@@ -1,9 +1,7 @@
 package generator.properties.solver;
 
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.generator.boxes.HBoxCriterion;
-import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxNbSolutionsCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 

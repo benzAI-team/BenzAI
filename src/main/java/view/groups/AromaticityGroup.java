@@ -1,11 +1,5 @@
 package view.groups;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -13,14 +7,16 @@ import molecules.Molecule;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
 import utils.HexagonAromaticity;
-import view.collections.BenzenoidCollectionsManagerPane;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class AromaticityGroup extends MoleculeGroup {
 
 	public static AromaticityDisplayType aromaticityDisplayType;
-	
-	@SuppressWarnings("unused")
-	private final BenzenoidCollectionsManagerPane pane;
 
 	private Color[] paletteLocalScale;
 	private Color[] paletteGlobalScale;
@@ -28,11 +24,10 @@ public class AromaticityGroup extends MoleculeGroup {
 	private final Aromaticity aromaticity;
 	
 	
-	public AromaticityGroup(BenzenoidCollectionsManagerPane pane, Molecule molecule, Aromaticity aromaticity)
+	public AromaticityGroup(Molecule molecule, Aromaticity aromaticity)
 			throws IOException {
 
 		super(molecule);
-		this.pane = pane;
 		this.aromaticity = aromaticity;
 		removeTexts();
 		writeAromaticity();
@@ -48,14 +43,14 @@ public class AromaticityGroup extends MoleculeGroup {
 			
 			Hexagon2 hexagon = hexagons[i];
 			StringBuilder builder = new StringBuilder();
-			Tooltip tooltip = null;
-			builder.append("H" + i);
+			Tooltip tooltip;
+			builder.append("H").append(i);
 
 			if (writeText) {
 
 				BigDecimal bd = BigDecimal.valueOf(aromaticity.getLocalAromaticity()[i]).setScale(2, RoundingMode.HALF_UP);
 
-				builder.append(": " + bd.doubleValue());
+				builder.append(": ").append(bd.doubleValue());
 				
 				tooltip = new Tooltip(builder.toString());
 				
@@ -76,10 +71,7 @@ public class AromaticityGroup extends MoleculeGroup {
 				else {
 					
 					if(valueStr.length() < 4) {
-						String toAppend = "";
-						for (int j = valueStr.length() ; j < 4 ; j++)
-							toAppend += 0;
-						valueStr = valueStr + toAppend;
+						valueStr = valueStr + "0".repeat(4 - valueStr.length());
 					}
 					
 					text = createText(valueStr);
@@ -103,7 +95,7 @@ public class AromaticityGroup extends MoleculeGroup {
 	private void coloringHexagonsWithLocalScale() {
 
 		double[] localAromaticity = aromaticity.getLocalAromaticity();
-		ArrayList<HexagonAromaticity> aromaticities = new ArrayList<HexagonAromaticity>();
+		ArrayList<HexagonAromaticity> aromaticities = new ArrayList<>();
 
 		for (int i = 0; i < localAromaticity.length; i++)
 			aromaticities.add(new HexagonAromaticity(i, localAromaticity[i]));
@@ -113,7 +105,7 @@ public class AromaticityGroup extends MoleculeGroup {
 		int nbColors = 0;
 		double curentValue = -1.0;
 
-		ArrayList<Double> values = new ArrayList<Double>();
+		ArrayList<Double> values = new ArrayList<>();
 
 		for (HexagonAromaticity aromaticity : aromaticities) {
 			if (aromaticity.getAromaticity() != curentValue) {
@@ -152,13 +144,13 @@ public class AromaticityGroup extends MoleculeGroup {
 			hexagon.setOnMouseClicked(e -> {
 
 				StringBuilder informations = new StringBuilder();
-				informations.append("H" + index + " : ");
+				informations.append("H").append(index).append(" : ");
 
-				for (int j = 0; j < localCircuits.length; j++) {
-					informations.append(localCircuits[j] + " ");
+				for (double localCircuit : localCircuits) {
+					informations.append(localCircuit).append(" ");
 				}
 
-				informations.append("(" + aromaticity.getLocalAromaticity()[index] + ")");
+				informations.append("(").append(aromaticity.getLocalAromaticity()[index]).append(")");
 
 			});
 		}
@@ -208,7 +200,7 @@ public class AromaticityGroup extends MoleculeGroup {
 		
 	}
 	
-	private void buildPalette() throws IOException {
+	private void buildPalette() {
 
 		int[][] rgb = new int[][] { { 2, 3, 68 }, { 3, 9, 73 }, { 5, 15, 78 }, { 6, 22, 83 }, { 7, 28, 88 },
 				{ 9, 34, 93 }, { 10, 40, 98 }, { 11, 47, 103 }, { 12, 53, 108 }, { 14, 59, 113 }, { 15, 65, 118 },

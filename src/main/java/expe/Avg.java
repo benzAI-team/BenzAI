@@ -9,7 +9,7 @@ public class Avg {
 
 	public static void main(String[] args) throws IOException {
 
-		BufferedReader r = new BufferedReader(new FileReader(new File("C:\\Users\\adrie\\Desktop\\toavg.txt")));
+		BufferedReader r = new BufferedReader(new FileReader("C:\\Users\\adrie\\Desktop\\toavg.txt"));
 		String line;
 
 		boolean header = true;

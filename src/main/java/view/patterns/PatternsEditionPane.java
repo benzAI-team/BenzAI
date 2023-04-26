@@ -1,9 +1,8 @@
 package view.patterns;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
+import constraints.ForbiddenPatternConstraint1;
+import constraints.MultiplePatterns1Constraint;
+import constraints.SinglePattern2Constraint;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
@@ -11,38 +10,29 @@ import generator.patterns.Pattern;
 import generator.patterns.PatternGenerationType;
 import generator.patterns.PatternResolutionInformations;
 import generator.patterns.PatternsInterraction;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.PatternExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.PatternExpression;
-import constraints.ForbiddenPatternConstraint1;
-import constraints.MultiplePatterns1Constraint;
-import constraints.SinglePattern2Constraint;
 import molecules.Node;
 import utils.Utils;
 import view.generator.boxes.HBoxPatternCriterion;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class PatternsEditionPane extends BorderPane {
 
 	private final HBoxPatternCriterion parent;
-	private MenuBar menuBar;
 	private BorderPane borderPane;
 	private ListView<GridPane> listView;
 	private ArrayList<GridPane> boxItems;
@@ -73,7 +63,7 @@ public class PatternsEditionPane extends BorderPane {
 
 	private void initializeMenu() {
 
-		menuBar = new MenuBar();
+		MenuBar menuBar = new MenuBar();
 
 		Menu fileMenu = new Menu("File");
 		MenuItem importItem = new MenuItem("Import pattern");
@@ -111,7 +101,7 @@ public class PatternsEditionPane extends BorderPane {
 					ok = false;
 				}
 
-				if (ok && pattern != null) {
+				if (ok) {
 
 					int yMax = -1;
 
@@ -155,21 +145,13 @@ public class PatternsEditionPane extends BorderPane {
 		drawingMenu.getItems().addAll(clearItem, neutralItem, positiveItem, negativeItem);
 		menuBar.getMenus().add(drawingMenu);
 
-		clearItem.setOnAction(e -> {
-			selectedPatternGroup.setAllLabels(0);
-		});
+		clearItem.setOnAction(e -> selectedPatternGroup.setAllLabels(0));
 
-		neutralItem.setOnAction(e -> {
-			selectedPatternGroup.setAllLabels(1);
-		});
+		neutralItem.setOnAction(e -> selectedPatternGroup.setAllLabels(1));
 
-		positiveItem.setOnAction(e -> {
-			selectedPatternGroup.setAllLabels(2);
-		});
+		positiveItem.setOnAction(e -> selectedPatternGroup.setAllLabels(2));
 
-		negativeItem.setOnAction(e -> {
-			selectedPatternGroup.setAllLabels(3);
-		});
+		negativeItem.setOnAction(e -> selectedPatternGroup.setAllLabels(3));
 
 		Label labelName = new Label("Name: ");
 		fieldName = new TextField("default name");
@@ -199,13 +181,9 @@ public class PatternsEditionPane extends BorderPane {
 				((Label) gridPane.getChildren().get(0)).setText("default name");
 		});
 
-		minusButton.setOnAction(e -> {
-			removeCrown();
-		});
+		minusButton.setOnAction(e -> removeCrown());
 
-		plusButton.setOnAction(e -> {
-			addCrown();
-		});
+		plusButton.setOnAction(e -> addCrown());
 
 		Menu patternMenu = new Menu("Patterns properties");
 		Menu multipleMenu = new Menu("Multiple patterns interaction");
@@ -287,7 +265,7 @@ public class PatternsEditionPane extends BorderPane {
 				patterns.add(buildPattern(group));
 			}
 
-			PatternGenerationType type = null;
+			PatternGenerationType type;
 			String subject = "";
 			PatternResolutionInformations patternInformations = null; 
 			
@@ -345,23 +323,17 @@ public class PatternsEditionPane extends BorderPane {
 
 		});
 
-		addButton.setOnAction(e -> {
-			addEntry();
-		});
+		addButton.setOnAction(e -> addEntry());
 
 		VBox vBox = new VBox(5.0);
 		vBox.getChildren().addAll(listView, buttonBox);
 		vBox.setPrefHeight(this.getHeight());
 
-		listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				GridPane selection = listView.getSelectionModel().getSelectedItem();
-				if (selection != null) {
-					PatternCloseButton button = (PatternCloseButton) selection.getChildren().get(1);
-					select(button.getIndex());
-				}
+		listView.setOnMouseClicked(event -> {
+			GridPane selection = listView.getSelectionModel().getSelectedItem();
+			if (selection != null) {
+				PatternCloseButton button = (PatternCloseButton) selection.getChildren().get(1);
+				select(button.getIndex());
 			}
 		});
 

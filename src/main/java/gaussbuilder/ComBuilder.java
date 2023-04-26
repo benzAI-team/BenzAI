@@ -1,18 +1,15 @@
 package gaussbuilder;
 
-import java.io.BufferedReader;
+import molecules.Molecule;
+import parsers.ComConverter.ComType;
+import parsers.GraphParser;
+import utils.Triplet;
+
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import molecules.Molecule;
-import parsers.GraphParser;
-import parsers.ComConverter.ComType;
-import utils.Triplet;
 
 public class ComBuilder {
 
@@ -63,16 +60,16 @@ public class ComBuilder {
 			break;
 		}
 
-		String s = "";
+		StringBuilder s = new StringBuilder();
 
 		for (Triplet<Double, Double, Double> carbon : carbons) {
 			writer.write(" C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n");
-			s += " C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n";
+			s.append(" C ").append(carbon.getX()).append(" ").append(carbon.getY()).append(" ").append(carbon.getZ()).append("\n");
 		}
 
 		for (Triplet<Double, Double, Double> hydrogen : hydrogens) {
 			writer.write(" H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n");
-			s += " H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n";
+			s.append(" H ").append(hydrogen.getX()).append(" ").append(hydrogen.getY()).append(" ").append(hydrogen.getZ()).append("\n");
 		}
 
 		writer.write("\n");
@@ -83,7 +80,7 @@ public class ComBuilder {
 	
 	public static void main(String [] args) throws IOException {
 		File dir = new File("/home/adrien/Documents/old_log_files/bad_benzenoids/");
-		BufferedWriter w = new BufferedWriter(new FileWriter(new File("/home/adrien/Documents/old_log_files/bad_benzenoids/delete_bad_benzenodis.sql")));
+		BufferedWriter w = new BufferedWriter(new FileWriter("/home/adrien/Documents/old_log_files/bad_benzenoids/delete_bad_benzenodis.sql"));
 		
 //		StringBuilder benzenoid = new StringBuilder();
 //		StringBuilder point = new StringBuilder();
