@@ -38,7 +38,7 @@ public class CorrelationLinOpt {
 		String dir = args[1];
 		
 		BufferedReader r = new BufferedReader(new FileReader(listFile));
-		String line = "";
+		String line;
 		
 		while((line = r.readLine()) != null) {
 			

@@ -12,7 +12,7 @@ public class PAHClass {
 	public PAHClass(String title, HashMap<String, MoleculeInformation> moleculesInformations) {
 		this.title = title;
 		this.moleculesInformations = moleculesInformations;
-		moleculesNames = new ArrayList<String>();
+		moleculesNames = new ArrayList<>();
 	}
 
 	public void addMolecule(String molecule) {
@@ -40,10 +40,10 @@ public class PAHClass {
 
 		StringBuilder builder = new StringBuilder();
 
-		builder.append(title + "\n");
+		builder.append(title).append("\n");
 
 		for (String molecule : moleculesNames)
-			builder.append(moleculesInformations.get(molecule).getPathToGraphFile() + "\n");
+			builder.append(moleculesInformations.get(molecule).getPathToGraphFile()).append("\n");
 
 		return builder.toString();
 	}

@@ -3,7 +3,6 @@ package correlations;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class ComputeCorrelations {
@@ -23,20 +22,21 @@ public class ComputeCorrelations {
 		File dir = new File(args[0]);
 		File [] files = dir.listFiles();
 		
-		BufferedWriter w1 = new BufferedWriter(new FileWriter(new File(dir + "/coeff_lin_linfan.txt"), true));
-		BufferedWriter w2 = new BufferedWriter(new FileWriter(new File(dir + "/coeff_lin_nics.txt"), true));
-		BufferedWriter w3 = new BufferedWriter(new FileWriter(new File(dir + "/coeff_linfan_nics.txt"), true));
-		BufferedWriter w4 = new BufferedWriter(new FileWriter(new File(dir + "/coeff_lin_linfan_ns.txt"), true));
-		BufferedWriter w5 = new BufferedWriter(new FileWriter(new File(dir + "/coeff_lin_nics_ns.txt"), true));
-		BufferedWriter w6 = new BufferedWriter(new FileWriter(new File(dir + "/coeff_linfan_nics_ns.txt"), true));
+		BufferedWriter w1 = new BufferedWriter(new FileWriter(dir + "/coeff_lin_linfan.txt", true));
+		BufferedWriter w2 = new BufferedWriter(new FileWriter(dir + "/coeff_lin_nics.txt", true));
+		BufferedWriter w3 = new BufferedWriter(new FileWriter(dir + "/coeff_linfan_nics.txt", true));
+		BufferedWriter w4 = new BufferedWriter(new FileWriter(dir + "/coeff_lin_linfan_ns.txt", true));
+		BufferedWriter w5 = new BufferedWriter(new FileWriter(dir + "/coeff_lin_nics_ns.txt", true));
+		BufferedWriter w6 = new BufferedWriter(new FileWriter(dir + "/coeff_linfan_nics_ns.txt", true));
 		
-		BufferedWriter w1d = new BufferedWriter(new FileWriter(new File(dir + "/coeff_lin_linfan_details.txt"), true));
-		BufferedWriter w2d = new BufferedWriter(new FileWriter(new File(dir + "/coeff_lin_nics_details.txt"), true));
-		BufferedWriter w3d = new BufferedWriter(new FileWriter(new File(dir + "/coeff_linfan_nics_details.txt"), true));
-		BufferedWriter w4d = new BufferedWriter(new FileWriter(new File(dir + "/coeff_lin_linfan_ns_details.txt"), true));
-		BufferedWriter w5d = new BufferedWriter(new FileWriter(new File(dir + "/coeff_lin_nics_ns_details.txt"), true));
-		BufferedWriter w6d = new BufferedWriter(new FileWriter(new File(dir + "/coeff_linfan_nics_ns_details.txt"), true));
-		
+		BufferedWriter w1d = new BufferedWriter(new FileWriter(dir + "/coeff_lin_linfan_details.txt", true));
+		BufferedWriter w2d = new BufferedWriter(new FileWriter(dir + "/coeff_lin_nics_details.txt", true));
+		BufferedWriter w3d = new BufferedWriter(new FileWriter(dir + "/coeff_linfan_nics_details.txt", true));
+		BufferedWriter w4d = new BufferedWriter(new FileWriter(dir + "/coeff_lin_linfan_ns_details.txt", true));
+		BufferedWriter w5d = new BufferedWriter(new FileWriter(dir + "/coeff_lin_nics_ns_details.txt", true));
+		BufferedWriter w6d = new BufferedWriter(new FileWriter(dir + "/coeff_linfan_nics_ns_details.txt", true));
+
+		assert files != null;
 		for (File linFile : files) {
 			if (linFile.getName().endsWith("_lin.dat") /*&& !linFile.getName().contains("molecule_19")*/) {
 				
@@ -77,8 +77,7 @@ public class ComputeCorrelations {
 				
 				//reading lin dat
 				r = new BufferedReader(new FileReader(linFile));
-				line = "";
-				HashMap<Double, ArrayList<Integer>> map = new HashMap<>();
+					HashMap<Double, ArrayList<Integer>> map = new HashMap<>();
 				
 				while ((line = r.readLine()) != null) {
 					
@@ -100,8 +99,7 @@ public class ComputeCorrelations {
 				
 				//reading linfan dat
 				r = new BufferedReader(new FileReader(linFanFile));
-				line = "";
-				map = new HashMap<>();
+					map = new HashMap<>();
 				
 				while ((line = r.readLine()) != null) {
 					
@@ -122,8 +120,7 @@ public class ComputeCorrelations {
 				
 				//reading nics dat
 				r = new BufferedReader(new FileReader(nicsFile));
-				line = "";
-				map = new HashMap<>();
+					map = new HashMap<>();
 				
 				while ((line = r.readLine()) != null) {
 					
@@ -146,15 +143,14 @@ public class ComputeCorrelations {
 				
 				//list wo symmetries
 				for (Entry<Double, ArrayList<Integer>> entry : map.entrySet()) {
-					Double key = entry.getKey();
 					ArrayList<Integer> value = entry.getValue();
 					int hexagon = value.get(0);
 		    	
 					linValuesNS.add(linValues.get(hexagon));
 					if (linFanValues.size() == linValues.size())
 						linFanValuesNS.add(linFanValues.get(hexagon));
-					if (nicsValues.size() == linValues.size());
-					nicsValuesNS.add(nicsValues.get(hexagon));
+					if (nicsValues.size() == linValues.size())
+						nicsValuesNS.add(nicsValues.get(hexagon));
 				}
 			
 				

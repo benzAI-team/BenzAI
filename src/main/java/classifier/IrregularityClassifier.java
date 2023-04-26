@@ -1,15 +1,13 @@
 package classifier;
 
+import molecules.Molecule;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
-
-import molecules.Molecule;
 
 public class IrregularityClassifier extends Classifier {
 
@@ -33,7 +31,7 @@ public class IrregularityClassifier extends Classifier {
 		System.out.println("step = " + step);
 		System.out.println("nbClasses = " + nbClasses);
 
-		ArrayList<PAHClass> classes = new ArrayList<PAHClass>();
+		ArrayList<PAHClass> classes = new ArrayList<>();
 
 		double xiMin = 0;
 		double xiMax = step;
@@ -66,11 +64,7 @@ public class IrregularityClassifier extends Classifier {
 			xiMax += step;
 		}
 
-		Iterator<Entry<String, MoleculeInformation>> it = moleculesInformations.entrySet().iterator();
-		while (it.hasNext()) {
-
-			@SuppressWarnings("rawtypes")
-			Map.Entry pair = it.next();
+		for (Entry pair : moleculesInformations.entrySet()) {
 
 			MoleculeInformation moleculeInformation = (MoleculeInformation) pair.getValue();
 
@@ -83,10 +77,9 @@ public class IrregularityClassifier extends Classifier {
 
 				double XI = irregularity.getXI();
 
-				int index = 0;
+				int index;
 
 				for (int j = 0; j < nbClasses; j++) {
-
 					if (XI <= steps[j]) {
 						index = j;
 						classes.get(index).addMolecule(moleculeName);

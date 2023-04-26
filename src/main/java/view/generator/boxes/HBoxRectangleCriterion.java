@@ -1,32 +1,29 @@
 package view.generator.boxes;
 
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.RectangleExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.RectangleExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxRectangleCriterion extends HBoxModelCriterion {
 
-	private GridPane gridPane;
+	private ChoiceBox<String> heightChoiceBox;
+	private TextField heightTextField;
 
-	protected ChoiceBox<String> heightChoiceBox;
-	protected TextField heightTextField;
-
-	protected ChoiceBox<String> widthChoiceBox;
-	protected TextField widthTextField;
+	private ChoiceBox<String> widthChoiceBox;
+	private TextField widthTextField;
 
 	private HBox hBoxHeight;
 	private HBox hBoxWidth;
 
-	protected boolean valid1;
-	protected boolean valid2;
+	private boolean validHeight;
+	private boolean validWidth;
 
 	public HBoxRectangleCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
@@ -47,17 +44,17 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		hBoxHeight.getChildren().remove(getDeleteButton());
 
 		if (heightChoice != null && heightChoice.equals("Unspecified"))
-			valid1 = true;
+			validHeight = true;
 
 		else {
 
 			if (heightChoice == null || !Utils.isNumber(heightTextField.getText())) {
-				valid1 = false;
+				validHeight = false;
 				hBoxHeight.getChildren().addAll(heightTextField);
 			}
 
 			else {
-				valid1 = true;
+				validHeight = true;
 				hBoxHeight.getChildren().addAll(heightTextField);
 			}
 		}
@@ -71,22 +68,22 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		hBoxWidth.getChildren().remove(getDeleteButton());
 
 		if (widthChoice != null && widthChoice.equals("Unspecified"))
-			valid2 = true;
+			validWidth = true;
 
 		else {
 
 			if (widthChoice == null || !Utils.isNumber(widthTextField.getText())) {
-				valid2 = false;
+				validWidth = false;
 				hBoxWidth.getChildren().addAll(widthTextField);
 			}
 
 			else {
-				valid2 = true;
+				validWidth = true;
 				hBoxWidth.getChildren().addAll(widthTextField);
 			}
 		}
 
-		setValid(valid1 && valid2);
+		setValid(validHeight && validWidth);
 
 		if (!isValid())
 			hBoxHeight.getChildren().add(getWarningIcon());
@@ -97,8 +94,8 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 	@Override
 	protected void initialize() {
 
-		valid1 = false;
-		valid2 = false;
+		validHeight = false;
+		validWidth = false;
 
 		Label heightLabel = new Label("Height:   ");
 		heightChoiceBox = new ChoiceBox<>();
@@ -139,7 +136,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		hBoxWidth = new HBox(5.0);
 		hBoxWidth.getChildren().addAll(widthLabel, widthChoiceBox, widthTextField);
 
-		gridPane = new GridPane();
+		GridPane gridPane = new GridPane();
 
 		gridPane.add(hBoxHeight, 0, 0);
 		gridPane.add(hBoxWidth, 0, 1);

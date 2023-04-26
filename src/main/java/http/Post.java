@@ -41,7 +41,7 @@ public class Post {
 
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
 			StringBuilder response = new StringBuilder();
-			String responseLine = null;
+			String responseLine;
 			while ((responseLine = br.readLine()) != null) {
 				response.append(responseLine.trim());
 			}

@@ -1,12 +1,6 @@
 package correlations;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +37,7 @@ public class CorrelationCoefficient {
 	 
 	 public static void buildFiles() throws IOException {
 		 
-		 BufferedReader r = new BufferedReader(new FileReader(new File("/home/adrien/Bureau/corelations/ruiz_morales/resultats_nics.txt")));
+		 BufferedReader r = new BufferedReader(new FileReader("/home/adrien/Bureau/corelations/ruiz_morales/resultats_nics.txt"));
 		 String line;
 		 int state = 0;
 		 
@@ -72,9 +66,11 @@ public class CorrelationCoefficient {
 				 state = 0;
 				 
 				 
-				 BufferedWriter w = new BufferedWriter(new FileWriter(new File("/home/adrien/Bureau/corelations/ruiz_morales/" + name + "_nics.dat")));
-				 
+				 BufferedWriter w = new BufferedWriter(new FileWriter("/home/adrien/Bureau/corelations/ruiz_morales/" + name + "_nics.dat"));
+
+				 assert hexagons != null;
 				 String [] splittedHexagons = hexagons.split(Pattern.quote(" < "));
+				 assert values != null;
 				 String [] splittedValues = values.split(Pattern.quote(" < "));
 				 
 				 int nbHexagons = 0;
@@ -116,35 +112,22 @@ public class CorrelationCoefficient {
 		 HashMap<String, File []> map = new HashMap<>();
 		 
 		 File[] files = folder.listFiles();
-		 
-		 for (int i = 0; i < files.length; i++) {
-			 File file = files[i];
+
+		 assert files != null;
+		 for (File file : files) {
 			 if (file.isFile() && file.getName().endsWith("_lin.dat")) {
-				 
+
 				 String key = file.getName().substring(0, file.getName().length() - 8);
-				 if (map.get(key) != null) {
-					 map.get(key)[0] = file;
-				 }
-				 else {
-					 map.put(key, new File[2]);
-					 map.get(key)[0] = file;
-				 }
-				 
-			 }
-				
-			 
-			 else if (file.isFile() && file.getName().endsWith("_nics.dat")) {
-				 
+				 map.computeIfAbsent(key, k -> new File[2]);
+				 map.get(key)[0] = file;
+
+			 } else if (file.isFile() && file.getName().endsWith("_nics.dat")) {
+
 				 String key = file.getName().substring(0, file.getName().length() - 9);
-				 if (map.get(key) != null) {
-					 map.get(key)[1] = file;
-				 }
-				 else {
-					 map.put(key, new File[2]);
-					 map.get(key)[1] = file;
-				 }
+				 map.computeIfAbsent(key, k -> new File[2]);
+				 map.get(key)[1] = file;
 			 }
-				
+
 		 }
 		 
 		 
@@ -154,11 +137,11 @@ public class CorrelationCoefficient {
 			 File [] value = entry.getValue();
 			    
 			 boolean ok = true;
-			 for (int i = 0 ; i < value.length ; i++)
-                 if (value[i] == null) {
-                     ok = false;
-                     break;
-                 }
+			 for (File file : value)
+				 if (file == null) {
+					 ok = false;
+					 break;
+				 }
 			 
 			 if (ok) {
 			 

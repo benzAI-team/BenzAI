@@ -46,7 +46,7 @@ public class AllKekuleStructureComputation extends CollectionComputation{
 
                 ArrayList<int[][]> kekuleStructures = KekuleStructureSolver.computeKekuleStructures(molecule, 20);
                 molecule.setKekuleStructures(kekuleStructures);
-
+//TODO kekuleStructure is never used
                 for (int[][] kekuleStructure : kekuleStructures) {
                     benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.KEKULE);
                 }

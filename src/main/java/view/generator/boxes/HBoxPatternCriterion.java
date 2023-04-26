@@ -86,9 +86,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		editButton.setPadding(new Insets(0));
 		editButton.setGraphic(view);
 
-		editButton.setOnAction(e -> {
-			displayPatternEditionWindows();
-		});
+		editButton.setOnAction(e -> displayPatternEditionWindows());
 	}
 
 	@Override
@@ -129,32 +127,12 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		patternStage.hide();
 	}
 
-	public PatternsEditionPane getPatternPane() {
-		return patternPane;
-	}
-
-	public void setPatternPane(PatternsEditionPane patternPane) {
-		this.patternPane = patternPane;
-	}
-
-	public Stage getPatternStage() {
-		return patternStage;
-	}
-
-	public void setPatternStage(Stage patternStage) {
-		this.patternStage = patternStage;
-	}
-
 	public BenzenoidApplication getApplication() {
 		return ((GeneratorPane) getPane()).getApplication();
 	}
 
 	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
 		getPane().setPatternsInformations(patternsInformations);
-	}
-
-	public PatternResolutionInformations getPatternInformations() {
-		return patternInformations;
 	}
 
 	public PatternProperty getPatternProperty() {

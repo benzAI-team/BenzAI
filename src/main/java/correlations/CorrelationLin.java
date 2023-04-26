@@ -1,16 +1,10 @@
 package correlations;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 import molecules.Molecule;
 import parsers.GraphParser;
+
+import java.io.*;
+import java.util.regex.Pattern;
 
 public class CorrelationLin {
 
@@ -33,13 +27,11 @@ public class CorrelationLin {
 			RI[i] = 1.0 / denom;
 		}
 		
-		
-		
 		File listFile = new File(args[0]);
 		String dir = args[1];
 		
 		BufferedReader r = new BufferedReader(new FileReader(listFile));
-		String line = "";
+		String line;
 		
 		while((line = r.readLine()) != null) {
 			
@@ -64,11 +56,9 @@ public class CorrelationLin {
 			boolean in = false;
 			
 			while((line2 = r2.readLine()) != null) {
-				
 				if (!in && line2.startsWith("LOCAL ENERGY")) {
 					in = true;
 				}
-				
 				else if (in && !line2.equals("")) {
 					String [] vStr = line2.split(Pattern.quote(" : "))[1].split(" ");
 					double e = 0.0;
@@ -80,17 +70,13 @@ public class CorrelationLin {
 					w.write(i + " " + e + "\n");
 					i++;
 				}
-				
 				else if (in && line2.equals(""))
 					in = false;
 			}
-			
 			r2.close();
 			w.close();
-			
 			System.out.println(datFile.getAbsolutePath() + " treated\n");
 		}
-		
 		r.close();
 	}
 }

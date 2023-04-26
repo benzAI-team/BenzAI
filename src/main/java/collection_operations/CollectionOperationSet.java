@@ -1,6 +1,7 @@
 package collection_operations;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javafx.scene.control.MenuItem;
 
@@ -49,7 +50,7 @@ public class CollectionOperationSet {
 
 	public static MenuItem getMenuItemByName(String name){
 		for(CollectionOperation operation : collectionOperationSet)
-			if(name == operation.getMenuItem().getText())
+			if(Objects.equals(name, operation.getMenuItem().getText()))
 				return operation.getMenuItem();
 		return null;
 	}

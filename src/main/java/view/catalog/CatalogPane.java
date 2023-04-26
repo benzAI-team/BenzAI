@@ -305,7 +305,7 @@ public class CatalogPane extends GridPane {
 		 * ListView
 		 */
 
-		listView = new ListView<GridPane>();
+		listView = new ListView<>();
 		this.add(listView, 4, 0, 1, 6);
 
 		/*
@@ -368,8 +368,6 @@ public class CatalogPane extends GridPane {
 
 				String jsonInputString = buildJsonInputString();
 
-				// List<Map> results = Post.post("http://localhost:8080/benzenoids/find_ir/",
-				// jsonInputString);
 				List<Map> results = Post.post("https://benzenoids.lis-lab.fr/find_ir/", jsonInputString);
 
 				flowPane = new FlowPane();
@@ -381,7 +379,7 @@ public class CatalogPane extends GridPane {
 				flowPane.setPadding(new Insets(10));
 
 				molecules = new ArrayList<>();
-				logsResults = new HashMap<String, ResultLogFile>();
+				logsResults = new HashMap<>();
 
 				if (results.size() > 0) {
 
@@ -401,8 +399,8 @@ public class CatalogPane extends GridPane {
 								+ content.getNbHexagons() + " hexagons\n" + content.getNbCarbons() + " carbons\n"
 								+ content.getNbHydrogens() + " hydrogens\n" + "XI = " + content.getIrregularity();
 
-						BenzenoidPane benzenoidPane = new BenzenoidPane(this, -1, null, benzenoidDraw, description,
-								molecule.getVerticesSolutions());
+						BenzenoidPane benzenoidPane = new BenzenoidPane(benzenoidDraw, description
+						);
 
 						flowPane.getChildren().add(benzenoidPane);
 
@@ -438,7 +436,6 @@ public class CatalogPane extends GridPane {
 		classifierChoiceBox.getItems().add("Irregularity");
 
 		Label classifierLabel = new Label("Classify by : ");
-		Button classifyButton = new Button("Classify");
 
 		Label stepLabel = new Label("step : ");
 		TextField stepField = new TextField();
@@ -481,7 +478,7 @@ public class CatalogPane extends GridPane {
 
 				if (parameter != null) {
 
-					HashMap<String, MoleculeInformation> moleculesInformations = new HashMap<String, MoleculeInformation>();
+					HashMap<String, MoleculeInformation> moleculesInformations = new HashMap<>();
 
 					for (Molecule molecule : molecules) {
 						MoleculeInformation information = new MoleculeInformation(molecule.toString(), molecule);

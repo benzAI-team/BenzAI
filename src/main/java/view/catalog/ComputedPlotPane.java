@@ -44,7 +44,7 @@ public class ComputedPlotPane extends PlotPane{
 	    xAxis.setAnimated(false); 
 	    yAxis.setAnimated(false);
 	    
-	    lineChart = new LineChart<Number,Number>(xAxis,yAxis);
+	    lineChart = new LineChart<>(xAxis, yAxis);
 	    lineChart.setTitle(result.getPAHClass().getTitle());
 	    
 	    XYChart.Series series = new XYChart.Series();

@@ -23,7 +23,8 @@ public class Parser {
 
 		File directoryRuizMorales = new File(resultsPath + instance + "/");
 		File [] files = directoryRuizMorales.listFiles();
-		
+
+		assert files != null;
 		for (File linDatFile : files) {
 			
 			if (linDatFile.getName().endsWith("_lin.dat")) {
@@ -73,8 +74,7 @@ public class Parser {
 				
 				
 					r = new BufferedReader(new FileReader(nicsDatFile));
-					line = "";
-				
+
 					while((line = r.readLine()) != null) {
 
 						String [] splittedLine = line.split(" ");
@@ -92,11 +92,10 @@ public class Parser {
 					ArrayList<Double> nicsList = new ArrayList<>();
 				
 					for (Entry<Double, ArrayList<Integer>> entry : symmetries.entrySet()) {
-				    	Double key = entry.getKey();
+				    	Double linValue = entry.getKey();
 				    	ArrayList<Integer> value = entry.getValue();
-				   
-				    	Double linValue = key;
-				    	int hexagon = value.get(0);
+
+						int hexagon = value.get(0);
 				    	Double nicsValue = nicsValues[hexagon];
 				    
 				    	linList.add(linValue);
@@ -265,8 +264,7 @@ public class Parser {
 				
 				r = new BufferedReader(new FileReader(linFanFile));
 				in = false;
-				line = "";
-				
+
 				while((line = r.readLine()) != null) {
 					
 					if (!in && line.startsWith("NORMALIZED")) {

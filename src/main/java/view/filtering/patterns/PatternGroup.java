@@ -443,7 +443,7 @@ public class PatternGroup extends Group {
 		else
 			centerNode = nodes[0];
 
-		return new Pattern(matrix, labels, nodes, relativeMatrix, centerNode, dualGraph, degree);
+		return new Pattern(matrix, labels, nodes, centerNode, dualGraph, degree);
 	}
 
 	public void importPattern(Pattern pattern) {

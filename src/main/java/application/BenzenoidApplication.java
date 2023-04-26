@@ -37,8 +37,6 @@ public class BenzenoidApplication extends Application {
 	 * Home region
 	 */
 
-	private Region homeRegion;
-
 	/*
 	 * Main regions
 	 */
@@ -50,7 +48,6 @@ public class BenzenoidApplication extends Application {
 	 */
 
 	private Menu tasksMenu;
-	private Scene generatorScene;
 
 	private ArrayList<TaskHBox> tasksBoxes;
 
@@ -65,8 +62,6 @@ public class BenzenoidApplication extends Application {
 			boolean database = Post.checkDatabaseConnection();
 
 			settings = Settings.readSettingsFile();
-
-			homeRegion = new AboutPane(this);
 
 			panes = new Panes(this);
 
@@ -89,7 +84,7 @@ public class BenzenoidApplication extends Application {
 
 			rootPane = buildRootPane();
 
-			generatorScene = new Scene(rootPane);
+			Scene generatorScene = new Scene(rootPane);
 			generatorScene.getStylesheets().add("/resources/style/application.css");
 
 			// initializeIcons();
@@ -133,7 +128,7 @@ public class BenzenoidApplication extends Application {
 	 */
 	private BorderPane buildRootPane() {
 		BorderPane rootPane = new BorderPane();
-		MenuBar menuBar = buildMenuBar(rootPane);
+		MenuBar menuBar = buildMenuBar();
 		rootPane.setTop(menuBar);
 
 		rootPane.setCenter(panes.getCollectionsPane());
@@ -142,11 +137,10 @@ public class BenzenoidApplication extends Application {
 	}
 
 	/***
-	 * 
-	 * @param rootPane
+	 *
 	 * @return the primaryStage menu bar
 	 */
-	private MenuBar buildMenuBar(BorderPane rootPane) {
+	private MenuBar buildMenuBar() {
 
 		MenuBar menuBar = new MenuBar();
 		menuBar.getMenus().addAll(FileMenu.build(this), CollectionsMenu.build(this), InputMenu.build(this),
@@ -158,8 +152,6 @@ public class BenzenoidApplication extends Application {
 
 	/***
 	 * set the primary stage title, width, length, ...
-	 * 
-	 * @param primaryStage
 	 */
 	private void initPrimaryStageProperties(Stage primaryStage) {
 		primaryStage.setTitle("BenzAI");
@@ -227,10 +219,6 @@ public class BenzenoidApplication extends Application {
 		return panes.getDrawPane();
 	}
 
-	public FilteringPane getFilteringPane() {
-		return (FilteringPane) panes.getFilteringPane();
-	}
-
 	public Menu getTasksMenu() {
 		return tasksMenu;
 	}
@@ -275,14 +263,6 @@ public class BenzenoidApplication extends Application {
 
 	public Panes getPanes() {
 		return panes;
-	}
-
-	public ArrayList<TaskHBox> getTasksBoxes() {
-		return tasksBoxes;
-	}
-
-	public void setTasksBoxes(ArrayList<TaskHBox> tasksBoxes) {
-		this.tasksBoxes = tasksBoxes;
 	}
 
 	public static void main(String[] args) {

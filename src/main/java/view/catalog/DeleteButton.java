@@ -4,19 +4,10 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import utils.Utils;
 
 public class DeleteButton extends Button {
 
-	@SuppressWarnings("unused")
-	private final CatalogPane parent;
-
-	@SuppressWarnings("unused")
-	private final int index;
-
 	public DeleteButton(CatalogPane parent, int index) {
-		this.parent = parent;
-		this.index = index;
 
 		Image image;
 
@@ -30,9 +21,7 @@ public class DeleteButton extends Button {
 
 		this.setGraphic(view);
 
-		this.setOnAction(e -> {
-			parent.removeEntry(index);
-		});
+		this.setOnAction(e -> parent.removeEntry(index));
 
 	}
 

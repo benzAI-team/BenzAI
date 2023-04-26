@@ -38,18 +38,17 @@ public class AmpacBuilder {
 		NumberFormat formatter = new DecimalFormat("#0.000000"); 
 		
 		//" C             -1.214500  1    0.694000  1    0.000000  1 #   "
-		for (int i = 0 ; i < carbons.length ; i++) {
-			
-			Triplet<Double, Double, Double> carbon = carbons[i];
+		for (Triplet<Double, Double, Double> carbon : carbons) {
+
 			double x = carbon.getX();
 			double y = carbon.getY();
 			double z = carbon.getZ();
-			
+
 			String xStr = formatter.format(x).replace(",", ".");
 			String yStr = formatter.format(y).replace(",", ".");
 			String zStr = formatter.format(z).replace(",", ".");
-			    
-			
+
+
 			writer.write(" C\t" + xStr + "\t1\t" + yStr + "\t1\t" + zStr + "\t1 #   \n");
 		}
 		
@@ -72,7 +71,7 @@ public class AmpacBuilder {
 	
 	public static Geometry parseAmpacGeometry(String inputFilePath) throws IOException {
 		
-		BufferedReader reader = new BufferedReader(new FileReader(new File(inputFilePath)));
+		BufferedReader reader = new BufferedReader(new FileReader(inputFilePath));
 		String line;
 		ArrayList<String> lines = new ArrayList<>();
 		

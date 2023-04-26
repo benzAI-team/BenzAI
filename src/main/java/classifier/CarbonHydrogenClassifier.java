@@ -1,14 +1,12 @@
 package classifier;
 
+import molecules.Molecule;
+import utils.Couple;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
-
-import molecules.Molecule;
-import utils.Couple;
 
 public class CarbonHydrogenClassifier extends Classifier{
 
@@ -28,24 +26,20 @@ public class CarbonHydrogenClassifier extends Classifier{
 		
 		for (int i = 0 ; i < MAX_NB_CARBONS ; i++)
 			for (int j = 0 ; j < MAX_NB_HYDROGENS ; j++)
-				matrixClasses[i][j] = new ArrayList<String>();
+				matrixClasses[i][j] = new ArrayList<>();
 
-		Iterator<Entry<String, MoleculeInformation>> it = moleculesInformations.entrySet().iterator();
-	    while (it.hasNext()) {
-	    	
-	        @SuppressWarnings("rawtypes")
-			Map.Entry pair = it.next();
-	        
-	        MoleculeInformation moleculeInformation = (MoleculeInformation) pair.getValue();
-	        
-	        String moleculeName = moleculeInformation.getMoleculeName();
-	        Molecule molecule = moleculeInformation.getMolecule();
-	        
-	        Couple<Integer, Integer> nbAtoms = countCarbonsAndHydrogens(molecule);
+		for (Entry pair : moleculesInformations.entrySet()) {
+
+			MoleculeInformation moleculeInformation = (MoleculeInformation) pair.getValue();
+
+			String moleculeName = moleculeInformation.getMoleculeName();
+			Molecule molecule = moleculeInformation.getMolecule();
+
+			Couple<Integer, Integer> nbAtoms = countCarbonsAndHydrogens(molecule);
 			matrixClasses[nbAtoms.getX()][nbAtoms.getY()].add(moleculeName);
-	    }
+		}
 		
-		ArrayList<PAHClass> classes = new ArrayList<PAHClass>();
+		ArrayList<PAHClass> classes = new ArrayList<>();
 		
 		for (int i = 0 ; i < MAX_NB_CARBONS ; i++) {
 			for (int j = 0 ; j < MAX_NB_HYDROGENS ; j++) {
@@ -67,7 +61,7 @@ public class CarbonHydrogenClassifier extends Classifier{
 	
 	private Couple<Integer, Integer> countCarbonsAndHydrogens(Molecule molecule) {
 		
-		return new Couple<Integer, Integer>(molecule.getNbNodes(), molecule.getNbHydrogens());
+		return new Couple<>(molecule.getNbNodes(), molecule.getNbHydrogens());
 	}
 
 }

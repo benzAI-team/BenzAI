@@ -1,24 +1,24 @@
 package correlations;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class ReadNicsTime {
 
 	public static void main(String [] args) throws IOException {
 		
-		BufferedReader r = new BufferedReader(new FileReader(new File("/home/adrien/Documents/comparaisons_constraints/times_nics.txt")));
+		BufferedReader r = new BufferedReader(new FileReader("/home/adrien/Documents/comparaisons_constraints/times_nics.txt"));
 		String line;
 		int state = 0;
 		double [] time = new double[4];
-		String name1 = null, name2 = null;
+		String name1 = null, name2;
 		while((line = r.readLine()) != null) {
 			
 			if (line.startsWith("#") || line.equals("")) {
 				state = 0;
-				
-				for (int i = 0 ; i < time.length ; i++)
-					time[i] = 0.0;
+
+				Arrays.fill(time, 0.0);
 				
 				System.out.println(line);
 			}
@@ -26,11 +26,7 @@ public class ReadNicsTime {
 			else {
 				String [] splittedLine = line.split(": ");
 				String [] timeStr = splittedLine[1].split(" ");
-				
-//				for (String s : timeStr)
-//					System.out.print(s + " ");
-//				System.out.println("");
-				
+
 				if (state == 0) {
 					name1 = splittedLine[0].split(Pattern.quote("."))[0].replace("_opt", "");
 					time[0] += Double.parseDouble(timeStr[0]);
@@ -61,9 +57,8 @@ public class ReadNicsTime {
 					//System.out.println(line);
 					System.out.println(name1 + ": " + sum + " sec.");
 					//System.out.println(name + ": " + time[0] + " Days " + time[1] + " Hours " + time[2] + " minutes " + time[3] + " seconds\n");
-					
-					for (int i = 0 ; i < time.length ; i++)
-						time[i] = 0.0;
+
+					Arrays.fill(time, 0.0);
 					
 					state = 0;
 				}

@@ -1,19 +1,15 @@
 package view.generator;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import application.BenzenoidApplication;
 import application.Settings;
 import generator.GeneralModel;
 import generator.ModelBuilder;
 import generator.properties.Property;
+import generator.properties.model.ModelProperty;
+import generator.properties.model.RectangleProperty;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker.State;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -26,24 +22,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.RectangleProperty;
 import molecules.Molecule;
-import parsers.GraphCoordFileBuilder;
-import parsers.GraphFileBuilder;
-import parsers.GraphParser;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
-import view.generator.boxes.HBoxCriterion;
-import view.generator.boxes.HBoxDefaultCriterion;
-import view.generator.boxes.HBoxNbCarbonsCriterion;
-import view.generator.boxes.HBoxHexagonNumberCriterion;
-import view.generator.boxes.HBoxNbHydrogensCriterion;
-import view.generator.boxes.HBoxNbSolutionsCriterion;
-import view.generator.boxes.HBoxSolverCriterion;
-import view.generator.boxes.HBoxTimeoutCriterion;
+import view.generator.boxes.*;
 import view.primaryStage.ScrollPaneWithPropertyList;
+
+import java.util.ArrayList;
 
 public class GeneratorPane extends ScrollPaneWithPropertyList {
 
@@ -52,7 +38,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private boolean canStartGeneration;
 	private boolean isRunning;
 	private ArrayList<Molecule> generatedMolecules;
-	private int nbCriterions;
 
 	BenzenoidCollectionPane selectedCollectionTab;
 
@@ -61,8 +46,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private ImageView warningIcon;
 	private GridPane gridPane;
 
-	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
-	private ArrayList<HBoxCriterion> hBoxesCriterions;
 	private ArrayList<HBoxCriterion> hBoxesSolverCriterions;
 	
 
@@ -134,18 +117,12 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		resumeButton = buildResumeButton();
 		generateButton = buildGenerateButton();
 	}
-	/***
-	 * 
-	 */
+
 	private void buildIcons() {
 		loadIcon = buildLoadIcon();
 		warningIcon = buildWarningIcon();
 	}
 
-	/***
-	 * 
-	 * @return
-	 */
 	private ImageView buildLoadIcon() {
 		Image image = new Image("/resources/graphics/icon-load.gif");
 		ImageView loadIcon = new ImageView(image);
@@ -207,9 +184,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		closeButton.resize(30, 30);
 		closeButton.setStyle("-fx-background-color: transparent;");
 
-		closeButton.setOnAction(e -> {
-			application.switchMode(application.getPanes().getCollectionsPane());
-		});
+		closeButton.setOnAction(e -> application.switchMode(application.getPanes().getCollectionsPane()));
 		return closeButton;
 	}
 
@@ -230,9 +205,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			if (model.isPaused())
 				resumeGeneration();
 
-			model.getProblem().getSolver().limitSearch(() -> {
-				return model.getGeneratorRun().isStopped();
-			});
+			model.getProblem().getSolver().limitSearch(() -> model.getGeneratorRun().isStopped());
 
 			model.stop();
 
@@ -272,9 +245,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		resumeButton.setStyle("-fx-background-color: transparent;");
 		resumeButton.resize(30, 30);
 		Tooltip.install(resumeButton, new Tooltip("Resume generation"));
-		resumeButton.setOnAction(e -> {
-			resumeGeneration();
-		});
+		resumeButton.setOnAction(e -> resumeGeneration());
 		return resumeButton;
 	}
 
@@ -312,10 +283,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		return gridPane;
 	}
 
-	/***
-	 * 
-	 * @return
-	 */
 	private ArrayList<Integer> containsInvalidCriterion() {
 
 		ArrayList<Integer> indexes = new ArrayList<>();
@@ -376,99 +343,9 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		}
 		return super.buildPropertyExpressions();
 	}
-	/***
-	 * 
-	 * @param description
-	 * @param nbCrowns
-	 * @param index
-	 * @param verticesSolution
-	 * @return
-	 */
-	public static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution) {
-		Molecule molecule = null;
-		try {
-			String graphFilename = "tmp.graph";
-			String graphCoordFilename = "tmp.graph_coord";
 
-			buildGraphFile(nbCrowns, verticesSolution, graphFilename);
-			convertGraphCoordFileInstance(graphFilename, graphCoordFilename);
-			molecule = buildMolecule(description, nbCrowns, index, verticesSolution, graphCoordFilename);
-			deleteTmpFiles(graphFilename, graphCoordFilename);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return molecule;
-	}
 
-	/***
-	 * 
-	 * @param description
-	 * @param nbCrowns
-	 * @param index
-	 * @param verticesSolution
-	 * @param graphCoordFilename
-	 * @return
-	 */
-	private static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution,
-			String graphCoordFilename) {
-		Molecule molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
-		molecule.setVerticesSolutions(verticesSolution);
-		molecule.setDescription(buildMoleculeDescription(description, index));
-		molecule.setNbCrowns(nbCrowns);
-		return molecule;
-	}
 
-	/***
-	 * 
-	 * @param description
-	 * @param index
-	 * @return
-	 */
-	private static String buildMoleculeDescription(String description, int index) {
-		String[] lines = description.split("\n");
-		StringBuilder b = new StringBuilder();
-
-		b.append("solution_" + index + "\n");
-		for (int j = 1; j < lines.length; j++)
-			b.append(lines[j] + "\n");
-		return b.toString();
-	}
-
-	/***
-	 * 
-	 * @param graphFilename
-	 * @param graphCoordFilename
-	 */
-	private static void deleteTmpFiles(String graphFilename, String graphCoordFilename) {
-		File file = new File(graphFilename);
-		file.delete();
-		file = new File(graphCoordFilename);
-		file.delete();
-	}
-
-	/***
-	 * 
-	 * @param graphFilename
-	 * @param graphCoordFilename
-	 */
-	private static void convertGraphCoordFileInstance(String graphFilename, String graphCoordFilename) {
-		GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
-		graphCoordBuilder.convertInstance();
-	}
-
-	/***
-	 * 
-	 * @param nbCrowns
-	 * @param verticesSolution
-	 * @param graphFilename
-	 * @throws IOException
-	 */
-	private static void buildGraphFile(int nbCrowns, ArrayList<Integer> verticesSolution,
-			String graphFilename) throws IOException {
-		GraphFileBuilder graphBuilder = new GraphFileBuilder(verticesSolution, graphFilename,
-				nbCrowns);
-		graphBuilder.buildGraphFile();
-	}
 
 
 	
@@ -492,7 +369,8 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			buttonsBox.getChildren().addAll(closeButton, loadIcon, solutionTextLabel, solutionNumberLabel, pauseButton, stopButton);
 
 			try {
-				model = ModelBuilder.buildModel(getModelPropertySet(), getPatternsInformations());
+				model = ModelBuilder.buildModel(getModelPropertySet());
+				assert model != null;
 				solutionNumberLabel.textProperty().bind(model.getNbTotalSolutions().asString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -504,14 +382,14 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			generatedMolecules = new ArrayList<>();
 			//model.solve();
 
-			final Service<Void> calculateService = new Service<Void>() {
+			final Service<Void> calculateService = new Service<>() {
 
 				@Override
 				protected Task<Void> createTask() {
-					return new Task<Void>() {
+					return new Task<>() {
 
 						@Override
-						protected Void call() throws Exception {
+						protected Void call() {
 
 							model.solve();
 							System.out.println("Fin génération");
@@ -521,40 +399,35 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 				}
 			};
 
-			calculateService.stateProperty().addListener(new ChangeListener<State>() {
+			calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
 
-				@Override
-				public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-
-					switch (newValue) {
-					case FAILED:
-						isRunning = false;
-						Utils.alert("Generation failed.");
-						break;
-					case CANCELLED:
-						isRunning = false;
-						Utils.alert("Generation canceled");
-						break;
-					case SUCCEEDED:
-						isRunning = false;
-						if (!model.isPaused()) {
-							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-							buildBenzenoidPanesThread();
-							application.removeTask("Benzenoid generation");
-						}
-
-						else {
-							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
-						}
-
-						break;
-
-					default:
-						break;
+				switch (newValue) {
+				case FAILED:
+					isRunning = false;
+					Utils.alert("Generation failed.");
+					break;
+				case CANCELLED:
+					isRunning = false;
+					Utils.alert("Generation canceled");
+					break;
+				case SUCCEEDED:
+					isRunning = false;
+					if (!model.isPaused()) {
+						buttonsBox.getChildren().clear();
+						buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
+						buildBenzenoidPanesThread();
+						application.removeTask("Benzenoid generation");
 					}
 
+					else {
+						buttonsBox.getChildren().clear();
+						buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
+					}
+
+					break;
+
+				default:
+					break;
 				}
 
 			});
@@ -575,14 +448,14 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		buttonsBox.getChildren().clear();
 		buttonsBox.getChildren().addAll(closeButton, loadIcon, pauseButton, stopButton);
 
-		final Service<Void> calculateService = new Service<Void>() {
+		final Service<Void> calculateService = new Service<>() {
 
 			@Override
 			protected Task<Void> createTask() {
-				return new Task<Void>() {
+				return new Task<>() {
 
 					@Override
-					protected Void call() throws Exception {
+					protected Void call() {
 						model.getGeneratorRun().resume();
 
 						return null;
@@ -591,41 +464,35 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			}
 		};
 
-		calculateService.stateProperty().addListener(new ChangeListener<State>() {
+		calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
+			switch (newValue) {
+			case FAILED:
+				isRunning = false;
+				Utils.alert("Generation failed.");
+				break;
+			case CANCELLED:
+				isRunning = false;
+				Utils.alert("Generation canceled");
+				break;
+			case SUCCEEDED:
 
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-
-				switch (newValue) {
-				case FAILED:
-					isRunning = false;
-					Utils.alert("Generation failed.");
-					break;
-				case CANCELLED:
-					isRunning = false;
-					Utils.alert("Generation canceled");
-					break;
-				case SUCCEEDED:
-
-					if (model.isPaused()) {
-						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
-					}
-
-					else {
-						if (!model.isPaused()) {
-							buttonsBox.getChildren().clear();
-							buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-							buildBenzenoidPanes();
-						}
-					}
-
-					break;
-
-				default:
-					break;
+				if (model.isPaused()) {
+					buttonsBox.getChildren().clear();
+					buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 				}
 
+				else {
+					if (!model.isPaused()) {
+						buttonsBox.getChildren().clear();
+						buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
+						buildBenzenoidPanes();
+					}
+				}
+
+				break;
+
+			default:
+				break;
 			}
 
 		});
@@ -643,13 +510,9 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 		if (size > 0) {
 
-			Platform.runLater(new Runnable() {
-
-				@Override
-				public void run() {
-					buildBenzenoidPanes();
-					application.switchMode(application.getPanes().getCollectionsPane());
-				}
+			Platform.runLater(() -> {
+				buildBenzenoidPanes();
+				application.switchMode(application.getPanes().getCollectionsPane());
 			});
 
 		}
@@ -713,13 +576,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		Settings settings = application.getSettings();
 
 		if (settings.getGenerationTime() > 0 && settings.getTimeUnit() != null) {
-//			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, GeneralModel.getModelPropertySet(), GeneralModel.getSolverPropertySet());
-//			choiceBoxesCriterions.add(choiceBoxCriterion);
-//			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
-//
-//			choiceBoxCriterion.getSelectionModel().select("Time limit");
-
-//			HBoxTimeoutCriterion criterionBox = (HBoxTimeoutCriterion) hBoxesCriterions.get(choiceBoxCriterion.getIndex());
 			for(HBoxCriterion hBoxCriterion : this.hBoxesSolverCriterions)
 				if(hBoxCriterion instanceof HBoxTimeoutCriterion) {
 					((HBoxTimeoutCriterion)hBoxCriterion).setTime(Integer.toString(settings.getGenerationTime()));
@@ -734,20 +590,9 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private void checkNbMaxSolutions() {
 		Settings settings = application.getSettings();
 		if (settings.getNbMaxSolutions() > 0) {
-
-//			ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, GeneralModel.getModelPropertySet(), GeneralModel.getSolverPropertySet());
-//			choiceBoxesCriterions.add(choiceBoxCriterion);
-//			hBoxesCriterions.add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
-//
-//			choiceBoxCriterion.getSelectionModel().select("Number of solutions");
-//
-//			HBoxNbSolutionsCriterion criterionBox = (HBoxNbSolutionsCriterion) hBoxesCriterions
-//					.get(choiceBoxCriterion.getIndex());
-//			HBoxNbSolutionsCriterion criterionBox = new HBoxNbSolutionsCriterion(this, null);
 			for(HBoxCriterion hBoxCriterion : this.hBoxesSolverCriterions)
 				if(hBoxCriterion instanceof HBoxNbSolutionsCriterion)
 					((HBoxNbSolutionsCriterion)hBoxCriterion).setNbSolutions(Integer.toString(settings.getNbMaxSolutions()));
-
 		}
 	}
 

@@ -101,8 +101,8 @@ public class ParameterPane extends ScrollPane {
 				try {
 					reader = new BufferedReader(new FileReader(parameterFile));
 
-					ArrayList<String> lines = new ArrayList<String>();
-					String line = null;
+					ArrayList<String> lines = new ArrayList<>();
+					String line;
 
 					while ((line = reader.readLine()) != null)
 						lines.add(line);

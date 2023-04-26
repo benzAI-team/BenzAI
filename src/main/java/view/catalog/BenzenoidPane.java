@@ -1,8 +1,5 @@
 package view.catalog;
 
-import java.util.ArrayList;
-
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -11,25 +8,15 @@ import javafx.scene.layout.GridPane;
 
 public class BenzenoidPane extends GridPane{
 
-	private final CatalogPane catalogPane;
-	
-	private final int nbCrowns;
-	private final String solution;
 	private final Group benzenoidDraw;
 	private final String description;
 	
 	private final boolean isSelected;
-	
-	private final ArrayList<Integer> verticesSolution;
-	
-	public BenzenoidPane(CatalogPane catalogPane, int nbCrowns, String solution, Group benzenoidDraw, String description, ArrayList<Integer> verticesSolution) {
+
+	public BenzenoidPane(Group benzenoidDraw, String description) {
 		
 		super();
-		
-		this.catalogPane = catalogPane;
-		
-		this.nbCrowns = nbCrowns;
-		this.solution = solution;
+
 		this.benzenoidDraw = benzenoidDraw;
 		this.description = description;
 		
@@ -38,8 +25,7 @@ public class BenzenoidPane extends GridPane{
 		this.setStyle("-fx-border-color: black;" + "-fx-border-width: 4;" + "-fx-border-radius: 10px;");
 		
 		addItems();
-		
-		this.verticesSolution = verticesSolution;
+
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -54,20 +40,15 @@ public class BenzenoidPane extends GridPane{
 		this.add(benzenoidDraw, 0, 0, 2, 2);
 		this.add(new Label(description), 2, 0, 2, 2);
 	    
-	    this.setOnMouseClicked(new EventHandler() {
+	    this.setOnMouseClicked((EventHandler) arg0 -> {
 
-			@Override
-			public void handle(Event arg0) {
-				
-				if (!isSelected) 
-					select();
-				
-				else
-					unselect();
-				
-			}
-	    	
-	    });
+			if (!isSelected)
+				select();
+
+			else
+				unselect();
+
+		});
 	    
 		this.setMinSize(300, 200);
 		

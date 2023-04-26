@@ -44,18 +44,20 @@ public class TaskHBox extends HBox {
 		
 
 		stopButton.setOnAction(e -> {
-
-			if (task.equals("Benzenoid generation"))
-				application.getGeneratorPane().stop();
-
-			else if (task.equals("RE Lin"))
-				application.getBenzenoidCollectionsPane().stopLin();
-
-			else if (task.equals("Clar cover"))
-				application.getBenzenoidCollectionsPane().stopClar();
-
-			else if (task.equals("Ring Bond Order"))
-				application.getBenzenoidCollectionsPane().stopRBO();
+			switch (task) {
+				case "Benzenoid generation":
+					application.getGeneratorPane().stop();
+					break;
+				case "RE Lin":
+					application.getBenzenoidCollectionsPane().stopLin();
+					break;
+				case "Clar cover":
+					application.getBenzenoidCollectionsPane().stopClar();
+					break;
+				case "Ring Bond Order":
+					application.getBenzenoidCollectionsPane().stopRBO();
+					break;
+			}
 		});
 
     

@@ -242,7 +242,7 @@ public class GeneralModel2 {
 
 		Arrays.fill(labels, 2);
 
-		return new Pattern(matrix, labels, nodes, null, null, neighbors, 0);
+		return new Pattern(matrix, labels, nodes, null, neighbors, 0);
 	}
 
 	private static Tuples buildTable(int nbNeighbors) {
@@ -379,8 +379,7 @@ public class GeneralModel2 {
 					BoolVar[] neighbors = getNeighbors(i, j, X);
 
 					if (has6Neighbors(neighbors)) {
-						for (int l = 0; l < 6; l++)
-							varClause[l] = neighbors[l];
+						System.arraycopy(neighbors, 0, varClause, 0, 6);
 						varClause[6] = vertex;
 						model.getClauseConstraint().addClause(varClause, valClause);
 					}
