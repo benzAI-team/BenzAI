@@ -1,7 +1,5 @@
 package application;
 
-import java.util.ArrayList;
-
 import http.Post;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -24,6 +22,8 @@ import view.generator.GeneratorPane;
 import view.primaryStage.AboutPane;
 import view.primaryStage.Panes;
 import view.primaryStage.menus.*;
+
+import java.util.ArrayList;
 
 
 public class BenzenoidApplication extends Application {
@@ -249,7 +249,7 @@ public class BenzenoidApplication extends Application {
 				break;
 			}
 		}
-		if (tasksBoxes.size() == 0)
+		if (tasksBoxes.isEmpty())
 			addTask("None");
 	}
 
@@ -257,7 +257,7 @@ public class BenzenoidApplication extends Application {
 		return settings;
 	}
 
-	public GeneratorPane getGeneratorPane() {
+	GeneratorPane getGeneratorPane() {
 		return (GeneratorPane) panes.getGeneratorPane();
 	}
 

@@ -1,8 +1,6 @@
 package generator.properties.model.expression;
 
 
-import java.util.Objects;
-
 public class BinaryNumericalExpression extends ParameterizedExpression {
 	private int value;
 
