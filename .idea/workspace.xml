@@ -7,49 +7,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="add : testing generation">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CatacondensedConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CatacondensedConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns1Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns1Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/RhombusConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/RhombusConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern1Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern1Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/OldLexLead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/OldLexLead.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/RectangleProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/RectangleProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/RhombusProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/RhombusProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/BinaryNumericalExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/BinaryNumericalExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PropertyExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PropertyExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/RectangleExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/RectangleExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestGeneration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestGeneration.java" afterDir="false" />
-    </list>
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="add : testing generation" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -223,7 +188,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682514333264</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="add : testing generation">
+      <created>1683101993453</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683101993453</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
