@@ -27,7 +27,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 		String operatorValue = operatorChoiceBox.getValue();
 		String fieldStr = fieldValue.getText();
 
-		if (irregularityValue != null && irregularityValue.equals("Compute irregularity")) {
+		if (irregularityValue != null && "Compute irregularity".equals(irregularityValue)) {
 
 			setValid(true);
 			this.getChildren().remove(operatorChoiceBox);
@@ -75,7 +75,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 					this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 				}
 
-				else if (!irregularityValue.equals("Compute irregularity")) {
+				else if (!"Compute irregularity".equals(irregularityValue)) {
 				
 					setValid(true);
 					this.getChildren().remove(getWarningIcon());

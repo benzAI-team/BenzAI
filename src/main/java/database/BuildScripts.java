@@ -18,9 +18,10 @@ import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
 import utils.Triplet;
 
-public class BuildScripts {
+public enum BuildScripts {
+    ;
 
-	private static String directory;
+    private static String directory;
 	private static BufferedWriter writer;
 
 	private static long indexNames;
@@ -97,7 +98,7 @@ public class BuildScripts {
 				intensities.append(" ");
 		}
 
-		if (frequencies.toString().equals("") || intensities.toString().equals(""))
+		if ("".equals(frequencies.toString()) || "".equals(intensities.toString()))
 			System.out.print("");
 
 		writer.write(
@@ -128,7 +129,7 @@ public class BuildScripts {
 
 		line = lines.get(lineIndex);
 
-		while (!line.equals("")) {
+		while (!"".equals(line)) {
 			
 
 			String[] sl = line.split(" ");
@@ -179,7 +180,7 @@ public class BuildScripts {
 		
 		while (lineIndex < lines.size()) {
 			line = lines.get(lineIndex);
-			if (!line.equals("")) {
+			if (!"".equals(line)) {
 				points.add(Double.parseDouble(lines.get(lineIndex)));
 			}
 			lineIndex ++;

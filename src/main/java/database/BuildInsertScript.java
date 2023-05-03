@@ -1,15 +1,5 @@
 package database;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.regex.Pattern;
-
 import classifier.Irregularity;
 import molecules.Molecule;
 import parsers.GraphParser;
@@ -17,12 +7,18 @@ import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
 import utils.Utils;
 
-public class BuildInsertScript {
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.regex.Pattern;
 
-	private static void readFile(String graphFile, String logFile, int index) throws IOException {
+public enum BuildInsertScript {
+    ;
 
-		if (!graphFile
-				.equals("C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\graph_files\\benzene.graph_coord")) {
+    private static void readFile(String graphFile, String logFile, int index) throws IOException {
+
+		if (!"C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\graph_files\\benzene.graph_coord"
+				.equals(graphFile)) {
 
 			System.out.println("Treating : " + graphFile);
 

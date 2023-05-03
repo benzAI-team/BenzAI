@@ -46,7 +46,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		this.getChildren().remove(editButton);
 		this.getChildren().remove(getDeleteButton());
 
-		if (patternInformationField.getText().equals("NO_PROPERTY")) {
+		if ("NO_PROPERTY".equals(patternInformationField.getText())) {
 			setValid(false);
 			this.getChildren().add(getWarningIcon());
 		}

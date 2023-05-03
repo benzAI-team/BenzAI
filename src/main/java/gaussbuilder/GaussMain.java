@@ -10,9 +10,10 @@ import parsers.ComConverter.ComType;
 import parsers.GraphParser;
 import utils.Triplet;
 
-public class GaussMain {
+public enum GaussMain {
+    ;
 
-	private static void help() {
+    private static void help() {
 		System.out.println("# GaussianBuilder");
 		System.out.println("Usage: ");
 		System.out.println(" --com-ir nb_electrons *.[graph_coord|out]");
@@ -29,7 +30,7 @@ public class GaussMain {
 		
 			else {
 				
-				if (args[0].equals("--com-ir")) {
+				if ("--com-ir".equals(args[0])) {
 					
 					int nbElectrons = Integer.parseInt(args[1]);
 					String inputPath = args[2];
@@ -56,7 +57,7 @@ public class GaussMain {
 					}
 				}
 				
-				else if (args[0].equals("--com-re")) {
+				else if ("--com-re".equals(args[0])) {
 					
 					String inputPath = args[1];
 					Geometry geometry = null;
@@ -83,7 +84,7 @@ public class GaussMain {
 					
 				}
 				
-				else if (args[0].equals("--check-geom")) {
+				else if ("--check-geom".equals(args[0])) {
 					String inputPath = args[1];
 					String graphFile = args[1].replace(".com", ".graph_coord");
 					Molecule molecule = GraphParser.parseUndirectedGraph(new File(graphFile));
@@ -91,7 +92,7 @@ public class GaussMain {
 					GaussChecker.checkGeometry(inputPath,molecule, geometry);
 				}
 				
-				else if (args[0].equals("--build-ampac")) {
+				else if ("--build-ampac".equals(args[0])) {
 					String inputPath = args[1];
 					Molecule molecule = GraphParser.parseUndirectedGraph(new File(inputPath));
 					AmpacBuilder.buildAmpacFile(molecule, inputPath.split(Pattern.quote("."))[0] + ".dat");

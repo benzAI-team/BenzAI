@@ -60,7 +60,7 @@ public class AddToNewCollectionPane extends GridPane {
 		addButton.setOnAction(e -> {
 			String name = "Collection #" + (parent.size() + 1);
 
-			if (!fieldCollectionName.getText().equals(""))
+			if (!"".equals(fieldCollectionName.getText()))
 				name = fieldCollectionName.getText();
 
 			BenzenoidCollectionPane collectionPane = new BenzenoidCollectionPane(parent,

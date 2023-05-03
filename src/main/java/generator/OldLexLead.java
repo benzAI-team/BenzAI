@@ -7,7 +7,8 @@ import org.chocosolver.solver.variables.BoolVar;
 import constraints.Permutation;
 import utils.Coords;
 
-public class OldLexLead {
+public enum OldLexLead {
+	;
 
 	public static int xy2i(int x, int y, GeneralModel model) {
 		return x + y * model.getDiameter();

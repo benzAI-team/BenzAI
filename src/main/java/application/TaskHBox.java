@@ -25,7 +25,7 @@ public class TaskHBox extends HBox {
     Label label = new Label(task);
 		label.setTextFill(Color.BLACK);
     
-    if (task.equals("None")) {
+    if ("None".equals(task)) {
       this.getChildren().addAll(label);
       return;
     }

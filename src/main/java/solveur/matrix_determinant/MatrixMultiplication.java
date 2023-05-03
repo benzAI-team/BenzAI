@@ -1,7 +1,9 @@
 package solveur.matrix_determinant;
 
-public class MatrixMultiplication {
-	/**
+public enum MatrixMultiplication {
+    ;
+
+    /**
 	 * Main method that initialises matrices we'll be counting with, calls
 	 * method that does the multiplication and prints results
 	 *

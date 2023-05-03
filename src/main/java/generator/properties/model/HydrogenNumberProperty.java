@@ -22,7 +22,7 @@ public class HydrogenNumberProperty extends ModelProperty {
 			int hydrogenNumber = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();
 
 			if (isBoundingOperator(operator)) {
-				if (operator.equals("<"))
+				if ("<".equals(operator))
 					hydrogenNumber--;
 				if(hydrogenNumber < minHydrogenNumber)
 					minHydrogenNumber = hydrogenNumber;

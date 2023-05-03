@@ -4,7 +4,9 @@ import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import generator.properties.model.expression.RectangleExpression;
 
-public class TestGeneration {
+public enum TestGeneration {
+    ;
+
     public static void main(String[] args) {
         test5hexagons();
         testRectangle_inf3Xinf3();

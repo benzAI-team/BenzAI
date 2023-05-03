@@ -12,9 +12,10 @@ import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
 import utils.Utils;
 
-public class BuildInsertScript3 {
+public enum BuildInsertScript3 {
+    ;
 
-	public static void main(String [] args) throws IOException {
+    public static void main(String [] args) throws IOException {
 		
 		File dir = new File("/home/adrien/Documents/old_log_files");
 		File [] files = dir.listFiles();
@@ -78,7 +79,7 @@ public class BuildInsertScript3 {
 						intensities.append(" ");
 				}
 
-				if (frequencies.toString().equals("") || intensities.toString().equals(""))
+				if ("".equals(frequencies.toString()) || "".equals(intensities.toString()))
 					System.out.print("");
 				
 				BufferedWriter w = new BufferedWriter(new FileWriter(

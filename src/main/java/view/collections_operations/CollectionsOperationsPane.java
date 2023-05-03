@@ -113,13 +113,13 @@ public class CollectionsOperationsPane extends GridPane {
 
 			ArrayList<Molecule> molecules = null;
 
-			if (operatorBox.getValue().equals("Union"))
+			if ("Union".equals(operatorBox.getValue()))
 				molecules = Molecule.union(molecules1, molecules2);
 
-			else if (operatorBox.getValue().equals("Intersection"))
+			else if ("Intersection".equals(operatorBox.getValue()))
 				molecules = Molecule.intersection(molecules1, molecules2);
 
-			else if (operatorBox.getValue().equals("Difference"))
+			else if ("Difference".equals(operatorBox.getValue()))
 				molecules = Molecule.diff(molecules1, molecules2);
 
 			if (molecules != null) {
@@ -128,7 +128,7 @@ public class CollectionsOperationsPane extends GridPane {
 
 				String name;
 
-				if (!collectionName.getText().equals(""))
+				if (!"".equals(collectionName.getText()))
 					name = collectionName.getText();
 				else
 					name = pane1.getName() + "_" + operatorBox.getValue() + "_" + pane2.getName();

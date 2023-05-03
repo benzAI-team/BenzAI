@@ -53,8 +53,10 @@ public class PropertySet implements Iterable<Property> {
 	public String[] getNames() {
 		String[] names = new String[propertyList.size()];
 		int i = 0;
-		for(Property property : propertyList)
-			names[i++] = property.getName();
+		for(Property property : propertyList) {
+			names[i] = property.getName();
+			i++;
+		}
 		return names;
 	}
 

@@ -21,7 +21,8 @@ import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.matrix_determinant.PerfectMatchingMatrix;
 import utils.SubMolecule;
 
-public class PerfectMatchingSolver {
+public enum PerfectMatchingSolver {
+	;
 
 	public static int computeNbPerfectMatchingDeterminant(SubMolecule subMolecule) {
 
@@ -256,7 +257,7 @@ public class PerfectMatchingSolver {
 		
 		long time;
 		
-		if (mode.equals("0")) {
+		if ("0".equals(mode)) {
 			System.out.println("method: determinant");
 			long begin = System.currentTimeMillis();
 			fg = new SubGraph(molecule.getEdgeMatrix(), d, molecule.getDegrees(), PerfectMatchingType.DET);
@@ -272,7 +273,7 @@ public class PerfectMatchingSolver {
 			
 			String chocoMode = args[2];
 			
-			if (chocoMode.equals("0")) {
+			if ("0".equals(chocoMode)) {
 				System.out.println("constraint: sum");
 				long begin = System.currentTimeMillis();
 				fg = new SubGraph(molecule.getEdgeMatrix(), d, molecule.getDegrees(), PerfectMatchingType.CHOCO);	
@@ -281,7 +282,7 @@ public class PerfectMatchingSolver {
 				time = end - begin;
 			}
 			
-			else if (chocoMode.equals("1")) {
+			else if ("1".equals(chocoMode)) {
 				System.out.println("constraint:  all-diff[AC_REGIN]");
 				long begin = System.currentTimeMillis();
 				System.out.println(PerfectMatchingSolver.computeKekuleStructuresAllDiffConstraint(molecule, "AC_REGIN") + " matchings");

@@ -44,7 +44,7 @@ public class CollectionExportPNG extends CollectionOperation{
                         BenzenoidPane benzenoidPane = currentPane.getSelectedBenzenoidPanes().get(i);
                         Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
                         File moleculeFile;
-                        if (molecule.getDescription() != null && !molecule.getDescription().equals(""))
+                        if (molecule.getDescription() != null && !"".equals(molecule.getDescription()))
                             moleculeFile = new File(
                                     directoryPath + "/" + molecule.getDescription().replace("\n", "") + ".png");
                         else

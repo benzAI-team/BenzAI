@@ -1,13 +1,13 @@
 package expe;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Avg {
+public enum Avg {
+    ;
 
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
 		BufferedReader r = new BufferedReader(new FileReader("C:\\Users\\adrie\\Desktop\\toavg.txt"));
 		String line;
@@ -25,7 +25,7 @@ public class Avg {
 				System.out.print(line + " ");
 			}
 
-			else if (line.equals("")) {
+			else if ("".equals(line)) {
 				header = true;
 
 				sum1 = sum1 / ((float) n);

@@ -18,7 +18,7 @@ public abstract class HBoxInDatabase extends HBoxDatabaseCriterion {
 
 	@Override
 	protected void checkValidity() {
-		if (operatorChoiceBox.getSelectionModel().getSelectedItem().equals("IN")) {
+		if ("IN".equals(operatorChoiceBox.getSelectionModel().getSelectedItem())) {
 			this.getChildren().remove(warningIcon);
 			this.getChildren().remove(deleteButton);
 			this.getChildren().remove(fieldValue2);

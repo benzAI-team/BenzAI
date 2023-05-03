@@ -58,7 +58,7 @@ public class AromaticityGroup extends MoleculeGroup {
 				
 				Text text;
 				
-				if (valueStr.equals("0.0")) {
+				if ("0.0".equals(valueStr)) {
 					valueStr = "0.00";
 					
 					text = createText(valueStr);

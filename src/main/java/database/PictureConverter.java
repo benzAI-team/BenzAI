@@ -6,9 +6,10 @@ import java.util.Base64;
 
 import org.apache.commons.io.FileUtils;
 
-public class PictureConverter {
+public enum PictureConverter {
+    ;
 
-	public static String pngToString(String filePath) throws IOException {
+    public static String pngToString(String filePath) throws IOException {
 		byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath));
 		String encodedString = Base64.getEncoder().encodeToString(fileContent);
 		return encodedString;

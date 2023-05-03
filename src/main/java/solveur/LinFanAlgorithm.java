@@ -18,9 +18,10 @@ import molecules.UndirPonderateGraph;
 import parsers.GraphParser;
 import solveur.Aromaticity.RIType;
 
-public class LinFanAlgorithm {
+public enum LinFanAlgorithm {
+    ;
 
-	private static int indexStructure = 0;
+    private static int indexStructure = 0;
 
 	private static final int MAX_CIRCUIT_SIZE = 20;
 	private static final double [] rCount = new double[MAX_CIRCUIT_SIZE];

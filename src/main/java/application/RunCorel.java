@@ -1,8 +1,9 @@
 package application;
 
-public class RunCorel {
+public enum RunCorel {
+    ;
 
-	public static void main(String [] args) {
+    public static void main(String [] args) {
 		Corelations.main(args);
 	}
 }

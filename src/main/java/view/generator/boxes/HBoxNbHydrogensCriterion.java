@@ -17,7 +17,7 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 	@Override
 	public void checkValidity() {
 		
-		if (operatorChoiceBox.getValue().equals("EVEN") || operatorChoiceBox.getValue().equals("ODD")) {
+		if ("EVEN".equals(operatorChoiceBox.getValue()) || "ODD".equals(operatorChoiceBox.getValue())) {
 			setValid(true);
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(getWarningIcon());

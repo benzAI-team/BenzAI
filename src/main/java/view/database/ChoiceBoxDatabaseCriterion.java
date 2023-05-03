@@ -38,42 +38,42 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 
 				String value = getValue();
 
-				if (value.equals("Id")) {
+				if ("Id".equals(value)) {
 					HBoxDatabaseCriterion box = new HBoxIDDatabaseCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
 
-				else if (value.equals("Name")) {
+				else if ("Name".equals(value)) {
 					// HBoxDatabaseCriterion box = new HBoxNameDatabaseCriterion(parent, this);
 					// parent.setHBox(index, box);
 				}
 
-				else if (value.equals("Number of hexagons")) {
+				else if ("Number of hexagons".equals(value)) {
 					HBoxDatabaseCriterion box = new HBoxNbHexagonsDatabaseCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
 
-				else if (value.equals("Number of carbons")) {
+				else if ("Number of carbons".equals(value)) {
 					HBoxDatabaseCriterion box = new HBoxNbCarbonsDatabaseCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
 
-				else if (value.equals("Number of hydrogens")) {
+				else if ("Number of hydrogens".equals(value)) {
 					HBoxDatabaseCriterion box = new HBoxNbHydrogensDatabaseCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
 
-				else if (value.equals("Irregularity")) {
+				else if ("Irregularity".equals(value)) {
 					HBoxDatabaseCriterion box = new HBoxIrregularityDatabaseCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
 
-				else if (value.equals("Frequency")) {
+				else if ("Frequency".equals(value)) {
 					HBoxDatabaseCriterion box = new HBoxFrequencyDatabaseCriterion(parent, this);
 					parent.setHBox(index, box);
 				}
 
-				else if (value.equals("Intensity")) {
+				else if ("Intensity".equals(value)) {
 					HBoxDatabaseCriterion box = new HBoxIntensityDatabaseCriterion(parent, this);
 					parent.setHBox(index, box);
 				}

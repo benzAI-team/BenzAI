@@ -115,7 +115,7 @@ public class CarbonNumberConstraint extends BenzAIConstraint {
 				generalModel.getProblem().arithm(nbCarbonsVar, ((ParameterizedExpression)expression).getOperator(), value).post();
 
 			} else {
-				if (operator.equals("even"))
+				if ("even".equals(operator))
 					generalModel.getProblem().mod(nbCarbonsVar, 2, 0).post();
 				else
 					generalModel.getProblem().mod(nbCarbonsVar, 2, 1).post();

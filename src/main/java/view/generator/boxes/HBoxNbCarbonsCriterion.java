@@ -17,7 +17,7 @@ public class HBoxNbCarbonsCriterion extends ClassicalHBoxCriterion{
 	@Override
 	public void checkValidity() {
 		
-		if (operatorChoiceBox.getValue().equals("even") || operatorChoiceBox.getValue().equals("odd")) {
+		if ("even".equals(operatorChoiceBox.getValue()) || "odd".equals(operatorChoiceBox.getValue())) {
 			setValid(true);
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(getWarningIcon());

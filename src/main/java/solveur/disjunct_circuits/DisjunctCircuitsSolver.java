@@ -29,7 +29,8 @@ import utils.Couple;
 import utils.EdgeSet;
 import utils.Interval;
 
-public class DisjunctCircuitsSolver {
+public enum DisjunctCircuitsSolver {
+	;
 
 	private static int depth;
 	private static int[] indexes;

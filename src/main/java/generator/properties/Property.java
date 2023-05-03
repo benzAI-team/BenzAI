@@ -16,7 +16,7 @@ public abstract class Property {
 	private String id;
 	private String name;
 	private PropertySet propertySet;
-	private ArrayList<PropertyExpression> expressions = new ArrayList<>();
+	private final ArrayList<PropertyExpression> expressions = new ArrayList<>();
 
 	/***
 	 *

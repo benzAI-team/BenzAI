@@ -6,10 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class CorrelationCoefficient {
+public enum CorrelationCoefficient {
+	;
 
-	
-	 static double correlationCoefficient(ArrayList<Double> X, ArrayList<Double> Y, double n) {
+
+	static double correlationCoefficient(ArrayList<Double> X, ArrayList<Double> Y, double n) {
 
 		 double sum_X = 0.0, sum_Y = 0.0, sum_XY = 0.0;
 		 double squareSum_X = 0.0, squareSum_Y = 0.0;

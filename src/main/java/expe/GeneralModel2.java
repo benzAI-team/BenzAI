@@ -18,7 +18,8 @@ import generator.patterns.Pattern;
 import molecules.Node;
 import utils.Couple;
 
-public class GeneralModel2 {
+public enum GeneralModel2 {
+	;
 
 	private static Model model;
 
@@ -575,7 +576,7 @@ public class GeneralModel2 {
 	private static void initializeValues(String[] args) {
 		nbHexagons = 6;
 
-		nbCrowns = (int) Math.floor((((double) ((double) nbHexagons + 1)) / 2.0) + 1.0);
+		nbCrowns = (int) Math.floor((((double) nbHexagons + 1) / 2.0) + 1.0);
 
 		if (nbHexagons % 2 == 1)
 			nbCrowns--;

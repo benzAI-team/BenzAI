@@ -113,22 +113,22 @@ public class Settings {
 				double height;
 				boolean rememberSize;
 
-				if (splittedLine[0].equals("remember-window-size")) {
+				if ("remember-window-size".equals(splittedLine[0])) {
 					rememberSize = Boolean.parseBoolean(splittedLine[1]);
 					settings.setRemembersSize(rememberSize);
 				}
 
-				if (splittedLine[0].equals("width")) {
+				if ("width".equals(splittedLine[0])) {
 					width = Double.parseDouble(splittedLine[1]);
 					settings.setWidth(width);
 				}
 
-				else if (splittedLine[0].equals("height")) {
+				else if ("height".equals(splittedLine[0])) {
 					height = Double.parseDouble(splittedLine[1]);
 					settings.setHeight(height);
 				}
 
-				else if (splittedLine[0].equals("generation-time-limit")) {
+				else if ("generation-time-limit".equals(splittedLine[0])) {
 
 					String timeProperties = splittedLine[1];
 					String[] splittedTimeProperties = timeProperties.split(" ");
@@ -137,7 +137,7 @@ public class Settings {
 					settings.setTimeUnit(splittedTimeProperties[1]);
 				}
 
-				else if (splittedLine[0].equals("generation-max-solutions")) {
+				else if ("generation-max-solutions".equals(splittedLine[0])) {
 					settings.setNbMaxSolutions(Integer.parseInt(splittedLine[1]));
 				}
 				

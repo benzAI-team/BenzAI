@@ -28,8 +28,8 @@ public class InsertMolecules {
 
 	private void insert(String graphFile, String logFile, int index) throws Exception {
 
-		if (!graphFile
-				.equals("C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\graph_files\\benzene.graph_coord")) {
+		if (!"C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\graph_files\\benzene.graph_coord"
+				.equals(graphFile)) {
 
 			System.out.println("Treating : " + graphFile);
 

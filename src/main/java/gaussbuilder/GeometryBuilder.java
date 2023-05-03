@@ -6,9 +6,10 @@ import molecules.Molecule;
 import utils.Couple;
 import utils.Triplet;
 
-public class GeometryBuilder {
+public enum GeometryBuilder {
+    ;
 
-	public static int isInvalid(ArrayList<Couple<Integer, Integer>> invalidsCarbons, int carbon) {
+    public static int isInvalid(ArrayList<Couple<Integer, Integer>> invalidsCarbons, int carbon) {
 
 		for (Couple<Integer, Integer> carbons : invalidsCarbons) {
 

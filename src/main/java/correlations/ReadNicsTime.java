@@ -4,9 +4,10 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public class ReadNicsTime {
+public enum ReadNicsTime {
+    ;
 
-	public static void main(String [] args) throws IOException {
+    public static void main(String [] args) throws IOException {
 		
 		BufferedReader r = new BufferedReader(new FileReader("/home/adrien/Documents/comparaisons_constraints/times_nics.txt"));
 		String line;
@@ -15,7 +16,7 @@ public class ReadNicsTime {
 		String name1 = null, name2;
 		while((line = r.readLine()) != null) {
 			
-			if (line.startsWith("#") || line.equals("")) {
+			if (line.startsWith("#") || "".equals(line)) {
 				state = 0;
 
 				Arrays.fill(time, 0.0);

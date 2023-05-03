@@ -25,7 +25,8 @@ import utils.Interval;
 import utils.SubMolecule;
 import utils.Utils;
 
-public class LinAlgorithm {
+public enum LinAlgorithm {
+	;
 
 	public enum PerfectMatchingType {
 		CHOCO, DET
@@ -407,13 +408,13 @@ public class LinAlgorithm {
 
 		PerfectMatchingType type;
 
-		if (args[1].equals("0"))
+		if ("0".equals(args[1]))
 			type = PerfectMatchingType.DET;
 
 		else
 			type = PerfectMatchingType.CHOCO;
 
-		verbose = args.length >= 3 && (args[2].equals("-v") || args[2].equals("--verbose"));
+		verbose = args.length >= 3 && ("-v".equals(args[2]) || "--verbose".equals(args[2]));
 
 		printHeader(path, type);
 

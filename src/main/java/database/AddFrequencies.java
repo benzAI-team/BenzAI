@@ -1,11 +1,8 @@
 package database;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.google.gson.Gson;
+
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -13,9 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.google.gson.Gson;
-
-public class AddFrequencies {
+public enum AddFrequencies {
+	;
 
 	private static int idIrData;
 	
@@ -51,7 +47,7 @@ public class AddFrequencies {
 			String frequenciesStr = (String) map.get("frequencies");
 			String intensitiesStr = (String) map.get("intensities");
 			
-			if (frequenciesStr.equals("") || intensitiesStr.equals("")) 
+			if ("".equals(frequenciesStr) || "".equals(intensitiesStr))
 				System.out.println("Error on id " + idBenzenoid);
 			
 			else {

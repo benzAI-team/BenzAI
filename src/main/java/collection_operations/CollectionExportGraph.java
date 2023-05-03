@@ -41,7 +41,7 @@ public class CollectionExportGraph extends CollectionOperation{
                             .getMolecule(currentPane.getSelectedBenzenoidPanes().get(i).getIndex());
                     String name = currentPane.getSelectedBenzenoidPanes().get(i).getName();
                     String filename;
-                    if (!name.equals(""))
+                    if (!"".equals(name))
                         filename = name.split("\n")[0] + ".graph";
                     else {
                         filename = "unknown_molecule_" + index + ".graph";

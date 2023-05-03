@@ -20,7 +20,7 @@ public class HBoxNbHydrogensDatabaseCriterion extends HBoxInDatabase {
 		if (valid) {
 
 			String value = fieldValue1.getText();
-			if (operatorChoiceBox.getSelectionModel().getSelectedItem().equals("IN"))
+			if ("IN".equals(operatorChoiceBox.getSelectionModel().getSelectedItem()))
 				value = value + " " + fieldValue2.getText();
 
 			// String value = fieldValue1.getText() + " " + fieldValue2.getText();

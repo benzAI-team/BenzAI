@@ -63,16 +63,16 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 		if (isValid()) {
 			double time = Double.parseDouble(timeField.getText());
 
-			if (timeUnitBox.getValue().equals("milliseconds"))
+			if ("milliseconds".equals(timeUnitBox.getValue()))
 				time = time;
 
-			else if (timeUnitBox.getValue().equals("seconds"))
+			else if ("seconds".equals(timeUnitBox.getValue()))
 				time = time * 1000;
 
-			else if (timeUnitBox.getValue().equals("minutes"))
+			else if ("minutes".equals(timeUnitBox.getValue()))
 				time = time * 60000;
 
-			else if (timeUnitBox.getValue().equals("hours"))
+			else if ("hours".equals(timeUnitBox.getValue()))
 				time = time * 360000;
 
 			String value = time + "s";

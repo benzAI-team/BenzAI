@@ -8,9 +8,10 @@ import molecules.SubGraph;
 import parsers.GraphParser;
 import solveur.LinAlgorithm.PerfectMatchingType;
 
-public class RispoliAlgorithm {
+public enum RispoliAlgorithm {
+    ;
 
-	public static SubGraph removeCircuit(Molecule molecule, ArrayList<Integer> circuit, PerfectMatchingType type) {
+    public static SubGraph removeCircuit(Molecule molecule, ArrayList<Integer> circuit, PerfectMatchingType type) {
 
 		int nbNodes = molecule.getNbNodes();
 		int[][] matrix = molecule.getEdgeMatrix();

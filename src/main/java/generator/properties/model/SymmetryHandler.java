@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import constraints.Permutation;
 import utils.Coords;
 
-public class SymmetryHandler {
+public enum SymmetryHandler {
+    ;
+
     /***
      * checks if a molecule has a symmetry according to permutation p
      * @param moleculeIndices : indices of the hexagons

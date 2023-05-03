@@ -67,7 +67,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		hBoxWidth.getChildren().remove(getWarningIcon());
 		hBoxWidth.getChildren().remove(getDeleteButton());
 
-		if (widthChoice != null && widthChoice.equals("Unspecified"))
+		if (widthChoice != null && "Unspecified".equals(widthChoice))
 			validWidth = true;
 
 		else {
@@ -148,8 +148,8 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {
-			int height = heightTextField.getText().equals("Unspecified") ? -1 : Integer.decode(heightTextField.getText());
-			int width = widthTextField.getText().equals("Unspecified") ? -1 : Integer.decode(widthTextField.getText());
+			int height = "Unspecified".equals(heightTextField.getText()) ? -1 : Integer.decode(heightTextField.getText());
+			int width = "Unspecified".equals(widthTextField.getText()) ? -1 : Integer.decode(widthTextField.getText());
 			modelPropertySet.getById("rectangle").addExpression(new RectangleExpression("rectangle", heightChoiceBox.getValue(), height, widthChoiceBox.getValue(), width));
 		}
 	}

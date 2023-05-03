@@ -151,7 +151,7 @@ public class HydrogenNumberConstraint extends BenzAIConstraint {
 				generalModel.getProblem().arithm(nbHydrogensVar, ((BinaryNumericalExpression)expression).getOperator(), value).post();
 			}
 			else {
-				if (operator.equals("even"))
+				if ("even".equals(operator))
 					generalModel.getProblem().mod(nbHydrogensVar, 2, 0).post();
 				else
 					generalModel.getProblem().mod(nbHydrogensVar, 2, 1).post();

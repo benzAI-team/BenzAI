@@ -30,19 +30,19 @@ public class GraphCoordFileBuilder {
     }
 
     public boolean isCommentary(String[] splittedLine) {
-        return splittedLine[0].equals("c");
+        return "c".equals(splittedLine[0]);
     }
 
     public boolean isEdge(String[] splittedLine) {
-        return splittedLine[0].equals("e");
+        return "e".equals(splittedLine[0]);
     }
 
     public boolean isHexagon(String[] splittedLine) {
-        return splittedLine[0].equals("h");
+        return "h".equals(splittedLine[0]);
     }
 
     public boolean isHeader(String[] splittedLine) {
-        return splittedLine[0].equals("p");
+        return "p".equals(splittedLine[0]);
     }
 
     public int invert(int position) {

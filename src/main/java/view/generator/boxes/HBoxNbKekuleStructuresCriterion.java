@@ -17,7 +17,7 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 	@Override
 	protected void checkValidity() {
 		
-		if (operatorChoiceBox.getValue().equals("Min") || operatorChoiceBox.getValue().equals("Max")) {
+		if ("Min".equals(operatorChoiceBox.getValue()) || "Max".equals(operatorChoiceBox.getValue())) {
 			setValid(true);
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(getWarningIcon());

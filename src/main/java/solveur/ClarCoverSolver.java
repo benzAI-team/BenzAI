@@ -14,9 +14,10 @@ import molecules.Molecule;
 import solution.ClarCoverSolution;
 import utils.Couple;
 
-public class ClarCoverSolver {
+public enum ClarCoverSolver {
+    ;
 
-	public static ArrayList<ClarCoverSolution> solve(Molecule molecule) {
+    public static ArrayList<ClarCoverSolution> solve(Molecule molecule) {
 
 		Model model = new Model("Clar Cover");
 

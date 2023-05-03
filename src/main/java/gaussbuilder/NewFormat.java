@@ -15,9 +15,10 @@ import utils.Triplet;
 import utils.Utils;
 
 
-public class NewFormat {
+public enum NewFormat {
+    ;
 
-	public static void generate(Molecule molecule, String outputPath) throws IOException {
+    public static void generate(Molecule molecule, String outputPath) throws IOException {
 		Geometry geometry = GeometryBuilder.buildGeometry(molecule);
 		File f = new File(outputPath);
 		BufferedWriter w = new BufferedWriter(new FileWriter(f));
@@ -88,9 +89,9 @@ public class NewFormat {
 				
 				String [] split = Utils.splitBySeparators(line);
 				String atom = split[2];
-				if (atom.equals("C"))
+				if ("C".equals(atom))
 					nbCarbons ++;
-				else if (atom.equals("H"))
+				else if ("H".equals(atom))
 					nbHydrogens ++;
 			}
 		}

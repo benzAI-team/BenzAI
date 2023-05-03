@@ -15,18 +15,19 @@ import molecules.Node;
 import molecules.UndirPonderateGraph;
 import utils.RelativeMatrix;
 
-public class GraphParser {
+public enum GraphParser {
+	;
 
 	public static boolean isNoCommentary(String[] splittedLine) {
-		return (!splittedLine[0].equals("c"));
+		return (!"c".equals(splittedLine[0]));
 	}
 
 	public static boolean isEdge(String[] splittedLine) {
-		return (splittedLine[0].equals("e"));
+		return ("e".equals(splittedLine[0]));
 	}
 
 	public static boolean isHexagon(String[] splittedLine) {
-		return (splittedLine[0].equals("h"));
+		return ("h".equals(splittedLine[0]));
 	}
 
 	public static Molecule parseBenzenoidCode(String code) throws IOException {
@@ -418,7 +419,7 @@ public class GraphParser {
 							8 * nbHexagons);
 				}
 
-				if (inputFileLineWords[0].equals("h")) {
+				if ("h".equals(inputFileLineWords[0])) {
 					for (int i = 1; i < inputFileLineWords.length; i++) {
 						String[] ssl1 = inputFileLineWords[i].split(Pattern.quote("_"));
 

@@ -3,9 +3,10 @@ package spectrums;
 import java.io.*;
 import java.util.regex.Pattern;
 
-public class Test {
+public enum Test {
+    ;
 
-	public static void main(String [] args) throws IOException {
+    public static void main(String [] args) throws IOException {
 
 		BufferedReader r = new BufferedReader(new FileReader(new File("C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\log_files\\tmp.txt")));
 		

@@ -54,7 +54,7 @@ public class RenameCollectionPane extends GridPane {
 
 			String name = fieldCollectionName.getText();
 
-			if ((!name.equals("")) && (!name.equals("+"))) {
+			if ((!"".equals(name)) && (!"+".equals(name))) {
         if (parent.isCollectionPaneLabel(name))
           Utils.alert("This name is already used!");
         else parent.renameCurentTab(name);

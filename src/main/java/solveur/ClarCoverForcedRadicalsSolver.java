@@ -14,9 +14,10 @@ import molecules.Molecule;
 import solution.ClarCoverSolution;
 import utils.Couple;
 
-public class ClarCoverForcedRadicalsSolver {
+public enum ClarCoverForcedRadicalsSolver {
+    ;
 
-	public static ArrayList<ClarCoverSolution> solve(Molecule molecule, int nbRadicals) {
+    public static ArrayList<ClarCoverSolution> solve(Molecule molecule, int nbRadicals) {
 
 		Model model = new Model("Clar Cover");
 

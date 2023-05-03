@@ -93,25 +93,25 @@ public class BenzenoidCriterion {
 
 	public static Operator getOperator(String operatorString) {
 
-		if (operatorString.equals("<="))
+		if ("<=".equals(operatorString))
 			return Operator.LEQ;
 
-		else if (operatorString.equals("<"))
+		else if ("<".equals(operatorString))
 			return Operator.LT;
 
-		else if (operatorString.equals("="))
+		else if ("=".equals(operatorString))
 			return Operator.EQ;
 
-		else if (operatorString.equals(">"))
+		else if (">".equals(operatorString))
 			return Operator.GT;
 
-		else if (operatorString.equals(">="))
+		else if (">=".equals(operatorString))
 			return Operator.GEQ;
 
-		else if (operatorString.equals("!=") || operatorString.equals("<>"))
+		else if ("!=".equals(operatorString) || "<>".equals(operatorString))
 			return Operator.DIFF;
 
-		else if (operatorString.equalsIgnoreCase("IN"))
+		else if ("IN".equalsIgnoreCase(operatorString))
 			return Operator.IN;
 
 		else

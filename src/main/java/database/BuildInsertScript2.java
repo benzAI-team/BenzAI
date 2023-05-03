@@ -16,9 +16,10 @@ import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
 import utils.Utils;
 
-public class BuildInsertScript2 {
+public enum BuildInsertScript2 {
+    ;
 
-	private static void buildScript(File graphFilesDirectory, File logFilesDirectory) throws IOException {
+    private static void buildScript(File graphFilesDirectory, File logFilesDirectory) throws IOException {
 
 		File[] graphFiles = graphFilesDirectory.listFiles(new FilenameFilter() {
 			@Override

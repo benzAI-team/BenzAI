@@ -2,8 +2,10 @@ package solveur.matrix_determinant;
 
 import java.text.MessageFormat;
 
-public class MatrixDeterminant {
-/**
+public enum MatrixDeterminant {
+    ;
+
+    /**
 	 * Main method that initializes the matrix and calls method to calculate
 	 * its determinant
 	 *

@@ -13,9 +13,10 @@ import molecules.Molecule;
 import parsers.GraphParser;
 import utils.Couple;
 
-public class MoleculeFilter {
+public enum MoleculeFilter {
+    ;
 
-	private static Couple<Integer, Integer> countCarbonsAndHydrogens(Molecule molecule) {
+    private static Couple<Integer, Integer> countCarbonsAndHydrogens(Molecule molecule) {
 		
 		return new Couple<>(molecule.getNbNodes(), molecule.getNbHydrogens());
 	}

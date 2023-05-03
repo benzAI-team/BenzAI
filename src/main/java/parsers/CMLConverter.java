@@ -11,9 +11,10 @@ import molecules.Node;
 import utils.Couple;
 import utils.Triplet;
 
-public class CMLConverter {
+public enum CMLConverter {
+    ;
 
-	public static boolean validConfiguration(Node u, Node v) {
+    public static boolean validConfiguration(Node u, Node v) {
 
 		if (u.getX() == v.getX() && Math.abs(u.getY() - v.getY()) == 1)
 			return true;

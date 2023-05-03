@@ -26,7 +26,7 @@ public class IRSpectraEntry {
 	private final ArrayList<Double> intensities;
 	private final double zeroPointEnergy;
 
-	private String amesFormat;
+	private final String amesFormat;
 
 	/*
 	 * Constructor
@@ -138,7 +138,7 @@ public class IRSpectraEntry {
 
 		ArrayList<Double> frequencies = new ArrayList<>();
 
-		if (!frequenciesString.equals("")) {
+		if (!"".equals(frequenciesString)) {
 			String[] splittedFrequencies = frequenciesString.split("\\s+");
 			for (String frequency : splittedFrequencies)
 				frequencies.add(Double.parseDouble(frequency));
@@ -146,7 +146,7 @@ public class IRSpectraEntry {
 
 		ArrayList<Double> intensities = new ArrayList<>();
 
-		if (!intensitiesString.equals("")) {
+		if (!"".equals(intensitiesString)) {
 			String[] splittedIntensities = intensitiesString.split("\\s+");
 			for (String intensity : splittedIntensities)
 				intensities.add(Double.parseDouble(intensity));
@@ -184,28 +184,28 @@ public class IRSpectraEntry {
 
 			String[] splittedLine = line.split(Pattern.quote(" = "));
 
-			if (splittedLine[0].equals("id_molecule"))
+			if ("id_molecule".equals(splittedLine[0]))
 				idMolecule = Integer.parseInt(splittedLine[1]);
 
-			else if (splittedLine[0].equals("molecule_name"))
+			else if ("molecule_name".equals(splittedLine[0]))
 				moleculeName = splittedLine[1];
 
-			else if (splittedLine[0].equals("nb_hexagons"))
+			else if ("nb_hexagons".equals(splittedLine[0]))
 				nbHexagons = Integer.parseInt(splittedLine[1]);
 
-			else if (splittedLine[0].equals("nb_carbons"))
+			else if ("nb_carbons".equals(splittedLine[0]))
 				nbCarbons = Integer.parseInt(splittedLine[1]);
 
-			else if (splittedLine[0].equals("nb_hydrogens"))
+			else if ("nb_hydrogens".equals(splittedLine[0]))
 				nbHydrogens = Integer.parseInt(splittedLine[1]);
 
-			else if (splittedLine[0].equals("irregularity"))
+			else if ("irregularity".equals(splittedLine[0]))
 				irregularity = Double.parseDouble(splittedLine[1]);
 
-			else if (splittedLine[0].equals("id_gaussian_result"))
+			else if ("id_gaussian_result".equals(splittedLine[0]))
 				idGaussianResult = Integer.parseInt(splittedLine[1]);
 
-			else if (splittedLine[0].equals("final_energies")) {
+			else if ("final_energies".equals(splittedLine[0])) {
 
 				String[] splittedResult = splittedLine[1].split("\\s+");
 
@@ -213,7 +213,7 @@ public class IRSpectraEntry {
 					finalEnergies.add(Double.parseDouble(value));
 			}
 
-			else if (splittedLine[0].equals("frequencies")) {
+			else if ("frequencies".equals(splittedLine[0])) {
 
 				String[] splittedResult = splittedLine[1].split("\\s+");
 
@@ -221,7 +221,7 @@ public class IRSpectraEntry {
 					frequencies.add(Double.parseDouble(value));
 			}
 
-			else if (splittedLine[0].equals("intensities")) {
+			else if ("intensities".equals(splittedLine[0])) {
 
 				String[] splittedResult = splittedLine[1].split("\\s+");
 
@@ -229,10 +229,10 @@ public class IRSpectraEntry {
 					intensities.add(Double.parseDouble(value));
 			}
 
-			else if (splittedLine[0].equals("zero_point_energy"))
+			else if ("zero_point_energy".equals(splittedLine[0]))
 				zeroPointEnergy = Double.parseDouble(splittedLine[1]);
 
-			else if (splittedLine[0].equals("amesFormat"))
+			else if ("amesFormat".equals(splittedLine[0]))
 				amesFormat = splittedLine[1];
 		}
 

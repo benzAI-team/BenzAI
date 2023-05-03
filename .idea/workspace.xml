@@ -8,9 +8,124 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="add : testing generation">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/RunCorel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/RunCorel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/TaskHBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/TaskHBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/MoleculeInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/MoleculeInformation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportCML.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportCML.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportCOM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportCOM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportPNG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportPNG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionOperationSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionOperationSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/ComputeCorrelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/ComputeCorrelations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/CorrelationCoefficient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/CorrelationCoefficient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLinFan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLinFan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLinOpt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLinOpt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/ReadNICSBrut.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/ReadNICSBrut.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/ReadNicsTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/ReadNicsTime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/AddFrequencies.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/AddFrequencies.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/BenzenoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BenzenoidCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/InsertMolecules.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/InsertMolecules.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/InsertScriptFinal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/InsertScriptFinal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/PictureConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/PictureConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/models/IRSpectraEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/models/IRSpectraEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/expe/Avg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/expe/Avg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/expe/BuildJobs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/expe/BuildJobs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/expe/GeneralModel2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/expe/GeneralModel2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/expe/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/expe/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/expe/TestModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/expe/TestModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/AmpacBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/AmpacBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/ComBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/ComBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/GaussChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/GaussChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/GaussMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/GaussMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/GeometryBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/GeometryBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/NewFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/NewFormat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GraphConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GraphConversion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ModelBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ModelBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/OldLexLead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/OldLexLead.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/Property.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/Property.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/PropertySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/PropertySet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/CarbonNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/CarbonNumberProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/HydrogenNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/HydrogenNumberProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/SymmetryHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/SymmetryHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/BinaryNumericalExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/BinaryNumericalExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/solver/SolverProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/solver/SolverProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/http/JSonStringBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/http/JSonStringBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/http/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/http/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/http/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/http/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/CMLConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/CMLConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/COMConverter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/COMConverter2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/ComConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/ComConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphCoordFileBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphCoordFileBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/LogConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/LogConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverForcedRadicalsSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverForcedRadicalsSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverResonanceEnergy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverResonanceEnergy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/KekuleStructureSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/KekuleStructureSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/LinAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/LinAlgorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/LinFanAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/LinFanAlgorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/PerfectMatchingSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/PerfectMatchingSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RBOSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RBOSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RandicMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RandicMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RispoliAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RispoliAlgorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/disjunct_circuits/DisjunctCircuitsSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/disjunct_circuits/DisjunctCircuitsSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/MatrixDeterminant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/MatrixDeterminant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/MatrixInversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/MatrixInversion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/MatrixMultiplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/MatrixMultiplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/MatrixOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/MatrixOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/SpectrumsComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spectrums/SpectrumsComputer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spectrums/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/toolbox/BuildScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/toolbox/BuildScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/toolbox/MoleculeFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/toolbox/MoleculeFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/catalog/CatalogPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/catalog/CatalogPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/CreateCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/CreateCollectionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/RenameCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/RenameCollectionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections_operations/CollectionsOperationsPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections_operations/CollectionsOperationsPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/database/ChoiceBoxDatabaseCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/database/ChoiceBoxDatabaseCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxFrequencyDatabaseCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxFrequencyDatabaseCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxInDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxInDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxIrregularityDatabaseCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxIrregularityDatabaseCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxNbCarbonsDatabaseCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxNbCarbonsDatabaseCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxNbHexagonsDatabaseCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxNbHexagonsDatabaseCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxNbHydrogensDatabaseCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/database/boxes/HBoxNbHydrogensDatabaseCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/AddToNewCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/AddToNewCollectionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/DrawBenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/DrawBenzenoidPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/Stopper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/Stopper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronenoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronenoidCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronoidCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxIrregularityCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxIrregularityCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbCarbonsCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbCarbonsCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbHydrogensCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbHydrogensCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbKekuleStructuresCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbKekuleStructuresCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxPatternCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxPatternCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRhombusCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRhombusCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxSolverCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxSolverCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxTimeoutCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxTimeoutCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/AromaticityGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/AromaticityGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestGeneration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestGeneration.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,19 +179,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/collection_operations/LinFanResonanceEnergyTask.java&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "Errors",
+    "two.files.diff.last.used.file": "/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/collection_operations/LinFanResonanceEnergyTask.java"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -206,7 +324,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683102126203</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="add : testing generation">
+      <created>1683102344727</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1683102344727</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

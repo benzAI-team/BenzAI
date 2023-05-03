@@ -18,9 +18,10 @@ import molecules.Molecule;
 import utils.Couple;
 import utils.Triplet;
 
-public class GaussChecker {
+public enum GaussChecker {
+    ;
 
-	public static double distance(Triplet<Double, Double, Double> p1, Triplet<Double, Double, Double> p2) {
+    public static double distance(Triplet<Double, Double, Double> p1, Triplet<Double, Double, Double> p2) {
 
 		double x1 = p1.getX();
 		double y1 = p1.getY();

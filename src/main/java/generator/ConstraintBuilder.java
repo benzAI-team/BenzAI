@@ -8,7 +8,8 @@ import constraints.Permutation;
 import utils.Coords;
 import utils.Utils;
 
-public class ConstraintBuilder {
+public enum ConstraintBuilder {
+	;
 
 	public static void postFillNodesConnection(GeneralModel model) {
 

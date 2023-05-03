@@ -1,15 +1,16 @@
 package solveur;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import molecules.Molecule;
 import parsers.GraphParser;
 import solution.ClarCoverSolution;
 
-public class ClarCoverResonanceEnergy {
+import java.io.File;
+import java.util.ArrayList;
 
-	private static void usage() {
+public enum ClarCoverResonanceEnergy {
+    ;
+
+    private static void usage() {
 		System.out.println("usage : java -jar jarfile.jar file.graph_coord");
 	}
 

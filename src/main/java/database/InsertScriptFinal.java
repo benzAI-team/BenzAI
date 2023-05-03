@@ -19,9 +19,10 @@ import spectrums.SpectrumsComputer;
 import utils.Triplet;
 import utils.Utils;
 
-public class InsertScriptFinal {
+public enum InsertScriptFinal {
+    ;
 
-	private static int idBenzenoid;
+    private static int idBenzenoid;
 	private static int idName;
 	private static int idSpectra;
 	private static int idIMS2D1A;
@@ -58,7 +59,7 @@ public class InsertScriptFinal {
 				geo = true;
 			
 			else {	
-				if (geo && line.equals(""))
+				if (geo && "".equals(line))
 					geo = false;
 			
 				else if (geo) {
@@ -102,7 +103,7 @@ public class InsertScriptFinal {
 		String line;
 		
 		while((line = reader.readLine())!= null)
-			if (line.equals(""))
+			if ("".equals(line))
 				break;
 		
 		line = reader.readLine();
@@ -134,7 +135,7 @@ public class InsertScriptFinal {
 		
 		while((line = reader.readLine()) != null) {
 			
-			if (line.equals("")) {
+			if ("".equals(line)) {
 				first = false;
 				points.add(pointsLine);
 				pointsLine = new ArrayList<>();
@@ -159,15 +160,13 @@ public class InsertScriptFinal {
 		reader.close();
 		
 		String picture = PictureConverter.pngToString(mapFile.getAbsolutePath());
+
+        String insert = "INSERT INTO ims2d_1a (idIms2d1a, idBenzenoid, vectorX, vectorY, nbPointsX, nbPointsY, origin, points, picture) VALUES (\n" +
+                idIMS2D1A + ", " + idBenzenoid + ", " + quote(v1Str) + ", " + quote(v2Str) + ", " + nbPointsX + ", " + nbPointsY + ", " + quote(originStr) + ", " +
+                quote(pointsStr.toString()) + ", " + quote(picture) +
+                ");";
 		
-		StringBuilder insert = new StringBuilder();
-		
-		insert.append("INSERT INTO ims2d_1a (idIms2d1a, idBenzenoid, vectorX, vectorY, nbPointsX, nbPointsY, origin, points, picture) VALUES (\n");
-		insert.append(idIMS2D1A + ", " + idBenzenoid + ", " + quote(v1Str) + ", " + quote(v2Str) + ", " + nbPointsX + ", " + nbPointsY + ", " + quote(originStr) + ", " + 
-		quote(pointsStr.toString()) + ", " + quote(picture));
-		insert.append(");");
-		
-		out.write(insert.toString());
+		out.write(insert);
 		
 		idIMS2D1A ++;
 	}
@@ -182,9 +181,9 @@ public class InsertScriptFinal {
 		Irregularity irreg = Utils.computeParameterOfIrregularity(molecule);
 		
 		if (irreg == null)
-			irregBD = new BigDecimal(-1.0).setScale(3, RoundingMode.HALF_UP);
+			irregBD = BigDecimal.valueOf(-1.0).setScale(3, RoundingMode.HALF_UP);
 		else
-			irregBD = new BigDecimal(irreg.getXI()).setScale(3, RoundingMode.HALF_UP);
+			irregBD = BigDecimal.valueOf(irreg.getXI()).setScale(3, RoundingMode.HALF_UP);
 		
 		int nbHexagons = molecule.getNbHexagons();
 		int nbCarbons = molecule.getNbNodes();
@@ -201,16 +200,12 @@ public class InsertScriptFinal {
 		File nicsFile = new File(molFile.getAbsolutePath().replace(".graph_coord", ".nics"));
 		if (nicsFile.exists()) {
 			nics = nicsFileToString(nicsFile);
-		
-			StringBuilder majNICS = new StringBuilder();
-			
-			majNICS.append("UPDATE benzenoid SET nics = " + quote(nics).replace("  ", " ") + " WHERE idBenzenoid = " + idBenzenoid + ";");
-			
-			updateNICS.write(majNICS.toString() + "\n");
+
+            updateNICS.write("UPDATE benzenoid SET nics = " + quote(nics).replace("  ", " ") + " WHERE idBenzenoid = " + idBenzenoid + ";" + "\n");
 			
 		}
 		
-		if (!nics.equals(""))
+		if (!"".equals(nics))
 			nbNics ++;
 		
 		/*
@@ -221,9 +216,7 @@ public class InsertScriptFinal {
 		if (clarFile.exists()) {
 			
 			String picture = PictureConverter.pngToString(clarFile.getAbsolutePath());
-			StringBuilder majClar = new StringBuilder();
-			majClar.append("UPDATE benzenoid SET clar_cover = " + quote(picture) + " WHERE idBenzenoid = " + idBenzenoid + ";\n");
-			updateClar.write(majClar.toString() + "\n");
+            updateClar.write("UPDATE benzenoid SET clar_cover = " + quote(picture) + " WHERE idBenzenoid = " + idBenzenoid + ";\n" + "\n");
 
 		}
 		
@@ -233,11 +226,10 @@ public class InsertScriptFinal {
 		String geometry = getGeometry(comFile);
 		
 		ArrayList<String> names = molecule.getNames();
-		
-		StringBuilder insertBenzenoid = new StringBuilder();
-		insertBenzenoid.append("INSERT INTO benzenoid (idBenzenoid, nbHexagons, nbCarbons, nbHydrogens, inchie, irregularity, graphFile, nics, geometry) VALUES (\n");
-		insertBenzenoid.append(idBenzenoid + ", " + nbHexagons + ", " + nbCarbons + ", " + nbHydrogens + ", " + quote(inchie) + ", " + irregularity + ", ");
-		insertBenzenoid.append(quote(graphFileContent) + ", " + quote(nics) + ", " + quote(geometry) + "\n);");
+
+        String insertBenzenoid = "INSERT INTO benzenoid (idBenzenoid, nbHexagons, nbCarbons, nbHydrogens, inchie, irregularity, graphFile, nics, geometry) VALUES (\n" +
+                idBenzenoid + ", " + nbHexagons + ", " + nbCarbons + ", " + nbHydrogens + ", " + quote(inchie) + ", " + irregularity + ", " +
+                quote(graphFileContent) + ", " + quote(nics) + ", " + quote(geometry) + "\n);";
 		
 		StringBuilder insertNames = new StringBuilder();
 		
@@ -246,8 +238,8 @@ public class InsertScriptFinal {
 			idName ++;
 		}
 		
-		out.write(insertBenzenoid.toString() + "\n");
-		out.write(insertNames.toString() + "\n");
+		out.write(insertBenzenoid + "\n");
+		out.write(insertNames + "\n");
 		
 		
 	}
@@ -304,7 +296,7 @@ public class InsertScriptFinal {
 			String z = split[3];
 
 			String atomType;
-			if (atom.equals("C"))
+			if ("C".equals(atom))
 				atomType = "6";
 			else
 				atomType = "1";
@@ -373,7 +365,7 @@ public class InsertScriptFinal {
 
 
 
-		out.write(insert.toString() + "\n");
+		out.write(insert + "\n");
 		
 		idSpectra ++;
 	}

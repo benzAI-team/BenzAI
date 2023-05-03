@@ -6,9 +6,10 @@ import parsers.GraphParser;
 import java.io.*;
 import java.util.regex.Pattern;
 
-public class CorrelationLinFan {
+public enum CorrelationLinFan {
+    ;
 
-	private static void usage() {
+    private static void usage() {
 		System.err.println("convert .lin file to .dat file");
 		System.err.println("java -jar file list_lin_log_files curent_path");
 	}

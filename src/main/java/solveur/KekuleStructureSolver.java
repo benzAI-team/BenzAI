@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class KekuleStructureSolver {
+public enum KekuleStructureSolver {
+    ;
 
-	public static ArrayList<int[][]> computeKekuleStructures(Molecule molecule, int nbSolutionsMax) {
+    public static ArrayList<int[][]> computeKekuleStructures(Molecule molecule, int nbSolutionsMax) {
 
 		ArrayList<int[][]> structures = new ArrayList<>();
 

@@ -146,7 +146,7 @@ public class CatalogPane extends GridPane {
 
 		moleculeNameAddButton.setOnAction(e -> {
 
-			if (!moleculeNameField.getText().equals("")) {
+			if (!"".equals(moleculeNameField.getText())) {
 
 				BenzenoidCriterion criterion = new BenzenoidCriterion(Subject.MOLECULE_NAME,
 						BenzenoidCriterion.getOperator(moleculeNameChoiceBox.getValue().toString()),
@@ -451,7 +451,7 @@ public class CatalogPane extends GridPane {
 		stepLabel.setVisible(false);
 
 		classifierChoiceBox.setOnAction(e -> {
-			if (classifierChoiceBox.getValue().toString().equals("Irregularity")) {
+			if ("Irregularity".equals(classifierChoiceBox.getValue().toString())) {
 				stepField.setVisible(true);
 				stepLabel.setVisible(true);
 			}
@@ -493,7 +493,7 @@ public class CatalogPane extends GridPane {
 
 						String choice = classifierChoiceBox.getValue().toString();
 
-						if (choice.equals("Irregularity")) {
+						if ("Irregularity".equals(choice)) {
 
 							try {
 								double step = Double.parseDouble(stepField.getText());

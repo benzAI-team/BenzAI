@@ -8,9 +8,10 @@ import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.IntVar;
 
-public class TestModel {
+public enum TestModel {
+    ;
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
 		Model model = new Model("debug");
 

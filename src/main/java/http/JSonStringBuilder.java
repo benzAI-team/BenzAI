@@ -1,8 +1,9 @@
 package http;
 
-public class JSonStringBuilder {
+public enum JSonStringBuilder {
+    ;
 
-	public static String buildJsonString(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens,
+    public static String buildJsonString(Long id, String name, int nbHexagons, int nbCarbons, int nbHydrogens,
 			double irregularity, String opeId, String opeName, String opeHexagons, String opeCarbons,
 			String opeHydrogens, String opeIrregularity) {
 
@@ -23,44 +24,44 @@ public class JSonStringBuilder {
 
 		json.append("{");
 
-		if (!opeId.equals(""))
+		if (!"".equals(opeId))
 			json.append("\"id\": \"").append(opeId).append(" ").append(id).append("\", ");
 		else
 			json.append("\"id\": \"\", ");
 
-		if (!opeName.equals(""))
+		if (!"".equals(opeName))
 			json.append("\"name\": \"").append(opeName).append(" ").append(name).append("\", ");
 		else
 			json.append("\"name\": \"\", ");
 
-		if (!opeHexagons.equals(""))
+		if (!"".equals(opeHexagons))
 			json.append("\"nbHexagons\": \"").append(opeHexagons).append(" ").append(nbHexagons).append("\", ");
 		else
 			json.append("\"nbHexagons\": \"\", ");
 
-		if (!opeCarbons.equals(""))
+		if (!"".equals(opeCarbons))
 			json.append("\"nbCarbons\": \"").append(opeCarbons).append(" ").append(nbCarbons).append("\", ");
 		else
 			json.append("\"nbCarbons\": \"\", ");
 
-		if (!opeHydrogens.equals(""))
+		if (!"".equals(opeHydrogens))
 			json.append("\"nbHydrogens\": \"").append(opeHydrogens).append(" ").append(nbHydrogens).append("\", ");
 		else
 			json.append("\"nbHydrogens\": \"\", ");
 
-		if (!opeIrregularity.equals(""))
+		if (!"".equals(opeIrregularity))
 			json.append("\"irregularity\": \"").append(opeIrregularity).append(" ").append(irregularity).append("\", ");
 		else
 			json.append("\"irregularity\": \"\", ");
 
 		// new criterions
 
-		if (!opeFrequency.equals(""))
+		if (!"".equals(opeFrequency))
 			json.append("\"frequency\": \"").append(opeFrequency).append(" ").append(frequency).append("\", ");
 		else
 			json.append("\"frequency\": \"\", ");
 
-		if (!opeIntensity.equals(""))
+		if (!"".equals(opeIntensity))
 			json.append("\"intensity\": \"").append(opeIntensity).append(" ").append(intensity).append("\"");
 		else
 			json.append("\"intensity\": \"\"");

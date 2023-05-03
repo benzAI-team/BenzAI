@@ -23,9 +23,10 @@ import parsers.ComConverter.ComType;
 import utils.Couple;
 import utils.Triplet;
 
-public class COMConverter2 {
+public enum COMConverter2 {
+    ;
 
-	public static int isInvalid(ArrayList<Couple<Integer, Integer>> invalidsCarbons, int carbon) {
+    public static int isInvalid(ArrayList<Couple<Integer, Integer>> invalidsCarbons, int carbon) {
 
 		for (Couple<Integer, Integer> carbons : invalidsCarbons) {
 

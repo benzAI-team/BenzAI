@@ -1,21 +1,17 @@
 package gaussbuilder;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import molecules.Molecule;
+import utils.Triplet;
+
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-import molecules.Molecule;
-import utils.Triplet;
+public enum AmpacBuilder {
+    ;
 
-public class AmpacBuilder {
-
-	public static void buildAmpacFile(Molecule molecule, String outputFilePath) throws IOException {
+    public static void buildAmpacFile(Molecule molecule, String outputFilePath) throws IOException {
 		
 		Geometry geometry = GeometryBuilder.buildGeometry(molecule);
 		Triplet<Double, Double, Double> [] carbons = geometry.getX();
@@ -84,7 +80,7 @@ public class AmpacBuilder {
 			if (line.contains("CARTESIAN COORDINATES")) {
 				lines = new ArrayList<>();
 				
-				while(!line.equals("")) {
+				while(!"".equals(line)) {
 					lines.add(line);
 					line = reader.readLine();
 				}
@@ -98,7 +94,7 @@ public class AmpacBuilder {
 			line = lines.get(i);
 			String [] splittedString = line.split("\\s+");
 			
-			if (splittedString[2].equals("C"))
+			if ("C".equals(splittedString[2]))
 				nbCarbons ++;
 			
 		}
@@ -116,7 +112,7 @@ public class AmpacBuilder {
 			double y = Double.parseDouble(splittedString[4]);
 			double z = Double.parseDouble(splittedString[5]);
 			
-			if (splittedString[2].equals("C")) {
+			if ("C".equals(splittedString[2])) {
 				carbons[indexCarbon] = new Triplet<>(x, y, z);
 				indexCarbon ++;
 			}

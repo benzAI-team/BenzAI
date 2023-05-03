@@ -1,8 +1,9 @@
 package utils;
 
-public class DiameterComputer {
+public enum DiameterComputer {
+    ;
 
-	final static int INF = 99999, V = 4;
+    static final int INF = 99999, V = 4;
 
 	public static int[][] floydWarshall(int[][] graph) {
 		int[][] dist = new int[V][V];

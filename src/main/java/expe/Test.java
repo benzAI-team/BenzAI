@@ -10,7 +10,8 @@ import java.util.Base64;
 
 import org.apache.commons.io.FileUtils;
 
-public class Test {
+public enum Test {
+	;
 
 	public static String pictureToString(String filePath) throws IOException {
 		byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath));

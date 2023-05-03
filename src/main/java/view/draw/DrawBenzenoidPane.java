@@ -309,7 +309,7 @@ public class DrawBenzenoidPane extends BorderPane {
 			case COM:
 				try {
 					String title = nameField.getText();
-					if (title.equals(""))
+					if ("".equals(title))
 						title = "default_name";
 					ComConverter.generateComFile(molecule, file, 0, ComType.IR, title);
 				} catch (IOException e1) {

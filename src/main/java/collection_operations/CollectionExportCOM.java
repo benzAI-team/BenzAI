@@ -52,7 +52,7 @@ public class CollectionExportCOM extends CollectionOperation{
 
                     String fileName;
 
-                    if (!currentPane.getSelectedBenzenoidPanes().get(i).getName().equals(""))
+                    if (!"".equals(currentPane.getSelectedBenzenoidPanes().get(i).getName()))
                         fileName = currentPane.getSelectedBenzenoidPanes().get(i).getName().split("\n")[0] + ".com";
                     else {
                         fileName = "unknown_molecule_" + index + ".com";

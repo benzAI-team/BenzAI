@@ -24,7 +24,8 @@ import utils.Interval;
 import utils.SubMolecule;
 import utils.Utils;
 
-public class RandicMethod {
+public enum RandicMethod {
+	;
 
 	private static int [][] globalMatrix;
 	

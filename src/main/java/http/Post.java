@@ -16,7 +16,8 @@ import com.google.gson.Gson;
 
 import utils.Utils;
 
-public class Post {
+public enum Post {
+	;
 
 	public static boolean isDatabaseConnected;
 
@@ -48,7 +49,7 @@ public class Post {
 
 			// System.out.println(response.toString());
 
-			if (!response.toString().equals("[]")) {
+			if (!"[]".equals(response.toString())) {
 
 				String res = response.toString();
 				res = res.substring(2, res.length() - 2);

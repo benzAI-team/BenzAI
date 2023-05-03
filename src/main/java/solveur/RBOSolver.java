@@ -7,9 +7,10 @@ import molecules.RBO;
 import molecules.SubGraph;
 import solveur.LinAlgorithm.PerfectMatchingType;
 
-public class RBOSolver {
+public enum RBOSolver {
+    ;
 
-	public static RBO RBO(Molecule molecule) {
+    public static RBO RBO(Molecule molecule) {
 
 		double[][] statistics = new double[molecule.getNbNodes()][molecule.getNbNodes()];
 		double[] RBO = new double[molecule.getNbHexagons()];

@@ -56,7 +56,7 @@ public class CollectionExportCML extends CollectionOperation{
 
                     String filename;
 
-                    if (!currentPane.getSelectedBenzenoidPanes().get(i).getName().equals(""))
+                    if (!"".equals(currentPane.getSelectedBenzenoidPanes().get(i).getName()))
                         filename = currentPane.getSelectedBenzenoidPanes().get(i).getName().split("\n")[0] + ".cml";
                     else {
                         filename = "unknown_molecule_" + index + ".cml";

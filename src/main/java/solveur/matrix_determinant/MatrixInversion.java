@@ -1,8 +1,10 @@
 package solveur.matrix_determinant;
 
 
-public class MatrixInversion {
-	/**
+public enum MatrixInversion {
+    ;
+
+    /**
 	 * Main method that initializes the matrix and calls method to calculate
 	 * inverted matrix of given matrix 
 	 *

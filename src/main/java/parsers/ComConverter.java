@@ -14,9 +14,10 @@ import molecules.Node;
 import utils.Couple;
 import utils.Triplet;
 
-public class ComConverter {
+public enum ComConverter {
+    ;
 
-	public enum ComType {
+    public enum ComType {
 		ER, IR
 	}
 
@@ -658,7 +659,7 @@ public class ComConverter {
 
 		ComType type;
 
-		if (args[2].equals("1"))
+		if ("1".equals(args[2]))
 			type = ComType.ER;
 
 		else

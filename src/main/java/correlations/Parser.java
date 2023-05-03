@@ -14,10 +14,11 @@ import java.util.regex.Pattern;
 import molecules.Molecule;
 import parsers.GraphParser;
 
-public class Parser {
+public enum Parser {
+    ;
 
-	private final static String instancesPath = "/home/adrien/Documents/comparaisons_constraints/instances/";
-	private final static String resultsPath = "/home/adrien/Documents/comparaisons_constraints/results/";
+    private static final String instancesPath = "/home/adrien/Documents/comparaisons_constraints/instances/";
+	private static final String resultsPath = "/home/adrien/Documents/comparaisons_constraints/results/";
 	
 	private static void corelations(String instance) throws IOException{
 
@@ -128,7 +129,7 @@ public class Parser {
 			if (!in && line.startsWith("LOCAL ENERGY")) 
 				in = true;
 			
-			else if (in && !line.equals("")) {
+			else if (in && !"".equals(line)) {
 				String [] circuitsStr = line.split(Pattern.quote(" : "))[1].split(" ");
 				double sum = 0.0;
 				for (int i = 0 ; i < 4 ; i++) {
@@ -142,7 +143,7 @@ public class Parser {
 				index ++;
 			}
 			
-			else if (in && line.equals("")) {
+			else if (in && "".equals(line)) {
 				in = false;
 			}
 		}
@@ -244,7 +245,7 @@ public class Parser {
 						
 					}
 					
-					else if (in && !line.equals("")) {
+					else if (in && !"".equals(line)) {
 						String [] strCircuits = line.split(Pattern.quote(" : "))[1].split(" ");
 						double sum = 0.0;
 						for (int j = 0 ; j < strCircuits.length ; j++) {
@@ -255,7 +256,7 @@ public class Parser {
 						linDat.add(sum);
 					}
 					
-					else if (in && line.equals("")) {
+					else if (in && "".equals(line)) {
 						in = false;
 					}
 				}

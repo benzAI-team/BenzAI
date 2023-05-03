@@ -5,12 +5,13 @@ import java.util.Objects;
 
 import javafx.scene.control.MenuItem;
 
-public class CollectionOperationSet {
-	static private final ArrayList<CollectionOperation> collectionSimpleOperationSet = new ArrayList<>();
-	static private final ArrayList<CollectionOperation> collectionComputationSet = new ArrayList<>();
-	static private final ArrayList<CollectionOperation> collectionIOSet = new ArrayList<>();
+public enum CollectionOperationSet {
+    ;
+    private static final ArrayList<CollectionOperation> collectionSimpleOperationSet = new ArrayList<>();
+	private static final ArrayList<CollectionOperation> collectionComputationSet = new ArrayList<>();
+	private static final ArrayList<CollectionOperation> collectionIOSet = new ArrayList<>();
 
-	static private final ArrayList<CollectionOperation> collectionOperationSet = new ArrayList<>();
+	private static final ArrayList<CollectionOperation> collectionOperationSet = new ArrayList<>();
 
 	static {
 		collectionSimpleOperationSet.add(new CollectionRename());

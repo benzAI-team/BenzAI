@@ -6,9 +6,10 @@ import parsers.GraphParser;
 import java.io.*;
 import java.util.regex.Pattern;
 
-public class CorrelationLin {
+public enum CorrelationLin {
+    ;
 
-	private static void usage() {
+    private static void usage() {
 		System.err.println("convert .lin file to .dat file");
 		System.err.println("java -jar file list_lin_log_files curent_path");
 	}
@@ -59,7 +60,7 @@ public class CorrelationLin {
 				if (!in && line2.startsWith("LOCAL ENERGY")) {
 					in = true;
 				}
-				else if (in && !line2.equals("")) {
+				else if (in && !"".equals(line2)) {
 					String [] vStr = line2.split(Pattern.quote(" : "))[1].split(" ");
 					double e = 0.0;
 					for (int j = 0 ; j < vStr.length ; j++) {
@@ -70,7 +71,7 @@ public class CorrelationLin {
 					w.write(i + " " + e + "\n");
 					i++;
 				}
-				else if (in && line2.equals(""))
+				else if (in && "".equals(line2))
 					in = false;
 			}
 			r2.close();

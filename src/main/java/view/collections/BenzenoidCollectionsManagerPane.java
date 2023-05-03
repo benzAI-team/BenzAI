@@ -243,7 +243,7 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 			// the added pane is different from the add pane
 			benzenoidSetPanes.add(benzenoidSetPanes.size() - 1, benzenoidSetPane);
 			tabPane.getTabs().add(benzenoidSetPanes.size() - 2, benzenoidSetPane);
-		} else if (benzenoidSetPane.getName().equals("+")) {
+		} else if ("+".equals(benzenoidSetPane.getName())) {
 			benzenoidSetPanes.add(benzenoidSetPane);
 			tabPane.getTabs().add(benzenoidSetPane);
 		} else {
@@ -900,7 +900,7 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 						Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 
 						File moleculeFile;
-						if (molecule.getDescription() != null && !molecule.getDescription().equals(""))
+						if (molecule.getDescription() != null && !"".equals(molecule.getDescription()))
 							moleculeFile = new File(
 									directoryPath + "/" + molecule.getDescription().replace("\n", "") + ".png");
 						else
@@ -1021,7 +1021,7 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 
 					String fileName;
 
-					if (!currentPane.getSelectedBenzenoidPanes().get(i).getName().equals(""))
+					if (!"".equals(currentPane.getSelectedBenzenoidPanes().get(i).getName()))
 						fileName = currentPane.getSelectedBenzenoidPanes().get(i).getName().split("\n")[0] + ".com";
 					else {
 						fileName = "unknown_molecule_" + index + ".com";
@@ -1082,7 +1082,7 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 
 					String filename;
 
-					if (!currentPane.getSelectedBenzenoidPanes().get(i).getName().equals(""))
+					if (!"".equals(currentPane.getSelectedBenzenoidPanes().get(i).getName()))
 						filename = currentPane.getSelectedBenzenoidPanes().get(i).getName().split("\n")[0] + ".cml";
 					else {
 						filename = "unknown_molecule_" + index + ".cml";
@@ -1143,7 +1143,7 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 					String name = currentPane.getSelectedBenzenoidPanes().get(i).getName();
 					String filename;
 
-					if (!name.equals(""))
+					if (!"".equals(name))
 						filename = name.split("\n")[0] + ".graph";
 					else {
 						filename = "unknown_molecule_" + index + ".graph";

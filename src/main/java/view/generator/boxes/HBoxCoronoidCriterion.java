@@ -24,7 +24,7 @@ public class HBoxCoronoidCriterion extends HBoxModelCriterion {
 		String operatorValue = operatorChoiceBox.getValue();
 		String textValue = fieldValue.getText();
 
-		if (operatorValue != null && operatorValue.equals("Unspecified")) {
+		if (operatorValue != null && "Unspecified".equals(operatorValue)) {
 
 			setValid(true);
 			this.getChildren().remove(fieldValue);
@@ -87,7 +87,7 @@ public class HBoxCoronoidCriterion extends HBoxModelCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {
-			int nbHoles = operatorChoiceBox.getValue().equals("Unspecified") ? -1 : Integer.decode(fieldValue.getText());
+			int nbHoles = "Unspecified".equals(operatorChoiceBox.getValue()) ? -1 : Integer.decode(fieldValue.getText());
 			modelPropertySet.getById("coronoid").addExpression(new BinaryNumericalExpression("coronoid", operatorChoiceBox.getValue(), nbHoles));
 		}
 	}

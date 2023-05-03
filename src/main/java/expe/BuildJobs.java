@@ -5,10 +5,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class BuildJobs {
+public enum BuildJobs {
+    ;
 
 
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
 		String script = "/home/COALA/varet/run_benzenoid_generator.sh";
 

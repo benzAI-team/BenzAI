@@ -1,19 +1,15 @@
 package correlations;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 import molecules.Molecule;
 import parsers.GraphParser;
 
-public class CorrelationLinOpt {
+import java.io.*;
+import java.util.regex.Pattern;
 
-	private static void usage() {
+public enum CorrelationLinOpt {
+    ;
+
+    private static void usage() {
 		System.err.println("convert .lin file to .dat file");
 		System.err.println("java -jar file list_lin_log_files curent_path");
 	}
@@ -68,7 +64,7 @@ public class CorrelationLinOpt {
 					in = true;
 				}
 				
-				else if (in && !line2.equals("")) {
+				else if (in && !"".equals(line2)) {
 					String [] vStr = line2.split(Pattern.quote(" : "))[1].split(" ");
 					double e = 0.0;
 					for (int j = 0 ; j < vStr.length ; j++) {
@@ -80,7 +76,7 @@ public class CorrelationLinOpt {
 					i++;
 				}
 				
-				else if (in && line2.equals(""))
+				else if (in && "".equals(line2))
 					in = false;
 			}
 			

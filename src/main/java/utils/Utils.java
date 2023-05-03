@@ -8,9 +8,10 @@ import javafx.scene.control.Alert.AlertType;
 import molecules.Molecule;
 import solveur.LinAlgorithm;
 
-public class Utils {
+public enum Utils {
+    ;
 
-	public static String [] splitBySeparators(String str) {
+    public static String [] splitBySeparators(String str) {
 		return str.split("\\s+");
 	}
 	

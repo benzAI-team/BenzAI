@@ -3,7 +3,8 @@ package generator;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
  
-public class BoundsBuilder {
+public enum BoundsBuilder {
+	;
 
 	public static UndirectedGraph buildGLB2(GeneralModel model) {
 		return new UndirectedGraph(model.getProblem(), model.getNbHexagonsCoronenoid(), SetType.LINKED_LIST, false);

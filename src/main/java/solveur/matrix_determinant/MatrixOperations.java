@@ -2,9 +2,10 @@ package solveur.matrix_determinant;
 
 import java.text.MessageFormat;
 
-public class MatrixOperations {
+public enum MatrixOperations {
+    ;
 
-	/**
+    /**
 	 * Method that multiplies two matrices and returns the result
 	 *
 	 * @param x first matrix

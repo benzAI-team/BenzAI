@@ -5,7 +5,8 @@ import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 
 
-public class ModelBuilder {
+public enum ModelBuilder {
+	;
 
 	public static GeneralModel buildModel(ModelPropertySet modelPropertySet) {
 		if(noLimitingProperties(modelPropertySet))

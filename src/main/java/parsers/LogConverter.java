@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import utils.Couple;
 import utils.Triplet;
 
-public class LogConverter {
+public enum LogConverter {
+    ;
 
-	private static ArrayList<String> retrieveGeometry(File file) throws IOException {
+    private static ArrayList<String> retrieveGeometry(File file) throws IOException {
 
 		ArrayList<ArrayList<String>> geometries = new ArrayList<>();
 

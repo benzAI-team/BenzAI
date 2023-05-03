@@ -4,16 +4,17 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class ReadNICSBrut{
+public enum ReadNICSBrut{
+    ;
 
-	public static void main(String [] args) throws IOException {
+    public static void main(String [] args) throws IOException {
 		
 		BufferedReader r = new BufferedReader(new FileReader("/home/adrien/Documents/comparaisons_constraints/nics_brut.txt"));
 		String line;
 		ArrayList<String> lines = new ArrayList<>();
 		
 		while((line = r.readLine()) != null) {
-			if (!line.equals(""))
+			if (!"".equals(line))
 				lines.add(line);
 		}
 		

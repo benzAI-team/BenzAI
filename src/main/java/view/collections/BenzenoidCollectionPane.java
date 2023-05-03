@@ -733,7 +733,7 @@ public class BenzenoidCollectionPane extends Tab {
                 separator = "/";
 
             String filename;
-            if (!benzenoidPanes.get(i).getName().equals(""))
+            if (!"".equals(benzenoidPanes.get(i).getName()))
                 filename = benzenoidPanes.get(i).getName().split("\n")[0];
             else {
                 filename = "unknown_molecule_" + index;

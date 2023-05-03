@@ -5,9 +5,10 @@ import org.jgrapht.graph.SimpleGraph;
 
 import molecules.Molecule;
 
-public class GraphConversion {
+public enum GraphConversion {
+    ;
 
-	public static SimpleGraph<Integer, DefaultEdge> buildCarbonGraph(Molecule molecule) {
+    public static SimpleGraph<Integer, DefaultEdge> buildCarbonGraph(Molecule molecule) {
 		
 		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<>(DefaultEdge.class);
 		
@@ -55,8 +56,8 @@ public class GraphConversion {
 		return hexagonGraph;
 	}
 	
-	static public SimpleGraph<Integer, DefaultEdge> toCarbonGraph(SimpleGraph<Integer, DefaultEdge> hexagonGraph,
-			int largeur) {
+	public static SimpleGraph<Integer, DefaultEdge> toCarbonGraph(SimpleGraph<Integer, DefaultEdge> hexagonGraph,
+                                                                  int largeur) {
 		int k = 0;
 		int i, j;
 		int haut, hautdroit, basdroit, bas, basgauche, hautgauche;
@@ -113,7 +114,7 @@ public class GraphConversion {
 
 	}
 
-	static public String toCML(SimpleGraph<Integer, DefaultEdge> hexagonGraph, int largeur) {
+	public static String toCML(SimpleGraph<Integer, DefaultEdge> hexagonGraph, int largeur) {
 		int k = 0;
 		int i, j;
 		int haut, hautdroit, basdroit, bas, basgauche, hautgauche;

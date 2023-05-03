@@ -318,7 +318,7 @@ public class GeneralModel {
         System.out.println();
 
         for (Variable x : variables)
-            if (x.getName().equals("XI"))
+            if ("XI".equals(x.getName()))
                 System.out.println(x.getName() + " = " + (double) ((((IntVar) x).getValue())) / 100);
             else
                 System.out.println(x.getName() + " = " + (((IntVar) x).getValue()));
@@ -339,7 +339,7 @@ public class GeneralModel {
 
         for (Variable x : variables)
 
-            if (x.getName().equals("XI")) {
+            if ("XI".equals(x.getName())) {
 
                 double value = (double) ((((IntVar) x).getValue())) / 100;
                 NumberFormat formatter = new DecimalFormat("#0.00");

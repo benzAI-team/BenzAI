@@ -15,9 +15,10 @@ import classifier.PAHClass;
 import molecules.Molecule;
 import utils.Couple;
 
-public class SpectrumsComputer {
+public enum SpectrumsComputer {
+    ;
 
-	/*
+    /*
 	 * Parameters
 	 */
 
@@ -37,26 +38,26 @@ public class SpectrumsComputer {
 			String[] splittedLine = line.split("\\s+");
 			int size = splittedLine.length;
 
-			if (size > 1 && splittedLine[1].equals("Frequencies")) {
+			if (size > 1 && "Frequencies".equals(splittedLine[1])) {
 
 				frequencies.add(Double.parseDouble(splittedLine[3]));
 				frequencies.add(Double.parseDouble(splittedLine[4]));
 				frequencies.add(Double.parseDouble(splittedLine[5]));
 			}
 
-			else if (size > 2 && splittedLine[1].equals("IR") && splittedLine[2].equals("Inten")) {
+			else if (size > 2 && "IR".equals(splittedLine[1]) && "Inten".equals(splittedLine[2])) {
 
 				intensities.add(Double.parseDouble(splittedLine[4]));
 				intensities.add(Double.parseDouble(splittedLine[5]));
 				intensities.add(Double.parseDouble(splittedLine[6]));
 			}
 
-			else if (size > 2 && splittedLine[1].equals("SCF") && splittedLine[2].equals("Done:")) {
+			else if (size > 2 && "SCF".equals(splittedLine[1]) && "Done:".equals(splittedLine[2])) {
 
 				finalEnergies.add(Double.parseDouble(splittedLine[5]));
 			}
 
-			else if (size > 2 && splittedLine[1].equals("Zero-point") && splittedLine[2].equals("correction=")) {
+			else if (size > 2 && "Zero-point".equals(splittedLine[1]) && "correction=".equals(splittedLine[2])) {
 
 				zeroPointEnergy = Double.parseDouble(splittedLine[3]);
 			}

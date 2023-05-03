@@ -11,9 +11,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ComBuilder {
+public enum ComBuilder {
+    ;
 
-	public static void buildComFile(Geometry geometry, String outputFilePath, int nbElectronsDiff, ComType type, String title) throws IOException {
+    public static void buildComFile(Geometry geometry, String outputFilePath, int nbElectronsDiff, ComType type, String title) throws IOException {
 		
 		Triplet<Double, Double, Double> [] carbons = geometry.getCarbons();
 		ArrayList<Triplet<Double, Double, Double>> hydrogens = geometry.getHydrogens();

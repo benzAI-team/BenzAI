@@ -23,7 +23,7 @@ public class CarbonNumberProperty extends ModelProperty {
 			int carbonNumber = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();
 
 			if (isBoundingOperator(operator)) {
-				if (operator.equals("<"))
+				if ("<".equals(operator))
 					carbonNumber--;
 				if(carbonNumber < minCarbonNumber)
 					minCarbonNumber = carbonNumber;

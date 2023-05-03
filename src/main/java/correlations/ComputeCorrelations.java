@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-public class ComputeCorrelations {
+public enum ComputeCorrelations {
+    ;
 
-	private static void usage() {
+    private static void usage() {
 		System.err.println("build all correlations");
 		System.err.println("java -jar file curent_directory");
 	}

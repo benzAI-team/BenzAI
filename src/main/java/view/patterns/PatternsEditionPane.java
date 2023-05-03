@@ -175,7 +175,7 @@ public class PatternsEditionPane extends BorderPane {
 			int index = selectedPatternGroup.getIndex();
 			GridPane gridPane = boxItems.get(index);
 
-			if (!fieldName.getText().equals(""))
+			if (!"".equals(fieldName.getText()))
 				((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
 			else
 				((Label) gridPane.getChildren().get(0)).setText("default name");
