@@ -75,8 +75,8 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 		
 		for (int i = 0 ; i < generalModel.getDiameter() ; i++) {
 			for (int j = 0 ; j < generalModel.getDiameter() ; j++) {
-				if (generalModel.getCoordsMatrix()[i][j] != -1) 
-					domainList.add(generalModel.getCoordsMatrix()[i][j]);
+				if (generalModel.getHexagonIndices()[i][j] != -1)
+					domainList.add(generalModel.getHexagonIndices()[i][j]);
 			}
 		}
 
@@ -179,7 +179,7 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 			for (Integer j : presentHexagons) {
 				for (int k = 0 ; k < generalModel.getDiameter() * generalModel.getDiameter() ; k++) {
 					
-					if (generalModel.getGraphVertices()[k] != null) {
+					if (generalModel.getBenzenoidVerticesBVArray(k) != null) {
 						//(i)
 						
 						varClause = new IntVar[coronenoidCorrespondances[j].getDomainSize()];
@@ -199,7 +199,7 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 						}
 						vit.dispose();
 
-						varClause[index] = generalModel.getGraphVertices()[k];
+						varClause[index] = generalModel.getBenzenoidVerticesBVArray(k);
 						valClause[index] = new IntIterableRangeSet(1);
 						
 						generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -211,7 +211,7 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 			for (Integer j : absentHexagons) {
 				for (int k = 0 ; k < generalModel.getDiameter() * generalModel.getDiameter() ; k++) {
 					
-					if (generalModel.getGraphVertices()[k] != null) {
+					if (generalModel.getBenzenoidVerticesBVArray(k) != null) {
 
 						varClause = new IntVar[coronenoidCorrespondances[j].getDomainSize()];
 						valClause = new IntIterableRangeSet[coronenoidCorrespondances[j].getDomainSize()];
@@ -230,7 +230,7 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 						}
 						vit.dispose();
 
-						varClause[index] = generalModel.getGraphVertices()[k];
+						varClause[index] = generalModel.getBenzenoidVerticesBVArray(k);
 						valClause[index] = new IntIterableRangeSet(0);
 						
 						generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);

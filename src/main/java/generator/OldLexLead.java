@@ -32,7 +32,7 @@ public class OldLexLead {
 		int largeur = generalModel.getDiameter();
 		Model model = generalModel.getProblem();
 
-		BoolVar[] benzenoidVertices = generalModel.getVG();
+		BoolVar[] benzenoidVertices = generalModel.getBenzenoidVerticesBVArray();
 		BoolVar yp1 = model.boolVar();
 		model.addClauses(LogOp.or(y));
 		for (j = 0; j < largeur; j++)

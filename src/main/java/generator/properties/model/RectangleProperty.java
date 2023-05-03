@@ -25,14 +25,20 @@ public class RectangleProperty extends ModelProperty {
 	@Override
 	public int computeHexagonNumberUpperBound() {
 		ArrayList<PropertyExpression> expressions = this.getExpressions();
-		int widthBound = expressions.stream().reduce(Integer.MAX_VALUE, (x,y) -> Math.min(x, ((RectangleExpression)y).getHeight()), Math::min);
-		int heightBound = expressions.stream().reduce(Integer.MAX_VALUE, (x,y) -> Math.min(x, ((RectangleExpression)y).getWidth()), Math::min);
-		return widthBound != Integer.MAX_VALUE && heightBound != Integer.MAX_VALUE ? widthBound * heightBound : Integer.MAX_VALUE;
+		int widthBound = expressions.stream().reduce(Integer.MAX_VALUE, (acc,expression) -> Math.min(acc, ((RectangleExpression)expression).getHeight()), Math::min);
+		int heightBound = expressions.stream().reduce(Integer.MAX_VALUE, (acc, expression) -> Math.min(acc, ((RectangleExpression)expression).getWidth()), Math::min);
+		return Math.min(widthBound * heightBound, Integer.MAX_VALUE);
 	}
-
+	@Override
+	public int computeNbCrowns(){
+		ArrayList<PropertyExpression> expressions = this.getExpressions();
+		int widthBound = expressions.stream().reduce(Integer.MAX_VALUE, (acc,expression) -> Math.min(acc, ((RectangleExpression)expression).getHeight()), Math::min);
+		int heightBound = expressions.stream().reduce(Integer.MAX_VALUE, (acc, expression) -> Math.min(acc, ((RectangleExpression)expression).getWidth()), Math::min);
+		return Math.min(widthBound, heightBound);
+	}
 	public boolean hasUpperBounds() {
 		ArrayList<PropertyExpression> expressions = this.getExpressions();
-		return expressions.stream().anyMatch(e -> ((RectangleExpression)e).hasHeightUpperBound())
-				&& expressions.stream().anyMatch(e -> ((RectangleExpression)e).hasWidthUpperBound());
+		return expressions.stream().anyMatch(expression -> ((RectangleExpression)expression).hasHeightUpperBound())
+				&& expressions.stream().anyMatch(expression -> ((RectangleExpression)expression).hasWidthUpperBound());
 	}
 }

@@ -43,7 +43,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		hBoxHeight.getChildren().remove(getWarningIcon());
 		hBoxHeight.getChildren().remove(getDeleteButton());
 
-		if (heightChoice != null && heightChoice.equals("Unspecified"))
+		if ("Unspecified".equals(heightChoice))
 			validHeight = true;
 
 		else {

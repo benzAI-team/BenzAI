@@ -20,11 +20,11 @@ public class BinaryNumericalExpression extends ParameterizedExpression {
 	}
 
 	public boolean hasUpperBound() {
-		return (Objects.equals(getOperator(), "<") || Objects.equals(getOperator(), "=") | Objects.equals(getOperator(), "<=")) && value >= 0;
+		return isUpperBoundingOperator(getOperator()) && value >= 0;
 	}
 
 	public boolean hasLowerBound() {
-		return (Objects.equals(getOperator(), ">") || Objects.equals(getOperator(), "=") | Objects.equals(getOperator(), ">="));
+		return isLowerBoundingOperator(getOperator());
 	}
 
 	public boolean test(int x, String operator, int y) {

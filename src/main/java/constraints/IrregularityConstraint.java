@@ -74,17 +74,17 @@ public class IrregularityConstraint extends BenzAIConstraint {
 
 		Tuples table = buildTable();
 
-		for (int line = 0; line < generalModel.getCoordsMatrix().length; line++) {
-			for (int column = 0; column < generalModel.getCoordsMatrix()[line].length; column++) {
-				if (generalModel.getCoordsMatrix()[line][column] != -1) {
+		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {
+			for (int column = 0; column < generalModel.getHexagonIndices()[line].length; column++) {
+				if (generalModel.getHexagonIndices()[line][column] != -1) {
 
-					int index = generalModel.getCoordsMatrix()[line][column];
+					int index = generalModel.getHexagonIndices()[line][column];
 					IntVar[] nH = xN[index];
 					IntVar[] tuple = new IntVar[] { nH[0], nH[1], nH[2], nH[3], nH[4], nH[5], NULL[index], SOLOS[index],
 							DUOS[index], TRIOS[index], QUATUORS[index] };
 
 					generalModel.getProblem().ifThenElse(
-							generalModel.getProblem().arithm(generalModel.getGraphVertices()[index], "=", 1),
+							generalModel.getProblem().arithm(generalModel.getBenzenoidVerticesBVArray(index), "=", 1),
 							generalModel.getProblem().table(tuple, table, "CT+"),
 							generalModel.getProblem().sum(new IntVar[] { NULL[index], SOLOS[index], DUOS[index],
 									TRIOS[index], QUATUORS[index] }, "=", 0));
@@ -152,7 +152,7 @@ public class IrregularityConstraint extends BenzAIConstraint {
 		for (int line = 0; line < dualGraph.length; line++) {
 			for (int column = 0; column < dualGraph[line].length; column++) {
 				if (dualGraph[line][column] != -1) {
-					xN[line][column] = generalModel.getGraphVertices()[dualGraph[line][column]];
+					xN[line][column] = generalModel.getBenzenoidVerticesBVArray(dualGraph[line][column]);
 				} else {
 					xN[line][column] = zero;
 				}
@@ -169,37 +169,37 @@ public class IrregularityConstraint extends BenzAIConstraint {
 			Arrays.fill(ints, -1);
 		}
 
-		for (int line = 0; line < generalModel.getCoordsMatrix().length; line++) {
-			for (int column = 0; column < generalModel.getCoordsMatrix()[line].length; column++) {
+		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {
+			for (int column = 0; column < generalModel.getHexagonIndices()[line].length; column++) {
 
-				if (generalModel.getCoordsMatrix()[line][column] != -1) {
+				if (generalModel.getHexagonIndices()[line][column] != -1) {
 
-					int index = generalModel.getCoordsMatrix()[line][column];
+					int index = generalModel.getHexagonIndices()[line][column];
 
 					// High-Right
 					if (line > 0)
-						dualGraph[index][0] = generalModel.getCoordsMatrix()[line - 1][column];
+						dualGraph[index][0] = generalModel.getHexagonIndices()[line - 1][column];
 
 					// Right
-					if (column < generalModel.getCoordsMatrix()[line].length - 1)
-						dualGraph[index][1] = generalModel.getCoordsMatrix()[line][column + 1];
+					if (column < generalModel.getHexagonIndices()[line].length - 1)
+						dualGraph[index][1] = generalModel.getHexagonIndices()[line][column + 1];
 
 					// Down-Right
-					if (line < generalModel.getCoordsMatrix()[line].length - 1
-							&& column < generalModel.getCoordsMatrix()[line].length - 1)
-						dualGraph[index][2] = generalModel.getCoordsMatrix()[line + 1][column + 1];
+					if (line < generalModel.getHexagonIndices()[line].length - 1
+							&& column < generalModel.getHexagonIndices()[line].length - 1)
+						dualGraph[index][2] = generalModel.getHexagonIndices()[line + 1][column + 1];
 
 					// Down-Left
-					if (line < generalModel.getCoordsMatrix()[line].length - 1)
-						dualGraph[index][3] = generalModel.getCoordsMatrix()[line + 1][column];
+					if (line < generalModel.getHexagonIndices()[line].length - 1)
+						dualGraph[index][3] = generalModel.getHexagonIndices()[line + 1][column];
 
 					// Left
 					if (column > 0)
-						dualGraph[index][4] = generalModel.getCoordsMatrix()[line][column - 1];
+						dualGraph[index][4] = generalModel.getHexagonIndices()[line][column - 1];
 
 					// High-Left
 					if (line > 0 && column > 0)
-						dualGraph[index][5] = generalModel.getCoordsMatrix()[line - 1][column - 1];
+						dualGraph[index][5] = generalModel.getHexagonIndices()[line - 1][column - 1];
 				}
 			}
 		}

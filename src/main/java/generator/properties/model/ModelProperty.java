@@ -10,6 +10,8 @@ import generator.properties.Property;
 import generator.properties.model.filters.Filter;
 import generator.properties.model.checkers.Checker;
 
+import java.util.Objects;
+
 /***
  * A model property defines a property required by a benzenoid. This property is 
  * defined by:
@@ -23,7 +25,7 @@ import generator.properties.model.checkers.Checker;
  */
 public abstract class ModelProperty extends Property {
 	private BenzAIConstraint module; // for posting constraints on the model
-	private Checker checker; // for checking if a solution to the model has the other requirements
+	private final Checker checker; // for checking if a solution to the model has the other requirements
 	private Filter Filter; // for testing if a molecule has the full property
 	
 	//model property with module and checker
@@ -65,8 +67,8 @@ public abstract class ModelProperty extends Property {
 		return (((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound() + 2) / 2;
 	}
 
-	public static boolean isBoundingOperator(String operator) {
-		return operator == "=" || operator == "<=" || operator == "<";
+	static boolean isBoundingOperator(String operator) {
+		return Objects.equals(operator, "=") || Objects.equals(operator, "<=") || Objects.equals(operator, "<");
 	}
 
 	/***

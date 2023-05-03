@@ -94,12 +94,12 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 				int index = 0;
 				
 				for (Integer j : absent) {
-					andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 0);
+					andCstr[index] = generalModel.getProblem().arithm(generalModel.getBenzenoidVerticesBVArray(j), "=", 0);
 					index ++;
 				}
 				
 				for (Integer j : present) {
-					andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 1);
+					andCstr[index] = generalModel.getProblem().arithm(generalModel.getBenzenoidVerticesBVArray(j), "=", 1);
 					index ++;
 				}	
 				
@@ -115,12 +115,12 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 				int index = 0;
 				
 				for (Integer j : absent) {
-					andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 0);
+					andCstr[index] = generalModel.getProblem().arithm(generalModel.getBenzenoidVerticesBVArray(j), "=", 0);
 					index ++;
 				}
 				
 				for (Integer j : present) {
-					andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 1);
+					andCstr[index] = generalModel.getProblem().arithm(generalModel.getBenzenoidVerticesBVArray(j), "=", 1);
 					index ++;
 				}
 				
@@ -134,13 +134,13 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 		 		int index = 0;
 		 		
 				for (Integer j : absent) {
-					varClause[index] = generalModel.getGraphVertices()[j];
+					varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 					valClause[index] = new IntIterableRangeSet(1);
 					index ++;
 				}
 				
 				for (Integer j : present) {
-					varClause[index] = generalModel.getGraphVertices()[j];
+					varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 					valClause[index] = new IntIterableRangeSet(0);
 					index ++;
 				}
@@ -158,7 +158,7 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 	@Override
 	public void changeSolvingStrategy() {
 		GeneralModel generalModel = getGeneralModel();
-		//generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getVG(), new FirstFail(generalModel.getProblem()), new IntDomainMin()), new IntStrategy(presences, new FirstFail(generalModel.getProblem()), new IntDomainMin()));
+		//generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getBenzenoidVerticesBVArray(), new FirstFail(generalModel.getProblem()), new IntDomainMin()), new IntStrategy(presences, new FirstFail(generalModel.getProblem()), new IntDomainMin()));
 		if (mode < 3)
 			generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getChanneling(), new FirstFail(generalModel.getProblem()), new IntDomainMin()), new IntStrategy(presences, new FirstFail(generalModel.getProblem()), new IntDomainMin()));
 		else generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getChanneling(), new FirstFail(generalModel.getProblem()), new IntDomainMin()));

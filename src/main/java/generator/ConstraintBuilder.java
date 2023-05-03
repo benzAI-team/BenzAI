@@ -14,7 +14,7 @@ public class ConstraintBuilder {
 
 		int[] correspondancesHexagons = model.getCorrespondancesHexagons();
 		int[][] adjacencyMatrix = model.getAdjacencyMatrix();
-		BoolVar[] benzenoidVertices = model.getVG();
+		BoolVar[] benzenoidVertices = model.getBenzenoidVerticesBVArray();
 		BoolVar[][] benzenoidEdges = model.getBenzenoidEdges();
 
 		// No-Good
@@ -67,8 +67,8 @@ public class ConstraintBuilder {
 
 	public static void postNoHolesOfSize1Constraint(GeneralModel model) {
 
-		BoolVar[] benzenoidVertices = model.getVG();
-		int[][] coordsMatrix = model.getCoordsMatrix();
+		BoolVar[] benzenoidVertices = model.getBenzenoidVerticesBVArray();
+		int[][] coordsMatrix = model.getHexagonIndices();
 
 		BoolVar[] varClause = new BoolVar[7];
 		IntIterableRangeSet[] valClause = new IntIterableRangeSet[7];
@@ -99,35 +99,37 @@ public class ConstraintBuilder {
 	 */
 
 	public static void postBordersConstraints(GeneralModel model) {
-
-		// if (model.getNbHexagons() > 1) {
 		if (model.getNbMaxHexagons() > 1) {
-
-			IntIterableRangeSet[] valClause = new IntIterableRangeSet[model.getNbCrowns()];
-			for (int i = 0; i < model.getNbCrowns(); i++)
-				valClause[i] = new IntIterableRangeSet(1);
-
-			BoolVar[] border = new BoolVar[model.getNbCrowns()];
-			for (int i = 0; i < model.getNbCrowns(); i++)
-				border[i] = model.getVG()[Utils.getHexagonID(i, 0, model.getDiameter())];
-			model.getProblem().getClauseConstraint().addClause(border, valClause);
-
-			border = new BoolVar[2 * model.getNbCrowns() - 1];
-			valClause = new IntIterableRangeSet[2 * model.getNbCrowns() - 1];
-
-			for (int i = 0; i < model.getNbCrowns(); i++) {
-				border[i] = model.getVG()[Utils.getHexagonID(0, i, model.getDiameter())];
-				valClause[i] = new IntIterableRangeSet(1);
-			}
-
-			for (int i = model.getNbCrowns() - 1; i < 2 * model.getNbCrowns() - 1; i++) {
-				border[i] = model.getVG()[Utils.getHexagonID(i - model.getNbCrowns() + 1, i, model.getDiameter())];
-				valClause[i] = new IntIterableRangeSet(1);
-			}
-
-			model.getProblem().getClauseConstraint().addClause(border, valClause);
-
+			postTopBorderConstraint(model);
+			postLeftBordersConstraint(model);
 		}
+	}
+
+	private static void postLeftBordersConstraint(GeneralModel model) {
+		IntIterableRangeSet[] valClause = new IntIterableRangeSet[2 * model.getNbCrowns() - 1];
+		BoolVar[] border = new BoolVar[2 * model.getNbCrowns() - 1];
+
+		for (int i = 0; i < model.getNbCrowns(); i++) {
+			border[i] = model.getBenzenoidVerticesBVArray()[Utils.getHexagonID(0, i, model.getDiameter())];
+			valClause[i] = new IntIterableRangeSet(1);
+		}
+
+		for (int i = model.getNbCrowns() - 1; i < 2 * model.getNbCrowns() - 1; i++) {
+			border[i] = model.getBenzenoidVerticesBVArray()[Utils.getHexagonID(i - model.getNbCrowns() + 1, i, model.getDiameter())];
+			valClause[i] = new IntIterableRangeSet(1);
+		}
+		model.getProblem().getClauseConstraint().addClause(border, valClause);
+	}
+
+	private static void postTopBorderConstraint(GeneralModel model) {
+		IntIterableRangeSet[] valClause = new IntIterableRangeSet[model.getNbCrowns()];
+		for (int i = 0; i < model.getNbCrowns(); i++)
+			valClause[i] = new IntIterableRangeSet(1);
+
+		BoolVar[] border = new BoolVar[model.getNbCrowns()];
+		for (int i = 0; i < model.getNbCrowns(); i++)
+			border[i] = model.getBenzenoidVerticesBVArray()[Utils.getHexagonID(i, 0, model.getDiameter())];
+		model.getProblem().getClauseConstraint().addClause(border, valClause);
 	}
 
 	public static boolean inCoronenoid(int x, int y, int diameter, int nbCrowns) {
@@ -213,7 +215,7 @@ public class ConstraintBuilder {
 
 		BoolVar y = model.getProblem().boolVar();
 		nbClauses += postSymmetryBreakingConstraints(model.getProblem(), model.getDiameter(), model.getNbCrowns(),
-				model.getVG(), new Permutation(model.getNbCrowns(), 0) {
+				model.getBenzenoidVerticesBVArray(), new Permutation(model.getNbCrowns(), 0) {
 					@Override
 					public Coords from(Coords indice) {
 						return hexAxis(indice);
@@ -223,7 +225,7 @@ public class ConstraintBuilder {
 		for (int i = 1; i < 6; i++) {
 
 			nbClauses += postSymmetryBreakingConstraints(model.getProblem(), model.getDiameter(), model.getNbCrowns(),
-					model.getVG(), new Permutation(model.getNbCrowns(), i) {
+					model.getBenzenoidVerticesBVArray(), new Permutation(model.getNbCrowns(), i) {
 						@Override
 						public Coords from(Coords point) {
 							return rot(point);
@@ -231,7 +233,7 @@ public class ConstraintBuilder {
 					}, y);
 
 			nbClauses += postSymmetryBreakingConstraints(model.getProblem(), model.getDiameter(), model.getNbCrowns(),
-					model.getVG(), new Permutation(model.getNbCrowns(), i) {
+					model.getBenzenoidVerticesBVArray(), new Permutation(model.getNbCrowns(), i) {
 						@Override
 						public Coords from(Coords point) {
 							return hexAxis(rot(point));

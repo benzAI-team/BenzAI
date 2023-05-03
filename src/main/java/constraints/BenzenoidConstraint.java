@@ -43,7 +43,7 @@ public class BenzenoidConstraint extends BenzAIConstraint {
 			IntVar[] variables = new IntVar[translation.length];
 
 			for (int j = 0; j < translation.length; j++) {
-				variables[j] = generalModel.getGraphVertices()[translation[j]];
+				variables[j] = generalModel.getBenzenoidVerticesBVArray(translation[j]);
 			}
 
 			or[i] = generalModel.getProblem().sum(variables, "=", variables.length);
@@ -77,7 +77,7 @@ public class BenzenoidConstraint extends BenzAIConstraint {
 		ArrayList<Integer[]> translations = new ArrayList<>();
 
 		int diameter = getGeneralModel().getDiameter();
-		int[][] coordsMatrix = getGeneralModel().getCoordsMatrix();
+		int[][] coordsMatrix = getGeneralModel().getHexagonIndices();
 
 		int xMin = Integer.MAX_VALUE;
 		int yMin = Integer.MAX_VALUE;

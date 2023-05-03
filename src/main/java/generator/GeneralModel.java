@@ -36,702 +36,691 @@ import java.util.*;
 
 public class GeneralModel {
 
-	private Solver solver;
-	private SolverResults solverResults;
+    private Solver chocoSolver;
+    private SolverResults solverResults;
 
-	private final GeneratorRun generatorRun = new GeneratorRun(this);
+    private final GeneratorRun generatorRun = new GeneratorRun(this);
 
-	private final HashMap<String, Integer> variablesDegrees = new HashMap<>();
+    private final HashMap<String, Integer> variablesDegrees = new HashMap<>();
 
-	/*
-	 * Application parameters
-	 */
+    /*
+     * Application parameters
+     */
 
-	private final int nbMaxHexagons;
+    private final int nbMaxHexagons;
 
-	private int[][] neighborGraph;
+    private int[][] neighborIndices;
 
-	private final ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
-	private final ArrayList<Integer> outterHexagonsIndexes = new ArrayList<>();
+    private final ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
+    private final ArrayList<Integer> outterHexagonsIndexes = new ArrayList<>();
 
-	private ArrayList<ArrayList<Integer>> neighborGraphOutterHexagons;
+    private ArrayList<ArrayList<Integer>> neighborGraphOutterHexagons;
 
-	private Couple<Integer, Integer>[] coordsCorrespondance;
+    private Couple<Integer, Integer>[] coordsCorrespondance;
 
-	/*
-	 * Parameters
-	 */
+    /*
+     * Parameters
+     */
 
-	// Don't use for regular solving
-	private final boolean applySymmetriesConstraints;
+    // Don't use for regular solving
+    private final boolean applySymmetriesConstraints;
 
-	private final int nbCrowns;
-	//private int nbHexagons;
-	private final int diameter;
+    private final int nbCrowns;
+    //private int nbHexagons;
+    private final int diameter;
 
-	private int nbEdges;
-	private int nbClausesLexLead = 0;
+    private int nbEdges;
+    private int nbClausesLexLead = 0;
 
-	boolean verbose = false;
+    boolean verbose = false;
 
-	private int indexOutterHexagon;
+    private int indexOutterHexagon;
 
-	/*
-	 * Constraint programming variables
-	 */
+    /*
+     * Constraint programming variables
+     */
 
-	private final Model chocoModel = new Model("Benzenoides");
+    private final Model chocoModel = new Model("Benzenoides");
 
-	private Node[] nodesRefs;
+    private Node[] nodesRefs;
 
-	private int[][] coordsMatrix;
-	private int[] hexagonsCorrespondances;
-	private int[] correspondancesHexagons;
+    private int[][] hexagonIndices;
+    private int[] hexagonsCorrespondances;
+    private int[] correspondancesHexagons;
 
-	private int nbHexagonsCoronenoid;
+    private int nbHexagonsCoronenoid;
 
-	private int[][] adjacencyMatrix;
-	private int[][] adjacencyMatrixWithOutterHexagons;
+    private int[][] adjacencyMatrix;
+    private int[][] adjacencyMatrixWithOutterHexagons;
 
-	private UndirectedGraph GUB;
+    private UndirectedGraph GUB;
 
-	private UndirectedGraphVar benzenoidGraphVar;
-	private BoolVar[] channeling;
-	private BoolVar[] benzenoidVertices;
-	private BoolVar[][] benzenoidEdges;
+    private UndirectedGraphVar benzenoidGraphVar;
+    private BoolVar[] channeling;
+    private BoolVar[] benzenoidVerticesBVArray;
+    private BoolVar[][] benzenoidEdges;
 
-	private final ArrayList<Variable> variables = new ArrayList<>();
+    private final ArrayList<Variable> variables = new ArrayList<>();
 
-	private IntVar nbVertices;
-	//private BoolVar[] edges;
+    private IntVar nbVertices;
+    //private BoolVar[] edges;
 
-	private BoolVar[] nbHexagonsReifies;
+    private BoolVar[] nbHexagonsReifies;
 
-	private final ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
+    private final ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
 
-	private final SimpleIntegerProperty nbTotalSolutions = new SimpleIntegerProperty(0);
-	private int indexSolution;
+    private final SimpleIntegerProperty nbTotalSolutions = new SimpleIntegerProperty(0);
+    private int indexSolution;
 
-	private ArrayList<Integer> topBorder;
-	private ArrayList<Integer> leftBorder;
+    private ArrayList<Integer> topBorder;
+    private ArrayList<Integer> leftBorder;
 
-	/*
-	 * Properties
-	 */
+    /*
+     * Properties
+     */
 
-	private ModelPropertySet modelPropertySet;
-	private static final SolverPropertySet solverPropertySet = new SolverPropertySet();
+    private ModelPropertySet modelPropertySet;
+    private static final SolverPropertySet solverPropertySet = new SolverPropertySet();
 
 
-	private boolean isInTestMode = false;
+    private boolean isInTestMode = false;
 
-	/*
-	 * Constructors
-	 */
+    /*
+     * Constructors
+     */
 
-	public GeneralModel(ModelPropertySet modelPropertySet) {
-		this.modelPropertySet = modelPropertySet;
-		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
-		nbCrowns = modelPropertySet.computeNbCrowns();
-		diameter = (2 * nbCrowns) - 1;
-		applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
-		initialize();
-	}
-
-	public GeneralModel(ModelPropertySet modelPropertySet, int nbCrowns) {
-		this.modelPropertySet = modelPropertySet;
-		nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
-		this.nbCrowns = nbCrowns;
-		diameter = (2 * nbCrowns) - 1;
-		applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
-		initialize();
-	}
-
-
-	/*
-	 * Initialization methods
-	 */
-
-	private void initialize() {
-		initializeMatrix();
-		initializeVariables();
-		initializeConstraints();
-		buildNodesRefs();
-		System.out.print("");
-	}
-
-	private void initializeMatrix() {
-		coordsMatrix = new int[diameter][diameter];
-		for (int i = 0; i < diameter; i++) {
-			Arrays.fill(coordsMatrix[i], -1);
-		}
-	}
-
-	private void initializeVariables() {
-		System.out.println("00 "+nbMaxHexagons);
-
-		nbHexagonsReifies = new BoolVar[nbMaxHexagons + 1];
-		System.out.println("1");
-
-		buildCoordsMatrix();
-		System.out.println("2");
-
-		UndirectedGraph GLB = BoundsBuilder.buildGLB2(this);
-		GUB = BoundsBuilder.buildGUB2(this);
-
-		indexOutterHexagon = diameter * diameter;
-		System.out.println("3");
-
-		buildAdjacencyMatrix();
-
-
-		benzenoidGraphVar = chocoModel.graphVar("g", GLB, GUB);
-
-		System.out.println("4");
-		buildBenzenoidVertices();
-		System.out.println("5");
-		buildBenzenoidEdges();
-		System.out.println("6");
-		buildCoordsCorrespondance();
-		System.out.println("7");
-		buildNeighborGraph();
-
-		nbVertices = chocoModel.intVar("nbVertices", 1, nbHexagonsCoronenoid);
-
-		leftBorder = new ArrayList<>();
-		topBorder = new ArrayList<>();
-
-		for (int y = 0; y < diameter; y++) {
-
-			if (coordsMatrix[0][y] != -1)
-				topBorder.add(correspondancesHexagons[coordsMatrix[0][y]]);
-		}
-
-		for (int i = 0; i < diameter; i++) {
-			for (int j = 0; j < diameter; j++) {
-				if (coordsMatrix[i][j] != -1) {
-					leftBorder.add(correspondancesHexagons[coordsMatrix[i][j]]);
-					break;
-				}
-			}
-		}
-	}
-
-	private void initializeConstraints() {
-
-		chocoModel.connected(benzenoidGraphVar).post();
-		ConstraintBuilder.postFillNodesConnection(this);
-		ConstraintBuilder.postNoHolesOfSize1Constraint(this);
-		if (applySymmetriesConstraints)
-			nbClausesLexLead = ConstraintBuilder.postSymmetryBreakingConstraints(this);
-	}
-
-	public void addVariable(Variable variable) {
-		variables.add(variable);
-	}
-
-	public void addVariable(Variable... variables) {
-		for (Variable variable : variables)
-			addVariable(variable);
-	}
-
-	/***
-	 * Apply the model propeerty constraint to the model
-	 * @param modelProperty : the model property
-	 */
-	public void applyModelConstraint(ModelProperty modelProperty) {
-		modelProperty.getConstraint().build(this, modelProperty.getExpressions());
-	}
-
-	/***
-	 * Apply all the model properties to the model
-	 */
-	private void applyModelConstraints() {
-		for (Property modelProperty : modelPropertySet)
-			if(modelPropertySet.has(modelProperty.getId())) {
-				applyModelConstraint((ModelProperty) modelProperty);
-			}
+    public GeneralModel(ModelPropertySet modelPropertySet) {
+        this.modelPropertySet = modelPropertySet;
+        nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
+        nbCrowns = modelPropertySet.computeNbCrowns();
+        diameter = (2 * nbCrowns) - 1;
+        applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
+        initialize();
+    }
+
+    public GeneralModel(ModelPropertySet modelPropertySet, int nbCrowns) {
+        this.modelPropertySet = modelPropertySet;
+        nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
+        this.nbCrowns = nbCrowns;
+        diameter = (2 * nbCrowns) - 1;
+        applySymmetriesConstraints = modelPropertySet.symmetryConstraintsAppliable();
+        initialize();
+    }
+
+
+    /*
+     * Initialization methods
+     */
+
+    private void initialize() {
+        initializeHexagonIndices();
+        initializeVariables();
+        initializeConstraints();
+        buildNodesRefs();
+        System.out.print("");
+    }
+
+    private void initializeHexagonIndices() {
+        hexagonIndices = new int[diameter][diameter];
+        for (int i = 0; i < diameter; i++) {
+            Arrays.fill(hexagonIndices[i], -1);
+        }
+    }
+
+    private void initializeVariables() {
+        System.out.println("00 " + nbMaxHexagons);
+
+        nbHexagonsReifies = new BoolVar[nbMaxHexagons + 1];
+        System.out.println("1");
+
+        buildHexagonIndices();
+        System.out.println("2");
+
+        UndirectedGraph GLB = BoundsBuilder.buildGLB2(this);
+        GUB = BoundsBuilder.buildGUB2(this);
+
+        indexOutterHexagon = diameter * diameter;
+        System.out.println("3");
+
+        buildAdjacencyMatrix();
+
+
+        benzenoidGraphVar = chocoModel.graphVar("g", GLB, GUB);
+
+        System.out.println("4");
+        buildBenzenoidVertices();
+        System.out.println("5");
+        buildBenzenoidEdges();
+        System.out.println("6");
+        buildCoordsCorrespondance();
+        System.out.println("7");
+        buildNeighborIndices();
+
+        nbVertices = chocoModel.intVar("nbVertices", 1, nbHexagonsCoronenoid);
+
+        leftBorder = new ArrayList<>();
+        topBorder = new ArrayList<>();
+
+        for (int y = 0; y < diameter; y++) {
+
+            if (validHexagonIndex(0, y))
+                topBorder.add(correspondancesHexagons[hexagonIndices[0][y]]);
+        }
+
+        for (int i = 0; i < diameter; i++) {
+            for (int j = 0; j < diameter; j++) {
+                if (validHexagonIndex(i, j)) {
+                    leftBorder.add(correspondancesHexagons[hexagonIndices[i][j]]);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void initializeConstraints() {
+
+        chocoModel.connected(benzenoidGraphVar).post();
+        ConstraintBuilder.postFillNodesConnection(this);
+        ConstraintBuilder.postNoHolesOfSize1Constraint(this);
+        if (applySymmetriesConstraints)
+            nbClausesLexLead = ConstraintBuilder.postSymmetryBreakingConstraints(this);
+    }
+
+    public void addVariable(Variable variable) {
+        variables.add(variable);
+    }
+
+    public void addVariable(Variable... variables) {
+        for (Variable variable : variables)
+            addVariable(variable);
+    }
+
+    /***
+     * Apply the model property constraint to the model
+     * @param modelProperty : the model property
+     */
+    public void applyModelConstraint(ModelProperty modelProperty) {
+        modelProperty.getConstraint().build(this, modelProperty.getExpressions());
+    }
 
-// TODO verifier l'utilite
-//		if (modelPropertySet.has("symmetry") || modelPropertySet.has("rectangle"))
-//			ConstraintBuilder.postBordersConstraints(this);
-		//TODO deplacer l'instruction ci-dessous
-		chocoModel.nbNodes(benzenoidGraphVar, nbVertices).post();
+    /***
+     * Apply all the model constraints to the model
+     */
+    private void applyModelConstraints() {
+        for (Property modelProperty : modelPropertySet)
+            if (modelPropertySet.has(modelProperty.getId())) {
+                applyModelConstraint((ModelProperty) modelProperty);
+            }
 
-	}
+        if (!modelPropertySet.has("symmetry") && !modelPropertySet.has("rectangle"))
+            ConstraintBuilder.postBordersConstraints(this);
+        //TODO deplacer l'instruction ci-dessous
+        chocoModel.nbNodes(benzenoidGraphVar, nbVertices).post();
+    }
 
 
-	/*
-	 * Getters & Setters
-	 */
+    /*
+     * Getters & Setters
+     */
 
-	public int getNbCrowns() {
-		return nbCrowns;
-	}
+    public int getNbCrowns() {
+        return nbCrowns;
+    }
 
-	public int getDiameter() {
-		return diameter;
-	}
+    public int getDiameter() {
+        return diameter;
+    }
 
-	public Model getProblem() {
-		return chocoModel;
-	}
+    public Model getProblem() {
+        return chocoModel;
+    }
 
-	public int[][] getCoordsMatrix() {
-		return coordsMatrix;
-	}
+    public int[][] getHexagonIndices() {
+        return hexagonIndices;
+    }
 
-	public int[][] getAdjacencyMatrix() {
-		return adjacencyMatrix;
-	}
+    public int getHexagonIndex(int column, int line){
+        return hexagonIndices[column][line];
+    }
 
-	public BoolVar[] getVG() {
-		return benzenoidVertices;
-	}
+    public int[][] getAdjacencyMatrix() {
+        return adjacencyMatrix;
+    }
 
-	public UndirectedGraphVar getGraphVar() {
-		return benzenoidGraphVar;
-	}
+    public BoolVar[] getBenzenoidVerticesBVArray() {
+        return benzenoidVerticesBVArray;
+    }
 
-	public BoolVar[][] getBenzenoidEdges() {
-		return benzenoidEdges;
-	}
+    public BoolVar getBenzenoidVerticesBVArray(int index) {
+        return benzenoidVerticesBVArray[index];
+    }
 
-	public BoolVar[] getGraphVertices() {
-		return benzenoidVertices;
-	}
+    public UndirectedGraphVar getGraphVar() {
+        return benzenoidGraphVar;
+    }
 
-	/*
-	 * Solving methods
-	 */
+    public BoolVar[][] getBenzenoidEdges() {
+        return benzenoidEdges;
+    }
 
-	public void displaySolution(Solver solver) {
 
-		for (int index = 0; index < channeling.length; index++) {
-			if (channeling[index].getValue() == 1)
-				System.out.print(index + " ");
-		}
+    /*
+     * Solving methods
+     */
 
-		System.out.println();
+    public void displaySolution(Solver solver) {
 
-		for (Variable x : variables)
-			if (x.getName().equals("XI"))
-				System.out.println(x.getName() + " = " + (double) ((((IntVar) x).getValue())) / 100);
-			else
-				System.out.println(x.getName() + " = " + (((IntVar) x).getValue()));
+        for (int index = 0; index < channeling.length; index++) {
+            if (channeling[index].getValue() == 1)
+                System.out.print(index + " ");
+        }
 
-		System.out.println(solver.getDecisionPath());
-		
-		if (!verbose)
-			System.out.println();
+        System.out.println();
 
-		System.out.println(this.getProblem().getSolver().getDecisionPath());
-		System.out.println(this.getProblem().getSolver().getFailCount() + " fails");
-	}
+        for (Variable x : variables)
+            if (x.getName().equals("XI"))
+                System.out.println(x.getName() + " = " + (double) ((((IntVar) x).getValue())) / 100);
+            else
+                System.out.println(x.getName() + " = " + (((IntVar) x).getValue()));
 
-	public String buildDescription(int index) {
+        System.out.println(solver.getDecisionPath());
 
-		StringBuilder builder = new StringBuilder();
-		builder.append("solution ").append(index).append("\n");
+        if (!verbose)
+            System.out.println();
 
-		for (Variable x : variables)
+        System.out.println(this.getProblem().getSolver().getDecisionPath());
+        System.out.println(this.getProblem().getSolver().getFailCount() + " fails");
+    }
 
-			if (x.getName().equals("XI")) {
+    public String buildDescription(int index) {
 
-				double value = (double) ((((IntVar) x).getValue())) / 100;
-				NumberFormat formatter = new DecimalFormat("#0.00");
-				builder.append(x.getName()).append(" = ").append(formatter.format(value).replace(",", ".")).append("\n");
+        StringBuilder builder = new StringBuilder();
+        builder.append("solution ").append(index).append("\n");
 
-			} else
-				builder.append(x.getName()).append(" = ").append(((IntVar) x).getValue()).append("\n");
+        for (Variable x : variables)
 
-		return builder.toString();
-	}
+            if (x.getName().equals("XI")) {
 
-	@SuppressWarnings("unchecked")
-	private void buildCoordsCorrespondance() {
+                double value = (double) ((((IntVar) x).getValue())) / 100;
+                NumberFormat formatter = new DecimalFormat("#0.00");
+                builder.append(x.getName()).append(" = ").append(formatter.format(value).replace(",", ".")).append("\n");
 
-		coordsCorrespondance = new Couple[diameter * diameter];
+            } else
+                builder.append(x.getName()).append(" = ").append(((IntVar) x).getValue()).append("\n");
 
-		for (int i = 0; i < diameter; i++) {
-			for (int j = 0; j < diameter; j++) {
+        return builder.toString();
+    }
 
-				if (coordsMatrix[i][j] != -1)
-					coordsCorrespondance[coordsMatrix[i][j]] = new Couple<>(i, j);
-			}
-		}
-	}
+    @SuppressWarnings("unchecked")
+    private void buildCoordsCorrespondance() {
 
-	private Pattern convertToPattern() {
+        coordsCorrespondance = new Couple[diameter * diameter];
 
-		ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
+        for (int i = 0; i < diameter; i++) {
+            for (int j = 0; j < diameter; j++) {
 
-		int[] correspondance = new int[diameter * diameter];
+                if (validHexagonIndex(i, j))
+                    coordsCorrespondance[hexagonIndices[i][j]] = new Couple<>(i, j);
+            }
+        }
+    }
 
-		Arrays.fill(correspondance, -1);
+    private Pattern convertToPattern() {
 
-		for (int index = 0; index < benzenoidVertices.length; index++) {
-			if (benzenoidVertices[index] != null) {
-				if (benzenoidVertices[index].getValue() == 1) {
-					hexagonsSolutions.add(index);
-					correspondance[index] = hexagonsSolutions.size() - 1;
-				}
-			}
-		}
+        ArrayList<Integer> hexagonsSolutions = new ArrayList<>();
 
-		int nbNodes = hexagonsSolutions.size();
+        int[] correspondance = new int[diameter * diameter];
 
-		/*
-		 * nodes
-		 */
+        Arrays.fill(correspondance, -1);
 
-		Node[] nodes = new Node[nbNodes];
+        for (int index = 0; index < benzenoidVerticesBVArray.length; index++) {
+            if (benzenoidVerticesBVArray[index] != null) {
+                if (benzenoidVerticesBVArray[index].getValue() == 1) {
+                    hexagonsSolutions.add(index);
+                    correspondance[index] = hexagonsSolutions.size() - 1;
+                }
+            }
+        }
 
-		for (int i = 0; i < hexagonsSolutions.size(); i++) {
+        int nbNodes = hexagonsSolutions.size();
 
-			int hexagon = hexagonsSolutions.get(i);
+        /*
+         * nodes
+         */
 
-			Couple<Integer, Integer> couple = coordsCorrespondance[hexagon];
+        Node[] nodes = new Node[nbNodes];
 
-			nodes[i] = new Node(couple.getY(), couple.getX(), i);
-		}
+        for (int i = 0; i < hexagonsSolutions.size(); i++) {
 
-		/*
-		 * matrix
-		 */
+            int hexagon = hexagonsSolutions.get(i);
 
-		int[][] matrix = new int[nbNodes][nbNodes];
-		int[][] neighbors = new int[nbNodes][6];
+            Couple<Integer, Integer> couple = coordsCorrespondance[hexagon];
 
-		for (int i = 0; i < nbNodes; i++)
-			Arrays.fill(neighbors[i], -1);
+            nodes[i] = new Node(couple.getY(), couple.getX(), i);
+        }
 
-		for (int i = 0; i < nbNodes; i++) {
+        /*
+         * matrix
+         */
 
-			int u = hexagonsSolutions.get(i);
-			Node n1 = nodes[i];
+        int[][] matrix = new int[nbNodes][nbNodes];
+        int[][] neighbors = new int[nbNodes][6];
 
-			for (int j = (i + 1); j < nbNodes; j++) {
+        for (int i = 0; i < nbNodes; i++)
+            Arrays.fill(neighbors[i], -1);
 
-				int v = hexagonsSolutions.get(j);
-				Node n2 = nodes[j];
+        for (int i = 0; i < nbNodes; i++) {
 
-				if (adjacencyMatrix[u][v] == 1) {
+            int u = hexagonsSolutions.get(i);
+            Node n1 = nodes[i];
 
-					// Setting matrix
-					matrix[i][j] = 1;
-					matrix[j][i] = 1;
+            for (int j = (i + 1); j < nbNodes; j++) {
 
-					// Setting neighbors
-					int x1 = n1.getX();
-					int y1 = n1.getY();
-					int x2 = n2.getX();
-					int y2 = n2.getY();
+                int v = hexagonsSolutions.get(j);
+                Node n2 = nodes[j];
 
-					if (x2 == x1 && y2 == y1 - 1) {
-						neighbors[correspondance[u]][0] = correspondance[v];
-						neighbors[correspondance[v]][3] = correspondance[u];
-					}
+                if (adjacencyMatrix[u][v] == 1) {
 
-					else if (x2 == x1 + 1 && y2 == y1) {
-						neighbors[correspondance[u]][1] = correspondance[v];
-						neighbors[correspondance[v]][4] = correspondance[u];
-					}
+                    // Setting matrix
+                    matrix[i][j] = 1;
+                    matrix[j][i] = 1;
 
-					else if (x2 == x1 + 1 && y2 == y1 + 1) {
-						neighbors[correspondance[u]][2] = correspondance[v];
-						neighbors[correspondance[v]][5] = correspondance[u];
-					}
+                    // Setting neighbors
+                    int x1 = n1.getX();
+                    int y1 = n1.getY();
+                    int x2 = n2.getX();
+                    int y2 = n2.getY();
 
-					else if (x2 == x1 && y2 == y1 + 1) {
-						neighbors[correspondance[u]][3] = correspondance[v];
-						neighbors[correspondance[v]][0] = correspondance[u];
-					}
+                    if (x2 == x1 && y2 == y1 - 1) {
+                        neighbors[correspondance[u]][0] = correspondance[v];
+                        neighbors[correspondance[v]][3] = correspondance[u];
+                    } else if (x2 == x1 + 1 && y2 == y1) {
+                        neighbors[correspondance[u]][1] = correspondance[v];
+                        neighbors[correspondance[v]][4] = correspondance[u];
+                    } else if (x2 == x1 + 1 && y2 == y1 + 1) {
+                        neighbors[correspondance[u]][2] = correspondance[v];
+                        neighbors[correspondance[v]][5] = correspondance[u];
+                    } else if (x2 == x1 && y2 == y1 + 1) {
+                        neighbors[correspondance[u]][3] = correspondance[v];
+                        neighbors[correspondance[v]][0] = correspondance[u];
+                    } else if (x2 == x1 - 1 && y2 == y1) {
+                        neighbors[correspondance[u]][4] = correspondance[v];
+                        neighbors[correspondance[v]][1] = correspondance[u];
+                    } else if (x2 == x1 - 1 && y2 == y1 - 1) {
+                        neighbors[correspondance[u]][5] = correspondance[v];
+                        neighbors[correspondance[v]][2] = correspondance[u];
+                    }
+                }
+            }
+        }
 
-					else if (x2 == x1 - 1 && y2 == y1) {
-						neighbors[correspondance[u]][4] = correspondance[v];
-						neighbors[correspondance[v]][1] = correspondance[u];
-					}
+        /*
+         * Label
+         */
 
-					else if (x2 == x1 - 1 && y2 == y1 - 1) {
-						neighbors[correspondance[u]][5] = correspondance[v];
-						neighbors[correspondance[v]][2] = correspondance[u];
-					}
-				}
-			}
-		}
+        int[] labels = new int[nbNodes];
 
-		/*
-		 * Label
-		 */
+        Arrays.fill(labels, 2);
 
-		int[] labels = new int[nbNodes];
+        return new Pattern(matrix, labels, nodes, null, neighbors, 0);
+    }
 
-		Arrays.fill(labels, 2);
+    private void recordNoGoods() {
 
-		return new Pattern(matrix, labels, nodes, null, neighbors, 0);
-	}
+        ArrayList<Integer> vertices = new ArrayList<>();
+        for (int i = 0; i < channeling.length; i++)
+            if (channeling[i].getValue() == 1)
+                vertices.add(i);
 
-	private void recordNoGoods() {
+        int center = correspondancesHexagons[hexagonIndices[(diameter - 1) / 2][(diameter - 1) / 2]];
 
-		ArrayList<Integer> vertices = new ArrayList<>();
-		for (int i = 0; i < channeling.length; i++)
-			if (channeling[i].getValue() == 1)
-				vertices.add(i);
+        Solution solution = new Solution(nodesRefs, correspondancesHexagons, hexagonsCorrespondances, hexagonIndices,
+                center, nbCrowns, vertices);
 
-		int center = correspondancesHexagons[coordsMatrix[(diameter - 1) / 2][(diameter - 1) / 2]];
+        NoGoodRecorder noGoodRecorder;// = null;
 
-		Solution solution = new Solution(nodesRefs, correspondancesHexagons, hexagonsCorrespondances, coordsMatrix,
-				center, nbCrowns, vertices);
+        if (!modelPropertySet.has("symmetry")) {
 
-		NoGoodRecorder noGoodRecorder;// = null;
+            solution.setPattern(convertToPattern());
+            noGoodRecorder = new NoGoodBorderRecorder(this, solution, topBorder, leftBorder);
+        } else {
 
-		if (!modelPropertySet.has("symmetry")) {
+            noGoodRecorder = new NoGoodNoneRecorder(this, solution);
 
-			solution.setPattern(convertToPattern());
-			noGoodRecorder = new NoGoodBorderRecorder(this, solution, topBorder, leftBorder);
-		}
+            if (Objects.equals(((ParameterizedExpression) modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator(), "SYMM_MIRROR"))
+                noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
+            else if (Objects.equals(((ParameterizedExpression) modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator(), "SYMM_VERTICAL"))
+                //noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
+                noGoodRecorder = new NoGoodVerticalAxisRecorder(this, solution);
 
-		else {
+            else {
+                if (modelPropertySet.has("pattern"))
+                    noGoodRecorder = new NoGoodUniqueRecorder(this, solution);
+            }
+        }
+        solution.setPattern(convertToPattern());
+        noGoodRecorder = new NoGoodAllRecorder(this, solution);
+        noGoodRecorder.record();
 
-			noGoodRecorder = new NoGoodNoneRecorder(this, solution);
+    }
 
-			if (Objects.equals(((ParameterizedExpression) modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator(), "SYMM_MIRROR"))
-				noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
-			else if (Objects.equals(((ParameterizedExpression) modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator(), "SYMM_VERTICAL"))
-				//noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
-				noGoodRecorder = new NoGoodVerticalAxisRecorder(this, solution);
+    public SolverResults solve() {
 
-			else {
-				if (modelPropertySet.has("pattern"))
-					noGoodRecorder = new NoGoodUniqueRecorder(this, solution);
-			}
-		}
-		solution.setPattern(convertToPattern());
-		noGoodRecorder = new NoGoodAllRecorder(this, solution);
-		noGoodRecorder.record();
+        applyModelConstraints();
+        chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
 
-	}
+        for (Property modelProperty : modelPropertySet) {
+            if (modelProperty.hasExpressions())
+                ((ModelProperty) modelProperty).getConstraint().changeSolvingStrategy();
+        }
 
-	public SolverResults solve() {
+        chocoSolver = chocoModel.getSolver();
+        chocoSolver.limitSearch(() -> Stopper.STOP);
 
-		applyModelConstraints();
-		chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
+        //applySolverProperties();
+        for (Property solverProperty : solverPropertySet)
+            if (solverProperty.hasExpressions())
+                ((SolverProperty) solverProperty).getSpecifier().apply(chocoSolver, solverProperty.getExpressions().get(0));
 
-		for (Property modelProperty : modelPropertySet) {
-			if(modelProperty.hasExpressions())
-				((ModelProperty) modelProperty).getConstraint().changeSolvingStrategy();
-		}
+        solverResults = new SolverResults();
 
-		solver = chocoModel.getSolver();
-		solver.limitSearch(() -> Stopper.STOP);
+        indexSolution = 0;
 
-		//applySolverProperties();
-		for(Property solverProperty : solverPropertySet)
-			if(solverProperty.hasExpressions())
-				((SolverProperty) solverProperty).getSpecifier().apply(solver, solverProperty.getExpressions().get(0));
+        long begin = System.currentTimeMillis();
 
-		solverResults = new SolverResults();
+        chocoSolver.limitSearch(() -> Stopper.STOP);
+        Stopper.STOP = false;
 
-		indexSolution = 0;
+        while (chocoSolver.solve() && !generatorRun.isPaused()) {
+            ArrayList<Integer> verticesSolution = buildVerticesSolution();
+            String description = buildDescription(indexSolution);
+            Molecule molecule = Molecule.buildMolecule(description, nbCrowns, indexSolution, verticesSolution);
 
-		long begin = System.currentTimeMillis();
+            if (molecule.respectPostProcessing(modelPropertySet)) {
+                solverResults.addMolecule(molecule);
+                if (inTestMode())
+                    nbTotalSolutions.set(nbTotalSolutions.get() + 1);
+                else
+                    Platform.runLater(() -> nbTotalSolutions.set(nbTotalSolutions.get() + 1));
 
-		solver.limitSearch(() -> Stopper.STOP);
-		Stopper.STOP = false;
+                recordNoGoods();
 
-		while (solver.solve() && !generatorRun.isPaused()) {
-			ArrayList<Integer> verticesSolution = buildVerticesSolution();
-			String description = buildDescription(indexSolution);
-			Molecule molecule = Molecule.buildMolecule(description, nbCrowns, indexSolution, verticesSolution);
+                BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
+                        chocoModel.getName() + indexSolution, hexagonsCorrespondances);
 
-			if(molecule.respectPostProcessing(modelPropertySet)) {
-				solverResults.addMolecule(molecule);
-				if(inTestMode())
-					nbTotalSolutions.set(nbTotalSolutions.get() + 1);
-				else
-					Platform.runLater(()-> nbTotalSolutions.set(nbTotalSolutions.get() + 1));
+                solverResults.addSolution(solverSolution, description, nbCrowns);
+                solverResults.addVerticesSolution(verticesSolution);
 
-				recordNoGoods();
+                displaySolution(chocoSolver);
 
-				BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
-						chocoModel.getName() + indexSolution, hexagonsCorrespondances);
+                if (verbose) {
 
-				solverResults.addSolution(solverSolution, description, nbCrowns);
-				solverResults.addVerticesSolution(verticesSolution);
+                    System.out.println("NO-GOOD");
 
-				displaySolution(solver);
+                    for (ArrayList<Integer> ng : nogoods) {
+                        for (Integer v : ng)
+                            System.out.print(v + " ");
+                        System.out.println();
+                    }
+                } else
+                    verticesSolution.add(0);
 
-				if (verbose) {
+                indexSolution++;
+            }
+        }
 
-					System.out.println("NO-GOOD");
+        long end = System.currentTimeMillis();
+        long time = end - begin;
 
-					for (ArrayList<Integer> ng : nogoods) {
-						for (Integer v : ng)
-							System.out.print(v + " ");
-						System.out.println();
-					}
-				} else
-					verticesSolution.add(0);
-				
-				indexSolution++;
-			}
-		}
+        solverResults.setTime(time);
+        solverResults.setNbTotalSolution(nbTotalSolutions.get());
+        solverResults.setSolver(chocoSolver);
 
-		long end = System.currentTimeMillis();
-		long time = end - begin;
+        System.out.println(nbCrowns + " crowns");
+        System.out.println(nogoods.size() + " no-good clauses");
+        System.out.println(nbClausesLexLead + " lex-lead clauses");
+        chocoSolver.printStatistics();
 
-		solverResults.setTime(time);
-		solverResults.setNbTotalSolution(nbTotalSolutions.get());
-		solverResults.setSolver(solver);
+        solverResults.setNogoodsFragments();
+        System.out.println("------");
+        displayDegrees();
+        return solverResults;
 
-		System.out.println(nbCrowns + " crowns");
-		System.out.println(nogoods.size() + " no-good clauses");
-		System.out.println(nbClausesLexLead + " lex-lead clauses");
-		solver.printStatistics();
 
-		solverResults.setNogoodsFragments();
-		System.out.println("------");
-		displayDegrees();
-		return solverResults;
+    }
 
+    private boolean inTestMode() {
+        return isInTestMode;
+    }
 
-	}
 
-	private boolean inTestMode() {
-		return isInTestMode;
-	}
+    private ArrayList<Integer> buildVerticesSolution() {
+        ArrayList<Integer> verticesSolution = new ArrayList<>();
 
+        for (BoolVar benzenoidVertex : benzenoidVerticesBVArray) {
 
-	private ArrayList<Integer> buildVerticesSolution() {
-		ArrayList<Integer> verticesSolution = new ArrayList<>();
+            if (benzenoidVertex != null) {
+                verticesSolution.add(benzenoidVertex.getValue());
+            } else
+                verticesSolution.add(0);
+        }
+        return verticesSolution;
+    }
 
-		for (BoolVar benzenoidVertex : benzenoidVertices) {
+    private void buildAdjacencyMatrix() {
 
-			if (benzenoidVertex != null) {
-				verticesSolution.add(benzenoidVertex.getValue());
-			} else
-				verticesSolution.add(0);
-		}
-		return verticesSolution;
-	}
+        nbEdges = 0;
+        adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
 
-	private void buildAdjacencyMatrix() {
+        for (int x = 0; x < diameter; x++) {
+            for (int y = 0; y < diameter; y++) {
 
-		nbEdges = 0;
-		adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
+                if (validHexagonIndex(x, y)) {
 
-		for (int x = 0; x < diameter; x++) {
-			for (int y = 0; y < diameter; y++) {
+                    int u = hexagonIndices[x][y];
 
-				if (coordsMatrix[x][y] != -1) {
+                    if (x > 0 && y > 0) {
 
-					int u = coordsMatrix[x][y];
+                        int v = hexagonIndices[x - 1][y - 1];
+                        if (v != -1) {
+                            if (adjacencyMatrix[u][v] == 0) {
+                                adjacencyMatrix[u][v] = 1;
+                                adjacencyMatrix[v][u] = 1;
+                                nbEdges++;
+                            }
+                        }
+                    }
 
-					if (x > 0 && y > 0) {
+                    if (y > 0) {
 
-						int v = coordsMatrix[x - 1][y - 1];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
+                        int v = hexagonIndices[x][y - 1];
+                        if (v != -1) {
+                            if (adjacencyMatrix[u][v] == 0) {
+                                adjacencyMatrix[u][v] = 1;
+                                adjacencyMatrix[v][u] = 1;
+                                nbEdges++;
+                            }
+                        }
+                    }
 
-					if (y > 0) {
+                    if (x + 1 < diameter) {
 
-						int v = coordsMatrix[x][y - 1];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
+                        int v = hexagonIndices[x + 1][y];
+                        if (v != -1) {
+                            if (adjacencyMatrix[u][v] == 0) {
+                                adjacencyMatrix[u][v] = 1;
+                                adjacencyMatrix[v][u] = 1;
+                                nbEdges++;
+                            }
+                        }
+                    }
 
-					if (x + 1 < diameter) {
+                    if (x + 1 < diameter && y + 1 < diameter) {
 
-						int v = coordsMatrix[x + 1][y];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
+                        int v = hexagonIndices[x + 1][y + 1];
+                        if (v != -1) {
+                            if (adjacencyMatrix[u][v] == 0) {
+                                adjacencyMatrix[u][v] = 1;
+                                adjacencyMatrix[v][u] = 1;
+                                nbEdges++;
+                            }
+                        }
+                    }
 
-					if (x + 1 < diameter && y + 1 < diameter) {
+                    if (y + 1 < diameter) {
 
-						int v = coordsMatrix[x + 1][y + 1];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
+                        int v = hexagonIndices[x][y + 1];
+                        if (v != -1) {
+                            if (adjacencyMatrix[u][v] == 0) {
+                                adjacencyMatrix[u][v] = 1;
+                                adjacencyMatrix[v][u] = 1;
+                                nbEdges++;
+                            }
+                        }
+                    }
 
-					if (y + 1 < diameter) {
+                    if (x > 0) {
 
-						int v = coordsMatrix[x][y + 1];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
+                        int v = hexagonIndices[x - 1][y];
+                        if (v != -1) {
+                            if (adjacencyMatrix[u][v] == 0) {
+                                adjacencyMatrix[u][v] = 1;
+                                adjacencyMatrix[v][u] = 1;
+                                nbEdges++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-					if (x > 0) {
+    public int getNbEdges() {
+        return nbEdges;
+    }
 
-						int v = coordsMatrix[x - 1][y];
-						if (v != -1) {
-							if (adjacencyMatrix[u][v] == 0) {
-								adjacencyMatrix[u][v] = 1;
-								adjacencyMatrix[v][u] = 1;
-								nbEdges++;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    public ArrayList<Integer> getOutterHexagonsIndexes() {
+        return outterHexagonsIndexes;
+    }
 
-	public int getNbEdges() {
-		return nbEdges;
-	}
+    public void buildNeighborGraphWithOutterHexagons(int order) {
 
-	public ArrayList<Integer> getOutterHexagonsIndexes() {
-		return outterHexagonsIndexes;
-	}
+        if (order == 0) {
+            // buildNeighborIndices();
+            neighborGraphOutterHexagons = new ArrayList<>();
 
-	public void buildNeighborGraphWithOutterHexagons(int order) {
+            for (int[] ints : neighborIndices) {
+                ArrayList<Integer> neighbors = new ArrayList<>();
+                for (int j = 0; j < 6; j++)
+                    neighbors.add(ints[j]);
+                neighborGraphOutterHexagons.add(neighbors);
+            }
+        } else {
 
-		if (order == 0) {
-			// buildNeighborGraph();
-			neighborGraphOutterHexagons = new ArrayList<>();
+            ArrayList<Integer> hexagons = new ArrayList<>();
+            ArrayList<Couple<Integer, Integer>> coords = new ArrayList<>();
 
-			for (int[] ints : neighborGraph) {
-				ArrayList<Integer> neighbors = new ArrayList<>();
-				for (int j = 0; j < 6; j++)
-					neighbors.add(ints[j]);
-				neighborGraphOutterHexagons.add(neighbors);
-			}
-		}
-
-		else {
-
-			ArrayList<Integer> hexagons = new ArrayList<>();
-			ArrayList<Couple<Integer, Integer>> coords = new ArrayList<>();
-
-			//TODO A quoi sert index ???? (pas utilisé plus tard)
+            //TODO A quoi sert index ???? (pas utilisé plus tard)
 //			int index = -1;
 //
 //			for (int i = 0; i < diameter; i++) {
@@ -743,873 +732,835 @@ public class GeneralModel {
 //
 //			index++;
 
-			for (int line = 0; line < diameter; line++) {
+            for (int line = 0; line < diameter; line++) {
 
-				if (line == 0 || line == diameter - 1) {
+                if (line == 0 || line == diameter - 1) {
 
-					for (int column = 0; column < diameter; column++) {
-						if (coordsMatrix[line][column] != -1) {
-							hexagons.add(coordsMatrix[line][column]);
-							coords.add(new Couple<>(column, line));
-						}
-					}
-				}
+                    for (int column = 0; column < diameter; column++) {
+                        if (validHexagonIndex(line, column)) {
+                            hexagons.add(hexagonIndices[line][column]);
+                            coords.add(new Couple<>(column, line));
+                        }
+                    }
+                } else {
 
-				else {
+                    ArrayList<Integer> c1 = getFirstColumns(line, 1);
+                    ArrayList<Integer> c2 = getLastColumns(line, 1);
 
-					ArrayList<Integer> c1 = getFirstColumns(line, 1);
-					ArrayList<Integer> c2 = getLastColumns(line, 1);
+                    for (int i = 0; i < c1.size(); i++) {
 
-					for (int i = 0; i < c1.size(); i++) {
+                        hexagons.add(hexagonIndices[line][c1.get(i)]);
+                        coords.add(new Couple<>(c1.get(i), line));
+                        hexagons.add(hexagonIndices[line][c2.get(i)]);
+                        coords.add(new Couple<>(c2.get(i), line));
+                    }
+                }
+            }
 
-						hexagons.add(coordsMatrix[line][c1.get(i)]);
-						coords.add(new Couple<>(c1.get(i), line));
-						hexagons.add(coordsMatrix[line][c2.get(i)]);
-						coords.add(new Couple<>(c2.get(i), line));
-					}
-				}
-			}
+            // buildNeighborIndices();
 
-			// buildNeighborGraph();
+            neighborGraphOutterHexagons = new ArrayList<>();
 
-			neighborGraphOutterHexagons = new ArrayList<>();
+            for (int[] ints : neighborIndices) {
+                ArrayList<Integer> neighbors = new ArrayList<>();
+                for (int j = 0; j < 6; j++)
+                    neighbors.add(ints[j]);
+                neighborGraphOutterHexagons.add(neighbors);
+            }
+
+            ArrayList<Triplet<Integer, Integer, Integer>> coordsOutterHexagons = new ArrayList<>();
+
+            for (int i = 0; i < hexagons.size(); i++) {
+
+                int hexagon = hexagons.get(i);
+                Couple<Integer, Integer> coord = coords.get(i);
+
+                int[] neighbors = neighborIndices[hexagon];
 
-			for (int[] ints : neighborGraph) {
-				ArrayList<Integer> neighbors = new ArrayList<>();
-				for (int j = 0; j < 6; j++)
-					neighbors.add(ints[j]);
-				neighborGraphOutterHexagons.add(neighbors);
-			}
+                for (int j = 0; j < 6; j++) {
+                    if (neighbors[j] == -1) {
 
-			ArrayList<Triplet<Integer, Integer, Integer>> coordsOutterHexagons = new ArrayList<>();
+                        int x, y;
 
-			for (int i = 0; i < hexagons.size(); i++) {
+                        if (j == 0) {
+                            x = coord.getX();
+                            y = coord.getY() - 1;
+                        } else if (j == 1) {
+                            x = coord.getX() + 1;
+                            y = coord.getY();
+                        } else if (j == 2) {
+                            x = coord.getX() + 1;
+                            y = coord.getY() + 1;
+                        } else if (j == 3) {
+                            x = coord.getX();
+                            y = coord.getY() + 1;
+                        } else if (j == 4) {
+                            x = coord.getX() - 1;
+                            y = coord.getY();
+                        } else {
+                            x = coord.getX() - 1;
+                            y = coord.getY() - 1;
+                        }
 
-				int hexagon = hexagons.get(i);
-				Couple<Integer, Integer> coord = coords.get(i);
+                        int indexOutter = -1;
 
-				int[] neighbors = neighborGraph[hexagon];
+                        for (Triplet<Integer, Integer, Integer> coordOutter : coordsOutterHexagons)
+                            if (coordOutter.getX() == x && coordOutter.getY() == y)
+                                indexOutter = coordOutter.getZ();
 
-				for (int j = 0; j < 6; j++) {
-					if (neighbors[j] == -1) {
+                        if (indexOutter == -1) {
 
-						int x, y;
+                            indexOutter = neighborGraphOutterHexagons.size();
 
-						if (j == 0) {
-							x = coord.getX();
-							y = coord.getY() - 1;
-						}
+                            coordsOutterHexagons.add(new Triplet<>(x, y, indexOutter));
 
-						else if (j == 1) {
-							x = coord.getX() + 1;
-							y = coord.getY();
-						}
+                            ArrayList<Integer> newNeighbor = new ArrayList<>();
+                            for (int k = 0; k < 6; k++)
+                                newNeighbor.add(-1);
 
-						else if (j == 2) {
-							x = coord.getX() + 1;
-							y = coord.getY() + 1;
-						}
+                            neighborGraphOutterHexagons.add(newNeighbor);
+                        }
 
-						else if (j == 3) {
-							x = coord.getX();
-							y = coord.getY() + 1;
-						}
+                        neighborGraphOutterHexagons.get(hexagon).set(j, indexOutter);
+                        neighborGraphOutterHexagons.get(indexOutter).set((j + 3) % 6, hexagon);
+                    }
+                }
+            }
 
-						else if (j == 4) {
-							x = coord.getX() - 1;
-							y = coord.getY();
-						}
+            for (int i = 0; i < coordsOutterHexagons.size(); i++) {
 
-						else {
-							x = coord.getX() - 1;
-							y = coord.getY() - 1;
-						}
+                Triplet<Integer, Integer, Integer> coord1 = coordsOutterHexagons.get(i);
 
-						int indexOutter = -1;
+                int x1 = coord1.getX();
+                int y1 = coord1.getY();
 
-						for (Triplet<Integer, Integer, Integer> coordOutter : coordsOutterHexagons)
-							if (coordOutter.getX() == x && coordOutter.getY() == y)
-								indexOutter = coordOutter.getZ();
+                int index1 = coord1.getZ();
 
-						if (indexOutter == -1) {
+                for (int j = 0; j < coordsOutterHexagons.size(); j++) {
 
-							indexOutter = neighborGraphOutterHexagons.size();
+                    if (i != j) {
 
-							coordsOutterHexagons.add(new Triplet<>(x, y, indexOutter));
+                        Triplet<Integer, Integer, Integer> coord2 = coordsOutterHexagons.get(j);
 
-							ArrayList<Integer> newNeighbor = new ArrayList<>();
-							for (int k = 0; k < 6; k++)
-								newNeighbor.add(-1);
+                        int x2 = coord2.getX();
+                        int y2 = coord2.getY();
 
-							neighborGraphOutterHexagons.add(newNeighbor);
-						}
+                        int index2 = coord2.getZ();
 
-						neighborGraphOutterHexagons.get(hexagon).set(j, indexOutter);
-						neighborGraphOutterHexagons.get(indexOutter).set((j + 3) % 6, hexagon);
-					}
-				}
-			}
+                        if (x2 == x1 && y2 == y1 - 1) {
+                            neighborGraphOutterHexagons.get(index1).set(0, index2);
+                            neighborGraphOutterHexagons.get(index2).set(3, index1);
+                        } else if (x2 == x1 + 1 && y2 == y1) {
+                            neighborGraphOutterHexagons.get(index1).set(1, index2);
+                            neighborGraphOutterHexagons.get(index2).set(4, index1);
+                        } else if (x2 == x1 + 1 && y2 == y1 + 1) {
+                            neighborGraphOutterHexagons.get(index1).set(2, index2);
+                            neighborGraphOutterHexagons.get(index2).set(5, index1);
+                        } else if (x2 == x1 && y2 == y1 + 1) {
+                            neighborGraphOutterHexagons.get(index1).set(3, index2);
+                            neighborGraphOutterHexagons.get(index2).set(0, index1);
+                        } else if (x2 == x1 - 1 && y2 == y1) {
+                            neighborGraphOutterHexagons.get(index1).set(4, index2);
+                            neighborGraphOutterHexagons.get(index2).set(1, index1);
+                        } else if (x2 == x1 - 1 && y2 == y1 - 1) {
+                            neighborGraphOutterHexagons.get(index1).set(5, index2);
+                            neighborGraphOutterHexagons.get(index2).set(2, index1);
+                        }
+                    }
 
-			for (int i = 0; i < coordsOutterHexagons.size(); i++) {
+                }
+            }
+        }
+    }
 
-				Triplet<Integer, Integer, Integer> coord1 = coordsOutterHexagons.get(i);
+    private ArrayList<Integer> getFirstColumns(int line, int order) {
 
-				int x1 = coord1.getX();
-				int y1 = coord1.getY();
+        ArrayList<Integer> columns = new ArrayList<>();
 
-				int index1 = coord1.getZ();
+        int nbColumns = 0;
+        int column = 0;
 
-				for (int j = 0; j < coordsOutterHexagons.size(); j++) {
+        while (nbColumns < order && column < diameter) {
 
-					if (i != j) {
+            if (validHexagonIndex(line, column)) {
+                columns.add(column);
+                nbColumns++;
+            }
 
-						Triplet<Integer, Integer, Integer> coord2 = coordsOutterHexagons.get(j);
+            column++;
+        }
 
-						int x2 = coord2.getX();
-						int y2 = coord2.getY();
+        return columns;
+    }
 
-						int index2 = coord2.getZ();
+    private ArrayList<Integer> getLastColumns(int line, int order) {
 
-						if (x2 == x1 && y2 == y1 - 1) {
-							neighborGraphOutterHexagons.get(index1).set(0, index2);
-							neighborGraphOutterHexagons.get(index2).set(3, index1);
-						}
+        ArrayList<Integer> columns = new ArrayList<>();
 
-						else if (x2 == x1 + 1 && y2 == y1) {
-							neighborGraphOutterHexagons.get(index1).set(1, index2);
-							neighborGraphOutterHexagons.get(index2).set(4, index1);
-						}
+        int nbColumns = 0;
+        int column = diameter - 1;
 
-						else if (x2 == x1 + 1 && y2 == y1 + 1) {
-							neighborGraphOutterHexagons.get(index1).set(2, index2);
-							neighborGraphOutterHexagons.get(index2).set(5, index1);
-						}
+        while (nbColumns < order && column >= 0) {
 
-						else if (x2 == x1 && y2 == y1 + 1) {
-							neighborGraphOutterHexagons.get(index1).set(3, index2);
-							neighborGraphOutterHexagons.get(index2).set(0, index1);
-						}
+            if (validHexagonIndex(line, column)) {
+                columns.add(column);
+                nbColumns++;
+            }
 
-						else if (x2 == x1 - 1 && y2 == y1) {
-							neighborGraphOutterHexagons.get(index1).set(4, index2);
-							neighborGraphOutterHexagons.get(index2).set(1, index1);
-						}
+            column--;
+        }
 
-						else if (x2 == x1 - 1 && y2 == y1 - 1) {
-							neighborGraphOutterHexagons.get(index1).set(5, index2);
-							neighborGraphOutterHexagons.get(index2).set(2, index1);
-						}
-					}
+        return columns;
+    }
 
-				}
-			}
-		}
-	}
+    private void buildNeighborIndices() {
 
-	private ArrayList<Integer> getFirstColumns(int line, int order) {
+        neighborIndices = new int[diameter * diameter][6];
 
-		ArrayList<Integer> columns = new ArrayList<>();
+        for (int[] ints : neighborIndices) {
+            Arrays.fill(ints, -1);
+        }
 
-		int nbColumns = 0;
-		int column = 0;
+        for (int column = 0; column < hexagonIndices.length; column++) {
+            for (int line = 0; line < hexagonIndices[column].length; line++) {
 
-		while (nbColumns < order && column < diameter) {
+                if (validHexagonIndex(column, line)) {
 
-			if (coordsMatrix[line][column] != -1) {
-				columns.add(column);
-				nbColumns++;
-			}
+                    int hexagonIndex = hexagonIndices[column][line];
 
-			column++;
-		}
+                    // Top-Right
+                    if (column > 0)
+                        neighborIndices[hexagonIndex][0] = hexagonIndices[column - 1][line];
 
-		return columns;
-	}
+                    // Right
+                    if (line < hexagonIndices[column].length - 1)
+                        neighborIndices[hexagonIndex][1] = hexagonIndices[column][line + 1];
 
-	private ArrayList<Integer> getLastColumns(int line, int order) {
+                    // Bottom-Right
+                    if (column < hexagonIndices[column].length - 1 && line < hexagonIndices[column].length - 1)
+                        neighborIndices[hexagonIndex][2] = hexagonIndices[column + 1][line + 1];
 
-		ArrayList<Integer> columns = new ArrayList<>();
+                    // Bottom-Left
+                    if (column < hexagonIndices[column].length - 1)
+                        neighborIndices[hexagonIndex][3] = hexagonIndices[column + 1][line];
 
-		int nbColumns = 0;
-		int column = diameter - 1;
+                    // Left
+                    if (line > 0)
+                        neighborIndices[hexagonIndex][4] = hexagonIndices[column][line - 1];
 
-		while (nbColumns < order && column >= 0) {
+                    // Top-Left
+                    if (column > 0 && line > 0)
+                        neighborIndices[hexagonIndex][5] = hexagonIndices[column - 1][line - 1];
+                }
+            }
+        }
+    }
 
-			if (coordsMatrix[line][column] != -1) {
-				columns.add(column);
-				nbColumns++;
-			}
+    public void buildAdjacencyMatrixWithOutterHexagons() {
 
-			column--;
-		}
+        adjacencyMatrixWithOutterHexagons = new int[neighborGraphOutterHexagons.size()][neighborGraphOutterHexagons
+                .size()];
 
-		return columns;
-	}
+        for (int i = 0; i < neighborGraphOutterHexagons.size(); i++) {
 
-	private void buildNeighborGraph() {
+            for (int j = 0; j < 6; j++) {
 
-		neighborGraph = new int[diameter * diameter][6];
+                int v = neighborGraphOutterHexagons.get(i).get(j);
 
-		for (int[] ints : neighborGraph) {
-			Arrays.fill(ints, -1);
-		}
+                if (v != -1) {
+                    adjacencyMatrixWithOutterHexagons[i][v] = 1;
+                    adjacencyMatrixWithOutterHexagons[v][i] = 1;
+                }
+            }
+        }
+    }
 
-		for (int line = 0; line < coordsMatrix.length; line++) {
-			for (int column = 0; column < coordsMatrix[line].length; column++) {
+    public ArrayList<ArrayList<Integer>> getNeighborGraphOutterHexagons() {
+        return neighborGraphOutterHexagons;
+    }
 
-				if (coordsMatrix[line][column] != -1) {
+    public int[][] getAdjacencyMatrixOutterHexagons() {
+        return adjacencyMatrixWithOutterHexagons;
+    }
 
-					int index = coordsMatrix[line][column];
+    private void buildBenzenoidVertices() {
 
-					// High-Right
-					if (line > 0)
-						neighborGraph[index][0] = coordsMatrix[line - 1][column];
+        channeling = new BoolVar[nbHexagonsCoronenoid];
+        for (int i = 0; i < channeling.length; i++)
+            channeling[i] = chocoModel.boolVar("vertex[" + i + "]");
 
-					// Right
-					if (column < coordsMatrix[line].length - 1)
-						neighborGraph[index][1] = coordsMatrix[line][column + 1];
+        chocoModel.nodesChanneling(benzenoidGraphVar, channeling).post();
 
-					// Down-Right
-					if (line < coordsMatrix[line].length - 1 && column < coordsMatrix[line].length - 1)
-						neighborGraph[index][2] = coordsMatrix[line + 1][column + 1];
+        benzenoidVerticesBVArray = new BoolVar[diameter * diameter];
 
-					// Down-Left
-					if (line < coordsMatrix[line].length - 1)
-						neighborGraph[index][3] = coordsMatrix[line + 1][column];
+        int index = 0;
 
-					// Left
-					if (column > 0)
-						neighborGraph[index][4] = coordsMatrix[line][column - 1];
+        for (int i = 0; i < diameter; i++) {
+            for (int j = 0; j < diameter; j++) {
+                if (validHexagonIndex(i, j)) {
 
-					// High-Left
-					if (line > 0 && column > 0)
-						neighborGraph[index][5] = coordsMatrix[line - 1][column - 1];
-				}
-			}
-		}
-	}
+                    BoolVar x = channeling[correspondancesHexagons[hexagonIndices[i][j]]];
+                    benzenoidVerticesBVArray[index] = x;
+                }
 
-	public void buildAdjacencyMatrixWithOutterHexagons() {
+                index++;
+            }
+        }
+    }
 
-		adjacencyMatrixWithOutterHexagons = new int[neighborGraphOutterHexagons.size()][neighborGraphOutterHexagons
-				.size()];
+    private void buildBenzenoidEdges() {
 
-		for (int i = 0; i < neighborGraphOutterHexagons.size(); i++) {
+        benzenoidEdges = new BoolVar[nbHexagonsCoronenoid][nbHexagonsCoronenoid];
 
-			for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
+            for (int j = (i + 1); j < adjacencyMatrix.length; j++) {
 
-				int v = neighborGraphOutterHexagons.get(i).get(j);
+                if (adjacencyMatrix[i][j] == 1) {
 
-				if (v != -1) {
-					adjacencyMatrixWithOutterHexagons[i][v] = 1;
-					adjacencyMatrixWithOutterHexagons[v][i] = 1;
-				}
-			}
-		}
-	}
+                    int u = correspondancesHexagons[i];
+                    int v = correspondancesHexagons[j];
 
-	public ArrayList<ArrayList<Integer>> getNeighborGraphOutterHexagons() {
-		return neighborGraphOutterHexagons;
-	}
+                    BoolVar x = chocoModel.boolVar("e_" + u + "_" + v);
+                    benzenoidEdges[u][v] = x;
+                    benzenoidEdges[v][u] = x;
 
-	public int[][] getAdjacencyMatrixOutterHexagons() {
-		return adjacencyMatrixWithOutterHexagons;
-	}
+                    chocoModel.edgeChanneling(benzenoidGraphVar, x, u, v).post();
+                    // chocoModel.edgeChanneling(benzenoid, x, v, u).post();
+                }
+            }
+        }
+    }
 
-	private void buildBenzenoidVertices() {
+    private void buildHexagonIndices() {
 
-		channeling = new BoolVar[nbHexagonsCoronenoid];
-		for (int i = 0; i < channeling.length; i++)
-			channeling[i] = chocoModel.boolVar("vertex[" + i + "]");
+        hexagonIndices = new int[diameter][diameter];
+        nbHexagonsCoronenoid = 0;
 
-		chocoModel.nodesChanneling(benzenoidGraphVar, channeling).post();
+        initializeHexagonIndices();
 
-		benzenoidVertices = new BoolVar[diameter * diameter];
+        int hexagonIndex = 0;
+        int centerIndex = (diameter - 1) / 2;
 
-		int index = 0;
+        int shift = diameter - nbCrowns;
 
-		for (int i = 0; i < diameter; i++) {
-			for (int j = 0; j < diameter; j++) {
-				if (coordsMatrix[i][j] != -1) {
+        for (int columnIndex = 0; columnIndex < centerIndex; columnIndex++) {
 
-					BoolVar x = channeling[correspondancesHexagons[coordsMatrix[i][j]]];
-					benzenoidVertices[index] = x;
-				}
+            for (int lineIndex = 0; lineIndex < diameter - shift; lineIndex++) {
+                hexagonIndices[columnIndex][lineIndex] = hexagonIndex;
+                hexagonIndex++;
+                nbHexagonsCoronenoid++;
+            }
+            hexagonIndex += shift;
+            shift--;
+        }
 
-				index++;
-			}
-		}
-	}
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            hexagonIndices[centerIndex][lineIndex] = hexagonIndex;
+            hexagonIndex++;
+            nbHexagonsCoronenoid++;
+        }
 
-	private void buildBenzenoidEdges() {
+        shift = 1;
 
-		benzenoidEdges = new BoolVar[nbHexagonsCoronenoid][nbHexagonsCoronenoid];
+        for (int columnIndex = centerIndex + 1; columnIndex < diameter; columnIndex++) {
+            hexagonIndex += shift;
+            for (int lineIndex = shift; lineIndex < diameter; lineIndex++) {
+                hexagonIndices[columnIndex][lineIndex] = hexagonIndex;
+                hexagonIndex++;
+                nbHexagonsCoronenoid++;
+            }
+            shift++;
+        }
 
-		for (int i = 0; i < adjacencyMatrix.length; i++) {
-			for (int j = (i + 1); j < adjacencyMatrix.length; j++) {
+        hexagonsCorrespondances = new int[nbHexagonsCoronenoid];
+        hexagonIndex = 0;
 
-				if (adjacencyMatrix[i][j] == 1) {
+        for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+            for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+                if (validHexagonIndex(columnIndex, lineIndex)) {
+                    hexagonsCorrespondances[hexagonIndex] = hexagonIndices[columnIndex][lineIndex];
+                    hexagonIndex++;
+                }
+            }
+        }
 
-					int u = correspondancesHexagons[i];
-					int v = correspondancesHexagons[j];
+        correspondancesHexagons = new int[diameter * diameter];
 
-					BoolVar x = chocoModel.boolVar("e_" + u + "_" + v);
-					benzenoidEdges[u][v] = x;
-					benzenoidEdges[v][u] = x;
+        Arrays.fill(correspondancesHexagons, -1);
 
-					chocoModel.edgeChanneling(benzenoidGraphVar, x, u, v).post();
-					// chocoModel.edgeChanneling(benzenoid, x, v, u).post();
-				}
-			}
-		}
-	}
+        for (int i = 0; i < hexagonsCorrespondances.length; i++)
+            correspondancesHexagons[hexagonsCorrespondances[i]] = i;
 
-	private void buildCoordsMatrix() {
+    }
 
-		coordsMatrix = new int[diameter][diameter];
-		nbHexagonsCoronenoid = 0;
+    private boolean validHexagonIndex(int columnIndex, int lineIndex) {
+        return hexagonIndices[columnIndex][lineIndex] != -1;
+    }
 
-		for (int i = 0; i < diameter; i++)
-			Arrays.fill(coordsMatrix[i], -1);
+    public int getNbHexagonsCoronenoid() {
+        return nbHexagonsCoronenoid;
+    }
 
-		int index = 0;
-		int m = (diameter - 1) / 2;
+    public int[] getCorrespondancesHexagons() {
+        return correspondancesHexagons;
+    }
 
-		int shift = diameter - nbCrowns;
+    public BoolVar[] getNeighbors(int columnIndex, int lineIndex) {
 
-		for (int i = 0; i < m; i++) {
+        if (validHexagonIndex(columnIndex, lineIndex)) {
 
-			for (int j = 0; j < diameter - shift; j++) {
-				coordsMatrix[i][j] = index;
-				index++;
-				nbHexagonsCoronenoid++;
-			}
+            BoolVar[] N = new BoolVar[6];
 
-			for (int j = diameter - shift; j < diameter; j++)
-				index++;
+            for (int k = 0; k < 6; k++)
+                N[k] = null;
 
-			shift--;
-		}
+            if (columnIndex > 0) {
+                if (validHexagonIndex(columnIndex - 1, lineIndex))
+                    N[0] = benzenoidVerticesBVArray[hexagonIndices[columnIndex - 1][lineIndex]];
+            }
 
-		for (int j = 0; j < diameter; j++) {
-			coordsMatrix[m][j] = index;
-			index++;
-			nbHexagonsCoronenoid++;
-		}
+            if (lineIndex + 1 < diameter) {
+                if (validHexagonIndex(columnIndex, lineIndex + 1))
+                    N[1] = benzenoidVerticesBVArray[hexagonIndices[columnIndex][lineIndex + 1]];
+            }
 
-		shift = 1;
+            if (columnIndex + 1 < diameter && lineIndex + 1 < diameter) {
+                if (validHexagonIndex(columnIndex + 1, lineIndex + 1)) {
+                    N[2] = benzenoidVerticesBVArray[hexagonIndices[columnIndex + 1][lineIndex + 1]];
+                }
+            }
 
-		for (int i = m + 1; i < diameter; i++) {
+            if (columnIndex + 1 < diameter) {
+                if (validHexagonIndex(columnIndex + 1, lineIndex))
+                    N[3] = benzenoidVerticesBVArray[hexagonIndices[columnIndex + 1][lineIndex]];
+            }
 
-			for (int j = 0; j < shift; j++)
-				index++;
+            if (lineIndex > 0) {
+                if (validHexagonIndex(columnIndex, lineIndex - 1))
+                    N[4] = benzenoidVerticesBVArray[hexagonIndices[columnIndex][lineIndex - 1]];
+            }
 
-			for (int j = shift; j < diameter; j++) {
-				coordsMatrix[i][j] = index;
-				index++;
-				nbHexagonsCoronenoid++;
-			}
+            if (columnIndex > 0 && lineIndex > 0) {
+                if (validHexagonIndex(columnIndex - 1, lineIndex - 1))
+                    N[5] = benzenoidVerticesBVArray[hexagonIndices[columnIndex - 1][lineIndex - 1]];
+            }
 
-			shift++;
-		}
+            return N;
+        }
 
-		hexagonsCorrespondances = new int[nbHexagonsCoronenoid];
-		index = 0;
+        return null;
+    }
 
-		for (int i = 0; i < diameter; i++) {
-			for (int j = 0; j < diameter; j++) {
-				if (coordsMatrix[i][j] != -1) {
-					hexagonsCorrespondances[index] = coordsMatrix[i][j];
-					index++;
-				}
-			}
-		}
+    public BoolVar[] getChanneling() {
+        return channeling;
+    }
 
-		correspondancesHexagons = new int[diameter * diameter];
+    public int[][] getNeighborIndices() {
+        return neighborIndices;
+    }
 
-		Arrays.fill(correspondancesHexagons, -1);
+    public int getNbMaxHexagons() {
+        return nbMaxHexagons;
+    }
 
-		for (int i = 0; i < hexagonsCorrespondances.length; i++)
-			correspondancesHexagons[hexagonsCorrespondances[i]] = i;
+    public IntVar getNbVerticesVar() {
+        return nbVertices;
+    }
 
-	}
+    public SolverResults getResultSolver() {
+        return solverResults;
+    }
 
-	public int getNbHexagonsCoronenoid() {
-		return nbHexagonsCoronenoid;
-	}
+    public GeneratorRun getGeneratorRun() {
+        return generatorRun;
+    }
 
-	public int[] getCorrespondancesHexagons() {
-		return correspondancesHexagons;
-	}
+    public void stop() {
+        generatorRun.stop();
+    }
 
-	public BoolVar[] getNeighbors(int i, int j) {
+    public boolean isPaused() {
+        return generatorRun.isPaused();
+    }
 
-		if (coordsMatrix[i][j] != -1) {
+    public void pause() {
+        generatorRun.pause();
+    }
 
-			BoolVar[] N = new BoolVar[6];
+    public void resume() {
 
-			for (int k = 0; k < 6; k++)
-				N[k] = null;
+        while (chocoSolver.solve() && !generatorRun.isPaused()) {
 
-			if (i > 0) {
-				if (coordsMatrix[i - 1][j] != -1)
-					N[0] = benzenoidVertices[coordsMatrix[i - 1][j]];
-			}
+            Platform.runLater(() -> nbTotalSolutions.set(nbTotalSolutions.get() + 1));
 
-			if (j + 1 < diameter) {
-				if (coordsMatrix[i][j + 1] != -1)
-					N[1] = benzenoidVertices[coordsMatrix[i][j + 1]];
-			}
+            recordNoGoods();
 
-			if (i + 1 < diameter && j + 1 < diameter) {
-				if (coordsMatrix[i + 1][j + 1] != -1) {
-					N[2] = benzenoidVertices[coordsMatrix[i + 1][j + 1]];
-				}
-			}
+            BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns, chocoModel.getName() + indexSolution,
+                    hexagonsCorrespondances);
+            String description = buildDescription(indexSolution);
+            solverResults.addSolution(solution, description, nbCrowns);
 
-			if (i + 1 < diameter) {
-				if (coordsMatrix[i + 1][j] != -1)
-					N[3] = benzenoidVertices[coordsMatrix[i + 1][j]];
-			}
+            ArrayList<BoolVar> presentHexagons = new ArrayList<>();
+            ArrayList<Integer> verticesSolution = new ArrayList<>();
 
-			if (j > 0) {
-				if (coordsMatrix[i][j - 1] != -1)
-					N[4] = benzenoidVertices[coordsMatrix[i][j - 1]];
-			}
+            for (BoolVar benzenoidVertex : benzenoidVerticesBVArray) {
 
-			if (i > 0 && j > 0) {
-				if (coordsMatrix[i - 1][j - 1] != -1)
-					N[5] = benzenoidVertices[coordsMatrix[i - 1][j - 1]];
-			}
+                if (benzenoidVertex != null) {
+                    verticesSolution.add(benzenoidVertex.getValue());
 
-			return N;
-		}
+                    if (benzenoidVertex.getValue() == 1) {
+                        presentHexagons.add(benzenoidVertex);
+                    }
 
-		return null;
-	}
+                } else
+                    verticesSolution.add(0);
+            }
 
-	public BoolVar[] getChanneling() {
-		return channeling;
-	}
+            solverResults.addVerticesSolution(verticesSolution);
 
-	public int[][] getNeighborGraph() {
-		return neighborGraph;
-	}
+            displaySolution(chocoSolver);
+            //System.out.println(solver.getDecisionPath());
 
-	public int getNbMaxHexagons() {
-		return nbMaxHexagons;
-	}
+            if (verbose) {
 
-	public IntVar getNbVerticesVar() {
-		return nbVertices;
-	}
+                System.out.println("NO-GOOD");
 
-	public SolverResults getResultSolver() {
-		return solverResults;
-	}
+                for (ArrayList<Integer> ng : nogoods) {
+                    for (Integer v : ng)
+                        System.out.println(v + " ");
+                }
 
-	public GeneratorRun getGeneratorRun() {
-		return generatorRun;
-	}
+                System.out.println();
+            }
 
-	public void stop() {
-		generatorRun.stop();
-	}
+            indexSolution++;
+        }
 
-	public boolean isPaused() {
-		return generatorRun.isPaused();
-	}
+    }
 
-	public void pause() {
-		generatorRun.pause();
-	}
+    private void buildNodesRefs() {
+        nodesRefs = new Node[nbHexagonsCoronenoid];
 
-	public void resume() {
+        for (int i = 0; i < diameter; i++) {
+            for (int j = 0; j < diameter; j++) {
+                if (validHexagonIndex(i, j)) {
+                    int index = correspondancesHexagons[hexagonIndices[i][j]];
+                    nodesRefs[index] = new Node(i, j, index);
+                }
+            }
+        }
 
-		while (solver.solve() && !generatorRun.isPaused()) {
+    }
 
-			Platform.runLater(()-> nbTotalSolutions.set(nbTotalSolutions.get() + 1));
+    private boolean isValid(Couple<Integer, Integer> coord, Pattern fragment, int index) {
 
-			recordNoGoods();
-
-			BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns, chocoModel.getName() + indexSolution,
-					hexagonsCorrespondances);
-			String description = buildDescription(indexSolution);
-			solverResults.addSolution(solution, description, nbCrowns);
-
-			ArrayList<BoolVar> presentHexagons = new ArrayList<>();
-			ArrayList<Integer> verticesSolution = new ArrayList<>();
-
-			for (BoolVar benzenoidVertex : benzenoidVertices) {
-
-				if (benzenoidVertex != null) {
-					verticesSolution.add(benzenoidVertex.getValue());
-
-					if (benzenoidVertex.getValue() == 1) {
-						presentHexagons.add(benzenoidVertex);
-					}
-
-				} else
-					verticesSolution.add(0);
-			}
-
-			solverResults.addVerticesSolution(verticesSolution);
-
-			displaySolution(solver);
-			//System.out.println(solver.getDecisionPath());
-
-			if (verbose) {
-
-				System.out.println("NO-GOOD");
-
-				for (ArrayList<Integer> ng : nogoods) {
-					for (Integer v : ng)
-						System.out.println(v + " ");
-				}
-
-				System.out.println();
-			}
-
-			indexSolution++;
-		}
-
-	}
-
-	private void buildNodesRefs() {
-		nodesRefs = new Node[nbHexagonsCoronenoid];
-
-		for (int i = 0; i < diameter; i++) {
-			for (int j = 0; j < diameter; j++) {
-				if (coordsMatrix[i][j] != -1) {
-					int index = correspondancesHexagons[coordsMatrix[i][j]];
-					nodesRefs[index] = new Node(i, j, index);
-				}
-			}
-		}
-
-	}
-
-	private boolean isValid(Couple<Integer, Integer> coord, Pattern fragment, int index) {
-
-		if (coord.getX() < 0 || coord.getX() >= diameter || coord.getY() < 0 || coord.getY() >= diameter
-				|| coordsMatrix[coord.getY()][coord.getX()] == -1) {
+        if (coord.getX() < 0 || coord.getX() >= diameter || coord.getY() < 0 || coord.getY() >= diameter
+                || hexagonIndices[coord.getY()][coord.getX()] == -1) {
             return fragment.getLabel(index) != 2;
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	private int findIndex(ArrayList<Couple<Integer, Integer>> coords, Couple<Integer, Integer> coord) {
+    private int findIndex(ArrayList<Couple<Integer, Integer>> coords, Couple<Integer, Integer> coord) {
 
-		for (int i = 0; i < coords.size(); i++)
-			if (coords.get(i).equals(coord))
-				return i;
+        for (int i = 0; i < coords.size(); i++)
+            if (coords.get(i).equals(coord))
+                return i;
 
-		return -1;
-	}
+        return -1;
+    }
 
-	@SuppressWarnings("unchecked")
-	public PatternOccurences computeTranslations(Pattern fragment) {
+    @SuppressWarnings("unchecked")
+    public PatternOccurences computeTranslations(Pattern fragment) {
 
-		PatternOccurences fragmentOccurences = new PatternOccurences();
+        PatternOccurences fragmentOccurences = new PatternOccurences();
 
-		/*
-		 * Trouver l'hexagone pr�sent du fragment le plus en haut � gauche
-		 */
+        /*
+         * Trouver l'hexagone pr�sent du fragment le plus en haut � gauche
+         */
 
-		int minY = Integer.MAX_VALUE;
-		for (Node node : fragment.getNodesRefs())
-			if (node.getY() < minY)
-				minY = node.getY();
+        int minY = Integer.MAX_VALUE;
+        for (Node node : fragment.getNodesRefs())
+            if (node.getY() < minY)
+                minY = node.getY();
 
-		while (true) {
+        while (true) {
 
-			boolean containsPresentHexagon = false;
-			for (int i = 0; i < fragment.getNbNodes(); i++) {
-				Node node = fragment.getNodesRefs()[i];
-				if (node.getY() == minY && fragment.getLabel(i) == 2)
-					containsPresentHexagon = true;
-			}
+            boolean containsPresentHexagon = false;
+            for (int i = 0; i < fragment.getNbNodes(); i++) {
+                Node node = fragment.getNodesRefs()[i];
+                if (node.getY() == minY && fragment.getLabel(i) == 2)
+                    containsPresentHexagon = true;
+            }
 
-			if (containsPresentHexagon)
-				break;
+            if (containsPresentHexagon)
+                break;
 
-			minY++;
-		}
+            minY++;
+        }
 
-		int nodeIndex = -1;
-		int minX = Integer.MAX_VALUE;
-		for (int i = 0; i < fragment.getNbNodes(); i++) {
-			Node node = fragment.getNodesRefs()[i];
-			if (node.getY() == minY && node.getX() < minX && fragment.getLabel(i) == 2) {
-				minX = node.getX();
-				nodeIndex = i;
-			}
-		}
+        int nodeIndex = -1;
+        int minX = Integer.MAX_VALUE;
+        for (int i = 0; i < fragment.getNbNodes(); i++) {
+            Node node = fragment.getNodesRefs()[i];
+            if (node.getY() == minY && node.getX() < minX && fragment.getLabel(i) == 2) {
+                minX = node.getX();
+                nodeIndex = i;
+            }
+        }
 
-		/*
-		 * Trouver les positions ou le fragment peut �tre plac�
-		 */
+        /*
+         * Trouver les positions ou le fragment peut �tre plac�
+         */
 
-		for (int y = 0; y < diameter; y++) {
-			for (int x = 0; x < diameter; x++) {
-				int hexagon = coordsMatrix[y][x];
-				if (hexagon != -1) {
+        for (int y = 0; y < diameter; y++) {
+            for (int x = 0; x < diameter; x++) {
+                int hexagon = hexagonIndices[y][x];
+                if (hexagon != -1) {
 
-					/*
-					 * On place le fragment dans le coron�no�de de telle sorte que firstNode
-					 * corresponde � hexagon
-					 */
+                    /*
+                     * On place le fragment dans le coron�no�de de telle sorte que firstNode
+                     * corresponde � hexagon
+                     */
 
-					int[] checkedHexagons = new int[fragment.getNbNodes()];
-					Couple<Integer, Integer>[] coords = new Couple[fragment.getNbNodes()];
+                    int[] checkedHexagons = new int[fragment.getNbNodes()];
+                    Couple<Integer, Integer>[] coords = new Couple[fragment.getNbNodes()];
 
-					int candidat = nodeIndex;
-					checkedHexagons[nodeIndex] = 1;
-					coords[nodeIndex] = new Couple<>(x, y);
+                    int candidat = nodeIndex;
+                    checkedHexagons[nodeIndex] = 1;
+                    coords[nodeIndex] = new Couple<>(x, y);
 
-					ArrayList<Integer> candidats = new ArrayList<>();
+                    ArrayList<Integer> candidats = new ArrayList<>();
 
-					for (int i = 0; i < 6; i++) {
-						if (fragment.getNeighbor(candidat, i) != -1) {
+                    for (int i = 0; i < 6; i++) {
+                        if (fragment.getNeighbor(candidat, i) != -1) {
 
-							int neighbor = fragment.getNeighbor(candidat, i);
-							candidats.add(neighbor);
-							Couple<Integer, Integer> coord;
+                            int neighbor = fragment.getNeighbor(candidat, i);
+                            candidats.add(neighbor);
+                            Couple<Integer, Integer> coord;
 
-							if (i == 0)
-								coord = new Couple<>(x, y - 1);
+                            if (i == 0)
+                                coord = new Couple<>(x, y - 1);
 
-							else if (i == 1)
-								coord = new Couple<>(x + 1, y);
+                            else if (i == 1)
+                                coord = new Couple<>(x + 1, y);
 
-							else if (i == 2)
-								coord = new Couple<>(x + 1, y + 1);
+                            else if (i == 2)
+                                coord = new Couple<>(x + 1, y + 1);
 
-							else if (i == 3)
-								coord = new Couple<>(x, y + 1);
+                            else if (i == 3)
+                                coord = new Couple<>(x, y + 1);
 
-							else if (i == 4)
-								coord = new Couple<>(x - 1, y);
+                            else if (i == 4)
+                                coord = new Couple<>(x - 1, y);
 
-							else
-								coord = new Couple<>(x - 1, y - 1);
+                            else
+                                coord = new Couple<>(x - 1, y - 1);
 
-							coords[neighbor] = coord;
-							checkedHexagons[neighbor] = 1;
-						}
-					}
+                            coords[neighbor] = coord;
+                            checkedHexagons[neighbor] = 1;
+                        }
+                    }
 
-					while (candidats.size() > 0) {
+                    while (candidats.size() > 0) {
 
-						candidat = candidats.get(0);
+                        candidat = candidats.get(0);
 
-						for (int i = 0; i < 6; i++) {
-							if (fragment.getNeighbor(candidat, i) != -1) {
+                        for (int i = 0; i < 6; i++) {
+                            if (fragment.getNeighbor(candidat, i) != -1) {
 
-								int neighbor = fragment.getNeighbor(candidat, i);
+                                int neighbor = fragment.getNeighbor(candidat, i);
 
-								if (checkedHexagons[neighbor] == 0) {
+                                if (checkedHexagons[neighbor] == 0) {
 
-									candidats.add(neighbor);
-									Couple<Integer, Integer> coord;
+                                    candidats.add(neighbor);
+                                    Couple<Integer, Integer> coord;
 
-									if (i == 0)
-										coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() - 1);
+                                    if (i == 0)
+                                        coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() - 1);
 
-									else if (i == 1)
-										coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY());
+                                    else if (i == 1)
+                                        coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY());
 
-									else if (i == 2)
-										coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY() + 1);
+                                    else if (i == 2)
+                                        coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY() + 1);
 
-									else if (i == 3)
-										coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() + 1);
+                                    else if (i == 3)
+                                        coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() + 1);
 
-									else if (i == 4)
-										coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY());
+                                    else if (i == 4)
+                                        coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY());
 
-									else
-										coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY() - 1);
-
-									coords[neighbor] = coord;
-									checkedHexagons[neighbor] = 1;
-								}
-							}
-						}
-
-						candidats.remove(candidats.get(0));
-					}
-
-					/*
-					 * On teste si le fragment obtenu est valide
-					 */
-
-					boolean valid = true;
-					for (int i = 0; i < coords.length; i++) {
-						Couple<Integer, Integer> coord = coords[i];
-
-						if (!isValid(coord, fragment, i))
-							valid = false;
-
-					}
-
-					if (valid) {
-
-						Integer[] occurence = new Integer[fragment.getNbNodes()];
-
-						for (int i = 0; i < coords.length; i++) {
-
-							Couple<Integer, Integer> coord = coords[i];
-
-							if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
-									&& coord.getY() < diameter) {
-								occurence[i] = coordsMatrix[coord.getY()][coord.getX()];
-
-								if (coordsMatrix[coord.getY()][coord.getX()] == -1 && !outterHexagons.contains(coord)) {
-									outterHexagons.add(coord);
-									outterHexagonsIndexes.add(indexOutterHexagon);
-									indexOutterHexagon++;
-								}
-							} else {
-								occurence[i] = -1;
-
-								if (!outterHexagons.contains(coord)) {
-									outterHexagons.add(coord);
-									outterHexagonsIndexes.add(indexOutterHexagon);
-									indexOutterHexagon++;
-								}
-							}
-						}
-
-						ArrayList<Integer> present = new ArrayList<>();
-						ArrayList<Integer> absent = new ArrayList<>();
-						ArrayList<Integer> unknown = new ArrayList<>();
-						ArrayList<Integer> outter = new ArrayList<>();
-
-						for (int i = 0; i < fragment.getNbNodes(); i++) {
-
-							if (fragment.getLabel(i) == 1) {
-								Couple<Integer, Integer> coord = coords[i];
-
-								if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
-										&& coord.getY() < diameter) {
-									if (coordsMatrix[coord.getY()][coord.getX()] == -1) {
-
-										int index = findIndex(outterHexagons, coord);
-										outter.add(outterHexagonsIndexes.get(index));
-									}
-
-									else {
-										unknown.add(coordsMatrix[coord.getY()][coord.getX()]);
-									}
-								}
-
-								else {
-									int index = findIndex(outterHexagons, coord);
-									outter.add(outterHexagonsIndexes.get(index));
-								}
-							}
-
-							else if (fragment.getLabel(i) == 2) {
-								Couple<Integer, Integer> coord = coords[i];
-								present.add(coordsMatrix[coord.getY()][coord.getX()]);
-							}
-
-							else if (fragment.getLabel(i) == 3) {
-								Couple<Integer, Integer> coord = coords[i];
-
-								if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
-										&& coord.getY() < diameter) {
-									if (coordsMatrix[coord.getY()][coord.getX()] == -1) {
-
-										int index = findIndex(outterHexagons, coord);
-										outter.add(outterHexagonsIndexes.get(index));
-									}
-
-									else {
-										absent.add(coordsMatrix[coord.getY()][coord.getX()]);
-									}
-								}
-
-								else {
-									int index = findIndex(outterHexagons, coord);
-									outter.add(outterHexagonsIndexes.get(index));
-								}
-							}
-						}
-
-						fragmentOccurences.addOccurence(occurence);
-						fragmentOccurences.addCoordinate(coords);
-						fragmentOccurences.addOutterHexagons(outter);
-						fragmentOccurences.addPresentHexagons(present);
-						fragmentOccurences.addAbsentHexagons(absent);
-						fragmentOccurences.addUnknownHexagons(unknown);
-					}
-				}
-			}
-		}
-
-		return fragmentOccurences;
-	}
-
-	public ArrayList<ArrayList<Integer>> getNoGoods() {
-		return nogoods;
-	}
-
-	public BoolVar getNbHexagonsReified(int index) {
-		return nbHexagonsReifies[index];
-	}
-
-	public void setNbHexagonsReified(int index, BoolVar value) {
-		nbHexagonsReifies[index] = value;
-	}
-
-	public Model getChocoModel() {
-		return chocoModel;
-	}
-
-	public SimpleIntegerProperty getNbTotalSolutions() {
-		return nbTotalSolutions;
-	}
-
-	public ModelPropertySet getModelPropertySet() {
-		return this.modelPropertySet;
-	}
-
-	public void setModelPropertySet(ModelPropertySet modelPropertySet) {
-		this.modelPropertySet = modelPropertySet;
-	}
-
-	public static SolverPropertySet getSolverPropertySet() {
-		return GeneralModel.solverPropertySet;
-	}
-
-	public static void buildSolverPropertySet(ArrayList<HBoxCriterion> hBoxesSolverCriterions) {
-		solverPropertySet.clearPropertyExpressions();
+                                    else
+                                        coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY() - 1);
+
+                                    coords[neighbor] = coord;
+                                    checkedHexagons[neighbor] = 1;
+                                }
+                            }
+                        }
+
+                        candidats.remove(candidats.get(0));
+                    }
+
+                    /*
+                     * On teste si le fragment obtenu est valide
+                     */
+
+                    boolean valid = true;
+                    for (int i = 0; i < coords.length; i++) {
+                        Couple<Integer, Integer> coord = coords[i];
+
+                        if (!isValid(coord, fragment, i))
+                            valid = false;
+
+                    }
+
+                    if (valid) {
+
+                        Integer[] occurence = new Integer[fragment.getNbNodes()];
+
+                        for (int i = 0; i < coords.length; i++) {
+
+                            Couple<Integer, Integer> coord = coords[i];
+
+                            if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
+                                    && coord.getY() < diameter) {
+                                occurence[i] = hexagonIndices[coord.getY()][coord.getX()];
+
+                                if (hexagonIndices[coord.getY()][coord.getX()] == -1 && !outterHexagons.contains(coord)) {
+                                    outterHexagons.add(coord);
+                                    outterHexagonsIndexes.add(indexOutterHexagon);
+                                    indexOutterHexagon++;
+                                }
+                            } else {
+                                occurence[i] = -1;
+
+                                if (!outterHexagons.contains(coord)) {
+                                    outterHexagons.add(coord);
+                                    outterHexagonsIndexes.add(indexOutterHexagon);
+                                    indexOutterHexagon++;
+                                }
+                            }
+                        }
+
+                        ArrayList<Integer> present = new ArrayList<>();
+                        ArrayList<Integer> absent = new ArrayList<>();
+                        ArrayList<Integer> unknown = new ArrayList<>();
+                        ArrayList<Integer> outter = new ArrayList<>();
+
+                        for (int i = 0; i < fragment.getNbNodes(); i++) {
+
+                            if (fragment.getLabel(i) == 1) {
+                                Couple<Integer, Integer> coord = coords[i];
+
+                                if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
+                                        && coord.getY() < diameter) {
+                                    if (hexagonIndices[coord.getY()][coord.getX()] == -1) {
+
+                                        int index = findIndex(outterHexagons, coord);
+                                        outter.add(outterHexagonsIndexes.get(index));
+                                    } else {
+                                        unknown.add(hexagonIndices[coord.getY()][coord.getX()]);
+                                    }
+                                } else {
+                                    int index = findIndex(outterHexagons, coord);
+                                    outter.add(outterHexagonsIndexes.get(index));
+                                }
+                            } else if (fragment.getLabel(i) == 2) {
+                                Couple<Integer, Integer> coord = coords[i];
+                                present.add(hexagonIndices[coord.getY()][coord.getX()]);
+                            } else if (fragment.getLabel(i) == 3) {
+                                Couple<Integer, Integer> coord = coords[i];
+
+                                if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
+                                        && coord.getY() < diameter) {
+                                    if (hexagonIndices[coord.getY()][coord.getX()] == -1) {
+
+                                        int index = findIndex(outterHexagons, coord);
+                                        outter.add(outterHexagonsIndexes.get(index));
+                                    } else {
+                                        absent.add(hexagonIndices[coord.getY()][coord.getX()]);
+                                    }
+                                } else {
+                                    int index = findIndex(outterHexagons, coord);
+                                    outter.add(outterHexagonsIndexes.get(index));
+                                }
+                            }
+                        }
+
+                        fragmentOccurences.addOccurence(occurence);
+                        fragmentOccurences.addCoordinate(coords);
+                        fragmentOccurences.addOutterHexagons(outter);
+                        fragmentOccurences.addPresentHexagons(present);
+                        fragmentOccurences.addAbsentHexagons(absent);
+                        fragmentOccurences.addUnknownHexagons(unknown);
+                    }
+                }
+            }
+        }
+
+        return fragmentOccurences;
+    }
+
+    public ArrayList<ArrayList<Integer>> getNoGoods() {
+        return nogoods;
+    }
+
+    public BoolVar getNbHexagonsReified(int index) {
+        return nbHexagonsReifies[index];
+    }
+
+    public void setNbHexagonsReified(int index, BoolVar value) {
+        nbHexagonsReifies[index] = value;
+    }
+
+    public Model getChocoModel() {
+        return chocoModel;
+    }
+
+    public SimpleIntegerProperty getNbTotalSolutions() {
+        return nbTotalSolutions;
+    }
+
+    public ModelPropertySet getModelPropertySet() {
+        return this.modelPropertySet;
+    }
+
+    public void setModelPropertySet(ModelPropertySet modelPropertySet) {
+        this.modelPropertySet = modelPropertySet;
+    }
+
+    public static SolverPropertySet getSolverPropertySet() {
+        return GeneralModel.solverPropertySet;
+    }
+
+    public static void buildSolverPropertySet(ArrayList<HBoxCriterion> hBoxesSolverCriterions) {
+        solverPropertySet.clearPropertyExpressions();
         for (HBoxCriterion box : hBoxesSolverCriterions) {
-			((HBoxSolverCriterion)box).addPropertyExpression(solverPropertySet);
-		}
-	}
+            ((HBoxSolverCriterion) box).addPropertyExpression(solverPropertySet);
+        }
+    }
 
-	public void increaseDegree(String variableName) {
-		variablesDegrees.putIfAbsent(variableName, 0);
-		int curentDegree = variablesDegrees.get(variableName);
-		variablesDegrees.remove(variableName);
-		variablesDegrees.put(variableName, curentDegree + 1);
-	}
+    public void increaseDegree(String variableName) {
+        variablesDegrees.putIfAbsent(variableName, 0);
+        int curentDegree = variablesDegrees.get(variableName);
+        variablesDegrees.remove(variableName);
+        variablesDegrees.put(variableName, curentDegree + 1);
+    }
 
-	public void displayDegrees() {
-		for (Map.Entry<String, Integer> entry : variablesDegrees.entrySet()) {
-			String key = entry.getKey();
-			Object value = entry.getValue();
+    public void displayDegrees() {
+        for (Map.Entry<String, Integer> entry : variablesDegrees.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
 
-			System.out.println("d(" + key + ") = " + value);
-		}
-	}
+            System.out.println("d(" + key + ") = " + value);
+        }
+    }
 
-	public void setInTestMode(boolean inTestMode) {
-		isInTestMode = inTestMode;
-	}
+    public void setInTestMode(boolean inTestMode) {
+        isInTestMode = inTestMode;
+    }
 
 }

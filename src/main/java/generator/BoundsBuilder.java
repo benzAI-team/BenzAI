@@ -13,7 +13,7 @@ public class BoundsBuilder {
 		
 		UndirectedGraph GUB = new UndirectedGraph(model.getProblem(), model.getNbHexagonsCoronenoid(), SetType.LINKED_LIST, false);
 		
-		int [][] matrix = model.getCoordsMatrix();
+		int [][] matrix = model.getHexagonIndices();
 		int diameter = model.getDiameter();
 		
 		/*

@@ -61,8 +61,8 @@ public class SinglePattern3Constraint extends BenzAIConstraint {
 
 		for (int i = 0; i < generalModel.getDiameter(); i++) {
 			for (int j = 0; j < generalModel.getDiameter(); j++) {
-				if (generalModel.getCoordsMatrix()[i][j] != -1)
-					domainList.add(generalModel.getCoordsMatrix()[i][j]);
+				if (generalModel.getHexagonIndices()[i][j] != -1)
+					domainList.add(generalModel.getHexagonIndices()[i][j]);
 			}
 		}
 
@@ -138,7 +138,7 @@ public class SinglePattern3Constraint extends BenzAIConstraint {
 		for (Integer i : presentHexagons) {
 			for (int j = 0; j < generalModel.getDiameter() * generalModel.getDiameter(); j++) {
 
-				if (generalModel.getGraphVertices()[j] != null) {
+				if (generalModel.getBenzenoidVerticesBVArray(j) != null) {
 					// (i)
 
 					varClause = new IntVar[coronenoidCorrespondances[i].getDomainSize()];
@@ -157,7 +157,7 @@ public class SinglePattern3Constraint extends BenzAIConstraint {
 					}
 					vit.dispose();
 
-					varClause[index] = generalModel.getGraphVertices()[j];
+					varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 					valClause[index] = new IntIterableRangeSet(1);
 
 					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -169,7 +169,7 @@ public class SinglePattern3Constraint extends BenzAIConstraint {
 		for (Integer i : absentHexagons) {
 			for (int j = 0; j < generalModel.getDiameter() * generalModel.getDiameter(); j++) {
 
-				if (generalModel.getGraphVertices()[j] != null) {
+				if (generalModel.getBenzenoidVerticesBVArray(j) != null) {
 
 					varClause = new IntVar[coronenoidCorrespondances[i].getDomainSize()];
 					valClause = new IntIterableRangeSet[coronenoidCorrespondances[i].getDomainSize()];
@@ -187,7 +187,7 @@ public class SinglePattern3Constraint extends BenzAIConstraint {
 					}
 					vit.dispose();
 
-					varClause[index] = generalModel.getGraphVertices()[j];
+					varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 					valClause[index] = new IntIterableRangeSet(0);
 
 					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);

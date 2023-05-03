@@ -2,6 +2,7 @@ package constraints;
 
 import java.util.ArrayList;
 
+import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
@@ -9,148 +10,147 @@ import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeS
 import generator.GeneralModel;
 import generator.properties.model.expression.PropertyExpression;
 import generator.properties.model.expression.RectangleExpression;
-
+import java.util.Collections;
 public class RectangleConstraint extends BenzAIConstraint {
 
-	private int[] correspondances2;
+	private int[] columnCorrespondances;
+	private int[] lineCorrespondances;
 
-	private BoolVar[][] lines;
-	private BoolVar[][] columns;
+	private BoolVar[][] linesBoolVar;
+	private BoolVar[][] columnsBoolVar;
 
-	private IntVar width;
-	private IntVar height;
+	private IntVar widthVar;
+	private IntVar heightVar;
 
 	private BoolVar zero;
 
 	public RectangleConstraint() {
 	}
 
-	private void buildLines() {
+	private void buildLinesBoolVars() {
 		GeneralModel generalModel = getGeneralModel();
+		int diameter = generalModel.getDiameter();
+		linesBoolVar = new BoolVar[diameter][diameter];
 
-		lines = new BoolVar[generalModel.getDiameter()][generalModel.getDiameter()];
-
-		for (int i = 0; i < generalModel.getDiameter(); i++) {
-			for (int j = 0; j < generalModel.getDiameter(); j++) {
-				if (generalModel.getCoordsMatrix()[i][j] != -1)
-					lines[i][j] = generalModel.getVG()[generalModel.getCoordsMatrix()[i][j]];
-				else
-					lines[i][j] = zero;
+		for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+			for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+				int hexagonIndex = generalModel.getHexagonIndex(columnIndex, lineIndex);
+				linesBoolVar[columnIndex][lineIndex] = validIndex(hexagonIndex) ?
+						generalModel.getBenzenoidVerticesBVArray(hexagonIndex) :
+						zero;
 			}
 		}
-
 	}
 
-	private void buildColumns() {
+	private void buildColumnsBoolVars() {
 		GeneralModel generalModel = getGeneralModel();
 
 		int diameter = generalModel.getDiameter();
 		int nbCrowns = generalModel.getNbCrowns();
 
-		int[][] coordsMatrix = generalModel.getCoordsMatrix();
-
-		ArrayList<ArrayList<Integer>> lines = new ArrayList<>();
-
-		for (int i = nbCrowns - 1; i >= 0; i--) {
-
-			ArrayList<Integer> line = new ArrayList<>();
-			for (int j = 0; j < i; j++)
-				line.add(-1);
-
-			int li = i;
-			int j = 0;
-
+		int[][] hexagonIndices = generalModel.getHexagonIndices();
+		ArrayList<ArrayList<Integer>> linesLists = new ArrayList<>();
+		for (int columnIndex = nbCrowns - 1; 0 <= columnIndex; columnIndex--) {
+			ArrayList<Integer> lineList = new ArrayList<>(Collections.nCopies(columnIndex, -1));
+			int columnIndex2 = columnIndex;
+			int lineIndex = 0;
 			do {
-				line.add(coordsMatrix[li][j]);
-				li++;
-				j++;
-			} while (li < diameter && j < diameter);
+				lineList.add(hexagonIndices[columnIndex2][lineIndex]);
+				columnIndex2++;
+				lineIndex++;
+			} while (columnIndex2 < diameter && lineIndex < diameter);
 
-			lines.add(line);
+			linesLists.add(lineList);
 		}
 
-		for (int j = 1; j < nbCrowns; j++) {
+		for (int lineIndex = 1; lineIndex < nbCrowns; lineIndex++) {
 
-			ArrayList<Integer> line = new ArrayList<>();
+			ArrayList<Integer> lineList = new ArrayList<>();
 
-			int i = 0;
-			int lj = j;
+			int columnIndex = 0;
+			int lineIndex2 = lineIndex;
 
 			do {
-				line.add(coordsMatrix[i][lj]);
-				i++;
-				lj++;
-			} while (lj < diameter && i < diameter);
+				lineList.add(hexagonIndices[columnIndex][lineIndex2]);
+				columnIndex++;
+				lineIndex2++;
+			} while (lineIndex2 < diameter && columnIndex < diameter);
 
-			while (line.size() < diameter)
-				line.add(-1);
+			while (lineList.size() < diameter)
+				lineList.add(-1);
 
-			lines.add(line);
+			linesLists.add(lineList);
 		}
 
-		columns = new BoolVar[diameter][];
+		columnsBoolVar = new BoolVar[diameter][];
 
-		for (int i = 0; i < lines.size(); i++) {
+		for (int columnIndex = 0; columnIndex < linesLists.size(); columnIndex++) {
 
-			BoolVar[] line = new BoolVar[diameter];
+			BoolVar[] column = new BoolVar[diameter];
 
-			for (int j = 0; j < diameter; j++) {
-
-				int index = lines.get(i).get(j);
-
-				if (index != -1)
-					line[j] = generalModel.getGraphVertices()[index];
-				else
-					line[j] = zero;
-
+			for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+				int index = linesLists.get(columnIndex).get(lineIndex);
+				column[lineIndex] = validIndex(index) ?
+						generalModel.getBenzenoidVerticesBVArray(index) :
+						zero;
 			}
-
-			columns[i] = line;
-
+			columnsBoolVar[columnIndex] = column;
 		}
 	}
 
 	private void buildCorrespondances() {
 		GeneralModel generalModel = getGeneralModel();
+		int diameter = generalModel.getDiameter();
 
-		int[] correspondances = new int[generalModel.getDiameter()];
-		correspondances2 = new int[generalModel.getDiameter()];
+		columnCorrespondances = new int[diameter];
 
-		int center = (generalModel.getDiameter() - 1) / 2;
-		correspondances[0] = center;
+		int center = (diameter - 1) / 2;
 		int shift = 1;
 
-		for (int i = 1; i < generalModel.getDiameter(); i++) {
+		columnCorrespondances[center] = 0;
+		for (int i = 1; i < diameter; i++) {
 
-			if (i % 2 == 1) {
-				correspondances[i] = center - shift;
-				correspondances2[center - shift] = i;
+			if (1 == i % 2) {
+				columnCorrespondances[center + shift] = i;
 			}
-
 			else {
-				correspondances[i] = center + shift;
-				correspondances2[center + shift] = i;
+				columnCorrespondances[center - shift] = i;
 				shift++;
 			}
 		}
+
+		lineCorrespondances = new int[diameter];
+		lineCorrespondances[center] = 0;
+		for (int i = 1; i < diameter; i++) {
+
+			if (1 == i % 2) {
+				lineCorrespondances[center - shift] = i;
+			}
+			else {
+				lineCorrespondances[center + shift] = i;
+				shift++;
+			}
+		}
+
 	}
 
 	@Override
 	public void buildVariables() {
 		GeneralModel generalModel = getGeneralModel();
+		Model model = generalModel.getProblem();
 
-		zero = generalModel.getProblem().boolVar("zero", false);
+		zero = model.boolVar("zero", false);
 
 		buildCorrespondances();
-		buildLines();
-		buildColumns();
+		buildLinesBoolVars();
+		buildColumnsBoolVars();
 
-		width = generalModel.getProblem().intVar("nbLines", 1, generalModel.getDiameter());
-		height = generalModel.getProblem().intVar("nb_columns", 1, generalModel.getDiameter());
+		widthVar = model.intVar("nbLines", 1, generalModel.getDiameter());
+		heightVar = model.intVar("nb_columns", 1, generalModel.getDiameter());
 
 	}
 
-	public int find(BoolVar x, BoolVar[][] matrix) {
+	private int find(BoolVar x, BoolVar[][] matrix) {
 
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[i].length; j++) {
@@ -165,23 +165,24 @@ public class RectangleConstraint extends BenzAIConstraint {
 	@Override
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
+		Model model = generalModel.getProblem();
 
 		for (int i = 0; i < generalModel.getNbHexagonsCoronenoid(); i++) {
 
 			BoolVar xi = generalModel.getChanneling()[i];
-			int lineIndex = correspondances2[find(xi, lines)] + 1;
-			int columnIndex = correspondances2[find(xi, columns)] + 1;
+			int lineIndex = lineCorrespondances[find(xi, linesBoolVar)] + 1;
+			int columnIndex = columnCorrespondances[find(xi, columnsBoolVar)] + 1;
 
-			BoolVar lineVar = generalModel.getProblem().arithm(width, ">=", lineIndex).reify();
-			BoolVar columnVar = generalModel.getProblem().arithm(height, ">=", columnIndex).reify();
-
+			BoolVar lineVar = model.arithm(widthVar, ">=", lineIndex).reify();
+			BoolVar columnVar = model.arithm(heightVar, ">=", columnIndex).reify();
+			System.out.println(xi.getName() + " (" + columnIndex + "," + lineIndex + ")");
 			// Clause 1
 
 			BoolVar[] varClause1 = new BoolVar[] { xi, lineVar };
 			IntIterableRangeSet[] valClause1 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 					new IntIterableRangeSet(1) };
 
-			generalModel.getProblem().getClauseConstraint().addClause(varClause1, valClause1);
+			model.getClauseConstraint().addClause(varClause1, valClause1);
 
 			// Clause 2
 
@@ -189,7 +190,7 @@ public class RectangleConstraint extends BenzAIConstraint {
 			IntIterableRangeSet[] valClause2 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 					new IntIterableRangeSet(1) };
 
-			generalModel.getProblem().getClauseConstraint().addClause(varClause2, valClause2);
+			model.getClauseConstraint().addClause(varClause2, valClause2);
 
 			// Clause 3
 
@@ -197,7 +198,7 @@ public class RectangleConstraint extends BenzAIConstraint {
 			IntIterableRangeSet[] valClause3 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 					new IntIterableRangeSet(0), new IntIterableRangeSet(1) };
 
-			generalModel.getProblem().getClauseConstraint().addClause(varClause3, valClause3);
+			model.getClauseConstraint().addClause(varClause3, valClause3);
 		}
 
 		/*
@@ -207,18 +208,18 @@ public class RectangleConstraint extends BenzAIConstraint {
 		for (PropertyExpression expression : this.getExpressionList()) {
 			RectangleExpression rectangleExpression = (RectangleExpression)expression;
 
-			if(rectangleExpression.getHeight() >= 0) {
-				generalModel.getProblem().arithm(height, rectangleExpression.getHeightOperator(), rectangleExpression.getHeight()).post();
+			if(0 <= rectangleExpression.getHeight()) {
+				model.arithm(heightVar, rectangleExpression.getHeightOperator(), rectangleExpression.getHeight()).post();
 				System.out.println("height:" + rectangleExpression.getHeightOperator() + rectangleExpression.getHeight());
 			}
-			if(rectangleExpression.getWidth() >= 0) {
-				generalModel.getProblem().arithm(width, rectangleExpression.getWidthOperator(), rectangleExpression.getWidth()).post();
+			if(0 <= rectangleExpression.getWidth()) {
+				model.arithm(widthVar, rectangleExpression.getWidthOperator(), rectangleExpression.getWidth()).post();
 				System.out.println("width:" + rectangleExpression.getWidthOperator() + rectangleExpression.getWidth());
 			}
 		}
 
-		generalModel.getProblem().times(width, height, generalModel.getNbVerticesVar()).post();
-		generalModel.getProblem().arithm(width, ">=", height).post();
+		model.times(widthVar, heightVar, generalModel.getNbVerticesVar()).post();
+		model.arithm(widthVar, ">=", heightVar).post();
 
 		System.out.print("");
 
@@ -227,8 +228,8 @@ public class RectangleConstraint extends BenzAIConstraint {
 	@Override
 	public void addVariables() {
 		GeneralModel generalModel = getGeneralModel();
-		generalModel.addVariable(width);
-		generalModel.addVariable(height);
+		generalModel.addVariable(widthVar);
+		generalModel.addVariable(heightVar);
 	}
 
 	@Override
@@ -243,12 +244,15 @@ public class RectangleConstraint extends BenzAIConstraint {
 
 	}
 
-	public IntVar getWidth() {
-		return width;
+	IntVar getWidthVar() {
+		return widthVar;
 	}
 
-	public IntVar getHeight() {
-		return height;
+	IntVar getHeightVar() {
+		return heightVar;
 	}
 
+	private boolean validIndex(int index) {
+		return index >= 0;
+	}
 }

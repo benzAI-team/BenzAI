@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="add : testing generation">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CatacondensedConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CatacondensedConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns1Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns1Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/RhombusConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/RhombusConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern1Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern1Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/OldLexLead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/OldLexLead.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/RectangleProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/RectangleProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/RhombusProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/RhombusProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/BinaryNumericalExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/BinaryNumericalExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PropertyExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PropertyExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/RectangleExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/RectangleExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestGeneration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestGeneration.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/modele_general2" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2OKHNuxxeDhPKwsyYORVqVPt0fJ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/collection_operations/LinFanResonanceEnergyTask.java&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="constraints" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.TestGeneration">
+    <configuration name="BenzAI" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="application.Launcher" />
+      <module name="BenzAI" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestGeneration" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TestGeneration" />
+      <module name="BenzAI" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TestGeneration" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="" />
+      <created>1681302335083</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681302335083</updated>
+    </task>
+    <task id="LOCAL-00001" summary="simplified code in BenzenoidCollectionsManagerPane">
+      <created>1681309780849</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1681309780849</updated>
+    </task>
+    <task id="LOCAL-00002" summary="simplified code in BenzenoidCollectionsManagerPane">
+      <created>1681309897594</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1681309897594</updated>
+    </task>
+    <task id="LOCAL-00003" summary="simplified code in BenzenoidCollectionsManagerPane">
+      <created>1681471837145</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1681471837145</updated>
+    </task>
+    <task id="LOCAL-00004" summary="simplified code in BenzenoidCollectionsManagerPane">
+      <created>1681471973308</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1681471973308</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Classes renamed, packages moved, symmetry handling bugs fixed">
+      <created>1681914250265</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1681914250265</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Classes renamed, packages moved, symmetry handling bugs fixed">
+      <created>1681914434051</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1681914434051</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Classes renamed, packages moved, symmetry handling bugs fixed">
+      <created>1681914582770</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1681914582770</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Symmetry OK, rectangle not OK">
+      <created>1681995474259</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1681995474259</updated>
+    </task>
+    <task id="LOCAL-00009" summary="lot of attributes made final">
+      <created>1682064859496</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1682064859496</updated>
+    </task>
+    <task id="LOCAL-00010" summary="branch general_model2 merged">
+      <created>1682080028641</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1682080028641</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add : testing generation">
+      <created>1682514333264</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1682514333264</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="Refactoring-collection-operations" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="false" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Refactoring-collection-operations" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="TEXT_FILTER_SETTINGS">
+                <TextFilterSettings>
+                  <option name="MATCH_CASE" value="true" />
+                </TextFilterSettings>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="simplified code in BenzenoidCollectionsManagerPane" />
+    <MESSAGE value="Classes renamed, packages moved, symmetry handling bugs fixed" />
+    <MESSAGE value="Symmetry OK, rectangle not OK" />
+    <MESSAGE value="lot of attributes made final" />
+    <MESSAGE value="branch general_model2 merged" />
+    <MESSAGE value="add : testing generation" />
+    <option name="LAST_COMMIT_MESSAGE" value="add : testing generation" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/collection_operations/CollectionTask.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/collection_operations/CollectionTask.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java</url>
+          <line>131</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1683038447745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1682673901626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

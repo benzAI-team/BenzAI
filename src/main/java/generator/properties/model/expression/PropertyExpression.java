@@ -20,7 +20,15 @@ public abstract class PropertyExpression {
 	public boolean hasUpperBound() {
 		return false;
 	}
-	
-	
+
+	public boolean isUpperBoundingOperator(String operator){
+		return "<".equals(operator) || "<=".equals(operator) || "=".equals(operator);
+	}
+
+	public boolean isLowerBoundingOperator(String operator){
+		return ">".equals(operator) || ">=".equals(operator) || "=".equals(operator);
+	}
+
+
 
 }

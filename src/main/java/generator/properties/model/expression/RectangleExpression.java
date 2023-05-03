@@ -1,7 +1,5 @@
 package generator.properties.model.expression;
 
-import java.util.Objects;
-
 public class RectangleExpression extends PropertyExpression {
 	private final int height;
     private final int width;
@@ -18,11 +16,11 @@ public class RectangleExpression extends PropertyExpression {
 	}
 	
 	public boolean hasHeightUpperBound() {
-		return (Objects.equals(heightOperator, "<") || Objects.equals(heightOperator, "=") | Objects.equals(heightOperator, "<=")) && height >= 0;
+		return isUpperBoundingOperator(heightOperator) && height >= 0;
 	}
 	
 	public boolean hasWidthUpperBound() {
-		return (Objects.equals(widthOperator, "<") || Objects.equals(widthOperator, "=") | Objects.equals(widthOperator, "<=")) && width >= 0;
+		return isUpperBoundingOperator(widthOperator) && width >= 0;
 	}
 
 	/***

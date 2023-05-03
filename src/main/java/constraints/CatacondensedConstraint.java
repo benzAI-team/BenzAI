@@ -63,7 +63,7 @@ public class CatacondensedConstraint extends BenzAIConstraint {
 	private ArrayList<BoolVar []> computeTriangles() {
 		GeneralModel generalModel = getGeneralModel();
 		int diameter = generalModel.getDiameter();
-		int [][] coordsMatrix = generalModel.getCoordsMatrix();
+		int [][] coordsMatrix = generalModel.getHexagonIndices();
 		
 		ArrayList<BoolVar []> triangles = new ArrayList<>();
 		
@@ -77,16 +77,16 @@ public class CatacondensedConstraint extends BenzAIConstraint {
 					int w = getMatrix(coordsMatrix, i+1, j+1);
 					
 					if (v1 != -1 && w != -1)
-						triangles.add(new BoolVar[] {generalModel.getGraphVertices()[u], 
-													generalModel.getGraphVertices()[v1], 
-													generalModel.getGraphVertices()[w]});
+						triangles.add(new BoolVar[] {generalModel.getBenzenoidVerticesBVArray(u),
+													generalModel.getBenzenoidVerticesBVArray(v1),
+													generalModel.getBenzenoidVerticesBVArray(w)});
 					
 					
 						
 					if (v2 != -1 && w != -1)
-						triangles.add(new BoolVar[] {generalModel.getGraphVertices()[u], 
-								generalModel.getGraphVertices()[v2], 
-								generalModel.getGraphVertices()[w]});
+						triangles.add(new BoolVar[] {generalModel.getBenzenoidVerticesBVArray(u),
+								generalModel.getBenzenoidVerticesBVArray(v2),
+								generalModel.getBenzenoidVerticesBVArray(w)});
 					
 				}
 			}

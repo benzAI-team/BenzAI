@@ -68,7 +68,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 		int nbHexagonsCoronenoid = 0;
 		for (int line = 0; line < generalModel.getDiameter(); line++) {
 			for (int column = 0; column < generalModel.getDiameter(); column++) {
-				if (generalModel.getCoordsMatrix()[line][column] != -1)
+				if (generalModel.getHexagonIndices()[line][column] != -1)
 					nbHexagonsCoronenoid++;
 			}
 		}
@@ -83,10 +83,10 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 		int coroIndex = 0;
 		for (int line = 0; line < generalModel.getDiameter(); line++) {
 			for (int column = 0; column < generalModel.getDiameter(); column++) {
-				if (generalModel.getCoordsMatrix()[line][column] != -1) {
+				if (generalModel.getHexagonIndices()[line][column] != -1) {
 
-					T1[generalModel.getCoordsMatrix()[line][column]] = index;
-					System.out.println(generalModel.getCoordsMatrix()[line][column] + " " + index);
+					T1[generalModel.getHexagonIndices()[line][column]] = index;
+					System.out.println(generalModel.getHexagonIndices()[line][column] + " " + index);
 					t2[index] = coroIndex;
 					patternCorrespondances[index] = generalModel.getProblem().intVar("f_c_" + coroIndex, -1, pattern.getNbNodes()-1);  	// attention
 					index ++;					
@@ -158,7 +158,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 					varClause[index] = patternCorrespondances[T1[j]];
 					valClause[index] = new IntIterableRangeSet(-1);
 					index++;
-					varClause[index] = generalModel.getGraphVertices()[j];
+					varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 					valClause[index] = new IntIterableRangeSet(1);
 
 					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -185,7 +185,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 					varClause[index] = patternCorrespondances[T1[j]];
 					valClause[index] = new IntIterableRangeSet(-1);
 					index++;
-					varClause[index] = generalModel.getGraphVertices()[j];
+					varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 					valClause[index] = new IntIterableRangeSet(0);
 
 					generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -210,7 +210,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 			varClause[index] = patternCorrespondances[T1[j]];
 			valClause[index] = new IntIterableRangeSet(-1);
 			index++;
-			varClause[index] = generalModel.getGraphVertices()[j];
+			varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 			valClause[index] = new IntIterableRangeSet(0);			
 			}
 		}
@@ -223,11 +223,11 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 		else
 			buildMatrixTableWithoutSymmetries();
 
-		for (int line = 0; line < generalModel.getCoordsMatrix().length; line++) {
-			for (int column = 0; column < generalModel.getCoordsMatrix()[line].length; column++) {
-				if (generalModel.getCoordsMatrix()[line][column] != -1) {
+		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {
+			for (int column = 0; column < generalModel.getHexagonIndices()[line].length; column++) {
+				if (generalModel.getHexagonIndices()[line][column] != -1) {
 
-					int index = generalModel.getCoordsMatrix()[line][column];
+					int index = generalModel.getHexagonIndices()[line][column];
 
 					ArrayList<IntVar> tupleList = new ArrayList<>();
 				
@@ -564,37 +564,37 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 			Arrays.fill(neighborGraph[i], -1);
 		}
 
-		for (int line = 0; line < generalModel.getCoordsMatrix().length; line++) {
-			for (int column = 0; column < generalModel.getCoordsMatrix()[line].length; column++) {
+		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {
+			for (int column = 0; column < generalModel.getHexagonIndices()[line].length; column++) {
 
-				if (generalModel.getCoordsMatrix()[line][column] != -1) {
+				if (generalModel.getHexagonIndices()[line][column] != -1) {
 
-					int index = generalModel.getCoordsMatrix()[line][column];
+					int index = generalModel.getHexagonIndices()[line][column];
 
 					// High-Right
 					if (line > 0)
-						neighborGraph[index][0] = generalModel.getCoordsMatrix()[line - 1][column];
+						neighborGraph[index][0] = generalModel.getHexagonIndices()[line - 1][column];
 
 					// Right
-					if (column < generalModel.getCoordsMatrix()[line].length - 1)
-						neighborGraph[index][1] = generalModel.getCoordsMatrix()[line][column + 1];
+					if (column < generalModel.getHexagonIndices()[line].length - 1)
+						neighborGraph[index][1] = generalModel.getHexagonIndices()[line][column + 1];
 
 					// Down-Right
-					if (line < generalModel.getCoordsMatrix()[line].length - 1
-							&& column < generalModel.getCoordsMatrix()[line].length - 1)
-						neighborGraph[index][2] = generalModel.getCoordsMatrix()[line + 1][column + 1];
+					if (line < generalModel.getHexagonIndices()[line].length - 1
+							&& column < generalModel.getHexagonIndices()[line].length - 1)
+						neighborGraph[index][2] = generalModel.getHexagonIndices()[line + 1][column + 1];
 
 					// Down-Left
-					if (line < generalModel.getCoordsMatrix()[line].length - 1)
-						neighborGraph[index][3] = generalModel.getCoordsMatrix()[line + 1][column];
+					if (line < generalModel.getHexagonIndices()[line].length - 1)
+						neighborGraph[index][3] = generalModel.getHexagonIndices()[line + 1][column];
 
 					// Left
 					if (column > 0)
-						neighborGraph[index][4] = generalModel.getCoordsMatrix()[line][column - 1];
+						neighborGraph[index][4] = generalModel.getHexagonIndices()[line][column - 1];
 
 					// High-Left
 					if (line > 0 && column > 0)
-						neighborGraph[index][5] = generalModel.getCoordsMatrix()[line - 1][column - 1];
+						neighborGraph[index][5] = generalModel.getHexagonIndices()[line - 1][column - 1];
 				}
 			}
 		}

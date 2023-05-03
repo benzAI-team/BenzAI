@@ -682,7 +682,7 @@ public class Molecule implements Comparable<Molecule> {
 		for (String s : split) {
 
 			int u = Integer.parseInt(s);
-			model.getProblem().arithm(model.getVG()[u], "=", 1).post();
+			model.getProblem().arithm(model.getBenzenoidVerticesBVArray()[u], "=", 1).post();
 		}
 
 		SolverResults result = model.solve();

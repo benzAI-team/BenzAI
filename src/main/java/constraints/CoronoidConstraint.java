@@ -110,9 +110,9 @@ public class CoronoidConstraint extends BenzAIConstraint {
 
 		for (int i = 0; i < generalModel.getDiameter(); i++) {
 			for (int j = 0; j < generalModel.getDiameter(); j++) {
-				if (generalModel.getCoordsMatrix()[i][j] != -1) {
-					hexagonsCorrespondances[index] = generalModel.getCoordsMatrix()[i][j];
-					lastIndex = generalModel.getCoordsMatrix()[i][j];
+				if (generalModel.getHexagonIndices()[i][j] != -1) {
+					hexagonsCorrespondances[index] = generalModel.getHexagonIndices()[i][j];
+					lastIndex = generalModel.getHexagonIndices()[i][j];
 					index++;
 				}
 			}
@@ -135,7 +135,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 
 		border = new ArrayList<Integer>();
 		int diameter = generalModel.getDiameter();
-		int[][] coordsMatrix = generalModel.getCoordsMatrix();
+		int[][] coordsMatrix = generalModel.getHexagonIndices();
 
 		for (int i = 0; i < diameter; i++) {
 
@@ -213,7 +213,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 	private UndirectedGraphVar holesGraphVar(String name) {
 		GeneralModel generalModel = getGeneralModel();
 
-		int[][] matrix = generalModel.getCoordsMatrix();
+		int[][] matrix = generalModel.getHexagonIndices();
 		int diameter = generalModel.getDiameter();
 
 		UndirectedGraph GUB = new UndirectedGraph(generalModel.getProblem(), generalModel.getNbHexagonsCoronenoid() + 1,

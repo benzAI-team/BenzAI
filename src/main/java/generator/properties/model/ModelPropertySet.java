@@ -58,7 +58,7 @@ public class ModelPropertySet extends PropertySet {
 		return nbCrowns;
 	}
 
-	public void clearPropertyExpressions() {
+	private void clearPropertyExpressions() {
 		for(Property property : getPropertyList())
 			property.clearExpressions();
 		

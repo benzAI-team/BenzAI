@@ -103,13 +103,13 @@ public class SinglePattern1Constraint extends BenzAIConstraint {
 			valClause[0] = new IntIterableRangeSet(0);
 
 			for (Integer j : absent) {
-				varClause[1] = generalModel.getGraphVertices()[j];
+				varClause[1] = generalModel.getBenzenoidVerticesBVArray(j);
 				valClause[1] = new IntIterableRangeSet(0);
 				generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 			}
 
 			for (Integer j : present) {
-				varClause[1] = generalModel.getGraphVertices()[j];
+				varClause[1] = generalModel.getBenzenoidVerticesBVArray(j);
 				valClause[1] = new IntIterableRangeSet(1);
 				generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 			}

@@ -11,7 +11,7 @@ import view.generator.boxes.HBoxHexagonNumberCriterion;
 
 public class HexagonNumberProperty extends ModelProperty {
 
-	public HexagonNumberProperty() {
+	HexagonNumberProperty() {
 		super("hexagons", "Number of hexagons", new HexagonNumberConstraint(), new HexagonNumberFilter());
 	}
 
@@ -23,10 +23,9 @@ public class HexagonNumberProperty extends ModelProperty {
 			String operator = ((BinaryNumericalExpression)binaryNumericalExpression).getOperator();
 			int hexagonNumber = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();
 			if (isBoundingOperator(operator)) {
-				if (operator.equals("<"))
+				if ("<".equals(operator))
 					hexagonNumber--;
-				if(hexagonNumber < hexagonNumberMin)
-					hexagonNumberMin = hexagonNumber;
+				hexagonNumberMin = Math.min(hexagonNumber, hexagonNumberMin);
 			}	
 		}
 		return hexagonNumberMin;

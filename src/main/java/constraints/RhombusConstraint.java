@@ -13,8 +13,8 @@ public class RhombusConstraint extends RectangleConstraint {
 		for (PropertyExpression binaryNumericalExpression : this.getExpressionList()) {
 			String operator = ((BinaryNumericalExpression)binaryNumericalExpression).getOperator();
 			int value = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();
-			getGeneralModel().getProblem().arithm(getWidth(), operator, value).post();
+			getGeneralModel().getProblem().arithm(getWidthVar(), operator, value).post();
 		}
-		getGeneralModel().getProblem().arithm(getHeight(), "=", getWidth()).post();
+		getGeneralModel().getProblem().arithm(getHeightVar(), "=", getWidthVar()).post();
 	}
 }

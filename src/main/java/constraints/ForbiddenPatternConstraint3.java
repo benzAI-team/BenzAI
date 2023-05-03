@@ -91,13 +91,13 @@ public class ForbiddenPatternConstraint3 extends BenzAIConstraint {
 		 	int index = 0;
 		 		
 			for (Integer j : absent) {
-				varClause[index] = generalModel.getGraphVertices()[j];
+				varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 				valClause[index] = new IntIterableRangeSet(1);
 				index ++;
 			}
 				
 			for (Integer j : present) {
-				varClause[index] = generalModel.getGraphVertices()[j];
+				varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 				valClause[index] = new IntIterableRangeSet(0);
 				index ++;
 			}

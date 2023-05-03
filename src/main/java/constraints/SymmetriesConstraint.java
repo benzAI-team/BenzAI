@@ -122,10 +122,10 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 				if (inCoronenoid(i, j))
 					if (inCoronenoid(p.from(Utils.getHexagonID(i, j, generalModel.getDiameter())))) {
 
-						BoolVar x = generalModel.getGraphVertices()[Utils.getHexagonID(i, j,
-								generalModel.getDiameter())];
-						BoolVar y = generalModel.getGraphVertices()[p
-								.from(Utils.getHexagonID(i, j, generalModel.getDiameter()))];
+						BoolVar x = generalModel.getBenzenoidVerticesBVArray(Utils.getHexagonID(i, j,
+								generalModel.getDiameter()));
+						BoolVar y = generalModel.getBenzenoidVerticesBVArray(p
+								.from(Utils.getHexagonID(i, j, generalModel.getDiameter())));
 System.out.println("S: ("+ i + "," + j + ") :" + Utils.getHexagonID(i, j, generalModel.getDiameter()) + " " + p
 		.from(Utils.getHexagonID(i, j, generalModel.getDiameter())));
 						BoolVar[] clauseVariables1 = new BoolVar[] { x, y };
@@ -142,8 +142,8 @@ System.out.println("S: ("+ i + "," + j + ") :" + Utils.getHexagonID(i, j, genera
 
 					} else {
 
-						BoolVar x = generalModel.getGraphVertices()[Utils.getHexagonID(i, j,
-								generalModel.getDiameter())];
+						BoolVar x = generalModel.getBenzenoidVerticesBVArray(Utils.getHexagonID(i, j,
+								generalModel.getDiameter()));
 
 						BoolVar[] clauseVariables = new BoolVar[] { x, x };
 						IntIterableRangeSet[] clauseValues = new IntIterableRangeSet[] { new IntIterableRangeSet(0),

@@ -100,12 +100,12 @@ public class ForbiddenPatternConstraint2 extends BenzAIConstraint {
 			int index = 0;
 				
 			for (Integer j : absent) {
-				andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 0);
+				andCstr[index] = generalModel.getProblem().arithm(generalModel.getBenzenoidVerticesBVArray(j), "=", 0);
 				index ++;
 			}
 				
 			for (Integer j : present) {
-				andCstr[index] = generalModel.getProblem().arithm(generalModel.getGraphVertices()[j], "=", 1);
+				andCstr[index] = generalModel.getProblem().arithm(generalModel.getBenzenoidVerticesBVArray(j), "=", 1);
 				index ++;
 			}
 				

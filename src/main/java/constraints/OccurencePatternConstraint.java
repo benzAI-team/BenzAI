@@ -113,13 +113,13 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 			valClause[0] = new IntIterableRangeSet(0);
 			
 			for (Integer j : absent) {
-				varClause[1] = generalModel.getGraphVertices()[j];
+				varClause[1] = generalModel.getBenzenoidVerticesBVArray(j);
 				valClause[1] = new IntIterableRangeSet(0);
 				generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 			}
 			
 			for (Integer j : present) {
-				varClause[1] = generalModel.getGraphVertices()[j];
+				varClause[1] = generalModel.getBenzenoidVerticesBVArray(j);
 				valClause[1] = new IntIterableRangeSet(1);
 				generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
 			}	
@@ -134,13 +134,13 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 			int index = 0;
 			
 			for (Integer j : absent) {
-				varClause[index] = generalModel.getGraphVertices()[j];
+				varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 				valClause[index] = new IntIterableRangeSet(1);
 				index ++;
 			}
 			
 			for (Integer j : present) {
-				varClause[index] = generalModel.getGraphVertices()[j];
+				varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 				valClause[index] = new IntIterableRangeSet(0);
 				index ++;
 			}
@@ -162,8 +162,8 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 		
 		for (int i = 0 ; i < generalModel.getDiameter() ; i ++) {
 			for (int j = 0 ; j < generalModel.getDiameter() ; j++) {
-				if (generalModel.getCoordsMatrix()[i][j] != -1)
-					hexagons.add(generalModel.getCoordsMatrix()[i][j]);
+				if (generalModel.getHexagonIndices()[i][j] != -1)
+					hexagons.add(generalModel.getHexagonIndices()[i][j]);
 			}
 		}
 

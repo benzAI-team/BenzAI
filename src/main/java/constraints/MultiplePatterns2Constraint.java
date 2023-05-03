@@ -81,7 +81,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 		int nbInternalHexagons = 0;
 		for (int line = 0; line < generalModel.getDiameter(); line++) {
 			for (int column = 0; column < generalModel.getDiameter(); column++) {
-				if (generalModel.getCoordsMatrix()[line][column] != -1)
+				if (generalModel.getHexagonIndices()[line][column] != -1)
 					nbInternalHexagons++;
 			}
 		}
@@ -119,8 +119,8 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 		int index = 0;
 		for (int line = 0; line < generalModel.getDiameter(); line++) {
 			for (int column = 0; column < generalModel.getDiameter(); column++) {
-				if (generalModel.getCoordsMatrix()[line][column] != -1) {
-					T1[generalModel.getCoordsMatrix()[line][column]] = index;
+				if (generalModel.getHexagonIndices()[line][column] != -1) {
+					T1[generalModel.getHexagonIndices()[line][column]] = index;
 					index++;
 				}
 			}
@@ -193,7 +193,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
 			for (int line = 0; line < generalModel.getDiameter(); line++) {
 				for (int column = 0; column < generalModel.getDiameter(); column++) {
-					if (generalModel.getCoordsMatrix()[line][column] != -1) {
+					if (generalModel.getHexagonIndices()[line][column] != -1) {
 
 						patternCorrespondancesAllHexagons.get(i)[index] = generalModel.getProblem()
 								.intVar("fc_" + i + "_" + coroIndex, domainInternalHexagons);
@@ -305,7 +305,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 						varClause[index] = correspondancesAllHexagons[T1[j]];
 						valClause[index] = new IntIterableRangeSet(-1);
 						index++;
-						varClause[index] = generalModel.getGraphVertices()[j];
+						varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 						valClause[index] = new IntIterableRangeSet(1);
 						
 						generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -334,7 +334,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 						varClause[index] = correspondancesAllHexagons[T1[j]];
 						valClause[index] = new IntIterableRangeSet(-1);
 						index++;
-						varClause[index] = generalModel.getGraphVertices()[j];
+						varClause[index] = generalModel.getBenzenoidVerticesBVArray(j);
 						valClause[index] = new IntIterableRangeSet(0);
 						
 						generalModel.getProblem().getClauseConstraint().addClause(varClause, valClause);
@@ -434,7 +434,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
 						for (int k = 0; k < 6; k++) {
 
-							int neighbor = generalModel.getNeighborGraph()[j][k];
+							int neighbor = generalModel.getNeighborIndices()[j][k];
 
 							if (neighbor == -1) {
 								nokColumns.add(k + 1);
@@ -818,37 +818,37 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 			Arrays.fill(ints, -1);
 		}
 
-		for (int line = 0; line < generalModel.getCoordsMatrix().length; line++) {
-			for (int column = 0; column < generalModel.getCoordsMatrix()[line].length; column++) {
+		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {
+			for (int column = 0; column < generalModel.getHexagonIndices()[line].length; column++) {
 
-				if (generalModel.getCoordsMatrix()[line][column] != -1) {
+				if (generalModel.getHexagonIndices()[line][column] != -1) {
 
-					int index = generalModel.getCoordsMatrix()[line][column];
+					int index = generalModel.getHexagonIndices()[line][column];
 
 					// High-Right
 					if (line > 0)
-						neighborGraph[index][0] = generalModel.getCoordsMatrix()[line - 1][column];
+						neighborGraph[index][0] = generalModel.getHexagonIndices()[line - 1][column];
 
 					// Right
-					if (column < generalModel.getCoordsMatrix()[line].length - 1)
-						neighborGraph[index][1] = generalModel.getCoordsMatrix()[line][column + 1];
+					if (column < generalModel.getHexagonIndices()[line].length - 1)
+						neighborGraph[index][1] = generalModel.getHexagonIndices()[line][column + 1];
 
 					// Down-Right
-					if (line < generalModel.getCoordsMatrix()[line].length - 1
-							&& column < generalModel.getCoordsMatrix()[line].length - 1)
-						neighborGraph[index][2] = generalModel.getCoordsMatrix()[line + 1][column + 1];
+					if (line < generalModel.getHexagonIndices()[line].length - 1
+							&& column < generalModel.getHexagonIndices()[line].length - 1)
+						neighborGraph[index][2] = generalModel.getHexagonIndices()[line + 1][column + 1];
 
 					// Down-Left
-					if (line < generalModel.getCoordsMatrix()[line].length - 1)
-						neighborGraph[index][3] = generalModel.getCoordsMatrix()[line + 1][column];
+					if (line < generalModel.getHexagonIndices()[line].length - 1)
+						neighborGraph[index][3] = generalModel.getHexagonIndices()[line + 1][column];
 
 					// Left
 					if (column > 0)
-						neighborGraph[index][4] = generalModel.getCoordsMatrix()[line][column - 1];
+						neighborGraph[index][4] = generalModel.getHexagonIndices()[line][column - 1];
 
 					// High-Left
 					if (line > 0 && column > 0)
-						neighborGraph[index][5] = generalModel.getCoordsMatrix()[line - 1][column - 1];
+						neighborGraph[index][5] = generalModel.getHexagonIndices()[line - 1][column - 1];
 				}
 			}
 		}
