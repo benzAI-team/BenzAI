@@ -1,11 +1,11 @@
 package generator.properties.model;
 
-import java.util.ArrayList;
-
 import generator.properties.Property;
 import generator.properties.PropertySet;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
+
+import java.util.ArrayList;
 
 public class ModelPropertySet extends PropertySet {
 	private int hexagonNumberUpperBound;
@@ -34,14 +34,17 @@ public class ModelPropertySet extends PropertySet {
 	public int computeHexagonNumberUpperBound() {
 		int upperBound = Integer.MAX_VALUE;
 		for(Property property : getPropertyList()) {
-			int bound = ((ModelProperty) property).computeHexagonNumberUpperBound();
-			upperBound = Math.min(upperBound, bound);
+			ModelProperty modelProperty = (ModelProperty) property;
+			if(modelProperty.hasExpressions()) {
+				int bound = modelProperty.computeHexagonNumberUpperBound();
+				upperBound = Math.min(upperBound, bound);
+			}
 		}
 		hexagonNumberUpperBound =  upperBound;
 		return upperBound;
 	}
 
-	public int getHexagonNumberUpperBound() {
+	int getHexagonNumberUpperBound() {
 		return hexagonNumberUpperBound;
 	}
 
@@ -50,7 +53,7 @@ public class ModelPropertySet extends PropertySet {
 		for(Property property : getPropertyList()) {
 			if(this.has(property.getId())) {
 				int bound = ((ModelProperty) property).computeNbCrowns();
-				System.out.println(property.getId() + " " + bound);
+				//System.out.println(property.getId() + " " + bound);
 				nbCrowns = Math.min(nbCrowns, bound);
 			}
 		}
@@ -65,7 +68,7 @@ public class ModelPropertySet extends PropertySet {
 	}
 
 	public boolean symmetryConstraintsAppliable() {
-		return this.has("rectangle");
+		return false;// TODO this.has("rectangle");
 	}
 
 	/***

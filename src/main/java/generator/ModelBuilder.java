@@ -21,7 +21,8 @@ public enum ModelBuilder {
 	private static boolean noLimitingProperties(ModelPropertySet modelPropertySet) {
 		return !(modelPropertySet.has("hexagons") || modelPropertySet.has("carbons")
 				|| modelPropertySet.has("hydrogens")|| modelPropertySet.has("coronenoid")
-				|| modelPropertySet.has("rectangle")|| modelPropertySet.has("rhombus"));
+				|| modelPropertySet.has("rectangle")|| modelPropertySet.has("rhombus")
+				|| modelPropertySet.has("diameter"));
 	}
 
 	/***

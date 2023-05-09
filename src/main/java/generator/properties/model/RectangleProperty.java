@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class RectangleProperty extends ModelProperty {
 
-	public RectangleProperty() {
+	RectangleProperty() {
 		super("rectangle", "Rectangle", new RectangleConstraint(), new RectangleFilter());
 	}
 
@@ -34,7 +34,7 @@ public class RectangleProperty extends ModelProperty {
 		ArrayList<PropertyExpression> expressions = this.getExpressions();
 		int widthBound = expressions.stream().reduce(Integer.MAX_VALUE, (acc,expression) -> Math.min(acc, ((RectangleExpression)expression).getHeight()), Math::min);
 		int heightBound = expressions.stream().reduce(Integer.MAX_VALUE, (acc, expression) -> Math.min(acc, ((RectangleExpression)expression).getWidth()), Math::min);
-		return Math.min(widthBound, heightBound);
+		return Math.max(widthBound, heightBound);
 	}
 	public boolean hasUpperBounds() {
 		ArrayList<PropertyExpression> expressions = this.getExpressions();

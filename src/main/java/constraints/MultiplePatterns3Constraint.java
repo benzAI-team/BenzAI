@@ -286,14 +286,14 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 			}
 		}
 		
-		IntVar [] branchingVariables = new IntVar[generalModel.getChanneling().length + correspondances.length];
+		IntVar [] branchingVariables = new IntVar[generalModel.getHexBoolVars().length + correspondances.length];
 		index = 0;
 		
 		switch(orderStrategy) {
 		
 			case CHANNELING_FIRST:
 				
-				for (BoolVar x : generalModel.getChanneling()) {
+				for (BoolVar x : generalModel.getHexBoolVars()) {
 					branchingVariables[index] = x;
 					index ++;
 				}
@@ -312,7 +312,7 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 					index ++;
 				}
 				
-				for (BoolVar x : generalModel.getChanneling()) {
+				for (BoolVar x : generalModel.getHexBoolVars()) {
 					branchingVariables[index] = x;
 					index ++;
 				}

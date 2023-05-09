@@ -125,15 +125,15 @@ public class ForbiddenPatternConstraint3 extends BenzAIConstraint {
 				break;
 				
 			case DOM_WDEG:
-				variableSelector = new DomOverWDeg(generalModel.getChanneling(), 0L);
+				variableSelector = new DomOverWDeg(generalModel.getHexBoolVars(), 0L);
 				break;
 				
 			case DOM_WDEG_REF:
-				variableSelector = new DomOverWDegRef(generalModel.getChanneling(), 0L);
+				variableSelector = new DomOverWDegRef(generalModel.getHexBoolVars(), 0L);
 				break;
 				
 			case CHS:
-				variableSelector = new ConflictHistorySearch(generalModel.getChanneling(), 0L);
+				variableSelector = new ConflictHistorySearch(generalModel.getHexBoolVars(), 0L);
 				break;
 		}
 		
@@ -148,7 +148,7 @@ public class ForbiddenPatternConstraint3 extends BenzAIConstraint {
 				break;
 		}
 		
-		generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getChanneling(), variableSelector, valueSelector));
+		generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getHexBoolVars(), variableSelector, valueSelector));
 	}
 
 	@Override

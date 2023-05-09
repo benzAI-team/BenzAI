@@ -276,7 +276,7 @@ public class PatternsEditionPane extends BorderPane {
 						type = PatternGenerationType.SINGLE_PATTERN_1;
 						subject = "SINGLE_PATTERN";
 						patternInformations = new PatternResolutionInformations(type, patterns);
-						parent.getPatternProperty().setModule(new SinglePattern2Constraint(patternInformations.getPatterns().get(0), false,
+						parent.getPatternProperty().setConstraint(new SinglePattern2Constraint(patternInformations.getPatterns().get(0), false,
 								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 					}
 
@@ -292,7 +292,7 @@ public class PatternsEditionPane extends BorderPane {
 					type = PatternGenerationType.FORBIDDEN_PATTERN;
 					subject = "FORBIDDEN_PATTERN";
 					patternInformations = new PatternResolutionInformations(type, patterns);
-					parent.getPatternProperty().setModule(new ForbiddenPatternConstraint1(patternInformations.getPatterns().get(0),
+					parent.getPatternProperty().setConstraint(new ForbiddenPatternConstraint1(patternInformations.getPatterns().get(0),
 							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 				}
 			}
@@ -308,7 +308,7 @@ public class PatternsEditionPane extends BorderPane {
 				else if (itemNNDisjunct.isSelected())
 					patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
 
-				parent.getPatternProperty().setModule(new MultiplePatterns1Constraint(patternInformations.getPatterns(),
+				parent.getPatternProperty().setConstraint(new MultiplePatterns1Constraint(patternInformations.getPatterns(),
 						VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST, patternInformations.getInterraction()));
 			}
 

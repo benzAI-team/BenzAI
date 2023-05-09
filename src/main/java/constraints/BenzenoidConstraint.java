@@ -1,14 +1,13 @@
 package constraints;
 
-import java.util.ArrayList;
-
-import org.chocosolver.solver.constraints.Constraint;
-import org.chocosolver.solver.variables.IntVar;
-
 import generator.GeneralModel;
 import generator.patterns.Pattern;
 import molecules.Molecule;
 import molecules.Node;
+import org.chocosolver.solver.constraints.Constraint;
+import org.chocosolver.solver.variables.IntVar;
+
+import java.util.ArrayList;
 
 public class BenzenoidConstraint extends BenzAIConstraint {
 
@@ -50,7 +49,7 @@ public class BenzenoidConstraint extends BenzAIConstraint {
 		}
 
 		if (or.length == 0)
-			generalModel.getProblem().sum(generalModel.getChanneling(), "=", 0).post();
+			generalModel.getProblem().sum(generalModel.getHexBoolVars(), "=", 0).post();
 		else
 			generalModel.getProblem().or(or).post();
 		this.getGeneralModel().getChocoModel().arithm(getGeneralModel().getNbVerticesVar(), "=", molecule.getNbHexagons()).post();

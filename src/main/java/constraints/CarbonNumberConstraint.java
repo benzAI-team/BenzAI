@@ -36,8 +36,8 @@ public class CarbonNumberConstraint extends BenzAIConstraint {
 	public void buildVariables() {
 		GeneralModel generalModel = getGeneralModel();
 
-		benzenoidCarbons = new IntVar[generalModel.getChanneling().length];
-		for (int i = 0; i < generalModel.getChanneling().length; i++)
+		benzenoidCarbons = new IntVar[generalModel.getHexBoolVars().length];
+		for (int i = 0; i < generalModel.getHexBoolVars().length; i++)
 			benzenoidCarbons[i] = generalModel.getProblem().intVar("nb_carbons_" + i, 0, 6);
 
 		zero = generalModel.getProblem().boolVar(false);
@@ -92,7 +92,7 @@ public class CarbonNumberConstraint extends BenzAIConstraint {
 					IntVar[] nH = xN[index];
 
 					IntVar[] tuple2 = new IntVar[] { nH[0], nH[4], nH[5], benzenoidCarbons[index],
-							generalModel.getChanneling()[index] };
+							generalModel.getHexBoolVars()[index] };
 
 					generalModel.getProblem().table(tuple2, tableCarbons, "CT+").post();
 
@@ -143,12 +143,12 @@ public class CarbonNumberConstraint extends BenzAIConstraint {
 	private void buildXN() {
 		GeneralModel generalModel = getGeneralModel();
 
-		xN = new BoolVar[generalModel.getChanneling().length][6];
+		xN = new BoolVar[generalModel.getHexBoolVars().length][6];
 
 		for (int line = 0; line < dualGraph.length; line++) {
 			for (int column = 0; column < dualGraph[line].length; column++) {
 				if (dualGraph[line][column] != -1) {
-					xN[line][column] = generalModel.getChanneling()[dualGraph[line][column]];
+					xN[line][column] = generalModel.getHexBoolVars()[dualGraph[line][column]];
 				} else {
 					xN[line][column] = zero;
 				}
@@ -161,7 +161,7 @@ public class CarbonNumberConstraint extends BenzAIConstraint {
 	private void buildDualGraph() {
 		GeneralModel generalModel = getGeneralModel();
 
-		dualGraph = new int[generalModel.getChanneling().length][6];
+		dualGraph = new int[generalModel.getHexBoolVars().length][6];
 
 		for (int[] ints : dualGraph) {
 			Arrays.fill(ints, -1);

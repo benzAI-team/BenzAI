@@ -125,14 +125,14 @@ public class ForbiddenPatternConstraint2 extends BenzAIConstraint {
 	public void changeSolvingStrategy() {
 		GeneralModel generalModel = getGeneralModel();
 
-		IntVar [] branchingVariables = new IntVar[generalModel.getChanneling().length + presences.length];
+		IntVar [] branchingVariables = new IntVar[generalModel.getHexBoolVars().length + presences.length];
 		int index = 0;
 		
 		switch(orderStrategy) {
 			
 			case CHANNELING_FIRST:
 				
-				for (BoolVar x : generalModel.getChanneling()) {
+				for (BoolVar x : generalModel.getHexBoolVars()) {
 					branchingVariables[index] = x;
 					index ++;
 				}
@@ -151,7 +151,7 @@ public class ForbiddenPatternConstraint2 extends BenzAIConstraint {
 					index ++;
 				}
 				
-				for (BoolVar x : generalModel.getChanneling()) {
+				for (BoolVar x : generalModel.getHexBoolVars()) {
 					branchingVariables[index] = x;
 					index ++;
 				}

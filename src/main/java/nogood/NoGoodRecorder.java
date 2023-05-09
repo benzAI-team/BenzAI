@@ -1,12 +1,11 @@
 package nogood;
 
-import java.util.ArrayList;
-
+import generator.GeneralModel;
+import generator.Solution;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
-import generator.GeneralModel;
-import generator.Solution;
+import java.util.ArrayList;
 
 public abstract class NoGoodRecorder {
 
@@ -44,7 +43,7 @@ public abstract class NoGoodRecorder {
 
 				for (int i = 0; i < translation.size(); i++) {
 
-					varClause[i] = model.getChanneling()[translation.get(i)];
+					varClause[i] = model.getHexBoolVars()[translation.get(i)];
 					valClause[i] = new IntIterableRangeSet(0);
 
 					nogood.add(translation.get(i));
@@ -64,7 +63,7 @@ public abstract class NoGoodRecorder {
 				nogood.add(translation.get(0));
 				nogood.add(translation.get(0));
 
-				BoolVar[] varClause = new BoolVar[] { model.getChanneling()[translation.get(0)], reified };
+				BoolVar[] varClause = new BoolVar[] { model.getHexBoolVars()[translation.get(0)], reified };
 
 				IntIterableRangeSet[] valClause = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 						new IntIterableRangeSet(0) };

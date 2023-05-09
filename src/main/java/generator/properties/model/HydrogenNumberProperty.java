@@ -10,10 +10,16 @@ import view.generator.boxes.HBoxNbHydrogensCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HydrogenNumberProperty extends ModelProperty {
-	public HydrogenNumberProperty() {
+	HydrogenNumberProperty() {
 		super("hydrogens", "Number of hydrogens", new HydrogenNumberConstraint(), new HydrogenNumberFilter());
 	}
-
+	/***
+	 * Compute the max number of hexagons from the (max) number of hydrogens.
+	 * The structure that minimize the number of hydrogens for a given number
+	 * of hexagons is the coronenoid case where #hex = 3n(n - 1)+1 and
+	 * #hydro = 6n where n is the number of crowns,
+	 * so #hex = #hydro / 2 (#hydro/6 - 1) + 1
+	 */
 	@Override
 	public int computeHexagonNumberUpperBound() {
 		int minHydrogenNumber = Integer.MAX_VALUE;
@@ -24,11 +30,10 @@ public class HydrogenNumberProperty extends ModelProperty {
 			if (isBoundingOperator(operator)) {
 				if ("<".equals(operator))
 					hydrogenNumber--;
-				if(hydrogenNumber < minHydrogenNumber)
-					minHydrogenNumber = hydrogenNumber;
+				minHydrogenNumber = Math.min(hydrogenNumber, minHydrogenNumber);
 			}
 		}
-		return minHydrogenNumber != Integer.MAX_VALUE ? (int)(Math.ceil(((minHydrogenNumber - 8) / 2.0) + 2.0)) : Integer.MAX_VALUE;
+		return Math.min((int)(Math.ceil((minHydrogenNumber / 2.0)  * (minHydrogenNumber / 6.0 - 1.0) + 1.0)) , Integer.MAX_VALUE);
 	}
 
 	@Override

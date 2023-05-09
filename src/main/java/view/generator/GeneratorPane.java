@@ -134,7 +134,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		ImageView warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
 		warningIcon.resize(30, 30);
 		Tooltip.install(warningIcon, new Tooltip(
-				"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns is required. Moreover, all the criterions must be valid"));
+				"A criterion limiting the number of hexagons/carbons/hydrogens/number of lines and columns or diameter is required. Moreover, all the criterions must be valid"));
 		return warningIcon;
 	}
 
@@ -315,7 +315,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 			if ((box instanceof HBoxHexagonNumberCriterion || box instanceof HBoxNbCarbonsCriterion
 					|| box instanceof HBoxNbHydrogensCriterion) && box.isValid()) {
-
 				valid = true;
 			}
 		}
@@ -343,17 +342,11 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		}
 		return super.buildPropertyExpressions();
 	}
-
-
-
-
-
 	
 	/***
 	 * 
 	 */
 	private void generateBenzenoids() {
-
 		if (canStartGeneration) {
 			getModelPropertySet().buildModelPropertySet(getHBoxesCriterions());
 			GeneralModel.buildSolverPropertySet(hBoxesSolverCriterions);
@@ -400,7 +393,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			};
 
 			calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
-
 				switch (newValue) {
 				case FAILED:
 					isRunning = false;
@@ -601,14 +593,14 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	public void refreshGenerationPossibility() {
-
-		boolean ok = buildPropertyExpressions();
 		canStartGeneration = false;
+		boolean ok = buildPropertyExpressions();
 		if (ok) {
 			if(((ModelProperty) getModelPropertySet().getById("hexagons")).hasUpperBound()
 					|| ((ModelProperty) getModelPropertySet().getById("carbons")).hasUpperBound()
 					|| ((ModelProperty) getModelPropertySet().getById("hydrogens")).hasUpperBound()
-					|| ((ModelProperty) getModelPropertySet().getById("rhombus")).hasUpperBound())
+					|| ((ModelProperty) getModelPropertySet().getById("rhombus")).hasUpperBound()
+					|| ((ModelProperty) getModelPropertySet().getById("diameter")).hasUpperBound())
 				canStartGeneration = true;
 			if(((RectangleProperty)getModelPropertySet().getById("rectangle")).hasUpperBounds())
 				canStartGeneration = true;
@@ -619,7 +611,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 				buttonsBox.getChildren().remove(warningIcon);
 			else
 				buttonsBox.getChildren().add(warningIcon);
-
 		}
 	}
 	

@@ -34,7 +34,7 @@ public class DiameterProperty extends ModelProperty {
 			if(binaryNumericalExpression.hasUpperBound())
 				diameterMax = Math.min(diameterMax, binaryNumericalExpression.getValue());
 		}
-		return diameterMax != Integer.MAX_VALUE ? (int) Math.floor(((double) diameterMax + 3.0) / 2.0) : Integer.MAX_VALUE;	
+		return Math.min(Integer.MAX_VALUE , (int) Math.floor(((double) diameterMax + 3.0) / 2.0));
 	}
 
 }

@@ -233,13 +233,13 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 	public void changeSolvingStrategy() {
 		GeneralModel generalModel = getGeneralModel();
 
-		IntVar[] branchingVariables = new IntVar[generalModel.getChanneling().length + presences.length + presences2.length];
+		IntVar[] branchingVariables = new IntVar[generalModel.getHexBoolVars().length + presences.length + presences2.length];
 		int index = 0;
 		
 		switch (orderStrategy) {
 			case CHANNELING_FIRST:
 				
-				for (BoolVar x : generalModel.getChanneling()) {
+				for (BoolVar x : generalModel.getHexBoolVars()) {
 					branchingVariables[index] = x;
 					index ++;
 				}
@@ -268,7 +268,7 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 					index ++;
 				}
 				
-				for (BoolVar x : generalModel.getChanneling()) {
+				for (BoolVar x : generalModel.getHexBoolVars()) {
 					branchingVariables[index] = x;
 					index ++;
 				}

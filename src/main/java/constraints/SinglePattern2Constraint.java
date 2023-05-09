@@ -1,27 +1,24 @@
 package constraints;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.chocosolver.solver.constraints.extension.Tuples;
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
-import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
-import org.chocosolver.solver.search.strategy.selectors.variables.ConflictHistorySearch;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDeg;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDegRef;
-import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
-import org.chocosolver.solver.search.strategy.selectors.variables.VariableSelector;
-import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
-import org.chocosolver.solver.variables.BoolVar;
-import org.chocosolver.solver.variables.IntVar;
-import org.chocosolver.solver.variables.Variable;
-import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
+import generator.properties.model.expression.BinaryNumericalExpression;
+import org.chocosolver.solver.constraints.extension.Tuples;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
+import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
+import org.chocosolver.solver.search.strategy.selectors.variables.*;
+import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
+import org.chocosolver.solver.variables.BoolVar;
+import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.solver.variables.Variable;
+import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SinglePattern2Constraint extends BenzAIConstraint {
 
@@ -103,6 +100,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
+		generalModel.getModelPropertySet().getById("diameter").addExpression(new BinaryNumericalExpression("diameter", "<", 45));
 		System.out.println("Scope");
 		for (IntVar x : patternCorrespondances)
 			System.out.println(x.toString());
@@ -285,7 +283,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 	public void changeSolvingStrategy() {
 		GeneralModel generalModel = getGeneralModel();
 
-		IntVar[] branchingVariables = new IntVar[generalModel.getChanneling().length + patternCorrespondances.length];
+		IntVar[] branchingVariables = new IntVar[generalModel.getHexBoolVars().length + patternCorrespondances.length];
 
 		int index = 0;
 
@@ -293,7 +291,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 
 		case CHANNELING_FIRST:
 
-			for (BoolVar x : generalModel.getChanneling()) {
+			for (BoolVar x : generalModel.getHexBoolVars()) {
 				branchingVariables[index] = x;
 				index++;
 			}
@@ -313,7 +311,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 				index++;
 			}
 
-			for (BoolVar x : generalModel.getChanneling()) {
+			for (BoolVar x : generalModel.getHexBoolVars()) {
 				branchingVariables[index] = x;
 				index++;
 			}

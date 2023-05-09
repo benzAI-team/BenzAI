@@ -96,7 +96,7 @@ public class GeneralModel {
     private UndirectedGraph GUB;
 
     private UndirectedGraphVar benzenoidGraphVar;
-    private BoolVar[] channeling;
+    private BoolVar[] hexBoolVars;
     private BoolVar[] benzenoidVerticesBVArray;
     private BoolVar[][] benzenoidEdges;
 
@@ -162,8 +162,8 @@ public class GeneralModel {
 
     private void initializeHexagonIndices() {
         hexagonIndices = new int[diameter][diameter];
-        for (int i = 0; i < diameter; i++) {
-            Arrays.fill(hexagonIndices[i], -1);
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            Arrays.fill(hexagonIndices[lineIndex], -1);
         }
     }
 
@@ -201,16 +201,16 @@ public class GeneralModel {
         leftBorder = new ArrayList<>();
         topBorder = new ArrayList<>();
 
-        for (int y = 0; y < diameter; y++) {
+        for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
 
-            if (validHexagonIndex(0, y))
-                topBorder.add(correspondancesHexagons[hexagonIndices[0][y]]);
+            if (validHexagonIndex(0, columnIndex))
+                topBorder.add(correspondancesHexagons[hexagonIndices[0][columnIndex]]);
         }
 
-        for (int i = 0; i < diameter; i++) {
-            for (int j = 0; j < diameter; j++) {
-                if (validHexagonIndex(i, j)) {
-                    leftBorder.add(correspondancesHexagons[hexagonIndices[i][j]]);
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+                if (validHexagonIndex(lineIndex, columnIndex)) {
+                    leftBorder.add(correspondancesHexagons[hexagonIndices[lineIndex][columnIndex]]);
                     break;
                 }
             }
@@ -218,7 +218,6 @@ public class GeneralModel {
     }
 
     private void initializeConstraints() {
-
         chocoModel.connected(benzenoidGraphVar).post();
         ConstraintBuilder.postFillNodesConnection(this);
         ConstraintBuilder.postNoHolesOfSize1Constraint(this);
@@ -279,8 +278,8 @@ public class GeneralModel {
         return hexagonIndices;
     }
 
-    public int getHexagonIndex(int column, int line){
-        return hexagonIndices[column][line];
+    public int getHexagonIndex(int lineIndex, int columnIndex){
+        return hexagonIndices[lineIndex][columnIndex];
     }
 
     public int[][] getAdjacencyMatrix() {
@@ -310,8 +309,8 @@ public class GeneralModel {
 
     public void displaySolution(Solver solver) {
 
-        for (int index = 0; index < channeling.length; index++) {
-            if (channeling[index].getValue() == 1)
+        for (int index = 0; index < hexBoolVars.length; index++) {
+            if (hexBoolVars[index].getValue() == 1)
                 System.out.print(index + " ");
         }
 
@@ -356,11 +355,11 @@ public class GeneralModel {
 
         coordsCorrespondance = new Couple[diameter * diameter];
 
-        for (int i = 0; i < diameter; i++) {
-            for (int j = 0; j < diameter; j++) {
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
 
-                if (validHexagonIndex(i, j))
-                    coordsCorrespondance[hexagonIndices[i][j]] = new Couple<>(i, j);
+                if (validHexagonIndex(lineIndex, columnIndex))
+                    coordsCorrespondance[hexagonIndices[lineIndex][columnIndex]] = new Couple<>(lineIndex, columnIndex);
             }
         }
     }
@@ -374,11 +373,9 @@ public class GeneralModel {
         Arrays.fill(correspondance, -1);
 
         for (int index = 0; index < benzenoidVerticesBVArray.length; index++) {
-            if (benzenoidVerticesBVArray[index] != null) {
-                if (benzenoidVerticesBVArray[index].getValue() == 1) {
+            if (benzenoidVerticesBVArray[index] != null && benzenoidVerticesBVArray[index].getValue() == 1) {
                     hexagonsSolutions.add(index);
                     correspondance[index] = hexagonsSolutions.size() - 1;
-                }
             }
         }
 
@@ -406,15 +403,15 @@ public class GeneralModel {
         int[][] matrix = new int[nbNodes][nbNodes];
         int[][] neighbors = new int[nbNodes][6];
 
-        for (int i = 0; i < nbNodes; i++)
-            Arrays.fill(neighbors[i], -1);
+        for (int nodeIndex = 0; nodeIndex < nbNodes; nodeIndex++)
+            Arrays.fill(neighbors[nodeIndex], -1);
 
-        for (int i = 0; i < nbNodes; i++) {
+        for (int nodeIndex = 0; nodeIndex < nbNodes; nodeIndex++) {
 
-            int u = hexagonsSolutions.get(i);
-            Node n1 = nodes[i];
+            int u = hexagonsSolutions.get(nodeIndex);
+            Node n1 = nodes[nodeIndex];
 
-            for (int j = (i + 1); j < nbNodes; j++) {
+            for (int j = (nodeIndex + 1); j < nbNodes; j++) {
 
                 int v = hexagonsSolutions.get(j);
                 Node n2 = nodes[j];
@@ -422,8 +419,8 @@ public class GeneralModel {
                 if (adjacencyMatrix[u][v] == 1) {
 
                     // Setting matrix
-                    matrix[i][j] = 1;
-                    matrix[j][i] = 1;
+                    matrix[nodeIndex][j] = 1;
+                    matrix[j][nodeIndex] = 1;
 
                     // Setting neighbors
                     int x1 = n1.getX();
@@ -468,8 +465,8 @@ public class GeneralModel {
     private void recordNoGoods() {
 
         ArrayList<Integer> vertices = new ArrayList<>();
-        for (int i = 0; i < channeling.length; i++)
-            if (channeling[i].getValue() == 1)
+        for (int i = 0; i < hexBoolVars.length; i++)
+            if (hexBoolVars[i].getValue() == 1)
                 vertices.add(i);
 
         int center = correspondancesHexagons[hexagonIndices[(diameter - 1) / 2][(diameter - 1) / 2]];
@@ -486,7 +483,7 @@ public class GeneralModel {
         } else {
 
             noGoodRecorder = new NoGoodNoneRecorder(this, solution);
-
+            //TODO changer tests
             if (Objects.equals(((ParameterizedExpression) modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator(), "SYMM_MIRROR"))
                 noGoodRecorder = new NoGoodHorizontalAxisRecorder(this, solution);
             else if (Objects.equals(((ParameterizedExpression) modelPropertySet.getById("symmetry").getExpressions().get(0)).getOperator(), "SYMM_VERTICAL"))
@@ -507,7 +504,7 @@ public class GeneralModel {
     public SolverResults solve() {
 
         applyModelConstraints();
-        chocoModel.getSolver().setSearch(new IntStrategy(channeling, new FirstFail(chocoModel), new IntDomainMax()));
+        chocoModel.getSolver().setSearch(new IntStrategy(hexBoolVars, new FirstFail(chocoModel), new IntDomainMax()));
 
         for (Property modelProperty : modelPropertySet) {
             if (modelProperty.hasExpressions())
@@ -612,16 +609,16 @@ public class GeneralModel {
         nbEdges = 0;
         adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
 
-        for (int x = 0; x < diameter; x++) {
-            for (int y = 0; y < diameter; y++) {
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
 
-                if (validHexagonIndex(x, y)) {
+                if (validHexagonIndex(lineIndex, columnIndex)) {
 
-                    int u = hexagonIndices[x][y];
+                    int u = hexagonIndices[lineIndex][columnIndex];
 
-                    if (x > 0 && y > 0) {
+                    if (lineIndex > 0 && columnIndex > 0) {
 
-                        int v = hexagonIndices[x - 1][y - 1];
+                        int v = hexagonIndices[lineIndex - 1][columnIndex - 1];
                         if (v != -1) {
                             if (adjacencyMatrix[u][v] == 0) {
                                 adjacencyMatrix[u][v] = 1;
@@ -631,9 +628,9 @@ public class GeneralModel {
                         }
                     }
 
-                    if (y > 0) {
+                    if (columnIndex > 0) {
 
-                        int v = hexagonIndices[x][y - 1];
+                        int v = hexagonIndices[lineIndex][columnIndex - 1];
                         if (v != -1) {
                             if (adjacencyMatrix[u][v] == 0) {
                                 adjacencyMatrix[u][v] = 1;
@@ -643,9 +640,9 @@ public class GeneralModel {
                         }
                     }
 
-                    if (x + 1 < diameter) {
+                    if (lineIndex + 1 < diameter) {
 
-                        int v = hexagonIndices[x + 1][y];
+                        int v = hexagonIndices[lineIndex + 1][columnIndex];
                         if (v != -1) {
                             if (adjacencyMatrix[u][v] == 0) {
                                 adjacencyMatrix[u][v] = 1;
@@ -655,9 +652,9 @@ public class GeneralModel {
                         }
                     }
 
-                    if (x + 1 < diameter && y + 1 < diameter) {
+                    if (lineIndex + 1 < diameter && columnIndex + 1 < diameter) {
 
-                        int v = hexagonIndices[x + 1][y + 1];
+                        int v = hexagonIndices[lineIndex + 1][columnIndex + 1];
                         if (v != -1) {
                             if (adjacencyMatrix[u][v] == 0) {
                                 adjacencyMatrix[u][v] = 1;
@@ -667,9 +664,9 @@ public class GeneralModel {
                         }
                     }
 
-                    if (y + 1 < diameter) {
+                    if (columnIndex + 1 < diameter) {
 
-                        int v = hexagonIndices[x][y + 1];
+                        int v = hexagonIndices[lineIndex][columnIndex + 1];
                         if (v != -1) {
                             if (adjacencyMatrix[u][v] == 0) {
                                 adjacencyMatrix[u][v] = 1;
@@ -679,9 +676,9 @@ public class GeneralModel {
                         }
                     }
 
-                    if (x > 0) {
+                    if (lineIndex > 0) {
 
-                        int v = hexagonIndices[x - 1][y];
+                        int v = hexagonIndices[lineIndex - 1][columnIndex];
                         if (v != -1) {
                             if (adjacencyMatrix[u][v] == 0) {
                                 adjacencyMatrix[u][v] = 1;
@@ -711,8 +708,8 @@ public class GeneralModel {
 
             for (int[] ints : neighborIndices) {
                 ArrayList<Integer> neighbors = new ArrayList<>();
-                for (int j = 0; j < 6; j++)
-                    neighbors.add(ints[j]);
+                for (int neighborIndex = 0; neighborIndex < 6; neighborIndex++)
+                    neighbors.add(ints[neighborIndex]);
                 neighborGraphOutterHexagons.add(neighbors);
             }
         } else {
@@ -720,39 +717,25 @@ public class GeneralModel {
             ArrayList<Integer> hexagons = new ArrayList<>();
             ArrayList<Couple<Integer, Integer>> coords = new ArrayList<>();
 
-            //TODO A quoi sert index ???? (pas utilisé plus tard)
-//			int index = -1;
-//
-//			for (int i = 0; i < diameter; i++) {
-//				for (int j = 0; j < diameter; j++) {
-//					if (coordsMatrix[i][j] > index)
-//						index = coordsMatrix[i][j];
-//				}
-//			}
-//
-//			index++;
-
-            for (int line = 0; line < diameter; line++) {
-
-                if (line == 0 || line == diameter - 1) {
-
-                    for (int column = 0; column < diameter; column++) {
-                        if (validHexagonIndex(line, column)) {
-                            hexagons.add(hexagonIndices[line][column]);
-                            coords.add(new Couple<>(column, line));
+            for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+                if (lineIndex == 0 || lineIndex == diameter - 1) {
+                    for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+                        if (validHexagonIndex(lineIndex, columnIndex)) {
+                            hexagons.add(hexagonIndices[lineIndex][columnIndex]);
+                            coords.add(new Couple<>(columnIndex, lineIndex));
                         }
                     }
                 } else {
 
-                    ArrayList<Integer> c1 = getFirstColumns(line, 1);
-                    ArrayList<Integer> c2 = getLastColumns(line, 1);
+                    ArrayList<Integer> c1 = getFirstColumns(lineIndex, 1);
+                    ArrayList<Integer> c2 = getLastColumns(lineIndex, 1);
 
                     for (int i = 0; i < c1.size(); i++) {
 
-                        hexagons.add(hexagonIndices[line][c1.get(i)]);
-                        coords.add(new Couple<>(c1.get(i), line));
-                        hexagons.add(hexagonIndices[line][c2.get(i)]);
-                        coords.add(new Couple<>(c2.get(i), line));
+                        hexagons.add(hexagonIndices[lineIndex][c1.get(i)]);
+                        coords.add(new Couple<>(c1.get(i), lineIndex));
+                        hexagons.add(hexagonIndices[lineIndex][c2.get(i)]);
+                        coords.add(new Couple<>(c2.get(i), lineIndex));
                     }
                 }
             }
@@ -873,41 +856,41 @@ public class GeneralModel {
         }
     }
 
-    private ArrayList<Integer> getFirstColumns(int line, int order) {
+    private ArrayList<Integer> getFirstColumns(int lineIndex, int order) {
 
         ArrayList<Integer> columns = new ArrayList<>();
 
         int nbColumns = 0;
-        int column = 0;
+        int columnIndex = 0;
 
-        while (nbColumns < order && column < diameter) {
+        while (nbColumns < order && columnIndex < diameter) {
 
-            if (validHexagonIndex(line, column)) {
-                columns.add(column);
+            if (validHexagonIndex(lineIndex, columnIndex)) {
+                columns.add(columnIndex);
                 nbColumns++;
             }
 
-            column++;
+            columnIndex++;
         }
 
         return columns;
     }
 
-    private ArrayList<Integer> getLastColumns(int line, int order) {
+    private ArrayList<Integer> getLastColumns(int lineIndex, int order) {
 
         ArrayList<Integer> columns = new ArrayList<>();
 
         int nbColumns = 0;
-        int column = diameter - 1;
+        int columnIndex = diameter - 1;
 
-        while (nbColumns < order && column >= 0) {
+        while (nbColumns < order && columnIndex >= 0) {
 
-            if (validHexagonIndex(line, column)) {
-                columns.add(column);
+            if (validHexagonIndex(lineIndex, columnIndex)) {
+                columns.add(columnIndex);
                 nbColumns++;
             }
 
-            column--;
+            columnIndex--;
         }
 
         return columns;
@@ -921,36 +904,36 @@ public class GeneralModel {
             Arrays.fill(ints, -1);
         }
 
-        for (int column = 0; column < hexagonIndices.length; column++) {
-            for (int line = 0; line < hexagonIndices[column].length; line++) {
+        for (int lineIndex = 0; lineIndex < hexagonIndices.length; lineIndex++) {
+            for (int columnIndex = 0; columnIndex < hexagonIndices[lineIndex].length; columnIndex++) {
 
-                if (validHexagonIndex(column, line)) {
+                if (validHexagonIndex(lineIndex, columnIndex)) {
 
-                    int hexagonIndex = hexagonIndices[column][line];
+                    int hexagonIndex = hexagonIndices[lineIndex][columnIndex];
 
                     // Top-Right
-                    if (column > 0)
-                        neighborIndices[hexagonIndex][0] = hexagonIndices[column - 1][line];
+                    if (lineIndex > 0)
+                        neighborIndices[hexagonIndex][0] = hexagonIndices[lineIndex - 1][columnIndex];
 
                     // Right
-                    if (line < hexagonIndices[column].length - 1)
-                        neighborIndices[hexagonIndex][1] = hexagonIndices[column][line + 1];
+                    if (columnIndex < hexagonIndices[lineIndex].length - 1)
+                        neighborIndices[hexagonIndex][1] = hexagonIndices[lineIndex][columnIndex + 1];
 
                     // Bottom-Right
-                    if (column < hexagonIndices[column].length - 1 && line < hexagonIndices[column].length - 1)
-                        neighborIndices[hexagonIndex][2] = hexagonIndices[column + 1][line + 1];
+                    if (lineIndex < hexagonIndices[lineIndex].length - 1 && columnIndex < hexagonIndices[lineIndex].length - 1)
+                        neighborIndices[hexagonIndex][2] = hexagonIndices[lineIndex + 1][columnIndex + 1];
 
                     // Bottom-Left
-                    if (column < hexagonIndices[column].length - 1)
-                        neighborIndices[hexagonIndex][3] = hexagonIndices[column + 1][line];
+                    if (lineIndex < hexagonIndices[lineIndex].length - 1)
+                        neighborIndices[hexagonIndex][3] = hexagonIndices[lineIndex + 1][columnIndex];
 
                     // Left
-                    if (line > 0)
-                        neighborIndices[hexagonIndex][4] = hexagonIndices[column][line - 1];
+                    if (columnIndex > 0)
+                        neighborIndices[hexagonIndex][4] = hexagonIndices[lineIndex][columnIndex - 1];
 
                     // Top-Left
-                    if (column > 0 && line > 0)
-                        neighborIndices[hexagonIndex][5] = hexagonIndices[column - 1][line - 1];
+                    if (lineIndex > 0 && columnIndex > 0)
+                        neighborIndices[hexagonIndex][5] = hexagonIndices[lineIndex - 1][columnIndex - 1];
                 }
             }
         }
@@ -961,15 +944,15 @@ public class GeneralModel {
         adjacencyMatrixWithOutterHexagons = new int[neighborGraphOutterHexagons.size()][neighborGraphOutterHexagons
                 .size()];
 
-        for (int i = 0; i < neighborGraphOutterHexagons.size(); i++) {
+        for (int nodeIndex = 0; nodeIndex < neighborGraphOutterHexagons.size(); nodeIndex++) {
 
-            for (int j = 0; j < 6; j++) {
+            for (int neighborIndex = 0; neighborIndex < 6; neighborIndex++) {
 
-                int v = neighborGraphOutterHexagons.get(i).get(j);
+                int v = neighborGraphOutterHexagons.get(nodeIndex).get(neighborIndex);
 
                 if (v != -1) {
-                    adjacencyMatrixWithOutterHexagons[i][v] = 1;
-                    adjacencyMatrixWithOutterHexagons[v][i] = 1;
+                    adjacencyMatrixWithOutterHexagons[nodeIndex][v] = 1;
+                    adjacencyMatrixWithOutterHexagons[v][nodeIndex] = 1;
                 }
             }
         }
@@ -985,24 +968,23 @@ public class GeneralModel {
 
     private void buildBenzenoidVertices() {
 
-        channeling = new BoolVar[nbHexagonsCoronenoid];
-        for (int i = 0; i < channeling.length; i++)
-            channeling[i] = chocoModel.boolVar("vertex[" + i + "]");
+        hexBoolVars = new BoolVar[nbHexagonsCoronenoid];
+        for (int i = 0; i < hexBoolVars.length; i++)
+            hexBoolVars[i] = chocoModel.boolVar("vertex[" + i + "]");
 
-        chocoModel.nodesChanneling(benzenoidGraphVar, channeling).post();
+        chocoModel.nodesChanneling(benzenoidGraphVar, hexBoolVars).post();
 
         benzenoidVerticesBVArray = new BoolVar[diameter * diameter];
 
         int index = 0;
 
-        for (int i = 0; i < diameter; i++) {
-            for (int j = 0; j < diameter; j++) {
-                if (validHexagonIndex(i, j)) {
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+                if (validHexagonIndex(lineIndex, columnIndex)) {
 
-                    BoolVar x = channeling[correspondancesHexagons[hexagonIndices[i][j]]];
-                    benzenoidVerticesBVArray[index] = x;
+                    BoolVar hexBV = hexBoolVars[correspondancesHexagons[hexagonIndices[lineIndex][columnIndex]]];
+                    benzenoidVerticesBVArray[index] = hexBV;
                 }
-
                 index++;
             }
         }
@@ -1012,13 +994,13 @@ public class GeneralModel {
 
         benzenoidEdges = new BoolVar[nbHexagonsCoronenoid][nbHexagonsCoronenoid];
 
-        for (int i = 0; i < adjacencyMatrix.length; i++) {
-            for (int j = (i + 1); j < adjacencyMatrix.length; j++) {
+        for (int lineIndex = 0; lineIndex < adjacencyMatrix.length; lineIndex++) {
+            for (int columnIndex = (lineIndex + 1); columnIndex < adjacencyMatrix.length; columnIndex++) {
 
-                if (adjacencyMatrix[i][j] == 1) {
+                if (adjacencyMatrix[lineIndex][columnIndex] == 1) {
 
-                    int u = correspondancesHexagons[i];
-                    int v = correspondancesHexagons[j];
+                    int u = correspondancesHexagons[lineIndex];
+                    int v = correspondancesHexagons[columnIndex];
 
                     BoolVar x = chocoModel.boolVar("e_" + u + "_" + v);
                     benzenoidEdges[u][v] = x;
@@ -1043,10 +1025,10 @@ public class GeneralModel {
 
         int shift = diameter - nbCrowns;
 
-        for (int columnIndex = 0; columnIndex < centerIndex; columnIndex++) {
+        for (int lineIndex = 0; lineIndex < centerIndex; lineIndex++) {
 
-            for (int lineIndex = 0; lineIndex < diameter - shift; lineIndex++) {
-                hexagonIndices[columnIndex][lineIndex] = hexagonIndex;
+            for (int columnIndex = 0; columnIndex < diameter - shift; columnIndex++) {
+                hexagonIndices[lineIndex][columnIndex] = hexagonIndex;
                 hexagonIndex++;
                 nbHexagonsCoronenoid++;
             }
@@ -1054,18 +1036,18 @@ public class GeneralModel {
             shift--;
         }
 
-        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
-            hexagonIndices[centerIndex][lineIndex] = hexagonIndex;
+        for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+            hexagonIndices[centerIndex][columnIndex] = hexagonIndex;
             hexagonIndex++;
             nbHexagonsCoronenoid++;
         }
 
         shift = 1;
 
-        for (int columnIndex = centerIndex + 1; columnIndex < diameter; columnIndex++) {
+        for (int lineIndex = centerIndex + 1; lineIndex < diameter; lineIndex++) {
             hexagonIndex += shift;
-            for (int lineIndex = shift; lineIndex < diameter; lineIndex++) {
-                hexagonIndices[columnIndex][lineIndex] = hexagonIndex;
+            for (int columnIndex = shift; columnIndex < diameter; columnIndex++) {
+                hexagonIndices[lineIndex][columnIndex] = hexagonIndex;
                 hexagonIndex++;
                 nbHexagonsCoronenoid++;
             }
@@ -1075,10 +1057,10 @@ public class GeneralModel {
         hexagonsCorrespondances = new int[nbHexagonsCoronenoid];
         hexagonIndex = 0;
 
-        for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
-            for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
-                if (validHexagonIndex(columnIndex, lineIndex)) {
-                    hexagonsCorrespondances[hexagonIndex] = hexagonIndices[columnIndex][lineIndex];
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+                if (validHexagonIndex(lineIndex, columnIndex)) {
+                    hexagonsCorrespondances[hexagonIndex] = hexagonIndices[lineIndex][columnIndex];
                     hexagonIndex++;
                 }
             }
@@ -1093,8 +1075,8 @@ public class GeneralModel {
 
     }
 
-    private boolean validHexagonIndex(int columnIndex, int lineIndex) {
-        return hexagonIndices[columnIndex][lineIndex] != -1;
+    private boolean validHexagonIndex(int lineIndex, int columnIndex) {
+        return hexagonIndices[lineIndex][columnIndex] != -1;
     }
 
     public int getNbHexagonsCoronenoid() {
@@ -1105,54 +1087,52 @@ public class GeneralModel {
         return correspondancesHexagons;
     }
 
-    public BoolVar[] getNeighbors(int columnIndex, int lineIndex) {
+    public BoolVar[] getNeighbors(int lineIndex, int columnIndex) {
 
-        if (validHexagonIndex(columnIndex, lineIndex)) {
+        if (validHexagonIndex(lineIndex, columnIndex)) {
 
             BoolVar[] N = new BoolVar[6];
 
             for (int k = 0; k < 6; k++)
                 N[k] = null;
 
-            if (columnIndex > 0) {
-                if (validHexagonIndex(columnIndex - 1, lineIndex))
-                    N[0] = benzenoidVerticesBVArray[hexagonIndices[columnIndex - 1][lineIndex]];
-            }
-
-            if (lineIndex + 1 < diameter) {
-                if (validHexagonIndex(columnIndex, lineIndex + 1))
-                    N[1] = benzenoidVerticesBVArray[hexagonIndices[columnIndex][lineIndex + 1]];
-            }
-
-            if (columnIndex + 1 < diameter && lineIndex + 1 < diameter) {
-                if (validHexagonIndex(columnIndex + 1, lineIndex + 1)) {
-                    N[2] = benzenoidVerticesBVArray[hexagonIndices[columnIndex + 1][lineIndex + 1]];
-                }
+            if (lineIndex > 0) {
+                if (validHexagonIndex(lineIndex - 1, columnIndex))
+                    N[0] = benzenoidVerticesBVArray[hexagonIndices[lineIndex - 1][columnIndex]];
             }
 
             if (columnIndex + 1 < diameter) {
-                if (validHexagonIndex(columnIndex + 1, lineIndex))
-                    N[3] = benzenoidVerticesBVArray[hexagonIndices[columnIndex + 1][lineIndex]];
+                if (validHexagonIndex(lineIndex, columnIndex + 1))
+                    N[1] = benzenoidVerticesBVArray[hexagonIndices[lineIndex][columnIndex + 1]];
             }
 
-            if (lineIndex > 0) {
-                if (validHexagonIndex(columnIndex, lineIndex - 1))
-                    N[4] = benzenoidVerticesBVArray[hexagonIndices[columnIndex][lineIndex - 1]];
+            if (lineIndex + 1 < diameter && columnIndex + 1 < diameter) {
+                if (validHexagonIndex(lineIndex + 1, columnIndex + 1)) {
+                    N[2] = benzenoidVerticesBVArray[hexagonIndices[lineIndex + 1][columnIndex + 1]];
+                }
             }
 
-            if (columnIndex > 0 && lineIndex > 0) {
-                if (validHexagonIndex(columnIndex - 1, lineIndex - 1))
-                    N[5] = benzenoidVerticesBVArray[hexagonIndices[columnIndex - 1][lineIndex - 1]];
+            if (lineIndex + 1 < diameter) {
+                if (validHexagonIndex(lineIndex + 1, columnIndex))
+                    N[3] = benzenoidVerticesBVArray[hexagonIndices[lineIndex + 1][columnIndex]];
             }
 
+            if (columnIndex > 0) {
+                if (validHexagonIndex(lineIndex, columnIndex - 1))
+                    N[4] = benzenoidVerticesBVArray[hexagonIndices[lineIndex][columnIndex - 1]];
+            }
+
+            if (lineIndex > 0 && columnIndex > 0) {
+                if (validHexagonIndex(lineIndex - 1, columnIndex - 1))
+                    N[5] = benzenoidVerticesBVArray[hexagonIndices[lineIndex - 1][columnIndex - 1]];
+            }
             return N;
         }
-
         return null;
     }
 
-    public BoolVar[] getChanneling() {
-        return channeling;
+    public BoolVar[] getHexBoolVars() {
+        return hexBoolVars;
     }
 
     public int[][] getNeighborIndices() {
@@ -1241,33 +1221,28 @@ public class GeneralModel {
     private void buildNodesRefs() {
         nodesRefs = new Node[nbHexagonsCoronenoid];
 
-        for (int i = 0; i < diameter; i++) {
-            for (int j = 0; j < diameter; j++) {
-                if (validHexagonIndex(i, j)) {
-                    int index = correspondancesHexagons[hexagonIndices[i][j]];
-                    nodesRefs[index] = new Node(i, j, index);
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+                if (validHexagonIndex(lineIndex, columnIndex)) {
+                    int index = correspondancesHexagons[hexagonIndices[lineIndex][columnIndex]];
+                    nodesRefs[index] = new Node(lineIndex, columnIndex, index);
                 }
             }
         }
-
     }
 
     private boolean isValid(Couple<Integer, Integer> coord, Pattern fragment, int index) {
-
         if (coord.getX() < 0 || coord.getX() >= diameter || coord.getY() < 0 || coord.getY() >= diameter
                 || hexagonIndices[coord.getY()][coord.getX()] == -1) {
             return fragment.getLabel(index) != 2;
         }
-
         return true;
     }
 
     private int findIndex(ArrayList<Couple<Integer, Integer>> coords, Couple<Integer, Integer> coord) {
-
         for (int i = 0; i < coords.size(); i++)
             if (coords.get(i).equals(coord))
                 return i;
-
         return -1;
     }
 
@@ -1286,17 +1261,14 @@ public class GeneralModel {
                 minY = node.getY();
 
         while (true) {
-
             boolean containsPresentHexagon = false;
             for (int i = 0; i < fragment.getNbNodes(); i++) {
                 Node node = fragment.getNodesRefs()[i];
                 if (node.getY() == minY && fragment.getLabel(i) == 2)
                     containsPresentHexagon = true;
             }
-
             if (containsPresentHexagon)
                 break;
-
             minY++;
         }
 
@@ -1314,11 +1286,10 @@ public class GeneralModel {
          * Trouver les positions ou le fragment peut �tre plac�
          */
 
-        for (int y = 0; y < diameter; y++) {
-            for (int x = 0; x < diameter; x++) {
-                int hexagon = hexagonIndices[y][x];
-                if (hexagon != -1) {
-
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+                int hexagonIndex = hexagonIndices[lineIndex][columnIndex];
+                if (hexagonIndex != -1) {
                     /*
                      * On place le fragment dans le coron�no�de de telle sorte que firstNode
                      * corresponde � hexagon
@@ -1329,7 +1300,7 @@ public class GeneralModel {
 
                     int candidat = nodeIndex;
                     checkedHexagons[nodeIndex] = 1;
-                    coords[nodeIndex] = new Couple<>(x, y);
+                    coords[nodeIndex] = new Couple<>(columnIndex, lineIndex);
 
                     ArrayList<Integer> candidats = new ArrayList<>();
 
@@ -1341,22 +1312,22 @@ public class GeneralModel {
                             Couple<Integer, Integer> coord;
 
                             if (i == 0)
-                                coord = new Couple<>(x, y - 1);
+                                coord = new Couple<>(columnIndex, lineIndex - 1);
 
                             else if (i == 1)
-                                coord = new Couple<>(x + 1, y);
+                                coord = new Couple<>(columnIndex + 1, lineIndex);
 
                             else if (i == 2)
-                                coord = new Couple<>(x + 1, y + 1);
+                                coord = new Couple<>(columnIndex + 1, lineIndex + 1);
 
                             else if (i == 3)
-                                coord = new Couple<>(x, y + 1);
+                                coord = new Couple<>(columnIndex, lineIndex + 1);
 
                             else if (i == 4)
-                                coord = new Couple<>(x - 1, y);
+                                coord = new Couple<>(columnIndex - 1, lineIndex);
 
                             else
-                                coord = new Couple<>(x - 1, y - 1);
+                                coord = new Couple<>(columnIndex - 1, lineIndex - 1);
 
                             coords[neighbor] = coord;
                             checkedHexagons[neighbor] = 1;
@@ -1367,34 +1338,34 @@ public class GeneralModel {
 
                         candidat = candidats.get(0);
 
-                        for (int i = 0; i < 6; i++) {
-                            if (fragment.getNeighbor(candidat, i) != -1) {
+                        for (int neighborIndex = 0; neighborIndex < 6; neighborIndex++) {
+                            if (fragment.getNeighbor(candidat, neighborIndex) != -1) {
 
-                                int neighbor = fragment.getNeighbor(candidat, i);
+                                int neighbor = fragment.getNeighbor(candidat, neighborIndex);
 
                                 if (checkedHexagons[neighbor] == 0) {
-
                                     candidats.add(neighbor);
                                     Couple<Integer, Integer> coord;
 
-                                    if (i == 0)
-                                        coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() - 1);
-
-                                    else if (i == 1)
-                                        coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY());
-
-                                    else if (i == 2)
-                                        coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY() + 1);
-
-                                    else if (i == 3)
-                                        coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() + 1);
-
-                                    else if (i == 4)
-                                        coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY());
-
-                                    else
-                                        coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY() - 1);
-
+                                    switch(neighborIndex) {
+                                        case 0:
+                                            coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() - 1);
+                                            break;
+                                        case 1:
+                                            coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY());
+                                            break;
+                                        case 2:
+                                            coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY() + 1);
+                                            break;
+                                        case 3:
+                                            coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() + 1);
+                                            break;
+                                        case 4:
+                                            coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY());
+                                            break;
+                                        default: // case 5
+                                            coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY() - 1);
+                                    }
                                     coords[neighbor] = coord;
                                     checkedHexagons[neighbor] = 1;
                                 }
@@ -1411,18 +1382,13 @@ public class GeneralModel {
                     boolean valid = true;
                     for (int i = 0; i < coords.length; i++) {
                         Couple<Integer, Integer> coord = coords[i];
-
                         if (!isValid(coord, fragment, i))
                             valid = false;
-
                     }
-
                     if (valid) {
-
                         Integer[] occurence = new Integer[fragment.getNbNodes()];
 
                         for (int i = 0; i < coords.length; i++) {
-
                             Couple<Integer, Integer> coord = coords[i];
 
                             if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
@@ -1451,7 +1417,6 @@ public class GeneralModel {
                         ArrayList<Integer> outter = new ArrayList<>();
 
                         for (int i = 0; i < fragment.getNbNodes(); i++) {
-
                             if (fragment.getLabel(i) == 1) {
                                 Couple<Integer, Integer> coord = coords[i];
 

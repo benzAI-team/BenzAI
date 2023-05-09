@@ -72,10 +72,10 @@ public class CoronenoidConstraint extends BenzAIConstraint {
 	public void changeSolvingStrategy() {
 		GeneralModel generalModel = getGeneralModel();
 
-		IntVar[] variables = new IntVar[generalModel.getChanneling().length + 1];
+		IntVar[] variables = new IntVar[generalModel.getHexBoolVars().length + 1];
 		variables[0] = nbCrowns;
-		for (int i = 0; i < generalModel.getChanneling().length; i++) {
-			variables[i + 1] = generalModel.getChanneling()[i];
+		for (int i = 0; i < generalModel.getHexBoolVars().length; i++) {
+			variables[i + 1] = generalModel.getHexBoolVars()[i];
 		}
 
 		generalModel.getProblem().getSolver()

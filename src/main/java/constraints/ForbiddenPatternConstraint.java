@@ -160,8 +160,8 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 		GeneralModel generalModel = getGeneralModel();
 		//generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getBenzenoidVerticesBVArray(), new FirstFail(generalModel.getProblem()), new IntDomainMin()), new IntStrategy(presences, new FirstFail(generalModel.getProblem()), new IntDomainMin()));
 		if (mode < 3)
-			generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getChanneling(), new FirstFail(generalModel.getProblem()), new IntDomainMin()), new IntStrategy(presences, new FirstFail(generalModel.getProblem()), new IntDomainMin()));
-		else generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getChanneling(), new FirstFail(generalModel.getProblem()), new IntDomainMin()));
+			generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getHexBoolVars(), new FirstFail(generalModel.getProblem()), new IntDomainMin()), new IntStrategy(presences, new FirstFail(generalModel.getProblem()), new IntDomainMin()));
+		else generalModel.getProblem().getSolver().setSearch(new IntStrategy(generalModel.getHexBoolVars(), new FirstFail(generalModel.getProblem()), new IntDomainMin()));
 	}
 
 	@Override

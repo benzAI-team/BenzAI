@@ -24,16 +24,16 @@ import java.util.Objects;
  * - a Filter that can be used to test if a molecule has the property
  */
 public abstract class ModelProperty extends Property {
-	private BenzAIConstraint module; // for posting constraints on the model
+	private BenzAIConstraint constraint; // for posting constraints on the model
 	private final Checker checker; // for checking if a solution to the model has the other requirements
-	private Filter Filter; // for testing if a molecule has the full property
+	private Filter filter; // for testing if a molecule has the full property
 	
-	//model property with module and checker
-	public ModelProperty(String id, String name, BenzAIConstraint module, Checker checker, Filter Filter) {
+	//model property with constraint and checker
+	public ModelProperty(String id, String name, BenzAIConstraint constraint, Checker checker, Filter filter) {
 		super(id, name);
-		this.module = module;
+		this.constraint = constraint;
 		this.checker = checker;
-		this.Filter = Filter;
+		this.filter = filter;
 	}
 	// model property without checker
 	public ModelProperty(String id, String name, BenzAIConstraint module, Filter Filter) {
@@ -83,11 +83,11 @@ public abstract class ModelProperty extends Property {
 	 * getters, setters
 	 */
 	public BenzAIConstraint getConstraint() {
-		return module;
+		return constraint;
 	}
 
-	public void setModule(BenzAIConstraint module) {
-		this.module = module;
+	public void setConstraint(BenzAIConstraint constraint) {
+		this.constraint = constraint;
 	}
 
 	public Checker getChecker() {
@@ -95,10 +95,10 @@ public abstract class ModelProperty extends Property {
 	}
 
 	public Filter getFilter() {
-		return Filter;
+		return filter;
 	}
 	public void setFilter(Filter Filter) {
-		this.Filter = Filter;
+		this.filter = Filter;
 	}
 
 }

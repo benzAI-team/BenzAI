@@ -1,7 +1,9 @@
 package constraints;
 
-import java.util.ArrayList;
-
+import generator.GeneralModel;
+import generator.properties.model.expression.BinaryNumericalExpression;
+import generator.properties.model.expression.ParameterizedExpression;
+import generator.properties.model.expression.PropertyExpression;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.UndirectedGraphVar;
@@ -9,10 +11,7 @@ import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
-import generator.GeneralModel;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.model.expression.ParameterizedExpression;
+import java.util.ArrayList;
 
 public class CoronoidConstraint extends BenzAIConstraint {
 
@@ -48,7 +47,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 		if (nbMaxHoles == 0)
 			nbMaxHoles = generalModel.getNbMaxHexagons() / 2;
 
-		holesVertices = new BoolVar[generalModel.getChanneling().length + 1];
+		holesVertices = new BoolVar[generalModel.getHexBoolVars().length + 1];
 		for (int i = 0; i < holesVertices.length; i++) {
 			BoolVar x = generalModel.getProblem().boolVar("nodes[" + i + "]");
 			holesVertices[i] = x;
@@ -311,7 +310,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 			IntVar[] varClause = new IntVar[2];
 			IntIterableRangeSet[] valClause = new IntIterableRangeSet[2];
 
-			varClause[0] = generalModel.getChanneling()[i];
+			varClause[0] = generalModel.getHexBoolVars()[i];
 			valClause[0] = new IntIterableRangeSet(1);
 			varClause[1] = holesVertices[i];
 			valClause[1] = new IntIterableRangeSet(1);
@@ -323,7 +322,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 			varClause = new IntVar[2];
 			valClause = new IntIterableRangeSet[2];
 
-			varClause[0] = generalModel.getChanneling()[i];
+			varClause[0] = generalModel.getHexBoolVars()[i];
 			valClause[0] = new IntIterableRangeSet(0);
 			varClause[1] = holesVertices[i];
 			valClause[1] = new IntIterableRangeSet(0);

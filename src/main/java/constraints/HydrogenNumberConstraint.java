@@ -39,13 +39,13 @@ public class HydrogenNumberConstraint extends BenzAIConstraint {
 		buildDualGraph();
 		buildXN();
 
-		NULL = new IntVar[generalModel.getChanneling().length];
-		SOLOS = new IntVar[generalModel.getChanneling().length];
-		DUOS = new IntVar[generalModel.getChanneling().length];
-		TRIOS = new IntVar[generalModel.getChanneling().length];
-		QUATUORS = new IntVar[generalModel.getChanneling().length];
+		NULL = new IntVar[generalModel.getHexBoolVars().length];
+		SOLOS = new IntVar[generalModel.getHexBoolVars().length];
+		DUOS = new IntVar[generalModel.getHexBoolVars().length];
+		TRIOS = new IntVar[generalModel.getHexBoolVars().length];
+		QUATUORS = new IntVar[generalModel.getHexBoolVars().length];
 
-		for (int index = 0; index < generalModel.getChanneling().length; index++) {
+		for (int index = 0; index < generalModel.getHexBoolVars().length; index++) {
 			NULL[index] = generalModel.getProblem().intVar("NULL_" + index, new int[] { 0, 1 });
 			SOLOS[index] = generalModel.getProblem().intVar("SOLOS_" + index, new int[] { 0, 1, 2 });
 			DUOS[index] = generalModel.getProblem().intVar("DUOS_" + index, new int[] { 0, 2 });
@@ -116,7 +116,7 @@ public class HydrogenNumberConstraint extends BenzAIConstraint {
 							DUOS[index], TRIOS[index], QUATUORS[index] };
 
 					generalModel.getProblem().ifThenElse(
-							generalModel.getProblem().arithm(generalModel.getChanneling()[index], "=", 1),
+							generalModel.getProblem().arithm(generalModel.getHexBoolVars()[index], "=", 1),
 							generalModel.getProblem().table(tuple, tableHydrogens, "CT+"),
 							generalModel.getProblem().sum(new IntVar[] { NULL[index], SOLOS[index], DUOS[index],
 									TRIOS[index], QUATUORS[index] }, "=", 0));
@@ -181,12 +181,12 @@ public class HydrogenNumberConstraint extends BenzAIConstraint {
 	private void buildXN() {
 		GeneralModel generalModel = getGeneralModel();
 
-		xN = new BoolVar[generalModel.getChanneling().length][6];
+		xN = new BoolVar[generalModel.getHexBoolVars().length][6];
 
 		for (int line = 0; line < dualGraph.length; line++) {
 			for (int column = 0; column < dualGraph[line].length; column++) {
 				if (dualGraph[line][column] != -1) {
-					xN[line][column] = generalModel.getChanneling()[dualGraph[line][column]];
+					xN[line][column] = generalModel.getHexBoolVars()[dualGraph[line][column]];
 				} else {
 					xN[line][column] = zero;
 				}
@@ -199,7 +199,7 @@ public class HydrogenNumberConstraint extends BenzAIConstraint {
 	private void buildDualGraph() {
 		GeneralModel generalModel = getGeneralModel();
 
-		dualGraph = new int[generalModel.getChanneling().length][6];
+		dualGraph = new int[generalModel.getHexBoolVars().length][6];
 
 		for (int[] ints : dualGraph) {
 			Arrays.fill(ints, -1);
