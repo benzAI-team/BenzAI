@@ -57,18 +57,97 @@ public class PatternsEditionPane extends BorderPane {
 	}
 
 	private void initialize() {
-		initializeMenu();
+		initializeMenuBar();
 		initializePane();
 	}
 
-	private void initializeMenu() {
-
+	private void initializeMenuBar() {
 		MenuBar menuBar = new MenuBar();
 		buildFileMenu(menuBar);
+		buildDrawingMenu(menuBar);
+		buildNameMenu(menuBar);
+		buildCrownMenu(menuBar);
+		buildPatternMenu(menuBar);
+		this.setTop(menuBar);
+	}
 
-		Menu drawingMenu = new Menu("Drawing");
-		buildDrawingMenu(menuBar, drawingMenu);
+	private void buildPatternMenu(MenuBar menuBar) {
+		Menu patternMenu = new Menu("Patterns properties");
+		Menu multipleMenu = buildMultipleMenu();
+		buildDisableItem();
+		//buildOccurenceItem(); TODO to complete
+		patternMenu.getItems().addAll(multipleMenu, disableItem);
+		menuBar.getMenus().add(patternMenu);
+	}
 
+	private void buildDisableItem() {
+		disableItem = new CheckMenuItem("Exclude pattern");
+		disableItem.setOnAction(e -> {
+			if (disableItem.isSelected())
+				unselectAllMenus(itemUndisjunct, itemDisjunct, itemNNDisjunct);
+		});
+	}
+
+	private void buildOccurenceItem() { // TODO to complete
+		//CheckMenuItem occurencesItem = new CheckMenuItem();
+		Label occurencesLabel = new Label("Pattern's occurences: ");
+		occurencesField = new TextField();
+		//HBox occurencesBox = new HBox(3.0);
+		//occurencesBox.getChildren().addAll(occurencesLabel, occurencesField);
+		//occurencesItem.setGraphic(occurencesBox);
+	}
+
+	private Menu buildMultipleMenu() {
+		Menu multipleMenu = new Menu("Multiple patterns interaction");
+		buildItemUndisjunct();
+		buildItemDisjunct();
+		buildItemNNDisjunct();
+		multipleMenu.getItems().addAll(itemUndisjunct, itemDisjunct, itemNNDisjunct);
+		return multipleMenu;
+	}
+
+	private void buildItemNNDisjunct() {
+		itemNNDisjunct = new CheckMenuItem("Disjunct on neutral/negative hexagons");
+		itemNNDisjunct.setOnAction(e -> {
+			itemNNDisjunct.setSelected(true);
+			if (itemNNDisjunct.isSelected())
+				unselectAllMenus(itemUndisjunct, itemDisjunct, disableItem);
+		});
+		itemNNDisjunct.setSelected(true);
+	}
+
+	private void buildItemDisjunct() {
+		itemDisjunct = new CheckMenuItem("Disjunct patterns");
+		itemDisjunct.setOnAction(e -> {
+			itemDisjunct.setSelected(true);
+			if (itemDisjunct.isSelected())
+				unselectAllMenus(itemUndisjunct, itemNNDisjunct, disableItem);
+		});
+	}
+
+	private void buildItemUndisjunct() {
+		itemUndisjunct = new CheckMenuItem("Undisjunct patterns");
+		itemUndisjunct.setOnAction(e -> {
+			itemUndisjunct.setSelected(true);
+			if (itemUndisjunct.isSelected())
+				unselectAllMenus(itemDisjunct, itemNNDisjunct, disableItem);
+		});
+	}
+
+	private void buildCrownMenu(MenuBar menuBar) {
+		Menu nbCrownsMenu = new Menu();
+		HBox nbCrownsBox = new HBox(3.0);
+		Label nbCrownsLabel = new Label("Number of crowns: ");
+		Button minusButton = new Button("-");
+		minusButton.setOnAction(e -> removeCrown());
+		Button plusButton = new Button("+");
+		plusButton.setOnAction(e -> addCrown());
+		nbCrownsBox.getChildren().addAll(nbCrownsLabel, minusButton, plusButton);
+		nbCrownsMenu.setGraphic(nbCrownsBox);
+		menuBar.getMenus().add(nbCrownsMenu);
+	}
+
+	private void buildNameMenu(MenuBar menuBar) {
 		Label labelName = new Label("Name: ");
 		fieldName = new TextField("default name");
 		HBox boxName = new HBox(3.0);
@@ -76,76 +155,20 @@ public class PatternsEditionPane extends BorderPane {
 		Menu nameMenu = new Menu();
 		nameMenu.setGraphic(boxName);
 		menuBar.getMenus().add(nameMenu);
-
-		Menu nbCrownsMenu = new Menu();
-		HBox nbCrownsBox = new HBox(3.0);
-		Label nbCrownsLabel = new Label("Number of crowns: ");
-		Button minusButton = new Button("-");
-		Button plusButton = new Button("+");
-		nbCrownsBox.getChildren().addAll(nbCrownsLabel, minusButton, plusButton);
-		nbCrownsMenu.setGraphic(nbCrownsBox);
-		menuBar.getMenus().add(nbCrownsMenu);
-
 		fieldName.setOnKeyReleased(e -> {
 
 			int index = selectedPatternGroup.getIndex();
 			GridPane gridPane = boxItems.get(index);
 
-			if (!"".equals(fieldName.getText()))
-				((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
-			else
+			if ("".equals(fieldName.getText()))
 				((Label) gridPane.getChildren().get(0)).setText("default name");
+			else
+				((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
 		});
-
-		minusButton.setOnAction(e -> removeCrown());
-
-		plusButton.setOnAction(e -> addCrown());
-
-		Menu patternMenu = new Menu("Patterns properties");
-		Menu multipleMenu = new Menu("Multiple patterns interaction");
-		itemUndisjunct = new CheckMenuItem("Undisjunct patterns");
-		itemDisjunct = new CheckMenuItem("Disjunct patterns");
-		itemNNDisjunct = new CheckMenuItem("Disjunct on neutral/negative hexagons");
-		multipleMenu.getItems().addAll(itemUndisjunct, itemDisjunct, itemNNDisjunct);
-		disableItem = new CheckMenuItem("Exclude pattern");
-		//CheckMenuItem occurencesItem = new CheckMenuItem();
-		Label occurencesLabel = new Label("Pattern's occurences: ");
-		occurencesField = new TextField();
-		//HBox occurencesBox = new HBox(3.0);
-		//occurencesBox.getChildren().addAll(occurencesLabel, occurencesField);
-		//occurencesItem.setGraphic(occurencesBox);
-		patternMenu.getItems().addAll(multipleMenu, disableItem);
-		menuBar.getMenus().add(patternMenu);
-
-		itemNNDisjunct.setSelected(true);
-		
-		itemUndisjunct.setOnAction(e -> {
-			itemUndisjunct.setSelected(true);
-			if (itemUndisjunct.isSelected())
-				unselectAllMenus(itemDisjunct, itemNNDisjunct, disableItem);
-		});
-
-		itemDisjunct.setOnAction(e -> {
-			itemDisjunct.setSelected(true);
-			if (itemDisjunct.isSelected())
-				unselectAllMenus(itemUndisjunct, itemNNDisjunct, disableItem);
-		});
-
-		itemNNDisjunct.setOnAction(e -> {
-			itemNNDisjunct.setSelected(true);
-			if (itemNNDisjunct.isSelected())
-				unselectAllMenus(itemUndisjunct, itemDisjunct, disableItem);
-		});
-
-		disableItem.setOnAction(e -> {
-			if (disableItem.isSelected())
-				unselectAllMenus(itemUndisjunct, itemDisjunct, itemNNDisjunct);
-		});
-
-		this.setTop(menuBar);
 	}
 
-	private void buildDrawingMenu(MenuBar menuBar, Menu drawingMenu) {
+	private void buildDrawingMenu(MenuBar menuBar) {
+		Menu drawingMenu = new Menu("Drawing");
 		MenuItem clearItem = new MenuItem("Clear");
 		MenuItem neutralItem = new MenuItem("Set all neutral");
 		MenuItem positiveItem = new MenuItem("Set all positive");
