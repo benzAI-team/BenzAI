@@ -4,14 +4,14 @@ import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 import utils.HexNeighborhood;
 
-public enum BoundsBuilder {
+enum BoundsBuilder {
 	;
 
-	public static UndirectedGraph buildGLB2(GeneralModel model) {
+	static UndirectedGraph buildGLB2(GeneralModel model) {
 		return new UndirectedGraph(model.getProblem(), model.getNbHexagonsCoronenoid(), SetType.LINKED_LIST, false);
 	}
 	
-	public static UndirectedGraph buildGUB2(GeneralModel model) {
+	static UndirectedGraph buildGUB2(GeneralModel model) {
 		
 		UndirectedGraph GUB = new UndirectedGraph(model.getProblem(), model.getNbHexagonsCoronenoid(), SetType.LINKED_LIST, false);
 		

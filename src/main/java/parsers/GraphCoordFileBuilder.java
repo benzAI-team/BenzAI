@@ -29,7 +29,7 @@ public class GraphCoordFileBuilder {
         this.outputFileName = outputFilename;
     }
 
-    public boolean isCommentary(String[] splittedLine) {
+    private boolean isCommentary(String[] splittedLine) {
         return "c".equals(splittedLine[0]);
     }
 
@@ -37,11 +37,11 @@ public class GraphCoordFileBuilder {
         return "e".equals(splittedLine[0]);
     }
 
-    public boolean isHexagon(String[] splittedLine) {
+    private boolean isHexagon(String[] splittedLine) {
         return "h".equals(splittedLine[0]);
     }
 
-    public boolean isHeader(String[] splittedLine) {
+    private boolean isHeader(String[] splittedLine) {
         return "p".equals(splittedLine[0]);
     }
 
@@ -49,7 +49,7 @@ public class GraphCoordFileBuilder {
         return (position + 3) % 6;
     }
 
-    public Point transition(int x, int y, int position) {
+    private Point transition(int x, int y, int position) {
 
         //Constants
         int h = 0;
@@ -68,7 +68,7 @@ public class GraphCoordFileBuilder {
         return null;
     }
 
-    public void readInput() {
+    private void readInput() {
         try {
 
             BufferedReader r = new BufferedReader(new FileReader(inputFileName));
@@ -112,7 +112,7 @@ public class GraphCoordFileBuilder {
         }
     }
 
-    public void setFirstHexagon() {
+    private void setFirstHexagon() {
         //Adding firstHexagon
         nodesCoord.set(0, 0, hexagons[0][0]);
         nodesCoord.set(1, 1, hexagons[0][1]);
@@ -146,7 +146,7 @@ public class GraphCoordFileBuilder {
         hexagonsCovered[0] = 1;
     }
 
-    public void saveResult() {
+    private void saveResult() {
 
         try {
             BufferedWriter w = new BufferedWriter(new FileWriter(outputFileName));
@@ -187,7 +187,7 @@ public class GraphCoordFileBuilder {
         ArrayList<Integer> candidats = new ArrayList<>();
         candidats.add(0);
 
-        while (candidats.size() > 0) {
+        while (!candidats.isEmpty()) {
             int candidat = candidats.get(0);
 
             for (int hexagon = 0; hexagon < nbHexagons; hexagon++) {
@@ -273,7 +273,6 @@ public class GraphCoordFileBuilder {
                                         int nodeId = hexagons[hexagon][nextIndex];
                                         nodesHexagon[nextIndex] = new Node((int) newCoord.getX(), (int) newCoord.getY(), nodeId);
                                     }
-                                    //firstIndex ++;
                                     firstIndex = (firstIndex + 1) % 6;
                                     cpt++;
                                 }
