@@ -40,11 +40,11 @@ public class Solution {
 		return vertices;
 	}
 
-	public int getVertex(int index) {
+	private int getVertex(int index) {
 		return vertices.get(index);
 	}
 
-	public Node getCoronenoidNode(int index) {
+	private Node getCoronenoidNode(int index) {
 		return coronenoidNodes[index];
 	}
 
@@ -56,7 +56,7 @@ public class Solution {
 		this.pattern = pattern;
 	}
 
-	public ArrayList<Integer> rotation180() {
+	private ArrayList<Integer> rotation180() {
 
 		Node center = getCoronenoidNode(coronenoidCenter);
 
@@ -109,9 +109,7 @@ public class Solution {
 					embedded1 = false;
 					break;
 				}
-
 				translation1.add(correspondancesHexagons[coordsMatrixCoronenoid[x1][y1]]);
-
 			}
 
 			if (embedded1) {
@@ -288,7 +286,7 @@ public class Solution {
 
 	}
 
-	public ArrayList<ArrayList<Integer>> allRotations() {
+	private ArrayList<ArrayList<Integer>> allRotations() {
 
 		ArrayList<ArrayList<Integer>> rotations = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> translatedRotations = new ArrayList<>();
@@ -423,7 +421,7 @@ public class Solution {
 						}
 					}
 
-					while (candidats.size() > 0) {
+					while (!candidats.isEmpty()) {
 
 						candidat = candidats.get(0);
 
@@ -476,7 +474,7 @@ public class Solution {
                 && coordsMatrixCoronenoid[coord.getY()][coord.getX()] != -1;
     }
 
-	public static int rotation60(int diameter, int nbCrowns, int i) {
+	private static int rotation60(int diameter, int nbCrowns, int i) {
 		return diameter * (nbCrowns - 1) - (i % diameter) * diameter + (i / diameter) * (diameter + 1);
 	}
 }

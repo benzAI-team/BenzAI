@@ -9,7 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="class HexNeighborhood added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/Pattern.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/Pattern.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683728177294</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="class HexNeighborhood added">
+      <created>1683730449896</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1683730449896</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

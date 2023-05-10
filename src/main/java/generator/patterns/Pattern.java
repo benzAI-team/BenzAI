@@ -7,6 +7,7 @@ import utils.RelativeMatrix;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Pattern {
 
@@ -34,143 +35,97 @@ public class Pattern {
 		this.order = order;
 	}
 
-
+	/***
+	 * export pattern in the given file
+	 */
 	public void export(File file) throws IOException {
-
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+		writeDegree(writer);
+		writeMatrix(writer, "MATRIX\n", matrix);
+		writeLabels(writer);
+		writeNodes(writer);
+		writeCenter(writer);
+		writeMatrix(writer, "NEIGHBORS\n", neighborGraph);
+		writer.close();
+	}
 
-		writer.write("DEGREE\n");
-		writer.write(order + "\n");
-
-		writer.write("MATRIX\n");
-		for (int[] ints : matrix) {
-			for (int anInt : ints) {
-				writer.write(anInt + " ");
-			}
-			writer.write("\n");
-		}
-
-		writer.write("LABELS\n");
-		for (int label : labels) writer.write(label + " ");
-		writer.write("\n");
-
-		writer.write("NODES\n");
-		for (Node node : nodesRefs)
-			writer.write(node.getX() + " " + node.getY() + "\n");
-
+	private void writeCenter(BufferedWriter writer) throws IOException {
 		writer.write("CENTER\n");
 		if (center != null)
 			writer.write(center.getIndex() + "\n");
 		else
 			writer.write("0\n");
+	}
 
-		writer.write("NEIGHBORS\n");
+	private void writeNodes(BufferedWriter writer) throws IOException {
+		writer.write("NODES\n");
+		for (Node node : nodesRefs)
+			writer.write(node.getX() + " " + node.getY() + "\n");
+	}
+
+	private void writeLabels(BufferedWriter writer) throws IOException {
+		writer.write("LABELS\n");
+		for (int label : labels) writer.write(label + " ");
+		writer.write("\n");
+	}
+
+	private void writeDegree(BufferedWriter writer) throws IOException {
+		writer.write("DEGREE\n");
+		writer.write(order + "\n");
+	}
+
+	private void writeMatrix(BufferedWriter writer, String str, int[][] neighborGraph) throws IOException {
+		writer.write(str);
 		for (int[] ints : neighborGraph) {
 			for (int anInt : ints) {
 				writer.write(anInt + " ");
 			}
 			writer.write("\n");
 		}
-
-		writer.close();
 	}
 
+	/***
+	 * import pattern from the given file
+	 * @return the pattern
+	 */
 	public static Pattern importPattern(File file) throws IOException {
+		ArrayList<String>[] lineArray = readPatternFile(file);
+		int degree = getDegree(lineArray);
+		int[][] matrix = getMatrix(lineArray);
+		int[] labels = getLabels(lineArray);
+		Node[] nodesRefs = getNodesRefs(lineArray);
+		Node centerNode = getCenterNode(lineArray, nodesRefs);
+		int[][] neighborGraph = getNeighborGraph(lineArray);
+		return new Pattern(matrix, labels, nodesRefs, centerNode, neighborGraph, degree);
+	}
 
-		int step = 0;
-
-		ArrayList<String> degreeLines = new ArrayList<>();
-		ArrayList<String> matrixLines = new ArrayList<>();
-		ArrayList<String> labelsLines = new ArrayList<>();
-		ArrayList<String> nodesLines = new ArrayList<>();
-		ArrayList<String> centerLines = new ArrayList<>();
-		ArrayList<String> neighborsLines = new ArrayList<>();
-
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+	private static int[][] getNeighborGraph(ArrayList<String>[] lineArray) {
+		String[] splittedLine;
 		String line;
+		ArrayList<String> neighborsLines = lineArray[5];
+		int[][] neighborGraph = new int[neighborsLines.size()][6];
 
-		while ((line = reader.readLine()) != null) {
+		for (int i = 0; i < neighborGraph.length; i++) {
 
-			switch (line) {
-				case "DEGREE":
-					step = 0;
-					break;
-				case "MATRIX":
-					step = 1;
-					break;
-				case "LABELS":
-					step = 2;
-					break;
-				case "NODES":
-					step = 3;
-					break;
-				case "CENTER":
-					step = 4;
-					break;
-				case "NEIGHBORS":
-					step = 5;
-					break;
-				default:
+			line = neighborsLines.get(i);
+			splittedLine = line.split(" ");
 
-					if (step == 0)
-						degreeLines.add(line);
-
-					else if (step == 1)
-						matrixLines.add(line);
-
-					else if (step == 2)
-						labelsLines.add(line);
-
-					else if (step == 3)
-						nodesLines.add(line);
-
-					else if (step == 4)
-						centerLines.add(line);
-
-					else if (step == 5)
-						neighborsLines.add(line);
-					break;
+			for (int j = 0; j < 6; j++) {
+				neighborGraph[i][j] = Integer.parseInt(splittedLine[j]);
 			}
 		}
+		return neighborGraph;
+	}
 
-		reader.close();
+	private static Node getCenterNode(ArrayList<String>[] lineArray, Node[] nodesRefs) {
+		ArrayList<String> centerLines = lineArray[4];
+		return nodesRefs[Integer.parseInt(centerLines.get(0))];
+	}
 
-		/*
-		 * Degree
-		 */
-
-		int degree = Integer.parseInt(degreeLines.get(0));
-
-		/*
-		 * Matrix
-		 */
-
-		int[][] matrix = new int[matrixLines.size()][matrixLines.size()];
-
-		for (int i = 0; i < matrixLines.size(); i++) {
-
-			line = matrixLines.get(i);
-			String[] splittedLine = line.split(" ");
-
-			for (int j = 0; j < splittedLine.length; j++)
-				matrix[i][j] = Integer.parseInt(splittedLine[j]);
-		}
-
-		/*
-		 * Labels
-		 */
-
-		line = labelsLines.get(0);
-		String[] splittedLine = line.split(" ");
-
-		int[] labels = new int[splittedLine.length];
-		for (int i = 0; i < labels.length; i++)
-			labels[i] = Integer.parseInt(splittedLine[i]);
-
-		/*
-		 * Nodes & RelativeMatrix
-		 */
-
+	private static Node[] getNodesRefs(ArrayList<String>[] lineArray) {
+		String[] splittedLine;
+		String line;
+		ArrayList<String> nodesLines = lineArray[3];
 		Node[] nodesRefs = new Node[nodesLines.size()];
 		RelativeMatrix relativeMatrix = new RelativeMatrix(8 * nodesLines.size() + 1, 16 * nodesLines.size() + 1,
 				4 * nodesLines.size(), 8 * nodesLines.size());
@@ -186,30 +141,63 @@ public class Pattern {
 			nodesRefs[i] = new Node(x, y, i);
 			relativeMatrix.set(x, y, i);
 		}
+		return nodesRefs;
+	}
 
-		/*
-		 * Center
-		 */
+	private static int[] getLabels(ArrayList<String>[] lineArray) {
+		String line;
+		ArrayList<String> labelsLines = lineArray[2];
+		line = labelsLines.get(0);
+		String[] splittedLine = line.split(" ");
 
-		Node centerNode = nodesRefs[Integer.parseInt(centerLines.get(0))];
+		int[] labels = new int[splittedLine.length];
+		for (int i = 0; i < labels.length; i++)
+			labels[i] = Integer.parseInt(splittedLine[i]);
+		return labels;
+	}
 
-		/*
-		 * Neighbor graph
-		 */
+	private static int[][] getMatrix(ArrayList<String>[] lineArray) {
+		String line;
+		ArrayList<String> matrixLines = lineArray[1];
+		int[][] matrix = new int[matrixLines.size()][matrixLines.size()];
 
-		int[][] neighborGraph = new int[neighborsLines.size()][6];
+		for (int i = 0; i < matrixLines.size(); i++) {
 
-		for (int i = 0; i < neighborGraph.length; i++) {
+			line = matrixLines.get(i);
+			String[] splittedLine = line.split(" ");
 
-			line = neighborsLines.get(i);
-			splittedLine = line.split(" ");
-
-			for (int j = 0; j < 6; j++) {
-				neighborGraph[i][j] = Integer.parseInt(splittedLine[j]);
-			}
+			for (int j = 0; j < splittedLine.length; j++)
+				matrix[i][j] = Integer.parseInt(splittedLine[j]);
 		}
+		return matrix;
+	}
 
-		return new Pattern(matrix, labels, nodesRefs, centerNode, neighborGraph, degree);
+	private static int getDegree(ArrayList<String>[] lineArray) {
+		ArrayList<String> degreeLines = lineArray[0];
+		return Integer.parseInt(degreeLines.get(0));
+	}
+
+	private static ArrayList<String>[] readPatternFile(File file) throws IOException {
+		ArrayList<String>[] lineArray = new ArrayList[6];
+		for(int i = 0 ; i < 6; i++)
+			lineArray[i] = new ArrayList<>();
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line;
+		int step = 0;
+		HashMap<String,Integer> lineTypes = new HashMap<>();
+		lineTypes.put("DEGREE", 0);
+		lineTypes.put("MATRIX", 1);
+		lineTypes.put("LABELS", 2);
+		lineTypes.put("NODES", 3);
+		lineTypes.put("CENTER", 4);
+		lineTypes.put("NEIGHBORS", 5);
+		while ((line = reader.readLine()) != null)
+			if(lineTypes.containsKey(line))
+				step = lineTypes.get(line);
+			else
+				lineArray[step].add(line);
+		reader.close();
+		return lineArray;
 	}
 
 	private Pattern buildPattern(int[][] neighborGraph, int[] labels, int order) {
@@ -251,7 +239,7 @@ public class Pattern {
 			}
 		}
 
-		while (candidats.size() > 0) {
+		while (!candidats.isEmpty()) {
 
 			int candidatIndex = candidats.get(0);
 
@@ -377,7 +365,7 @@ public class Pattern {
 		return coordsMatrix;
 	}
 
-	public static int getNbOptimizedCrowns(Pattern pattern) {
+	private static int getNbOptimizedCrowns(Pattern pattern) {
 
 		int nbPositiveHexagons = 0;
 		for (int i = 0; i < pattern.getNbNodes(); i++)
@@ -433,13 +421,13 @@ public class Pattern {
 					break;
 			}
 
-			if (!found) {
-				nbCrowns++;
-				ok = true;
-			} else {
+			if (found) {
 				nbCrowns--;
 				diameter = (2 * nbCrowns) - 1;
 				coordsMatrix = coordsMatrix(nbCrowns);
+			} else {
+				nbCrowns++;
+				ok = true;
 			}
 		}
 
