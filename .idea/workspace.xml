@@ -7,39 +7,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="minor refactoring">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Rectangle, Carbon number, Hydrogen number properties fixed&#10;TestGeneration class added">
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/HexNeighborhood.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pattern3test" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint3.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns1Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns1Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern1Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern1Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/GeometryBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/GeometryBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ModelBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ModelBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/CarbonNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/CarbonNumberProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/Pattern.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/Pattern.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/DiameterProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/DiameterProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/HydrogenNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/HydrogenNumberProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/RectangleProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/RectangleProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/nogood/NoGoodRecorder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nogood/NoGoodRecorder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/GeneratorPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/GeneratorPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/CMLConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/CMLConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/COMConverter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/COMConverter2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/ComConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/ComConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphCoordFileBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphCoordFileBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphFileBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphFileBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/MoleculeGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/MoleculeGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/MoleculeGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/MoleculeGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternGroup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestGeneration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestGeneration.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +45,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
         <option value="module-info" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -260,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683104378368</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Rectangle, Carbon number, Hydrogen number properties fixed&#10;TestGeneration class added">
+      <created>1683645858424</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1683645858424</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -319,7 +318,8 @@
     <MESSAGE value="branch general_model2 merged" />
     <MESSAGE value="add : testing generation" />
     <MESSAGE value="minor refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor refactoring" />
+    <MESSAGE value="Rectangle, Carbon number, Hydrogen number properties fixed&#10;TestGeneration class added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rectangle, Carbon number, Hydrogen number properties fixed&#10;TestGeneration class added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -348,7 +348,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1683639808276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1683711176610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1682673901626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

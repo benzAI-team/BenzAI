@@ -1,12 +1,13 @@
 package view.groups;
 
-import java.util.ArrayList;
-
 import javafx.scene.Group;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 import molecules.Molecule;
 import utils.Couple;
+import utils.HexNeighborhood;
+
+import java.util.ArrayList;
 
 public class MoleculeGroup extends Group {
 
@@ -51,68 +52,44 @@ public class MoleculeGroup extends Group {
 
 		while (candidates.size() > 0) {
 
-			int candidate = candidates.get(0);
+			int candidateIndex = candidates.get(0);
 
-			for (int i = 0; i < 6; i++) {
+			for (HexNeighborhood neighbor : HexNeighborhood.values()) {
 
-				int n = dualGraph[candidate][i];
+				int n = dualGraph[candidateIndex][neighbor.getIndex()];
 				if (n != -1) {
 					if (checkedHexagons[n] == 0) {
 
-						int x = hexagonsCoords[candidate].getX();
-						int y = hexagonsCoords[candidate].getY();
+						int x = hexagonsCoords[candidateIndex].getX() + neighbor.dx();
+						int y = hexagonsCoords[candidateIndex].getY() + neighbor.dy();
 
-						double xCenter = centersCoords[candidate].getX();
-						double yCenter = centersCoords[candidate].getY();
+						double xCenter = centersCoords[candidateIndex].getX();
+						double yCenter = centersCoords[candidateIndex].getY();
 
-						if (i == 0) {
-
-							y -= 1;
-
-							xCenter += 26.0;
-							yCenter -= 43.5;
-						}
-
-						else if (i == 1) {
-
-							x += 1;
-
-							xCenter += 52.0;
-							yCenter += 0.0;
-						}
-
-						else if (i == 2) {
-
-							x += 1;
-							y += 1;
-
-							xCenter += 26.0;
-							yCenter += 43.5;
-						}
-
-						else if (i == 3) {
-
-							y += 1;
-
-							xCenter -= 26.0;
-							yCenter += 43.5;
-						}
-
-						else if (i == 4) {
-
-							x -= 1;
-
-							xCenter -= 52.0;
-							yCenter += 0.0;
-						}
-
-						else if (i == 5) {
-
-							x -= 1;
-							y -= 1;
-
-							xCenter -= 26.0;
-							yCenter -= 43.5;
+						switch (neighbor.getIndex()){
+							case 0:
+								xCenter += 26.0;
+								yCenter -= 43.5;
+								break;
+							case 1:
+								xCenter += 52.0;
+								yCenter += 0.0;
+								break;
+							case 2:
+								xCenter += 26.0;
+								yCenter += 43.5;
+								break;
+							case 3:
+								xCenter -= 26.0;
+								yCenter += 43.5;
+								break;
+							case 4:
+								xCenter -= 52.0;
+								yCenter += 0.0;
+								break;
+							case 5:
+								xCenter -= 26.0;
+								yCenter -= 43.5;
 						}
 
 						checkedHexagons[n] = 1;

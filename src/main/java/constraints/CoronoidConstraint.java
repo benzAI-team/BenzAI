@@ -10,6 +10,7 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
+import utils.HexNeighborhood;
 
 import java.util.ArrayList;
 
@@ -254,23 +255,12 @@ public class CoronoidConstraint extends BenzAIConstraint {
 					for (int k = 0; k < 6; k++)
 						N[k] = -1;
 
-					if (i > 0)
-						N[0] = matrix[i - 1][j];
-
-					if (j + 1 < diameter)
-						N[1] = matrix[i][j + 1];
-
-					if (i + 1 < diameter && j + 1 < diameter)
-						N[2] = matrix[i + 1][j + 1];
-
-					if (i + 1 < diameter)
-						N[3] = matrix[i + 1][j];
-
-					if (j > 0)
-						N[4] = matrix[i][j - 1];
-
-					if (i > 0 && j > 0)
-						N[5] = matrix[i - 1][j - 1];
+					for(HexNeighborhood neighbor : HexNeighborhood.values()){
+						int i2 = i + neighbor.dy();
+						int j2 = j + neighbor.dx();
+						if(i2 >= 0 && i2 <= diameter - 1 && j2 >= 0 && j2 <= diameter - 1)
+							N[neighbor.getIndex()] = matrix[i2][j2];
+					}
 
 					for (int k = 0; k < 6; k++) {
 						int v;

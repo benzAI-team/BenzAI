@@ -64,94 +64,10 @@ public class PatternsEditionPane extends BorderPane {
 	private void initializeMenu() {
 
 		MenuBar menuBar = new MenuBar();
-
-		Menu fileMenu = new Menu("File");
-		MenuItem importItem = new MenuItem("Import pattern");
-		MenuItem saveItem = new MenuItem("Save pattern as");
-		fileMenu.getItems().addAll(importItem, saveItem);
-		menuBar.getMenus().add(fileMenu);
-
-		saveItem.setOnAction(e -> {
-			FileChooser fileChooser = new FileChooser();
-			File file = fileChooser.showSaveDialog(parent.getApplication().getStage());
-
-			if (file != null) {
-				Pattern pattern = selectedPatternGroup.exportPattern();
-				try {
-					pattern.export(file);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-
-		importItem.setOnAction(e -> {
-			FileChooser fileChooser = new FileChooser();
-			File file = fileChooser.showOpenDialog(parent.getApplication().getStage());
-
-			if (file != null) {
-				boolean ok = true;
-
-				Pattern pattern = null;
-
-				try {
-					pattern = Pattern.importPattern(file);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-					ok = false;
-				}
-
-				if (ok) {
-
-					int yMax = -1;
-
-					for (Node node : pattern.getNodesRefs())
-						if (node.getY() > yMax)
-							yMax = node.getX();
-
-					int maxColumn = -1;
-
-					for (int i = 0; i <= yMax; i++) {
-						int column = 0;
-						for (Node node : pattern.getNodesRefs()) {
-							if (node.getY() == i) {
-								column++;
-							}
-						}
-						if (column > maxColumn)
-							maxColumn = column;
-					}
-
-					int index = boxItems.size();
-					addEntry();
-
-					PatternGroup group = new PatternGroup(this, maxColumn, index);
-					group.importPattern(pattern);
-					patternGroups.set(index, group);
-					select(index);
-
-				}
-
-				else
-					Utils.alert("Error while importing the pattern");
-			}
-		});
+		buildFileMenu(menuBar);
 
 		Menu drawingMenu = new Menu("Drawing");
-		MenuItem clearItem = new MenuItem("Clear");
-		MenuItem neutralItem = new MenuItem("Set all neutral");
-		MenuItem positiveItem = new MenuItem("Set all positive");
-		MenuItem negativeItem = new MenuItem("Set all negative");
-		drawingMenu.getItems().addAll(clearItem, neutralItem, positiveItem, negativeItem);
-		menuBar.getMenus().add(drawingMenu);
-
-		clearItem.setOnAction(e -> selectedPatternGroup.setAllLabels(0));
-
-		neutralItem.setOnAction(e -> selectedPatternGroup.setAllLabels(1));
-
-		positiveItem.setOnAction(e -> selectedPatternGroup.setAllLabels(2));
-
-		negativeItem.setOnAction(e -> selectedPatternGroup.setAllLabels(3));
+		buildDrawingMenu(menuBar, drawingMenu);
 
 		Label labelName = new Label("Name: ");
 		fieldName = new TextField("default name");
@@ -227,6 +143,97 @@ public class PatternsEditionPane extends BorderPane {
 		});
 
 		this.setTop(menuBar);
+	}
+
+	private void buildDrawingMenu(MenuBar menuBar, Menu drawingMenu) {
+		MenuItem clearItem = new MenuItem("Clear");
+		MenuItem neutralItem = new MenuItem("Set all neutral");
+		MenuItem positiveItem = new MenuItem("Set all positive");
+		MenuItem negativeItem = new MenuItem("Set all negative");
+		drawingMenu.getItems().addAll(clearItem, neutralItem, positiveItem, negativeItem);
+		menuBar.getMenus().add(drawingMenu);
+
+		clearItem.setOnAction(e -> selectedPatternGroup.setAllLabels(0));
+
+		neutralItem.setOnAction(e -> selectedPatternGroup.setAllLabels(1));
+
+		positiveItem.setOnAction(e -> selectedPatternGroup.setAllLabels(2));
+
+		negativeItem.setOnAction(e -> selectedPatternGroup.setAllLabels(3));
+	}
+
+	private void buildFileMenu(MenuBar menuBar) {
+		Menu fileMenu = new Menu("File");
+		MenuItem importItem = new MenuItem("Import pattern");
+		MenuItem saveItem = new MenuItem("Save pattern as");
+		fileMenu.getItems().addAll(importItem, saveItem);
+		menuBar.getMenus().add(fileMenu);
+
+		saveItem.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			File file = fileChooser.showSaveDialog(parent.getApplication().getStage());
+
+			if (file != null) {
+				Pattern pattern = selectedPatternGroup.exportPattern();
+				try {
+					pattern.export(file);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
+		importItem.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			File file = fileChooser.showOpenDialog(parent.getApplication().getStage());
+
+			if (file != null) {
+				boolean ok = true;
+
+				Pattern pattern = null;
+
+				try {
+					pattern = Pattern.importPattern(file);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					ok = false;
+				}
+
+				if (ok) {
+
+					int yMax = -1;
+
+					for (Node node : pattern.getNodesRefs())
+						if (node.getY() > yMax)
+							yMax = node.getX();
+
+					int maxColumn = -1;
+
+					for (int i = 0; i <= yMax; i++) {
+						int column = 0;
+						for (Node node : pattern.getNodesRefs()) {
+							if (node.getY() == i) {
+								column++;
+							}
+						}
+						if (column > maxColumn)
+							maxColumn = column;
+					}
+
+					int index = boxItems.size();
+					addEntry();
+
+					PatternGroup group = new PatternGroup(this, maxColumn, index);
+					group.importPattern(pattern);
+					patternGroups.set(index, group);
+					select(index);
+
+				}
+
+				else
+					Utils.alert("Error while importing the pattern");
+			}
+		});
 	}
 
 	private void select(int index) {
@@ -345,7 +352,7 @@ public class PatternsEditionPane extends BorderPane {
 		this.setCenter(borderPane);
 	}
 
-	public void addEntry() {
+	private void addEntry() {
 
 		Label label = new Label("unknown_pattern");
 
@@ -372,11 +379,11 @@ public class PatternsEditionPane extends BorderPane {
 
 	}
 
-	public void removePane(int index) {
+	private void removePane(int index) {
 		patternGroups.remove(index);
 	}
 
-	public void removeEntry(int index) {
+	void removeEntry(int index) {
 
 		boxItems.remove(index);
 		ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
@@ -397,11 +404,11 @@ public class PatternsEditionPane extends BorderPane {
 		}
 	}
 
-	public int getNbItems() {
+	int getNbItems() {
 		return boxItems.size();
 	}
 
-	public void checkBorder() {
+	void checkBorder() {
 		boolean borderUsed = false;
 		for (PatternHexagon hexagon : selectedPatternGroup.getExtendedBorder()) {
 			if (hexagon.getLabel() >= 1) {
@@ -414,7 +421,7 @@ public class PatternsEditionPane extends BorderPane {
 			removeCrown();
 	}
 
-	public void addCrown() {
+	void addCrown() {
 		int nbCrowns = selectedPatternGroup.getNbCrowns() + 1;
 
 		PatternGroup newPatternGroup = new PatternGroup(this, nbCrowns, selectedPatternGroup.getIndex());
@@ -434,7 +441,7 @@ public class PatternsEditionPane extends BorderPane {
 		select(newPatternGroup.getIndex());
 	}
 
-	public void removeCrown() {
+	private void removeCrown() {
 
 		int nbCrowns = selectedPatternGroup.getNbCrowns();
 
@@ -460,7 +467,7 @@ public class PatternsEditionPane extends BorderPane {
 		}
 	}
 
-	public static Pattern buildPattern(PatternGroup group) {
+	private static Pattern buildPattern(PatternGroup group) {
 		return group.exportPattern();
 	}
 
@@ -471,11 +478,11 @@ public class PatternsEditionPane extends BorderPane {
 		}
 	}
 
-  public void setColorLabel(int label) {
+  void setColorLabel(int label) {
     colorLabel = label;
   }
   
-  public int getColorLabel() {
+  int getColorLabel() {
     return (colorLabel);
   }
 

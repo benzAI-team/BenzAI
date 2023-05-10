@@ -1,15 +1,15 @@
 package gaussbuilder;
 
-import java.util.ArrayList;
-
 import molecules.Molecule;
 import utils.Couple;
 import utils.Triplet;
 
-public enum GeometryBuilder {
+import java.util.ArrayList;
+
+enum GeometryBuilder {
     ;
 
-    public static int isInvalid(ArrayList<Couple<Integer, Integer>> invalidsCarbons, int carbon) {
+    private static int isInvalid(ArrayList<Couple<Integer, Integer>> invalidsCarbons, int carbon) {
 
 		for (Couple<Integer, Integer> carbons : invalidsCarbons) {
 
@@ -23,9 +23,9 @@ public enum GeometryBuilder {
 		return -1;
 	}
 
-	public static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
+	private static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
 
-		ArrayList<Integer> carbons = new ArrayList<Integer>();
+		ArrayList<Integer> carbons = new ArrayList<>();
 
 		for (int c = 0; c < molecule.getNbNodes(); c++) {
 			if (molecule.degree(c) == 2)
@@ -35,7 +35,7 @@ public enum GeometryBuilder {
 		return carbons;
 	}
 
-	public static Couple<Integer, Integer> findHexagon(Molecule molecule, int carbon) {
+	private static Couple<Integer, Integer> findHexagon(Molecule molecule, int carbon) {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 
@@ -50,7 +50,7 @@ public enum GeometryBuilder {
 		return null;
 	}
 
-	public static Geometry buildGeometry(Molecule molecule) {
+	static Geometry buildGeometry(Molecule molecule) {
 
 		int hexa = -1, yMin = Integer.MAX_VALUE;
 
@@ -66,17 +66,17 @@ public enum GeometryBuilder {
 
 		int[] checkedHexagons = new int[molecule.getNbHexagons()];
 
-		ArrayList<Integer> hexagonsOrder = new ArrayList<Integer>();
+		ArrayList<Integer> hexagonsOrder = new ArrayList<>();
 		hexagonsOrder.add(hexa);
 
-		ArrayList<Integer> candidates = new ArrayList<Integer>();
+		ArrayList<Integer> candidates = new ArrayList<>();
 		candidates.add(hexa);
 
 		int[][] dualGraph = molecule.getDualGraph();
 
 		checkedHexagons[hexa] = 1;
 
-		while (candidates.size() > 0) {
+		while (!candidates.isEmpty()) {
 
 			int candidat = candidates.get(0);
 
@@ -113,93 +113,39 @@ public enum GeometryBuilder {
 			}
 
 			for (int i = 0; i < 6; i++) {
-
 				int u = hexagon[index];
 				int v = hexagon[(index + 1) % 6];
-
-				double xu = 0, yu = 0, xv = 0, yv = 0;
+				double xu, yu, xv = 0, yv = 0;
+				if (carbons[u] == null) {
+					xu = molecule.getNodesRefs()[u].getX();
+					yu = molecule.getNodesRefs()[u].getY();
+				}
+				else {
+					xu = carbons[u].getX();
+					yu = carbons[u].getY();
+				}
 
 				if (index == 0) {
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu + 1.2145;
 					yv = yu + 0.694;
 				}
-
 				else if (index == 1) {
-
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu;
 					yv = yu + 1.388;
-
 				}
-
 				else if (index == 2) {
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu - 1.2145;
 					yv = yu + 0.694;
-
 				}
-
 				else if (index == 3) {
-
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu - 1.2145;
 					yv = yu - 0.694;
-
 				}
-
 				else if (index == 4) {
-
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu;
 					yv = yu - 1.388;
 				}
-
 				else if (index == 5) {
-
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu + 1.2145;
 					yv = yu - 0.694;
 				}
@@ -242,6 +188,7 @@ public enum GeometryBuilder {
 					int xvr = 0, yvr = 0;
 
 					Couple<Integer, Integer> couple = findHexagon(molecule, u);
+					assert couple != null;
 					int position = couple.getY();
 
 					if (position == 0) {

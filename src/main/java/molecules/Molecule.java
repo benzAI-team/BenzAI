@@ -1,22 +1,15 @@
 package molecules;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-
 import classifier.Irregularity;
 import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.SolverResults;
 import generator.patterns.Pattern;
 import generator.properties.Property;
-import http.Post;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.BinaryNumericalExpression;
+import http.Post;
 import molecules.sort.MoleculeComparator;
 import molecules.sort.NbHexagonsComparator;
 import parsers.GraphCoordFileBuilder;
@@ -30,8 +23,16 @@ import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.RBOSolver;
 import spectrums.ResultLogFile;
 import utils.Couple;
+import utils.HexNeighborhood;
 import utils.Interval;
 import utils.RelativeMatrix;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class Molecule implements Comparable<Molecule> {
 
@@ -475,54 +476,14 @@ public class Molecule implements Comparable<Molecule> {
 			checkedHexagons[0] = 1;
 
 			while (candidats.size() > 0) {
-
 				int candidat = candidats.get(0);
-
-				int x1 = hexagons[candidat].getX();
-				int y1 = hexagons[candidat].getY();
-
-				for (int i = 0; i < 6; i++) {
-
-					int neighbor = dualGraph[candidat][i];
-
-					if (neighbor != -1) {
-						if (checkedHexagons[neighbor] == 0) {
-
-							int x2, y2;
-
-							if (i == 0) {
-								x2 = x1;
-								y2 = y1 - 1;
-							}
-
-							else if (i == 1) {
-								x2 = x1 + 1;
-								y2 = y1;
-							}
-
-							else if (i == 2) {
-								x2 = x1 + 1;
-								y2 = y1 + 1;
-							}
-
-							else if (i == 3) {
-								x2 = x1;
-								y2 = y1 + 1;
-							}
-
-							else if (i == 4) {
-								x2 = x1 - 1;
-								y2 = y1;
-							}
-
-							else {
-								x2 = x1 - 1;
-								y2 = y1 - 1;
-							}
-
-							hexagons[neighbor] = new Couple<>(x2, y2);
-							candidats.add(neighbor);
-							checkedHexagons[neighbor] = 1;
+				for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+					int neighborIndex = dualGraph[candidat][neighbor.getIndex()];
+					if (neighborIndex != -1) {
+						if (checkedHexagons[neighborIndex] == 0) {
+							hexagons[neighborIndex] = new Couple<>(hexagons[candidat].getX() + neighbor.dx(), hexagons[candidat].getY() + neighbor.dy());
+							candidats.add(neighborIndex);
+							checkedHexagons[neighborIndex] = 1;
 						}
 					}
 				}
@@ -723,52 +684,14 @@ public class Molecule implements Comparable<Molecule> {
 
 			int candidat = candidats.get(0);
 
-			for (int i = 0; i < 6; i++) {
-				int neighbor = dualGraph[candidat][i];
-				if (neighbor != -1 && checkedHexagons[neighbor] == 0) {
-
-					checkedHexagons[neighbor] = 1;
-
-					int x = hexagonsCoords[candidat].getX();
-					int y = hexagonsCoords[candidat].getY();
-
-					int x2, y2;
-
-					if (i == 0) {
-						x2 = x;
-						y2 = x - 1;
-					}
-
-					else if (i == 1) {
-						x2 = x + 1;
-						y2 = y;
-					}
-
-					else if (i == 2) {
-						x2 = x + 1;
-						y2 = y + 1;
-					}
-
-					else if (i == 3) {
-						x2 = x;
-						y2 = y + 1;
-					}
-
-					else if (i == 4) {
-						x2 = x - 1;
-						y2 = y;
-					}
-
-					else {
-						x2 = x - 1;
-						y2 = y - 1;
-					}
-
-					hexagonsCoords[neighbor] = new Couple<>(x2, y2);
-					candidats.add(neighbor);
+			for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+				int neighborIndex = dualGraph[candidat][neighbor.getIndex()];
+				if (neighborIndex != -1 && checkedHexagons[neighborIndex] == 0) {
+					checkedHexagons[neighborIndex] = 1;
+					hexagonsCoords[neighborIndex] = new Couple<>(hexagonsCoords[candidat].getX() + neighbor.dx(), hexagonsCoords[candidat].getY() + neighbor.dy());
+					candidats.add(neighborIndex);
 				}
 			}
-
 			candidats.remove(candidats.get(0));
 		}
 	}
@@ -1339,55 +1262,14 @@ public class Molecule implements Comparable<Molecule> {
 
 		while (candidates.size() > 0) {
 
-			int candidate = candidates.get(0);
+			int candidateIndex = candidates.get(0);
 
-			for (int i = 0; i < 6; i++) {
-
-				int n = dualGraph[candidate][i];
+			for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+				int n = dualGraph[candidateIndex][neighbor.getIndex()];
 				if (n != -1) {
 					if (checkedHexagons[n] == 0) {
-
-						int x = hexagonsCoords[candidate].getX();
-						int y = hexagonsCoords[candidate].getY();
-
-						if (i == 0) {
-
-							y -= 1;
-
-						}
-
-						else if (i == 1) {
-
-							x += 1;
-
-						}
-
-						else if (i == 2) {
-
-							x += 1;
-							y += 1;
-
-						}
-
-						else if (i == 3) {
-
-							y += 1;
-
-						}
-
-						else if (i == 4) {
-
-							x -= 1;
-
-						}
-
-						else if (i == 5) {
-
-							x -= 1;
-							y -= 1;
-
-						}
-
+						int x = hexagonsCoords[candidateIndex].getX() + neighbor.dx();
+						int y = hexagonsCoords[candidateIndex].getY() + neighbor.dy();
 						checkedHexagons[n] = 1;
 						hexagonsCoords[n] = new Couple<>(x, y);
 						// centersCoords[n] = new Couple<Double, Double>(xCenter, yCenter);

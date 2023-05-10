@@ -1,11 +1,12 @@
 package generator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import generator.patterns.Pattern;
 import molecules.Node;
 import utils.Couple;
+import utils.HexNeighborhood;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Solution {
 
@@ -413,33 +414,12 @@ public class Solution {
 
 					ArrayList<Integer> candidats = new ArrayList<>();
 
-					for (int i = 0; i < 6; i++) {
-						if (pattern.getNeighborGraph()[candidat][i] != -1) {
-
-							int neighbor = pattern.getNeighborGraph()[candidat][i];
-							candidats.add(neighbor);
-							Couple<Integer, Integer> coord;
-
-							if (i == 0)
-								coord = new Couple<>(x, y - 1);
-
-							else if (i == 1)
-								coord = new Couple<>(x + 1, y);
-
-							else if (i == 2)
-								coord = new Couple<>(x + 1, y + 1);
-
-							else if (i == 3)
-								coord = new Couple<>(x, y + 1);
-
-							else if (i == 4)
-								coord = new Couple<>(x - 1, y);
-
-							else
-								coord = new Couple<>(x - 1, y - 1);
-
-							coords[neighbor] = coord;
-							checkedHexagons[neighbor] = 1;
+					for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+						if (pattern.getNeighborGraph()[candidat][neighbor.getIndex()] != -1) {
+							int neighborIndex = pattern.getNeighborGraph()[candidat][neighbor.getIndex()];
+							candidats.add(neighborIndex);
+							coords[neighborIndex] = new Couple<>(x + neighbor.dx(), y + neighbor.dy());
+							checkedHexagons[neighborIndex] = 1;
 						}
 					}
 
@@ -447,36 +427,13 @@ public class Solution {
 
 						candidat = candidats.get(0);
 
-						for (int i = 0; i < 6; i++) {
-							if (pattern.getNeighborGraph()[candidat][i] != -1) {
-
-								int neighbor = pattern.getNeighborGraph()[candidat][i];
-
-								if (checkedHexagons[neighbor] == 0) {
-
-									candidats.add(neighbor);
-									Couple<Integer, Integer> coord;
-
-									if (i == 0)
-										coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() - 1);
-
-									else if (i == 1)
-										coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY());
-
-									else if (i == 2)
-										coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY() + 1);
-
-									else if (i == 3)
-										coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() + 1);
-
-									else if (i == 4)
-										coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY());
-
-									else
-										coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY() - 1);
-
-									coords[neighbor] = coord;
-									checkedHexagons[neighbor] = 1;
+						for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+							if (pattern.getNeighborGraph()[candidat][neighbor.getIndex()] != -1) {
+								int neighborIndex = pattern.getNeighborGraph()[candidat][neighbor.getIndex()];
+								if (checkedHexagons[neighborIndex] == 0) {
+									candidats.add(neighborIndex);
+									coords[neighborIndex] = new Couple<>(coords[candidat].getX() + neighbor.dx(), coords[candidat].getY() + neighbor.dy());
+									checkedHexagons[neighborIndex] = 1;
 								}
 							}
 						}

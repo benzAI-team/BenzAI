@@ -1,7 +1,8 @@
 package constraints;
 
-import java.util.ArrayList;
-
+import generator.GeneralModel;
+import generator.patterns.Pattern;
+import generator.patterns.PatternOccurences;
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
 import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
@@ -9,19 +10,16 @@ import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
-import generator.GeneralModel;
-import generator.patterns.Pattern;
-import generator.patterns.PatternOccurences;
+import java.util.ArrayList;
 
 public class ForbiddenPatternConstraint extends BenzAIConstraint {
 
 	private final int mode = 3;
 	
 	private final Pattern pattern;
-	
-	private ArrayList<Pattern> symmetricPatterns;
-	
-	private ArrayList<Integer> presentHexagons, unknownHexagons, absentHexagons;
+
+	private ArrayList<Integer> presentHexagons;
+	private ArrayList<Integer> absentHexagons;
 	private BoolVar [] presences;
 	
 	private PatternOccurences patternOccurences;
@@ -44,7 +42,7 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 		
 		presentHexagons = new ArrayList<>();
 		absentHexagons = new ArrayList<>();
-		unknownHexagons = new ArrayList<>();
+		ArrayList<Integer> unknownHexagons = new ArrayList<>();
 		
 		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 			
@@ -168,8 +166,8 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 	public void changeGraphVertices() { }
 	
 	private void computePatternOccurences() {
-		
-		symmetricPatterns = pattern.computeRotations();	
+
+		ArrayList<Pattern> symmetricPatterns = pattern.computeRotations();
 		patternOccurences = new PatternOccurences();
 		
 		for (Pattern f : symmetricPatterns)

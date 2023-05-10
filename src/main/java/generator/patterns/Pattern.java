@@ -1,16 +1,12 @@
 package generator.patterns;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import molecules.Node;
+import utils.HexNeighborhood;
+import utils.RelativeMatrix;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import molecules.Node;
-import utils.RelativeMatrix;
 
 public class Pattern {
 
@@ -38,45 +34,6 @@ public class Pattern {
 		this.order = order;
 	}
 
-	/*
-	 * Getters and setters
-	 */
-
-	public int getNbNodes() {
-		return nbNodes;
-	}
-
-	public int getOrder() {
-		return order;
-	}
-
-	public int[][] getMatrix() {
-		return matrix;
-	}
-
-	public int getLabel(int index) {
-		return labels[index];
-	}
-
-	public Node getNode(int index) {
-		return nodesRefs[index];
-	}
-
-	public int getNeighbor(int i, int j) {
-		return neighborGraph[i][j];
-	}
-
-	public int[][] getNeighborGraph() {
-		return neighborGraph;
-	}
-
-	/*
-	 * Methods
-	 */
-
-	public Node getCenter() {
-		return center;
-	}
 
 	public void export(File file) throws IOException {
 
@@ -266,11 +223,8 @@ public class Pattern {
 		int[][] matrix = new int[nbNodes][nbNodes];
 
 		for (int i = 0; i < neighborGraph.length; i++) {
-
-			for (int j = 0; j < 6; j++) {
-
-				int hexagon = neighborGraph[i][j];
-
+			for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+				int hexagon = neighborGraph[i][neighbor.getIndex()];
 				if (hexagon != -1) {
 					matrix[i][hexagon] = 1;
 					matrix[hexagon][i] = 1;
@@ -287,75 +241,31 @@ public class Pattern {
 
 		ArrayList<Integer> candidats = new ArrayList<>();
 
-		for (int i = 0; i < 6; i++) {
-
-			int neighbor = neighborGraph[0][i];
-
-			if (neighbor != -1) {
-
+		for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+			int neighborIndex = neighborGraph[0][neighbor.getIndex()];
+			if (neighborIndex != -1) {
 				int x = 0;
 				int y = 0;
-
-				if (i == 0)
-					nodesRefs[neighbor] = new Node(x, y - 1, neighbor);
-
-				else if (i == 1)
-					nodesRefs[neighbor] = new Node(x + 1, y, neighbor);
-
-				else if (i == 2)
-					nodesRefs[neighbor] = new Node(x + 1, y + 1, neighbor);
-
-				else if (i == 3)
-					nodesRefs[neighbor] = new Node(x, y + 1, neighbor);
-
-				else if (i == 4)
-					nodesRefs[neighbor] = new Node(x - 1, y, neighbor);
-
-				else
-					nodesRefs[neighbor] = new Node(x - 1, y - 1, neighbor);
-
-				candidats.add(neighbor);
+				nodesRefs[neighborIndex] = new Node(x + neighbor.dx(), y + neighbor.dy(), neighborIndex);
+				candidats.add(neighborIndex);
 			}
 		}
 
 		while (candidats.size() > 0) {
 
-			int candidat = candidats.get(0);
+			int candidatIndex = candidats.get(0);
 
-			for (int i = 0; i < 6; i++) {
+			for (HexNeighborhood neighbor : HexNeighborhood.values()) {
 
-				int neighbor = neighborGraph[candidat][i];
+				int neighborIndex = neighborGraph[candidatIndex][neighbor.getIndex()];
 
-				if (neighbor != -1) {
-
-					if (nodesRefs[neighbor] == null) {
-
-						int x = nodesRefs[candidat].getX();
-						int y = nodesRefs[candidat].getY();
-
-						if (i == 0)
-							nodesRefs[neighbor] = new Node(x, y - 1, neighbor);
-
-						else if (i == 1)
-							nodesRefs[neighbor] = new Node(x + 1, y, neighbor);
-
-						else if (i == 2)
-							nodesRefs[neighbor] = new Node(x + 1, y + 1, neighbor);
-
-						else if (i == 3)
-							nodesRefs[neighbor] = new Node(x, y + 1, neighbor);
-
-						else if (i == 4)
-							nodesRefs[neighbor] = new Node(x - 1, y, neighbor);
-
-						else
-							nodesRefs[neighbor] = new Node(x - 1, y - 1, neighbor);
-
-						candidats.add(neighbor);
-					}
+				if (neighborIndex != -1 && nodesRefs[neighborIndex] == null) {
+					int x = nodesRefs[candidatIndex].getX();
+					int y = nodesRefs[candidatIndex].getY();
+					nodesRefs[neighborIndex] = new Node(x + neighbor.dx(), y + neighbor.dy());
+					candidats.add(neighborIndex);
 				}
 			}
-
 			candidats.remove(candidats.get(0));
 		}
 
@@ -374,15 +284,10 @@ public class Pattern {
 		 */
 
 		for (int shift = 1; shift < 6; shift++) {
-
 			int[][] newNeighborGraph = new int[nbNodes][6];
-
-			for (int i = 0; i < nbNodes; i++) {
-				for (int j = 0; j < 6; j++) {
-					newNeighborGraph[i][(j + shift) % 6] = neighborGraph[i][j];
-				}
-			}
-
+			for (int i = 0; i < nbNodes; i++)
+				for (HexNeighborhood neighbor : HexNeighborhood.values())
+					newNeighborGraph[i][(neighbor.getIndex() + shift) % 6] = neighborGraph[i][neighbor.getIndex()];
 			Pattern pattern = buildPattern(newNeighborGraph, labels, order);
 			patterns.add(pattern);
 		}
@@ -536,9 +441,6 @@ public class Pattern {
 				diameter = (2 * nbCrowns) - 1;
 				coordsMatrix = coordsMatrix(nbCrowns);
 			}
-
-			// }
-
 		}
 
 		return nbCrowns;
@@ -626,4 +528,40 @@ public class Pattern {
 			builder.append(node.toString());
 		return builder.toString();
 	}
+	/*
+	 * Getters and setters
+	 */
+
+	public int getNbNodes() {
+		return nbNodes;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public int[][] getMatrix() {
+		return matrix;
+	}
+
+	public int getLabel(int index) {
+		return labels[index];
+	}
+
+	public Node getNode(int index) {
+		return nodesRefs[index];
+	}
+
+	public int getNeighbor(int i, int j) {
+		return neighborGraph[i][j];
+	}
+
+	public int[][] getNeighborGraph() {
+		return neighborGraph;
+	}
+
+	public Node getCenter() {
+		return center;
+	}
+
 }

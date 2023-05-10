@@ -1,14 +1,15 @@
 package view.draw;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import generator.patterns.Pattern;
 import javafx.scene.Group;
 import molecules.Molecule;
 import molecules.Node;
 import utils.Couple;
+import utils.HexNeighborhood;
 import utils.RelativeMatrix;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MoleculeGroup extends Group {
 
@@ -67,7 +68,6 @@ public class MoleculeGroup extends Group {
 
 						if (i > 1 && i < hexagons.length - 2)
 							extendedBorder.add(hexagons[i][j + 1]);
-
 						break;
 					}
 				}
@@ -80,7 +80,6 @@ public class MoleculeGroup extends Group {
 
 						if (i > 1 && i < hexagons.length - 2)
 							extendedBorder.add(hexagons[i][j - 1]);
-
 						break;
 					}
 				}
@@ -1094,25 +1093,30 @@ public class MoleculeGroup extends Group {
 					for (int k = 0; k < 6; k++)
 						dualGraph[u][k] = -1;
 
-					if (j > 0)
-						dualGraph[u][0] = hexagonCoordinates[i][j - 1];
-
-					if (i < diameter - 1)
-						dualGraph[u][1] = hexagonCoordinates[i + 1][j];
-
-					if (i < diameter - 1 && j < diameter - 1)
-						dualGraph[u][2] = hexagonCoordinates[i + 1][j + 1];
-
-					if (j < diameter - 1)
-						dualGraph[u][3] = hexagonCoordinates[i][j + 1];
-
-					if (i > 0)
-						dualGraph[u][4] = hexagonCoordinates[i - 1][j];
-
-					if (i > 0 && j > 0)
-						dualGraph[u][5] = hexagonCoordinates[i - 1][j - 1];
+					for(HexNeighborhood  neighbor : HexNeighborhood.values()){
+						int i2 = i + neighbor.dx();
+						int j2 = j + neighbor.dy();
+						if(i2 >= 0 && i2 <= diameter - 1 && j2 >= 0 && j2 >= diameter - 1)
+							dualGraph[u][neighbor.getIndex()] = hexagonCoordinates[i2][j2];
+					}
+//					if (j > 0)
+//						dualGraph[u][0] = hexagonCoordinates[i][j - 1];
+//
+//					if (i < diameter - 1)
+//						dualGraph[u][1] = hexagonCoordinates[i + 1][j];
+//
+//					if (i < diameter - 1 && j < diameter - 1)
+//						dualGraph[u][2] = hexagonCoordinates[i + 1][j + 1];
+//
+//					if (j < diameter - 1)
+//						dualGraph[u][3] = hexagonCoordinates[i][j + 1];
+//
+//					if (i > 0)
+//						dualGraph[u][4] = hexagonCoordinates[i - 1][j];
+//
+//					if (i > 0 && j > 0)
+//						dualGraph[u][5] = hexagonCoordinates[i - 1][j - 1];
 				}
-
 			}
 		}
 

@@ -12,7 +12,7 @@ public abstract class NoGoodRecorder {
 	private final GeneralModel model;
 	private final Solution solution;
 
-	public NoGoodRecorder(GeneralModel model, Solution solution) {
+	NoGoodRecorder(GeneralModel model, Solution solution) {
 		this.model = model;
 		this.solution = solution;
 	}

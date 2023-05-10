@@ -2,7 +2,8 @@ package generator;
 
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
- 
+import utils.HexNeighborhood;
+
 public enum BoundsBuilder {
 	;
 
@@ -46,24 +47,30 @@ public enum BoundsBuilder {
 					
 					for (int k = 0 ; k < 6 ; k++)
 						N[k] = -1;
-					
-					if (i > 0) 
-						N[0] = matrix[i - 1][j];
-					
-					if (j + 1 < diameter)
-						N[1] = matrix[i][j + 1];
-					
-					if (i + 1 < diameter && j + 1 < diameter)
-						N[2] = matrix[i + 1][j + 1];
-					
-					if (i + 1 < diameter)
-						N[3] = matrix[i + 1][j];
-					
-					if (j > 0)
-						N[4] = matrix[i][j - 1];
-					
-					if (i > 0 && j > 0)
-						N[5] = matrix[i - 1][j - 1];
+					for(HexNeighborhood neighbor : HexNeighborhood.values()){
+						int x =  j + neighbor.dx();
+						int y = i + neighbor.dy();
+						if(x >= 0 && x <= diameter - 1 && y >= 0 && y <= diameter - 1 )
+							N[neighbor.getIndex()] = matrix[y][x];
+					}
+
+//					if (i > 0)
+//						N[0] = matrix[i - 1][j];
+//
+//					if (j + 1 < diameter)
+//						N[1] = matrix[i][j + 1];
+//
+//					if (i + 1 < diameter && j + 1 < diameter)
+//						N[2] = matrix[i + 1][j + 1];
+//
+//					if (i + 1 < diameter)
+//						N[3] = matrix[i + 1][j];
+//
+//					if (j > 0)
+//						N[4] = matrix[i][j - 1];
+//
+//					if (i > 0 && j > 0)
+//						N[5] = matrix[i - 1][j - 1];
 					
 					for (int k = 0 ; k < 6 ; k++) {
 						int v;

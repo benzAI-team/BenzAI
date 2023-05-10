@@ -25,6 +25,7 @@ import org.chocosolver.solver.variables.Variable;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import solution.BenzenoidSolution;
 import utils.Couple;
+import utils.HexNeighborhood;
 import utils.Triplet;
 import view.generator.Stopper;
 import view.generator.boxes.HBoxCriterion;
@@ -760,30 +761,10 @@ public class GeneralModel {
 
                 int[] neighbors = neighborIndices[hexagon];
 
-                for (int j = 0; j < 6; j++) {
-                    if (neighbors[j] == -1) {
-
-                        int x, y;
-
-                        if (j == 0) {
-                            x = coord.getX();
-                            y = coord.getY() - 1;
-                        } else if (j == 1) {
-                            x = coord.getX() + 1;
-                            y = coord.getY();
-                        } else if (j == 2) {
-                            x = coord.getX() + 1;
-                            y = coord.getY() + 1;
-                        } else if (j == 3) {
-                            x = coord.getX();
-                            y = coord.getY() + 1;
-                        } else if (j == 4) {
-                            x = coord.getX() - 1;
-                            y = coord.getY();
-                        } else {
-                            x = coord.getX() - 1;
-                            y = coord.getY() - 1;
-                        }
+                for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+                    if (neighbors[neighbor.getIndex()] == -1) {
+                        int x = coord.getX() + neighbor.dx();
+                        int y = coord.getY() + neighbor.dy();
 
                         int indexOutter = -1;
 
@@ -804,8 +785,8 @@ public class GeneralModel {
                             neighborGraphOutterHexagons.add(newNeighbor);
                         }
 
-                        neighborGraphOutterHexagons.get(hexagon).set(j, indexOutter);
-                        neighborGraphOutterHexagons.get(indexOutter).set((j + 3) % 6, hexagon);
+                        neighborGraphOutterHexagons.get(hexagon).set(neighbor.getIndex(), indexOutter);
+                        neighborGraphOutterHexagons.get(indexOutter).set((neighbor.getIndex() + 3) % 6, hexagon);
                     }
                 }
             }
@@ -1096,35 +1077,12 @@ public class GeneralModel {
             for (int k = 0; k < 6; k++)
                 N[k] = null;
 
-            if (lineIndex > 0) {
-                if (validHexagonIndex(lineIndex - 1, columnIndex))
-                    N[0] = benzenoidVerticesBVArray[hexagonIndices[lineIndex - 1][columnIndex]];
-            }
-
-            if (columnIndex + 1 < diameter) {
-                if (validHexagonIndex(lineIndex, columnIndex + 1))
-                    N[1] = benzenoidVerticesBVArray[hexagonIndices[lineIndex][columnIndex + 1]];
-            }
-
-            if (lineIndex + 1 < diameter && columnIndex + 1 < diameter) {
-                if (validHexagonIndex(lineIndex + 1, columnIndex + 1)) {
-                    N[2] = benzenoidVerticesBVArray[hexagonIndices[lineIndex + 1][columnIndex + 1]];
-                }
-            }
-
-            if (lineIndex + 1 < diameter) {
-                if (validHexagonIndex(lineIndex + 1, columnIndex))
-                    N[3] = benzenoidVerticesBVArray[hexagonIndices[lineIndex + 1][columnIndex]];
-            }
-
-            if (columnIndex > 0) {
-                if (validHexagonIndex(lineIndex, columnIndex - 1))
-                    N[4] = benzenoidVerticesBVArray[hexagonIndices[lineIndex][columnIndex - 1]];
-            }
-
-            if (lineIndex > 0 && columnIndex > 0) {
-                if (validHexagonIndex(lineIndex - 1, columnIndex - 1))
-                    N[5] = benzenoidVerticesBVArray[hexagonIndices[lineIndex - 1][columnIndex - 1]];
+            for(HexNeighborhood neighbor : HexNeighborhood.values()){
+                int lineIndex2 = lineIndex + neighbor.dy();
+                int columnIndex2 = columnIndex + neighbor.dx();
+                if(lineIndex2 >= 0 && lineIndex2 <= diameter - 1 && columnIndex2 >= 0 && columnIndex2 <= diameter - 1)
+                    if(validHexagonIndex(lineIndex2, columnIndex2))
+                        N[neighbor.getIndex()] = benzenoidVerticesBVArray[hexagonIndices[lineIndex2][columnIndex2]];
             }
             return N;
         }
@@ -1304,33 +1262,12 @@ public class GeneralModel {
 
                     ArrayList<Integer> candidats = new ArrayList<>();
 
-                    for (int i = 0; i < 6; i++) {
-                        if (fragment.getNeighbor(candidat, i) != -1) {
-
-                            int neighbor = fragment.getNeighbor(candidat, i);
-                            candidats.add(neighbor);
-                            Couple<Integer, Integer> coord;
-
-                            if (i == 0)
-                                coord = new Couple<>(columnIndex, lineIndex - 1);
-
-                            else if (i == 1)
-                                coord = new Couple<>(columnIndex + 1, lineIndex);
-
-                            else if (i == 2)
-                                coord = new Couple<>(columnIndex + 1, lineIndex + 1);
-
-                            else if (i == 3)
-                                coord = new Couple<>(columnIndex, lineIndex + 1);
-
-                            else if (i == 4)
-                                coord = new Couple<>(columnIndex - 1, lineIndex);
-
-                            else
-                                coord = new Couple<>(columnIndex - 1, lineIndex - 1);
-
-                            coords[neighbor] = coord;
-                            checkedHexagons[neighbor] = 1;
+                    for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+                        if (fragment.getNeighbor(candidat, neighbor.getIndex()) != -1) {
+                            int neighborIndex = fragment.getNeighbor(candidat, neighbor.getIndex());
+                            candidats.add(neighborIndex);
+                            coords[neighborIndex] = new Couple<>(columnIndex + neighbor.dx(), lineIndex + neighbor.dy());
+                            checkedHexagons[neighborIndex] = 1;
                         }
                     }
 
@@ -1338,36 +1275,15 @@ public class GeneralModel {
 
                         candidat = candidats.get(0);
 
-                        for (int neighborIndex = 0; neighborIndex < 6; neighborIndex++) {
-                            if (fragment.getNeighbor(candidat, neighborIndex) != -1) {
+                        for (HexNeighborhood neighbor : HexNeighborhood.values()) {
+                            if (fragment.getNeighbor(candidat, neighbor.getIndex()) != -1) {
 
-                                int neighbor = fragment.getNeighbor(candidat, neighborIndex);
+                                int neighborIndex = fragment.getNeighbor(candidat, neighbor.getIndex());
 
-                                if (checkedHexagons[neighbor] == 0) {
-                                    candidats.add(neighbor);
-                                    Couple<Integer, Integer> coord;
-
-                                    switch(neighborIndex) {
-                                        case 0:
-                                            coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() - 1);
-                                            break;
-                                        case 1:
-                                            coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY());
-                                            break;
-                                        case 2:
-                                            coord = new Couple<>(coords[candidat].getX() + 1, coords[candidat].getY() + 1);
-                                            break;
-                                        case 3:
-                                            coord = new Couple<>(coords[candidat].getX(), coords[candidat].getY() + 1);
-                                            break;
-                                        case 4:
-                                            coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY());
-                                            break;
-                                        default: // case 5
-                                            coord = new Couple<>(coords[candidat].getX() - 1, coords[candidat].getY() - 1);
-                                    }
-                                    coords[neighbor] = coord;
-                                    checkedHexagons[neighbor] = 1;
+                                if (checkedHexagons[neighborIndex] == 0) {
+                                    candidats.add(neighborIndex);
+                                    coords[neighborIndex] = new Couple<>(coords[candidat].getX() + neighbor.dx(), coords[candidat].getY() + neighbor.dy());
+                                    checkedHexagons[neighborIndex] = 1;
                                 }
                             }
                         }

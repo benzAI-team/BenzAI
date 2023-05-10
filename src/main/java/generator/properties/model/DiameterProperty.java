@@ -11,7 +11,7 @@ import view.generator.boxes.HBoxDiameterCriterion;
 
 public class DiameterProperty extends ModelProperty {
 
-	public DiameterProperty() {
+	DiameterProperty() {
 		super("diameter", "Diameter", new DiameterConstraint(), new DiameterFilter());
 	}
 

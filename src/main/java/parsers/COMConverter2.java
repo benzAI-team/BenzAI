@@ -1,11 +1,6 @@
 package parsers;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-
+import molecules.Molecule;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
@@ -17,11 +12,15 @@ import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
-
-import molecules.Molecule;
 import parsers.ComConverter.ComType;
 import utils.Couple;
 import utils.Triplet;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public enum COMConverter2 {
     ;
@@ -267,87 +266,35 @@ public enum COMConverter2 {
 
 				double xu = 0, yu = 0, xv = 0, yv = 0;
 
-				if (index == 0) {
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
+				if (carbons[u] == null) {
+					xu = molecule.getNodesRefs()[u].getX();
+					yu = molecule.getNodesRefs()[u].getY();
+				} else {
+					xu = carbons[u].getX();
+					yu = carbons[u].getY();
+				}
 
+				if (index == 0) {
 					xv = xu + 1.2145;
 					yv = yu + 0.694;
 				}
-
 				else if (index == 1) {
-
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu;
 					yv = yu + 1.388;
-
 				}
-
 				else if (index == 2) {
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu - 1.2145;
 					yv = yu + 0.694;
-
 				}
-
 				else if (index == 3) {
-
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu - 1.2145;
 					yv = yu - 0.694;
-
 				}
-
 				else if (index == 4) {
-
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu;
 					yv = yu - 1.388;
 				}
-
 				else if (index == 5) {
-
-					if (carbons[u] == null) {
-						xu = molecule.getNodesRefs()[u].getX();
-						yu = molecule.getNodesRefs()[u].getY();
-					} else {
-						xu = carbons[u].getX();
-						yu = carbons[u].getY();
-					}
-
 					xv = xu + 1.2145;
 					yv = yu - 0.694;
 				}

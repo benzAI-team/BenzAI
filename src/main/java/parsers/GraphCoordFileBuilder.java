@@ -203,7 +203,6 @@ public class GraphCoordFileBuilder {
 
                             if ((hexagons[candidat][i] == hexagons[hexagon][i2] &&
                                     hexagons[candidat][j] == hexagons[hexagon][j2]) ||
-
                                     (hexagons[candidat][i] == hexagons[hexagon][j2] &&
                                             hexagons[candidat][j] == hexagons[hexagon][i2])) {
 
