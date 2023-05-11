@@ -1,38 +1,28 @@
 package view.filtering.patterns;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import generator.patterns.Pattern;
-import generator.patterns.PatternGenerationType;
-import generator.patterns.PatternResolutionInformations;
-import generator.patterns.PatternsInterraction;
+import generator.patterns.*;
+import generator.properties.model.expression.BinaryNumericalExpression;
+import generator.properties.model.expression.PropertyExpression;
+import generator.properties.model.expression.SubjectExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.model.expression.SubjectExpression;
 import molecules.Node;
 import utils.Utils;
 import view.generator.boxes.HBoxPatternCriterion;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class PatternsEditionPane extends BorderPane {
 
@@ -98,7 +88,7 @@ public class PatternsEditionPane extends BorderPane {
 				Pattern pattern = null;
 
 				try {
-					pattern = Pattern.importPattern(file);
+					pattern = PatternFileImport.importPattern(file);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					ok = false;

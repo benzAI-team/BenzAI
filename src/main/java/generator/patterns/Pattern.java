@@ -2,12 +2,10 @@ package generator.patterns;
 
 import molecules.Node;
 import utils.HexNeighborhood;
-import utils.RelativeMatrix;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class Pattern {
 
@@ -21,8 +19,8 @@ public class Pattern {
 	private final int[] labels;
 	private final Node[] nodesRefs;
 	private final int[][] neighborGraph;
-
 	private final Node center;
+	private final PatternFileWriter patternFileWriter = new PatternFileWriter(this);
 
 	public Pattern(int[][] matrix, int[] labels, Node[] nodesRefs, Node center,
 				   int[][] neighborGraph, int order) {
@@ -39,175 +37,11 @@ public class Pattern {
 	 * export pattern in the given file
 	 */
 	public void export(File file) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		writeDegree(writer);
-		writeMatrix(writer, "MATRIX\n", matrix);
-		writeLabels(writer);
-		writeNodes(writer);
-		writeCenter(writer);
-		writeMatrix(writer, "NEIGHBORS\n", neighborGraph);
-		writer.close();
-	}
-
-	private void writeCenter(BufferedWriter writer) throws IOException {
-		writer.write("CENTER\n");
-		if (center != null)
-			writer.write(center.getIndex() + "\n");
-		else
-			writer.write("0\n");
-	}
-
-	private void writeNodes(BufferedWriter writer) throws IOException {
-		writer.write("NODES\n");
-		for (Node node : nodesRefs)
-			writer.write(node.getX() + " " + node.getY() + "\n");
-	}
-
-	private void writeLabels(BufferedWriter writer) throws IOException {
-		writer.write("LABELS\n");
-		for (int label : labels) writer.write(label + " ");
-		writer.write("\n");
-	}
-
-	private void writeDegree(BufferedWriter writer) throws IOException {
-		writer.write("DEGREE\n");
-		writer.write(order + "\n");
-	}
-
-	private void writeMatrix(BufferedWriter writer, String str, int[][] neighborGraph) throws IOException {
-		writer.write(str);
-		for (int[] ints : neighborGraph) {
-			for (int anInt : ints) {
-				writer.write(anInt + " ");
-			}
-			writer.write("\n");
-		}
-	}
-
-	/***
-	 * import pattern from the given file
-	 * @return the pattern
-	 */
-	public static Pattern importPattern(File file) throws IOException {
-		ArrayList<String>[] lineArray = readPatternFile(file);
-		int degree = getDegree(lineArray);
-		int[][] matrix = getMatrix(lineArray);
-		int[] labels = getLabels(lineArray);
-		Node[] nodesRefs = getNodesRefs(lineArray);
-		Node centerNode = getCenterNode(lineArray, nodesRefs);
-		int[][] neighborGraph = getNeighborGraph(lineArray);
-		return new Pattern(matrix, labels, nodesRefs, centerNode, neighborGraph, degree);
-	}
-
-	private static int[][] getNeighborGraph(ArrayList<String>[] lineArray) {
-		String[] splittedLine;
-		String line;
-		ArrayList<String> neighborsLines = lineArray[5];
-		int[][] neighborGraph = new int[neighborsLines.size()][6];
-
-		for (int i = 0; i < neighborGraph.length; i++) {
-
-			line = neighborsLines.get(i);
-			splittedLine = line.split(" ");
-
-			for (int j = 0; j < 6; j++) {
-				neighborGraph[i][j] = Integer.parseInt(splittedLine[j]);
-			}
-		}
-		return neighborGraph;
-	}
-
-	private static Node getCenterNode(ArrayList<String>[] lineArray, Node[] nodesRefs) {
-		ArrayList<String> centerLines = lineArray[4];
-		return nodesRefs[Integer.parseInt(centerLines.get(0))];
-	}
-
-	private static Node[] getNodesRefs(ArrayList<String>[] lineArray) {
-		String[] splittedLine;
-		String line;
-		ArrayList<String> nodesLines = lineArray[3];
-		Node[] nodesRefs = new Node[nodesLines.size()];
-		RelativeMatrix relativeMatrix = new RelativeMatrix(8 * nodesLines.size() + 1, 16 * nodesLines.size() + 1,
-				4 * nodesLines.size(), 8 * nodesLines.size());
-
-		for (int i = 0; i < nodesLines.size(); i++) {
-
-			line = nodesLines.get(i);
-			splittedLine = line.split(" ");
-
-			int x = Integer.parseInt(splittedLine[0]);
-			int y = Integer.parseInt(splittedLine[1]);
-
-			nodesRefs[i] = new Node(x, y, i);
-			relativeMatrix.set(x, y, i);
-		}
-		return nodesRefs;
-	}
-
-	private static int[] getLabels(ArrayList<String>[] lineArray) {
-		String line;
-		ArrayList<String> labelsLines = lineArray[2];
-		line = labelsLines.get(0);
-		String[] splittedLine = line.split(" ");
-
-		int[] labels = new int[splittedLine.length];
-		for (int i = 0; i < labels.length; i++)
-			labels[i] = Integer.parseInt(splittedLine[i]);
-		return labels;
-	}
-
-	private static int[][] getMatrix(ArrayList<String>[] lineArray) {
-		String line;
-		ArrayList<String> matrixLines = lineArray[1];
-		int[][] matrix = new int[matrixLines.size()][matrixLines.size()];
-
-		for (int i = 0; i < matrixLines.size(); i++) {
-
-			line = matrixLines.get(i);
-			String[] splittedLine = line.split(" ");
-
-			for (int j = 0; j < splittedLine.length; j++)
-				matrix[i][j] = Integer.parseInt(splittedLine[j]);
-		}
-		return matrix;
-	}
-
-	private static int getDegree(ArrayList<String>[] lineArray) {
-		ArrayList<String> degreeLines = lineArray[0];
-		return Integer.parseInt(degreeLines.get(0));
-	}
-
-	private static ArrayList<String>[] readPatternFile(File file) throws IOException {
-		ArrayList<String>[] lineArray = new ArrayList[6];
-		for(int i = 0 ; i < 6; i++)
-			lineArray[i] = new ArrayList<>();
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String line;
-		int step = 0;
-		HashMap<String,Integer> lineTypes = new HashMap<>();
-		lineTypes.put("DEGREE", 0);
-		lineTypes.put("MATRIX", 1);
-		lineTypes.put("LABELS", 2);
-		lineTypes.put("NODES", 3);
-		lineTypes.put("CENTER", 4);
-		lineTypes.put("NEIGHBORS", 5);
-		while ((line = reader.readLine()) != null)
-			if(lineTypes.containsKey(line))
-				step = lineTypes.get(line);
-			else
-				lineArray[step].add(line);
-		reader.close();
-		return lineArray;
+		patternFileWriter.export(file);
 	}
 
 	private Pattern buildPattern(int[][] neighborGraph, int[] labels, int order) {
-
 		int nbNodes = neighborGraph.length;
-
-		/*
-		 * Matrix
-		 */
-
 		int[][] matrix = new int[nbNodes][nbNodes];
 
 		for (int i = 0; i < neighborGraph.length; i++) {
@@ -504,7 +338,7 @@ public class Pattern {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Pattern p = Pattern.importPattern(new File("expe_fragments/triangle.frg"));
+		Pattern p = PatternFileImport.importPattern(new File("expe_fragments/triangle.frg"));
 		int optNbCrowns = Pattern.getNbOptimizedCrowns(p);
 		System.out.println(optNbCrowns);
 	}
@@ -551,5 +385,7 @@ public class Pattern {
 	public Node getCenter() {
 		return center;
 	}
-
+	public int[] getLabels() {
+		return labels;
+	}
 }

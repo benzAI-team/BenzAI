@@ -7,10 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="class HexNeighborhood added">
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="class Pattern refactored">
+      <change afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileWriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/Solution.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/Pattern.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/Pattern.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683730449896</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="class Pattern refactored">
+      <created>1683737221586</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1683737221586</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -320,7 +330,8 @@
     <MESSAGE value="minor refactoring" />
     <MESSAGE value="Rectangle, Carbon number, Hydrogen number properties fixed&#10;TestGeneration class added" />
     <MESSAGE value="class HexNeighborhood added" />
-    <option name="LAST_COMMIT_MESSAGE" value="class HexNeighborhood added" />
+    <MESSAGE value="class Pattern refactored" />
+    <option name="LAST_COMMIT_MESSAGE" value="class Pattern refactored" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

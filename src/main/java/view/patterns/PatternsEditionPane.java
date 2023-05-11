@@ -6,10 +6,7 @@ import constraints.SinglePattern2Constraint;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
-import generator.patterns.Pattern;
-import generator.patterns.PatternGenerationType;
-import generator.patterns.PatternResolutionInformations;
-import generator.patterns.PatternsInterraction;
+import generator.patterns.*;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.PatternExpression;
 import javafx.collections.FXCollections;
@@ -216,7 +213,7 @@ public class PatternsEditionPane extends BorderPane {
 				Pattern pattern = null;
 
 				try {
-					pattern = Pattern.importPattern(file);
+					pattern = PatternFileImport.importPattern(file);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					ok = false;
