@@ -11,7 +11,8 @@ public class ResultLogFile {
 	private ArrayList<Double> intensities;
 	private ArrayList<Double> finalEnergies;
 	private double zeroPointEnergy;
-	
+
+	private double molecularMass;
 	public ResultLogFile(String filename, ArrayList<Double> frequencies, ArrayList<Double> intensities, ArrayList<Double> finalEnergies, double zeroPointEnergy) {
 		this.frequencies = frequencies;
 		this.intensities = intensities;
@@ -19,7 +20,16 @@ public class ResultLogFile {
 		this.zeroPointEnergy = zeroPointEnergy;
 		this.filename = filename;
 	}
-	
+
+	public ResultLogFile(String filename, ArrayList<Double> frequencies, ArrayList<Double> intensities, ArrayList<Double> finalEnergies, double zeroPointEnergy, double molecularMass) {
+		this.frequencies = frequencies;
+		this.intensities = intensities;
+		this.finalEnergies = finalEnergies;
+		this.zeroPointEnergy = zeroPointEnergy;
+		this.filename = filename;
+		this.molecularMass = molecularMass;
+	}
+
 	public String getFilename() {
 		return filename;
 	}
@@ -66,7 +76,11 @@ public class ResultLogFile {
 	public ArrayList<Double> getIntensities() {
 		return intensities;
 	}
-	
+
+	public double getMolecularMass() {
+		return molecularMass;
+	}
+
 	@Override
 	public String toString() {
 		
