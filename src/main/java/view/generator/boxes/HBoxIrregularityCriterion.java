@@ -10,6 +10,8 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
+import java.util.Objects;
+
 public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 
 	private ChoiceBox<String> irregularityChoiceBox;
@@ -27,7 +29,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 		String operatorValue = operatorChoiceBox.getValue();
 		String fieldStr = fieldValue.getText();
 
-		if (irregularityValue != null && "Compute irregularity".equals(irregularityValue)) {
+		if ("Compute irregularity".equals(irregularityValue)) {
 
 			setValid(true);
 			this.getChildren().remove(operatorChoiceBox);
@@ -57,9 +59,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 					addFieldValueIfMissing();
 					addWarningIconAndDeleteButton();
 				}
-
-				else if (!"Compute irregularity".equals(irregularityValue)) {
-				
+				else {
 					setValid(true);
 					removeWarningIconAndDeleteButton();
 					addOperatorChoiceBoxIfMissing();
@@ -87,23 +87,17 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 		irregularityChoiceBox.getItems().addAll("XI", "N0", "N1", "N2", "N3", "N4");
 		irregularityChoiceBox.getSelectionModel().selectFirst();
 
-		irregularityChoiceBox.setOnAction(e -> {
-			updateValidity();
-		});
+		irregularityChoiceBox.setOnAction(e -> updateValidity());
 
 		operatorChoiceBox = new ChoiceBox<>();
 		operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=");
 		operatorChoiceBox.getSelectionModel().select(2);
 
-		operatorChoiceBox.setOnAction(e -> {
-			updateValidity();
-		});
+		operatorChoiceBox.setOnAction(e -> updateValidity());
 
 		fieldValue = new TextField();
 
-		fieldValue.setOnKeyReleased(e -> {
-			updateValidity();
-		});
+		fieldValue.setOnKeyReleased(e -> updateValidity());
 
 		//deleteButton = new DeleteButton(this);
 
@@ -119,7 +113,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 			String parameter = irregularityChoiceBox.getValue();
 			String operator = operatorChoiceBox.getValue();
 			// 0 =< Xi =< 1 must be multiplied by 100 and converted to an int 
-			int value = parameter == "XI" ? (int)(Double.parseDouble(fieldValue.getText()) * 100) : Integer.parseInt(fieldValue.getText());
+			int value = Objects.equals(parameter, "XI") ? (int)(Double.parseDouble(fieldValue.getText()) * 100) : Integer.parseInt(fieldValue.getText());
 			modelPropertySet.getById("irregularity").addExpression(new IrregularityExpression("irregularity", parameter, operator, value));
 		}
 	}

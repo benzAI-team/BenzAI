@@ -38,17 +38,13 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 
 		setValid(false);
 		timeField = new TextField();
-		timeUnitBox = new ChoiceBox<String>();
+		timeUnitBox = new ChoiceBox<>();
 		timeUnitBox.getItems().addAll("milliseconds", "seconds", "minutes", "hours");
 		timeUnitBox.getSelectionModel().select(2);
 
-		timeField.setOnKeyReleased(e -> {
-			this.updateValidity();
-		});
+		timeField.setOnKeyReleased(e -> this.updateValidity());
 
-		timeUnitBox.setOnAction(e -> {
-			this.updateValidity();
-		});
+		timeUnitBox.setOnAction(e -> this.updateValidity());
 
 		this.getChildren().addAll(timeField, timeUnitBox, getWarningIcon(), getDeleteButton());
 		this.updateValidity();
@@ -60,22 +56,13 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 		if (isValid()) {
 			double time = Double.parseDouble(timeField.getText());
 
-			if ("milliseconds".equals(timeUnitBox.getValue()))
-				time = time;
-
-			else if ("seconds".equals(timeUnitBox.getValue()))
+			if ("seconds".equals(timeUnitBox.getValue()))
 				time = time * 1000;
-
 			else if ("minutes".equals(timeUnitBox.getValue()))
 				time = time * 60000;
-
 			else if ("hours".equals(timeUnitBox.getValue()))
 				time = time * 360000;
-
-			String value = time + "s";
-
 			propertySet.getById("timeout").addExpression(new BinaryNumericalExpression("timeout", "=", (int)time));
-
 		}
 	}
 

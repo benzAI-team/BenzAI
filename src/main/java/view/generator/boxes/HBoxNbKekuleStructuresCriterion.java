@@ -7,6 +7,8 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
+import java.util.Objects;
+
 public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 
 	
@@ -42,7 +44,7 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {		
 		if (isValid()) {		
 				String operator = operatorChoiceBox.getValue();	
-				if (operator != "min" && operator != "max")
+				if (!Objects.equals(operator, "min") && !Objects.equals(operator, "max"))
 					modelPropertySet.getById("kekule").addExpression(new BinaryNumericalExpression("kekuleNumber", operator, Integer.decode(fieldValue.getText())));			
 				else 
 					modelPropertySet.getById("kekule").addExpression(new ParameterizedExpression("kekuleNumber", operator));

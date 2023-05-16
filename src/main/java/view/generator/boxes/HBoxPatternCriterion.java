@@ -94,7 +94,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText(), this.patternInformations));
 	}
 
-	public void displayPatternEditionWindows() {
+	private void displayPatternEditionWindows() {
 
 		if (patternPane == null) {
 
@@ -137,7 +137,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		return patternProperty;
 	}
 
-	public void setPatternProperty(PatternProperty patternProperty) {
+	private void setPatternProperty(PatternProperty patternProperty) {
 		this.patternProperty = patternProperty;
 	}
 }

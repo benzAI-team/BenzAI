@@ -67,7 +67,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		hBoxWidth.getChildren().remove(getWarningIcon());
 		hBoxWidth.getChildren().remove(getDeleteButton());
 
-		if (widthChoice != null && "Unspecified".equals(widthChoice))
+		if ("Unspecified".equals(widthChoice))
 			validWidth = true;
 
 		else {

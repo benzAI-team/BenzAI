@@ -7,6 +7,8 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
+import java.util.Objects;
+
 public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 
 	public HBoxNbHydrogensCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
@@ -43,7 +45,7 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {
 			String operator = operatorChoiceBox.getValue();	
-			if (operator != "even" && operator != "odd")
+			if (!Objects.equals(operator, "even") && !Objects.equals(operator, "odd"))
 				modelPropertySet.getById("hydrogens").addExpression(new BinaryNumericalExpression("hydrogens", operator, Integer.decode(fieldValue.getText())));			
 			else 
 				modelPropertySet.getById("hydrogens").addExpression(new ParameterizedExpression("hydrogens", operator));

@@ -48,9 +48,7 @@ public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 
 		symmetriesChoiceBox.getSelectionModel().selectFirst();
 
-		symmetriesChoiceBox.setOnAction(e -> {
-			updateValidity();
-		});
+		symmetriesChoiceBox.setOnAction(e -> updateValidity());
 
 		this.getChildren().addAll(symmetriesChoiceBox, getWarningIcon(), getDeleteButton());
 		updateValidity();

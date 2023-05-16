@@ -29,7 +29,7 @@ public abstract class HBoxCriterion extends HBox {
 		this.choiceBoxCriterion = choiceBoxCriterion;
 		
 		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
-		deleteButton = new DeleteButton(this);
+		deleteButton = new DeleteButton();
 		
 		Tooltip.install(warningIcon, new Tooltip("Invalid entry, criterion will not be considered"));
 		Tooltip.install(deleteButton, new Tooltip("Delete criterion"));

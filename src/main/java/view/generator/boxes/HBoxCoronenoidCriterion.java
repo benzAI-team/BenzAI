@@ -25,7 +25,7 @@ public class HBoxCoronenoidCriterion extends HBoxModelCriterion {
 		String operatorValue = operatorChoiceBox.getValue();
 		String textValue = fieldValue.getText();
 
-		if (operatorValue != null && "Unspecified".equals(operatorValue)) {
+		if ("Unspecified".equals(operatorValue)) {
 
 			setValid(true);
 			this.getChildren().remove(fieldValue);
@@ -55,23 +55,13 @@ public class HBoxCoronenoidCriterion extends HBoxModelCriterion {
 
 	@Override
 	protected void initialize() {
-
 		Label nbHolesLabel = new Label("Number of crowns: ");
-
 		operatorChoiceBox = new ChoiceBox<>();
 		operatorChoiceBox.getItems().addAll("Unspecified", "<=", "<", "=", ">", ">=");
 		operatorChoiceBox.getSelectionModel().selectFirst();
-
-		operatorChoiceBox.setOnAction(e -> {
-			updateValidity();
-		});
-
+		operatorChoiceBox.setOnAction(e -> updateValidity());
 		fieldValue = new TextField();
-
-		fieldValue.setOnKeyReleased(e -> {
-			updateValidity();
-		});
-
+		fieldValue.setOnKeyReleased(e -> updateValidity());
 		this.getChildren().addAll(nbHolesLabel, operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
 		updateValidity();
 	}
