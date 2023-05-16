@@ -2,7 +2,6 @@ package view.generator.boxes;
 
 import generator.properties.solver.SolverPropertySet;
 import view.generator.ChoiceBoxCriterion;
-import view.generator.GeneratorPane;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public abstract class HBoxSolverCriterion extends HBoxCriterion {
@@ -12,7 +11,7 @@ public abstract class HBoxSolverCriterion extends HBoxCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 	}
 
 	@Override

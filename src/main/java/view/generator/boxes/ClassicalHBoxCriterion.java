@@ -8,7 +8,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 public abstract class ClassicalHBoxCriterion extends HBoxModelCriterion {
 
-	public ClassicalHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	ClassicalHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
 
@@ -16,20 +16,17 @@ public abstract class ClassicalHBoxCriterion extends HBoxModelCriterion {
 	protected TextField fieldValue;
 
 	@Override
-	protected void checkValidity() {
-
+	protected void updateValidity() {
 		if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			setValid(false);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addWarningIconAndDeleteButton();
 		}
 
 		else {
 			setValid(true);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().add(getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addDeleteButton();
 		}
 
 		if (isValid())
@@ -38,25 +35,15 @@ public abstract class ClassicalHBoxCriterion extends HBoxModelCriterion {
 
 	@Override
 	protected void initialize() {
-
 		setValid(false);
-
-		operatorChoiceBox = new ChoiceBox<String>();
+		operatorChoiceBox = new ChoiceBox<>();
 		operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=");
 		fieldValue = new TextField();
 
 		operatorChoiceBox.getSelectionModel().select(2);
-
-		fieldValue.setOnKeyReleased(e -> {
-			checkValidity();
-		});
-
-		operatorChoiceBox.setOnAction(e -> {
-			checkValidity();
-		});
-
+		fieldValue.setOnKeyReleased(e -> updateValidity());
+		operatorChoiceBox.setOnAction(e -> updateValidity());
 		this.getChildren().addAll(operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
-
 	}
 
 }

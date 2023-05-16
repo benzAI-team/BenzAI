@@ -13,25 +13,21 @@ public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
-		
+	protected void updateValidity() {
 		if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			setValid(false);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addWarningIconAndDeleteButton();
 		}
 		
 		else {
 			setValid(true);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
+			removeWarningIconAndDeleteButton();
 			this.getChildren().add(getDeleteButton());
 		}
-		
 		getPane().refreshGenerationPossibility();
 	}
-	
+
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {	
 		if (isValid())

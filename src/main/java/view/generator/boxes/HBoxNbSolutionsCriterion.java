@@ -16,20 +16,17 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 
 		if (!Utils.isNumber(nbSolutionsField.getText())) {
 			setValid(false);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addWarningIconAndDeleteButton();
 		}
-
 		else {
 			setValid(true);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().add(getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addDeleteButton();
 		}
 	}
 
@@ -40,7 +37,7 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 
 		nbSolutionsField = new TextField();
 		nbSolutionsField.setOnKeyReleased(e -> {
-			checkValidity();
+			updateValidity();
 		});
 
 		this.getChildren().addAll(nbSolutionsField, getWarningIcon(), getDeleteButton());
@@ -57,6 +54,6 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 
 	public void setNbSolutions(String nbSolutions) {
 		nbSolutionsField.setText(nbSolutions);
-		checkValidity();
+		updateValidity();
 	}
 }

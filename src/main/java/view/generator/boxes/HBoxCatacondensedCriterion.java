@@ -13,14 +13,14 @@ public class HBoxCatacondensedCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 		setValid(true);
 		getPane().refreshGenerationPossibility();
 	}
 
 	@Override
 	protected void initialize() {
-		this.getChildren().add(getDeleteButton());
+		addDeleteButton();
 	}
 
 	@Override

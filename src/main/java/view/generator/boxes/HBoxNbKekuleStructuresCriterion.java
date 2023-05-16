@@ -15,31 +15,27 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 		
 		if ("Min".equals(operatorChoiceBox.getValue()) || "Max".equals(operatorChoiceBox.getValue())) {
 			setValid(true);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().add(getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addDeleteButton();
 		}
 		
 		else if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			setValid(false);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
+			removeWarningIconAndDeleteButton();
 			this.getChildren().addAll(fieldValue, getWarningIcon(), getDeleteButton());
 		}
 
 		else {
 			setValid(true);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().addAll(getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addDeleteButton();
 		}
-    
 	}
 
 	@Override

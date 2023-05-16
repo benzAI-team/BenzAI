@@ -5,8 +5,6 @@ import application.Settings;
 import generator.GeneralModel;
 import generator.ModelBuilder;
 import generator.properties.Property;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.RectangleProperty;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -39,7 +37,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private boolean isRunning;
 	private ArrayList<Molecule> generatedMolecules;
 
-	BenzenoidCollectionPane selectedCollectionTab;
+	private BenzenoidCollectionPane selectedCollectionTab;
 
 	private Label titleLabel;
 	private ImageView loadIcon;
@@ -153,7 +151,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
 
-			if (invalidIndexes.size() == 0) {
+			if (invalidIndexes.isEmpty()) {
 				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(getNbCriterions(), this, getModelPropertySet());
 				getChoiceBoxesCriterions().add(choiceBoxCriterion);
 				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
@@ -262,10 +260,10 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		generateButton.resize(30, 30);
 
 		generateButton.setOnAction(e -> {
-			if (!isRunning) {
-				generateBenzenoids();
-			} else
+			if (isRunning)
 				Utils.alert("Cannot launch generation: another one is running");
+			else
+				generateBenzenoids();
 		});
 		return generateButton;
 	}
@@ -376,14 +374,11 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			//model.solve();
 
 			final Service<Void> calculateService = new Service<>() {
-
 				@Override
 				protected Task<Void> createTask() {
 					return new Task<>() {
-
 						@Override
 						protected Void call() {
-
 							model.solve();
 							System.out.println("Fin génération");
 							return null;
@@ -404,16 +399,14 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 					break;
 				case SUCCEEDED:
 					isRunning = false;
-					if (!model.isPaused()) {
+					if (model.isPaused()) {
+						buttonsBox.getChildren().clear();
+						buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
+					} else {
 						buttonsBox.getChildren().clear();
 						buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 						buildBenzenoidPanesThread();
 						application.removeTask("Benzenoid generation");
-					}
-
-					else {
-						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 					}
 
 					break;
@@ -518,19 +511,19 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	 * 
 	 */
 	private void buildBenzenoidPanes() {
-		if (!model.isPaused()) {
-
+		if (model.isPaused()) {
 			isRunning = false;
-
-
+			Utils.alert("No benzenoid found");
+		} else {
+			isRunning = false;
 
 			//generatedMolecules = buildMolecules(model.getResultSolver(), generatedMolecules.size());
 			generatedMolecules = model.getResultSolver().getMolecules();
-			if (generatedMolecules.size() == 0) {
+			if (generatedMolecules.isEmpty()) {
 				Utils.alert("No benzenoid found");
 				return;
 			}
-			
+
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);
 
@@ -543,11 +536,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			buttonsBox.getChildren().clear();
 			buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 			application.switchMode(application.getPanes().getCollectionsPane());
-		}
-
-		else {
-			isRunning = false;
-			Utils.alert("No benzenoid found");
 		}
 	}
 
@@ -593,23 +581,11 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	public void refreshGenerationPossibility() {
-		canStartGeneration = false;
 		boolean ok = buildPropertyExpressions();
 		if (ok) {
-			if(((ModelProperty) getModelPropertySet().getById("hexagons")).hasUpperBound()
-					|| ((ModelProperty) getModelPropertySet().getById("carbons")).hasUpperBound()
-					|| ((ModelProperty) getModelPropertySet().getById("hydrogens")).hasUpperBound()
-					|| ((ModelProperty) getModelPropertySet().getById("rhombus")).hasUpperBound()
-					|| ((ModelProperty) getModelPropertySet().getById("diameter")).hasUpperBound())
-				canStartGeneration = true;
-			if(((RectangleProperty)getModelPropertySet().getById("rectangle")).hasUpperBounds())
-				canStartGeneration = true;
-
+			canStartGeneration = getModelPropertySet().hasUpperBound();
 			buttonsBox.getChildren().remove(warningIcon);
-
-			if (canStartGeneration)
-				buttonsBox.getChildren().remove(warningIcon);
-			else
+			if (!canStartGeneration)
 				buttonsBox.getChildren().add(warningIcon);
 		}
 	}

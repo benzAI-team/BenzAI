@@ -1,6 +1,5 @@
 package view.generator.boxes;
 
-import generator.properties.solver.SolverProperty;
 import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -19,20 +18,18 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 
 		if (!Utils.isNumber(timeField.getText()) && timeUnitBox.getValue() != null) {
 			setValid(false);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addWarningIconAndDeleteButton();
 		}
 
 		else {
 			setValid(true);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().add(getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addDeleteButton();
 		}
 	}
 
@@ -46,15 +43,15 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 		timeUnitBox.getSelectionModel().select(2);
 
 		timeField.setOnKeyReleased(e -> {
-			checkValidity();
+			this.updateValidity();
 		});
 
 		timeUnitBox.setOnAction(e -> {
-			checkValidity();
+			this.updateValidity();
 		});
 
 		this.getChildren().addAll(timeField, timeUnitBox, getWarningIcon(), getDeleteButton());
-		checkValidity();
+		this.updateValidity();
 	}
 
 
@@ -84,11 +81,11 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 
 	public void setTime(String time) {
 		timeField.setText(time);
-		checkValidity();
+		this.updateValidity();
 	}
 
 	public void setTimeUnit(String timeUnit) {
 		timeUnitBox.getSelectionModel().select(timeUnit);
-		checkValidity();
+		this.updateValidity();
 	}
 }

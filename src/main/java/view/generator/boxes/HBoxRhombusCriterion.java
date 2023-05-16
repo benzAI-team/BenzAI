@@ -3,7 +3,6 @@ package view.generator.boxes;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import utils.Utils;
@@ -20,17 +19,14 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 
 		String dimensionChoice = dimensionChoiceBox.getValue();
 
 		this.getChildren().remove(dimensionTextField);
-		this.getChildren().remove(getWarningIcon());
-		this.getChildren().remove(getDeleteButton());
-
+		removeWarningIconAndDeleteButton();
 		if (dimensionChoice != null && dimensionChoice.contentEquals("Unspecified"))
 			setValid(true);
-
 		else {
 
 			if (dimensionChoice == null || !Utils.isNumber(dimensionTextField.getText())) {
@@ -46,8 +42,7 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 
 		if (!isValid())
 			this.getChildren().add(getWarningIcon());
-
-		this.getChildren().add(getDeleteButton());
+		addDeleteButton();
 	}
 
 	@Override
@@ -60,19 +55,19 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 		dimensionChoiceBox.getSelectionModel().selectFirst();
 
 		dimensionChoiceBox.setOnAction(e -> {
-			checkValidity();
+			updateValidity();
 			getPane().refreshGenerationPossibility();
 		});
 
 		dimensionTextField = new TextField();
 
 		dimensionTextField.setOnKeyReleased(e -> {
-			checkValidity();
+			updateValidity();
 			getPane().refreshGenerationPossibility();
 		});
 
 		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, getWarningIcon(), getDeleteButton());
-		checkValidity();
+		updateValidity();
 	}
 
 	@Override

@@ -11,13 +11,13 @@ public class HBoxDefaultCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 		setValid(false);
 	}
 
 	@Override
 	protected void initialize() {
-		this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+		addWarningIconAndDeleteButton();
 	}
 
 	@Override

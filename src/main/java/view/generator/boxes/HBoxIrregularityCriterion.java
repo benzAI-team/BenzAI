@@ -21,7 +21,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 
 		String irregularityValue = irregularityChoiceBox.getValue();
 		String operatorValue = operatorChoiceBox.getValue();
@@ -42,55 +42,42 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 			System.out.println(split.length == 2 && Utils.isNumber(split[0]) && Utils.isNumber(split[1]));
 			
 			if ((split.length == 2 && Utils.isNumber(split[0]) && Utils.isNumber(split[1]))) {
-				
 				setValid(true);
-				this.getChildren().remove(getWarningIcon());
-				this.getChildren().remove(getDeleteButton());
-
-				if (!this.getChildren().contains(operatorChoiceBox))
-					this.getChildren().add(operatorChoiceBox);
-
-				if (!this.getChildren().contains(fieldValue))
-					this.getChildren().add(fieldValue);
-
+				removeWarningIconAndDeleteButton();
+				addOperatorChoiceBoxIfMissing();
+				addFieldValueIfMissing();
 				fieldValue.setText(split[0] + "." + split[1]);
-				
-				this.getChildren().addAll(getDeleteButton());
+				addDeleteButton();
 			}
-			
 			else {
-			
 				if (irregularityValue == null || operatorValue == null || !Utils.isNumber(fieldStr)) {
-
 					setValid(false);
-					this.getChildren().remove(getWarningIcon());
-					this.getChildren().remove(getDeleteButton());
-
-					if (!this.getChildren().contains(operatorChoiceBox))
-						this.getChildren().add(operatorChoiceBox);
-
-					if (!this.getChildren().contains(fieldValue))
-						this.getChildren().add(fieldValue);
-
-					this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+					removeWarningIconAndDeleteButton();
+					addOperatorChoiceBoxIfMissing();
+					addFieldValueIfMissing();
+					addWarningIconAndDeleteButton();
 				}
 
 				else if (!"Compute irregularity".equals(irregularityValue)) {
 				
 					setValid(true);
-					this.getChildren().remove(getWarningIcon());
-					this.getChildren().remove(getDeleteButton());
-
-					if (!this.getChildren().contains(operatorChoiceBox))
-						this.getChildren().add(operatorChoiceBox);
-
-					if (!this.getChildren().contains(fieldValue))
-						this.getChildren().add(fieldValue);
-
-					this.getChildren().addAll(getDeleteButton());
+					removeWarningIconAndDeleteButton();
+					addOperatorChoiceBoxIfMissing();
+					addFieldValueIfMissing();
+					addDeleteButton();
 				}
 			}
 		}
+	}
+
+	private void addFieldValueIfMissing() {
+		if (!this.getChildren().contains(fieldValue))
+			this.getChildren().add(fieldValue);
+	}
+
+	private void addOperatorChoiceBoxIfMissing() {
+		if (!this.getChildren().contains(operatorChoiceBox))
+			this.getChildren().add(operatorChoiceBox);
 	}
 
 	@Override
@@ -101,7 +88,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 		irregularityChoiceBox.getSelectionModel().selectFirst();
 
 		irregularityChoiceBox.setOnAction(e -> {
-			checkValidity();
+			updateValidity();
 		});
 
 		operatorChoiceBox = new ChoiceBox<>();
@@ -109,13 +96,13 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 		operatorChoiceBox.getSelectionModel().select(2);
 
 		operatorChoiceBox.setOnAction(e -> {
-			checkValidity();
+			updateValidity();
 		});
 
 		fieldValue = new TextField();
 
 		fieldValue.setOnKeyReleased(e -> {
-			checkValidity();
+			updateValidity();
 		});
 
 		//deleteButton = new DeleteButton(this);
@@ -123,7 +110,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 		setWarningIcon(new ImageView(new Image("/resources/graphics/icon-warning.png")));
 
 		this.getChildren().addAll(irregularityChoiceBox, operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
-		checkValidity();
+		updateValidity();
 	}
 
 	@Override

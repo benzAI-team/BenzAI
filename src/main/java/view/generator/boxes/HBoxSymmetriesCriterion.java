@@ -1,7 +1,6 @@
 package view.generator.boxes;
 
 import javafx.scene.control.ChoiceBox;
-import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.ParameterizedExpression;
 import view.generator.ChoiceBoxCriterion;
@@ -14,17 +13,16 @@ public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
-		this.getChildren().remove(getWarningIcon());
-		this.getChildren().remove(getDeleteButton());
+	protected void updateValidity() {
+		removeWarningIconAndDeleteButton();
 
 		if (symmetriesChoiceBox.getValue() != null) {
 			setValid(true);
-			this.getChildren().addAll(getDeleteButton());
+			addDeleteButton();
 		}
 		else {
 			setValid(false);
-			this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+			addWarningIconAndDeleteButton();
 		}
 	}
 
@@ -51,11 +49,11 @@ public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 		symmetriesChoiceBox.getSelectionModel().selectFirst();
 
 		symmetriesChoiceBox.setOnAction(e -> {
-			checkValidity();
+			updateValidity();
 		});
 
 		this.getChildren().addAll(symmetriesChoiceBox, getWarningIcon(), getDeleteButton());
-		checkValidity();
+		updateValidity();
 	}
 
 	@Override

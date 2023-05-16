@@ -30,7 +30,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 
 		String heightChoice = heightChoiceBox.getValue();
 		String widthChoice = widthChoiceBox.getValue();
@@ -105,12 +105,12 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		heightTextField = new TextField();
 
 		heightChoiceBox.setOnAction(e -> {
-			checkValidity();
+			updateValidity();
 			getPane().refreshGenerationPossibility();
 		});
 
 		heightTextField.setOnKeyReleased(e -> {
-			checkValidity();
+			updateValidity();
 			getPane().refreshGenerationPossibility();
 		});
 
@@ -124,12 +124,12 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		widthTextField = new TextField();
 
 		widthChoiceBox.setOnAction(e -> {
-			checkValidity();
+			updateValidity();
 			getPane().refreshGenerationPossibility();
 		});
 
 		widthTextField.setOnKeyReleased(e -> {
-			checkValidity();
+			updateValidity();
 			getPane().refreshGenerationPossibility();
 		});
 
@@ -141,7 +141,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		gridPane.add(hBoxHeight, 0, 0);
 		gridPane.add(hBoxWidth, 0, 1);
 
-		checkValidity();
+		updateValidity();
 		this.getChildren().add(gridPane);
 	}
 

@@ -38,19 +38,17 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 
 		setValid(true);
 
-		this.getChildren().remove(getWarningIcon());
+		removeWarningIconAndDeleteButton();
 		this.getChildren().remove(editButton);
-		this.getChildren().remove(getDeleteButton());
 
 		if ("NO_PROPERTY".equals(patternInformationField.getText())) {
 			setValid(false);
 			this.getChildren().add(getWarningIcon());
 		}
-
 		this.getChildren().addAll(editButton, getDeleteButton());
 	}
 
@@ -120,7 +118,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 
 	public void refreshPatternInformations(String information) {
 		patternInformationField.setText(information);
-		checkValidity();
+		updateValidity();
 	}
 
 	public void hidePatternStage() {

@@ -7,6 +7,8 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
+import java.util.Objects;
+
 public class HBoxNbCarbonsCriterion extends ClassicalHBoxCriterion{
 
 	public HBoxNbCarbonsCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
@@ -15,28 +17,23 @@ public class HBoxNbCarbonsCriterion extends ClassicalHBoxCriterion{
 	}
 
 	@Override
-	public void checkValidity() {
+	public void updateValidity() {
 		
 		if ("even".equals(operatorChoiceBox.getValue()) || "odd".equals(operatorChoiceBox.getValue())) {
 			setValid(true);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().add(getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addDeleteButton();
 		}
-		
 		else if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			setValid(false);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
+			removeWarningIconAndDeleteButton();
 			this.getChildren().remove(fieldValue);
 			this.getChildren().addAll(fieldValue, getWarningIcon(), getDeleteButton());
 		}
-		
 		else {
 			setValid(true);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
+			removeWarningIconAndDeleteButton();
 			this.getChildren().remove(fieldValue);
 			this.getChildren().addAll(fieldValue, getDeleteButton());
 		}
@@ -49,7 +46,7 @@ public class HBoxNbCarbonsCriterion extends ClassicalHBoxCriterion{
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {	
 		if (isValid()) {
 			String operator = operatorChoiceBox.getValue();	
-			if (operator != "even" && operator != "odd")
+			if (!Objects.equals(operator, "even") && !Objects.equals(operator, "odd"))
 				modelPropertySet.getById("carbons").addExpression(new BinaryNumericalExpression("carbons", operator, Integer.decode(fieldValue.getText())));			
 			else 
 				modelPropertySet.getById("carbons").addExpression(new ParameterizedExpression("carbons", operator));

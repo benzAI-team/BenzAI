@@ -37,15 +37,16 @@ public abstract class HBoxCriterion extends HBox {
 		deleteButton.setOnAction(e -> {
 			pane.removeCriterion(choiceBoxCriterion, this);
 		});
-		
 		initialize();
 	}
 	
-	protected abstract void checkValidity();
+	protected abstract void updateValidity();
+
+	protected void addDeleteButton() {
+		this.getChildren().add(getDeleteButton());
+	}
+
 	protected abstract void initialize();
-	
-	//public abstract void addPropertyExpression(PropertySet<Property> propertySet);
-	
 
 	/***
 	 * getters, setters
@@ -66,8 +67,6 @@ public abstract class HBoxCriterion extends HBox {
 		this.warningIcon = warningIcon;
 	}
 
-
-
 	public ChoiceBoxCriterion getChoiceBoxCriterion() {
 		return choiceBoxCriterion;
 	}
@@ -80,11 +79,9 @@ public abstract class HBoxCriterion extends HBox {
 		return expression;
 	}
 
-
 	public void setExpression(PropertyExpression expression) {
 		this.expression = expression;
 	}
-
 
 	public boolean isValid() {
 		return valid;
@@ -101,6 +98,13 @@ public abstract class HBoxCriterion extends HBox {
 	public void setPane(ScrollPaneWithPropertyList pane) {
 		this.pane = pane;
 	}
-	
 
+	protected void removeWarningIconAndDeleteButton() {
+		this.getChildren().remove(getWarningIcon());
+		this.getChildren().remove(getDeleteButton());
+	}
+
+	protected void addWarningIconAndDeleteButton() {
+		this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+	}
 }

@@ -15,28 +15,23 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 	}
 
 	@Override
-	public void checkValidity() {
+	public void updateValidity() {
 		
-		if ("EVEN".equals(operatorChoiceBox.getValue()) || "ODD".equals(operatorChoiceBox.getValue())) {
+		if ("even".equals(operatorChoiceBox.getValue()) || "odd".equals(operatorChoiceBox.getValue())) {
 			setValid(true);
 			this.getChildren().remove(fieldValue);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
-			this.getChildren().add(getDeleteButton());
+			removeWarningIconAndDeleteButton();
+			addDeleteButton();
 		}
-		
 		else if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
 			setValid(false);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
+			removeWarningIconAndDeleteButton();
 			this.getChildren().remove(fieldValue);
 			this.getChildren().addAll(fieldValue, getWarningIcon(), getDeleteButton());
 		}
-		
 		else {
 			setValid(true);
-			this.getChildren().remove(getWarningIcon());
-			this.getChildren().remove(getDeleteButton());
+			removeWarningIconAndDeleteButton();
 			this.getChildren().remove(fieldValue);
 			this.getChildren().addAll(fieldValue, getDeleteButton());
 		}

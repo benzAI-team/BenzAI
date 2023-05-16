@@ -31,6 +31,15 @@ public class ModelPropertySet extends PropertySet {
 	}
 
 
+	public boolean hasUpperBound(){
+		return ((ModelProperty) getById("hexagons")).hasUpperBound()
+				|| ((ModelProperty) getById("carbons")).hasUpperBound()
+				|| ((ModelProperty) getById("hydrogens")).hasUpperBound()
+				|| ((ModelProperty) getById("rhombus")).hasUpperBound()
+				|| ((ModelProperty) getById("diameter")).hasUpperBound()
+				|| ((ModelProperty) getById("coronenoid")).hasUpperBound()
+				|| ((RectangleProperty) getById("rectangle")).hasUpperBounds();
+	}
 	public int computeHexagonNumberUpperBound() {
 		int upperBound = Integer.MAX_VALUE;
 		for(Property property : getPropertyList()) {

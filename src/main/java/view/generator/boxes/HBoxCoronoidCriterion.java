@@ -19,46 +19,35 @@ public class HBoxCoronoidCriterion extends HBoxModelCriterion {
 	private TextField fieldValue;
 
 	@Override
-	protected void checkValidity() {
+	protected void updateValidity() {
 
 		String operatorValue = operatorChoiceBox.getValue();
 		String textValue = fieldValue.getText();
 
 		if (operatorValue != null && "Unspecified".equals(operatorValue)) {
-
 			setValid(true);
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(getWarningIcon());
 		}
-
 		else {
-
 			if (operatorValue == null || !Utils.isNumber(textValue)) {
-
 				setValid(false);
-
-				this.getChildren().remove(getWarningIcon());
-				this.getChildren().remove(getDeleteButton());
-
-				if (!this.getChildren().contains(fieldValue))
-					this.getChildren().add(fieldValue);
-
-				this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+				removeWarningIconAndDeleteButton();
+				addFieldIfMissing();
+				addWarningIconAndDeleteButton();
 			}
-
 			else {
-
 				setValid(true);
-
-				this.getChildren().remove(getWarningIcon());
-				this.getChildren().remove(getDeleteButton());
-
-				if (!this.getChildren().contains(fieldValue))
-					this.getChildren().add(fieldValue);
-
-				this.getChildren().addAll(getDeleteButton());
+				removeWarningIconAndDeleteButton();
+				addFieldIfMissing();
+				addDeleteButton();
 			}
 		}
+	}
+
+	private void addFieldIfMissing() {
+		if (!this.getChildren().contains(fieldValue))
+			this.getChildren().add(fieldValue);
 	}
 
 	@Override
@@ -71,17 +60,17 @@ public class HBoxCoronoidCriterion extends HBoxModelCriterion {
 		operatorChoiceBox.getSelectionModel().selectFirst();
 
 		operatorChoiceBox.setOnAction(e -> {
-			checkValidity();
+			updateValidity();
 		});
 
 		fieldValue = new TextField();
 
 		fieldValue.setOnKeyReleased(e -> {
-			checkValidity();
+			updateValidity();
 		});
 
 		this.getChildren().addAll(nbHolesLabel, operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
-		checkValidity();
+		updateValidity();
 	}
 
 	@Override
