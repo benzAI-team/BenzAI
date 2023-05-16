@@ -65,7 +65,6 @@ public class SpectrumsComputer {
 			//7_hexagons194.log: Molecular mass:   352.12520 amu.
 			if (line.contains("Molecular mass")) {
 				molecularWeight = Double.parseDouble(splittedLine[3]);
-				System.out.println("");
 			}
 		}
 

@@ -1,6 +1,7 @@
 package view.ames_format;
 
 import application.BenzenoidApplication;
+import javafx.scene.layout.ColumnConstraints;
 import molecules.Geometry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AmesFormatPane extends GridPane {
+
+    private static final int AREAS_HEIGHT = 1000;
 
     private BenzenoidApplication application;
     private ListView<LogFileBox> listView;
@@ -45,9 +48,9 @@ public class AmesFormatPane extends GridPane {
 
         listView = new ListView<>();
         logFileBoxes = new ArrayList<>();
-        refreshListView();
-
         textArea = new TextArea();
+
+        refreshListView();
 
         addButton = new Button("Add");
         saveButton = new Button("Save as");
@@ -60,12 +63,21 @@ public class AmesFormatPane extends GridPane {
         this.add(vBoxLeft, 0, 0);
 
         VBox vBoxRight = new VBox(5.0);
-        textArea.setPrefHeight(1000);
+        textArea.setPrefHeight(AREAS_HEIGHT);
         vBoxRight.getChildren().addAll(textArea, saveButton);
         saveButton.setPrefWidth(textArea.getPrefWidth());
-
+        listView.setPrefHeight(AREAS_HEIGHT);
+        textArea.setEditable(false);
 
         this.add(vBoxRight, 1, 0);
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(50);
+
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(50);
+
+        this.getColumnConstraints().addAll(col1, col2);
 
         setActions();
     }
@@ -127,7 +139,7 @@ public class AmesFormatPane extends GridPane {
             builder.append("\t\t\t<comment># b3lyp/6-31g opt freq</comment>\n");
             builder.append("\t\t</comments>\n");
 
-            builder.append("\t\t<formula>C" + geometry.getNbCarbons() + "H" + geometry.getHydrogens() + "</formula>\n");
+            builder.append("\t\t<formula>C" + geometry.getNbCarbons() + "H" + geometry.getNbHydrogens() + "</formula>\n");
             builder.append("\t\t<charge>0</charge>\n");
             builder.append("\t\t<method>B3LYP</method>\n");
 
@@ -170,11 +182,11 @@ public class AmesFormatPane extends GridPane {
                 Double frequency = resultLogFile.getFrequency(i);
                 Double intensity = resultLogFile.getIntensity(i);
 
-                builder.append("<mode>");
-                builder.append("<frequency>" + frequency + "</frequency>");
-                builder.append("<intensity>" + intensity + "</intensity>");
-                builder.append("<symmetry>unknown</symmetry>");
-                builder.append("</mode>");
+                builder.append("\t\t\t<mode>\n");
+                builder.append("\t\t\t\t<frequency>" + frequency + "</frequency>\n");
+                builder.append("\t\t\t\t<intensity>" + intensity + "</intensity>\n");
+                builder.append("\t\t\t\t<symmetry>unknown</symmetry>\n");
+                builder.append("\t\t\t</mode>\n");
             }
 
             builder.append("\t\t</transitions>\n");
@@ -206,7 +218,6 @@ public class AmesFormatPane extends GridPane {
 
         String line = lines.get(position);
         while(!line.contains("----------------")) {
-            line = lines.get(position);
             String [] split = Utils.splitBySeparators(line);
 
             int type = Integer.parseInt(split[2]);
@@ -222,9 +233,14 @@ public class AmesFormatPane extends GridPane {
                 geometry.addCarbon(atom);
 
             position ++;
+            line = lines.get(position);
         }
 
         return geometry;
     }
 
+    public void deleteFile(int index) throws IOException {
+        logFileBoxes.remove(index);
+        refreshListView();
+    }
 }

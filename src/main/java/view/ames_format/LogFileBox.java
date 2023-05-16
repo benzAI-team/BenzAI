@@ -1,10 +1,14 @@
 package view.ames_format;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.io.File;
+import java.io.IOException;
 
 public class LogFileBox extends HBox {
 
@@ -24,8 +28,31 @@ public class LogFileBox extends HBox {
 
     private void initialize() {
         fileLabel = new Label(file.getName());
-        deleteButton = new Button("X");
+        deleteButton = new Button();
+
+        deleteButton.resize(25, 25);
+        deleteButton.setStyle("-fx-background-color: transparent;");
+
+        Image imageAddButton;
+
+        imageAddButton = new Image("/resources/graphics/icon-delete.png");
+
+        ImageView view = new ImageView(imageAddButton);
+        deleteButton.setPadding(new Insets(0));
+        deleteButton.setGraphic(view);
+
         this.getChildren().addAll(fileLabel, deleteButton);
+        setActions();
+    }
+
+    private void setActions() {
+        deleteButton.setOnAction(e -> {
+            try {
+                delete();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 
     public File getFile() {
@@ -36,4 +63,7 @@ public class LogFileBox extends HBox {
         return index;
     }
 
+    private void delete() throws IOException {
+        parent.deleteFile(index);
+    }
 }
