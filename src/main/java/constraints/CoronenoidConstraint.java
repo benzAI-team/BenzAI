@@ -16,8 +16,6 @@ public class CoronenoidConstraint extends BenzAIConstraint {
 	private IntVar nbCrowns;
 	private IntVar diameter;
 
-	IntVar sub;
-
 
 	@Override
 	public void buildVariables() {
@@ -43,7 +41,7 @@ public class CoronenoidConstraint extends BenzAIConstraint {
 
 		generalModel.getProblem().or(constraints).post();
 
-		sub = generalModel.getProblem().intVar("sub", 0, 2 * generalModel.getNbCrowns());
+		IntVar sub = generalModel.getProblem().intVar("sub", 0, 2 * generalModel.getNbCrowns());
 		// sub = nbCrowns - 1
 		generalModel.getProblem().sum(new IntVar[] { nbCrowns, generalModel.getProblem().intVar(-1) }, "=", sub).post();
 		// diameter = 2 * sub = 2 * (nbCrowns - 1)

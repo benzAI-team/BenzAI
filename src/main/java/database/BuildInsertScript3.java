@@ -1,16 +1,19 @@
 package database;
 
-import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-
 import classifier.Irregularity;
 import molecules.Molecule;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
 import utils.Utils;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 
 public enum BuildInsertScript3 {
     ;
@@ -79,7 +82,7 @@ public enum BuildInsertScript3 {
 						intensities.append(" ");
 				}
 
-				if ("".equals(frequencies.toString()) || "".equals(intensities.toString()))
+				if ("".contentEquals(frequencies) || "".contentEquals(intensities))
 					System.out.print("");
 				
 				BufferedWriter w = new BufferedWriter(new FileWriter(

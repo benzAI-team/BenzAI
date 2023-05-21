@@ -1,5 +1,8 @@
 package http;
 
+import com.google.gson.Gson;
+import utils.Utils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,10 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import com.google.gson.Gson;
-
-import utils.Utils;
 
 public enum Post {
 	;
@@ -49,7 +48,7 @@ public enum Post {
 
 			// System.out.println(response.toString());
 
-			if (!"[]".equals(response.toString())) {
+			if (!"[]".contentEquals(response)) {
 
 				String res = response.toString();
 				res = res.substring(2, res.length() - 2);

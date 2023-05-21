@@ -17,7 +17,6 @@ public class HexagonNumberProperty extends ModelProperty {
 
 	@Override
 	public int computeHexagonNumberUpperBound() {
-
 		int hexagonNumberMin = Integer.MAX_VALUE;
 		for (PropertyExpression binaryNumericalExpression : this.getExpressions()) {
 			String operator = ((BinaryNumericalExpression)binaryNumericalExpression).getOperator();

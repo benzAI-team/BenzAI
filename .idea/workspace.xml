@@ -7,20 +7,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="class HBox and derivates lightly refactored">
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="class HBoxCriterion and derivates lightly refactored">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/DeleteButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/DeleteButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronenoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronenoidCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronoidCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxIrregularityCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxIrregularityCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneratorCriterion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneratorRun.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneratorRun.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/http/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/http/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/ClassicalHBoxCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxBoundingCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxDiameterCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxDiameterCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxHexagonNumberCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxHexagonNumberCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbCarbonsCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbCarbonsCriterion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbHydrogensCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbHydrogensCriterion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbKekuleStructuresCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbKekuleStructuresCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbSolutionsCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbSolutionsCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxPatternCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxPatternCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxSymmetriesCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxSymmetriesCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxTimeoutCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxTimeoutCriterion.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -297,7 +300,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684253502454</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="class HBoxCriterion and derivates lightly refactored">
+      <created>1684254385528</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1684254385528</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -361,7 +371,8 @@
     <MESSAGE value="class Pattern refactored" />
     <MESSAGE value="class Pattern delegates export and import file to new classes PatternFileImport and PatternFileWriter" />
     <MESSAGE value="class HBox and derivates lightly refactored" />
-    <option name="LAST_COMMIT_MESSAGE" value="class HBox and derivates lightly refactored" />
+    <MESSAGE value="class HBoxCriterion and derivates lightly refactored" />
+    <option name="LAST_COMMIT_MESSAGE" value="class HBoxCriterion and derivates lightly refactored" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -390,7 +401,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1684249126645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1684306459241" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1682673901626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

@@ -9,33 +9,33 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 import java.util.Objects;
 
-public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
+public class HBoxNbHydrogensCriterion extends HBoxBoundingCriterion {
 
 	public HBoxNbHydrogensCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
-		operatorChoiceBox.getItems().addAll("EVEN", "ODD");
+		getOperatorChoiceBox().getItems().addAll("EVEN", "ODD");
 	}
 
 	@Override
 	public void updateValidity() {
 		
-		if ("even".equals(operatorChoiceBox.getValue()) || "odd".equals(operatorChoiceBox.getValue())) {
+		if ("even".equals(getOperatorChoiceBox().getValue()) || "odd".equals(getOperatorChoiceBox().getValue())) {
 			setValid(true);
-			this.getChildren().remove(fieldValue);
+			this.getChildren().remove(getFieldValue());
 			removeWarningIconAndDeleteButton();
 			addDeleteButton();
 		}
-		else if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
+		else if (! Utils.isNumber(getFieldValue().getText()) || getOperatorChoiceBox().getValue() == null) {
 			setValid(false);
 			removeWarningIconAndDeleteButton();
-			this.getChildren().remove(fieldValue);
-			this.getChildren().addAll(fieldValue, getWarningIcon(), getDeleteButton());
+			this.getChildren().remove(getFieldValue());
+			this.getChildren().addAll(getFieldValue(), getWarningIcon(), getDeleteButton());
 		}
 		else {
 			setValid(true);
 			removeWarningIconAndDeleteButton();
-			this.getChildren().remove(fieldValue);
-			this.getChildren().addAll(fieldValue, getDeleteButton());
+			this.getChildren().remove(getFieldValue());
+			this.getChildren().addAll(getFieldValue(), getDeleteButton());
 		}
 		
 		getPane().refreshGenerationPossibility();
@@ -44,9 +44,9 @@ public class HBoxNbHydrogensCriterion extends ClassicalHBoxCriterion{
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {
-			String operator = operatorChoiceBox.getValue();	
+			String operator = getOperatorChoiceBox().getValue();
 			if (!Objects.equals(operator, "even") && !Objects.equals(operator, "odd"))
-				modelPropertySet.getById("hydrogens").addExpression(new BinaryNumericalExpression("hydrogens", operator, Integer.decode(fieldValue.getText())));			
+				modelPropertySet.getById("hydrogens").addExpression(new BinaryNumericalExpression("hydrogens", operator, Integer.decode(getFieldValue().getText())));
 			else 
 				modelPropertySet.getById("hydrogens").addExpression(new ParameterizedExpression("hydrogens", operator));
 		}

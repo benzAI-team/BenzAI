@@ -221,8 +221,6 @@ public class RectangleConstraint extends BenzAIConstraint {
 			model.arithm(widthVar, "<=", heightVar).post();
 		else
 			model.arithm(widthVar, ">=", heightVar).post();
-		System.out.print("");
-
 	}
 
 	private boolean widthInfHeight(ArrayList<PropertyExpression> expressionList) {

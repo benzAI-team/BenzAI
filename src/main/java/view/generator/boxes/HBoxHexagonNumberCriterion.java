@@ -6,7 +6,7 @@ import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
-public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
+public class HBoxHexagonNumberCriterion extends HBoxBoundingCriterion {
 	
 	public HBoxHexagonNumberCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
@@ -14,7 +14,7 @@ public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
 
 	@Override
 	protected void updateValidity() {
-		if (! Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
+		if (! Utils.isNumber(getFieldValue().getText()) || getOperatorChoiceBox().getValue() == null) {
 			setValid(false);
 			removeWarningIconAndDeleteButton();
 			addWarningIconAndDeleteButton();
@@ -23,7 +23,7 @@ public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
 		else {
 			setValid(true);
 			removeWarningIconAndDeleteButton();
-			this.getChildren().add(getDeleteButton());
+			addDeleteButton();
 		}
 		getPane().refreshGenerationPossibility();
 	}
@@ -31,7 +31,7 @@ public class HBoxHexagonNumberCriterion extends ClassicalHBoxCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {	
 		if (isValid())
-			modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", operatorChoiceBox.getValue(), Integer.decode(fieldValue.getText())));
+			modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", getOperatorChoiceBox().getValue(), Integer.decode(getFieldValue().getText())));
 	}
 
 }

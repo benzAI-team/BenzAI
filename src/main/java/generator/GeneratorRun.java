@@ -6,7 +6,7 @@ public class GeneratorRun {
 	private boolean isStopped;
 	private boolean isPaused;
 
-	public GeneratorRun(GeneralModel model) {
+	GeneratorRun(GeneralModel model) {
 		this.model = model;
 		isStopped = false;
 		isPaused = false;
@@ -16,15 +16,15 @@ public class GeneratorRun {
 		return isStopped;
 	}
 
-	public boolean isPaused() {
+	boolean isPaused() {
 		return isPaused;
 	}
 	
-	public void stop() {
+	void stop() {
 		isStopped = true;
 	}
 	
-	public void pause() {
+	void pause() {
 		isPaused = true;
 	}
 	

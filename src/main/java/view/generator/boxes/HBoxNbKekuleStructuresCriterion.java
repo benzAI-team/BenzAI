@@ -9,7 +9,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 import java.util.Objects;
 
-public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
+public class HBoxNbKekuleStructuresCriterion extends HBoxBoundingCriterion {
 
 	
 	public HBoxNbKekuleStructuresCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
@@ -19,18 +19,18 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 	@Override
 	protected void updateValidity() {
 		
-		if ("Min".equals(operatorChoiceBox.getValue()) || "Max".equals(operatorChoiceBox.getValue())) {
+		if ("Min".equals(getOperatorChoiceBox().getValue()) || "Max".equals(getOperatorChoiceBox().getValue())) {
 			setValid(true);
-			this.getChildren().remove(fieldValue);
+			this.getChildren().remove(getFieldValue());
 			removeWarningIconAndDeleteButton();
 			addDeleteButton();
 		}
 		
-		else if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
+		else if (!Utils.isNumber(getFieldValue().getText()) || getOperatorChoiceBox().getValue() == null) {
 			setValid(false);
-			this.getChildren().remove(fieldValue);
+			this.getChildren().remove(getFieldValue());
 			removeWarningIconAndDeleteButton();
-			this.getChildren().addAll(fieldValue, getWarningIcon(), getDeleteButton());
+			this.getChildren().addAll(getFieldValue(), getWarningIcon(), getDeleteButton());
 		}
 
 		else {
@@ -43,9 +43,9 @@ public class HBoxNbKekuleStructuresCriterion extends ClassicalHBoxCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {		
 		if (isValid()) {		
-				String operator = operatorChoiceBox.getValue();	
+				String operator = getOperatorChoiceBox().getValue();
 				if (!Objects.equals(operator, "min") && !Objects.equals(operator, "max"))
-					modelPropertySet.getById("kekule").addExpression(new BinaryNumericalExpression("kekuleNumber", operator, Integer.decode(fieldValue.getText())));			
+					modelPropertySet.getById("kekule").addExpression(new BinaryNumericalExpression("kekuleNumber", operator, Integer.decode(getFieldValue().getText())));
 				else 
 					modelPropertySet.getById("kekule").addExpression(new ParameterizedExpression("kekuleNumber", operator));
 			}

@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PatternFileImport {
+public enum PatternFileImport {
+    ;
+
     /***
      * import pattern from the given file
      * @return the pattern

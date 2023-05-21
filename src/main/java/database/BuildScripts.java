@@ -1,22 +1,17 @@
 package database;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-
 import molecules.AtomGeometry;
 import molecules.Molecule;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
 import utils.Triplet;
+
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public enum BuildScripts {
     ;
@@ -98,7 +93,7 @@ public enum BuildScripts {
 				intensities.append(" ");
 		}
 
-		if ("".equals(frequencies.toString()) || "".equals(intensities.toString()))
+		if ("".contentEquals(frequencies) || "".contentEquals(intensities))
 			System.out.print("");
 
 		writer.write(
