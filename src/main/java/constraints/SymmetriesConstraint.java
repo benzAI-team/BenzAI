@@ -14,67 +14,52 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 
 	@Override
 	public void postConstraints() {
-
 		switch (((ParameterizedExpression)this.getExpressionList().get(0)).getOperator()) {
-
 		case "C_2v(a) \"face-mirror\"":
 			postHasHexagonAxisSymmetry();
 			break;
-			
 		case "C_6h \"(face)-60-rotation\"" : 
 			postHasRot60Symmetry();
 			break;
-			
 		case "C_3h(i) \"face-120-rotation\"":			
 			postHasRot120Symmetry();
 			break;
-
 		case "C_2h(i) \"face-180-rotation\"": 
 			postHasRot180Symmetry();
 			break;
-
 		case "C_2v(b) \"edge-mirror\"" : 
 			postHasEdgeAxisSymmetry();
 			break;
-
 		case "C_3h(ii) \"vertex-120-rotation\"" : 
 			postHasRot120VertexSymmetry();
 			break;
-
 		case "C_2h(ii) \"edge-180-rotation\"" : 
 			postHasRot180EdgeSymmetry();
 			break;
-
 		case "D_6h \"(face)-60-rotation+(edge)-mirror\"" : 
 			postHasEdgeAxisSymmetry();
 			postHasRot60Symmetry();
 			break;
-			
 		case "D_3h(ii) \"vertex-120-rotation+(edge)-mirror\"" :
 			postHasRot120VertexSymmetry();
 			postHasEdgeAxisSymmetry();
 			break;
-			
 		case "D_3h(ia) \"face-120-rotation+face-mirror\"" :
 			postHasRot120Symmetry();
 			postHasHexagonAxisSymmetry();
 			break;
-			
 		case "D_3h(ib) \"face-120-rotation+edge-mirror\"" :
 			postHasRot120Symmetry();
 			postHasEdgeAxisSymmetry();
 			break;
-			
 		case "D_2h(ii) \"edge-180-rotation+edge-mirror\"" :
 			postHasRot180EdgeSymmetry();
 			postHasEdgeAxisSymmetry();
 			break;
-			
 		case "D_2h(i) \"face-180-rotation+edge-mirror\"" : 
 			postHasRot180Symmetry();
 			postHasEdgeAxisSymmetry();//??
 			break;
-			
 		case "C_s \"no-symmetry\"" :
 			break;
 		}
@@ -121,8 +106,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 								generalModel.getDiameter()));
 						BoolVar y = generalModel.getBenzenoidVerticesBVArray(p
 								.from(Utils.getHexagonID(i, j, generalModel.getDiameter())));
-System.out.println("S: ("+ i + "," + j + ") :" + Utils.getHexagonID(i, j, generalModel.getDiameter()) + " " + p
-		.from(Utils.getHexagonID(i, j, generalModel.getDiameter())));
+//System.out.println("S: ("+ i + "," + j + ") :" + Utils.getHexagonID(i, j, generalModel.getDiameter()) + " " + p.from(Utils.getHexagonID(i, j, generalModel.getDiameter())));
 						BoolVar[] clauseVariables1 = new BoolVar[] { x, y };
 						IntIterableRangeSet[] clauseValues1 = new IntIterableRangeSet[] { new IntIterableRangeSet(0),
 								new IntIterableRangeSet(1) };
@@ -150,60 +134,100 @@ System.out.println("S: ("+ i + "," + j + ") :" + Utils.getHexagonID(i, j, genera
 	}
 
 	private void postHasHexagonAxisSymmetry() {
-		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
-			@Override
-			public Coords from(Coords point) {
-				return hexAxis(point);
-			}
-		});
+		postHasSymmetry(new HexagonAxisSymmetry());
 	}
 
 	private void postHasRot60Symmetry() {
-		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns(), 1) {
-			public Coords from(Coords point) {
-				return rot(point);
-			}
-		});
+		postHasSymmetry(new Rot60Symmetry());
 	}
 
 	private void postHasRot120Symmetry() {
-		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns(), 2) {
-			public Coords from(Coords point) {
-				return rot(point);
-			}
-		});
+		postHasSymmetry(new Rot120Symmetry());
 	}
 
 	private void postHasRot180Symmetry() {
-		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns(), 3) {
-			public Coords from(Coords point) {
-				return rot(point);
-			}
-		});
+		postHasSymmetry(new Rot180Symmetry());
 	}
 
 	private void postHasEdgeAxisSymmetry() {
-		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
-			public Coords from(Coords point) {
-				return edgeAxis(point);
-			}
-		});
+		postHasSymmetry(new EdgeAxisSymmetry());
 	}
 
 	private void postHasRot120VertexSymmetry() {
-		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
-			public Coords from(Coords point) {
-				return rot120topVertex(point);
-			}
-		});
+		postHasSymmetry(new Rot120VertexSymmetry());
 	}
 
 	private void postHasRot180EdgeSymmetry() {
-		postHasSymmetry(new Permutation(getGeneralModel().getNbCrowns()) {
-			public Coords from(Coords point) {
-				return rot180edge(point);
-			}
-		});
+		postHasSymmetry(new Rot180EdgeSymmetry());
 	}
 
+	private class HexagonAxisSymmetry extends Permutation {
+		HexagonAxisSymmetry() {
+			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns());
+		}
+		@Override
+		public Coords from(Coords point) {
+			return hexAxis(point);
+		}
+	}
+
+	private class Rot60Symmetry extends Permutation {
+		Rot60Symmetry() {
+			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns(), 1);
+		}
+
+		public Coords from(Coords point) {
+			return rot(point);
+		}
+	}
+
+	private class Rot120Symmetry extends Permutation {
+		Rot120Symmetry() {
+			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns(), 2);
+		}
+
+		public Coords from(Coords point) {
+			return rot(point);
+		}
+	}
+
+	private class Rot180Symmetry extends Permutation {
+		Rot180Symmetry() {
+			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns(), 3);
+		}
+
+		public Coords from(Coords point) {
+			return rot(point);
+		}
+	}
+
+	private class EdgeAxisSymmetry extends Permutation {
+		EdgeAxisSymmetry() {
+			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns());
+		}
+
+		public Coords from(Coords point) {
+			return edgeAxis(point);
+		}
+	}
+
+	private class Rot120VertexSymmetry extends Permutation {
+		Rot120VertexSymmetry() {
+			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns());
+		}
+
+		public Coords from(Coords point) {
+			return rot120topVertex(point);
+		}
+	}
+
+	private class Rot180EdgeSymmetry extends Permutation {
+		Rot180EdgeSymmetry() {
+			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns());
+		}
+
+		public Coords from(Coords point) {
+			return rot180edge(point);
+		}
+	}
 }

@@ -7,31 +7,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Coronenoid criterion fixed + few refactorings">
-      <change afterPath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternPropertyMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/BenzenoidApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/BenzenoidApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/Corelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Corelations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/TaskHBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/TaskHBox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/Classifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/Classifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/MoleculeInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/MoleculeInformation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/PAHClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/PAHClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/AllKekuleStructureComputation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/AllKekuleStructureComputation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/ClarCoverTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/ClarCoverTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/BenzAIConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/BenzAIConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="PatternsEditionPane refactoring">
       <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/AmpacBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/AmpacBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ModelBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ModelBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/NbCrowns.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/NbHexagons.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/OldLexLead.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/http/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/http/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -322,7 +299,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684679814846</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="PatternsEditionPane refactoring">
+      <created>1684943902026</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1684943902026</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -388,7 +372,8 @@
     <MESSAGE value="class HBox and derivates lightly refactored" />
     <MESSAGE value="class HBoxCriterion and derivates lightly refactored" />
     <MESSAGE value="Coronenoid criterion fixed + few refactorings" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coronenoid criterion fixed + few refactorings" />
+    <MESSAGE value="PatternsEditionPane refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="PatternsEditionPane refactoring" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
