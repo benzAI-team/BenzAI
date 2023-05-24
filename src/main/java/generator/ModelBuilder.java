@@ -11,7 +11,6 @@ public enum ModelBuilder {
 	public static GeneralModel buildModel(ModelPropertySet modelPropertySet) {
 		if(noLimitingProperties(modelPropertySet))
 			return null;
-		//model.setPatternsInformations();
 		return new GeneralModel(modelPropertySet);
 	}
 	

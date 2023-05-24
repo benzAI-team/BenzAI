@@ -22,7 +22,7 @@ public class ClarCoverTask extends CollectionTask{
     public void execute(BenzenoidCollectionsManagerPane collectionManagerPane) {
         BenzenoidCollectionPane currentPane = collectionManagerPane.getSelectedTab();
 
-        if (currentPane.getBenzenoidPanes().size() == 0) {
+        if (currentPane.getBenzenoidPanes().isEmpty()) {
             Utils.alert("There is no benzenoid!");
             return;
         }
@@ -35,7 +35,7 @@ public class ClarCoverTask extends CollectionTask{
 
         collectionManagerPane.getApplication().addTask("Clar cover");
 
-        if (selectedBenzenoidPanes.size() == 0) {
+        if (selectedBenzenoidPanes.isEmpty()) {
             collectionManagerPane.selectAll();
         }
 

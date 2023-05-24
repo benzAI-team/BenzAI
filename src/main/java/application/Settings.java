@@ -1,14 +1,9 @@
 package application;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 import javafx.stage.Screen;
+
+import java.io.*;
+import java.util.regex.Pattern;
 
 public class Settings {
 	
@@ -34,7 +29,7 @@ public class Settings {
 	 * Getters and setters
 	 */
 
-	public boolean remembersSize() {
+	boolean remembersSize() {
 		return rememberSize;
 	}
 
@@ -50,7 +45,7 @@ public class Settings {
 		this.width = width;
 	}
 
-	public void setHeight(double height) {
+	void setHeight(double height) {
 		this.height = height;
 	}
 
@@ -82,11 +77,11 @@ public class Settings {
 		this.nbMaxSolutions = nbMaxSolutions;
 	}
 
-	public boolean isDisplayHomeWindow() {
+	boolean isDisplayHomeWindow() {
 		return displayHomeWindow;
 	}
 
-	public void setDisplayHomeWindow(boolean displayHomeWindow) {
+	private void setDisplayHomeWindow(boolean displayHomeWindow) {
 		this.displayHomeWindow = displayHomeWindow;
 	}
 	
@@ -94,7 +89,7 @@ public class Settings {
 	 * I/O methods
 	 */
 
-	public static Settings readSettingsFile() throws IOException {
+	static Settings readSettingsFile() throws IOException {
 
 		Settings settings = new Settings();
 

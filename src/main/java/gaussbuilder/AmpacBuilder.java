@@ -8,10 +8,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public enum AmpacBuilder {
+enum AmpacBuilder {
     ;
 
-    public static void buildAmpacFile(Molecule molecule, String outputFilePath) throws IOException {
+    static void buildAmpacFile(Molecule molecule, String outputFilePath) throws IOException {
 		
 		Geometry geometry = GeometryBuilder.buildGeometry(molecule);
 		Triplet<Double, Double, Double> [] carbons = geometry.getX();

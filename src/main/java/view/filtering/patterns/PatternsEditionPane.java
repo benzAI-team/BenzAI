@@ -6,11 +6,9 @@ import generator.properties.model.expression.PropertyExpression;
 import generator.properties.model.expression.SubjectExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -27,7 +25,7 @@ import java.util.ArrayList;
 public class PatternsEditionPane extends BorderPane {
 
 	private final HBoxPatternCriterion parent;
-	private MenuBar menuBar;
+	private final PatternPropertyMenu patternPropertyMenu = new PatternPropertyMenu();
 	private BorderPane borderPane;
 	private ListView<GridPane> listView;
 	private ArrayList<GridPane> boxItems;
@@ -35,12 +33,6 @@ public class PatternsEditionPane extends BorderPane {
 
 	private PatternGroup selectedPatternGroup;
 	private int selectedIndex;
-
-	private CheckMenuItem itemUndisjunct;
-	private CheckMenuItem itemDisjunct;
-	private CheckMenuItem itemNNDisjunct;
-	private CheckMenuItem disableItem;
-	private TextField occurencesField;
 	private TextField fieldName;
 
 	public PatternsEditionPane(HBoxPatternCriterion parent) {
@@ -55,14 +47,88 @@ public class PatternsEditionPane extends BorderPane {
 	}
 
 	private void initializeMenu() {
+		MenuBar menuBar = new MenuBar();
+		buildFileMenu(menuBar);
+		buildDrawingMenu(menuBar);
+		buildNameMenu(menuBar);
+		buildCrownMenu(menuBar);
+		buildPatternMenu(menuBar);
+		this.setTop(menuBar);
+	}
 
-		menuBar = new MenuBar();
+	private void buildPatternMenu(MenuBar menuBar) {
+		Menu patternMenu = patternPropertyMenu.build();
+		menuBar.getMenus().add(patternMenu);
+	}
+
+
+	private void buildCrownMenu(MenuBar menuBar) {
+		Button minusButton = new Button("-");
+		minusButton.setOnAction(e -> removeCrown());
+
+		Button plusButton = new Button("+");
+		plusButton.setOnAction(e -> addCrown());
+
+		Label nbCrownsLabel = new Label("Number of crowns: ");
+
+		HBox nbCrownsBox = new HBox(3.0);
+		nbCrownsBox.getChildren().addAll(nbCrownsLabel, minusButton, plusButton);
+
+		Menu nbCrownsMenu = new Menu();
+		nbCrownsMenu.setGraphic(nbCrownsBox);
+		menuBar.getMenus().add(nbCrownsMenu);
+	}
+
+	private void buildNameMenu(MenuBar menuBar) {
+		Label labelName = new Label("Name: ");
+		fieldName = new TextField("default name");
+		fieldName.setOnKeyReleased(e -> {
+			int index = selectedPatternGroup.getIndex();
+			GridPane gridPane = boxItems.get(index);
+
+			if ("".equals(fieldName.getText())) ((Label) gridPane.getChildren().get(0)).setText("default name");
+			else ((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
+		});
+
+		HBox boxName = new HBox(3.0);
+		boxName.getChildren().addAll(labelName, fieldName);
+
+		Menu nameMenu = new Menu();
+		nameMenu.setGraphic(boxName);
+		menuBar.getMenus().add(nameMenu);
+	}
+
+	private void buildDrawingMenu(MenuBar menuBar) {
+		Menu drawingMenu = new Menu("Drawing");
+
+		MenuItem clearItem = new MenuItem("Clear");
+		clearItem.setOnAction(e -> selectedPatternGroup.setAllLabels(0));
+
+		MenuItem neutralItem = new MenuItem("Set all neutral");
+		neutralItem.setOnAction(e -> selectedPatternGroup.setAllLabels(1));
+
+		MenuItem positiveItem = new MenuItem("Set all positive");
+		positiveItem.setOnAction(e -> selectedPatternGroup.setAllLabels(2));
+
+		MenuItem negativeItem = new MenuItem("Set all negative");
+		negativeItem.setOnAction(e -> selectedPatternGroup.setAllLabels(3));
+
+		drawingMenu.getItems().addAll(clearItem, neutralItem, positiveItem, negativeItem);
+		menuBar.getMenus().add(drawingMenu);
+	}
+
+	private void buildFileMenu(MenuBar menuBar) {
+		MenuItem saveItem = buildSaveItem();
+		MenuItem importItem = buildImportItem();
 
 		Menu fileMenu = new Menu("File");
-		MenuItem importItem = new MenuItem("Import pattern");
-		MenuItem saveItem = new MenuItem("Save pattern as");
 		fileMenu.getItems().addAll(importItem, saveItem);
+
 		menuBar.getMenus().add(fileMenu);
+	}
+
+	private MenuItem buildSaveItem() {
+		MenuItem saveItem = new MenuItem("Save pattern as");
 
 		saveItem.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
@@ -77,16 +143,18 @@ public class PatternsEditionPane extends BorderPane {
 				}
 			}
 		});
+		return saveItem;
+	}
 
+	private MenuItem buildImportItem() {
+		MenuItem importItem = new MenuItem("Import pattern");
 		importItem.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
 			File file = fileChooser.showOpenDialog(parent.getApplication().getStage());
 
 			if (file != null) {
 				boolean ok = true;
-
 				Pattern pattern = null;
-
 				try {
 					pattern = PatternFileImport.importPattern(file);
 				} catch (Exception e1) {
@@ -94,10 +162,8 @@ public class PatternsEditionPane extends BorderPane {
 					ok = false;
 				}
 
-				if (ok && pattern != null) {
-
+				if (ok) {
 					int yMax = -1;
-
 					for (Node node : pattern.getNodesRefs())
 						if (node.getY() > yMax)
 							yMax = node.getX();
@@ -122,116 +188,12 @@ public class PatternsEditionPane extends BorderPane {
 					group.importPattern(pattern);
 					patternGroups.set(index, group);
 					select(index);
-
 				}
-
 				else
 					Utils.alert("Error while importing the pattern");
 			}
 		});
-
-		Menu drawingMenu = new Menu("Drawing");
-		MenuItem clearItem = new MenuItem("Clear");
-		MenuItem neutralItem = new MenuItem("Set all neutral");
-		MenuItem positiveItem = new MenuItem("Set all positive");
-		MenuItem negativeItem = new MenuItem("Set all negative");
-		drawingMenu.getItems().addAll(clearItem, neutralItem, positiveItem, negativeItem);
-		menuBar.getMenus().add(drawingMenu);
-
-		clearItem.setOnAction(e -> {
-			selectedPatternGroup.setAllLabels(0);
-		});
-
-		neutralItem.setOnAction(e -> {
-			selectedPatternGroup.setAllLabels(1);
-		});
-
-		positiveItem.setOnAction(e -> {
-			selectedPatternGroup.setAllLabels(2);
-		});
-
-		negativeItem.setOnAction(e -> {
-			selectedPatternGroup.setAllLabels(3);
-		});
-
-		Label labelName = new Label("Name: ");
-		fieldName = new TextField("default name");
-		HBox boxName = new HBox(3.0);
-		boxName.getChildren().addAll(labelName, fieldName);
-		Menu nameMenu = new Menu();
-		nameMenu.setGraphic(boxName);
-		menuBar.getMenus().add(nameMenu);
-
-		Menu nbCrownsMenu = new Menu();
-		HBox nbCrownsBox = new HBox(3.0);
-		Label nbCrownsLabel = new Label("Number of crowns: ");
-		Button minusButton = new Button("-");
-		Button plusButton = new Button("+");
-		nbCrownsBox.getChildren().addAll(nbCrownsLabel, minusButton, plusButton);
-		nbCrownsMenu.setGraphic(nbCrownsBox);
-		menuBar.getMenus().add(nbCrownsMenu);
-
-		fieldName.setOnKeyReleased(e -> {
-
-			int index = selectedPatternGroup.getIndex();
-			GridPane gridPane = boxItems.get(index);
-
-			if (!"".equals(fieldName.getText()))
-				((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
-			else
-				((Label) gridPane.getChildren().get(0)).setText("default name");
-		});
-
-		minusButton.setOnAction(e -> {
-			removeCrown();
-		});
-
-		plusButton.setOnAction(e -> {
-			addCrown();
-		});
-
-		Menu patternMenu = new Menu("Patterns properties");
-		Menu multipleMenu = new Menu("Multiple patterns interaction");
-		itemUndisjunct = new CheckMenuItem("Undisjunct patterns");
-		itemDisjunct = new CheckMenuItem("Disjunct patterns");
-		itemNNDisjunct = new CheckMenuItem("Disjunct on neutral/negative hexagons");
-		multipleMenu.getItems().addAll(itemUndisjunct, itemDisjunct, itemNNDisjunct);
-		disableItem = new CheckMenuItem("Exclude pattern");
-		// CheckMenuItem occurencesItem = new CheckMenuItem();
-		Label occurencesLabel = new Label("Pattern's occurences: ");
-		occurencesField = new TextField();
-		// HBox occurencesBox = new HBox(3.0);
-		// occurencesBox.getChildren().addAll(occurencesLabel, occurencesField);
-		// occurencesItem.setGraphic(occurencesBox);
-		patternMenu.getItems().addAll(multipleMenu, disableItem);
-		menuBar.getMenus().add(patternMenu);
-
-		itemNNDisjunct.setSelected(true);
-
-		itemUndisjunct.setOnAction(e -> {
-			itemUndisjunct.setSelected(true);
-			if (itemUndisjunct.isSelected())
-				unselectAllMenus(itemDisjunct, itemNNDisjunct, disableItem);
-		});
-
-		itemDisjunct.setOnAction(e -> {
-			itemDisjunct.setSelected(true);
-			if (itemDisjunct.isSelected())
-				unselectAllMenus(itemUndisjunct, itemNNDisjunct, disableItem);
-		});
-
-		itemNNDisjunct.setOnAction(e -> {
-			itemNNDisjunct.setSelected(true);
-			if (itemNNDisjunct.isSelected())
-				unselectAllMenus(itemUndisjunct, itemDisjunct, disableItem);
-		});
-
-		disableItem.setOnAction(e -> {
-			if (disableItem.isSelected())
-				unselectAllMenus(itemUndisjunct, itemDisjunct, itemNNDisjunct);
-		});
-
-		this.setTop(menuBar);
+		return importItem;
 	}
 
 	private void select(int index) {
@@ -245,26 +207,56 @@ public class PatternsEditionPane extends BorderPane {
 	}
 
 	private void initializePane() {
-
 		this.setPrefSize(1500, 500);
-
 		this.setPadding(new Insets(15.0));
 
 		patternGroups = new ArrayList<>();
-		borderPane = new BorderPane();
-
-		listView = new ListView<>();
 		boxItems = new ArrayList<>();
 
-		Button addButton = new Button("Add pattern");
-		Button applyButton = new Button("Apply");
+		VBox patternListBox = buildPatternListBox();
+		addEntry();
+		select(0);
+
+		borderPane = new BorderPane();
+		borderPane.setCenter(selectedPatternGroup);
+		borderPane.setRight(patternListBox);
+		this.setCenter(borderPane);
+	}
+
+	private VBox buildPatternListBox() {
+		HBox buttonBox = buildButtonBox();
+		buildListView();
+
+		VBox patternListBox = new VBox(5.0);
+		patternListBox.getChildren().addAll(listView, buttonBox);
+		patternListBox.setPrefHeight(this.getHeight());
+		return patternListBox;
+	}
+
+	private HBox buildButtonBox() {
+		Button addPatternButton = buildAddPatternButton();
+		Button applyPatternButton = buildApplyPatternButton();
+
 		HBox buttonBox = new HBox(3.0);
-		buttonBox.getChildren().addAll(addButton, applyButton);
+		buttonBox.getChildren().addAll(addPatternButton, applyPatternButton);
+		return buttonBox;
+	}
 
-		applyButton.setPrefWidth(125);
-		addButton.setPrefWidth(125);
+	private void buildListView() {
+		listView = new ListView<>();
+		listView.setOnMouseClicked(event -> {
+			GridPane selection = listView.getSelectionModel().getSelectedItem();
+			if (selection != null) {
+				PatternCloseButton button = (PatternCloseButton) selection.getChildren().get(1);
+				select(button.getIndex());
+			}
+		});
+	}
 
-		applyButton.setOnAction(e -> {
+	private Button buildApplyPatternButton() {
+		Button applyPatternButton = new Button("Apply");
+		applyPatternButton.setPrefWidth(125);
+		applyPatternButton.setOnAction(e -> {
 			ArrayList<Pattern> patterns = new ArrayList<>();
 			for (PatternGroup group : patternGroups) {
 				patterns.add(buildPattern(group));
@@ -274,30 +266,24 @@ public class PatternsEditionPane extends BorderPane {
 			PropertyExpression expression = null;
 
 			if (boxItems.size() == 1) {
-
-				if (!disableItem.isSelected()) {
-					if (!Utils.isNumber(occurencesField.getText())) {
+				if (patternPropertyMenu.getDisableItem().isSelected()) {
+					parent.refreshPatternInformations("FORBIDDEN_PATTERN");
+					type = PatternGenerationType.FORBIDDEN_PATTERN;
+					expression = new SubjectExpression("FORBIDDEN_PATTERN");
+				} else {
+					if (Utils.isNumber(patternPropertyMenu.getOccurencesField().getText())) {
+						type = PatternGenerationType.PATTERN_OCCURENCES;
+						parent.refreshPatternInformations("OCCURENCES_PATTERN: " + patternPropertyMenu.getOccurencesField().getText());
+						expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=",
+								Integer.parseInt(patternPropertyMenu.getOccurencesField().getText()));
+					} else {
 						type = PatternGenerationType.SINGLE_PATTERN_1;
 						parent.refreshPatternInformations("SINGLE_PATTERN");
 						expression = new SubjectExpression("SINGLE_PATTERN");
 					}
-
-					else {
-						type = PatternGenerationType.PATTERN_OCCURENCES;
-						parent.refreshPatternInformations("OCCURENCES_PATTERN: " + occurencesField.getText());
-						expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=",
-								Integer.parseInt(occurencesField.getText()));
-					}
-				}
-
-				else {
-					parent.refreshPatternInformations("FORBIDDEN_PATTERN");
-					type = PatternGenerationType.FORBIDDEN_PATTERN;
-					expression = new SubjectExpression("FORBIDDEN_PATTERN");
 				}
 			}
-
-			else if (itemUndisjunct.isSelected() || itemDisjunct.isSelected() || itemNNDisjunct.isSelected()) {
+			else if (patternPropertyMenu.getItemUndisjunct().isSelected() || patternPropertyMenu.getItemDisjunct().isSelected() || patternPropertyMenu.getItemNNDisjunct().isSelected()) {
 				parent.refreshPatternInformations("MULTIPLE_PATTERNS");
 				type = PatternGenerationType.MULTIPLE_PATTERN_1;
 				expression = new SubjectExpression("MULTIPLE_PATTERNS");
@@ -307,48 +293,27 @@ public class PatternsEditionPane extends BorderPane {
 			parent.setPatternResolutionInformations(patternInformations);
 			parent.setExpression(expression);
 
-			if (itemUndisjunct.isSelected())
+			if (patternPropertyMenu.getItemUndisjunct().isSelected())
 				patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
 
-			else if (itemDisjunct.isSelected())
+			else if (patternPropertyMenu.getItemDisjunct().isSelected())
 				patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
 
-			else if (itemNNDisjunct.isSelected())
+			else if (patternPropertyMenu.getItemNNDisjunct().isSelected())
 				patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
-
 			hide();
-
 		});
-
-		addButton.setOnAction(e -> {
-			addEntry();
-		});
-
-		VBox vBox = new VBox(5.0);
-		vBox.getChildren().addAll(listView, buttonBox);
-		vBox.setPrefHeight(this.getHeight());
-
-		listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				GridPane selection = listView.getSelectionModel().getSelectedItem();
-				if (selection != null) {
-					PatternCloseButton button = (PatternCloseButton) selection.getChildren().get(1);
-					select(button.getIndex());
-				}
-			}
-		});
-
-		addEntry();
-		select(0);
-
-		borderPane.setCenter(selectedPatternGroup);
-		borderPane.setRight(vBox);
-		this.setCenter(borderPane);
+		return applyPatternButton;
 	}
 
-	public void addEntry() {
+	private Button buildAddPatternButton() {
+		Button addPatternButton = new Button("Add pattern");
+		addPatternButton.setPrefWidth(125);
+		addPatternButton.setOnAction(e -> addEntry());
+		return addPatternButton;
+	}
+
+	private void addEntry() {
 
 		Label label = new Label("unknown_pattern");
 
@@ -371,15 +336,14 @@ public class PatternsEditionPane extends BorderPane {
 		patternGroups.add(patternGroup);
 
 		if (patternGroups.size() > 1)
-			itemDisjunct.fire();
-
+			patternPropertyMenu.getItemDisjunct().fire();
 	}
 
-	public void removePane(int index) {
+	private void removePane(int index) {
 		patternGroups.remove(index);
 	}
 
-	public void removeEntry(int index) {
+	void removeEntry(int index) {
 
 		boxItems.remove(index);
 		ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
@@ -396,15 +360,15 @@ public class PatternsEditionPane extends BorderPane {
 		}
 
 		if (patternGroups.size() == 1) {
-			unselectAllMenus(itemDisjunct, itemUndisjunct, itemNNDisjunct);
+			unselectAllMenus(patternPropertyMenu.getItemDisjunct(), patternPropertyMenu.getItemUndisjunct(), patternPropertyMenu.getItemNNDisjunct());
 		}
 	}
 
-	public int getNbItems() {
+	int getNbItems() {
 		return boxItems.size();
 	}
 
-	public void checkBorder() {
+	void checkBorder() {
 		boolean borderUsed = false;
 		for (PatternHexagon hexagon : selectedPatternGroup.getExtendedBorder()) {
 			if (hexagon.getLabel() >= 1) {
@@ -412,12 +376,11 @@ public class PatternsEditionPane extends BorderPane {
 				break;
 			}
 		}
-
 		if (!borderUsed)
 			removeCrown();
 	}
 
-	public void addCrown() {
+	void addCrown() {
 		int nbCrowns = selectedPatternGroup.getNbCrowns() + 1;
 
 		PatternGroup newPatternGroup = new PatternGroup(this, nbCrowns, selectedPatternGroup.getIndex());
@@ -437,7 +400,7 @@ public class PatternsEditionPane extends BorderPane {
 		select(newPatternGroup.getIndex());
 	}
 
-	public void removeCrown() {
+	private void removeCrown() {
 
 		int nbCrowns = selectedPatternGroup.getNbCrowns();
 
@@ -463,7 +426,7 @@ public class PatternsEditionPane extends BorderPane {
 		}
 	}
 
-	public static Pattern buildPattern(PatternGroup group) {
+	private static Pattern buildPattern(PatternGroup group) {
 		return group.exportPattern();
 	}
 

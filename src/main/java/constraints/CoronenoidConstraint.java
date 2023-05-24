@@ -42,9 +42,9 @@ public class CoronenoidConstraint extends BenzAIConstraint {
 		generalModel.getProblem().or(constraints).post();
 
 		IntVar sub = generalModel.getProblem().intVar("sub", 0, 2 * generalModel.getNbCrowns());
-		// sub = nbCrowns - 1
+		// sub == nbCrowns - 1
 		generalModel.getProblem().sum(new IntVar[] { nbCrowns, generalModel.getProblem().intVar(-1) }, "=", sub).post();
-		// diameter = 2 * sub = 2 * (nbCrowns - 1)
+		// diameter == 2 * sub == 2 * (nbCrowns - 1)
 		generalModel.getProblem().times(sub, generalModel.getProblem().intVar(2), diameter).post();
 
 		generalModel.getProblem().diameter(generalModel.getGraphVar(), diameter).post();
@@ -62,7 +62,6 @@ public class CoronenoidConstraint extends BenzAIConstraint {
 	public void addVariables() {
 		GeneralModel generalModel = getGeneralModel();
 		generalModel.addVariable(nbCrowns);
-		// generalModel.addWatchedVariable(sub);
 		generalModel.addVariable(diameter);
 	}
 
@@ -81,32 +80,19 @@ public class CoronenoidConstraint extends BenzAIConstraint {
 	}
 
 	@Override
-	public void changeGraphVertices() {
-		// TODO Auto-generated method stub
-
-	}
+	public void changeGraphVertices() {}
 
 	private int[] getNbHexagons() {
 		int[] nbHexagons = new int[getGeneralModel().getNbCrowns()];
-
-		for (int nbCrowns = 1; nbCrowns <= getGeneralModel().getNbCrowns(); nbCrowns++) {
-
-			int n = (int) (6.0 * (((nbCrowns * (nbCrowns - 1)) / 2.0)) + 1.0);
-			nbHexagons[nbCrowns - 1] = n;
-		}
-
+		for (int nbCrowns = 1; nbCrowns <= getGeneralModel().getNbCrowns(); nbCrowns++)
+			nbHexagons[nbCrowns - 1] = (int) (6.0 * (((nbCrowns * (nbCrowns - 1)) / 2.0)) + 1.0);;
 		return nbHexagons;
 	}
 
 	private int[] getDiameterDomain() {
 		int[] diameters = new int[getGeneralModel().getNbCrowns()];
-
-		for (int nbCrowns = 1; nbCrowns <= getGeneralModel().getNbCrowns(); nbCrowns++) {
-
-			int n = 2 * (nbCrowns - 1);
-			diameters[nbCrowns - 1] = n;
-		}
-
+		for (int nbCrowns = 1; nbCrowns <= getGeneralModel().getNbCrowns(); nbCrowns++)
+			diameters[nbCrowns - 1] = 2 * (nbCrowns - 1);
 		return diameters;
 	}
 }

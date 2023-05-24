@@ -48,7 +48,9 @@ public enum Post {
 
 			// System.out.println(response.toString());
 
-			if (!"[]".contentEquals(response)) {
+			if ("[]".contentEquals(response))
+				return new ArrayList<>();
+			else {
 
 				String res = response.toString();
 				res = res.substring(2, res.length() - 2);
@@ -70,9 +72,6 @@ public enum Post {
 				return maps;
 
 			}
-
-			else
-				return new ArrayList<>();
 		}
 	}
 

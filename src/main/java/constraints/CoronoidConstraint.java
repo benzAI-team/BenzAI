@@ -13,6 +13,8 @@ import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeS
 import utils.HexNeighborhood;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class CoronoidConstraint extends BenzAIConstraint {
 
@@ -38,7 +40,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 		holes = holesGraphVar("holes");
 		for (PropertyExpression expression : this.getExpressionList()) {
 			String operator = ((ParameterizedExpression)expression).getOperator();
-			if (operator == "=" || operator == "<=" || operator == "<") {
+			if (Objects.equals(operator, "=") || Objects.equals(operator, "<=") || Objects.equals(operator, "<")) {
 				int nbHoles = ((BinaryNumericalExpression)expression).getValue();
 				if (nbHoles > nbMaxHoles)
 					nbMaxHoles = nbHoles;
@@ -122,8 +124,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 
 		correspondancesHexagons = new int[generalModel.getDiameter() * generalModel.getDiameter() + 1];
 
-		for (int i = 0; i < correspondancesHexagons.length; i++)
-			correspondancesHexagons[i] = -1;
+		Arrays.fill(correspondancesHexagons, -1);
 
 		for (int i = 0; i < hexagonsCorrespondances.length; i++)
 			correspondancesHexagons[hexagonsCorrespondances[i]] = i;
@@ -133,7 +134,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 	private void buildBorder() {
 		GeneralModel generalModel = getGeneralModel();
 
-		border = new ArrayList<Integer>();
+		border = new ArrayList<>();
 		int diameter = generalModel.getDiameter();
 		int[][] coordsMatrix = generalModel.getHexagonIndices();
 
@@ -226,9 +227,9 @@ public class CoronoidConstraint extends BenzAIConstraint {
 		 */
 
 		int index = 0;
-		for (int i = 0; i < matrix.length; i++) {
+		for (int[] ints : matrix) {
 			for (int j = 0; j < matrix.length; j++) {
-				if (matrix[i][j] != -1) {
+				if (ints[j] != -1) {
 					GUB.addNode(index);
 					index++;
 				}

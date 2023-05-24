@@ -1,11 +1,5 @@
 package application;
 
-import java.awt.Label;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
@@ -15,12 +9,18 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+
 public class Corelations extends Application {
 
 	// int DATA_SIZE = 1000;
 	// int data[] = new int[DATA_SIZE];
-	ArrayList<Double> data;
-	int[] group = new int[10];
+	private ArrayList<Double> data;
+	private int[] group = new int[10];
 
 	@Override
 	public void start(Stage primaryStage) {

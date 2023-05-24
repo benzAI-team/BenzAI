@@ -1,9 +1,9 @@
 package constraints;
 
-import java.util.ArrayList;
-
 import generator.GeneralModel;
 import generator.properties.model.expression.PropertyExpression;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public abstract class BenzAIConstraint {
@@ -17,7 +17,7 @@ public abstract class BenzAIConstraint {
 
 	};
 	private GeneralModel generalModel;
-	ArrayList<PropertyExpression> expressionList;
+	private ArrayList<PropertyExpression> expressionList;
 
 	public BenzAIConstraint() {}
 	

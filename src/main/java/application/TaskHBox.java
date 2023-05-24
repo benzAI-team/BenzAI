@@ -13,7 +13,7 @@ public class TaskHBox extends HBox {
 	private final BenzenoidApplication application;
 	private final String task;
 
-	public TaskHBox(BenzenoidApplication application, String task) {
+	TaskHBox(BenzenoidApplication application, String task) {
 		super(3.0);
 		this.task = task;
 		this.application = application;

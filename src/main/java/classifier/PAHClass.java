@@ -9,22 +9,18 @@ public class PAHClass {
 	private final ArrayList<String> moleculesNames;
 	private final HashMap<String, MoleculeInformation> moleculesInformations;
 
-	public PAHClass(String title, HashMap<String, MoleculeInformation> moleculesInformations) {
+	PAHClass(String title, HashMap<String, MoleculeInformation> moleculesInformations) {
 		this.title = title;
 		this.moleculesInformations = moleculesInformations;
 		moleculesNames = new ArrayList<>();
 	}
 
-	public void addMolecule(String molecule) {
+	void addMolecule(String molecule) {
 		moleculesNames.add(molecule);
 	}
 
 	public String getTitle() {
 		return title;
-	}
-
-	public String getGraphFilename(int index) {
-		return moleculesInformations.get(moleculesNames.get(index)).getPathToGraphFile();
 	}
 
 	public String getLogFilename(int index) {

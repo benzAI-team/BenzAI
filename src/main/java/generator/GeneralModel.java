@@ -36,7 +36,6 @@ import java.text.NumberFormat;
 import java.util.*;
 
 public class GeneralModel {
-
     private Solver chocoSolver;
     private SolverResults solverResults;
 

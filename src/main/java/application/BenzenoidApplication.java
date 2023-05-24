@@ -193,8 +193,7 @@ public class BenzenoidApplication extends Application {
 	}
 
 	/***
-	 * 
-	 * @param pane
+	 *
 	 */
 	public void switchMode(Region pane) {
 		if (pane instanceof FilteringPane) {

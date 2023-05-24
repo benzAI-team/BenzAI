@@ -24,11 +24,11 @@ public class MoleculeInformation {
 		return moleculeName;
 	}
 	
-	public String getPathToGraphFile() {
+	String getPathToGraphFile() {
 		return pathToGraphFile;
 	}
 
-	public String getPathToLogFile() {
+	String getPathToLogFile() {
 		return pathToLogFile;
 	}
 

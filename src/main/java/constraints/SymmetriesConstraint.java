@@ -9,13 +9,8 @@ import utils.Utils;
 import generator.properties.model.expression.ParameterizedExpression;
 
 public class SymmetriesConstraint extends BenzAIConstraint {
-
-	//private SymmetryType symmetryType;
-
 	@Override
-	public void buildVariables() {
-
-	}
+	public void buildVariables() {}
 
 	@Override
 	public void postConstraints() {

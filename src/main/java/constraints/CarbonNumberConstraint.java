@@ -147,10 +147,10 @@ public class CarbonNumberConstraint extends BenzAIConstraint {
 
 		for (int line = 0; line < dualGraph.length; line++) {
 			for (int column = 0; column < dualGraph[line].length; column++) {
-				if (dualGraph[line][column] != -1) {
-					xN[line][column] = generalModel.getHexBoolVars()[dualGraph[line][column]];
-				} else {
+				if (dualGraph[line][column] == -1) {
 					xN[line][column] = zero;
+				} else {
+					xN[line][column] = generalModel.getHexBoolVars()[dualGraph[line][column]];
 				}
 			}
 		}

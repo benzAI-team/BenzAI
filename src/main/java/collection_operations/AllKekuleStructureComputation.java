@@ -19,7 +19,7 @@ public class AllKekuleStructureComputation extends CollectionComputation{
     public void execute(BenzenoidCollectionsManagerPane collectionManagerPane) {
         BenzenoidCollectionPane currentPane = collectionManagerPane.getSelectedTab();
 
-        if (currentPane.getBenzenoidPanes().size() == 0) {
+        if (currentPane.getBenzenoidPanes().isEmpty()) {
             Utils.alert("There is no benzenoid!");
             return;
         }
@@ -29,7 +29,7 @@ public class AllKekuleStructureComputation extends CollectionComputation{
         BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(collectionManagerPane, collectionManagerPane.getBenzenoidSetPanes().size(),
                 collectionManagerPane.getNextCollectionPaneLabel("Kekulé structures"));
 
-        if (selectedBenzenoidPanes.size() == 0) {
+        if (selectedBenzenoidPanes.isEmpty()) {
             Utils.alert("Please select a benzenoid");
             return;
         } else {

@@ -7,23 +7,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="class HBoxCriterion and derivates lightly refactored">
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Coronenoid criterion fixed + few refactorings">
+      <change afterPath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternPropertyMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/BenzenoidApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/BenzenoidApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/Corelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Corelations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/TaskHBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/TaskHBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/Classifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/Classifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/MoleculeInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/MoleculeInformation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/PAHClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/PAHClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/AllKekuleStructureComputation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/AllKekuleStructureComputation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/ClarCoverTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/ClarCoverTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/BenzAIConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/BenzAIConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneratorCriterion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneratorRun.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneratorRun.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/AmpacBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/AmpacBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ModelBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ModelBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/NbCrowns.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/NbHexagons.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/OldLexLead.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/http/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/http/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/ClassicalHBoxCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxBoundingCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxDiameterCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxDiameterCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxHexagonNumberCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxHexagonNumberCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbCarbonsCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbCarbonsCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbHydrogensCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbHydrogensCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbKekuleStructuresCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbKekuleStructuresCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -307,7 +315,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684254385528</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Coronenoid criterion fixed + few refactorings">
+      <created>1684679814846</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1684679814846</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -372,7 +387,8 @@
     <MESSAGE value="class Pattern delegates export and import file to new classes PatternFileImport and PatternFileWriter" />
     <MESSAGE value="class HBox and derivates lightly refactored" />
     <MESSAGE value="class HBoxCriterion and derivates lightly refactored" />
-    <option name="LAST_COMMIT_MESSAGE" value="class HBoxCriterion and derivates lightly refactored" />
+    <MESSAGE value="Coronenoid criterion fixed + few refactorings" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coronenoid criterion fixed + few refactorings" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
