@@ -7,19 +7,18 @@ import generator.properties.model.expression.SubjectExpression;
 
 public enum TestGeneration {
     ;
-
+    private static long date;
     public static void main(String[] args) {
-        String diagnostic = "";
-        diagnostic = diagnostic + test5hexagons();
-        diagnostic = diagnostic + test6hexagonsCatacondensed();
-        diagnostic = diagnostic + testRectangle_inf5Xinf5();
-        diagnostic = diagnostic + testCoronenoid_inf3();
-        diagnostic = diagnostic + testCoronoid_hex9();
-        diagnostic = diagnostic + testCarbonsInf24();
-        diagnostic = diagnostic + testHydrogensInf12();
-        diagnostic = diagnostic + test6hexagonsCatacondensed();
-        diagnostic = diagnostic + testDiameter3();
-
+        String diagnostic =
+                test5hexagons()
+                + test6hexagonsCatacondensed()
+                + testRectangle_inf5Xinf5()
+                + testCoronenoid_inf3()
+                + testCoronoid_hex9()
+                + testCarbonsInf24()
+                + testHydrogensInf12()
+                + test6hexagonsCatacondensed()
+                + testDiameter3();
         System.out.println(diagnostic);
     }
 
@@ -92,6 +91,7 @@ public enum TestGeneration {
     private static int runGeneration(ModelPropertySet modelPropertySet){
         GeneralModel model = new GeneralModel(modelPropertySet);
         model.setInTestMode(true);
+        date = System.currentTimeMillis();
         SolverResults results = model.solve();
         return results.getNbTotalSolutions();
     }
@@ -104,7 +104,8 @@ public enum TestGeneration {
      * @return the String characterizing the diagnostic
      */
     private static String diagnostic(String title, int expected, int found) {
-        String diagnostic = title + " : expecting : " + expected + " found : " + found + "-> ";
+        long endDate = System.currentTimeMillis();
+        String diagnostic = title + " : expecting : " + expected + " found : " + found + " in " + (endDate - date) + "ms -> ";
         if (found == expected)
             diagnostic = diagnostic + "OK\n";
         else {

@@ -1,27 +1,23 @@
 package constraints;
 
-import java.util.ArrayList;
-
+import generator.GeneralModel;
+import generator.OrderStrategy;
+import generator.ValueStrategy;
+import generator.VariableStrategy;
+import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
 import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
-import org.chocosolver.solver.search.strategy.selectors.variables.ConflictHistorySearch;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDeg;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDegRef;
-import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
-import org.chocosolver.solver.search.strategy.selectors.variables.VariableSelector;
+import org.chocosolver.solver.search.strategy.selectors.variables.*;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.iterators.DisposableValueIterator;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 
-import generator.GeneralModel;
-import generator.OrderStrategy;
-import generator.ValueStrategy;
-import generator.VariableStrategy;
-import generator.patterns.Pattern;
+import java.util.ArrayList;
 
 public class MultiplePatterns3Constraint extends BenzAIConstraint {
 
@@ -93,24 +89,16 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 			domainWithOutterHexagons[i] = domainList.get(i);
 		
 		for (int i = 0 ; i < patterns.size() ; i++) {
-			
 			Pattern pattern = patterns.get(i);
-			
 			IntVar[] coronenoidCorrespondances = new IntVar[pattern.getNbNodes()];
-			
 			for (int j = 0 ; j < pattern.getNbNodes() ; j++) {
-				
-				if (pattern.getLabel(j) == 2) 
+				if (pattern.getLabel(j) == PatternLabel.POSITIVE)
 					coronenoidCorrespondances[j] = generalModel.getProblem().intVar("cc_" + i + "_" + j, domain);
-				
 				else 
 					coronenoidCorrespondances[j] = generalModel.getProblem().intVar("cc_" + i + "_" + j, domainWithOutterHexagons);
-					
 			}
-			
 			allCoronenoidCorrespondances.add(coronenoidCorrespondances);
 		}
-		
 	}
 
 	@Override
@@ -132,16 +120,12 @@ public class MultiplePatterns3Constraint extends BenzAIConstraint {
 			 */
 
 			for (int j = 0 ; j < pattern.getNbNodes() ; j++) {
-				
-				int labelI = pattern.getLabel(j);
-				
-				if (labelI == 1)
+				PatternLabel labelI = pattern.getLabel(j);
+				if (labelI == PatternLabel.NEUTRAL)
 					unknownHexagons.add(j);
-				
-				else if (labelI == 2)
+				else if (labelI == PatternLabel.POSITIVE)
 					presentHexagons.add(j);
-				
-				else if (labelI == 3)
+				else if (labelI == PatternLabel.NEGATIVE)
 					absentHexagons.add(j);
 			}
 			

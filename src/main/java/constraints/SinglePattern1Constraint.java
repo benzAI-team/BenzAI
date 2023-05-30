@@ -5,6 +5,7 @@ import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import generator.patterns.PatternOccurences;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
@@ -54,16 +55,12 @@ public class SinglePattern1Constraint extends BenzAIConstraint {
 		ArrayList<Integer> unknownHexagons = new ArrayList<>();
 
 		for (int i = 0; i < pattern.getNbNodes(); i++) {
-
-			int label = pattern.getLabel(i);
-
-			if (label == 1)
+			PatternLabel label = pattern.getLabel(i);
+			if (label == PatternLabel.NEUTRAL)
 				unknownHexagons.add(i);
-
-			else if (label == 2)
+			else if (label == PatternLabel.POSITIVE)
 				presentHexagons.add(i);
-
-			else if (label == 3)
+			else if (label == PatternLabel.NEGATIVE)
 				absentHexagons.add(i);
 		}
 	}

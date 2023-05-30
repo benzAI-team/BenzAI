@@ -21,7 +21,7 @@ public enum PatternFileImport {
         ArrayList<String>[] lineArray = readPatternFile(file);
         int degree = getDegree(lineArray);
         int[][] matrix = getMatrix(lineArray);
-        int[] labels = getLabels(lineArray);
+        PatternLabel[] labels = getLabels(lineArray);
         Node[] nodesRefs = getNodesRefs(lineArray);
         Node centerNode = getCenterNode(lineArray, nodesRefs);
         int[][] neighborGraph = getNeighborGraph(lineArray);
@@ -67,15 +67,15 @@ public enum PatternFileImport {
         return nodesRefs;
     }
 
-    public static int[] getLabels(ArrayList<String>[] lineArray) {
+    public static PatternLabel[] getLabels(ArrayList<String>[] lineArray) {
         String line;
         ArrayList<String> labelsLines = lineArray[2];
         line = labelsLines.get(0);
         String[] splittedLine = line.split(" ");
 
-        int[] labels = new int[splittedLine.length];
+        PatternLabel[] labels = new PatternLabel[splittedLine.length];
         for (int i = 0; i < labels.length; i++)
-            labels[i] = Integer.parseInt(splittedLine[i]);
+            labels[i] = PatternLabel.valueOf(splittedLine[i]);
         return labels;
     }
 

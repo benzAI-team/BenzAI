@@ -7,8 +7,46 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="PatternsEditionPane refactoring">
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" afterDir="false" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="SymmetriesConstraint refactoring">
+      <change afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternLabel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pattern8test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ForbiddenPatternConstraint3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns1Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns1Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/Permutation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/Permutation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern1Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern1Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SymmetriesConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SymmetryConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/expe/GeneralModel2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/expe/GeneralModel2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/Pattern.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/Pattern.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/PatternProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/PatternProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/SymmetryProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/SymmetryProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/DrawBenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/DrawBenzenoidPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/HexagonDraw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/HexagonDraw.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/MoleculeGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/MoleculeGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternCloseButton.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternGroup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternHexagon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternPropertyMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternPropertyMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/patterns/PatternsEditionPane.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxPatternCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxPatternCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternCloseButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternCloseButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternHexagon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternHexagon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/patterns/PatternsEditionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestGeneration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestGeneration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pattern3test" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pattern3test" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +62,7 @@
         <option value="JUnit5 Test Class" />
         <option value="module-info" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -53,6 +92,7 @@
     </option>
   </component>
   <component name="ProblemsViewState">
+    <option name="groupByToolId" value="true" />
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2OKHNuxxeDhPKwsyYORVqVPt0fJ" />
@@ -63,25 +103,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/collection_operations/LinFanResonanceEnergyTask.java&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "Errors",
+    "two.files.diff.last.used.file": "/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/view/filtering/patterns/PatternHexagon.java"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="view.patterns" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="constraints" />
@@ -306,7 +349,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684943902026</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="SymmetriesConstraint refactoring">
+      <created>1684944551148</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1684944551148</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -373,7 +423,8 @@
     <MESSAGE value="class HBoxCriterion and derivates lightly refactored" />
     <MESSAGE value="Coronenoid criterion fixed + few refactorings" />
     <MESSAGE value="PatternsEditionPane refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="PatternsEditionPane refactoring" />
+    <MESSAGE value="SymmetriesConstraint refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="SymmetriesConstraint refactoring" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -395,14 +446,14 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/TestGeneration.java</url>
-          <line>37</line>
+          <line>36</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1684306459241" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1685459060345" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1682673901626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

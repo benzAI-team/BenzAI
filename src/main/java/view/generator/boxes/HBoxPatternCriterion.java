@@ -29,8 +29,6 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	private Button editButton;
 	private TextField patternInformationField;
 
-	//private GeneratorCriterion criterion;
-	
 
 	public HBoxPatternCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion, ModelProperty modelProperty) {
 		super(parent, choiceBoxCriterion);
@@ -74,7 +72,6 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		editButton.setStyle("-fx-background-color: transparent;");
 
 		Image imageAddButton;
-
 		if (Utils.onWindows())
 			imageAddButton = new Image("/resources/graphics\\icon-edit.png");
 		else
@@ -83,27 +80,20 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		ImageView view = new ImageView(imageAddButton);
 		editButton.setPadding(new Insets(0));
 		editButton.setGraphic(view);
-
 		editButton.setOnAction(e -> displayPatternEditionWindows());
 	}
 
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
-
 		if (isValid())
 			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText(), this.patternInformations));
 	}
 
 	private void displayPatternEditionWindows() {
-
 		if (patternPane == null) {
-
 			patternPane = new PatternsEditionPane(this);
-
 			patternStage = new Stage();
-
 			patternStage.getIcons().add(new Image("/resources/graphics/icon-benzene.png"));
-
 			patternStage.setTitle("Add pattern properties");
 
 			Scene scene = new Scene(patternPane);
@@ -112,7 +102,6 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 			patternStage.setScene(scene);
 			patternStage.show();
 		}
-
 		patternStage.show();
 	}
 
@@ -130,7 +119,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	}
 
 	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
-		getPane().setPatternsInformations(patternsInformations);
+		this.patternInformations = patternsInformations;
 	}
 
 	public PatternProperty getPatternProperty() {

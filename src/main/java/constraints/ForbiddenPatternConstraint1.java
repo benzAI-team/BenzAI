@@ -1,25 +1,22 @@
 package constraints;
 
-import java.util.ArrayList;
-
-import org.chocosolver.solver.constraints.Constraint;
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
-import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
-import org.chocosolver.solver.search.strategy.selectors.variables.ConflictHistorySearch;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDeg;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDegRef;
-import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
-import org.chocosolver.solver.search.strategy.selectors.variables.VariableSelector;
-import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
-import org.chocosolver.solver.variables.BoolVar;
-import org.chocosolver.solver.variables.IntVar;
 import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import generator.patterns.PatternOccurences;
+import org.chocosolver.solver.constraints.Constraint;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
+import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
+import org.chocosolver.solver.search.strategy.selectors.variables.*;
+import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
+import org.chocosolver.solver.variables.BoolVar;
+import org.chocosolver.solver.variables.IntVar;
+
+import java.util.ArrayList;
 
 public class ForbiddenPatternConstraint1 extends BenzAIConstraint {
 	
@@ -59,16 +56,12 @@ public class ForbiddenPatternConstraint1 extends BenzAIConstraint {
 		unknownHexagons = new ArrayList<>();
 		
 		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
-			
-			int label = pattern.getLabel(i);
-			
-			if (label == 1)
+			PatternLabel label = pattern.getLabel(i);
+			if (label == PatternLabel.NEUTRAL)
 				unknownHexagons.add(i);
-			
-			else if (label == 2)
+			else if (label == PatternLabel.POSITIVE)
 				presentHexagons.add(i);
-			
-			else if (label == 3)
+			else if (label == PatternLabel.NEGATIVE)
 				absentHexagons.add(i);
 		}
 	}

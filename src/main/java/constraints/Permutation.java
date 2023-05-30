@@ -120,7 +120,5 @@ public abstract class Permutation {
 	public Coords getCenter() {
 		return center;
 	}
-	
-	
 }
 

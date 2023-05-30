@@ -1,17 +1,9 @@
 package view.draw;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import application.BenzenoidApplication;
+import generator.patterns.PatternLabel;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
@@ -24,9 +16,13 @@ import parsers.GraphParser;
 import utils.Couple;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
-import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
+import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.CollectionMenuItem;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class DrawBenzenoidPane extends BorderPane {
 
@@ -110,7 +106,7 @@ public class DrawBenzenoidPane extends BorderPane {
 		Label clearLabel = new Label("Clear");
 		clearLabel.setOnMouseClicked(e -> {
 			for (HexagonDraw hexagon : moleculeGroup.getHexagons())
-				hexagon.setLabel(0);
+				hexagon.setLabel(PatternLabel.VOID);
 		});
 		clearItem.setGraphic(clearLabel);
 
@@ -118,7 +114,7 @@ public class DrawBenzenoidPane extends BorderPane {
 		Label selectAllLabel = new Label("Select all");
 		selectAllLabel.setOnMouseClicked(e -> {
 			for (HexagonDraw hexagon : moleculeGroup.getHexagons())
-				hexagon.setLabel(1);
+				hexagon.setLabel(PatternLabel.NEUTRAL);
 		});
 		selectAllItem.setGraphic(selectAllLabel);
 
@@ -126,7 +122,10 @@ public class DrawBenzenoidPane extends BorderPane {
 		Label revertLabel = new Label("Reverse");
 		revertLabel.setOnMouseClicked(e -> {
 			for (HexagonDraw hexagon : moleculeGroup.getHexagons())
-				hexagon.setLabel(1 - hexagon.getLabel());
+				if(hexagon.getLabel() == PatternLabel.POSITIVE)
+					hexagon.setLabel(PatternLabel.NEGATIVE);
+				else if(hexagon.getLabel() == PatternLabel.NEGATIVE)
+					hexagon.setLabel(PatternLabel.POSITIVE);
 		});
 		revertItem.setGraphic(revertLabel);
 
@@ -270,7 +269,7 @@ public class DrawBenzenoidPane extends BorderPane {
 		MoleculeGroup newMoleculeGroup = new MoleculeGroup(nbCrowns, this);
 
 		for (Couple<Integer, Integer> coord : coords)
-			newMoleculeGroup.getHexagonsMatrix()[coord.getX()][coord.getY()].setLabel(1);
+			newMoleculeGroup.getHexagonsMatrix()[coord.getX()][coord.getY()].setLabel(PatternLabel.NEUTRAL);
 
 		borderPane.getChildren().remove(moleculeGroup);
 		moleculeGroup = newMoleculeGroup;
@@ -355,7 +354,6 @@ public class DrawBenzenoidPane extends BorderPane {
 						newHexagonMatrix[i - 1][j - 1].setLabel(hexagonMatrix[i][j].getLabel());
 				}
 			}
-
 			moleculeGroup = newMoleculeGroup;
 			borderPane.setCenter(moleculeGroup);
 		}
@@ -364,12 +362,11 @@ public class DrawBenzenoidPane extends BorderPane {
 	public void checkBorder() {
 		boolean borderUsed = false;
 		for (HexagonDraw hexagon : moleculeGroup.getExtendedBorder()) {
-			if (hexagon.getLabel() == 1) {
+			if (hexagon.getLabel() == PatternLabel.NEUTRAL) {
 				borderUsed = true;
 				break;
 			}
 		}
-
 		if (!borderUsed)
 			removeCrown();
 	}

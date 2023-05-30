@@ -28,7 +28,7 @@ public class PatternCloseButton extends Button {
 
 		this.setOnAction(e -> {
 			if (parent.getNbItems() == 1) {
-				Utils.alert("You cannot delete the last fragment.");
+				Utils.alert("You cannot delete the last pattern.");
 			} else {
 				parent.removeEntry(index);
 			}

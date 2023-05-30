@@ -1,6 +1,7 @@
 package generator;
 
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import generator.patterns.PatternOccurences;
 import generator.properties.Property;
 import generator.properties.model.ModelProperty;
@@ -221,6 +222,7 @@ public class GeneralModel {
         chocoModel.connected(benzenoidGraphVar).post();
         ConstraintBuilder.postFillNodesConnection(this);
         ConstraintBuilder.postNoHolesOfSize1Constraint(this);
+        chocoModel.nbNodes(benzenoidGraphVar, nbVertices).post();
         if (applySymmetriesConstraints)
             nbClausesLexLead = ConstraintBuilder.postSymmetryBreakingConstraints(this);
     }
@@ -253,8 +255,6 @@ public class GeneralModel {
 
         if (!modelPropertySet.has("symmetry") && !modelPropertySet.has("rectangle"))
             ConstraintBuilder.postBordersConstraints(this);
-        //TODO deplacer l'instruction ci-dessous
-        chocoModel.nbNodes(benzenoidGraphVar, nbVertices).post();
     }
 
 
@@ -455,10 +455,8 @@ public class GeneralModel {
          * Label
          */
 
-        int[] labels = new int[nbNodes];
-
-        Arrays.fill(labels, 2);
-
+        PatternLabel[] labels = new PatternLabel[nbNodes];
+        Arrays.fill(labels, PatternLabel.POSITIVE);
         return new Pattern(matrix, labels, nodes, null, neighbors, 0);
     }
 
@@ -1191,7 +1189,7 @@ public class GeneralModel {
     private boolean isValid(Couple<Integer, Integer> coord, Pattern fragment, int index) {
         if (coord.getX() < 0 || coord.getX() >= diameter || coord.getY() < 0 || coord.getY() >= diameter
                 || hexagonIndices[coord.getY()][coord.getX()] == -1) {
-            return fragment.getLabel(index) != 2;
+            return fragment.getLabel(index) != PatternLabel.POSITIVE;
         }
         return true;
     }
@@ -1204,7 +1202,7 @@ public class GeneralModel {
     }
 
     @SuppressWarnings("unchecked")
-    public PatternOccurences computeTranslations(Pattern fragment) {
+    public PatternOccurences computeTranslations(Pattern pattern) {
 
         PatternOccurences fragmentOccurences = new PatternOccurences();
 
@@ -1213,15 +1211,15 @@ public class GeneralModel {
          */
 
         int minY = Integer.MAX_VALUE;
-        for (Node node : fragment.getNodesRefs())
+        for (Node node : pattern.getNodesRefs())
             if (node.getY() < minY)
                 minY = node.getY();
 
         while (true) {
             boolean containsPresentHexagon = false;
-            for (int i = 0; i < fragment.getNbNodes(); i++) {
-                Node node = fragment.getNodesRefs()[i];
-                if (node.getY() == minY && fragment.getLabel(i) == 2)
+            for (int i = 0; i < pattern.getNbNodes(); i++) {
+                Node node = pattern.getNodesRefs()[i];
+                if (node.getY() == minY && pattern.getLabel(i) == PatternLabel.POSITIVE)
                     containsPresentHexagon = true;
             }
             if (containsPresentHexagon)
@@ -1231,9 +1229,9 @@ public class GeneralModel {
 
         int nodeIndex = -1;
         int minX = Integer.MAX_VALUE;
-        for (int i = 0; i < fragment.getNbNodes(); i++) {
-            Node node = fragment.getNodesRefs()[i];
-            if (node.getY() == minY && node.getX() < minX && fragment.getLabel(i) == 2) {
+        for (int i = 0; i < pattern.getNbNodes(); i++) {
+            Node node = pattern.getNodesRefs()[i];
+            if (node.getY() == minY && node.getX() < minX && pattern.getLabel(i) == PatternLabel.POSITIVE) {
                 minX = node.getX();
                 nodeIndex = i;
             }
@@ -1252,8 +1250,8 @@ public class GeneralModel {
                      * corresponde � hexagon
                      */
 
-                    int[] checkedHexagons = new int[fragment.getNbNodes()];
-                    Couple<Integer, Integer>[] coords = new Couple[fragment.getNbNodes()];
+                    int[] checkedHexagons = new int[pattern.getNbNodes()];
+                    Couple<Integer, Integer>[] coords = new Couple[pattern.getNbNodes()];
 
                     int candidat = nodeIndex;
                     checkedHexagons[nodeIndex] = 1;
@@ -1262,8 +1260,8 @@ public class GeneralModel {
                     ArrayList<Integer> candidats = new ArrayList<>();
 
                     for (HexNeighborhood neighbor : HexNeighborhood.values()) {
-                        if (fragment.getNeighbor(candidat, neighbor.getIndex()) != -1) {
-                            int neighborIndex = fragment.getNeighbor(candidat, neighbor.getIndex());
+                        if (pattern.getNeighbor(candidat, neighbor.getIndex()) != -1) {
+                            int neighborIndex = pattern.getNeighbor(candidat, neighbor.getIndex());
                             candidats.add(neighborIndex);
                             coords[neighborIndex] = new Couple<>(columnIndex + neighbor.dx(), lineIndex + neighbor.dy());
                             checkedHexagons[neighborIndex] = 1;
@@ -1275,9 +1273,9 @@ public class GeneralModel {
                         candidat = candidats.get(0);
 
                         for (HexNeighborhood neighbor : HexNeighborhood.values()) {
-                            if (fragment.getNeighbor(candidat, neighbor.getIndex()) != -1) {
+                            if (pattern.getNeighbor(candidat, neighbor.getIndex()) != -1) {
 
-                                int neighborIndex = fragment.getNeighbor(candidat, neighbor.getIndex());
+                                int neighborIndex = pattern.getNeighbor(candidat, neighbor.getIndex());
 
                                 if (checkedHexagons[neighborIndex] == 0) {
                                     candidats.add(neighborIndex);
@@ -1297,11 +1295,11 @@ public class GeneralModel {
                     boolean valid = true;
                     for (int i = 0; i < coords.length; i++) {
                         Couple<Integer, Integer> coord = coords[i];
-                        if (!isValid(coord, fragment, i))
+                        if (!isValid(coord, pattern, i))
                             valid = false;
                     }
                     if (valid) {
-                        Integer[] occurence = new Integer[fragment.getNbNodes()];
+                        Integer[] occurence = new Integer[pattern.getNbNodes()];
 
                         for (int i = 0; i < coords.length; i++) {
                             Couple<Integer, Integer> coord = coords[i];
@@ -1331,8 +1329,8 @@ public class GeneralModel {
                         ArrayList<Integer> unknown = new ArrayList<>();
                         ArrayList<Integer> outter = new ArrayList<>();
 
-                        for (int i = 0; i < fragment.getNbNodes(); i++) {
-                            if (fragment.getLabel(i) == 1) {
+                        for (int i = 0; i < pattern.getNbNodes(); i++) {
+                            if (pattern.getLabel(i) == PatternLabel.NEUTRAL) {
                                 Couple<Integer, Integer> coord = coords[i];
 
                                 if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
@@ -1348,10 +1346,10 @@ public class GeneralModel {
                                     int index = findIndex(outterHexagons, coord);
                                     outter.add(outterHexagonsIndexes.get(index));
                                 }
-                            } else if (fragment.getLabel(i) == 2) {
+                            } else if (pattern.getLabel(i) == PatternLabel.POSITIVE) {
                                 Couple<Integer, Integer> coord = coords[i];
                                 present.add(hexagonIndices[coord.getY()][coord.getX()]);
-                            } else if (fragment.getLabel(i) == 3) {
+                            } else if (pattern.getLabel(i) == PatternLabel.NEGATIVE) {
                                 Couple<Integer, Integer> coord = coords[i];
 
                                 if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0

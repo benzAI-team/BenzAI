@@ -8,7 +8,7 @@ import utils.Coords;
 import utils.Utils;
 import generator.properties.model.expression.ParameterizedExpression;
 
-public class SymmetriesConstraint extends BenzAIConstraint {
+public class SymmetryConstraint extends BenzAIConstraint {
 	@Override
 	public void buildVariables() {}
 
@@ -163,7 +163,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 
 	private class HexagonAxisSymmetry extends Permutation {
 		HexagonAxisSymmetry() {
-			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns());
+			super(SymmetryConstraint.this.getGeneralModel().getNbCrowns());
 		}
 		@Override
 		public Coords from(Coords point) {
@@ -173,7 +173,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 
 	private class Rot60Symmetry extends Permutation {
 		Rot60Symmetry() {
-			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns(), 1);
+			super(SymmetryConstraint.this.getGeneralModel().getNbCrowns(), 1);
 		}
 
 		public Coords from(Coords point) {
@@ -183,7 +183,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 
 	private class Rot120Symmetry extends Permutation {
 		Rot120Symmetry() {
-			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns(), 2);
+			super(SymmetryConstraint.this.getGeneralModel().getNbCrowns(), 2);
 		}
 
 		public Coords from(Coords point) {
@@ -193,7 +193,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 
 	private class Rot180Symmetry extends Permutation {
 		Rot180Symmetry() {
-			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns(), 3);
+			super(SymmetryConstraint.this.getGeneralModel().getNbCrowns(), 3);
 		}
 
 		public Coords from(Coords point) {
@@ -203,7 +203,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 
 	private class EdgeAxisSymmetry extends Permutation {
 		EdgeAxisSymmetry() {
-			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns());
+			super(SymmetryConstraint.this.getGeneralModel().getNbCrowns());
 		}
 
 		public Coords from(Coords point) {
@@ -213,7 +213,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 
 	private class Rot120VertexSymmetry extends Permutation {
 		Rot120VertexSymmetry() {
-			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns());
+			super(SymmetryConstraint.this.getGeneralModel().getNbCrowns());
 		}
 
 		public Coords from(Coords point) {
@@ -223,7 +223,7 @@ public class SymmetriesConstraint extends BenzAIConstraint {
 
 	private class Rot180EdgeSymmetry extends Permutation {
 		Rot180EdgeSymmetry() {
-			super(SymmetriesConstraint.this.getGeneralModel().getNbCrowns());
+			super(SymmetryConstraint.this.getGeneralModel().getNbCrowns());
 		}
 
 		public Coords from(Coords point) {

@@ -3,7 +3,7 @@ package generator.properties.model;
 import generator.properties.model.checkers.SymmetryChecker;
 import generator.properties.model.expression.ParameterizedExpression;
 import generator.properties.model.filters.SymmetryFilter;
-import constraints.SymmetriesConstraint;
+import constraints.SymmetryConstraint;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxSymmetriesCriterion;
@@ -12,7 +12,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 public class SymmetryProperty extends ModelProperty {
 
 	public SymmetryProperty() {
-		super("symmetry", "Symmetries", new SymmetriesConstraint(), new SymmetryChecker(),new SymmetryFilter());
+		super("symmetry", "Symmetries", new SymmetryConstraint(), new SymmetryChecker(),new SymmetryFilter());
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import database.models.IRSpectraEntry;
 import generator.GeneralModel;
 import generator.SolverResults;
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import generator.properties.Property;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
@@ -1110,10 +1111,10 @@ public class Molecule implements Comparable<Molecule> {
 		 * Label
 		 */
 
-		int[] labels = new int[nbHexagons];
+		PatternLabel[] labels = new PatternLabel[nbHexagons];
 
 		for (int i = 0; i < nbNodes; i++)
-			labels[i] = 2;
+			labels[i] = PatternLabel.POSITIVE;
 
 		return new Pattern(matrix, labels, nodes, null, neighbors, 0);
 	}

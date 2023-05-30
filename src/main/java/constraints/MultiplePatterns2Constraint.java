@@ -1,26 +1,23 @@
 package constraints;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.chocosolver.solver.constraints.extension.Tuples;
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
-import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
-import org.chocosolver.solver.search.strategy.selectors.variables.ConflictHistorySearch;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDeg;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDegRef;
-import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
-import org.chocosolver.solver.search.strategy.selectors.variables.VariableSelector;
-import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
-import org.chocosolver.solver.variables.BoolVar;
-import org.chocosolver.solver.variables.IntVar;
-import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
+import org.chocosolver.solver.constraints.extension.Tuples;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
+import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
+import org.chocosolver.solver.search.strategy.selectors.variables.*;
+import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
+import org.chocosolver.solver.variables.BoolVar;
+import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
@@ -144,13 +141,11 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
 			for (int j = 0; j < pattern.getNbNodes(); j++) {
 
-				if (pattern.getLabel(j) == 1)
+				if (pattern.getLabel(j) == PatternLabel.NEUTRAL)
 					unknownHexagons.add(j);
-
-				else if (pattern.getLabel(j) == 2)
+				else if (pattern.getLabel(j) == PatternLabel.POSITIVE)
 					presentHexagons.add(j);
-
-				else if (pattern.getLabel(j) == 3)
+				else if (pattern.getLabel(j) == PatternLabel.NEGATIVE)
 					absentHexagons.add(j);
 			}
 
@@ -254,7 +249,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
 			for (int j = 0; j < pattern.getNbNodes(); j++) {
 
-				int label = pattern.getLabel(j);
+				PatternLabel label = pattern.getLabel(j);
 
 				IntVar countAllHexagons = generalModel.getProblem().intVar("count_all_" + j, 0, 1);				
 				generalModel.getProblem().count(j, correspondancesAllHexagons, countAllHexagons).post();
@@ -262,15 +257,13 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 				IntVar countInternalHexagons = generalModel.getProblem().intVar("count_internal_" + j, 0, 1);
 				generalModel.getProblem().count(j, correspondancesInternalCrowns, countInternalHexagons).post();
 
-				if (label == 1) { // UNKNOWN_HEXAGON
+				if (label == PatternLabel.NEUTRAL) { // UNKNOWN_HEXAGON
 					generalModel.getProblem().arithm(countAllHexagons, "=", 1).post();
 				}
-
-				else if (label == 2) { // PRESENT_HEXAGONS
+				else if (label == PatternLabel.POSITIVE) { // PRESENT_HEXAGONS
 					generalModel.getProblem().arithm(countInternalHexagons, "=", 1).post();
 				}
-
-				else if (label == 3) { // ABSENT_HEXAGONS
+				else if (label == PatternLabel.NEGATIVE) { // ABSENT_HEXAGONS
 					generalModel.getProblem().arithm(countAllHexagons, "=", 1).post();
 				}
 			}
@@ -631,8 +624,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 				int v = matrixTable[i][column];
 				
 				if (v != -1) {
-					
-					if (!(pattern.getLabel(v) == 1 || pattern.getLabel(v) == 3)) {
+					if (!(pattern.getLabel(v) == PatternLabel.NEUTRAL || pattern.getLabel(v) == PatternLabel.NEGATIVE)) {
 						ok = false;
 					}
 				}

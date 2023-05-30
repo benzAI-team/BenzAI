@@ -1,29 +1,30 @@
 package view.patterns;
 
-import java.util.ArrayList;
-
+import generator.patterns.PatternLabel;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import utils.Couple;
 
+import java.util.ArrayList;
+
 public class PatternHexagon extends Polygon {
 
-	private final Color[] COLORS = new Color[] { Color.WHITE, Color.GREEN, Color.ORANGE, Color.RED };
+	private final Color[] COLORS = new Color[] { Color.WHITE, Color.GREEN, Color.RED, Color.ORANGE };
 
 	private final PatternGroup group;
 
 	private final Couple<Integer, Integer> coords;
 	private final ArrayList<Double> points;
 
-	private int label;
+	private PatternLabel label;
 	private boolean isCenter;
 
-	public PatternHexagon(PatternGroup group, Couple<Integer, Integer> coords, ArrayList<Double> points) {
+	PatternHexagon(PatternGroup group, Couple<Integer, Integer> coords, ArrayList<Double> points) {
 		super();
 		this.group = group;
 		this.coords = coords;
 		this.points = points;
-		label = 0;
+		label = PatternLabel.VOID;
 		isCenter = false;
 
 		initialize();
@@ -43,28 +44,27 @@ public class PatternHexagon extends Polygon {
 		this.setStroke(Color.BLACK);
 	}
 
-	public int getLabel() {
+	public PatternLabel getLabel() {
 		return label;
 	}
 
 	private void shiftLabel() {
-    int lastLabel = group.getParentPane().getColorLabel();
-    
+    PatternLabel lastLabel = group.getParentPane().getLastLabel();
     if (lastLabel == label) {
-      label = (label + 1) % 4;
-      group.getParentPane().setColorLabel(label);
+      label = PatternLabel.next(label);
+      group.getParentPane().setLastLabel(label);
     }
     else
       label = lastLabel;
-	this.setFill(COLORS[label]);
+	this.setFill(COLORS[label.ordinal()]);
 	}
 
-	public void setLabel(int label) {
-		this.label = label % 4;
-		this.setFill(COLORS[label]);
+	public void setLabel(PatternLabel label) {
+		this.label = label;
+		this.setFill(COLORS[label.ordinal()]);
 	}
 
-	public void disableCenter() {
+	void disableCenter() {
 		isCenter = false;
 		this.setStrokeWidth(this.getStrokeWidth() / 2);
 	}
@@ -77,7 +77,7 @@ public class PatternHexagon extends Polygon {
 		return coords;
 	}
 
-	public void setBorderAction() {
+	void setBorderAction() {
 		this.setOnMouseClicked(e -> {
 			System.out.println("Click on border");
 			shiftLabel();

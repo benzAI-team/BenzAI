@@ -1,14 +1,14 @@
 package view.patterns;
 
 import constraints.ForbiddenPatternConstraint1;
-import constraints.MultiplePatterns1Constraint;
 import constraints.SinglePattern2Constraint;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.*;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.PatternExpression;
+import generator.properties.model.expression.BinaryNumericalExpression;
+import generator.properties.model.expression.PropertyExpression;
+import generator.properties.model.expression.SubjectExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -29,7 +29,8 @@ import java.util.ArrayList;
 
 public class PatternsEditionPane extends BorderPane {
 
-	private final HBoxPatternCriterion parent;
+	private final HBoxPatternCriterion patternConstraintHBox;
+	private final PatternPropertyMenu patternPropertyMenu = new PatternPropertyMenu();
 	private BorderPane borderPane;
 	private ListView<GridPane> listView;
 	private ArrayList<GridPane> boxItems;
@@ -37,20 +38,14 @@ public class PatternsEditionPane extends BorderPane {
 
 	private PatternGroup selectedPatternGroup;
 	private int selectedIndex;
-
-	private CheckMenuItem itemUndisjunct;
-	private CheckMenuItem itemDisjunct;
-	private CheckMenuItem itemNNDisjunct;
-	private CheckMenuItem disableItem;
-	private TextField occurencesField;
 	private TextField fieldName;
-	private int colorLabel;   // the label of the last color assign to a hexagon
+	private PatternLabel lastLabel;   // the label of the last color assign to a hexagon
 
-	public PatternsEditionPane(HBoxPatternCriterion parent) {
+	public PatternsEditionPane(HBoxPatternCriterion patternConstraintHBox) {
 		super();
-		this.parent = parent;
+		this.patternConstraintHBox = patternConstraintHBox;
 		initialize();
-		colorLabel = 0;
+		lastLabel = PatternLabel.VOID;
 	}
 
 	private void initialize() {
@@ -69,77 +64,24 @@ public class PatternsEditionPane extends BorderPane {
 	}
 
 	private void buildPatternMenu(MenuBar menuBar) {
-		Menu patternMenu = new Menu("Patterns properties");
-		Menu multipleMenu = buildMultipleMenu();
-		buildDisableItem();
-		//buildOccurenceItem(); TODO to complete
-		patternMenu.getItems().addAll(multipleMenu, disableItem);
+		Menu patternMenu = patternPropertyMenu.build();
 		menuBar.getMenus().add(patternMenu);
 	}
 
-	private void buildDisableItem() {
-		disableItem = new CheckMenuItem("Exclude pattern");
-		disableItem.setOnAction(e -> {
-			if (disableItem.isSelected())
-				unselectAllMenus(itemUndisjunct, itemDisjunct, itemNNDisjunct);
-		});
-	}
-
-	private void buildOccurenceItem() { // TODO to complete
-		//CheckMenuItem occurencesItem = new CheckMenuItem();
-		Label occurencesLabel = new Label("Pattern's occurences: ");
-		occurencesField = new TextField();
-		//HBox occurencesBox = new HBox(3.0);
-		//occurencesBox.getChildren().addAll(occurencesLabel, occurencesField);
-		//occurencesItem.setGraphic(occurencesBox);
-	}
-
-	private Menu buildMultipleMenu() {
-		Menu multipleMenu = new Menu("Multiple patterns interaction");
-		buildItemUndisjunct();
-		buildItemDisjunct();
-		buildItemNNDisjunct();
-		multipleMenu.getItems().addAll(itemUndisjunct, itemDisjunct, itemNNDisjunct);
-		return multipleMenu;
-	}
-
-	private void buildItemNNDisjunct() {
-		itemNNDisjunct = new CheckMenuItem("Disjunct on neutral/negative hexagons");
-		itemNNDisjunct.setOnAction(e -> {
-			itemNNDisjunct.setSelected(true);
-			if (itemNNDisjunct.isSelected())
-				unselectAllMenus(itemUndisjunct, itemDisjunct, disableItem);
-		});
-		itemNNDisjunct.setSelected(true);
-	}
-
-	private void buildItemDisjunct() {
-		itemDisjunct = new CheckMenuItem("Disjunct patterns");
-		itemDisjunct.setOnAction(e -> {
-			itemDisjunct.setSelected(true);
-			if (itemDisjunct.isSelected())
-				unselectAllMenus(itemUndisjunct, itemNNDisjunct, disableItem);
-		});
-	}
-
-	private void buildItemUndisjunct() {
-		itemUndisjunct = new CheckMenuItem("Undisjunct patterns");
-		itemUndisjunct.setOnAction(e -> {
-			itemUndisjunct.setSelected(true);
-			if (itemUndisjunct.isSelected())
-				unselectAllMenus(itemDisjunct, itemNNDisjunct, disableItem);
-		});
-	}
 
 	private void buildCrownMenu(MenuBar menuBar) {
-		Menu nbCrownsMenu = new Menu();
-		HBox nbCrownsBox = new HBox(3.0);
-		Label nbCrownsLabel = new Label("Number of crowns: ");
 		Button minusButton = new Button("-");
 		minusButton.setOnAction(e -> removeCrown());
+
 		Button plusButton = new Button("+");
 		plusButton.setOnAction(e -> addCrown());
+
+		Label nbCrownsLabel = new Label("Number of crowns: ");
+
+		HBox nbCrownsBox = new HBox(3.0);
 		nbCrownsBox.getChildren().addAll(nbCrownsLabel, minusButton, plusButton);
+
+		Menu nbCrownsMenu = new Menu();
 		nbCrownsMenu.setGraphic(nbCrownsBox);
 		menuBar.getMenus().add(nbCrownsMenu);
 	}
@@ -147,51 +89,57 @@ public class PatternsEditionPane extends BorderPane {
 	private void buildNameMenu(MenuBar menuBar) {
 		Label labelName = new Label("Name: ");
 		fieldName = new TextField("default name");
-		HBox boxName = new HBox(3.0);
-		boxName.getChildren().addAll(labelName, fieldName);
-		Menu nameMenu = new Menu();
-		nameMenu.setGraphic(boxName);
-		menuBar.getMenus().add(nameMenu);
 		fieldName.setOnKeyReleased(e -> {
-
 			int index = selectedPatternGroup.getIndex();
 			GridPane gridPane = boxItems.get(index);
 
-			if ("".equals(fieldName.getText()))
-				((Label) gridPane.getChildren().get(0)).setText("default name");
-			else
-				((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
+			if ("".equals(fieldName.getText())) ((Label) gridPane.getChildren().get(0)).setText("default name");
+			else ((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
 		});
+
+		HBox boxName = new HBox(3.0);
+		boxName.getChildren().addAll(labelName, fieldName);
+
+		Menu nameMenu = new Menu();
+		nameMenu.setGraphic(boxName);
+		menuBar.getMenus().add(nameMenu);
 	}
 
 	private void buildDrawingMenu(MenuBar menuBar) {
 		Menu drawingMenu = new Menu("Drawing");
+
 		MenuItem clearItem = new MenuItem("Clear");
+		clearItem.setOnAction(e -> selectedPatternGroup.setAllLabels(PatternLabel.VOID));
+
 		MenuItem neutralItem = new MenuItem("Set all neutral");
+		neutralItem.setOnAction(e -> selectedPatternGroup.setAllLabels(PatternLabel.NEUTRAL));
+
 		MenuItem positiveItem = new MenuItem("Set all positive");
+		positiveItem.setOnAction(e -> selectedPatternGroup.setAllLabels(PatternLabel.POSITIVE));
+
 		MenuItem negativeItem = new MenuItem("Set all negative");
+		negativeItem.setOnAction(e -> selectedPatternGroup.setAllLabels(PatternLabel.NEGATIVE));
+
 		drawingMenu.getItems().addAll(clearItem, neutralItem, positiveItem, negativeItem);
 		menuBar.getMenus().add(drawingMenu);
-
-		clearItem.setOnAction(e -> selectedPatternGroup.setAllLabels(0));
-
-		neutralItem.setOnAction(e -> selectedPatternGroup.setAllLabels(1));
-
-		positiveItem.setOnAction(e -> selectedPatternGroup.setAllLabels(2));
-
-		negativeItem.setOnAction(e -> selectedPatternGroup.setAllLabels(3));
 	}
 
 	private void buildFileMenu(MenuBar menuBar) {
+		MenuItem saveItem = buildSaveItem();
+		MenuItem importItem = buildImportItem();
+
 		Menu fileMenu = new Menu("File");
-		MenuItem importItem = new MenuItem("Import pattern");
-		MenuItem saveItem = new MenuItem("Save pattern as");
 		fileMenu.getItems().addAll(importItem, saveItem);
+
 		menuBar.getMenus().add(fileMenu);
+	}
+
+	private MenuItem buildSaveItem() {
+		MenuItem saveItem = new MenuItem("Save pattern as");
 
 		saveItem.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
-			File file = fileChooser.showSaveDialog(parent.getApplication().getStage());
+			File file = fileChooser.showSaveDialog(patternConstraintHBox.getApplication().getStage());
 
 			if (file != null) {
 				Pattern pattern = selectedPatternGroup.exportPattern();
@@ -202,16 +150,18 @@ public class PatternsEditionPane extends BorderPane {
 				}
 			}
 		});
+		return saveItem;
+	}
 
+	private MenuItem buildImportItem() {
+		MenuItem importItem = new MenuItem("Import pattern");
 		importItem.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
-			File file = fileChooser.showOpenDialog(parent.getApplication().getStage());
+			File file = fileChooser.showOpenDialog(patternConstraintHBox.getApplication().getStage());
 
 			if (file != null) {
 				boolean ok = true;
-
 				Pattern pattern = null;
-
 				try {
 					pattern = PatternFileImport.importPattern(file);
 				} catch (Exception e1) {
@@ -220,9 +170,7 @@ public class PatternsEditionPane extends BorderPane {
 				}
 
 				if (ok) {
-
 					int yMax = -1;
-
 					for (Node node : pattern.getNodesRefs())
 						if (node.getY() > yMax)
 							yMax = node.getX();
@@ -247,13 +195,12 @@ public class PatternsEditionPane extends BorderPane {
 					group.importPattern(pattern);
 					patternGroups.set(index, group);
 					select(index);
-
 				}
-
 				else
 					Utils.alert("Error while importing the pattern");
 			}
 		});
+		return importItem;
 	}
 
 	private void select(int index) {
@@ -267,95 +214,43 @@ public class PatternsEditionPane extends BorderPane {
 	}
 
 	private void initializePane() {
-
 		this.setPrefSize(1500, 500);
-
 		this.setPadding(new Insets(15.0));
 
 		patternGroups = new ArrayList<>();
-		borderPane = new BorderPane();
-
-		listView = new ListView<>();
 		boxItems = new ArrayList<>();
 
-		Button addButton = new Button("Add pattern");
-		Button applyButton = new Button("Apply");
+		VBox patternListBox = buildPatternListBox();
+		addEntry();
+
+		borderPane = new BorderPane();
+		borderPane.setCenter(selectedPatternGroup);
+		borderPane.setRight(patternListBox);
+		this.setCenter(borderPane);
+		select(0);
+	}
+
+	private VBox buildPatternListBox() {
+		HBox buttonBox = buildButtonBox();
+		buildListView();
+
+		VBox patternListBox = new VBox(5.0);
+		patternListBox.getChildren().addAll(listView, buttonBox);
+		patternListBox.setPrefHeight(this.getHeight());
+		return patternListBox;
+	}
+
+	private HBox buildButtonBox() {
+		Button addPatternButton = buildAddPatternButton();
+		Button applyPatternButton = buildApplyPatternButton();
+
 		HBox buttonBox = new HBox(3.0);
-		buttonBox.getChildren().addAll(addButton, applyButton);
+		buttonBox.getChildren().addAll(addPatternButton, applyPatternButton);
+		return buttonBox;
+	}
 
-		applyButton.setPrefWidth(125);
-		addButton.setPrefWidth(125);
-
-		applyButton.setOnAction(e -> {
-			ArrayList<Pattern> patterns = new ArrayList<>();
-			for (PatternGroup group : patternGroups) {
-				patterns.add(buildPattern(group));
-			}
-
-			PatternGenerationType type;
-			String subject = "";
-			PatternResolutionInformations patternInformations = null; 
-			
-			if (boxItems.size() == 1) {
-
-				if (!disableItem.isSelected()) {
-					if (!Utils.isNumber(occurencesField.getText())) {
-						type = PatternGenerationType.SINGLE_PATTERN_1;
-						subject = "SINGLE_PATTERN";
-						patternInformations = new PatternResolutionInformations(type, patterns);
-						parent.getPatternProperty().setConstraint(new SinglePattern2Constraint(patternInformations.getPatterns().get(0), false,
-								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-					}
-
-					else {
-						type = PatternGenerationType.PATTERN_OCCURENCES;
-						subject = "OCCURENCES_PATTERN: " + occurencesField.getText();
-//TODO
-						//expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=", Integer.parseInt(occurencesField.getText()));
-					}
-				}
-
-				else {
-					type = PatternGenerationType.FORBIDDEN_PATTERN;
-					subject = "FORBIDDEN_PATTERN";
-					patternInformations = new PatternResolutionInformations(type, patterns);
-					parent.getPatternProperty().setConstraint(new ForbiddenPatternConstraint1(patternInformations.getPatterns().get(0),
-							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-				}
-			}
-
-			else if (itemUndisjunct.isSelected() || itemDisjunct.isSelected() || itemNNDisjunct.isSelected()) {
-				type = PatternGenerationType.MULTIPLE_PATTERN_1;
-				subject = "MULTIPLE_PATTERNS";
-				patternInformations = new PatternResolutionInformations(type, patterns);
-				if (itemUndisjunct.isSelected()) 
-					patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
-				else if (itemDisjunct.isSelected())
-					patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
-				else if (itemNNDisjunct.isSelected())
-					patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
-
-				parent.getPatternProperty().setConstraint(new MultiplePatterns1Constraint(patternInformations.getPatterns(),
-						VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST, patternInformations.getInterraction()));
-			}
-
-			parent.setPatternResolutionInformations(patternInformations);
-			parent.setExpression(new PatternExpression(subject, patternInformations));
-
-			
-			
-			parent.addPropertyExpression((ModelPropertySet) parent.getPatternProperty().getPropertySet());
-			parent.refreshPatternInformations(subject);
-			hide();
-
-		});
-
-		addButton.setOnAction(e -> addEntry());
-
-		VBox vBox = new VBox(5.0);
-		vBox.getChildren().addAll(listView, buttonBox);
-		vBox.setPrefHeight(this.getHeight());
-
+	private void buildListView() {
+		listView = new ListView<>();
 		listView.setOnMouseClicked(event -> {
 			GridPane selection = listView.getSelectionModel().getSelectedItem();
 			if (selection != null) {
@@ -363,13 +258,73 @@ public class PatternsEditionPane extends BorderPane {
 				select(button.getIndex());
 			}
 		});
+	}
 
-		addEntry();
-		select(0);
+	private Button buildApplyPatternButton() {
+		Button applyPatternButton = new Button("Apply");
+		applyPatternButton.setPrefWidth(125);
+		applyPatternButton.setOnAction(e -> {
+			ArrayList<Pattern> patterns = new ArrayList<>();
+			for (PatternGroup group : patternGroups) {
+				patterns.add(buildPattern(group));
+			}
 
-		borderPane.setCenter(selectedPatternGroup);
-		borderPane.setRight(vBox);
-		this.setCenter(borderPane);
+			PatternGenerationType type = null;
+			PropertyExpression expression = null;
+			PatternResolutionInformations patternInformations;
+
+			if (boxItems.size() == 1) {
+				if (patternPropertyMenu.getDisableItem().isSelected()) {
+					patternConstraintHBox.refreshPatternInformations("FORBIDDEN_PATTERN");
+					type = PatternGenerationType.FORBIDDEN_PATTERN;
+					expression = new SubjectExpression("FORBIDDEN_PATTERN");
+					patternInformations = new PatternResolutionInformations(type, patterns);
+					patternConstraintHBox.getPatternProperty().setConstraint(new ForbiddenPatternConstraint1(patternInformations.getPatterns().get(0),
+							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+				} else {
+					if (Utils.isNumber(patternPropertyMenu.getOccurencesField().getText())) {
+						type = PatternGenerationType.PATTERN_OCCURENCES;
+						patternConstraintHBox.refreshPatternInformations("OCCURENCES_PATTERN: " + patternPropertyMenu.getOccurencesField().getText());
+						expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=",
+								Integer.parseInt(patternPropertyMenu.getOccurencesField().getText()));
+					} else {
+						type = PatternGenerationType.SINGLE_PATTERN_2;
+						patternConstraintHBox.refreshPatternInformations("SINGLE_PATTERN");
+						expression = new SubjectExpression("SINGLE_PATTERN");
+						patternInformations = new PatternResolutionInformations(type, patterns);
+						patternConstraintHBox.getPatternProperty().setConstraint(new SinglePattern2Constraint(patternInformations.getPatterns().get(0), false,
+								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+					}
+				}
+			}
+			else if (patternPropertyMenu.getItemUndisjunct().isSelected() || patternPropertyMenu.getItemDisjunct().isSelected() || patternPropertyMenu.getItemNNDisjunct().isSelected()) {
+				patternConstraintHBox.refreshPatternInformations("MULTIPLE_PATTERNS");
+				type = PatternGenerationType.MULTIPLE_PATTERN_1;
+				expression = new SubjectExpression("MULTIPLE_PATTERNS");
+			}
+
+			patternInformations = new PatternResolutionInformations(type, patterns);
+
+			if (patternPropertyMenu.getItemUndisjunct().isSelected())
+				patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
+
+			else if (patternPropertyMenu.getItemDisjunct().isSelected())
+				patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
+
+			else if (patternPropertyMenu.getItemNNDisjunct().isSelected())
+				patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
+			patternConstraintHBox.setPatternResolutionInformations(patternInformations);
+			patternConstraintHBox.setExpression(expression);
+			hide();
+		});
+		return applyPatternButton;
+	}
+
+	private Button buildAddPatternButton() {
+		Button addPatternButton = new Button("Add pattern");
+		addPatternButton.setPrefWidth(125);
+		addPatternButton.setOnAction(e -> addEntry());
+		return addPatternButton;
 	}
 
 	private void addEntry() {
@@ -395,8 +350,7 @@ public class PatternsEditionPane extends BorderPane {
 		patternGroups.add(patternGroup);
 
 		if (patternGroups.size() > 1)
-			itemDisjunct.fire();
-
+			patternPropertyMenu.getItemDisjunct().fire();
 	}
 
 	private void removePane(int index) {
@@ -420,7 +374,7 @@ public class PatternsEditionPane extends BorderPane {
 		}
 
 		if (patternGroups.size() == 1) {
-			unselectAllMenus(itemDisjunct, itemUndisjunct, itemNNDisjunct);
+			unselectAllMenus(patternPropertyMenu.getItemDisjunct(), patternPropertyMenu.getItemUndisjunct(), patternPropertyMenu.getItemNNDisjunct());
 		}
 	}
 
@@ -431,12 +385,11 @@ public class PatternsEditionPane extends BorderPane {
 	void checkBorder() {
 		boolean borderUsed = false;
 		for (PatternHexagon hexagon : selectedPatternGroup.getExtendedBorder()) {
-			if (hexagon.getLabel() >= 1) {
+			if (hexagon.getLabel() != PatternLabel.VOID) {
 				borderUsed = true;
 				break;
 			}
 		}
-
 		if (!borderUsed)
 			removeCrown();
 	}
@@ -498,15 +451,15 @@ public class PatternsEditionPane extends BorderPane {
 		}
 	}
 
-  void setColorLabel(int label) {
-    colorLabel = label;
+  void setLastLabel(PatternLabel label) {
+    lastLabel = label;
   }
   
-  int getColorLabel() {
-    return (colorLabel);
+  PatternLabel getLastLabel() {
+    return lastLabel;
   }
 
 	private void hide() {
-		parent.hidePatternStage();
+		patternConstraintHBox.hidePatternStage();
 	}
 }

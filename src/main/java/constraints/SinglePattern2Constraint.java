@@ -5,6 +5,7 @@ import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
@@ -27,9 +28,9 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 	private final Pattern pattern;
 	private int [][] neighborGraph;
 
-	ArrayList<Integer> absentHexagons;
-	ArrayList<Integer> presentHexagons;
-	ArrayList<Integer> unknownHexagons;
+	private ArrayList<Integer> absentHexagons;
+	private ArrayList<Integer> presentHexagons;
+	private ArrayList<Integer> unknownHexagons;
 	
 	private IntVar[] patternCorrespondances;
 	private int [] T1;
@@ -56,9 +57,9 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 	public void buildVariables() {
 		GeneralModel generalModel = getGeneralModel();
 
-		presentHexagons = new ArrayList<Integer>();
-		absentHexagons = new ArrayList<Integer>();
-		unknownHexagons = new ArrayList<Integer>();
+		presentHexagons = new ArrayList<>();
+		absentHexagons = new ArrayList<>();
+		unknownHexagons = new ArrayList<>();
 
 		symmetry = generalModel.getProblem().boolVar("axial_symmetry");
 
@@ -81,18 +82,15 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 		for (int line = 0; line < generalModel.getDiameter(); line++) {
 			for (int column = 0; column < generalModel.getDiameter(); column++) {
 				if (generalModel.getHexagonIndices()[line][column] != -1) {
-
 					T1[generalModel.getHexagonIndices()[line][column]] = index;
 					System.out.println(generalModel.getHexagonIndices()[line][column] + " " + index);
 					t2[index] = coroIndex;
 					patternCorrespondances[index] = generalModel.getProblem().intVar("f_c_" + coroIndex, -1, pattern.getNbNodes()-1);  	// attention
 					index ++;					
 				}
-
 				coroIndex++;
 			}
 		}
-
 		buildNeighborGraph();
 	}
 
@@ -100,30 +98,27 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		generalModel.getModelPropertySet().getById("diameter").addExpression(new BinaryNumericalExpression("diameter", "<", 45));
+		generalModel.getModelPropertySet().getById("diameter").addExpression(new BinaryNumericalExpression("diameter", "<", 45));//TODO ???
 		System.out.println("Scope");
 		for (IntVar x : patternCorrespondances)
 			System.out.println(x.toString());
 		
 		for (int i = 0 ; i < pattern.getNbNodes() ; i++) {
 			
-			int label = pattern.getLabel(i);
+			PatternLabel label = pattern.getLabel(i);
 
 			IntVar count;
-			if (label == 2)
+			if (label == PatternLabel.POSITIVE)
 				count = generalModel.getProblem().intVar("count_" + i, 1, 1);
 			else count = generalModel.getProblem().intVar("count_" + i, 0, 1);
 			
 			generalModel.getProblem().count(i, patternCorrespondances, count).post();
 					
-			if (label == 1)
+			if (label == PatternLabel.NEUTRAL)
 				unknownHexagons.add(i);
-
-			else if (label == 2) {
+			else if (label == PatternLabel.POSITIVE)
 				presentHexagons.add(i);
-			}
-
-			else if (label == 3)
+			else if (label == PatternLabel.NEGATIVE)
 				absentHexagons.add(i);
 		}
 
@@ -138,7 +133,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 			 * Si un hexagone du coronénoïde est lié à un hexagon présent du pattern, alors il doit être présent dans la solution
 			 */	
 				
-				if (presentHexagons.size() > 0) {					
+				if (!presentHexagons.isEmpty()) {
 					
 					varClause = new IntVar[pattern.getNbNodes()+2-presentHexagons.size()];
 					valClause = new IntIterableRangeSet[pattern.getNbNodes()+2-presentHexagons.size()];
@@ -166,7 +161,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 				 * Si un hexagone du coronénoïde est lié à un hexagone absent du pattern i, alors il ne doit pas être présent dans la solutions
 				 */
 
-				if (absentHexagons.size() > 0) {	
+				if (!absentHexagons.isEmpty()) {
 					varClause = new IntVar[pattern.getNbNodes()+2-absentHexagons.size()];
 					valClause = new IntIterableRangeSet[pattern.getNbNodes()+2-absentHexagons.size()];
 					
@@ -231,10 +226,10 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 				
 					tupleList.add(patternCorrespondances[T1[index]]);
 					
-					ArrayList<Integer> okColumns = new ArrayList<Integer>();
+					ArrayList<Integer> okColumns = new ArrayList<>();
 					okColumns.add(0);
 
-					ArrayList<Integer> nokColumns = new ArrayList<Integer>();
+					ArrayList<Integer> nokColumns = new ArrayList<>();
 
 					for (int i = 0; i < 6; i++) {
 
@@ -364,7 +359,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 
 		Tuples table = new Tuples(true);
 
-		ArrayList<Integer> okLines = new ArrayList<Integer>();
+		ArrayList<Integer> okLines = new ArrayList<>();
 
 		for (int i = 0; i < matrixTable.length; i++) {
 
@@ -375,7 +370,7 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 				int v = matrixTable[i][column];
 
 				if (v != -1) {
-					if (!(pattern.getLabel(v) == 1 || pattern.getLabel(v) == 3)) {
+					if (!(pattern.getLabel(v) == PatternLabel.NEUTRAL || pattern.getLabel(v) == PatternLabel.NEGATIVE)) {
 						ok = false;
 					}
 				}
@@ -557,9 +552,9 @@ public class SinglePattern2Constraint extends BenzAIConstraint {
 		GeneralModel generalModel = getGeneralModel();
 
 		neighborGraph = new int [generalModel.getDiameter() * generalModel.getDiameter()][6];
-		
-		for (int i = 0 ; i < neighborGraph.length ; i++) {
-			Arrays.fill(neighborGraph[i], -1);
+
+		for (int[] ints : neighborGraph) {
+			Arrays.fill(ints, -1);
 		}
 
 		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {

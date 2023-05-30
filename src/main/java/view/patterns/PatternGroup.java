@@ -1,6 +1,7 @@
 package view.patterns;
 
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import javafx.scene.Group;
 import molecules.Node;
 import utils.Couple;
@@ -27,7 +28,7 @@ public class PatternGroup extends Group {
 	private ArrayList<PatternHexagon> border;
 	private ArrayList<PatternHexagon> extendedBorder;
 
-	public PatternGroup(PatternsEditionPane parent, int nbCrowns, int index) {
+	PatternGroup(PatternsEditionPane parent, int nbCrowns, int index) {
 		this.parent = parent;
 		this.nbCrowns = nbCrowns;
 		this.index = index;
@@ -93,7 +94,6 @@ public class PatternGroup extends Group {
 
 						if (i > 1 && i < hexagons.length - 2)
 							extendedBorder.add(hexagons[i][j + 1]);
-
 						break;
 					}
 				}
@@ -106,7 +106,6 @@ public class PatternGroup extends Group {
 
 						if (i > 1 && i < hexagons.length - 2)
 							extendedBorder.add(hexagons[i][j - 1]);
-
 						break;
 					}
 				}
@@ -192,18 +191,16 @@ public class PatternGroup extends Group {
 	}
 
 	private void drawHexagons(PatternHexagon[][] hexagons) {
-		for (int i = 0; i < hexagons.length; i++) {
+		for (PatternHexagon[] hexagon : hexagons) {
 			for (int j = 0; j < hexagons.length; j++) {
-				if (hexagons[i][j] != null)
-					this.getChildren().add(hexagons[i][j]);
+				if (hexagon[j] != null)
+					this.getChildren().add(hexagon[j]);
 			}
 		}
 	}
 
 	private void initialize() {
-
 		diameter = 2 * nbCrowns - 1;
-
 		buildDisplayedHexagons();
 		ArrayList<Couple<Double, Double>> centers = getFirstCenters();
 		buildHexagons(centers);
@@ -211,7 +208,7 @@ public class PatternGroup extends Group {
 		initializeBorder();
 	}
 
-	public void setAllLabels(int label) {
+	public void setAllLabels(PatternLabel label) {
 		for (int x = 0; x < diameter; x++) {
 			for (int y = 0; y < diameter; y++) {
 				if (hexagons[x][y] != null) {
@@ -246,52 +243,102 @@ public class PatternGroup extends Group {
 	}
 
 	public Pattern exportPattern() {
-
-		/*
-		 * Computing the number of hexagons
-		 */
-
-		int nbHexagons = 0;
-
-		for (int i = 0; i < diameter; i++) {
-			for (int j = 0; j < diameter; j++) {
-				if (hexagons[i][j] != null) {
-
-					if (hexagons[i][j].getLabel() != 0)
-						nbHexagons++;
-				}
-
-			}
-		}
-
-		/*
-		 * Connecting hexagons of each coords to an index
-		 */
+		int nbHexagons = computeHexagonNumber();
 
 		ArrayList<Couple<Integer, Integer>> coordsArray = new ArrayList<>();
 		int[][] hexagonCoordinates = new int[diameter][diameter];
-		int index = 0;
+		computeHexagonsCoordsIndex(coordsArray, hexagonCoordinates);
 
-		for (int i = 0; i < diameter; i++)
-			for (int j = 0; j < diameter; j++)
-				hexagonCoordinates[i][j] = -1;
+		int[][] adjacencyMatrix = computeAdjacencyMatrix(nbHexagons, hexagonCoordinates);
 
-		for (int y = 0; y < diameter; y++) {
-			for (int x = 0; x < diameter; x++) {
-				if (hexagons[y][x] != null) {
-					if (hexagons[y][x].getLabel() != 0) {
-						hexagonCoordinates[x][y] = index;
-						coordsArray.add(new Couple<Integer, Integer>(x, y));
-						index++;
+		RelativeMatrix relativeMatrix = new RelativeMatrix(8 * nbHexagons + 1, 16 * nbHexagons + 1, 4 * nbHexagons,
+				8 * nbHexagons);
+
+		Node[] nodes = computeNodeArrayAndRelativeMatrix(nbHexagons, coordsArray, relativeMatrix);
+
+		int[][] dualGraph = computeDualGraph(nbHexagons, hexagonCoordinates);
+
+		PatternLabel[] labels = computeLabels(nbHexagons, coordsArray);
+
+		Node centerNode = computeCenter(hexagonCoordinates, nodes);
+
+		return new Pattern(adjacencyMatrix, labels, nodes, centerNode, dualGraph, degree);
+	}
+
+	private Node computeCenter(int[][] hexagonCoordinates, Node[] nodes) {
+		Node centerNode;
+
+		if (center != null)
+			centerNode = nodes[hexagonCoordinates[center.getCoords().getX()][center.getCoords().getY()]];
+		else
+			centerNode = nodes[0];
+		return centerNode;
+	}
+
+	private PatternLabel[] computeLabels(int nbHexagons, ArrayList<Couple<Integer, Integer>> coordsArray) {
+		PatternLabel[] labels = new PatternLabel[nbHexagons];
+
+		for (int i = 0; i < nbHexagons; i++) {
+
+			Couple<Integer, Integer> coords = coordsArray.get(i);
+			//labels[i] = hexagons[coords.getY()][coords.getX()].getLabel();
+			PatternLabel label = hexagons[coords.getY()][coords.getX()].getLabel();
+
+//			if (label == 1)
+//				label = 2;
+//			else if (label == 2)
+//				label = 1;
+//
+			labels[i] = label;
+		}
+		return labels;
+	}
+
+	private int[][] computeDualGraph(int nbHexagons, int[][] hexagonCoordinates) {
+		int[][] dualGraph = new int[nbHexagons][6];
+
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+
+				if (hexagonCoordinates[i][j] != -1) {
+
+					int u = hexagonCoordinates[i][j];
+
+					for (int k = 0; k < 6; k++)
+						dualGraph[u][k] = -1;
+					for(HexNeighborhood neighbor : HexNeighborhood.values()){
+						int i2 = i + neighbor.dx();
+						int j2 = j + neighbor.dy();
+						if(i2 >= 0 && i2 <= diameter - 1 && j2 >= 0 && j2 <= diameter - 1)
+							dualGraph[u][neighbor.getIndex()] = hexagonCoordinates[i2][j2];
 					}
 				}
 			}
 		}
+		return dualGraph;
+	}
 
-		/*
-		 * Creating the adjacency matrix
-		 */
+	private static Node[] computeNodeArrayAndRelativeMatrix(int nbHexagons, ArrayList<Couple<Integer, Integer>> coordsArray, RelativeMatrix relativeMatrix) {
+		int xShift = -coordsArray.get(0).getX();
+		int yShift = -coordsArray.get(0).getY();
 
+		Node[] nodes = new Node[nbHexagons];
+
+		int indexNode = 0;
+		for (Couple<Integer, Integer> couple : coordsArray) {
+
+			int x = couple.getX() + xShift;
+			int y = couple.getY() + yShift;
+
+			nodes[indexNode] = new Node(x, y, indexNode);
+			relativeMatrix.set(x, y, indexNode);
+
+			indexNode++;
+		}
+		return nodes;
+	}
+
+	private int[][] computeAdjacencyMatrix(int nbHexagons, int[][] hexagonCoordinates) {
 		int[][] matrix = new int[nbHexagons][nbHexagons];
 
 		for (int x = 0; x < diameter; x++) {
@@ -347,7 +394,6 @@ public class PatternGroup extends Group {
 					}
 
 					if (x > 0) {
-
 						int v = hexagonCoordinates[x - 1][y];
 						if (v != -1) {
 							matrix[u][v] = 1;
@@ -356,108 +402,41 @@ public class PatternGroup extends Group {
 					}
 				}
 			}
-
 		}
+		return matrix;
+	}
 
-		/*
-		 * Creating nodes array and relativeMatrix
-		 */
+	private void computeHexagonsCoordsIndex(ArrayList<Couple<Integer, Integer>> coordsArray, int[][] hexagonCoordinates) {
+		int index = 0;
 
-		RelativeMatrix relativeMatrix = new RelativeMatrix(8 * nbHexagons + 1, 16 * nbHexagons + 1, 4 * nbHexagons,
-				8 * nbHexagons);
+		for (int i = 0; i < diameter; i++)
+			for (int j = 0; j < diameter; j++)
+				hexagonCoordinates[i][j] = -1;
 
-		int xShift = -coordsArray.get(0).getX();
-		int yShift = -coordsArray.get(0).getY();
-
-		Node[] nodes = new Node[nbHexagons];
-
-		int indexNode = 0;
-		for (Couple<Integer, Integer> couple : coordsArray) {
-
-			int x = couple.getX() + xShift;
-			int y = couple.getY() + yShift;
-
-			nodes[indexNode] = new Node(x, y, indexNode);
-			relativeMatrix.set(x, y, indexNode);
-
-			indexNode++;
-		}
-
-		/*
-		 * Creating dual graph
-		 */
-
-		int[][] dualGraph = new int[nbHexagons][6];
-
-		for (int i = 0; i < diameter; i++) {
-			for (int j = 0; j < diameter; j++) {
-
-				if (hexagonCoordinates[i][j] != -1) {
-
-					int u = hexagonCoordinates[i][j];
-
-					for (int k = 0; k < 6; k++)
-						dualGraph[u][k] = -1;
-					for(HexNeighborhood neighbor : HexNeighborhood.values()){
-						int i2 = i + neighbor.dx();
-						int j2 = j + neighbor.dy();
-						if(i2 >= 0 && i2 <= diameter - 1 && j2 >= 0 && j2 <= diameter - 1)
-							dualGraph[u][neighbor.getIndex()] = hexagonCoordinates[i2][j2];
+		for (int y = 0; y < diameter; y++) {
+			for (int x = 0; x < diameter; x++) {
+				if (hexagons[y][x] != null) {
+					if (hexagons[y][x].getLabel() != PatternLabel.VOID) {
+						hexagonCoordinates[x][y] = index;
+						coordsArray.add(new Couple<Integer, Integer>(x, y));
+						index++;
 					}
-//					if (j > 0)
-//						dualGraph[u][0] = hexagonCoordinates[i][j - 1];
-//
-//					if (i < diameter - 1)
-//						dualGraph[u][1] = hexagonCoordinates[i + 1][j];
-//
-//					if (i < diameter - 1 && j < diameter - 1)
-//						dualGraph[u][2] = hexagonCoordinates[i + 1][j + 1];
-//
-//					if (j < diameter - 1)
-//						dualGraph[u][3] = hexagonCoordinates[i][j + 1];
-//
-//					if (i > 0)
-//						dualGraph[u][4] = hexagonCoordinates[i - 1][j];
-//
-//					if (i > 0 && j > 0)
-//						dualGraph[u][5] = hexagonCoordinates[i - 1][j - 1];
 				}
 			}
 		}
+	}
 
-		/*
-		 * Creating labels
-		 */
-
-		int[] labels = new int[nbHexagons];
-
-		for (int i = 0; i < nbHexagons; i++) {
-
-			Couple<Integer, Integer> coords = coordsArray.get(i);
-			//labels[i] = hexagons[coords.getY()][coords.getX()].getLabel();
-			int label = hexagons[coords.getY()][coords.getX()].getLabel();
-			
-			if (label == 1)
-				label = 2;
-			else if (label == 2)
-				label = 1;
-			
-			labels[i] = label;
-		
+	private int computeHexagonNumber() {
+		int nbHexagons = 0;
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+				if (hexagons[i][j] != null) {
+					if (hexagons[i][j].getLabel() != PatternLabel.VOID)
+						nbHexagons++;
+				}
+			}
 		}
-
-		/*
-		 * Creating center
-		 */
-
-		Node centerNode;
-
-		if (center != null)
-			centerNode = nodes[hexagonCoordinates[center.getCoords().getX()][center.getCoords().getY()]];
-		else
-			centerNode = nodes[0];
-
-		return new Pattern(matrix, labels, nodes, centerNode, dualGraph, degree);
+		return nbHexagons;
 	}
 
 	public void importPattern(Pattern pattern) {
@@ -469,7 +448,7 @@ public class PatternGroup extends Group {
 			int x = node.getY();
 			int y = node.getX();
 
-			int label = pattern.getLabel(i);
+			PatternLabel label = pattern.getLabel(i);
 
 			hexagons[x][y].setLabel(label);
 		}
@@ -484,7 +463,7 @@ public class PatternGroup extends Group {
 		for (int y = 0; y < diameter; y++) {
 			for (int x = 0; x < diameter; x++) {
 				if (hexagons[y][x] != null) {
-					if (hexagons[y][x].getLabel() != 0) {
+					if (hexagons[y][x].getLabel() != PatternLabel.VOID) {
 						hexagonsList.add(hexagons[y][x]);
 					}
 				}
@@ -511,18 +490,18 @@ public class PatternGroup extends Group {
 
 			if (x > 0) {
 				if (hexagons[x - 1][y] != null)
-					if (hexagons[x - 1][y].getLabel() != 0)
+					if (hexagons[x - 1][y].getLabel() != PatternLabel.VOID)
 						pos1 = 1;
 			}
 
 			if (y < diameter - 1) {
 				if (hexagons[x][y + 1] != null)
-					if (hexagons[x][y + 1].getLabel() != 0)
+					if (hexagons[x][y + 1].getLabel() != PatternLabel.VOID)
 						pos2 = 1;
 			}
 
 			if (x < diameter - 1 && y < diameter - 1)
-				if (hexagons[x + 1][y + 1].getLabel() != 0)
+				if (hexagons[x + 1][y + 1].getLabel() != PatternLabel.VOID)
 					pos3 = 1;
 
 			if (pos1 == 0 && pos2 == 0 && pos3 == 0) {
@@ -543,7 +522,7 @@ public class PatternGroup extends Group {
 				toCheck[i] = new Couple<>(coordsPos6, coordsPos2);
 
 			else if (pos1 == 1 && pos2 == 0 && pos3 == 1)
-				hexagons[coordsPos2.getX()][coordsPos2.getY()].setLabel(1);
+				hexagons[coordsPos2.getX()][coordsPos2.getY()].setLabel(PatternLabel.NEUTRAL);
 
 			else if (pos1 == 1 && pos2 == 1 && pos3 == 0) {
 				// DO_NOTHING
@@ -554,9 +533,8 @@ public class PatternGroup extends Group {
 			}
 		}
 
-		for (int i = 0; i < toCheck.length; i++) {
+		for (Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> check : toCheck) {
 
-			Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> check = toCheck[i];
 			if (check != null) {
 
 				int x1 = check.getX().getX();
@@ -566,37 +544,37 @@ public class PatternGroup extends Group {
 
 				if (x1 > 0) { // HIGH-RIGHT (1)
 					if (hexagons[x1 - 1][y1] != null)
-						if (hexagons[x1 - 1][y1].getLabel() != 0)
+						if (hexagons[x1 - 1][y1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (y1 < diameter - 1) { // RIGHT (2)
 					if (hexagons[x1][y1 + 1] != null)
-						if (hexagons[x1][y1 + 1].getLabel() != 0)
+						if (hexagons[x1][y1 + 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (x1 < diameter - 1 && y1 < diameter - 1) { // DOWN_RIGHT (3)
 					if (hexagons[x1 + 1][y1 + 1] != null)
-						if (hexagons[x1 + 1][y1 + 1].getLabel() != 0)
+						if (hexagons[x1 + 1][y1 + 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (x1 < diameter - 1) { // DOWN_LEFT (4)
 					if (hexagons[x1 + 1][y1] != null)
-						if (hexagons[x1 + 1][y1].getLabel() != 0)
+						if (hexagons[x1 + 1][y1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (y1 > 0) { // LEFT (5)
 					if (hexagons[y1 - 1][x1] != null)
-						if (hexagons[y1 - 1][x1].getLabel() != 0)
+						if (hexagons[y1 - 1][x1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (x1 > 0 && y1 > 0) { // HIGH-LEFT (6)
 					if (hexagons[x1 - 1][y1 - 1] != null)
-						if (hexagons[x1 - 1][y1 - 1].getLabel() != 0)
+						if (hexagons[x1 - 1][y1 - 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
@@ -607,45 +585,45 @@ public class PatternGroup extends Group {
 
 				if (x2 > 0) { // HIGH-RIGHT (1)
 					if (hexagons[x2 - 1][y2] != null)
-						if (hexagons[x2 - 1][y2].getLabel() != 0)
+						if (hexagons[x2 - 1][y2].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (y2 < diameter - 1) { // RIGHT (2)
 					if (hexagons[x2][y2 + 1] != null)
-						if (hexagons[x2][y2 + 1].getLabel() != 0)
+						if (hexagons[x2][y2 + 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (x2 < diameter - 1 && y2 < diameter - 1) { // DOWN_RIGHT (3)
 					if (hexagons[x2 + 1][y2 + 1] != null)
-						if (hexagons[x2 + 1][y2 + 1].getLabel() != 0)
+						if (hexagons[x2 + 1][y2 + 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (x2 < diameter - 1) { // DOWN_LEFT (4)
 					if (hexagons[x2 + 1][y2] != null)
-						if (hexagons[x2 + 1][y2].getLabel() != 0)
+						if (hexagons[x2 + 1][y2].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (y2 > 0) { // LEFT (5)
 					if (hexagons[y2 - 1][x2] != null)
-						if (hexagons[y2 - 1][x2].getLabel() != 0)
+						if (hexagons[y2 - 1][x2].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (x2 > 0 && y2 > 0) { // HIGH-LEFT (6)
 					if (hexagons[x2 - 1][y2 - 1] != null)
-						if (hexagons[x2 - 1][y2 - 1].getLabel() != 0)
+						if (hexagons[x2 - 1][y2 - 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
-				if (nbNeighbors1 >= nbNeighbors2 && hexagons[x1][y1].getLabel() == 0)
-					hexagons[x1][y1].setLabel(1);
+				if (nbNeighbors1 >= nbNeighbors2 && hexagons[x1][y1].getLabel() == PatternLabel.VOID)
+					hexagons[x1][y1].setLabel(PatternLabel.NEUTRAL);
 
-				else if (nbNeighbors1 < nbNeighbors2 && hexagons[x2][y2].getLabel() == 0)
-					hexagons[x2][y2].setLabel(1);
+				else if (nbNeighbors1 < nbNeighbors2 && hexagons[x2][y2].getLabel() == PatternLabel.VOID)
+					hexagons[x2][y2].setLabel(PatternLabel.NEUTRAL);
 			}
 		}
 	}

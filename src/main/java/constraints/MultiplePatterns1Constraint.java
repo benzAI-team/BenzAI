@@ -1,28 +1,24 @@
 package constraints;
 
-import java.util.ArrayList;
-
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
-import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
-import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
-import org.chocosolver.solver.search.strategy.selectors.variables.ConflictHistorySearch;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDeg;
-import org.chocosolver.solver.search.strategy.selectors.variables.DomOverWDegRef;
-import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
-import org.chocosolver.solver.search.strategy.selectors.variables.VariableSelector;
-import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
-import org.chocosolver.solver.variables.BoolVar;
-import org.chocosolver.solver.variables.IntVar;
-import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
-
 import generator.GeneralModel;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import generator.patterns.PatternOccurences;
 import generator.patterns.PatternsInterraction;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
+import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
+import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
+import org.chocosolver.solver.search.strategy.selectors.variables.*;
+import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
+import org.chocosolver.solver.variables.BoolVar;
+import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 import utils.Utils;
+
+import java.util.ArrayList;
 
 public class MultiplePatterns1Constraint extends BenzAIConstraint {
 
@@ -83,17 +79,14 @@ public class MultiplePatterns1Constraint extends BenzAIConstraint {
 			ArrayList<Integer> unknownHexagons = new ArrayList<>();
 
 			for (int j = 0; j < pattern.getNbNodes(); j++) {
+				PatternLabel label = pattern.getLabel(i);
 
-				int label = pattern.getLabel(j);
-
-				if (label == 1)
-					unknownHexagons.add(j);
-
-				else if (label == 2)
-					presentHexagons.add(j);
-
-				else if (label == 3)
-					absentHexagons.add(j);
+				if (label == PatternLabel.NEUTRAL)
+					unknownHexagons.add(i);
+				else if (label == PatternLabel.POSITIVE)
+					presentHexagons.add(i);
+				else if (label == PatternLabel.NEGATIVE)
+					absentHexagons.add(i);
 			}
 
 			allPresentHexagons.add(presentHexagons);

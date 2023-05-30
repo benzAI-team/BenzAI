@@ -1,4 +1,4 @@
-package view.filtering.patterns;
+package view.patterns;
 
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;

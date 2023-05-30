@@ -1,6 +1,7 @@
 package view.draw;
 
 import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
 import javafx.scene.Group;
 import molecules.Molecule;
 import molecules.Node;
@@ -239,7 +240,7 @@ public class MoleculeGroup extends Group {
 		drawHexagons(hexagons);
 	}
 
-	public void setAllLabels(int label) {
+	public void setAllLabels(PatternLabel label) {
 		for (int x = 0; x < diameter; x++) {
 			for (int y = 0; y < diameter; y++) {
 				if (hexagons[x][y] != null) {
@@ -336,18 +337,18 @@ public class MoleculeGroup extends Group {
 			for (int j = 0; j < diameter; j++) {
 
 				HexagonDraw hexagon = hexagons[i][j];
-				if (hexagon != null && hexagon.getLabel() == 0) {
+				if (hexagon != null && hexagon.getLabel() == PatternLabel.VOID) {
 					ArrayList<HexagonDraw> neighbors = getNeighbors(hexagon.getCoords());
 					
 					int nbNeighbors = 0;
 					for (HexagonDraw neighbor : neighbors) {
-						if (neighbor.getLabel() == 1)
+						if (neighbor.getLabel() == PatternLabel.NEUTRAL)
 							nbNeighbors ++;
 							
 					}
 					
 					if (nbNeighbors == 6)
-						hexagon.setLabel(1);
+						hexagon.setLabel(PatternLabel.NEUTRAL);
 					
 					/*
 					boolean surrounded = true;
@@ -383,7 +384,7 @@ public class MoleculeGroup extends Group {
 			for (int j = 0; j < diameter; j++) {
 				if (hexagons[i][j] != null) {
 
-					if (hexagons[i][j].getLabel() != 0)
+					if (hexagons[i][j].getLabel() != PatternLabel.VOID)
 						nbHexagons++;
 				}
 
@@ -405,7 +406,7 @@ public class MoleculeGroup extends Group {
 		for (int y = 0; y < diameter; y++) {
 			for (int x = 0; x < diameter; x++) {
 				if (hexagons[y][x] != null) {
-					if (hexagons[y][x].getLabel() != 0) {
+					if (hexagons[y][x].getLabel() != PatternLabel.VOID) {
 						hexagonCoordinates[x][y] = index;
 						coordsArray.add(new Couple<Integer, Integer>(x, y));
 						index++;
@@ -951,7 +952,7 @@ public class MoleculeGroup extends Group {
 			for (int j = 0; j < diameter; j++) {
 				if (hexagons[i][j] != null) {
 
-					if (hexagons[i][j].getLabel() != 0)
+					if (hexagons[i][j].getLabel() != PatternLabel.VOID)
 						nbHexagons++;
 				}
 
@@ -973,7 +974,7 @@ public class MoleculeGroup extends Group {
 		for (int y = 0; y < diameter; y++) {
 			for (int x = 0; x < diameter; x++) {
 				if (hexagons[y][x] != null) {
-					if (hexagons[y][x].getLabel() != 0) {
+					if (hexagons[y][x].getLabel() != PatternLabel.VOID) {
 						hexagonCoordinates[x][y] = index;
 						coordsArray.add(new Couple<Integer, Integer>(x, y));
 						index++;
@@ -1124,10 +1125,9 @@ public class MoleculeGroup extends Group {
 		 * Creating labels
 		 */
 
-		int[] labels = new int[nbHexagons];
+		PatternLabel[] labels = new PatternLabel[nbHexagons];
 
 		for (int i = 0; i < nbHexagons; i++) {
-
 			Couple<Integer, Integer> coords = coordsArray.get(i);
 			labels[i] = hexagons[coords.getY()][coords.getX()].getLabel();
 		}
@@ -1146,16 +1146,16 @@ public class MoleculeGroup extends Group {
 		return new Pattern(matrix, labels, nodes, centerNode, dualGraph, degree);
 	}
 
-	public void importFragment(Pattern fragment) {
+	public void importPattern(Pattern pattern) {
 
-		for (int i = 0; i < fragment.getNbNodes(); i++) {
+		for (int i = 0; i < pattern.getNbNodes(); i++) {
 
-			Node node = fragment.getNode(i);
+			Node node = pattern.getNode(i);
 
 			int x = node.getY();
 			int y = node.getX();
 
-			int label = fragment.getLabel(i);
+			PatternLabel label = pattern.getLabel(i);
 
 			hexagons[x][y].setLabel(label);
 		}
@@ -1170,7 +1170,7 @@ public class MoleculeGroup extends Group {
 		for (int y = 0; y < diameter; y++) {
 			for (int x = 0; x < diameter; x++) {
 				if (hexagons[y][x] != null) {
-					if (hexagons[y][x].getLabel() != 0) {
+					if (hexagons[y][x].getLabel() != PatternLabel.VOID) {
 						hexagonsList.add(hexagons[y][x]);
 					}
 				}
@@ -1197,18 +1197,18 @@ public class MoleculeGroup extends Group {
 
 			if (x > 0) {
 				if (hexagons[x - 1][y] != null)
-					if (hexagons[x - 1][y].getLabel() != 0)
+					if (hexagons[x - 1][y].getLabel() != PatternLabel.VOID)
 						pos1 = 1;
 			}
 
 			if (y < diameter - 1) {
 				if (hexagons[x][y + 1] != null)
-					if (hexagons[x][y + 1].getLabel() != 0)
+					if (hexagons[x][y + 1].getLabel() != PatternLabel.VOID)
 						pos2 = 1;
 			}
 
 			if (x < diameter - 1 && y < diameter - 1)
-				if (hexagons[x + 1][y + 1].getLabel() != 0)
+				if (hexagons[x + 1][y + 1].getLabel() != PatternLabel.VOID)
 					pos3 = 1;
 
 			if (pos1 == 0 && pos2 == 0 && pos3 == 0) {
@@ -1229,7 +1229,7 @@ public class MoleculeGroup extends Group {
 				toCheck[i] = new Couple<>(coordsPos6, coordsPos2);
 
 			else if (pos1 == 1 && pos2 == 0 && pos3 == 1)
-				hexagons[coordsPos2.getX()][coordsPos2.getY()].setLabel(1);
+				hexagons[coordsPos2.getX()][coordsPos2.getY()].setLabel(PatternLabel.NEUTRAL);
 
 			else if (pos1 == 1 && pos2 == 1 && pos3 == 0) {
 				// DO_NOTHING
@@ -1252,37 +1252,37 @@ public class MoleculeGroup extends Group {
 
 				if (x1 > 0) { // HIGH-RIGHT (1)
 					if (hexagons[x1 - 1][y1] != null)
-						if (hexagons[x1 - 1][y1].getLabel() != 0)
+						if (hexagons[x1 - 1][y1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (y1 < diameter - 1) { // RIGHT (2)
 					if (hexagons[x1][y1 + 1] != null)
-						if (hexagons[x1][y1 + 1].getLabel() != 0)
+						if (hexagons[x1][y1 + 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (x1 < diameter - 1 && y1 < diameter - 1) { // DOWN_RIGHT (3)
 					if (hexagons[x1 + 1][y1 + 1] != null)
-						if (hexagons[x1 + 1][y1 + 1].getLabel() != 0)
+						if (hexagons[x1 + 1][y1 + 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (x1 < diameter - 1) { // DOWN_LEFT (4)
 					if (hexagons[x1 + 1][y1] != null)
-						if (hexagons[x1 + 1][y1].getLabel() != 0)
+						if (hexagons[x1 + 1][y1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (y1 > 0) { // LEFT (5)
 					if (hexagons[y1 - 1][x1] != null)
-						if (hexagons[y1 - 1][x1].getLabel() != 0)
+						if (hexagons[y1 - 1][x1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
 				if (x1 > 0 && y1 > 0) { // HIGH-LEFT (6)
 					if (hexagons[x1 - 1][y1 - 1] != null)
-						if (hexagons[x1 - 1][y1 - 1].getLabel() != 0)
+						if (hexagons[x1 - 1][y1 - 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors1++;
 				}
 
@@ -1293,45 +1293,45 @@ public class MoleculeGroup extends Group {
 
 				if (x2 > 0) { // HIGH-RIGHT (1)
 					if (hexagons[x2 - 1][y2] != null)
-						if (hexagons[x2 - 1][y2].getLabel() != 0)
+						if (hexagons[x2 - 1][y2].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (y2 < diameter - 1) { // RIGHT (2)
 					if (hexagons[x2][y2 + 1] != null)
-						if (hexagons[x2][y2 + 1].getLabel() != 0)
+						if (hexagons[x2][y2 + 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (x2 < diameter - 1 && y2 < diameter - 1) { // DOWN_RIGHT (3)
 					if (hexagons[x2 + 1][y2 + 1] != null)
-						if (hexagons[x2 + 1][y2 + 1].getLabel() != 0)
+						if (hexagons[x2 + 1][y2 + 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (x2 < diameter - 1) { // DOWN_LEFT (4)
 					if (hexagons[x2 + 1][y2] != null)
-						if (hexagons[x2 + 1][y2].getLabel() != 0)
+						if (hexagons[x2 + 1][y2].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (y2 > 0) { // LEFT (5)
 					if (hexagons[y2 - 1][x2] != null)
-						if (hexagons[y2 - 1][x2].getLabel() != 0)
+						if (hexagons[y2 - 1][x2].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
 				if (x2 > 0 && y2 > 0) { // HIGH-LEFT (6)
 					if (hexagons[x2 - 1][y2 - 1] != null)
-						if (hexagons[x2 - 1][y2 - 1].getLabel() != 0)
+						if (hexagons[x2 - 1][y2 - 1].getLabel() != PatternLabel.VOID)
 							nbNeighbors2++;
 				}
 
-				if (nbNeighbors1 >= nbNeighbors2 && hexagons[x1][y1].getLabel() == 0)
-					hexagons[x1][y1].setLabel(1);
+				if (nbNeighbors1 >= nbNeighbors2 && hexagons[x1][y1].getLabel() == PatternLabel.VOID)
+					hexagons[x1][y1].setLabel(PatternLabel.NEUTRAL);
 
-				else if (nbNeighbors1 < nbNeighbors2 && hexagons[x2][y2].getLabel() == 0)
-					hexagons[x2][y2].setLabel(1);
+				else if (nbNeighbors1 < nbNeighbors2 && hexagons[x2][y2].getLabel() == PatternLabel.VOID)
+					hexagons[x2][y2].setLabel(PatternLabel.NEUTRAL);
 			}
 		}
 	}
@@ -1340,7 +1340,7 @@ public class MoleculeGroup extends Group {
 		int nbHexagons = 0;
 		for (int i = 0; i < hexagons.length; i++) {
 			for (int j = 0; j < hexagons.length; j++) {
-				if (hexagons[i][j].getLabel() == 1)
+				if (hexagons[i][j].getLabel() == PatternLabel.NEUTRAL)
 					nbHexagons++;
 			}
 		}

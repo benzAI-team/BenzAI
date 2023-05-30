@@ -8,21 +8,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Pattern {
-
-	/*
-	 * Label : 1 = neutral, 2 = positive, 3 = negative
-	 */
-
 	private final int nbNodes;
 	private final int order;
 	private final int[][] matrix;
-	private final int[] labels;
+
+	private final PatternLabel [] labels;
 	private final Node[] nodesRefs;
 	private final int[][] neighborGraph;
 	private final Node center;
 	private final PatternFileWriter patternFileWriter = new PatternFileWriter(this);
 
-	public Pattern(int[][] matrix, int[] labels, Node[] nodesRefs, Node center,
+	public Pattern(int[][] matrix, PatternLabel[] labels, Node[] nodesRefs, Node center,
 				   int[][] neighborGraph, int order) {
 		nbNodes = nodesRefs.length;
 		this.matrix = matrix;
@@ -33,31 +29,32 @@ public class Pattern {
 		this.order = order;
 	}
 
-	/***
-	 * export pattern in the given file
-	 */
 	public void export(File file) throws IOException {
 		patternFileWriter.export(file);
 	}
 
-	private Pattern buildPattern(int[][] neighborGraph, int[] labels, int order) {
+	private Pattern buildPattern(int[][] neighborGraph, PatternLabel[] labels, int order) {
 		int nbNodes = neighborGraph.length;
-		int[][] matrix = new int[nbNodes][nbNodes];
+		int[][] adjacencyMatrix = buildAdjacencyMatrix(neighborGraph, nbNodes);
+		Node[] nodesRefs = buildNodesRefs(neighborGraph, nbNodes);
+		return new Pattern(adjacencyMatrix, labels, nodesRefs, null, neighborGraph, order);
+	}
 
-		for (int i = 0; i < neighborGraph.length; i++) {
+	private static int[][] buildAdjacencyMatrix(int[][] neighborGraph, int nbNodes) {
+		int[][] adjacencyMatrix = new int[nbNodes][nbNodes];
+		for (int hexagonIndex1 = 0; hexagonIndex1 < neighborGraph.length; hexagonIndex1++) {
 			for (HexNeighborhood neighbor : HexNeighborhood.values()) {
-				int hexagon = neighborGraph[i][neighbor.getIndex()];
-				if (hexagon != -1) {
-					matrix[i][hexagon] = 1;
-					matrix[hexagon][i] = 1;
+				int hexagonIndex2 = neighborGraph[hexagonIndex1][neighbor.getIndex()];
+				if (hexagonIndex2 != -1) {
+					adjacencyMatrix[hexagonIndex1][hexagonIndex2] = 1;
+					adjacencyMatrix[hexagonIndex2][hexagonIndex1] = 1;
 				}
 			}
 		}
+		return adjacencyMatrix;
+	}
 
-		/*
-		 * Nodes refs
-		 */
-
+	private static Node[] buildNodesRefs(int[][] neighborGraph, int nbNodes) {
 		Node[] nodesRefs = new Node[nbNodes];
 		nodesRefs[0] = new Node(0, 0, 0);
 
@@ -74,13 +71,9 @@ public class Pattern {
 		}
 
 		while (!candidats.isEmpty()) {
-
 			int candidatIndex = candidats.get(0);
-
 			for (HexNeighborhood neighbor : HexNeighborhood.values()) {
-
 				int neighborIndex = neighborGraph[candidatIndex][neighbor.getIndex()];
-
 				if (neighborIndex != -1 && nodesRefs[neighborIndex] == null) {
 					int x = nodesRefs[candidatIndex].getX();
 					int y = nodesRefs[candidatIndex].getY();
@@ -90,8 +83,7 @@ public class Pattern {
 			}
 			candidats.remove(candidats.get(0));
 		}
-
-		return new Pattern(matrix, labels, nodesRefs, null, neighborGraph, order);
+		return nodesRefs;
 	}
 
 	public ArrayList<Pattern> computeRotations() {
@@ -203,7 +195,7 @@ public class Pattern {
 
 		int nbPositiveHexagons = 0;
 		for (int i = 0; i < pattern.getNbNodes(); i++)
-			if (pattern.getLabel(i) == 2)
+			if (pattern.getLabel(i) == PatternLabel.POSITIVE)
 				nbPositiveHexagons++;
 
 		int nbCrowns = (int) Math.floor((((double) nbPositiveHexagons + 1) / 2.0) + 1.0);
@@ -230,7 +222,7 @@ public class Pattern {
 					boolean embedded = true;
 
 					for (Node node : pattern.getNodesRefs()) {
-						if (pattern.getLabel(node.getIndex()) == 2) { // If node is a positive hexagon
+						if (pattern.getLabel(node.getIndex()) == PatternLabel.POSITIVE) { // If node is a positive hexagon
 
 							int x = node.getX() + xShift;
 							int y = node.getY() + yShift;
@@ -267,6 +259,94 @@ public class Pattern {
 
 		return nbCrowns;
 	}
+
+	/**
+	 * Computes the shortest path length between two nodes in the graph.
+	 *
+	 * @param a The starting node.
+	 * @param b The target node.
+	 * @return The length of the shortest path between nodes a and b.
+	 */
+	private int shortestPath(int a, int b) {
+		if(a == b) return 0;
+
+		boolean[] visited = new boolean[nbNodes];
+		visited[a] = true;
+
+		ArrayList<Integer> neighbors1 = new ArrayList<>();
+		ArrayList<Integer> neighbors2 = new ArrayList<>();
+
+		for (int neighbor : this.getNeighborGraph()[a]) {
+			if (neighbor >= 0) {
+				neighbors1.add(neighbor);
+				visited[neighbor] = true;
+			}
+		}
+
+		int len = 1;
+
+		while (!neighbors1.contains(b)) {
+			len ++;
+
+			for (int c : neighbors1) {
+				int[] cNeighborGraph = this.getNeighborGraph()[c];
+				for (int neighbor : cNeighborGraph) {
+					if (neighbor >= 0 && !visited[neighbor]){
+						if (neighbor == b) return len;
+						neighbors2.add(neighbor);
+						visited[neighbor] = true;
+					}
+				}
+			}
+
+			neighbors1 = new ArrayList<>(neighbors2);
+			neighbors2.clear();
+		}
+
+		return len;
+	}
+
+	private int gridDistance(int nodeIndex1, int nodeIndex2){
+		Node node1 = nodesRefs[nodeIndex1];
+		Node node2 = nodesRefs[nodeIndex2];
+		int x1 = node1.getX();
+		int y1 = node1.getY();
+		int x2 = node2.getX();
+		int y2 = node2.getY();
+		if(x1 <= x2 && y1 <= y2 || x1 >= x2 && y1 >= y2)
+			return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
+		else
+			return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+	}
+
+	public int computeGridDiameter(){
+		int diameter = -1;
+		for (int i = 0; i < nbNodes; i++)
+			for (int j = i + 1; j < nbNodes ; j++)
+				if(getLabel(i) == PatternLabel.POSITIVE && getLabel(j) == PatternLabel.POSITIVE)
+					diameter = Math.max(gridDistance(i ,j), diameter);
+		return diameter;
+	}
+	/**
+	 * Computes the diameter of the graph, which is the longest shortest path length
+	 * among all pairs of nodes in the graph.
+	 *
+	 * @return The diameter of the graph.
+	 */
+	public int getDiameter() {
+		int diameter = -1;
+
+		for (int i = 0; i < nbNodes; i++) {
+			for (int j = i + 1; j < nbNodes ; j++) {
+				int len = this.shortestPath(i, j);
+				System.out.printf("%2d <--> %2d : %2d | ", i, j, len);
+				diameter = Math.max(diameter, len);
+			}
+			System.out.println();
+		}
+		return diameter;
+	}
+
 
 	public Pattern mirror() {
 
@@ -338,9 +418,9 @@ public class Pattern {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Pattern p = PatternFileImport.importPattern(new File("expe_fragments/triangle.frg"));
-		int optNbCrowns = Pattern.getNbOptimizedCrowns(p);
-		System.out.println(optNbCrowns);
+		Pattern p = PatternFileImport.importPattern(new File("src/main/java/expe/patterns/test_pattern3"));
+		int diameter = p.getDiameter();
+		System.out.printf("diameter : %d%n", diameter);
 	}
 	
 	@Override
@@ -350,12 +430,16 @@ public class Pattern {
 			builder.append(node.toString());
 		return builder.toString();
 	}
-	/*
-	 * Getters and setters
-	 */
-
 	public int getNbNodes() {
 		return nbNodes;
+	}
+
+	public int getNbPositiveNodes() {
+		int nbPositiveHexagons = 0;
+		for (int i = 0; i < this.getNbNodes(); i++)
+			if (this.getLabel(i) == PatternLabel.POSITIVE)
+				nbPositiveHexagons++;
+		return nbPositiveHexagons;
 	}
 
 	public int getOrder() {
@@ -366,7 +450,7 @@ public class Pattern {
 		return matrix;
 	}
 
-	public int getLabel(int index) {
+	public PatternLabel getLabel(int index) {
 		return labels[index];
 	}
 
@@ -382,10 +466,16 @@ public class Pattern {
 		return neighborGraph;
 	}
 
+	/*
+	 * Methods
+	 */
+
 	public Node getCenter() {
 		return center;
 	}
-	public int[] getLabels() {
+
+	public PatternLabel[] getLabels() {
 		return labels;
 	}
+
 }

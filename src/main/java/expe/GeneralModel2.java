@@ -1,9 +1,8 @@
 package expe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import generator.patterns.Pattern;
+import generator.patterns.PatternLabel;
+import molecules.Node;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.extension.Tuples;
@@ -13,10 +12,11 @@ import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
-
-import generator.patterns.Pattern;
-import molecules.Node;
 import utils.Couple;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public enum GeneralModel2 {
 	;
@@ -239,7 +239,7 @@ public enum GeneralModel2 {
 		 * Label
 		 */
 
-		int[] labels = new int[nbNodes];
+		PatternLabel[] labels = new PatternLabel[nbNodes];
 
 		Arrays.fill(labels, 2);
 
