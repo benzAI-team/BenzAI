@@ -1,9 +1,19 @@
-import generator.GeneralModel;
-import generator.SolverResults;
+import constraints.SinglePattern2Constraint;
+import generator.*;
+import generator.patterns.Pattern;
+import generator.patterns.PatternFileImport;
+import generator.patterns.PatternGenerationType;
+import generator.patterns.PatternResolutionInformations;
+import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.BinaryNumericalExpression;
+import generator.properties.model.expression.PatternExpression;
 import generator.properties.model.expression.RectangleExpression;
 import generator.properties.model.expression.SubjectExpression;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public enum TestGeneration {
     ;
@@ -18,9 +28,14 @@ public enum TestGeneration {
                 + testCarbonsInf24()
                 + testHydrogensInf12()
                 + test6hexagonsCatacondensed()
-                + testDiameter3();
+                + testDiameter3()
+                + testPattern3();
         System.out.println(diagnostic);
     }
+
+    /***
+     * TESTS
+     */
 
     private static String testDiameter3() {
         ModelPropertySet modelPropertySet  = new ModelPropertySet();
@@ -29,10 +44,25 @@ public enum TestGeneration {
         return diagnostic("Generate molecules with diameter = 3", 102, found);
     }
 
+    private static String testPattern3() {
+        ModelPropertySet modelPropertySet  = new ModelPropertySet();
+        modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", 5));
+        Pattern pattern = null;
+        try {
+            pattern = PatternFileImport.importPattern(new File("./pattern3test"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ArrayList<Pattern> patterns = new ArrayList<>();
+        patterns.add(pattern);
+        PatternResolutionInformations patternInformations = new PatternResolutionInformations(PatternGenerationType.SINGLE_PATTERN_2, patterns);
+        ((ModelProperty)modelPropertySet.getById("pattern")).setConstraint(new SinglePattern2Constraint(patternInformations.getPatterns().get(0), false,
+                VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+        modelPropertySet.getById("pattern").addExpression(new PatternExpression("SINGLE_PATTERN", patternInformations));
+        int found = runGeneration(modelPropertySet);
+        return diagnostic("Generate molecules with triangle3 pattern and #hex=5", 10, found);
+    }
 
-    /***
-     * TESTS
-     */
     private static String test5hexagons() {
         ModelPropertySet modelPropertySet  = new ModelPropertySet();
         modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", 5));
