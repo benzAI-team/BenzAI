@@ -130,6 +130,7 @@ public class AmesFormatPane extends GridPane {
         for (LogFileBox logFileBox : logFileBoxes) {
 
             builder.append("\t<specie uid=\"" + uid + "\">\n");
+            uid ++;
 
             File file = logFileBox.getFile();
             Geometry geometry = retrieveGeometry(file);
