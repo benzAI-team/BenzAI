@@ -28,26 +28,6 @@ public class PatternFileWriter {
         writer.close();
     }
 
-    private void writeCenter(BufferedWriter writer) throws IOException {
-        writer.write("CENTER\n");
-        if (pattern.getCenter() != null)
-            writer.write(pattern.getCenter().getIndex() + "\n");
-        else
-            writer.write("0\n");
-    }
-
-    private void writeNodes(BufferedWriter writer) throws IOException {
-        writer.write("NODES\n");
-        for (Node node : pattern.getNodesRefs())
-            writer.write(node.getX() + " " + node.getY() + "\n");
-    }
-
-    private void writeLabels(BufferedWriter writer) throws IOException {
-        writer.write("LABELS\n");
-        for (PatternLabel label : pattern.getLabels()) writer.write(label.name() +  " ");
-        writer.write("\n");
-    }
-
     private void writeDegree(BufferedWriter writer) throws IOException {
         writer.write("DEGREE\n");
         writer.write(pattern.getOrder() + "\n");
@@ -61,4 +41,29 @@ public class PatternFileWriter {
             writer.write("\n");
         }
     }
+
+    private void writeLabels(BufferedWriter writer) throws IOException {
+        writer.write("LABELS\n");
+        for (PatternLabel label : pattern.getLabels()) writer.write(label.name() +  " ");
+        writer.write("\n");
+    }
+
+    private void writeNodes(BufferedWriter writer) throws IOException {
+        writer.write("NODES\n");
+        for (Node node : pattern.getNodesRefs())
+            writer.write(node.getX() + " " + node.getY() + "\n");
+    }
+
+    private void writeCenter(BufferedWriter writer) throws IOException {
+        writer.write("CENTER\n");
+        if (pattern.getCenter() != null)
+            writer.write(pattern.getCenter().getIndex() + "\n");
+        else
+            writer.write("0\n");
+    }
+
+
+
+
+
 }

@@ -7,10 +7,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Pattern constraint, drawing refactoring">
-      <change afterPath="$PROJECT_DIR$/pattern3test" afterDir="false" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Pattern generation test added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestGeneration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestGeneration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileImport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/patterns/PatternFileWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/RelativeMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/RelativeMatrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections_operations/CollectionsOperationsPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections_operations/CollectionsOperationsPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +103,7 @@
       <recent name="constraints" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.TestGeneration">
+  <component name="RunManager" selected="Application.BenzAI">
     <configuration name="BenzAI" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="application.Launcher" />
       <module name="BenzAI" />
@@ -332,7 +336,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685463591505</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Pattern generation test added">
+      <created>1685543892340</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1685543892340</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -401,7 +412,8 @@
     <MESSAGE value="PatternsEditionPane refactoring" />
     <MESSAGE value="SymmetriesConstraint refactoring" />
     <MESSAGE value="Pattern constraint, drawing refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pattern constraint, drawing refactoring" />
+    <MESSAGE value="Pattern generation test added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pattern generation test added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

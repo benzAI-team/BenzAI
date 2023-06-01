@@ -71,6 +71,5 @@ public class RelativeMatrix {
 			}
 		}
 		return maxValue;
-		
 	}
 }

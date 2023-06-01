@@ -1,26 +1,22 @@
 package view.collections_operations;
 
-import java.util.ArrayList;
-
 import application.BenzenoidApplication;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import molecules.Molecule;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidCollectionsManagerPane;
+
+import java.util.ArrayList;
 
 public class CollectionsOperationsPane extends GridPane {
 
@@ -34,11 +30,6 @@ public class CollectionsOperationsPane extends GridPane {
 	private TextField collectionName;
 
 	private HBox operationBox;
-	private HBox boxCollectionName;
-
-	private Label labelCollectionName;
-
-	private Button applyButton;
 
 	public CollectionsOperationsPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) {
 		this.application = application;
@@ -69,14 +60,14 @@ public class CollectionsOperationsPane extends GridPane {
 			collectionBox2.getItems().add(collectionPane.getName());
 		}
 
-		labelCollectionName = new Label("New collection's name: ");
+		Label labelCollectionName = new Label("New collection's name: ");
 		collectionName = new TextField();
 
 		operationBox = new HBox(5.0);
 		operationBox.getChildren().addAll(new Label("Collection #1: "), collectionBox1, new Label("Operation: "), operatorBox,
 				new Label("Collection #2: "), collectionBox2);
 
-		boxCollectionName = new HBox(5.0);
+		HBox boxCollectionName = new HBox(5.0);
 		boxCollectionName.getChildren().addAll(labelCollectionName, collectionName);
 
 		this.add(operationBox, 0, 1);
@@ -90,11 +81,9 @@ public class CollectionsOperationsPane extends GridPane {
 		closeButton.resize(30, 30);
 		closeButton.setStyle("-fx-background-color: transparent;");
 
-		closeButton.setOnAction(e -> {
-			application.switchMode(application.getPanes().getCollectionsPane());
-		});
+		closeButton.setOnAction(e -> application.switchMode(application.getPanes().getCollectionsPane()));
 
-		applyButton = new Button("Apply");
+		Button applyButton = new Button("Apply");
 
 		applyButton.setOnAction(e -> {
 
@@ -128,10 +117,9 @@ public class CollectionsOperationsPane extends GridPane {
 
 				String name;
 
-				if (!"".equals(collectionName.getText()))
-					name = collectionName.getText();
-				else
+				if (collectionName.getText().isEmpty())
 					name = pane1.getName() + "_" + operatorBox.getValue() + "_" + pane2.getName();
+				else name = collectionName.getText();
 
 				BenzenoidCollectionPane newCollectionPane = new BenzenoidCollectionPane(managerPane,
 						managerPane.getNbCollectionPanes(), name);
@@ -155,7 +143,7 @@ public class CollectionsOperationsPane extends GridPane {
 		});
 
     HBox boxButton = new HBox(5.0);
-		boxButton.getChildren().addAll(closeButton,applyButton);
+		boxButton.getChildren().addAll(closeButton, applyButton);
 
 		this.add(boxButton, 0, 3);
 	}

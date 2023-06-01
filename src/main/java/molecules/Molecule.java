@@ -360,7 +360,7 @@ public class Molecule implements Comparable<Molecule> {
 		return hexagons;
 	}
 
-	public void initHexagons() {
+	private void initHexagons() {
 
 		hexagonsVertices = new ArrayList<>();
 
@@ -476,7 +476,7 @@ public class Molecule implements Comparable<Molecule> {
 			int[] checkedHexagons = new int[nbHexagons];
 			checkedHexagons[0] = 1;
 
-			while (candidats.size() > 0) {
+			while (!candidats.isEmpty()) {
 				int candidat = candidats.get(0);
 				for (HexNeighborhood neighbor : HexNeighborhood.values()) {
 					int neighborIndex = dualGraph[candidat][neighbor.getIndex()];
@@ -553,7 +553,7 @@ public class Molecule implements Comparable<Molecule> {
 	}
 
 	public void exportToCML(File file) {
-
+		//TODO
 	}
 
 	public void exportToGraphFile(File file) throws IOException {
@@ -681,7 +681,7 @@ public class Molecule implements Comparable<Molecule> {
 
 		hexagonsCoords[0] = new Couple(0, 0);
 
-		while (candidats.size() > 0) {
+		while (!candidats.isEmpty()) {
 
 			int candidat = candidats.get(0);
 
@@ -713,7 +713,7 @@ public class Molecule implements Comparable<Molecule> {
 		int[] N = new int[4];
 		int[] checkedNodes = new int[molecule.getNbNodes()];
 
-		ArrayList<Integer> V = new ArrayList<Integer>();
+		ArrayList<Integer> V = new ArrayList<>();
 
 		for (int u = 0; u < molecule.getNbNodes(); u++) {
 			int degree = molecule.degree(u);
@@ -726,7 +726,7 @@ public class Molecule implements Comparable<Molecule> {
 				checkedNodes[u] = -1;
 		}
 
-		ArrayList<Integer> candidats = new ArrayList<Integer>();
+		ArrayList<Integer> candidats = new ArrayList<>();
 
 		while (true) {
 
@@ -746,7 +746,7 @@ public class Molecule implements Comparable<Molecule> {
 
 			int nbNeighbors = 1;
 
-			while (candidats.size() > 0) {
+			while (!candidats.isEmpty()) {
 
 				int candidat = candidats.get(0);
 
@@ -1012,7 +1012,7 @@ public class Molecule implements Comparable<Molecule> {
 		return touchTop && touchLeft;
 	}
 
-	public boolean areNeighbors(int hexagon1, int hexagon2) {
+	private boolean areNeighbors(int hexagon1, int hexagon2) {
 
 		for (int i = 0; i < 6; i++) {
 			if (dualGraph[hexagon1][i] == hexagon2)
@@ -1026,7 +1026,6 @@ public class Molecule implements Comparable<Molecule> {
 
 		@SuppressWarnings("unchecked")
 		Couple<Integer, Integer>[] shiftCoords = new Couple[nbHexagons];
-		int nbNodes = nbHexagons;
 
 		for (int i = 0; i < nbHexagons; i++)
 			shiftCoords[i] = new Couple<>(hexagonsCoords[i].getX() + xShift, hexagonsCoords[i].getY() + yShift);
@@ -1113,14 +1112,14 @@ public class Molecule implements Comparable<Molecule> {
 
 		PatternLabel[] labels = new PatternLabel[nbHexagons];
 
-		for (int i = 0; i < nbNodes; i++)
+		for (int i = 0; i < nbHexagons; i++)
 			labels[i] = PatternLabel.POSITIVE;
 
 		return new Pattern(matrix, labels, nodes, null, neighbors, 0);
 	}
 
-	public ArrayList<String> translations(Pattern pattern, int diameter, int[][] coordsMatrix,
-			ArrayList<Integer> topBorder, ArrayList<Integer> leftBorder) {
+	private ArrayList<String> translations(Pattern pattern, int diameter, int[][] coordsMatrix,
+										   ArrayList<Integer> topBorder, ArrayList<Integer> leftBorder) {
 
 		ArrayList<String> names = new ArrayList<>();
 
@@ -1261,7 +1260,7 @@ public class Molecule implements Comparable<Molecule> {
 
 		// centersCoords[0] = new Couple<Double, Double>(40.0, 40.0);
 
-		while (candidates.size() > 0) {
+		while (!candidates.isEmpty()) {
 
 			int candidateIndex = candidates.get(0);
 
@@ -1302,7 +1301,7 @@ public class Molecule implements Comparable<Molecule> {
 		try {
 			List<Map> results = Post.post(url, json);
 
-			if (results.size() > 0) {
+			if (!results.isEmpty()) {
 				Map map = results.get(0);
 				ims2d1a = (String) map.get("picture");
 				return ims2d1a;
@@ -1335,7 +1334,7 @@ public class Molecule implements Comparable<Molecule> {
 		try {
 			List<Map> results = Post.post(url, json);
 
-			if (results.size() > 0) {
+			if (!results.isEmpty()) {
 				IRSpectraEntry content = IRSpectraEntry.buildQueryContent(results.get(0));
 				amesFormat = content.getAmesFormat();
 				nicsResult = content.buildResultLogFile();
@@ -1360,7 +1359,7 @@ public class Molecule implements Comparable<Molecule> {
 		try {
 			List<Map> results = Post.post(url, json);
 
-			if (results.size() > 0) {
+			if (!results.isEmpty()) {
 				return true;
 			}
 
@@ -1440,7 +1439,6 @@ public class Molecule implements Comparable<Molecule> {
 			if (this.getNames().contains(name))
 				return true;
 		}
-
 		return false;
 	}
 
@@ -1503,11 +1501,6 @@ public class Molecule implements Comparable<Molecule> {
 
 	/***
 	 *
-	 * @param description
-	 * @param nbCrowns
-	 * @param index
-	 * @param verticesSolution
-	 * @return
 	 */
 	public static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution) {
 		Molecule molecule = null;
@@ -1527,12 +1520,6 @@ public class Molecule implements Comparable<Molecule> {
 
 	/***
 	 *
-	 * @param description
-	 * @param nbCrowns
-	 * @param index
-	 * @param verticesSolution
-	 * @param graphCoordFilename
-	 * @return
 	 */
 	private static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution,
 										  String graphCoordFilename) {
@@ -1544,9 +1531,6 @@ public class Molecule implements Comparable<Molecule> {
 	}
 	/***
 	 *
-	 * @param description
-	 * @param index
-	 * @return
 	 */
 	private static String buildMoleculeDescription(String description, int index) {
 		String[] lines = description.split("\n");
@@ -1559,8 +1543,6 @@ public class Molecule implements Comparable<Molecule> {
 	}
 	/***
 	 *
-	 * @param graphFilename
-	 * @param graphCoordFilename
 	 */
 	private static void deleteTmpFiles(String graphFilename, String graphCoordFilename) {
 		File file = new File(graphFilename);
@@ -1571,8 +1553,6 @@ public class Molecule implements Comparable<Molecule> {
 
 	/***
 	 *
-	 * @param graphFilename
-	 * @param graphCoordFilename
 	 */
 	private static void convertGraphCoordFileInstance(String graphFilename, String graphCoordFilename) {
 		GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
@@ -1581,10 +1561,6 @@ public class Molecule implements Comparable<Molecule> {
 
 	/***
 	 *
-	 * @param nbCrowns
-	 * @param verticesSolution
-	 * @param graphFilename
-	 * @throws IOException
 	 */
 	private static void buildGraphFile(int nbCrowns, ArrayList<Integer> verticesSolution,
 									   String graphFilename) throws IOException {

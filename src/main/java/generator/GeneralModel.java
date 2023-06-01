@@ -56,6 +56,7 @@ public class GeneralModel {
     private final ArrayList<Integer> outterHexagonsIndexes = new ArrayList<>();
 
     private ArrayList<ArrayList<Integer>> neighborGraphOutterHexagons;
+    private int indexOutterHexagon;
 
     private Couple<Integer, Integer>[] coordsCorrespondance;
 
@@ -75,8 +76,6 @@ public class GeneralModel {
 
     boolean verbose = false;
 
-    private int indexOutterHexagon;
-
     /*
      * Constraint programming variables
      */
@@ -94,6 +93,9 @@ public class GeneralModel {
     private int[][] adjacencyMatrix;
     private int[][] adjacencyMatrixWithOutterHexagons;
 
+    /***
+     * Choco solver variables
+     */
     private UndirectedGraph GUB;
 
     private UndirectedGraphVar benzenoidGraphVar;
@@ -107,6 +109,7 @@ public class GeneralModel {
     //private BoolVar[] edges;
 
     private BoolVar[] nbHexagonsReifies;
+    //private IntVar graphDiameter;
 
     private final ArrayList<ArrayList<Integer>> nogoods = new ArrayList<>();
 
@@ -198,6 +201,7 @@ public class GeneralModel {
         buildNeighborIndices();
 
         nbVertices = chocoModel.intVar("nbVertices", 1, nbHexagonsCoronenoid);
+        //graphDiameter = chocoModel.intVar("diameter", 0, diameter);
 
         leftBorder = new ArrayList<>();
         topBorder = new ArrayList<>();
@@ -220,6 +224,10 @@ public class GeneralModel {
 
     private void initializeConstraints() {
         chocoModel.connected(benzenoidGraphVar).post();
+
+        //chocoModel.diameter(benzenoidGraphVar,graphDiameter).post();
+        //chocoModel.arithm(graphDiameter, "<", nbVertices).post();
+
         ConstraintBuilder.postFillNodesConnection(this);
         ConstraintBuilder.postNoHolesOfSize1Constraint(this);
         chocoModel.nbNodes(benzenoidGraphVar, nbVertices).post();
