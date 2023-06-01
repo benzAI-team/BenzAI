@@ -162,6 +162,7 @@ public class AmesFormatPane extends GridPane {
                 builder.append("\t\t\t\t<z>" + carbon.getZ() + "</z>\n");
                 builder.append("\t\t\t\t<type>" + 6 + "</type>\n");
                 builder.append("\t\t\t</atom>\n");
+                position ++;
             }
 
             for(Triplet<Double, Double, Double> hydrogen : geometry.getHydrogens()) {
@@ -172,6 +173,7 @@ public class AmesFormatPane extends GridPane {
                 builder.append("\t\t\t\t<z>" + hydrogen.getZ() + "</z>\n");
                 builder.append("\t\t\t\t<type>" + 1 + "</type>\n");
                 builder.append("\t\t\t</atom>\n");
+                position ++;
             }
 
             builder.append("\t\t<geometry>\n");

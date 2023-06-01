@@ -28,21 +28,20 @@ public class LogFileBox extends HBox {
 
     private void initialize() {
         fileLabel = new Label(file.getName());
-        deleteButton = new Button();
 
+        initializeDeleteButton();
+        this.getChildren().addAll(fileLabel, deleteButton);
+        setActions();
+    }
+
+    private void initializeDeleteButton() {
+        deleteButton = new Button();
         deleteButton.resize(25, 25);
         deleteButton.setStyle("-fx-background-color: transparent;");
-
-        Image imageAddButton;
-
-        imageAddButton = new Image("/resources/graphics/icon-delete.png");
-
+        Image imageAddButton = new Image("/resources/graphics/icon-delete.png");
         ImageView view = new ImageView(imageAddButton);
         deleteButton.setPadding(new Insets(0));
         deleteButton.setGraphic(view);
-
-        this.getChildren().addAll(fileLabel, deleteButton);
-        setActions();
     }
 
     private void setActions() {
