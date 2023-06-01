@@ -359,41 +359,29 @@ public class BenzenoidCollectionPane extends Tab {
 
 								case CLAR_COVER:
 									group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
-
 									break;
 
 								case KEKULE:
 									int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
-
 									group = new KekuleStructureGroup(molecule, kekuleStructure);
-
 									description += "structure " + (index + 1);
-
 									break;
 
 								case CLAR_COVER_FIXED:
-
 									group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(),
 											molecule.getFixedBonds(), molecule.getFixedCircles());
-
 									break;
 
 								case RBO:
-
 									group = new RBOGroup(molecule);
-
 									break;
 
 								case RADICALAR:
-
 									group = new RadicalarClarCoverGroup(molecule);
-
 									break;
 
 								case IMS2D1A:
-
 									group = new IMS2D1AGroup(molecule);
-
 									break;
 
 								case CLAR_RE:
@@ -401,9 +389,7 @@ public class BenzenoidCollectionPane extends Tab {
 									break;
 
 								default:
-
 									group = new MoleculeGroup(molecule);
-
 									break;
 								}
 
@@ -476,28 +462,22 @@ public class BenzenoidCollectionPane extends Tab {
 		scrollPane.setContent(flowPane);
 		gridPane.add(scrollPane, 0, 0, 1, 4);
 
-		// propertiesBox = new HBox(3.0);
 		borderPane = new BorderPane();
 		selectedArea = null;
 
 		switch (displayedProperty) {
+
 		case PROPERTIES:
-			// propertiesBox.getChildren().addAll(previousButton, propertiesLabel,
-			// nextButton);
 			borderPane.setLeft(previousButton);
 			borderPane.setCenter(propertiesLabel);
 			borderPane.setRight(nextButton);
-
 			selectedArea = benzenoidPropertiesArea;
 			break;
 
 		case FREQUENCIES:
-			// propertiesBox.getChildren().addAll(previousButton, frequenciesLabel,
-			// nextButton);
 			borderPane.setLeft(previousButton);
 			borderPane.setCenter(frequenciesLabel);
 			borderPane.setRight(nextButton);
-
 			selectedArea = frequenciesArea;
 			break;
 
@@ -799,12 +779,6 @@ public class BenzenoidCollectionPane extends Tab {
 	}
 
 	public void setComparator(MoleculeComparator comparator) {
-
-//		if (comparator instanceof ResonanceEnergyComparator) {
-//			for (Molecule molecule : molecules)
-//				molecule.getAromaticity();
-//		}
-
 		for (Molecule molecule : molecules)
 			molecule.setComparator(comparator);
 	}
@@ -823,8 +797,6 @@ public class BenzenoidCollectionPane extends Tab {
 	}
 
 	public void export(File directory) {
-
-		int index = 0;
 		for (int i = 0; i < molecules.size(); i++) {
 
 			Molecule molecule = molecules.get(i);
@@ -835,18 +807,6 @@ public class BenzenoidCollectionPane extends Tab {
 				separator = "\\";
 			else
 				separator = "/";
-
-			/*String filename;
-			if (!benzenoidPanes.get(i).getName().equals(""))
-				filename = benzenoidPanes.get(i).getName().split("\n")[0];
-			else {
-				filename = "unknown_molecule_" + index;
-				index++;
-			}
-
-			if (!filename.endsWith(".graph"))
-				filename += ".graph";
-			*/
 
 			String filename = molecule.getNames().get(0) + ".graph";
 

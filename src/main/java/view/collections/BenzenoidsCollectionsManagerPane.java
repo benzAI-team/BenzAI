@@ -1525,7 +1525,7 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 
 					Molecule molecule = currentPane
 							.getMolecule(currentPane.getSelectedBenzenoidPanes().get(i).getIndex());
-
+/*
 					String fileName;
 
 					if (!currentPane.getSelectedBenzenoidPanes().get(i).getName().equals(""))
@@ -1536,6 +1536,9 @@ public class BenzenoidsCollectionsManagerPane extends BorderPane {
 					}
 
 					fileName = fileName.replace(".graph", "");
+*/
+
+					String fileName = molecule.getNames().get(0) + ".com";
 
 					File file = new File(directoryPath + "/" + fileName);
 					try {
