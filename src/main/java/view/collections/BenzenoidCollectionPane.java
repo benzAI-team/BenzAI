@@ -836,7 +836,7 @@ public class BenzenoidCollectionPane extends Tab {
 			else
 				separator = "/";
 
-			String filename;
+			/*String filename;
 			if (!benzenoidPanes.get(i).getName().equals(""))
 				filename = benzenoidPanes.get(i).getName().split("\n")[0];
 			else {
@@ -846,6 +846,9 @@ public class BenzenoidCollectionPane extends Tab {
 
 			if (!filename.endsWith(".graph"))
 				filename += ".graph";
+			*/
+
+			String filename = molecule.getNames().get(0) + ".graph";
 
 			File file = new File(directory.getAbsolutePath() + separator + filename);
 			try {
