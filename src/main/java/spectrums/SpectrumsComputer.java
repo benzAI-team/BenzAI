@@ -27,6 +27,7 @@ public enum SpectrumsComputer {
 		ArrayList<Double> frequencies = new ArrayList<Double>();
 		ArrayList<Double> intensities = new ArrayList<Double>();
 		ArrayList<Double> finalEnergies = new ArrayList<Double>();
+		double molecularWeight = -1;
 		double zeroPointEnergy = -1;
 
 		BufferedReader r = new BufferedReader(new FileReader(new File(inputFilename)));
@@ -61,11 +62,16 @@ public enum SpectrumsComputer {
 
 				zeroPointEnergy = Double.parseDouble(splittedLine[3]);
 			}
+
+			//7_hexagons194.log: Molecular mass:   352.12520 amu.
+			if (line.contains("Molecular mass")) {
+				molecularWeight = Double.parseDouble(splittedLine[3]);
+			}
 		}
 
 		r.close();
 
-		return new ResultLogFile(inputFilename, frequencies, intensities, finalEnergies, zeroPointEnergy);
+		return new ResultLogFile(inputFilename, frequencies, intensities, finalEnergies, zeroPointEnergy, molecularWeight);
 	}
 
 	public static double g(ResultLogFile result, int i, int V, int FWHM) {

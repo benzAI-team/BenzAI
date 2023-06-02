@@ -334,55 +334,41 @@ public class BenzenoidCollectionPane extends Tab {
                                     }
                                     break;
 
-                                    case CLAR_COVER:
-                                        group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
+								case CLAR_COVER:
+									group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
+									break;
 
-                                        break;
+								case KEKULE:
+									int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
+									group = new KekuleStructureGroup(molecule, kekuleStructure);
+									description += "structure " + (index + 1);
+									break;
 
-                                    case KEKULE:
-                                        int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
+								case CLAR_COVER_FIXED:
+									group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(),
+											molecule.getFixedBonds(), molecule.getFixedCircles());
+									break;
 
-                                        group = new KekuleStructureGroup(molecule, kekuleStructure);
+								case RBO:
+									group = new RBOGroup(molecule);
+									break;
 
-                                        description += "structure " + (index + 1);
+								case RADICALAR:
+									group = new RadicalarClarCoverGroup(molecule);
+									break;
 
-                                        break;
-
-                                    case CLAR_COVER_FIXED:
-
-                                        group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(),
-                                                molecule.getFixedBonds(), molecule.getFixedCircles());
-
-                                        break;
-
-                                    case RBO:
-
-                                        group = new RBOGroup(molecule);
-
-                                        break;
-
-                                    case RADICALAR:
-
-                                        group = new RadicalarClarCoverGroup(molecule);
-
-                                        break;
-
-                                    case IMS2D1A:
-
-                                        group = new IMS2D1AGroup(molecule);
-
-                                        break;
+								case IMS2D1A:
+									group = new IMS2D1AGroup(molecule);
+									break;
 
                                     case CLAR_RE:
                                         group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
                                         break;
 
-                                    default:
-
-                                        group = new MoleculeGroup(molecule);
-
-                                        break;
-                                }
+								default:
+									group = new MoleculeGroup(molecule);
+									break;
+								}
 
                                 BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group,
                                         description, molecule.getVerticesSolutions(), index, false);
@@ -437,30 +423,24 @@ public class BenzenoidCollectionPane extends Tab {
         scrollPane.setContent(flowPane);
         gridPane.add(scrollPane, 0, 0, 1, 4);
 
-        // propertiesBox = new HBox(3.0);
-        borderPane = new BorderPane();
-        selectedArea = null;
+		borderPane = new BorderPane();
+		selectedArea = null;
 
-        switch (displayedProperty) {
-            case PROPERTIES:
-                // propertiesBox.getChildren().addAll(previousButton, propertiesLabel,
-                // nextButton);
-                borderPane.setLeft(previousButton);
-                borderPane.setCenter(propertiesLabel);
-                borderPane.setRight(nextButton);
+		switch (displayedProperty) {
 
-                selectedArea = benzenoidPropertiesArea;
-                break;
+		case PROPERTIES:
+			borderPane.setLeft(previousButton);
+			borderPane.setCenter(propertiesLabel);
+			borderPane.setRight(nextButton);
+			selectedArea = benzenoidPropertiesArea;
+			break;
 
-            case FREQUENCIES:
-                // propertiesBox.getChildren().addAll(previousButton, frequenciesLabel,
-                // nextButton);
-                borderPane.setLeft(previousButton);
-                borderPane.setCenter(frequenciesLabel);
-                borderPane.setRight(nextButton);
-
-                selectedArea = frequenciesArea;
-                break;
+		case FREQUENCIES:
+			borderPane.setLeft(previousButton);
+			borderPane.setCenter(frequenciesLabel);
+			borderPane.setRight(nextButton);
+			selectedArea = frequenciesArea;
+			break;
 
             default:
                 // DO_NOTHING
@@ -622,14 +602,30 @@ public class BenzenoidCollectionPane extends Tab {
         refresh();
     }
 
-    public Molecule getMolecule(int index) {
-        return molecules.get(index);
-    }
+	public void removeBenzenoidPane(BenzenoidPane benzenoidPane) {
+		benzenoidPanes.remove(benzenoidPane);
+		selectedBenzenoidPanes.remove(benzenoidPane);
 
-    @Override
-    public String toString() {
-        return "BenzenoidSetPane::" + getName();
-    }
+		System.out.println("molecules.size() = " + molecules.size());
+
+		Molecule molecule = molecules.get(benzenoidPane.getIndex());
+		molecules.remove(benzenoidPane.getIndex());
+		selectedMolecules.remove(molecule);
+		refresh();
+	}
+
+	public Molecule getMolecule(int index) {
+		return molecules.get(index);
+	}
+
+	public BenzenoidPane getBenzenoidPane(int index) {
+		return benzenoidPanes.get(index);
+	}
+
+	@Override
+	public String toString() {
+		return "BenzenoidSetPane::" + getName();
+	}
 
     public void copy() {
         if (selectedBenzenoidPanes.size() > 0)
@@ -641,13 +637,53 @@ public class BenzenoidCollectionPane extends Tab {
         }
     }
 
-    public ArrayList<BenzenoidPane> getSelectedBenzenoidPanes() {
-        return selectedBenzenoidPanes;
-    }
+	public void paste() {
+		parent.paste();
+	}
 
-    public DisplayType getDisplayType(int index) {
-        return displayTypes.get(index);
-    }
+	public void move(BenzenoidCollectionPane originPane, BenzenoidCollectionPane destinationPane) {
+		parent.move(originPane, destinationPane);
+	}
+
+	public void resonanceEnergyLin() {
+		parent.resonanceEnergyLin();
+	}
+
+	public void resonanceEnergyLinFan() {
+		parent.resonanceEnergyLinFan();
+	}
+
+	public void clarCover() {
+		parent.clarCover();
+	}
+
+	public void ringBoundOrder() {
+		parent.ringBoundOrder();
+	}
+
+	public void irregularityStatistics() {
+		parent.irregularityStatistics();
+	}
+
+	public ArrayList<BenzenoidPane> getSelectedBenzenoidPanes() {
+		return selectedBenzenoidPanes;
+	}
+
+	public ArrayList<Molecule> getSelectedMolecules() {
+		return selectedMolecules;
+	}
+
+	public void addSelectedMolecule(int index) {
+		selectedMolecules.add(molecules.get(index));
+	}
+
+	public void removeSelectedMolecule(int index) {
+		selectedMolecules.remove(index);
+	}
+
+	public DisplayType getDisplayType(int index) {
+		return displayTypes.get(index);
+	}
 
     public void setPropertiesArea(String properties) {
         benzenoidPropertiesArea.setText(properties);
@@ -694,16 +730,10 @@ public class BenzenoidCollectionPane extends Tab {
         }
     }
 
-    public void setComparator(MoleculeComparator comparator) {
-
-//		if (comparator instanceof ResonanceEnergyComparator) {
-//			for (Molecule molecule : molecules)
-//				molecule.getAromaticity();
-//		}
-
-        for (Molecule molecule : molecules)
-            molecule.setComparator(comparator);
-    }
+	public void setComparator(MoleculeComparator comparator) {
+		for (Molecule molecule : molecules)
+			molecule.setComparator(comparator);
+	}
 
     public void sort(boolean ascending) {
         unselectAll();
@@ -718,10 +748,8 @@ public class BenzenoidCollectionPane extends Tab {
         return molecules;
     }
 
-    public void export(File directory) {
-
-        int index = 0;
-        for (int i = 0; i < molecules.size(); i++) {
+	public void export(File directory) {
+		for (int i = 0; i < molecules.size(); i++) {
 
             Molecule molecule = molecules.get(i);
 
@@ -732,16 +760,7 @@ public class BenzenoidCollectionPane extends Tab {
             else
                 separator = "/";
 
-            String filename;
-            if (!"".equals(benzenoidPanes.get(i).getName()))
-                filename = benzenoidPanes.get(i).getName().split("\n")[0];
-            else {
-                filename = "unknown_molecule_" + index;
-                index++;
-            }
-
-            if (!filename.endsWith(".graph"))
-                filename += ".graph";
+			String filename = molecule.getNames().get(0) + ".graph";
 
             File file = new File(directory.getAbsolutePath() + separator + filename);
             try {

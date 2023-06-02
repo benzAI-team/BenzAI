@@ -30,7 +30,6 @@ public class BenzenoidApplication extends Application {
 
 	private Stage stage;
 	private BorderPane rootPane;
-
 	private Settings settings;
 
 	/*

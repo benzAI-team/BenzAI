@@ -1,10 +1,16 @@
 package utils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import classifier.Irregularity;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import molecules.Molecule;
 import solveur.LinAlgorithm;
 
@@ -14,7 +20,19 @@ public enum Utils {
     public static String [] splitBySeparators(String str) {
 		return str.split("\\s+");
 	}
-	
+
+	public static List<String> getLinesFromFile(File file) throws IOException {
+		List<String> lines = new ArrayList<>();
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line;
+
+		while((line = reader.readLine()) != null)
+			lines.add(line);
+
+		reader.close();
+		return lines;
+	}
+
 	public static Integer [] toArray(ArrayList<Integer> list) {
 		Integer [] array = new Integer[list.size()];
 		

@@ -327,7 +327,7 @@ public class IRSpectraPane extends GridPane {
 
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-			writer.write("<pahdatabase database=\"theoretical\" version=\"3.00\" date=\"2017-08-18\" full=\"false\"/>\n");
+			writer.write("<pahdatabase database=\"theoretical\" version=\"3.00\" date=\"2017-08-18\" full=\"false\">\n");
 
 			writer.write("<comment>This file was generated with BenzAI software.</comment>\n");
 
@@ -336,6 +336,7 @@ public class IRSpectraPane extends GridPane {
 				writer.write(amesFormat + "\n");
 			}
 			writer.write("</species>\n");
+			writer.write("</pahdatabase>\n");
 			writer.close();
 
 		}
