@@ -13,7 +13,7 @@ public class HBoxNbHydrogensCriterion extends HBoxBoundingCriterion {
 
 	public HBoxNbHydrogensCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
-		getOperatorChoiceBox().getItems().addAll("EVEN", "ODD");
+		getOperatorChoiceBox().getItems().addAll("even", "odd");
 	}
 
 	@Override

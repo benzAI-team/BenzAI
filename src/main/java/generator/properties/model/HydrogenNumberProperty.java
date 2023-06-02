@@ -23,14 +23,15 @@ public class HydrogenNumberProperty extends ModelProperty {
 	@Override
 	public int computeHexagonNumberUpperBound() {
 		int minHydrogenNumber = Integer.MAX_VALUE;
-		for(PropertyExpression binaryNumericalExpression : getExpressions()) {
-			String  operator = ((BinaryNumericalExpression)binaryNumericalExpression).getOperator();
-			int hydrogenNumber = ((BinaryNumericalExpression)binaryNumericalExpression).getValue();
-
-			if (isBoundingOperator(operator)) {
-				if ("<".equals(operator))
-					hydrogenNumber--;
-				minHydrogenNumber = Math.min(hydrogenNumber, minHydrogenNumber);
+		for(PropertyExpression propertyExpression : getExpressions()) {
+			if (propertyExpression instanceof BinaryNumericalExpression) {
+				String operator = ((BinaryNumericalExpression) propertyExpression).getOperator();
+				int hydrogenNumber = ((BinaryNumericalExpression) propertyExpression).getValue();
+				if (isBoundingOperator(operator)) {
+					if ("<".equals(operator))
+						hydrogenNumber--;
+					minHydrogenNumber = Math.min(hydrogenNumber, minHydrogenNumber);
+				}
 			}
 		}
 		return Math.min((int)(Math.ceil((minHydrogenNumber / 2.0)  * (minHydrogenNumber / 6.0 - 1.0) + 1.0)) , Integer.MAX_VALUE);
