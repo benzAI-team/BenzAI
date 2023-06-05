@@ -2,21 +2,17 @@ package molecules;
 
 import classifier.Irregularity;
 import database.models.IRSpectraEntry;
-import generator.GeneralModel;
-import generator.SolverResults;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
 import generator.properties.Property;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.BinaryNumericalExpression;
 import http.Post;
 import molecules.sort.MoleculeComparator;
 import molecules.sort.NbHexagonsComparator;
 import parsers.GraphCoordFileBuilder;
 import parsers.GraphFileBuilder;
 import parsers.GraphParser;
-import solution.BenzenoidSolution;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity;
 import solveur.LinAlgorithm;
@@ -28,11 +24,8 @@ import utils.HexNeighborhood;
 import utils.Interval;
 import utils.RelativeMatrix;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Benzenoid implements Comparable<Benzenoid> {
@@ -552,36 +545,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 			return name;
 	}
 
-	public void exportToCML(File file) {
-		//TODO
-	}
-
-
-
-
-
-	public BenzenoidSolution buildBenzenoidSolution() {
-
-		ModelPropertySet modelPropertySet = new ModelPropertySet();
-		modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", nbHexagons));
-
-		String name = toString();
-
-		String[] split = name.split(java.util.regex.Pattern.quote("-"));
-
-		GeneralModel model = new GeneralModel(modelPropertySet);
-
-		for (String s : split) {
-
-			int u = Integer.parseInt(s);
-			model.getProblem().arithm(model.getBenzenoidVerticesBVArray()[u], "=", 1).post();
-		}
-
-		SolverResults result = model.solve();
-
-		return result.getSolutions().get(0);
-	}
-
 	public void setVerticesSolutions(ArrayList<Integer> verticesSolutions) {
 		this.verticesSolutions = verticesSolutions;
 	}
@@ -596,35 +559,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	public String getDescription() {
 		return description;
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void buildHexagonsCoords() {
-
-		hexagonsCoords = new Couple[nbHexagons];
-
-		int[] checkedHexagons = new int[nbHexagons];
-		checkedHexagons[0] = 1;
-
-		ArrayList<Integer> candidats = new ArrayList<>();
-		candidats.add(0);
-
-		hexagonsCoords[0] = new Couple(0, 0);
-
-		while (!candidats.isEmpty()) {
-
-			int candidat = candidats.get(0);
-
-			for (HexNeighborhood neighbor : HexNeighborhood.values()) {
-				int neighborIndex = dualGraph[candidat][neighbor.getIndex()];
-				if (neighborIndex != -1 && checkedHexagons[neighborIndex] == 0) {
-					checkedHexagons[neighborIndex] = 1;
-					hexagonsCoords[neighborIndex] = new Couple<>(hexagonsCoords[candidat].getX() + neighbor.dx(), hexagonsCoords[candidat].getY() + neighbor.dy());
-					candidats.add(neighborIndex);
-				}
-			}
-			candidats.remove(candidats.get(0));
-		}
 	}
 
 	public Couple<Integer, Integer>[] getHexagonsCoords() {
@@ -715,7 +649,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		try {
 			aromaticity = LinAlgorithm.solve(this, PerfectMatchingType.DET);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		aromaticity.normalize(getNbKekuleStructures());
@@ -734,12 +667,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		}
 
 		return nbKekuleStructures;
-	}
-
-	public void normalizeAromaticity() {
-		if (aromaticity == null)
-			aromaticity = getAromaticity();
-
 	}
 
 	public boolean isAromaticitySet() {
@@ -968,7 +895,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 		for (int i = 0; i < nbHexagons; i++) {
 			Couple<Integer, Integer> couple = shiftCoords[i];
-			// nodes[i] = new Node(couple.getY(), couple.getX(), i);
 			nodes[i] = new Node(couple.getX(), couple.getY(), i);
 		}
 
@@ -1188,8 +1114,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		checkedHexagons[0] = 1;
 		hexagonsCoords[0] = new Couple<>(0, 0);
 
-		// centersCoords[0] = new Couple<Double, Double>(40.0, 40.0);
-
 		while (!candidates.isEmpty()) {
 
 			int candidateIndex = candidates.get(0);
@@ -1278,28 +1202,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		}
 
 		return null;
-	}
-
-	public boolean inDatabase() {
-
-		String name = getNames().get(0);
-		String url = "https://benzenoids.lis-lab.fr/find_id/";
-		String json = "{\"name\": \"" + name + "\"}";
-
-		try {
-			List<Map> results = Post.post(url, json);
-
-			if (!results.isEmpty()) {
-				return true;
-			}
-
-		} catch (Exception e) {
-			System.out.println("Connection to database failed");
-			return false;
-		}
-
-		return false;
-
 	}
 
 	public void setNicsResult(ResultLogFile nicsResult) {

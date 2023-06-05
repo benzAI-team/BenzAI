@@ -93,4 +93,7 @@ public class BenzenoidParser {
 
     }
 
+    public static void exportToCML(Benzenoid benzenoid) throws IOException {
+
+    }
 }

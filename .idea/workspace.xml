@@ -7,9 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="creating BenzenoidParser">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportProperties.java" afterDir="false" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="refactoring BenzenoidParser.exportProperties()">
       <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidParser.java" afterDir="false" />
     </list>
@@ -389,7 +387,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685965786916</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="refactoring BenzenoidParser.exportProperties()">
+      <created>1685966047103</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1685966047103</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -454,7 +459,8 @@
     <MESSAGE value="fixing pattern drawing bug" />
     <MESSAGE value="before refactoring Molecule" />
     <MESSAGE value="creating BenzenoidParser" />
-    <option name="LAST_COMMIT_MESSAGE" value="creating BenzenoidParser" />
+    <MESSAGE value="refactoring BenzenoidParser.exportProperties()" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactoring BenzenoidParser.exportProperties()" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
