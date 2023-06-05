@@ -1251,7 +1251,6 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 
 			for (Benzenoid molecule : moleculesClasses) {
 
-
 				Optional<ResultLogFile> IRSpectra = molecule.getDatabaseInformation().findIRSpectra();
 				if (IRSpectra.isPresent()) {
 					finalEnergies.put(molecule.getNames().get(0),
@@ -1265,8 +1264,6 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 
 					amesFormats.add(IRSpectra.get().getAmesFormat());
 				}
-
-
 			}
 
 			try {

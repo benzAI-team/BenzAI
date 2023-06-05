@@ -30,7 +30,6 @@ import solution.BenzenoidSolution;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
-import spectrums.IRSpectra;
 import spectrums.ResultLogFile;
 import view.groups.AromaticityGroup;
 
@@ -92,7 +91,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			if (!benzenoidSetPane.isLock()) {
 				benzenoidSetPane.setHoveringPane(this);
 				benzenoidSetPane.setDescription(buildDescription());
-				benzenoidSetPane.setFrequencies(buildIRDATA());
+				benzenoidSetPane.setIRSpectraData(buildIRDATA());
 			}
 		});
 
@@ -100,7 +99,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			if (!benzenoidSetPane.isLock()) {
 				benzenoidSetPane.setHoveringPane(null);
 				benzenoidSetPane.setDescription("");
-				benzenoidSetPane.setFrequencies("");
+				benzenoidSetPane.setIRSpectraData("");
 			}
 		});
 	}
@@ -152,7 +151,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		benzenoidSetPane.removeSelectedBenzenoidPane(this);
 
 		benzenoidSetPane.setDescription("");
-		benzenoidSetPane.setFrequencies("");
+		benzenoidSetPane.setIRSpectraData("");
 
 
 		this.setStyle("-fx-border-color: black;" + "-fx-border-width: 4;" + "-fx-border-radius: 10px;");
@@ -172,7 +171,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		isSelected = true;
 
 		benzenoidSetPane.setDescription(buildDescription());
-		benzenoidSetPane.setFrequencies(buildIRDATA());
+		benzenoidSetPane.setIRSpectraData(buildIRDATA());
 
 
 		setStyle("-fx-border-color: blue;" + "-fx-border-width: 4;" + "-fx-border-radius: 10px;");

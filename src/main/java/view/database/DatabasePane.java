@@ -244,8 +244,6 @@ public class DatabasePane extends ScrollPane {
 
 										ResultLogFile resultLog = content.buildResultLogFile();
 
-										//molecule.setNicsResult(resultLog);
-
 										molecules.add(molecule);
 										logsResults.put(molecule.toString(), resultLog);
 

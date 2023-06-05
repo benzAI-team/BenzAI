@@ -28,7 +28,7 @@ import java.util.Collections;
 public class BenzenoidCollectionPane extends Tab {
 
     public enum DisplayedProperty {
-        PROPERTIES, FREQUENCIES, INTENSITIES, ENERGIES
+        PROPERTIES, FREQUENCIES
     }
 
     public enum DisplayType {
@@ -45,14 +45,13 @@ public class BenzenoidCollectionPane extends Tab {
     private TextArea benzenoidPropertiesArea;
     private Console console;
 
-    private TextArea frequenciesArea;
-    private TextArea intensitiesArea;
-    private TextArea energiesArea;
+    private TextArea IRSpectraArea;
+
     private Button previousButton;
     private Button nextButton;
 
     private Label propertiesLabel;
-    private Label frequenciesLabel;
+    private Label IRSpectraLabel;
 
     private TextArea selectedArea;
     private BorderPane borderPane;
@@ -86,21 +85,19 @@ public class BenzenoidCollectionPane extends Tab {
         lock = false;
 
         propertiesLabel = new Label("Benzenoid's properties");
-        frequenciesLabel = new Label("IR Spectra");
+        IRSpectraLabel = new Label("IR Spectra");
 
         propertiesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
         propertiesLabel.setMaxWidth(Double.MAX_VALUE);
         propertiesLabel.setAlignment(Pos.CENTER);
 
-        frequenciesLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-        frequenciesLabel.setMaxWidth(Double.MAX_VALUE);
-        frequenciesLabel.setAlignment(Pos.CENTER);
+        IRSpectraLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
+        IRSpectraLabel.setMaxWidth(Double.MAX_VALUE);
+        IRSpectraLabel.setAlignment(Pos.CENTER);
 
         console = new Console();
         benzenoidPropertiesArea = new TextArea();
-        frequenciesArea = new TextArea();
-        intensitiesArea = new TextArea();
-        energiesArea = new TextArea();
+        IRSpectraArea = new TextArea();
 
         selectedArea = benzenoidPropertiesArea;
 
@@ -114,11 +111,11 @@ public class BenzenoidCollectionPane extends Tab {
                     displayedProperty = DisplayedProperty.FREQUENCIES;
                     gridPane.getChildren().remove(borderPane);
                     gridPane.getChildren().remove(selectedArea);
-                    selectedArea = frequenciesArea;
+                    selectedArea = IRSpectraArea;
 
                     borderPane = new BorderPane();
                     borderPane.setLeft(previousButton);
-                    borderPane.setCenter(frequenciesLabel);
+                    borderPane.setCenter(IRSpectraLabel);
                     borderPane.setRight(nextButton);
 
                     gridPane.add(borderPane, 1, 0);
@@ -155,11 +152,11 @@ public class BenzenoidCollectionPane extends Tab {
                     displayedProperty = DisplayedProperty.FREQUENCIES;
                     gridPane.getChildren().remove(borderPane);
                     gridPane.getChildren().remove(selectedArea);
-                    selectedArea = frequenciesArea;
+                    selectedArea = IRSpectraArea;
 
                     borderPane = new BorderPane();
                     borderPane.setLeft(previousButton);
-                    borderPane.setCenter(frequenciesLabel);
+                    borderPane.setCenter(IRSpectraLabel);
                     borderPane.setRight(nextButton);
 
                     gridPane.add(borderPane, 1, 0);
@@ -438,9 +435,9 @@ public class BenzenoidCollectionPane extends Tab {
 
 		case FREQUENCIES:
 			borderPane.setLeft(previousButton);
-			borderPane.setCenter(frequenciesLabel);
+			borderPane.setCenter(IRSpectraLabel);
 			borderPane.setRight(nextButton);
-			selectedArea = frequenciesArea;
+			selectedArea = IRSpectraArea;
 			break;
 
             default:
@@ -603,24 +600,10 @@ public class BenzenoidCollectionPane extends Tab {
         refresh();
     }
 
-	public void removeBenzenoidPane(BenzenoidPane benzenoidPane) {
-		benzenoidPanes.remove(benzenoidPane);
-		selectedBenzenoidPanes.remove(benzenoidPane);
 
-		System.out.println("molecules.size() = " + molecules.size());
-
-		Benzenoid molecule = molecules.get(benzenoidPane.getIndex());
-		molecules.remove(benzenoidPane.getIndex());
-		selectedMolecules.remove(molecule);
-		refresh();
-	}
 
 	public Benzenoid getMolecule(int index) {
 		return molecules.get(index);
-	}
-
-	public BenzenoidPane getBenzenoidPane(int index) {
-		return benzenoidPanes.get(index);
 	}
 
 	@Override
@@ -638,48 +621,13 @@ public class BenzenoidCollectionPane extends Tab {
         }
     }
 
-	public void paste() {
-		parent.paste();
-	}
-
 	public void move(BenzenoidCollectionPane originPane, BenzenoidCollectionPane destinationPane) {
 		parent.move(originPane, destinationPane);
 	}
 
-	public void resonanceEnergyLin() {
-		parent.resonanceEnergyLin();
-	}
-
-	public void resonanceEnergyLinFan() {
-		parent.resonanceEnergyLinFan();
-	}
-
-	public void clarCover() {
-		parent.clarCover();
-	}
-
-	public void ringBoundOrder() {
-		parent.ringBoundOrder();
-	}
-
-	public void irregularityStatistics() {
-		parent.irregularityStatistics();
-	}
 
 	public ArrayList<BenzenoidPane> getSelectedBenzenoidPanes() {
 		return selectedBenzenoidPanes;
-	}
-
-	public ArrayList<Benzenoid> getSelectedMolecules() {
-		return selectedMolecules;
-	}
-
-	public void addSelectedMolecule(int index) {
-		selectedMolecules.add(molecules.get(index));
-	}
-
-	public void removeSelectedMolecule(int index) {
-		selectedMolecules.remove(index);
 	}
 
 	public DisplayType getDisplayType(int index) {
@@ -778,8 +726,8 @@ public class BenzenoidCollectionPane extends Tab {
         }
     }
 
-    public void setFrequencies(String frequencies) {
-        frequenciesArea.setText(frequencies);
+    public void setIRSpectraData(String frequencies) {
+        IRSpectraArea.setText(frequencies);
     }
 
     public Console getConsole() {
