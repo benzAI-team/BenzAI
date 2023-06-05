@@ -55,8 +55,6 @@ public class CheckDatabaseTask extends CollectionTask{
                                     setIndex(getIndex() + 1);
                                 });
                                 pane.buildFrequencies();
-                                pane.buildIntensities();
-                                pane.buildEnergies();
                             }
                         }
                         return null;

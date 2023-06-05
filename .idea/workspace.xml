@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="check DB après simple génération (à enlever)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/molecules/DatabaseCheckManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidDatabaseInformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidDatabaseInformations.java" afterDir="false" />
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="problème réglé !">
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/IRSpectraTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/IRSpectraTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,13 +103,21 @@
       <option name="project" value="LOCAL" />
       <updated>1685982539573</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="problème réglé !">
+      <created>1685984231659</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1685984231659</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="before creating new branch" />
     <MESSAGE value="check DB après simple génération (à enlever)" />
-    <option name="LAST_COMMIT_MESSAGE" value="check DB après simple génération (à enlever)" />
+    <MESSAGE value="problème réglé !" />
+    <option name="LAST_COMMIT_MESSAGE" value="problème réglé !" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -782,16 +782,6 @@ public class BenzenoidCollectionPane extends Tab {
         frequenciesArea.setText(frequencies);
     }
 
-    public void setEnergies(String energies) {
-        if (energies.contains("-"))
-            System.out.print("");
-        energiesArea.setText(energies);
-    }
-
-    public void setIntensities(String intensities) {
-        intensitiesArea.setText(intensities);
-    }
-
     public Console getConsole() {
         return console;
     }

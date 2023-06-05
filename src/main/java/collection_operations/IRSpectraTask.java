@@ -83,8 +83,6 @@ public class IRSpectraTask extends CollectionTask {
                                 });
 
                                 pane.buildFrequencies();
-                                pane.buildIntensities();
-                                pane.buildEnergies();
                             }
                         }
 
