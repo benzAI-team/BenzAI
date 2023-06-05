@@ -10,6 +10,9 @@ import java.util.ArrayList;
 public class HexagonDraw extends Polygon {
 
 	private final Color[] COLORS = new Color[] { Color.WHITE, Color.DARKGRAY };
+	private final PatternLabel[] LABELS = new PatternLabel[] {PatternLabel.VOID, PatternLabel.NEUTRAL};
+
+	private int index = 0;
 
 	private final MoleculeGroup group;
 
@@ -47,7 +50,7 @@ public class HexagonDraw extends Polygon {
 
 	public void setBorderAction() {
 		this.setOnMouseClicked(e -> {
-			System.out.println("Click on border");
+			System.out.println(coords.toString() + "[Border]");
 			shiftLabel();
 			group.getDrawPane().addCrown();
 		});
@@ -58,12 +61,24 @@ public class HexagonDraw extends Polygon {
 	}
 
 	private void shiftLabel() {
+		/*
 		label = PatternLabel.next(label);
 		this.setFill(COLORS[label.ordinal()]);
+		 */
+		index = 1 - index;
+		Color color = COLORS[index];
+		label = LABELS[index];
+		this.setFill(color);
 	}
 
 	public void setLabel(PatternLabel label) {
-		this.setFill(COLORS[label.ordinal()]);
+		//this.setFill(COLORS[label.ordinal()]);
+		this.label = label;
+		if (label == PatternLabel.VOID)
+			index = 0;
+		else index = 1;
+		Color color = COLORS[index];
+		this.setFill(color);
 	}
 
 	public void disableCenter() {
