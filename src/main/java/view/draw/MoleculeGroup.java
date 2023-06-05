@@ -338,7 +338,7 @@ public class MoleculeGroup extends Group {
 
 				HexagonDraw hexagon = hexagons[i][j];
 				if (hexagon != null && hexagon.getLabel() == PatternLabel.VOID) {
-					ArrayList<HexagonDraw> neighbors = getNeighbors(hexagon.getCoords());
+					ArrayList<HexagonDraw> neighbors = getNeighbors(hexagon.getCoordinates());
 					
 					int nbNeighbors = 0;
 					for (HexagonDraw neighbor : neighbors) {
@@ -1139,7 +1139,7 @@ public class MoleculeGroup extends Group {
 		Node centerNode;
 
 		if (center != null)
-			centerNode = nodes[hexagonCoordinates[center.getCoords().getX()][center.getCoords().getY()]];
+			centerNode = nodes[hexagonCoordinates[center.getCoordinates().getX()][center.getCoordinates().getY()]];
 		else
 			centerNode = nodes[0];
 
@@ -1182,7 +1182,7 @@ public class MoleculeGroup extends Group {
 		for (int i = 0; i < hexagonsList.size(); i++) {
 
 			HexagonDraw hexagon = hexagonsList.get(i);
-			Couple<Integer, Integer> coords = hexagon.getCoords();
+			Couple<Integer, Integer> coords = hexagon.getCoordinates();
 
 			int x = coords.getY();
 			int y = coords.getX();

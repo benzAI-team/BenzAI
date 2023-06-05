@@ -7,11 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="even number of carbons fixed">
-      <change afterPath="$PROJECT_DIR$/src/main/java/view/draw/DrawLabel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="fixing drawing bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/HexagonDraw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/HexagonDraw.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/MoleculeGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/MoleculeGroup.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -361,7 +360,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685705362362</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="fixing drawing bug">
+      <created>1685962645114</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1685962645114</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -422,7 +428,8 @@
     <MESSAGE value="Pattern generation test added" />
     <MESSAGE value="merging main and general_model2" />
     <MESSAGE value="even number of carbons fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="even number of carbons fixed" />
+    <MESSAGE value="fixing drawing bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing drawing bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

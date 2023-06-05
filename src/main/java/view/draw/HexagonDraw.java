@@ -9,23 +9,23 @@ import java.util.ArrayList;
 
 public class HexagonDraw extends Polygon {
 
-	private final Color[] COLORS = new Color[] { Color.WHITE, Color.DARKGRAY };
-	private final PatternLabel[] LABELS = new PatternLabel[] {PatternLabel.VOID, PatternLabel.NEUTRAL};
+	private static final Color[] COLORS = new Color[] { Color.WHITE, Color.DARKGRAY };
+	private static final PatternLabel[] LABELS = new PatternLabel[] {PatternLabel.VOID, PatternLabel.NEUTRAL};
 
 	private int index = 0;
 
 	private final MoleculeGroup group;
 
-	private final Couple<Integer, Integer> coords;
+	private final Couple<Integer, Integer> coordinates;
 	private final ArrayList<Double> points;
 
 	private PatternLabel label;
 	private boolean isCenter;
 
-	public HexagonDraw(MoleculeGroup group, Couple<Integer, Integer> coords, ArrayList<Double> points) {
+	public HexagonDraw(MoleculeGroup group, Couple<Integer, Integer> coordinates, ArrayList<Double> points) {
 		super();
 		this.group = group;
-		this.coords = coords;
+		this.coordinates = coordinates;
 		this.points = points;
 		label = PatternLabel.VOID;
 		isCenter = false;
@@ -41,7 +41,7 @@ public class HexagonDraw extends Polygon {
 		this.setStroke(Color.BLACK);
 
 		this.setOnMouseClicked(e -> {
-			System.out.println(coords.toString());
+			System.out.println(coordinates.toString());
 			shiftLabel();
 			group.getDrawPane().checkBorder();
 		});
@@ -50,7 +50,7 @@ public class HexagonDraw extends Polygon {
 
 	public void setBorderAction() {
 		this.setOnMouseClicked(e -> {
-			System.out.println(coords.toString() + "[Border]");
+			System.out.println(coordinates.toString() + "[Border]");
 			shiftLabel();
 			group.getDrawPane().addCrown();
 		});
@@ -61,22 +61,20 @@ public class HexagonDraw extends Polygon {
 	}
 
 	private void shiftLabel() {
-		/*
-		label = PatternLabel.next(label);
-		this.setFill(COLORS[label.ordinal()]);
-		 */
 		index = 1 - index;
-		Color color = COLORS[index];
 		label = LABELS[index];
-		this.setFill(color);
+		refreshColor();
 	}
 
 	public void setLabel(PatternLabel label) {
-		//this.setFill(COLORS[label.ordinal()]);
 		this.label = label;
 		if (label == PatternLabel.VOID)
 			index = 0;
 		else index = 1;
+		refreshColor();
+	}
+
+	private void refreshColor() {
 		Color color = COLORS[index];
 		this.setFill(color);
 	}
@@ -84,20 +82,19 @@ public class HexagonDraw extends Polygon {
 	public void disableCenter() {
 		isCenter = false;
 		this.setStrokeWidth(this.getStrokeWidth() / 2);
-
 	}
 
 	public boolean isCenter() {
 		return isCenter;
 	}
 
-	public Couple<Integer, Integer> getCoords() {
-		return coords;
+	public Couple<Integer, Integer> getCoordinates() {
+		return coordinates;
 	}
 
 	@Override
 	public String toString() {
-		return coords.toString();
+		return coordinates.toString();
 	}
 
 }
