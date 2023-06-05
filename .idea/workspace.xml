@@ -1,48 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="ANALYZE_INJECTED_CODE" value="false" />
-  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="refactoring BenzenoidParser.exportProperties()">
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidParser.java" afterDir="false" />
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidDatabaseInformations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/ResultLogFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spectrums/ResultLogFile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CodeInsightWorkspaceSettings">
-    <option name="optimizeImportsOnTheFly" value="true" />
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit5 Test Class" />
-        <option value="module-info" />
-        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
   </component>
-  <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="origin/modele_general2" />
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="0150353810a145091059e6ca6990dfa6cff8c36c" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -53,443 +38,54 @@
         <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
+    </option>
   </component>
-  <component name="ProblemsViewState">
-    <option name="groupByToolId" value="true" />
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectId" id="2OKHNuxxeDhPKwsyYORVqVPt0fJ" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2Qn7FEpKPbSuQrUfXD7OMaCaUi5" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/view/filtering/patterns/PatternHexagon.java&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/adrie/eclipse-workspace/BenzAI"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/target/test-classes" />
-    </key>
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="view.patterns" />
-    </key>
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="constraints" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Application.BenzAI">
-    <configuration name="BenzAI" type="Application" factoryName="Application">
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="application.Launcher" />
       <module name="BenzAI" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestGeneration" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="TestGeneration" />
-      <module name="BenzAI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="application.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TestGeneration" />
+        <item itemvalue="Application.Launcher" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="" />
-      <created>1681302335083</created>
+      <changelist id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="" />
+      <created>1685977386429</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1681302335083</updated>
+      <updated>1685977386429</updated>
     </task>
-    <task id="LOCAL-00001" summary="simplified code in BenzenoidCollectionsManagerPane">
-      <created>1681309780849</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1681309780849</updated>
-    </task>
-    <task id="LOCAL-00002" summary="simplified code in BenzenoidCollectionsManagerPane">
-      <created>1681309897594</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1681309897594</updated>
-    </task>
-    <task id="LOCAL-00003" summary="simplified code in BenzenoidCollectionsManagerPane">
-      <created>1681471837145</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1681471837145</updated>
-    </task>
-    <task id="LOCAL-00004" summary="simplified code in BenzenoidCollectionsManagerPane">
-      <created>1681471973308</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1681471973308</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Classes renamed, packages moved, symmetry handling bugs fixed">
-      <created>1681914250265</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1681914250265</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Classes renamed, packages moved, symmetry handling bugs fixed">
-      <created>1681914434051</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1681914434051</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Classes renamed, packages moved, symmetry handling bugs fixed">
-      <created>1681914582770</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1681914582770</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Symmetry OK, rectangle not OK">
-      <created>1681995474259</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1681995474259</updated>
-    </task>
-    <task id="LOCAL-00009" summary="lot of attributes made final">
-      <created>1682064859496</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1682064859496</updated>
-    </task>
-    <task id="LOCAL-00010" summary="branch general_model2 merged">
-      <created>1682080028641</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1682080028641</updated>
-    </task>
-    <task id="LOCAL-00011" summary="add : testing generation">
-      <created>1682514333264</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1682514333264</updated>
-    </task>
-    <task id="LOCAL-00012" summary="add : testing generation">
-      <created>1683101993453</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1683101993453</updated>
-    </task>
-    <task id="LOCAL-00013" summary="add : testing generation">
-      <created>1683102126203</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1683102126203</updated>
-    </task>
-    <task id="LOCAL-00014" summary="add : testing generation">
-      <created>1683102344727</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1683102344727</updated>
-    </task>
-    <task id="LOCAL-00015" summary="minor refactoring">
-      <created>1683104326390</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1683104326390</updated>
-    </task>
-    <task id="LOCAL-00016" summary="minor refactoring">
-      <created>1683104378368</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1683104378368</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Rectangle, Carbon number, Hydrogen number properties fixed&#10;TestGeneration class added">
-      <created>1683645858424</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1683645858424</updated>
-    </task>
-    <task id="LOCAL-00018" summary="class HexNeighborhood added">
-      <created>1683727783769</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1683727783769</updated>
-    </task>
-    <task id="LOCAL-00019" summary="class HexNeighborhood added">
-      <created>1683728177294</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1683728177294</updated>
-    </task>
-    <task id="LOCAL-00020" summary="class HexNeighborhood added">
-      <created>1683730449896</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1683730449896</updated>
-    </task>
-    <task id="LOCAL-00021" summary="class Pattern refactored">
-      <created>1683737221586</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1683737221586</updated>
-    </task>
-    <task id="LOCAL-00022" summary="class Pattern delegates export and import file to new classes PatternFileImport and PatternFileWriter">
-      <created>1683793013477</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1683793013477</updated>
-    </task>
-    <task id="LOCAL-00023" summary="class HBox and derivates lightly refactored">
-      <created>1684253212972</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1684253212972</updated>
-    </task>
-    <task id="LOCAL-00024" summary="class HBox and derivates lightly refactored">
-      <created>1684253502454</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1684253502454</updated>
-    </task>
-    <task id="LOCAL-00025" summary="class HBoxCriterion and derivates lightly refactored">
-      <created>1684254385528</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1684254385528</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Coronenoid criterion fixed + few refactorings">
-      <created>1684679814846</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1684679814846</updated>
-    </task>
-    <task id="LOCAL-00027" summary="PatternsEditionPane refactoring">
-      <created>1684943902026</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1684943902026</updated>
-    </task>
-    <task id="LOCAL-00028" summary="SymmetriesConstraint refactoring">
-      <created>1684944551148</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1684944551148</updated>
-    </task>
-    <task id="LOCAL-00029" summary="Pattern constraint, drawing refactoring">
-      <created>1685463591505</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1685463591505</updated>
-    </task>
-    <task id="LOCAL-00030" summary="Pattern generation test added">
-      <created>1685543892340</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1685543892340</updated>
-    </task>
-    <task id="LOCAL-00031" summary="merging main and general_model2">
-      <created>1685697984961</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1685697984961</updated>
-    </task>
-    <task id="LOCAL-00032" summary="merging main and general_model2">
-      <created>1685702646934</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1685702646934</updated>
-    </task>
-    <task id="LOCAL-00033" summary="even number of carbons fixed">
-      <created>1685705362362</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1685705362362</updated>
-    </task>
-    <task id="LOCAL-00034" summary="fixing drawing bug">
-      <created>1685962645114</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1685962645114</updated>
-    </task>
-    <task id="LOCAL-00035" summary="fixing pattern drawing bug">
-      <created>1685964224650</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1685964224650</updated>
-    </task>
-    <task id="LOCAL-00036" summary="before refactoring Molecule">
-      <created>1685965035944</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1685965035944</updated>
-    </task>
-    <task id="LOCAL-00037" summary="creating BenzenoidParser">
-      <created>1685965786916</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1685965786916</updated>
-    </task>
-    <task id="LOCAL-00038" summary="refactoring BenzenoidParser.exportProperties()">
-      <created>1685966047103</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1685966047103</updated>
-    </task>
-    <option name="localTasksCounter" value="39" />
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="CUSTOM_BOOLEAN_PROPERTIES">
-                <map>
-                  <entry key="Show.Git.Branches" value="false" />
-                </map>
-              </option>
-              <option name="TEXT_FILTER_SETTINGS">
-                <TextFilterSettings>
-                  <option name="MATCH_CASE" value="true" />
-                </TextFilterSettings>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="Refactoring-collection-operations" />
-                </option>
-              </RecentGroup>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="simplified code in BenzenoidCollectionsManagerPane" />
-    <MESSAGE value="Classes renamed, packages moved, symmetry handling bugs fixed" />
-    <MESSAGE value="Symmetry OK, rectangle not OK" />
-    <MESSAGE value="lot of attributes made final" />
-    <MESSAGE value="branch general_model2 merged" />
-    <MESSAGE value="add : testing generation" />
-    <MESSAGE value="minor refactoring" />
-    <MESSAGE value="Rectangle, Carbon number, Hydrogen number properties fixed&#10;TestGeneration class added" />
-    <MESSAGE value="class HexNeighborhood added" />
-    <MESSAGE value="class Pattern refactored" />
-    <MESSAGE value="class Pattern delegates export and import file to new classes PatternFileImport and PatternFileWriter" />
-    <MESSAGE value="class HBox and derivates lightly refactored" />
-    <MESSAGE value="class HBoxCriterion and derivates lightly refactored" />
-    <MESSAGE value="Coronenoid criterion fixed + few refactorings" />
-    <MESSAGE value="PatternsEditionPane refactoring" />
-    <MESSAGE value="SymmetriesConstraint refactoring" />
-    <MESSAGE value="Pattern constraint, drawing refactoring" />
-    <MESSAGE value="Pattern generation test added" />
-    <MESSAGE value="merging main and general_model2" />
-    <MESSAGE value="even number of carbons fixed" />
-    <MESSAGE value="fixing drawing bug" />
-    <MESSAGE value="fixing pattern drawing bug" />
-    <MESSAGE value="before refactoring Molecule" />
-    <MESSAGE value="creating BenzenoidParser" />
-    <MESSAGE value="refactoring BenzenoidParser.exportProperties()" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactoring BenzenoidParser.exportProperties()" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/collection_operations/CollectionTask.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/collection_operations/CollectionTask.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java</url>
-          <line>131</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/TestGeneration.java</url>
-          <line>66</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1685704892637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1682673901626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
