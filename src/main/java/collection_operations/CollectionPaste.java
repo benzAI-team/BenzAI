@@ -1,6 +1,6 @@
 package collection_operations;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidPane;
@@ -24,7 +24,7 @@ public class CollectionPaste extends CollectionOperation{
 
             BenzenoidCollectionPane originPane = pane.getBenzenoidCollectionPane();
 
-            Molecule molecule = originPane.getMolecule(pane.getIndex());
+            Benzenoid molecule = originPane.getMolecule(pane.getIndex());
             BenzenoidCollectionPane.DisplayType displayType = originPane.getDisplayType(pane.getIndex());
 
             destinationPane.addBenzenoid(molecule, displayType);

@@ -3,7 +3,7 @@ package spectrums;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Couple;
 
 public class IRSpectra {
@@ -14,7 +14,7 @@ public class IRSpectra {
 
 	private Parameter parameter;
 	private String className;
-	private ArrayList<Molecule> molecules;
+	private ArrayList<Benzenoid> molecules;
 
 	private ArrayList<String> amesFormats;
 
@@ -35,7 +35,7 @@ public class IRSpectra {
 	 * Constructeurs
 	 */
 
-	public IRSpectra(Parameter parameter, String className, ArrayList<Molecule> molecules) {
+	public IRSpectra(Parameter parameter, String className, ArrayList<Benzenoid> molecules) {
 		this.parameter = parameter;
 		this.className = className;
 		this.molecules = molecules;
@@ -61,11 +61,11 @@ public class IRSpectra {
 		this.className = className;
 	}
 
-	public ArrayList<Molecule> getMolecules() {
+	public ArrayList<Benzenoid> getMolecules() {
 		return molecules;
 	}
 
-	public void setMolecules(ArrayList<Molecule> molecules) {
+	public void setMolecules(ArrayList<Benzenoid> molecules) {
 		this.molecules = molecules;
 	}
 

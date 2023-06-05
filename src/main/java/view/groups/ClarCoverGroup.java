@@ -3,7 +3,7 @@ package view.groups;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solution.ClarCoverSolution;
 import utils.Couple;
 
@@ -11,7 +11,7 @@ public class ClarCoverGroup extends MoleculeGroup {
 
 	private final ClarCoverSolution clarCoverSolution;
 
-	public ClarCoverGroup(Molecule molecule, ClarCoverSolution clarCoverSolution) {
+	public ClarCoverGroup(Benzenoid molecule, ClarCoverSolution clarCoverSolution) {
 		super(molecule);
 		removeTexts();
 		this.clarCoverSolution = clarCoverSolution;

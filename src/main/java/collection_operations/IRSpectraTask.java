@@ -6,7 +6,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
@@ -55,7 +55,7 @@ public class IRSpectraTask extends CollectionTask {
 
                         for (BenzenoidPane pane : panes) {
 
-                            Molecule molecule = currentPane.getMolecule(pane.getIndex());
+                            Benzenoid molecule = currentPane.getMolecule(pane.getIndex());
 
                             if (!molecule.databaseCheckedIR()) {
                                 if (molecule.getIRSpectraResult() != null) {

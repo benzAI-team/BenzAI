@@ -28,7 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import spectrums.ResultLogFile;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane.DisplayType;
@@ -53,7 +53,7 @@ public class DatabasePane extends ScrollPane {
 
 	private HBox buttonsBox;
 
-	private ArrayList<Molecule> molecules;
+	private ArrayList<Benzenoid> molecules;
 
 	private Label titleLabel;
 
@@ -239,7 +239,7 @@ public class DatabasePane extends ScrollPane {
 
 										IRSpectraEntry content = IRSpectraEntry.buildQueryContent(map);
 
-										Molecule molecule = null;
+										Benzenoid molecule = null;
 
 										molecule = content.buildMolecule();
 

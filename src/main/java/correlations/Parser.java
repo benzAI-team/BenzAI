@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 
 public enum Parser {
@@ -42,7 +42,7 @@ public enum Parser {
 					String moleculeName = moleculeFile.getName();
 					moleculeName = moleculeName.replaceAll(".graph_coord", "");
 				
-					Molecule molecule = GraphParser.parseUndirectedGraph(moleculeFile);
+					Benzenoid molecule = GraphParser.parseUndirectedGraph(moleculeFile);
 				
 					//computing classes of symmetries
 					HashMap<Double, ArrayList<Integer>> symmetries = new HashMap<>();
@@ -115,7 +115,7 @@ public enum Parser {
 	
 	public static void linLogToDat(File moleculeFile, File logFile) throws IOException {
 		
-		Molecule molecule = GraphParser.parseUndirectedGraph(moleculeFile);
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(moleculeFile);
 		double nbKekuleStructures = molecule.getNbKekuleStructures();
 		double [] RI = new double[] {0.869, 0.246, 0.100, 0.041};
 		
@@ -232,7 +232,7 @@ public enum Parser {
 				ArrayList<Double> linDat = new ArrayList<>();
 				ArrayList<Double> linFanDat = new ArrayList<>();
 				
-				Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
+				Benzenoid molecule = GraphParser.parseUndirectedGraph(molFile);
 				
 				BufferedReader r = new BufferedReader(new FileReader(linFile));
 				String line;

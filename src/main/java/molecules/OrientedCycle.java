@@ -6,7 +6,7 @@ public class OrientedCycle {
 	private final int [] nodes;
 	private final int [][] matrix;
 	
-	public OrientedCycle(Molecule molecule) {
+	public OrientedCycle(Benzenoid molecule) {
 		size = 0;
 		nodes = new int [molecule.getNbNodes()];
 		matrix = new int [molecule.getNbNodes()][molecule.getNbNodes()];

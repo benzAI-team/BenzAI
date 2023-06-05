@@ -3,7 +3,7 @@ package solveur;
 import java.util.ArrayList;
 
 import Jama.Matrix;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.SubGraph;
 import parsers.GraphParser;
 import solveur.LinAlgorithm.PerfectMatchingType;
@@ -11,7 +11,7 @@ import solveur.LinAlgorithm.PerfectMatchingType;
 public enum RispoliAlgorithm {
     ;
 
-    public static SubGraph removeCircuit(Molecule molecule, ArrayList<Integer> circuit, PerfectMatchingType type) {
+    public static SubGraph removeCircuit(Benzenoid molecule, ArrayList<Integer> circuit, PerfectMatchingType type) {
 
 		int nbNodes = molecule.getNbNodes();
 		int[][] matrix = molecule.getEdgeMatrix();
@@ -132,7 +132,7 @@ public enum RispoliAlgorithm {
 
 	public static void main(String[] args) {
 
-		Molecule molecule = GraphParser
+		Benzenoid molecule = GraphParser
 				.parseUndirectedGraph("C:\\Users\\adrie\\Desktop\\molecules_test\\coro_3.graph_coord", null, true);
 		ArrayList<Integer> circuit = new ArrayList<>();
 

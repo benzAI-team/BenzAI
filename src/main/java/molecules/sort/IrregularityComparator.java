@@ -1,11 +1,11 @@
 package molecules.sort;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class IrregularityComparator implements MoleculeComparator{
 
 	@Override
-	public int compare(Molecule molecule1, Molecule molecule2) {
+	public int compare(Benzenoid molecule1, Benzenoid molecule2) {
 		
 		if (molecule1.getIrregularity() == null && molecule2.getIrregularity() == null)
 			return 0;

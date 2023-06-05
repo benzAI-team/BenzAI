@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
@@ -97,19 +97,19 @@ public class CollectionsOperationsPane extends GridPane {
 					pane2 = pane;
 			}
 
-			ArrayList<Molecule> molecules1 = pane1.getMolecules();
-			ArrayList<Molecule> molecules2 = pane2.getMolecules();
+			ArrayList<Benzenoid> molecules1 = pane1.getMolecules();
+			ArrayList<Benzenoid> molecules2 = pane2.getMolecules();
 
-			ArrayList<Molecule> molecules = null;
+			ArrayList<Benzenoid> molecules = null;
 
 			if ("Union".equals(operatorBox.getValue()))
-				molecules = Molecule.union(molecules1, molecules2);
+				molecules = Benzenoid.union(molecules1, molecules2);
 
 			else if ("Intersection".equals(operatorBox.getValue()))
-				molecules = Molecule.intersection(molecules1, molecules2);
+				molecules = Benzenoid.intersection(molecules1, molecules2);
 
 			else if ("Difference".equals(operatorBox.getValue()))
-				molecules = Molecule.diff(molecules1, molecules2);
+				molecules = Benzenoid.diff(molecules1, molecules2);
 
 			if (molecules != null) {
 
@@ -124,7 +124,7 @@ public class CollectionsOperationsPane extends GridPane {
 				BenzenoidCollectionPane newCollectionPane = new BenzenoidCollectionPane(managerPane,
 						managerPane.getNbCollectionPanes(), name);
 
-				for (Molecule molecule : molecules) {
+				for (Benzenoid molecule : molecules) {
 					newCollectionPane.addBenzenoid(molecule, DisplayType.BASIC);
 				}
 

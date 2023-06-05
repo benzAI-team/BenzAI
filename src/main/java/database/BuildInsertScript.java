@@ -1,7 +1,7 @@
 package database;
 
 import classifier.Irregularity;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
@@ -22,7 +22,7 @@ public enum BuildInsertScript {
 
 			System.out.println("Treating : " + graphFile);
 
-			Molecule molecule = GraphParser.parseUndirectedGraph(graphFile, null, false);
+			Benzenoid molecule = GraphParser.parseUndirectedGraph(graphFile, null, false);
 			ResultLogFile log = SpectrumsComputer.parseLogFile(logFile);
 
 			Irregularity irregularity = Utils.computeParameterOfIrregularity(molecule);

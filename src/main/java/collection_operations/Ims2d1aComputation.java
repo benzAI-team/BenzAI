@@ -1,6 +1,6 @@
 package collection_operations;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
@@ -29,7 +29,7 @@ public class Ims2d1aComputation extends CollectionComputation{
 
         int nbNotAvailable = 0; // the number of benzenoids for which the map is not available
         for (BenzenoidPane pane : panes) {
-            Molecule molecule = currentPane.getMolecule(pane.getIndex());
+            Benzenoid molecule = currentPane.getMolecule(pane.getIndex());
             if (molecule.getIms2d1a() != null)
                 benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.IMS2D1A);
             else

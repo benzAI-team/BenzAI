@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextInputDialog;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solution.ClarCoverSolution;
 import solveur.ClarCoverForcedRadicalsSolver;
 import utils.Utils;
@@ -70,7 +70,7 @@ public class ForcedSingleClarCoverTask extends CollectionTask{
 
                         for (BenzenoidPane benzenoidPane : panes) {
                             if (operationIsRunning()) {
-                                Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+                                Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 
                                 ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverForcedRadicalsSolver.solve(molecule, nbRadicals);
                                 if (clarCoverSolutions.size() > 0) {

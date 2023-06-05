@@ -34,7 +34,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import spectrums.Parameter;
 import spectrums.ResultLogFile;
 import spectrums.ResultSpectrums;
@@ -55,7 +55,7 @@ public class CatalogPane extends GridPane {
 
 	private final ScrollPane scrollPane = new ScrollPane();
 
-	ArrayList<Molecule> molecules;
+	ArrayList<Benzenoid> molecules;
 
 	HashMap<String, ResultLogFile> logsResults;
 
@@ -387,7 +387,7 @@ public class CatalogPane extends GridPane {
 
 						IRSpectraEntry content = IRSpectraEntry.buildQueryContent(map);
 
-						Molecule molecule = content.buildMolecule();
+						Benzenoid molecule = content.buildMolecule();
 						ResultLogFile resultLog = content.buildResultLogFile();
 
 						molecules.add(molecule);
@@ -480,7 +480,7 @@ public class CatalogPane extends GridPane {
 
 					HashMap<String, MoleculeInformation> moleculesInformations = new HashMap<>();
 
-					for (Molecule molecule : molecules) {
+					for (Benzenoid molecule : molecules) {
 						MoleculeInformation information = new MoleculeInformation(molecule.toString(), molecule);
 						moleculesInformations.put(molecule.toString(), information);
 					}
@@ -559,7 +559,7 @@ public class CatalogPane extends GridPane {
 								String key = entry.getKey();
 								MoleculeInformation value = entry.getValue();
 
-								Molecule molecule = value.getMolecule();
+								Benzenoid molecule = value.getMolecule();
 
 								Irregularity irregularity = IrregularityClassifier
 										.computeParameterOfIrregularity(molecule);

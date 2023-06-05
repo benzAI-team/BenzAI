@@ -1,17 +1,17 @@
 package classifier;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class MoleculeInformation {
 
-	private final Molecule molecule;
+	private final Benzenoid molecule;
 	
 	private final String moleculeName;
 	private final String pathToGraphFile = "NONE";
 	private final String pathToLogFile = "NONE";
 
 
-	public MoleculeInformation(String moleculeName, Molecule molecule) {
+	public MoleculeInformation(String moleculeName, Benzenoid molecule) {
 		this.molecule = molecule;
 		this.moleculeName = moleculeName;
 	}
@@ -32,7 +32,7 @@ public class MoleculeInformation {
 		return pathToLogFile;
 	}
 
-	public Molecule getMolecule() {
+	public Benzenoid getMolecule() {
 		return molecule;
 	}
 	

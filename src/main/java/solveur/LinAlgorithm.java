@@ -14,7 +14,7 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import molecules.NodeSameLine;
 import molecules.SubGraph;
@@ -38,7 +38,7 @@ public enum LinAlgorithm {
 	public static double [] circuitCount;
 	private static boolean verbose = false;
 
-	public static void computeResonanceEnergy(Molecule molecule, PerfectMatchingType type) {
+	public static void computeResonanceEnergy(Benzenoid molecule, PerfectMatchingType type) {
 
 		energies = Utils.initEnergies();
 		circuits = new double[molecule.getNbHexagons()][MAX_CYCLE_SIZE];
@@ -138,7 +138,7 @@ public enum LinAlgorithm {
 		System.out.print("\n# Resolution time: " + time + " ms.");
 	}
 
-	public static EdgeSet computeStraightEdges(Molecule molecule, ArrayList<Integer> cycle) {
+	public static EdgeSet computeStraightEdges(Benzenoid molecule, ArrayList<Integer> cycle) {
 
 		List<Node> firstVertices = new ArrayList<>();
 		List<Node> secondVertices = new ArrayList<>();
@@ -213,8 +213,8 @@ public enum LinAlgorithm {
 		return intervals;
 	}
 
-	public static SubMolecule substractCycleAndInterior(Molecule molecule,
-														ArrayList<Interval> intervals) {
+	public static SubMolecule substractCycleAndInterior(Benzenoid molecule,
+                                                        ArrayList<Interval> intervals) {
 
 		int[][] newGraph = new int[molecule.getNbNodes()][molecule.getNbNodes()];
 		int[] vertices = new int[molecule.getNbNodes()];
@@ -263,8 +263,8 @@ public enum LinAlgorithm {
 		return (i1.y1() == i2.y1() && i1.y2() == i2.y2());
 	}
 
-	public static List<Integer> getHexagons(Molecule molecule,
-											ArrayList<Interval> intervals) {
+	public static List<Integer> getHexagons(Benzenoid molecule,
+                                            ArrayList<Interval> intervals) {
 		List<Integer> hexagons = new ArrayList<>();
 
 		for (Interval interval : intervals) {
@@ -305,7 +305,7 @@ public enum LinAlgorithm {
 		return list.toString();
 	}
 
-	public static void treatCycle(Molecule molecule, ArrayList<Integer> cycle, PerfectMatchingType type) {
+	public static void treatCycle(Benzenoid molecule, ArrayList<Integer> cycle, PerfectMatchingType type) {
 
 		EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
 		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(verticalEdges);
@@ -368,7 +368,7 @@ public enum LinAlgorithm {
 		}
 	}
 
-	public static Aromaticity solve(Molecule molecule, PerfectMatchingType type) throws IOException {
+	public static Aromaticity solve(Benzenoid molecule, PerfectMatchingType type) throws IOException {
 		computeResonanceEnergy(molecule, type);
 		return new Aromaticity(molecule, circuits, RIType.OPTIMIZED);
 	}
@@ -418,7 +418,7 @@ public enum LinAlgorithm {
 
 		printHeader(path, type);
 
-		Molecule molecule = GraphParser.parseUndirectedGraph(path, null, false);
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(path, null, false);
 
 		long begin = System.currentTimeMillis();
 		assert molecule != null;

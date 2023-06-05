@@ -6,13 +6,13 @@ import generator.properties.Property;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public abstract class Filter {
 
-	public abstract boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet);
+	public abstract boolean test(Benzenoid molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet);
 	
-	public static boolean testAll(Molecule molecule, ModelPropertySet modelPropertySet) {
+	public static boolean testAll(Benzenoid molecule, ModelPropertySet modelPropertySet) {
 		for(Property modelProperty : modelPropertySet)
 			if(modelProperty.hasExpressions() && !((ModelProperty)modelProperty).getFilter().test(molecule, modelProperty.getExpressions(), modelPropertySet))
 				return false;

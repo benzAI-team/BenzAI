@@ -10,14 +10,14 @@ import org.chocosolver.solver.constraints.nary.cnf.LogOp;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solution.ClarCoverSolution;
 import utils.Couple;
 
 public enum ClarCoverSolver {
     ;
 
-    public static ArrayList<ClarCoverSolution> solve(Molecule molecule) {
+    public static ArrayList<ClarCoverSolution> solve(Benzenoid molecule) {
 
 		Model model = new Model("Clar Cover");
 

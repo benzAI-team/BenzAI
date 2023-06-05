@@ -9,7 +9,7 @@ import molecules.RBO;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import view.collections.BenzenoidCollectionsManagerPane;
 
 public class RBOGroup extends MoleculeGroup {
@@ -20,7 +20,7 @@ public class RBOGroup extends MoleculeGroup {
 
 	private Color[] palette;
 
-	public RBOGroup(Molecule molecule) {
+	public RBOGroup(Benzenoid molecule) {
 		super(molecule);
 		RBO = molecule.getRBO();
 		removeTexts();

@@ -14,7 +14,7 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Couple;
 import utils.Triplet;
 
@@ -125,8 +125,8 @@ public enum GaussChecker {
 		return cycles;
 	}
 	
-	public static ArrayList<Couple<Integer, Integer>> checkInvalidCarbons(Molecule molecule,
-			Triplet<Double, Double, Double>[] carbons) {
+	public static ArrayList<Couple<Integer, Integer>> checkInvalidCarbons(Benzenoid molecule,
+                                                                          Triplet<Double, Double, Double>[] carbons) {
 
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<>();
 
@@ -146,8 +146,8 @@ public enum GaussChecker {
 		return invalidsCarbons;
 	}
 	
-	public static ArrayList<Couple<Integer, Integer>> checkInvalidHydrogens(Molecule molecule,
-			Triplet<Double, Double, Double>[] hydrogens) {
+	public static ArrayList<Couple<Integer, Integer>> checkInvalidHydrogens(Benzenoid molecule,
+                                                                            Triplet<Double, Double, Double>[] hydrogens) {
 
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<>();
 
@@ -170,7 +170,7 @@ public enum GaussChecker {
 		return invalidsCarbons;
 	}
 	
-	public static void checkGeometry(String name, Molecule molecule, Geometry geometry) {
+	public static void checkGeometry(String name, Benzenoid molecule, Geometry geometry) {
 		
 		/*
 		 * Nb carbons

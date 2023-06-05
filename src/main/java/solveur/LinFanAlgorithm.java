@@ -13,7 +13,7 @@ import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 
 import molecules.Edge;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.UndirPonderateGraph;
 import parsers.GraphParser;
 import solveur.Aromaticity.RIType;
@@ -815,7 +815,7 @@ public enum LinFanAlgorithm {
 		}
 	}
 
-	public static Aromaticity computeEnergy(Molecule graph) throws IOException {
+	public static Aromaticity computeEnergy(Benzenoid graph) throws IOException {
 
 		localAromaticity = new double[graph.getNbHexagons()][MAX_CIRCUIT_SIZE];
 
@@ -887,7 +887,7 @@ public enum LinFanAlgorithm {
 			System.exit(1);
 		}
 		
-		Molecule molecule = GraphParser.parseUndirectedGraph(args[0],
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(args[0],
 				null, false);
 
 		long begin = System.currentTimeMillis();

@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Couple;
 import utils.HexagonAromaticity;
 
@@ -16,7 +16,7 @@ public class ClarCoverREGroup extends MoleculeGroup {
 
 	private Color[] paletteLocalScale;
 
-	public ClarCoverREGroup(Molecule molecule, int[] clarValues) throws IOException {
+	public ClarCoverREGroup(Benzenoid molecule, int[] clarValues) throws IOException {
 		super(molecule);
 		removeTexts();
 

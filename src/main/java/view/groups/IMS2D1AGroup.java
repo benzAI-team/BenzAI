@@ -8,13 +8,13 @@ import java.io.InputStream;
 import database.PictureConverter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class IMS2D1AGroup extends MoleculeGroup {
 
 	private final String pictureData;
 
-	public IMS2D1AGroup(Molecule molecule) {
+	public IMS2D1AGroup(Benzenoid molecule) {
 		super(molecule);
 		this.pictureData = molecule.getIms2d1a();
 		try {

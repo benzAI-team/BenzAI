@@ -10,7 +10,7 @@ import java.math.RoundingMode;
 import java.util.regex.Pattern;
 
 import classifier.Irregularity;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
@@ -38,7 +38,7 @@ public enum BuildInsertScript2 {
 					+ ".log";
 			File logFile = new File(logFileName);
 
-			Molecule molecule = GraphParser.parseUndirectedGraph(graphFile.getAbsolutePath(), null, false);
+			Benzenoid molecule = GraphParser.parseUndirectedGraph(graphFile.getAbsolutePath(), null, false);
 			ResultLogFile log = SpectrumsComputer.parseLogFile(logFile.getAbsolutePath());
 
 			Irregularity irregularity = Utils.computeParameterOfIrregularity(molecule);

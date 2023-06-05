@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class Molecule implements Comparable<Molecule> {
+public class Benzenoid implements Comparable<Benzenoid> {
 
 	private MoleculeComparator comparator;
 
@@ -99,8 +99,8 @@ public class Molecule implements Comparable<Molecule> {
 	 * Constructors
 	 */
 
-	public Molecule(int nbNodes, int nbEdges, int nbHexagons, int[][] hexagons, Node[] nodesRefs,
-			int[][] edgeMatrix, RelativeMatrix coordinates) {
+	public Benzenoid(int nbNodes, int nbEdges, int nbHexagons, int[][] hexagons, Node[] nodesRefs,
+					 int[][] edgeMatrix, RelativeMatrix coordinates) {
 
 		comparator = new NbHexagonsComparator();
 
@@ -134,9 +134,9 @@ public class Molecule implements Comparable<Molecule> {
 		buildHexagonsCoords2();
 	}
 
-	public Molecule(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeLists,
-			int[][] edgeMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
-			RelativeMatrix coords, RelativeMatrix nodesMem, int maxIndex) {
+	public Benzenoid(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeLists,
+					 int[][] edgeMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
+					 RelativeMatrix coords, RelativeMatrix nodesMem, int maxIndex) {
 
 		this.nbNodes = nbNodes;
 		this.nbEdges = nbEdges;
@@ -556,40 +556,7 @@ public class Molecule implements Comparable<Molecule> {
 		//TODO
 	}
 
-	public void exportToGraphFile(File file) throws IOException {
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
-		writer.write("p DIMACS " + nbNodes + " " + nbEdges + " " + nbHexagons + "\n");
-
-		for (int i = 0; i < nbNodes; i++) {
-			for (int j = (i + 1); j < nbNodes; j++) {
-				if (edgeMatrix[i][j] == 1) {
-
-					Node u = nodesRefs[i];
-					Node v = nodesRefs[j];
-
-					writer.write("e " + u.getX() + "_" + u.getY() + " " + v.getX() + "_" + v.getY() + "\n");
-				}
-			}
-		}
-
-		for (int i = 0; i < nbHexagons; i++) {
-
-			int[] hexagon = hexagons[i];
-			writer.write("h ");
-
-			for (int j = 0; j < 6; j++) {
-
-				Node u = nodesRefs[hexagon[j]];
-				writer.write(u.getX() + "_" + u.getY() + " ");
-			}
-
-			writer.write("\n");
-		}
-
-		writer.close();
-	}
 
 	public void exportProperties(File file) throws IOException {
 
@@ -705,7 +672,7 @@ public class Molecule implements Comparable<Molecule> {
 		return degrees;
 	}
 
-	public static Irregularity computeParameterOfIrregularity(Molecule molecule) {
+	public static Irregularity computeParameterOfIrregularity(Benzenoid molecule) {
 
 		if (molecule.getNbHexagons() == 1)
 			return null;
@@ -772,7 +739,7 @@ public class Molecule implements Comparable<Molecule> {
 	public Irregularity getIrregularity() {
 
 		if (irregularity == null)
-			irregularity = Molecule.computeParameterOfIrregularity(this);
+			irregularity = Benzenoid.computeParameterOfIrregularity(this);
 
 		return irregularity;
 	}
@@ -894,7 +861,7 @@ public class Molecule implements Comparable<Molecule> {
 	}
 
 	@Override
-	public int compareTo(Molecule arg0) {
+	public int compareTo(Benzenoid arg0) {
 		return comparator.compare(this, arg0);
 	}
 
@@ -1381,16 +1348,16 @@ public class Molecule implements Comparable<Molecule> {
 		return databaseCheckedIR;
 	}
 
-	public static ArrayList<Molecule> union(ArrayList<Molecule> molecules1, ArrayList<Molecule> molecules2) {
+	public static ArrayList<Benzenoid> union(ArrayList<Benzenoid> molecules1, ArrayList<Benzenoid> molecules2) {
 
-		ArrayList<Molecule> molecules = new ArrayList<>();
+		ArrayList<Benzenoid> molecules = new ArrayList<>();
 
-		for (Molecule molecule : molecules1) {
+		for (Benzenoid molecule : molecules1) {
 			if (!molecules.contains(molecule))
 				molecules.add(molecule);
 		}
 
-		for (Molecule molecule : molecules2) {
+		for (Benzenoid molecule : molecules2) {
 			if (!molecules.contains(molecule))
 				molecules.add(molecule);
 		}
@@ -1398,11 +1365,11 @@ public class Molecule implements Comparable<Molecule> {
 		return molecules;
 	}
 
-	public static ArrayList<Molecule> intersection(ArrayList<Molecule> molecules1, ArrayList<Molecule> molecules2) {
+	public static ArrayList<Benzenoid> intersection(ArrayList<Benzenoid> molecules1, ArrayList<Benzenoid> molecules2) {
 
-		ArrayList<Molecule> molecules = new ArrayList<>();
+		ArrayList<Benzenoid> molecules = new ArrayList<>();
 
-		for (Molecule molecule : molecules1) {
+		for (Benzenoid molecule : molecules1) {
 			if (molecules2.contains(molecule))
 				molecules.add(molecule);
 		}
@@ -1410,11 +1377,11 @@ public class Molecule implements Comparable<Molecule> {
 		return molecules;
 	}
 
-	public static ArrayList<Molecule> diff(ArrayList<Molecule> molecules1, ArrayList<Molecule> molecules2) {
+	public static ArrayList<Benzenoid> diff(ArrayList<Benzenoid> molecules1, ArrayList<Benzenoid> molecules2) {
 
-		ArrayList<Molecule> molecules = new ArrayList<>();
+		ArrayList<Benzenoid> molecules = new ArrayList<>();
 
-		for (Molecule molecule : molecules1) {
+		for (Benzenoid molecule : molecules1) {
 			if (!molecules2.contains(molecule))
 				molecules.add(molecule);
 		}
@@ -1433,7 +1400,7 @@ public class Molecule implements Comparable<Molecule> {
 	@Override
 	public boolean equals(Object obj) {
 
-		Molecule molecule = (Molecule) obj;
+		Benzenoid molecule = (Benzenoid) obj;
 
 		for (String name : molecule.getNames()) {
 			if (this.getNames().contains(name))
@@ -1502,8 +1469,8 @@ public class Molecule implements Comparable<Molecule> {
 	/***
 	 *
 	 */
-	public static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution) {
-		Molecule molecule = null;
+	public static Benzenoid buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution) {
+		Benzenoid molecule = null;
 		try {
 			String graphFilename = "tmp.graph";
 			String graphCoordFilename = "tmp.graph_coord";
@@ -1521,9 +1488,9 @@ public class Molecule implements Comparable<Molecule> {
 	/***
 	 *
 	 */
-	private static Molecule buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution,
-										  String graphCoordFilename) {
-		Molecule molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
+	private static Benzenoid buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution,
+										   String graphCoordFilename) {
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
 		molecule.setVerticesSolutions(verticesSolution);
 		molecule.setDescription(buildMoleculeDescription(description, index));
 		molecule.setNbCrowns(nbCrowns);

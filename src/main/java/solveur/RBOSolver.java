@@ -2,7 +2,7 @@ package solveur;
 
 import java.util.ArrayList;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.RBO;
 import molecules.SubGraph;
 import solveur.LinAlgorithm.PerfectMatchingType;
@@ -10,7 +10,7 @@ import solveur.LinAlgorithm.PerfectMatchingType;
 public enum RBOSolver {
     ;
 
-    public static RBO RBO(Molecule molecule) {
+    public static RBO RBO(Benzenoid molecule) {
 
 		double[][] statistics = new double[molecule.getNbNodes()][molecule.getNbNodes()];
 		double[] RBO = new double[molecule.getNbHexagons()];

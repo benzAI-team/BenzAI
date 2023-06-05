@@ -2,26 +2,25 @@ package toolbox;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import classifier.Irregularity;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 import utils.Couple;
 
 public enum MoleculeFilter {
     ;
 
-    private static Couple<Integer, Integer> countCarbonsAndHydrogens(Molecule molecule) {
+    private static Couple<Integer, Integer> countCarbonsAndHydrogens(Benzenoid molecule) {
 		
 		return new Couple<>(molecule.getNbNodes(), molecule.getNbHydrogens());
 	}
 	
-	private static Irregularity computeParameterOfIrregularity(Molecule molecule) {
+	private static Irregularity computeParameterOfIrregularity(Benzenoid molecule) {
 		
 		if (molecule.getNbHexagons() == 1)
 			return null;
@@ -85,7 +84,7 @@ public enum MoleculeFilter {
 		return new Irregularity(N, XI);
 	}
 	
-	private static void check(Molecule molecule, String filename) {
+	private static void check(Benzenoid molecule, String filename) {
 		
 		Couple<Integer, Integer> result = countCarbonsAndHydrogens(molecule); 
 		
@@ -98,7 +97,7 @@ public enum MoleculeFilter {
 	}
 	
 	private static void readFile(String filename) {
-		Molecule molecule = GraphParser.parseUndirectedGraph(filename, null, false);
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(filename, null, false);
 		check(molecule, filename);
 	}
 	

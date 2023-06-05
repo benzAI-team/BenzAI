@@ -1,11 +1,11 @@
 package molecules.sort;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class NbCarbonsComparator implements MoleculeComparator{
 
 	@Override
-	public int compare(Molecule molecule1, Molecule molecule2) {
+	public int compare(Benzenoid molecule1, Benzenoid molecule2) {
 		if (molecule1.getNbNodes() < molecule2.getNbNodes())
 			return -1;
 		else if (molecule1.getNbNodes() == molecule2.getNbNodes())

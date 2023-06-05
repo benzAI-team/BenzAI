@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.ParameterizedExpression;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import generator.properties.model.SymmetryHandler;
 
 public class SymmetryFilter extends Filter {
 
 	@Override
-	public boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
+	public boolean test(Benzenoid molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
 		ArrayList<Integer> flatBooleanGrid = molecule.getVerticesSolutions();
 		ArrayList<Integer> moleculeIndices = new ArrayList<>();
 		int couronnes = molecule.getNbCrowns();

@@ -1,13 +1,13 @@
 package view.groups;
 
 import javafx.scene.shape.Line;
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class KekuleStructureGroup extends MoleculeGroup {
 
 	private final int[][] bonds;
 
-	public KekuleStructureGroup(Molecule molecule, int[][] bonds) {
+	public KekuleStructureGroup(Benzenoid molecule, int[][] bonds) {
 		super(molecule);
 		this.bonds = bonds;
 		removeTexts();

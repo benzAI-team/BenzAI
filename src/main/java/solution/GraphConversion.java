@@ -3,12 +3,12 @@ package solution;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public enum GraphConversion {
     ;
 
-    public static SimpleGraph<Integer, DefaultEdge> buildCarbonGraph(Molecule molecule) {
+    public static SimpleGraph<Integer, DefaultEdge> buildCarbonGraph(Benzenoid molecule) {
 		
 		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<>(DefaultEdge.class);
 		
@@ -27,7 +27,7 @@ public enum GraphConversion {
 		return carbonGraph;
 	}
 	
-	public static SimpleGraph<Integer, DefaultEdge> buildHexagonGraph(Molecule molecule) {
+	public static SimpleGraph<Integer, DefaultEdge> buildHexagonGraph(Benzenoid molecule) {
 		
 		int [][] dualGraph = molecule.getDualGraph();
 		SimpleGraph<Integer, DefaultEdge> hexagonGraph = new SimpleGraph<>(DefaultEdge.class);

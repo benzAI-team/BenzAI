@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class ConcealedNonKekuleanFilter extends Filter {
 
 	@Override
-	public boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
+	public boolean test(Benzenoid molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
 		return molecule.getNbKekuleStructures() == 0.0 && molecule.colorShift() == 0;
 	}
 

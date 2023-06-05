@@ -3,7 +3,7 @@ package view.groups;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Couple;
 import utils.HexNeighborhood;
 
@@ -14,7 +14,7 @@ public class MoleculeGroup extends Group {
 	private double width;
 	private double height;
 
-	protected Molecule molecule;
+	protected Benzenoid molecule;
 	protected Couple<Integer, Integer>[] hexagonsCoords;
 	protected Couple<Double, Double>[] centersCoords;
 
@@ -26,7 +26,7 @@ public class MoleculeGroup extends Group {
 	protected double xShift;
 	protected double yShift;
 
-	public MoleculeGroup(Molecule molecule) {
+	public MoleculeGroup(Benzenoid molecule) {
 		this.molecule = molecule;
 		buildHexagons();
 		drawHexagons();

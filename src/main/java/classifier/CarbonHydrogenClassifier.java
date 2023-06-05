@@ -1,6 +1,6 @@
 package classifier;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Couple;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class CarbonHydrogenClassifier extends Classifier{
 			MoleculeInformation moleculeInformation = (MoleculeInformation) pair.getValue();
 
 			String moleculeName = moleculeInformation.getMoleculeName();
-			Molecule molecule = moleculeInformation.getMolecule();
+			Benzenoid molecule = moleculeInformation.getMolecule();
 
 			Couple<Integer, Integer> nbAtoms = countCarbonsAndHydrogens(molecule);
 			matrixClasses[nbAtoms.getX()][nbAtoms.getY()].add(moleculeName);
@@ -59,7 +59,7 @@ public class CarbonHydrogenClassifier extends Classifier{
 		return classes;
 	}
 	
-	private Couple<Integer, Integer> countCarbonsAndHydrogens(Molecule molecule) {
+	private Couple<Integer, Integer> countCarbonsAndHydrogens(Benzenoid molecule) {
 		
 		return new Couple<>(molecule.getNbNodes(), molecule.getNbHydrogens());
 	}

@@ -2,17 +2,17 @@ package molecules;
 
 public class RBO {
 
-	private final Molecule molecule;
+	private final Benzenoid molecule;
 	private final double [][] statistics;
 	private final double [] RBO;
 	
-	public RBO(Molecule molecule, double[][] statistics, double[] rBO) {
+	public RBO(Benzenoid molecule, double[][] statistics, double[] rBO) {
 		this.molecule = molecule;
 		this.statistics = statistics;
 		RBO = rBO;
 	}
 	
-	public Molecule getMolecule() {
+	public Benzenoid getMolecule() {
 		return molecule;
 	}
 	

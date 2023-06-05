@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import molecules.UndirPonderateGraph;
 import utils.RelativeMatrix;
@@ -30,7 +30,7 @@ public enum GraphParser {
 		return ("h".equals(splittedLine[0]));
 	}
 
-	public static Molecule parseBenzenoidCode(String code) throws IOException {
+	public static Benzenoid parseBenzenoidCode(String code) throws IOException {
 
 		String[] splittedCode = code.split(Pattern.quote("-"));
 
@@ -63,7 +63,7 @@ public enum GraphParser {
 		GraphCoordFileBuilder graphCoordBuilder = new GraphCoordFileBuilder(graphFilename, graphCoordFilename);
 		graphCoordBuilder.convertInstance();
 
-		Molecule molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(graphCoordFilename, null, false);
 
 		File file = new File("tmp.graph");
 		file.delete();
@@ -77,7 +77,7 @@ public enum GraphParser {
 		return molecule;
 	}
 
-	public static UndirPonderateGraph exportSolutionToPonderateGraph(Molecule graph, int[] edgesValues) {
+	public static UndirPonderateGraph exportSolutionToPonderateGraph(Benzenoid graph, int[] edgesValues) {
 
 		int[][] adjacencyMatrix = new int[graph.getEdgeMatrix().length][graph.getEdgeMatrix()[0].length];
 		ArrayList<String> edgesString = new ArrayList<>();
@@ -113,7 +113,7 @@ public enum GraphParser {
 
 	}
 
-	public static void exportSolutionToPonderateGraphFile(String filename, Molecule graph, int[] edgesValues) {
+	public static void exportSolutionToPonderateGraphFile(String filename, Benzenoid graph, int[] edgesValues) {
 
 		try {
 			BufferedWriter w = new BufferedWriter(new FileWriter(filename));
@@ -260,11 +260,11 @@ public enum GraphParser {
 		return null;
 	}
 
-	public static Molecule parseUndirectedGraph(File file) {
+	public static Benzenoid parseUndirectedGraph(File file) {
 		return parseUndirectedGraph(file.getAbsolutePath(), null, false);
 	}
 
-	public static Molecule parseUndirectedGraph(String inputFileName, String fileWithNoCoordsName, boolean verbose) {
+	public static Benzenoid parseUndirectedGraph(String inputFileName, String fileWithNoCoordsName, boolean verbose) {
 
 		RelativeMatrix nodesMem = null;
 
@@ -382,7 +382,7 @@ public enum GraphParser {
 
 			int maxValue = nodesMem == null ? -1 : nodesMem.maxValue();
 			assert adjacencyMatrix != null;
-			return new Molecule(nbNodes, nbEdges, nbHexagons, edgesMatrix, adjacencyMatrix, edgesStrings,
+			return new Benzenoid(nbNodes, nbEdges, nbHexagons, edgesMatrix, adjacencyMatrix, edgesStrings,
 					hexagonsStrings, nodes, nodesCoord, nodesMem, maxValue);
 		} catch (IOException e) {
 			e.printStackTrace();

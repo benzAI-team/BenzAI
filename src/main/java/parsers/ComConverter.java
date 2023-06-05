@@ -1,6 +1,6 @@
 package parsers;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import utils.Couple;
 import utils.Triplet;
@@ -16,7 +16,7 @@ public enum ComConverter {
 		ER, IR
 	}
 
-	public static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
+	public static ArrayList<Integer> getCarbonsWithHydrogens(Benzenoid molecule) {
 
 		ArrayList<Integer> carbons = new ArrayList<Integer>();
 
@@ -28,7 +28,7 @@ public enum ComConverter {
 		return carbons;
 	}
 
-	public static Couple<Integer, Integer> findHexagon(Molecule molecule, int carbon) {
+	public static Couple<Integer, Integer> findHexagon(Benzenoid molecule, int carbon) {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 
@@ -43,7 +43,7 @@ public enum ComConverter {
 		return null;
 	}
 
-	public static boolean areOnSameHexagon(Molecule molecule, int u, int v) {
+	public static boolean areOnSameHexagon(Benzenoid molecule, int u, int v) {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 
@@ -69,7 +69,7 @@ public enum ComConverter {
 		return false;
 	}
 
-	public static boolean validConfiguration(Molecule molecule, Node u, Node v) {
+	public static boolean validConfiguration(Benzenoid molecule, Node u, Node v) {
 
 		if (u.getX() == 1 && u.getY() == 2 && v.getX() == 2 && v.getY() == 4)
 			System.out.print("");
@@ -118,8 +118,8 @@ public enum ComConverter {
 				|| (validHexaConfig && u.getX() == v.getX() - 1 && u.getY() == v.getY() - 2);
 	}
 
-	public static ArrayList<Couple<Integer, Integer>> checkGeometry(Molecule molecule,
-			ArrayList<Integer> carbonsWithHydrogens) throws IOException {
+	public static ArrayList<Couple<Integer, Integer>> checkGeometry(Benzenoid molecule,
+                                                                    ArrayList<Integer> carbonsWithHydrogens) throws IOException {
 
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<Couple<Integer, Integer>>();
 
@@ -174,7 +174,7 @@ public enum ComConverter {
 		return -1;
 	}
 
-	private static ArrayList<Integer> getHexagons(Molecule molecule, int node) {
+	private static ArrayList<Integer> getHexagons(Benzenoid molecule, int node) {
 
 		ArrayList<Integer> hexagons = new ArrayList<Integer>();
 
@@ -191,7 +191,7 @@ public enum ComConverter {
 	}
 
 	@SuppressWarnings({ "unchecked", "unused" })
-	public static void generateComFile(Molecule molecule, File file, int nbElectronsDiff, ComType type, String title)
+	public static void generateComFile(Benzenoid molecule, File file, int nbElectronsDiff, ComType type, String title)
 			throws IOException {
 
 		int hexa = -1, yMin = Integer.MAX_VALUE;
@@ -580,7 +580,7 @@ public enum ComConverter {
 
 			System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
-			Molecule molecule = GraphParser.parseUndirectedGraph(line, null, false);
+			Benzenoid molecule = GraphParser.parseUndirectedGraph(line, null, false);
 			System.out.println(line.split(Pattern.quote("."))[0] + ".com generated");
 			generateComFile(molecule, new File(line.split(Pattern.quote("."))[0] + ".com"), nbElectronsDiff, type,
 					title/* line.split(Pattern.quote("."))[0] */);

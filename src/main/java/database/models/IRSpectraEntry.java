@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import http.Post;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 
@@ -240,7 +240,7 @@ public class IRSpectraEntry {
 				idGaussianResult, finalEnergies, frequencies, intensities, zeroPointEnergy, amesFormat);
 	}
 
-	public Molecule buildMolecule() throws IOException {
+	public Benzenoid buildMolecule() throws IOException {
 		return GraphParser.parseBenzenoidCode(moleculeName);
 	}
 

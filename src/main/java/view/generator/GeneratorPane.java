@@ -20,7 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
@@ -35,7 +35,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private GeneralModel model;
 	private boolean canStartGeneration;
 	private boolean isRunning;
-	private ArrayList<Molecule> generatedMolecules;
+	private ArrayList<Benzenoid> generatedMolecules;
 
 	private BenzenoidCollectionPane selectedCollectionTab;
 
@@ -527,7 +527,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			application.getBenzenoidCollectionsPane().log("-> " + selectedCollectionTab.getName(), false);
 			application.getBenzenoidCollectionsPane().log("", false);
 
-			for (Molecule molecule : generatedMolecules) {
+			for (Benzenoid molecule : generatedMolecules) {
 				selectedCollectionTab.addBenzenoid(molecule, DisplayType.BASIC);
 			}
 

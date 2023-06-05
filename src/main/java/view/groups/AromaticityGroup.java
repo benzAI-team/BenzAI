@@ -3,7 +3,7 @@ package view.groups;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
 import utils.HexagonAromaticity;
@@ -24,7 +24,7 @@ public class AromaticityGroup extends MoleculeGroup {
 	private final Aromaticity aromaticity;
 	
 	
-	public AromaticityGroup(Molecule molecule, Aromaticity aromaticity)
+	public AromaticityGroup(Benzenoid molecule, Aromaticity aromaticity)
 			throws IOException {
 
 		super(molecule);

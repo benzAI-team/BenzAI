@@ -6,12 +6,12 @@ import generator.properties.model.ModelProperty;
 import generator.properties.model.SymmetryHandler;
 import generator.properties.model.expression.ParameterizedExpression;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class SymmetryChecker extends Checker {
 
     @Override
-    public boolean checks(Molecule molecule, ModelProperty property) {
+    public boolean checks(Benzenoid molecule, ModelProperty property) {
         ArrayList<Integer> flatBooleanGrid = molecule.getVerticesSolutions();
         ArrayList<Integer> moleculeIndices = new ArrayList<>();
         int couronnes = molecule.getNbCrowns();

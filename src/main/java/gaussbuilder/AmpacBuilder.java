@@ -1,6 +1,6 @@
 package gaussbuilder;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Triplet;
 
 import java.io.*;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 enum AmpacBuilder {
     ;
 
-    static void buildAmpacFile(Molecule molecule, String outputFilePath) throws IOException {
+    static void buildAmpacFile(Benzenoid molecule, String outputFilePath) throws IOException {
 		
 		Geometry geometry = GeometryBuilder.buildGeometry(molecule);
 		Triplet<Double, Double, Double> [] carbons = geometry.getX();

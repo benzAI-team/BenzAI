@@ -2,7 +2,7 @@ package constraints;
 
 import generator.GeneralModel;
 import generator.patterns.Pattern;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.IntVar;
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class BenzenoidConstraint extends BenzAIConstraint {
 
-	private final Molecule molecule;
+	private final Benzenoid molecule;
 
-	public BenzenoidConstraint(Molecule molecule) {
+	public BenzenoidConstraint(Benzenoid molecule) {
 		this.molecule = molecule;
 	}
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import classifier.Irregularity;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
@@ -174,7 +174,7 @@ public enum InsertScriptFinal {
 	// Fill the tables `benzenoid` and `name`
 	public static void insertBenzenoid(File molFile, File inchiFile) throws IOException {
 		
-		Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(molFile);
 		
 		
 		BigDecimal irregBD;
@@ -249,7 +249,7 @@ public enum InsertScriptFinal {
 		if (!molFile.exists() || !comFile.exists())
 			return "unknown";
 
-		Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(molFile);
 		Irregularity irregularity = molecule.getIrregularity();
 		String geometry = getGeometry(comFile);
 		String [] geometries = geometry.split(" ");

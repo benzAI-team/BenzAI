@@ -5,7 +5,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
@@ -40,7 +40,7 @@ public class InputMenu {
 			if (file != null) {
 
 				try {
-					Molecule molecule = GraphParser.parseUndirectedGraph(file);
+					Benzenoid molecule = GraphParser.parseUndirectedGraph(file);
 					molecule.setDescription(file.getName());
 
 					BenzenoidCollectionPane benzenoidCollectionPane = collectionsPane.getSelectedTab();

@@ -11,7 +11,7 @@ import generator.properties.solver.SolverProperty;
 import generator.properties.solver.SolverPropertySet;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import nogood.*;
 import org.chocosolver.solver.Model;
@@ -537,7 +537,7 @@ public class GeneralModel {
         while (chocoSolver.solve() && !generatorRun.isPaused()) {
             ArrayList<Integer> verticesSolution = buildVerticesSolution();
             String description = buildDescription(indexSolution);
-            Molecule molecule = Molecule.buildMolecule(description, nbCrowns, indexSolution, verticesSolution);
+            Benzenoid molecule = Benzenoid.buildMolecule(description, nbCrowns, indexSolution, verticesSolution);
 
             if (molecule.respectPostProcessing(modelPropertySet)) {
                 solverResults.addMolecule(molecule);

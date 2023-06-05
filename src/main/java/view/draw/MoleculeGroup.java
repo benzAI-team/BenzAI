@@ -3,7 +3,7 @@ package view.draw;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
 import javafx.scene.Group;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import utils.Couple;
 import utils.HexNeighborhood;
@@ -370,7 +370,7 @@ public class MoleculeGroup extends Group {
 		}
 	}
 
-	public Molecule exportMolecule() {
+	public Benzenoid exportMolecule() {
 
 		fillHolesOfSize1();
 
@@ -937,7 +937,7 @@ public class MoleculeGroup extends Group {
 			}
 		}
 
-		return new Molecule(nbNodes, nbEdges, nbHexagons, finalHexagons, atoms, adjacencyMatrix, coordsMatrix);
+		return new Benzenoid(nbNodes, nbEdges, nbHexagons, finalHexagons, atoms, adjacencyMatrix, coordsMatrix);
 	}
 
 	public Pattern exportFragment() {

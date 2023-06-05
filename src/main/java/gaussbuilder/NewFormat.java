@@ -3,14 +3,12 @@ package gaussbuilder;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import molecules.Molecule;
-import parsers.GraphParser;
+import molecules.Benzenoid;
 import utils.Triplet;
 import utils.Utils;
 
@@ -18,7 +16,7 @@ import utils.Utils;
 public enum NewFormat {
     ;
 
-    public static void generate(Molecule molecule, String outputPath) throws IOException {
+    public static void generate(Benzenoid molecule, String outputPath) throws IOException {
 		Geometry geometry = GeometryBuilder.buildGeometry(molecule);
 		File f = new File(outputPath);
 		BufferedWriter w = new BufferedWriter(new FileWriter(f));

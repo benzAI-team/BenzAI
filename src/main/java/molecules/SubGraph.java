@@ -10,7 +10,7 @@ import solveur.RispoliAlgorithm;
 
 public class SubGraph {
 
-	private Molecule molecule;
+	private Benzenoid molecule;
 
 	private final int nbNodes;
 	private int nbEdges;
@@ -49,7 +49,7 @@ public class SubGraph {
 
 	}
 
-	public SubGraph(Molecule molecule, int[][] matrix, int[] disabledVertices, int[] degrees) {
+	public SubGraph(Benzenoid molecule, int[][] matrix, int[] disabledVertices, int[] degrees) {
 
 		this.molecule = molecule;
 		this.matrix = matrix;

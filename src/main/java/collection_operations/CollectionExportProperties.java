@@ -2,7 +2,7 @@ package collection_operations;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidPane;
@@ -63,7 +63,7 @@ public class CollectionExportProperties extends CollectionOperation {
                     for (int i = 0; i < currentPane.getSelectedBenzenoidPanes().size(); i++) {
 
                         BenzenoidPane benzenoidPane = currentPane.getSelectedBenzenoidPanes().get(i);
-                        Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+                        Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 
                         try {
                             File moleculeFile;

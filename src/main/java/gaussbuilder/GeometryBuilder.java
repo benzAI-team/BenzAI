@@ -1,6 +1,6 @@
 package gaussbuilder;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Couple;
 import utils.Triplet;
 
@@ -23,7 +23,7 @@ enum GeometryBuilder {
 		return -1;
 	}
 
-	private static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
+	private static ArrayList<Integer> getCarbonsWithHydrogens(Benzenoid molecule) {
 
 		ArrayList<Integer> carbons = new ArrayList<>();
 
@@ -35,7 +35,7 @@ enum GeometryBuilder {
 		return carbons;
 	}
 
-	private static Couple<Integer, Integer> findHexagon(Molecule molecule, int carbon) {
+	private static Couple<Integer, Integer> findHexagon(Benzenoid molecule, int carbon) {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 
@@ -50,7 +50,7 @@ enum GeometryBuilder {
 		return null;
 	}
 
-	static Geometry buildGeometry(Molecule molecule) {
+	static Geometry buildGeometry(Benzenoid molecule) {
 
 		int hexa = -1, yMin = Integer.MAX_VALUE;
 

@@ -1,6 +1,6 @@
 package classifier;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ public class IrregularityClassifier extends Classifier {
 		this.step = step;
 	}
 
-	public static Irregularity computeParameterOfIrregularity(Molecule molecule) {
+	public static Irregularity computeParameterOfIrregularity(Benzenoid molecule) {
 		return molecule.getIrregularity();
 	}
 
@@ -69,7 +69,7 @@ public class IrregularityClassifier extends Classifier {
 			MoleculeInformation moleculeInformation = (MoleculeInformation) pair.getValue();
 
 			String moleculeName = moleculeInformation.getMoleculeName();
-			Molecule molecule = moleculeInformation.getMolecule();
+			Benzenoid molecule = moleculeInformation.getMolecule();
 
 			Irregularity irregularity = computeParameterOfIrregularity(molecule);
 

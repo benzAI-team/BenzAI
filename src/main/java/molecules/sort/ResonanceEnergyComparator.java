@@ -1,12 +1,12 @@
 package molecules.sort;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solveur.Aromaticity;
 
 public class ResonanceEnergyComparator implements MoleculeComparator {
 
 	@Override
-	public int compare(Molecule molecule1, Molecule molecule2) {
+	public int compare(Benzenoid molecule1, Benzenoid molecule2) {
 		
 		Aromaticity aromaticity1 = molecule1.getAromaticity();
 		Aromaticity aromaticity2 = molecule2.getAromaticity();

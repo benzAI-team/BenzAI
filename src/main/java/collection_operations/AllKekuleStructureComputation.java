@@ -1,6 +1,6 @@
 package collection_operations;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solveur.KekuleStructureSolver;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
@@ -37,7 +37,7 @@ public class AllKekuleStructureComputation extends CollectionComputation{
                 Utils.alert("Please select only one benzenoid");
                 return;
             } else {
-                Molecule molecule = selectedBenzenoidPanes.get(0).getMolecule();
+                Benzenoid molecule = selectedBenzenoidPanes.get(0).getMolecule();
 
                 if (molecule.getNbKekuleStructures() == 0) {
                     Utils.alert("The selected benzenoid has no Kekulé structures.");

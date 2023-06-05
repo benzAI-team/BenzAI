@@ -2,13 +2,11 @@ package gaussbuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.ComConverter.ComType;
 import parsers.GraphParser;
-import utils.Triplet;
 
 public enum GaussMain {
     ;
@@ -40,7 +38,7 @@ public enum GaussMain {
 					if (inputPath.endsWith(".graph_coord") || inputPath.endsWith(".graph")) {
 						
 						File inputFile = new File(inputPath);
-						Molecule molecule = GraphParser.parseUndirectedGraph(inputFile);
+						Benzenoid molecule = GraphParser.parseUndirectedGraph(inputFile);
 						geometry = GeometryBuilder.buildGeometry(molecule);
 						
 					}
@@ -66,7 +64,7 @@ public enum GaussMain {
 					if (inputPath.endsWith(".graph_coord") || inputPath.endsWith(".graph")) {
 						
 						File inputFile = new File(inputPath);
-						Molecule molecule = GraphParser.parseUndirectedGraph(inputFile);
+						Benzenoid molecule = GraphParser.parseUndirectedGraph(inputFile);
 						geometry = GeometryBuilder.buildGeometry(molecule);
 						
 					}
@@ -87,14 +85,14 @@ public enum GaussMain {
 				else if ("--check-geom".equals(args[0])) {
 					String inputPath = args[1];
 					String graphFile = args[1].replace(".com", ".graph_coord");
-					Molecule molecule = GraphParser.parseUndirectedGraph(new File(graphFile));
+					Benzenoid molecule = GraphParser.parseUndirectedGraph(new File(graphFile));
 					Geometry geometry = GeometryBuilder.buildGeometry(molecule);
 					GaussChecker.checkGeometry(inputPath,molecule, geometry);
 				}
 				
 				else if ("--build-ampac".equals(args[0])) {
 					String inputPath = args[1];
-					Molecule molecule = GraphParser.parseUndirectedGraph(new File(inputPath));
+					Benzenoid molecule = GraphParser.parseUndirectedGraph(new File(inputPath));
 					AmpacBuilder.buildAmpacFile(molecule, inputPath.split(Pattern.quote("."))[0] + ".dat");
 				}
 			}

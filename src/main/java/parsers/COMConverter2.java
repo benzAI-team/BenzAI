@@ -1,6 +1,6 @@
 package parsers;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
@@ -131,7 +131,7 @@ public enum COMConverter2 {
 
 	}
 
-	public static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
+	public static ArrayList<Integer> getCarbonsWithHydrogens(Benzenoid molecule) {
 
 		ArrayList<Integer> carbons = new ArrayList<>();
 
@@ -143,7 +143,7 @@ public enum COMConverter2 {
 		return carbons;
 	}
 
-	public static Couple<Integer, Integer> findHexagon(Molecule molecule, int carbon) {
+	public static Couple<Integer, Integer> findHexagon(Benzenoid molecule, int carbon) {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 
@@ -172,8 +172,8 @@ public enum COMConverter2 {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
 	}
 
-	public static ArrayList<Couple<Integer, Integer>> checkInvalidCarbons(Molecule molecule,
-			Triplet<Double, Double, Double>[] carbons) {
+	public static ArrayList<Couple<Integer, Integer>> checkInvalidCarbons(Benzenoid molecule,
+                                                                          Triplet<Double, Double, Double>[] carbons) {
 
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<>();
 
@@ -194,7 +194,7 @@ public enum COMConverter2 {
 	}
 
 	@SuppressWarnings({ "unchecked", "unused" })
-	public static void generateComFile(Molecule molecule, File file, int nbElectronsDiff, ComType type, String title)
+	public static void generateComFile(Benzenoid molecule, File file, int nbElectronsDiff, ComType type, String title)
 			throws IOException {
 
 		System.out.println("Treating " + title + ".log");
@@ -649,7 +649,7 @@ public enum COMConverter2 {
 		
 		File file = new File("9_hexagons5196.graph_coord");
 		
-		Molecule m = GraphParser.parseUndirectedGraph(file);
+		Benzenoid m = GraphParser.parseUndirectedGraph(file);
 
 		generateComFile(m, new File("9_hexagons5196.com"), 0, ComType.IR, file.getName());
 	}

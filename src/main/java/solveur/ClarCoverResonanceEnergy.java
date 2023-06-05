@@ -1,6 +1,6 @@
 package solveur;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 import solution.ClarCoverSolution;
 
@@ -19,7 +19,7 @@ public enum ClarCoverResonanceEnergy {
 		if (args.length == 0)
 			usage();
 		else {
-			Molecule molecule = GraphParser.parseUndirectedGraph(new File(args[0]));
+			Benzenoid molecule = GraphParser.parseUndirectedGraph(new File(args[0]));
 			ArrayList<ClarCoverSolution> solutions = ClarCoverSolver.solve(molecule);
 			molecule.setClarCoverSolutions(solutions);
 			int[] clarValues = molecule.resonanceEnergyClar();

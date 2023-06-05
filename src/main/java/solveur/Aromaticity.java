@@ -1,6 +1,6 @@
 package solveur;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 import java.util.Arrays;
 
@@ -12,7 +12,7 @@ public class Aromaticity {
 	private double[] Ri;
 	private final double[] optimizedRi = new double[] { 0.869, 0.246, 0.100, 0.041 };
 
-	private Molecule molecule;
+	private Benzenoid molecule;
 
 	private final double[][] localCircuits;
 	private double[] globalCircuits;
@@ -22,7 +22,7 @@ public class Aromaticity {
 
 	private RIType type;
 
-	public Aromaticity(Molecule molecule, double[][] localCircuits, RIType type) {
+	public Aromaticity(Benzenoid molecule, double[][] localCircuits, RIType type) {
 
 		initializeRi();
 
@@ -81,11 +81,11 @@ public class Aromaticity {
 		System.out.print("");
 	}
 
-	public Molecule getMolecule() {
+	public Benzenoid getMolecule() {
 		return molecule;
 	}
 
-	public void setMolecule(Molecule molecule) {
+	public void setMolecule(Benzenoid molecule) {
 		this.molecule = molecule;
 	}
 

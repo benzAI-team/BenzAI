@@ -1,7 +1,7 @@
 package molecules.sort;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public interface MoleculeComparator {
-	int compare(Molecule molecule1, Molecule molecule2);
+	int compare(Benzenoid molecule1, Benzenoid molecule2);
 }

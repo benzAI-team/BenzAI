@@ -1,7 +1,7 @@
 package database;
 
 import molecules.AtomGeometry;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
@@ -34,7 +34,7 @@ public enum BuildScripts {
 		indexAtom = 0;
 	}
 
-	private static void insertBenzenoid(long id, Molecule molecule) throws IOException {
+	private static void insertBenzenoid(long id, Benzenoid molecule) throws IOException {
 
 		BigDecimal irregbd;
 
@@ -257,7 +257,7 @@ public enum BuildScripts {
 		String moleculeName = graphFile.getName().split(Pattern.quote("."))[0];
 		writer.write("# " + moleculeName + "\n\n");
 
-		Molecule molecule = GraphParser.parseUndirectedGraph(graphFile);
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(graphFile);
 
 		insertBenzenoid(id, molecule);
 		insertIRSpectra(id, irFile, graphFile);

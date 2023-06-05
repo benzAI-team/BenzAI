@@ -2,7 +2,8 @@ package collection_operations;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import molecules.Molecule;
+import molecules.Benzenoid;
+import molecules.BenzenoidParser;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 
@@ -10,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class CollectionExportGraph extends CollectionOperation{
-    CollectionExportGraph() {
+    public CollectionExportGraph() {
         super(".graph");
     }
 
@@ -23,7 +24,8 @@ public class CollectionExportGraph extends CollectionOperation{
                 File file = fileChooser.showSaveDialog(collectionManagerPane.getApplication().getStage());
                 if (file != null) {
                     try {
-                        currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex()).exportToGraphFile(file);
+                        Benzenoid benzenoid = currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex());
+                        BenzenoidParser.exportToGraphFile(benzenoid, file);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -37,7 +39,7 @@ public class CollectionExportGraph extends CollectionOperation{
                 String directoryPath = directory.getAbsolutePath();
                 int index = 0;
                 for (int i = 0; i < currentPane.getSelectedBenzenoidPanes().size(); i++) {
-                    Molecule molecule = currentPane
+                    Benzenoid benzenoid = currentPane
                             .getMolecule(currentPane.getSelectedBenzenoidPanes().get(i).getIndex());
                     String name = currentPane.getSelectedBenzenoidPanes().get(i).getName();
                     String filename;
@@ -47,12 +49,10 @@ public class CollectionExportGraph extends CollectionOperation{
                         filename = "unknown_molecule_" + index + ".graph";
                         index++;
                     }
-//					File file = new File(directoryPath + "/molecule_" + i + ".graph");
                     File file = new File(directoryPath + filename);
                     try {
-                        molecule.exportToGraphFile(file);
+                        BenzenoidParser.exportToGraphFile(benzenoid, file);
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }

@@ -22,7 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
@@ -254,7 +254,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 							indexFiltering = i;
 
-							Molecule molecule = collectionPane.getMolecules().get(i);
+							Benzenoid molecule = collectionPane.getMolecules().get(i);
 							if(Filter.testAll(molecule, getModelPropertySet())) {
 								DisplayType displayType = collectionPane.getDisplayType(i);
 								newCollectionPane.addBenzenoid(molecule, displayType);

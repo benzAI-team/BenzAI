@@ -3,7 +3,7 @@ package collection_operations;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solution.ClarCoverSolution;
 import solveur.ClarCoverSolver;
 import utils.Utils;
@@ -60,7 +60,7 @@ public class RadicalarStatisticsTask extends CollectionTask{
 
                         for (BenzenoidPane benzenoidPane : panes) {
                             if (operationIsRunning()) {
-                                Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+                                Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 
                                 ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverSolver.solve(molecule);
                                 if (clarCoverSolutions.size() > 0) {

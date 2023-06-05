@@ -1,6 +1,6 @@
 package solveur;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
@@ -19,7 +19,7 @@ import java.util.List;
 public enum KekuleStructureSolver {
     ;
 
-    public static ArrayList<int[][]> computeKekuleStructures(Molecule molecule, int nbSolutionsMax) {
+    public static ArrayList<int[][]> computeKekuleStructures(Benzenoid molecule, int nbSolutionsMax) {
 
 		ArrayList<int[][]> structures = new ArrayList<>();
 
@@ -109,7 +109,7 @@ public enum KekuleStructureSolver {
 		return structures;
 	}
 
-	public static ArrayList<ClarCoverSolution> solve(Molecule molecule) {
+	public static ArrayList<ClarCoverSolution> solve(Benzenoid molecule) {
 
 		Model model = new Model("Clar Cover");
 

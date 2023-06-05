@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import classifier.PAHClass;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Couple;
 
 public enum SpectrumsComputer {
@@ -442,11 +442,11 @@ public enum SpectrumsComputer {
 	}
 
 	public static HashMap<String, Couple<ArrayList<Double>, ResultLogFile>> computeSpectresOfAClass(
-			ArrayList<Molecule> molecules, Parameter parameter) {
+            ArrayList<Benzenoid> molecules, Parameter parameter) {
 
 		HashMap<String, Couple<ArrayList<Double>, ResultLogFile>> map = new HashMap<>();
 
-		for (Molecule molecule : molecules) {
+		for (Benzenoid molecule : molecules) {
 			ResultLogFile nicsResult = molecule.getIRSpectraResult();
 			ArrayList<Double> spectres = spectres(nicsResult, parameter);
 			map.put(molecule.getNames().get(0), new Couple<ArrayList<Double>, ResultLogFile>(spectres, nicsResult));
@@ -473,7 +473,7 @@ public enum SpectrumsComputer {
 	/*
 	 * Méthode pour l'appli
 	 */
-	public static IRSpectra buildSpectraData(String className, ArrayList<Molecule> molecules, Parameter parameter)
+	public static IRSpectra buildSpectraData(String className, ArrayList<Benzenoid> molecules, Parameter parameter)
 			throws IOException {
 
 		IRSpectra spectraData = new IRSpectra(parameter, className, molecules);

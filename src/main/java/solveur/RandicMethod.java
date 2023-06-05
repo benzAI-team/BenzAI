@@ -14,7 +14,7 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import molecules.NodeSameLine;
 import molecules.OrientedCycle;
@@ -29,7 +29,7 @@ public enum RandicMethod {
 
 	private static int [][] globalMatrix;
 	
-	private static int getTopLeftHexagon(Molecule molecule, ArrayList<Integer> hexagonsCycle) {
+	private static int getTopLeftHexagon(Benzenoid molecule, ArrayList<Integer> hexagonsCycle) {
 		
 		Node topLeftNode = null;
 		int topLeftHexagon = -1;
@@ -52,7 +52,7 @@ public enum RandicMethod {
 		return topLeftHexagon;
 	}
 	
-	private static EdgeSet computeStraightEdges(Molecule molecule, int [][] cycle) {
+	private static EdgeSet computeStraightEdges(Benzenoid molecule, int [][] cycle) {
 		
 		List<Node> firstVertices = new ArrayList<>();
 		List<Node> secondVertices = new ArrayList<>();
@@ -132,7 +132,7 @@ public enum RandicMethod {
 	
 	
 	
-	private static ArrayList<Integer> getHexagons(Molecule molecule, int [][] cycle) {
+	private static ArrayList<Integer> getHexagons(Benzenoid molecule, int [][] cycle) {
 		
 		EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
 		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(verticalEdges);
@@ -187,7 +187,7 @@ public enum RandicMethod {
 		return size;
 	}
 	
-	private static OrientedCycle buildOrientedCycle(Molecule molecule, int [][] cycle) {
+	private static OrientedCycle buildOrientedCycle(Benzenoid molecule, int [][] cycle) {
 		
 		OrientedCycle orientedCycle = new OrientedCycle(molecule);
 		ArrayList<Integer> hexagonsCycle = getHexagons(molecule, cycle);
@@ -243,7 +243,7 @@ public enum RandicMethod {
 		return orientedCycle;
 	}
 	
-	private static SubMolecule substractCycleAndInterior(Molecule molecule, int [][] cycle) {
+	private static SubMolecule substractCycleAndInterior(Benzenoid molecule, int [][] cycle) {
 		
 		int [][] newGraph = new int [molecule.getNbNodes()][molecule.getNbNodes()];
 		int [] vertices = new int [molecule.getNbNodes()];
@@ -288,7 +288,7 @@ public enum RandicMethod {
 		return new SubMolecule(subGraphNbNodes, nbEdges, molecule.getNbNodes(), newGraph);
 	}
 	
-	private static void treatCycle(Molecule molecule, int [][] cycle) {
+	private static void treatCycle(Benzenoid molecule, int [][] cycle) {
 		
 		EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
 		ArrayList<Interval> intervals = (ArrayList<Interval>) computeIntervals(verticalEdges);
@@ -315,7 +315,7 @@ public enum RandicMethod {
 		}
 	}
 	
-	private static void solve(Molecule molecule) {
+	private static void solve(Benzenoid molecule) {
 		
 		globalMatrix = new int[molecule.getNbNodes()][molecule.getNbNodes()];
 		
@@ -423,7 +423,7 @@ public enum RandicMethod {
 		
 		else {
 		
-			Molecule molecule = GraphParser.parseUndirectedGraph(args[0], null, false);
+			Benzenoid molecule = GraphParser.parseUndirectedGraph(args[0], null, false);
 			assert molecule != null;
 			solve(molecule);
 		}

@@ -10,7 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
@@ -18,11 +18,11 @@ import view.collections.BenzenoidCollectionPane.DisplayType;
 
 public class AddToNewCollectionPane extends GridPane {
 
-	private final Molecule molecule;
+	private final Benzenoid molecule;
 	private final BenzenoidCollectionsManagerPane parent;
 	private TextField fieldCollectionName;
 
-	public AddToNewCollectionPane(BenzenoidCollectionsManagerPane parent, Molecule molecule) {
+	public AddToNewCollectionPane(BenzenoidCollectionsManagerPane parent, Benzenoid molecule) {
 
 		this.parent = parent;
 		this.molecule = molecule;

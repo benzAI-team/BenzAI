@@ -9,7 +9,7 @@ import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import generator.properties.model.expression.PropertyExpression;
 import constraints.BenzenoidConstraint;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import constraints.BenzAIConstraint;
 
 public class DefaultFilter extends Filter {
@@ -21,7 +21,7 @@ public class DefaultFilter extends Filter {
 	}
 
 	@Override
-	public boolean test(Molecule molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
+	public boolean test(Benzenoid molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
 		modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", molecule.getNbHexagons()));
 		GeneralModel model = ModelBuilder.buildModel(modelPropertySet, molecule.getNbCrowns());
 		module.build(model, propertyExpressionList);

@@ -2,7 +2,7 @@ package collection_operations;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.ComConverter;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
@@ -23,7 +23,7 @@ public class CollectionExportCOM extends CollectionOperation{
                 FileChooser fileChooser = new FileChooser();
                 File file = fileChooser.showSaveDialog(collectionManagerPane.getApplication().getStage());
                 if (file != null) {
-                    Molecule molecule = currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex());
+                    Benzenoid molecule = currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex());
                     try {
                         ComConverter.generateComFile(molecule, file, 0, ComConverter.ComType.ER, file.getName());
                     } catch (IOException e) {
@@ -47,7 +47,7 @@ public class CollectionExportCOM extends CollectionOperation{
 
                 for (int i = 0; i < currentPane.getSelectedBenzenoidPanes().size(); i++) {
 
-                    Molecule molecule = currentPane
+                    Benzenoid molecule = currentPane
                             .getMolecule(currentPane.getSelectedBenzenoidPanes().get(i).getIndex());
 
                     String fileName;

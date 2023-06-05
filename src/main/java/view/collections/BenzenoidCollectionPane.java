@@ -11,7 +11,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import molecules.Molecule;
+import molecules.Benzenoid;
+import molecules.BenzenoidParser;
 import molecules.sort.MoleculeComparator;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
@@ -61,8 +62,8 @@ public class BenzenoidCollectionPane extends Tab {
     private ArrayList<BenzenoidPane> benzenoidPanes;
     private ArrayList<BenzenoidPane> selectedBenzenoidPanes;
 
-    private ArrayList<Molecule> molecules;
-    private ArrayList<Molecule> selectedMolecules;
+    private ArrayList<Benzenoid> molecules;
+    private ArrayList<Benzenoid> selectedMolecules;
 
     private FlowPane flowPane;
 
@@ -198,7 +199,7 @@ public class BenzenoidCollectionPane extends Tab {
         refresh();
     }
 
-    public void addBenzenoid(Molecule molecule, DisplayType displayType) {
+    public void addBenzenoid(Benzenoid molecule, DisplayType displayType) {
         molecules.add(molecule);
         displayTypes.add(displayType);
         selectedBenzenoidPanes.clear();
@@ -282,7 +283,7 @@ public class BenzenoidCollectionPane extends Tab {
 
                         for (int i = 0; i < molecules.size(); i++) {
 
-                            Molecule molecule = molecules.get(i);
+                            Benzenoid molecule = molecules.get(i);
                             DisplayType displayType = displayTypes.get(i);
 
                             MoleculeGroup group;
@@ -565,7 +566,7 @@ public class BenzenoidCollectionPane extends Tab {
 
         System.out.println("removeBenzenoidPanes(): " + selectedBenzenoidPanes.size() + " selections");
 
-        ArrayList<Molecule> moleculesToRemove = new ArrayList<>();
+        ArrayList<Benzenoid> moleculesToRemove = new ArrayList<>();
         ArrayList<BenzenoidPane> panesToRemove = new ArrayList<>();
         ArrayList<Integer> displayTypesToRemove = new ArrayList<>();
 
@@ -589,7 +590,7 @@ public class BenzenoidCollectionPane extends Tab {
 
         for (int i = 0; i < moleculesToRemove.size(); i++) {
 
-            Molecule molecule = moleculesToRemove.get(i);
+            Benzenoid molecule = moleculesToRemove.get(i);
             BenzenoidPane pane = panesToRemove.get(i);
 
             molecules.remove(molecule);
@@ -608,13 +609,13 @@ public class BenzenoidCollectionPane extends Tab {
 
 		System.out.println("molecules.size() = " + molecules.size());
 
-		Molecule molecule = molecules.get(benzenoidPane.getIndex());
+		Benzenoid molecule = molecules.get(benzenoidPane.getIndex());
 		molecules.remove(benzenoidPane.getIndex());
 		selectedMolecules.remove(molecule);
 		refresh();
 	}
 
-	public Molecule getMolecule(int index) {
+	public Benzenoid getMolecule(int index) {
 		return molecules.get(index);
 	}
 
@@ -669,7 +670,7 @@ public class BenzenoidCollectionPane extends Tab {
 		return selectedBenzenoidPanes;
 	}
 
-	public ArrayList<Molecule> getSelectedMolecules() {
+	public ArrayList<Benzenoid> getSelectedMolecules() {
 		return selectedMolecules;
 	}
 
@@ -731,7 +732,7 @@ public class BenzenoidCollectionPane extends Tab {
     }
 
 	public void setComparator(MoleculeComparator comparator) {
-		for (Molecule molecule : molecules)
+		for (Benzenoid molecule : molecules)
 			molecule.setComparator(comparator);
 	}
 
@@ -744,14 +745,14 @@ public class BenzenoidCollectionPane extends Tab {
         refresh();
     }
 
-    public ArrayList<Molecule> getMolecules() {
+    public ArrayList<Benzenoid> getMolecules() {
         return molecules;
     }
 
 	public void export(File directory) {
 		for (int i = 0; i < molecules.size(); i++) {
 
-            Molecule molecule = molecules.get(i);
+            Benzenoid benzenoid = molecules.get(i);
 
             String separator;
 
@@ -760,11 +761,11 @@ public class BenzenoidCollectionPane extends Tab {
             else
                 separator = "/";
 
-			String filename = molecule.getNames().get(0) + ".graph";
+			String filename = benzenoid.getNames().get(0) + ".graph";
 
             File file = new File(directory.getAbsolutePath() + separator + filename);
             try {
-                molecule.exportToGraphFile(file);
+                BenzenoidParser.exportToGraphFile(benzenoid, file);
             } catch (IOException e) {
                 e.printStackTrace();
             }

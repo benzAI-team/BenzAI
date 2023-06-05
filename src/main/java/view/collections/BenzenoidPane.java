@@ -24,7 +24,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solution.BenzenoidSolution;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity;
@@ -287,7 +287,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 			StringBuilder builder = new StringBuilder();
 
-			Molecule molecule = benzenoidSetPane.getMolecule(index);
+			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
 
 			builder.append(molecule.getNbNodes() + " carbons\n");
 			builder.append(molecule.getNbHydrogens() + " hydrogens\n");
@@ -382,7 +382,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 		if (getMolecule().databaseCheckedIR()) {
 
-			Molecule molecule = benzenoidSetPane.getMolecule(index);
+			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
 			ResultLogFile log = molecule.getIRSpectraResult();
 
 			StringBuilder b = new StringBuilder();
@@ -441,7 +441,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 		if (getMolecule().databaseCheckedIR()) {
 
-			Molecule molecule = benzenoidSetPane.getMolecule(index);
+			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
 			ResultLogFile log = molecule.getIRSpectraResult();
 
 			StringBuilder b = new StringBuilder();
@@ -473,7 +473,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 		if (getMolecule().databaseCheckedIR()) {
 
-			Molecule molecule = benzenoidSetPane.getMolecule(index);
+			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
 			ResultLogFile log = molecule.getIRSpectraResult();
 
 			StringBuilder b = new StringBuilder();
@@ -502,7 +502,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		return descriptionBox;
 	}
 
-	public Molecule getMolecule() {
+	public Benzenoid getMolecule() {
 		return benzenoidSetPane.getMolecule(index);
 	}
 

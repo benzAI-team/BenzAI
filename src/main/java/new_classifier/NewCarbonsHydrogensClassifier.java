@@ -3,20 +3,20 @@ package new_classifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class NewCarbonsHydrogensClassifier extends NewClassifier {
 
-	public NewCarbonsHydrogensClassifier(ArrayList<Molecule> molecules) {
+	public NewCarbonsHydrogensClassifier(ArrayList<Benzenoid> molecules) {
 		super(molecules);
 	}
 
 	@Override
-	public HashMap<String, ArrayList<Molecule>> classify() {
+	public HashMap<String, ArrayList<Benzenoid>> classify() {
 
-		HashMap<String, ArrayList<Molecule>> map = new HashMap<>();
+		HashMap<String, ArrayList<Benzenoid>> map = new HashMap<>();
 
-		for (Molecule molecule : molecules) {
+		for (Benzenoid molecule : molecules) {
 
 			String key = molecule.getNbNodes() + "_carbons_" + molecule.getNbHydrogens() + "_hydrogens";
 

@@ -1,6 +1,6 @@
 package parsers;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import utils.Couple;
 import utils.Triplet;
@@ -27,7 +27,7 @@ public enum CMLConverter {
 					|| (u.getX() == v.getX() + 1 && u.getY() == v.getY() - 1);
 	}
 
-	public static ArrayList<Integer> getCarbonsWithHydrogens(Molecule molecule) {
+	public static ArrayList<Integer> getCarbonsWithHydrogens(Benzenoid molecule) {
 
 		ArrayList<Integer> carbons = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public enum CMLConverter {
 		return carbons;
 	}
 
-	public static Couple<Integer, Integer> findHexagon(Molecule molecule, int carbon) {
+	public static Couple<Integer, Integer> findHexagon(Benzenoid molecule, int carbon) {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 
@@ -54,7 +54,7 @@ public enum CMLConverter {
 		return null;
 	}
 
-	public static boolean areOnSameHexagon(Molecule molecule, int u, int v) {
+	public static boolean areOnSameHexagon(Benzenoid molecule, int u, int v) {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 
@@ -94,7 +94,7 @@ public enum CMLConverter {
 		return -1;
 	}
 
-	public static ArrayList<Couple<Integer, Integer>> checkGeometry(Molecule molecule) {
+	public static ArrayList<Couple<Integer, Integer>> checkGeometry(Benzenoid molecule) {
 
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<>();
 
@@ -135,7 +135,7 @@ public enum CMLConverter {
 	}
 
 	@SuppressWarnings("unused")
-	public static void generateCmlFile(Molecule molecule, File file) throws IOException {
+	public static void generateCmlFile(Benzenoid molecule, File file) throws IOException {
 
 		int hexa = -1, yMin = Integer.MAX_VALUE;
 

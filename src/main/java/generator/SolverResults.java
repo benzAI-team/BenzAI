@@ -1,6 +1,6 @@
 package generator;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import org.chocosolver.solver.Solver;
 import solution.BenzenoidSolution;
 
@@ -17,7 +17,7 @@ public class SolverResults {
 	private final ArrayList<String> descriptions = new ArrayList<>();
 	private final ArrayList<ArrayList<Integer>> verticesSolutions = new ArrayList<>();
 	private final ArrayList<Integer> nbCrowns = new ArrayList<>();
-	private ArrayList<Molecule> molecules = new ArrayList<>();
+	private ArrayList<Benzenoid> molecules = new ArrayList<>();
 
 	/*
 	 * JavaFX Components
@@ -128,15 +128,15 @@ public class SolverResults {
 	public void setNogoodsFragments() {
 	}
 
-	public ArrayList<Molecule> getMolecules() {
+	public ArrayList<Benzenoid> getMolecules() {
 		return molecules;
 	}
 
-	public void setMolecules(ArrayList<Molecule> molecules) {
+	public void setMolecules(ArrayList<Benzenoid> molecules) {
 		this.molecules = molecules;
 	}
 
-	public void addMolecule(Molecule molecule) {
+	public void addMolecule(Benzenoid molecule) {
 		molecules.add(molecule);
 		
 	}

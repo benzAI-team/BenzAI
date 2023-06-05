@@ -3,7 +3,7 @@ package collection_operations;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
@@ -28,13 +28,13 @@ public class IrregularityComputation extends CollectionComputation{
         }
 
         ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
-        ArrayList<Molecule> molecules = new ArrayList<>();
+        ArrayList<Benzenoid> molecules = new ArrayList<>();
 
         if (selectedBenzenoidPanes.size() == 0)
             collectionManagerPane.selectAll();
 
         for (BenzenoidPane benzenoidPane : selectedBenzenoidPanes) {
-            Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+            Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
             molecules.add(molecule);
         }
 

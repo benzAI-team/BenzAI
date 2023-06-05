@@ -1,7 +1,7 @@
 package solveur.matrix_determinant;
 
 import Jama.Matrix;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class PerfectMatchingMatrix {
 
 	public static void main(String[] args) {
 
-		Molecule molecule = GraphParser
+		Benzenoid molecule = GraphParser
 				.parseUndirectedGraph("C:\\Users\\adrie\\Desktop\\molecules_test\\coro_4.graph_coord", null, true);
 		assert molecule != null;
 		PerfectMatchingMatrix matrix = PerfectMatchingMatrix.buildMatrix(molecule.getEdgeMatrix(),

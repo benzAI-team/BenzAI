@@ -10,8 +10,7 @@ import java.util.List;
 import classifier.Irregularity;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solveur.LinAlgorithm;
 
 public enum Utils {
@@ -66,7 +65,7 @@ public enum Utils {
 		return true;
 	}
 
-	public static Irregularity computeParameterOfIrregularity(Molecule molecule) {
+	public static Irregularity computeParameterOfIrregularity(Benzenoid molecule) {
 
 		if (molecule.getNbHexagons() == 1)
 			return null;
@@ -268,7 +267,7 @@ public enum Utils {
 	 */
 
 	@SuppressWarnings("unused")
-	public static int identifyDependantCycle(Molecule molecule, ArrayList<Interval> intervals) {
+	public static int identifyDependantCycle(Benzenoid molecule, ArrayList<Interval> intervals) {
 
 		Interval i0 = null;
 		Interval i1 = null;
@@ -323,7 +322,7 @@ public enum Utils {
 		return -1;
 	}
 
-	public static int identifyCycle(Molecule molecule, ArrayList<Interval> intervals) {
+	public static int identifyCycle(Benzenoid molecule, ArrayList<Interval> intervals) {
 
 		Interval i0 = null;
 		Interval i1 = null;

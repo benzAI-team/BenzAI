@@ -19,7 +19,7 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.Node;
 import molecules.NodeSameLine;
 import molecules.SubGraph;
@@ -45,7 +45,7 @@ public enum DisjunctCircuitsSolver {
 
 	private static double nbKekuleStructures;
 
-	private static void treatCycle(Molecule molecule, SubGraph subGraph, ArrayList<Integer> cycle) {
+	private static void treatCycle(Benzenoid molecule, SubGraph subGraph, ArrayList<Integer> cycle) {
 
 		int[][] circuit = new int[molecule.getNbNodes()][molecule.getNbNodes()];
 
@@ -190,7 +190,7 @@ public enum DisjunctCircuitsSolver {
 		return null;
 	}
 	
-	private static int findTopLeftHexagon(Molecule molecule, ArrayList<Integer> hexagonsBorder, int[] checkedHexagons) {
+	private static int findTopLeftHexagon(Benzenoid molecule, ArrayList<Integer> hexagonsBorder, int[] checkedHexagons) {
 
 		int hexagon = -1;
 
@@ -229,8 +229,8 @@ public enum DisjunctCircuitsSolver {
 		return hexagon;
 	}
 
-	private static ArrayList<Integer> getHexagonsBorderCycle(Molecule molecule, ArrayList<Integer> cycle,
-			ArrayList<Integer> allHexagons) {
+	private static ArrayList<Integer> getHexagonsBorderCycle(Benzenoid molecule, ArrayList<Integer> cycle,
+                                                             ArrayList<Integer> allHexagons) {
 
 		ArrayList<Integer> hexagons = new ArrayList<>();
 		int[] checkedNodes = new int[molecule.getNbNodes()];
@@ -253,7 +253,7 @@ public enum DisjunctCircuitsSolver {
 		return hexagons;
 	}
 
-	private static void displayCycle(Molecule molecule) {
+	private static void displayCycle(Benzenoid molecule) {
 
 		System.out.print("{ ");
 
@@ -280,7 +280,7 @@ public enum DisjunctCircuitsSolver {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void removeHexagons(Molecule molecule, ArrayList<Integer> cycle) {
+	private static void removeHexagons(Benzenoid molecule, ArrayList<Integer> cycle) {
 		EdgeSet verticalEdges = computeStraightEdges(molecule, cycle);
 		ArrayList<Interval> intervals = computeIntervals(molecule, subGraph, cycle,
 				verticalEdges);
@@ -323,8 +323,8 @@ public enum DisjunctCircuitsSolver {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ArrayList<ArrayList<ArrayList<Integer>>> computeDisjunctCycles(Molecule molecule,
-			ArrayList<Integer> mainCycle, int maxNbCycles) {
+	public static ArrayList<ArrayList<ArrayList<Integer>>> computeDisjunctCycles(Benzenoid molecule,
+                                                                                 ArrayList<Integer> mainCycle, int maxNbCycles) {
 
 		/*
 		 * Initializing structures
@@ -414,8 +414,8 @@ public enum DisjunctCircuitsSolver {
 		nbKekuleStructures = SubGraph.nbKekuleStructures(subGraph);
 	}
 
-	public static List<Integer> getHexagons(Molecule molecule, ArrayList<Integer> cycle,
-			ArrayList<Interval> intervals) {
+	public static List<Integer> getHexagons(Benzenoid molecule, ArrayList<Integer> cycle,
+                                            ArrayList<Interval> intervals) {
 		List<Integer> hexagons = new ArrayList<Integer>();
 
 		for (Interval interval : intervals) {
@@ -446,8 +446,8 @@ public enum DisjunctCircuitsSolver {
 		return hexagons;
 	}
 
-	public static ArrayList<Interval> computeIntervals(Molecule molecule, SubGraph subGraph, ArrayList<Integer> cycle,
-			EdgeSet edges) {
+	public static ArrayList<Interval> computeIntervals(Benzenoid molecule, SubGraph subGraph, ArrayList<Integer> cycle,
+                                                       EdgeSet edges) {
 
 		ArrayList<Interval> intervals = new ArrayList<Interval>();
 
@@ -616,7 +616,7 @@ public enum DisjunctCircuitsSolver {
 		return null;
 	}
 
-	public static EdgeSet computeStraightEdges(Molecule molecule, ArrayList<Integer> cycle) {
+	public static EdgeSet computeStraightEdges(Benzenoid molecule, ArrayList<Integer> cycle) {
 
 		List<Node> firstVertices = new ArrayList<Node>();
 		List<Node> secondVertices = new ArrayList<Node>();
@@ -637,7 +637,7 @@ public enum DisjunctCircuitsSolver {
 		return new EdgeSet(firstVertices, secondVertices);
 	}
 
-	public static SubGraph buildSubGraph(Molecule molecule) {
+	public static SubGraph buildSubGraph(Benzenoid molecule) {
 
 		int[][] matrix = molecule.getEdgeMatrix();
 		int[] disabledVertices = new int[molecule.getNbNodes()];
@@ -651,7 +651,7 @@ public enum DisjunctCircuitsSolver {
 		return new SubGraph(molecule, matrix, disabledVertices, degrees);
 	}
 
-	public static void solve(Molecule molecule, PerfectMatchingType type) throws IOException {
+	public static void solve(Benzenoid molecule, PerfectMatchingType type) throws IOException {
 
 		int[] firstVertices = new int[molecule.getNbEdges()];
 		int[] secondVertices = new int[molecule.getNbEdges()];
@@ -732,7 +732,7 @@ public enum DisjunctCircuitsSolver {
 
 	public static void main(String[] args) {
 
-		Molecule molecule = GraphParser.parseUndirectedGraph(new File("C:\\Users\\adrie\\Desktop\\coronene.graph"));
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(new File("C:\\Users\\adrie\\Desktop\\coronene.graph"));
 		try {
 			solve(molecule, PerfectMatchingType.DET);
 		} catch (IOException e) {

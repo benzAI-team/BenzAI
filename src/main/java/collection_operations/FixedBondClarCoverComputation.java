@@ -1,6 +1,6 @@
 package collection_operations;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solution.ClarCoverSolution;
 import solveur.ClarCoverSolver;
 import utils.Utils;
@@ -43,7 +43,7 @@ public class FixedBondClarCoverComputation extends CollectionComputation{
         collectionManagerPane.log("Clar Cover (" + size + "benzenoids)", true);
 
         for (BenzenoidPane benzenoidPane : panes) {
-            Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+            Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
             ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverSolver.solve(molecule);
             if (clarCoverSolutions.size() > 0) {
                 // 0 = non défini // 1 = pas de cercle // 2 = cercle

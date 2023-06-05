@@ -3,7 +3,7 @@ package collection_operations;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
@@ -55,7 +55,7 @@ public class LinResonanceEnergyTask extends CollectionTask {
 
 						for (BenzenoidPane benzenoidPane : panes) {
 							if (operationIsRunning()) {
-								Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+								Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 								molecule.getAromaticity();
 								benzenoidSetPane.addBenzenoid(molecule, DisplayType.RE_LIN);
 								setIndex(getIndex() + 1);

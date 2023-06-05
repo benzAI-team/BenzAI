@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import solution.ClarCoverSolution;
 
 public class RadicalarClarCoverGroup extends MoleculeGroup {
 
 	private final ArrayList<ClarCoverSolution> clarCoverSolutions;
 
-	public RadicalarClarCoverGroup(Molecule molecule) {
+	public RadicalarClarCoverGroup(Benzenoid molecule) {
 		super(molecule);
 		this.clarCoverSolutions = molecule.getClarCoverSolutions();
 		drawRadicalar();

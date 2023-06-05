@@ -1,6 +1,6 @@
 package correlations;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.GraphParser;
 
 import java.io.*;
@@ -37,7 +37,7 @@ public enum CorrelationLinFan {
 			System.out.println("mol file : " + molFile.getAbsolutePath());
 			System.out.println("dat file : " + datFile.getAbsolutePath());
 			
-			Molecule molecule = GraphParser.parseUndirectedGraph(molFile);
+			Benzenoid molecule = GraphParser.parseUndirectedGraph(molFile);
 			double nbStructures = molecule.getNbKekuleStructures();
 			System.out.println("nb structures : " + nbStructures);
 			

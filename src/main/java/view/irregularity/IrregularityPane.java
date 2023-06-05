@@ -36,14 +36,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import view.collections.BenzenoidCollectionsManagerPane;
 
 public class IrregularityPane extends BorderPane {
 
 	private final BenzenoidCollectionsManagerPane parent;
 
-	private final ArrayList<Molecule> molecules;
+	private final ArrayList<Benzenoid> molecules;
 	private ArrayList<PAHClass> classes;
 	@SuppressWarnings("rawtypes")
 	private BarChart chart;
@@ -56,7 +56,7 @@ public class IrregularityPane extends BorderPane {
 
 	private TextField stepField;
 
-	public IrregularityPane(BenzenoidCollectionsManagerPane parent, ArrayList<Molecule> molecules, double step)
+	public IrregularityPane(BenzenoidCollectionsManagerPane parent, ArrayList<Benzenoid> molecules, double step)
 			throws IOException {
 		super();
 		this.parent = parent;

@@ -8,7 +8,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import molecules.Molecule;
+import molecules.Benzenoid;
+import molecules.BenzenoidParser;
 import parsers.CMLConverter;
 import parsers.ComConverter;
 import parsers.ComConverter.ComType;
@@ -85,7 +86,7 @@ public class DrawBenzenoidPane extends BorderPane {
 			File file = fileChooser.showOpenDialog(application.getStage());
 
 			if (file != null) {
-				Molecule molecule = GraphParser.parseUndirectedGraph(file);
+				Benzenoid molecule = GraphParser.parseUndirectedGraph(file);
 				importBenzenoid(molecule);
 			}
 		});
@@ -143,7 +144,7 @@ public class DrawBenzenoidPane extends BorderPane {
 
 			menuItem.setOnAction(e -> {
 
-				Molecule molecule = null;
+				Benzenoid molecule = null;
 
 				try {
 					molecule = moleculeGroup.exportMolecule();
@@ -170,7 +171,7 @@ public class DrawBenzenoidPane extends BorderPane {
 		MenuItem newCollectionItem = new MenuItem("New collection");
 
 		newCollectionItem.setOnAction(e -> {
-			Molecule molecule = moleculeGroup.exportMolecule();
+			Benzenoid molecule = moleculeGroup.exportMolecule();
 			molecule.setDescription(nameField.getText());
 			AddToNewCollectionPane addPane = new AddToNewCollectionPane(application.getBenzenoidCollectionsPane(),
 					molecule);
@@ -218,7 +219,7 @@ public class DrawBenzenoidPane extends BorderPane {
 		this.setTop(menuBar);
 	}
 
-	public void importBenzenoid(Molecule molecule) {
+	public void importBenzenoid(Benzenoid molecule) {
 
 		Couple<Integer, Integer>[] coords = molecule.getHexagonsCoords();
 
@@ -285,13 +286,13 @@ public class DrawBenzenoidPane extends BorderPane {
 
 		if (file != null) {
 
-			Molecule molecule = moleculeGroup.exportMolecule();
+			Benzenoid benzenoid = moleculeGroup.exportMolecule();
 
 			switch (type) {
 
 			case GRAPH:
 				try {
-					molecule.exportToGraphFile(file);
+					BenzenoidParser.exportToGraphFile(benzenoid, file);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -299,7 +300,7 @@ public class DrawBenzenoidPane extends BorderPane {
 
 			case CML:
 				try {
-					CMLConverter.generateCmlFile(molecule, file);
+					CMLConverter.generateCmlFile(benzenoid, file);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -310,7 +311,7 @@ public class DrawBenzenoidPane extends BorderPane {
 					String title = nameField.getText();
 					if ("".equals(title))
 						title = "default_name";
-					ComConverter.generateComFile(molecule, file, 0, ComType.IR, title);
+					ComConverter.generateComFile(benzenoid, file, 0, ComType.IR, title);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

@@ -2,7 +2,7 @@ package collection_operations;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import parsers.CMLConverter;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
@@ -27,7 +27,7 @@ public class CollectionExportCML extends CollectionOperation{
                 File file = fileChooser.showSaveDialog(collectionManagerPane.getApplication().getStage());
 
                 if (file != null) {
-                    Molecule molecule = currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex());
+                    Benzenoid molecule = currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex());
                     try {
                         CMLConverter.generateCmlFile(molecule, file);
                     } catch (IOException e) {
@@ -51,7 +51,7 @@ public class CollectionExportCML extends CollectionOperation{
 
                 for (int i = 0; i < currentPane.getSelectedBenzenoidPanes().size(); i++) {
 
-                    Molecule molecule = currentPane
+                    Benzenoid molecule = currentPane
                             .getMolecule(currentPane.getSelectedBenzenoidPanes().get(i).getIndex());
 
                     String filename;

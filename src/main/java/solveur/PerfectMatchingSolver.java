@@ -14,7 +14,7 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
 import Jama.Matrix;
-import molecules.Molecule;
+import molecules.Benzenoid;
 import molecules.SubGraph;
 import parsers.GraphParser;
 import solveur.LinAlgorithm.PerfectMatchingType;
@@ -146,7 +146,7 @@ public enum PerfectMatchingSolver {
 	}
 
 	// filtering = AC_REGIN, AC_ZHANG
-	public static int computeKekuleStructuresAllDiffConstraint(Molecule molecule, String filtering) {
+	public static int computeKekuleStructuresAllDiffConstraint(Benzenoid molecule, String filtering) {
 
 		int nbNode = molecule.getNbNodes();
 
@@ -247,7 +247,7 @@ public enum PerfectMatchingSolver {
 
 	public static void main(String[] args) {
 
-		Molecule molecule = GraphParser.parseUndirectedGraph(new File(args[0]));
+		Benzenoid molecule = GraphParser.parseUndirectedGraph(new File(args[0]));
 		int [] d = new int [molecule.getNbNodes()];
 		String mode = args[1];
 		

@@ -1,6 +1,6 @@
 package collection_operations;
 
-import molecules.Molecule;
+import molecules.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
@@ -32,7 +32,7 @@ public class LinFanResonanceEnergyTask extends CollectionTask{
                 collectionManagerPane.getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
         for (BenzenoidPane benzenoidPane : selectedBenzenoidPanes) {
-            Molecule molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+            Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
             benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.RE_LIN_FAN);
         }
         addNewSetPane(benzenoidSetPane, collectionManagerPane);

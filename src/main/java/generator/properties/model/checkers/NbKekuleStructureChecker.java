@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Molecule;
+import molecules.Benzenoid;
 
 public class NbKekuleStructureChecker extends Checker {
 
@@ -13,7 +13,7 @@ public class NbKekuleStructureChecker extends Checker {
 	 * Checks if the number of Kekule structures of the benzenoid respects the expressions
 	 */
 	@Override
-	public boolean checks(Molecule molecule, ModelProperty property) {
+	public boolean checks(Benzenoid molecule, ModelProperty property) {
 		ArrayList<PropertyExpression> expressions = property.getExpressions();
 		for(PropertyExpression expression : expressions)
 			if (expression instanceof BinaryNumericalExpression) {
