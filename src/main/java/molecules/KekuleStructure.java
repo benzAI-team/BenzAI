@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public class UndirPonderateGraph {
+public class KekuleStructure {
 private final int nbNodes;
     private final int nbEdges;
     private final int nbHexagons;
 	
-	private final RelativeMatrix coords;
+	private final RelativeMatrix coordinates;
 	
 	private final int maxIndex;
 	
@@ -30,9 +30,9 @@ private final int nbNodes;
 	 * Constructors
 	 */
 	
-	public UndirPonderateGraph(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeMatrix,
-							   int[][] adjacencyMatrix, ArrayList<String> hexagonsString,
-							   Node[] nodesRefs, RelativeMatrix coords, int maxIndex) {
+	public KekuleStructure(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeMatrix,
+						   int[][] adjacencyMatrix, ArrayList<String> hexagonsString,
+						   Node[] nodesRefs, RelativeMatrix coordinates, int maxIndex) {
 
 		this.nbNodes = nbNodes;
 		this.nbEdges = nbEdges;
@@ -41,7 +41,7 @@ private final int nbNodes;
 		this.adjacencyMatrix = adjacencyMatrix;
 		this.hexagonsString = hexagonsString;
 		this.nodesRefs = nodesRefs;
-		this.coords = coords;
+		this.coordinates = coordinates;
 		this.maxIndex = maxIndex;
 		
 		hexagons = new int [nbHexagons][6];
@@ -112,7 +112,7 @@ private final int nbNodes;
 				String []  sNodeStr = sHexagon[i].split(Pattern.quote("_"));
 				int x = Integer.parseInt(sNodeStr[0]);
 				int y = Integer.parseInt(sNodeStr[1]);
-				hexagons[index][i-1] = coords.get(x, y);
+				hexagons[index][i-1] = coordinates.get(x, y);
 			}
 			index ++;
 		}
@@ -130,11 +130,9 @@ private final int nbNodes;
 		return nbEdges;
 	}
 
-
 	public int getNbHexagons() {
 		return nbHexagons;
 	}
-
 
 	public ArrayList<ArrayList<Integer>> getEdgeMatrix() {
 		return edgeMatrix;
@@ -144,19 +142,8 @@ private final int nbNodes;
 		return adjacencyMatrix;
 	}
 
-	public Node [] getNodeRefs() {
-		return nodesRefs;
-	}
-	
+
 	public int [][] getHexagons() {
 		return hexagons;
-	}
-	
-	/**
-	 * Class's methods
-	 */
-	
-	public int getMaxIndex() {
-		return maxIndex;
 	}
 }

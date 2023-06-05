@@ -1,29 +1,24 @@
 package molecules;
 
-import java.util.ArrayList;
-import java.util.Objects;
-
 import Jama.Matrix;
 import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.PerfectMatchingSolver;
 import solveur.RispoliAlgorithm;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class SubGraph {
 
 	private Benzenoid molecule;
-
 	private final int nbNodes;
 	private int nbEdges;
-
 	private final int[][] matrix;
 	private final int[] disabledVertices;
 	private final int[] degrees;
-
 	private int[] disabledHexagons;
 	private int nbDisabledHexagons;
-
-	private double nbPerfectMatchings;
-
+	private double nbPerfectMatching;
 	public SubGraph(int[][] matrix, int[] disabledVertices, int[] degrees, PerfectMatchingType perfectMatchingType) {
 		this.matrix = matrix;
 		this.disabledVertices = disabledVertices;
@@ -32,7 +27,7 @@ public class SubGraph {
 		nbNodes = matrix.length;
 		nbEdges = -1;
 
-		nbPerfectMatchings = -1;
+		nbPerfectMatching = -1;
 
 		clean();
 		switch (perfectMatchingType) {
@@ -61,7 +56,7 @@ public class SubGraph {
 		nbNodes = matrix.length;
 		nbEdges = -1;
 
-		nbPerfectMatchings = -1;
+		nbPerfectMatching = -1;
 
 		nbDisabledHexagons = 0;
 
@@ -83,8 +78,8 @@ public class SubGraph {
 		return degrees;
 	}
 
-	public double getNbPerfectMatchings() {
-		return nbPerfectMatchings;
+	public double getNbPerfectMatching() {
+		return nbPerfectMatching;
 	}
 
 	public int getNbEdges() {
@@ -171,7 +166,7 @@ public class SubGraph {
 								candidats.add(i);
 
 							else if (degrees[i] == 0) {
-								nbPerfectMatchings = 0;
+								nbPerfectMatching = 0;
 								candidats.clear();
 								leafes.clear();
 							}
@@ -193,13 +188,13 @@ public class SubGraph {
 	}
 
 	private void computeNbPerfectMatchingsChoco() {
-		if (nbPerfectMatchings != 0) {
-			nbPerfectMatchings = PerfectMatchingSolver.computeNbPerfectMatchings(this);
+		if (nbPerfectMatching != 0) {
+			nbPerfectMatching = PerfectMatchingSolver.computeNbPerfectMatchings(this);
 		}
 	}
 
 	private void computeNbPerfectMatchingsRispoli() {
-		if (nbPerfectMatchings != 0) {
+		if (nbPerfectMatching != 0) {
 			Matrix rispoliMatrix = RispoliAlgorithm.buildMatrix(this);
 
 			if (rispoliMatrix != null) {
@@ -208,12 +203,12 @@ public class SubGraph {
 				int height = rispoliMatrix.getColumnDimension();
 
 				if (width == height)
-					nbPerfectMatchings = Math.round(Math.abs(rispoliMatrix.det()));
+					nbPerfectMatching = Math.round(Math.abs(rispoliMatrix.det()));
 				else
-					nbPerfectMatchings = 0;
+					nbPerfectMatching = 0;
 
 			} else
-				nbPerfectMatchings = 1;
+				nbPerfectMatching = 1;
 		}
 	}
 

@@ -663,7 +663,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 			SubGraph subGraph = new SubGraph(getEdgeMatrix(), disabledVertices, degrees, PerfectMatchingType.DET);
 
-			nbKekuleStructures = subGraph.getNbPerfectMatchings();
+			nbKekuleStructures = subGraph.getNbPerfectMatching();
 		}
 
 		return nbKekuleStructures;

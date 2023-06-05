@@ -5,8 +5,7 @@ import org.jgrapht.graph.SimpleGraph;
 
 import molecules.Benzenoid;
 
-public enum GraphConversion {
-    ;
+public class GraphConversion {
 
     public static SimpleGraph<Integer, DefaultEdge> buildCarbonGraph(Benzenoid molecule) {
 		

@@ -341,7 +341,7 @@ public enum LinAlgorithm {
 				case DET:
 
 					case CHOCO:
-						nbPerfectMatchings = subGraph.getNbPerfectMatchings();
+						nbPerfectMatchings = subGraph.getNbPerfectMatching();
 					break;
 
 				}

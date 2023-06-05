@@ -215,6 +215,6 @@ public enum RispoliAlgorithm {
 				circuit.add(u);
 
 		SubGraph subGraph = removeCircuit(molecule, circuit, PerfectMatchingType.DET);
-		System.out.println(subGraph.getNbPerfectMatchings() + " perfect matchings");
+		System.out.println(subGraph.getNbPerfectMatching() + " perfect matchings");
 	}
 }

@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 import molecules.Benzenoid;
 import molecules.Node;
-import molecules.UndirPonderateGraph;
+import molecules.KekuleStructure;
 import utils.RelativeMatrix;
 
 public enum GraphParser {
@@ -77,7 +77,7 @@ public enum GraphParser {
 		return molecule;
 	}
 
-	public static UndirPonderateGraph exportSolutionToPonderateGraph(Benzenoid graph, int[] edgesValues) {
+	public static KekuleStructure exportSolutionToPonderateGraph(Benzenoid graph, int[] edgesValues) {
 
 		int[][] adjacencyMatrix = new int[graph.getEdgeMatrix().length][graph.getEdgeMatrix()[0].length];
 		ArrayList<String> edgesString = new ArrayList<>();
@@ -107,7 +107,7 @@ public enum GraphParser {
 			edgesString.add(edgeStr + " " + edgeValue);
 		}
 
-		return new UndirPonderateGraph(graph.getNbNodes(), graph.getNbEdges(), graph.getNbHexagons(),
+		return new KekuleStructure(graph.getNbNodes(), graph.getNbEdges(), graph.getNbHexagons(),
 				graph.getEdgeLists(), adjacencyMatrix, graph.getHexagonsString(), graph.getNodesRefs(),
                 graph.getCoords(), graph.getMaxIndex());
 
@@ -137,7 +137,7 @@ public enum GraphParser {
 
 	}
 
-	public static UndirPonderateGraph parseUndirPonderateGraph(String inputFileName, String fileWithNoCoords) {
+	public static KekuleStructure parseUndirPonderateGraph(String inputFileName, String fileWithNoCoords) {
 
 		try {
 			BufferedReader r = new BufferedReader(new FileReader(inputFileName));
@@ -251,7 +251,7 @@ public enum GraphParser {
 
 			r.close();
 
-			return new UndirPonderateGraph(nbNodes, nbEdges, nbHexagons, edgesMatrix, adjacencyMatrix,
+			return new KekuleStructure(nbNodes, nbEdges, nbHexagons, edgesMatrix, adjacencyMatrix,
 					hexagonsStrings, nodes, null, -1);
 		} catch (IOException e) {
 			e.printStackTrace();
