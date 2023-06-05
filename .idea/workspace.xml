@@ -7,20 +7,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="some corrections">
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="deleting useless code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/SubGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/SubGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/UndirPonderateGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/KekuleStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/LinAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/LinAlgorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/LinFanAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/LinFanAlgorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/PerfectMatchingSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/PerfectMatchingSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RBOSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RBOSolver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RispoliAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RispoliAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/GeneralModelMode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/ParameterIrregularity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/RectangleModuleMode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/SolvingMode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/SymmetryType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/Test.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/toolbox/BuildScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/toolbox/BuildScript.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/toolbox/MoleculeFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/toolbox/MoleculeFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Ibex.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -412,14 +410,7 @@
       <option name="project" value="LOCAL" />
       <updated>1685966558846</updated>
     </task>
-    <task id="LOCAL-00040" summary="some corrections">
-      <created>1685966973770</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1685966973770</updated>
-    </task>
-    <option name="localTasksCounter" value="41" />
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -460,6 +451,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Classes renamed, packages moved, symmetry handling bugs fixed" />
     <MESSAGE value="Symmetry OK, rectangle not OK" />
     <MESSAGE value="lot of attributes made final" />
     <MESSAGE value="branch general_model2 merged" />
@@ -484,8 +476,7 @@
     <MESSAGE value="creating BenzenoidParser" />
     <MESSAGE value="refactoring BenzenoidParser.exportProperties()" />
     <MESSAGE value="deleting useless code" />
-    <MESSAGE value="some corrections" />
-    <option name="LAST_COMMIT_MESSAGE" value="some corrections" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleting useless code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
