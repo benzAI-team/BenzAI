@@ -407,21 +407,24 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (irData != null)
 			return irData;
 
-		Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
-		if (IRSpectra.isPresent()) {
-			StringBuilder b = new StringBuilder();
+		if (getMolecule().getDatabaseInformation().getDatabaseCheckManager().isIRSpectraChecked()) {
 
-			b.append("i\tFreq\tInten\n");
-			for (int i = 0 ; i < IRSpectra.get().getNbFrequencies() ; i++) {
-				b.append(i + "\t" + IRSpectra.get().getFrequency(i) + "\t" + IRSpectra.get().getIntensity(i) + "\n");
+			Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
+			if (IRSpectra.isPresent()) {
+				StringBuilder b = new StringBuilder();
+
+				b.append("i\tFreq\tInten\n");
+				for (int i = 0; i < IRSpectra.get().getNbFrequencies(); i++) {
+					b.append(i + "\t" + IRSpectra.get().getFrequency(i) + "\t" + IRSpectra.get().getIntensity(i) + "\n");
+				}
+				b.append("final energy: " + IRSpectra.get().getFinalEnergy().get(IRSpectra.get().getFinalEnergy().size() - 1));
+
+				irData = b.toString();
+				return irData;
 			}
-			b.append("final energy: " + IRSpectra.get().getFinalEnergy().get(IRSpectra.get().getFinalEnergy().size() - 1));
 
-			irData = b.toString();
-			return irData;
 		}
-		
-		return "";
+		return "Unknown";
 	}
 	
 	public String buildEnergies() {
@@ -429,21 +432,25 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (energies != null)
 			return energies;
 
-		Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
-		if (IRSpectra.isPresent()) {
-			StringBuilder b = new StringBuilder();
+		if (getMolecule().getDatabaseInformation().getDatabaseCheckManager().isIRSpectraChecked()) {
 
-			int i = 0;
-			for (Double energy : IRSpectra.get().getFinalEnergy()) {
-				b.append(i + "\t" + energy + "\n");
-				i++;
-			}
+			Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
+			if (IRSpectra.isPresent()) {
+				StringBuilder b = new StringBuilder();
 
-			energies = b.toString();
+				int i = 0;
+				for (Double energy : IRSpectra.get().getFinalEnergy()) {
+					b.append(i + "\t" + energy + "\n");
+					i++;
+				}
+
+				energies = b.toString();
+			} else
+				energies = "Unknown";
 		}
-
-		else
+		else {
 			energies = "Unknown";
+		}
 
 		return energies;
 	}
@@ -453,17 +460,21 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (intensities != null)
 			return intensities;
 
-		Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
+		if (getMolecule().getDatabaseInformation().getDatabaseCheckManager().isIRSpectraChecked()) {
+
+			Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
 
 
-		if (IRSpectra.isPresent()) {
-			StringBuilder b = new StringBuilder();
-			int i = 0;
-			for (Double intensity : IRSpectra.get().getIntensities()) {
-				b.append(i + "\t" + intensity + "\n");
-				i++;
-			}
-			intensities = b.toString();
+			if (IRSpectra.isPresent()) {
+				StringBuilder b = new StringBuilder();
+				int i = 0;
+				for (Double intensity : IRSpectra.get().getIntensities()) {
+					b.append(i + "\t" + intensity + "\n");
+					i++;
+				}
+				intensities = b.toString();
+			} else
+				intensities = "Unknown";
 		}
 
 		else

@@ -2,6 +2,7 @@ package molecules;
 
 import database.models.IRSpectraEntry;
 import http.Post;
+import org.chocosolver.solver.constraints.nary.nvalue.amnv.differences.D;
 import spectrums.ResultLogFile;
 
 import java.util.List;
@@ -12,20 +13,25 @@ public class BenzenoidDatabaseInformations {
 
     private Benzenoid benzenoid;
 
-    private Optional<Boolean> inDatabase;
+    private DatabaseCheckManager databaseCheckManager;
+
     private Optional<String> imsMap;
     private Optional<ResultLogFile> IRSpectra;
     private Optional<String> NICS;
 
     public BenzenoidDatabaseInformations(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
+        databaseCheckManager = new DatabaseCheckManager(benzenoid);
     }
 
-    public Optional<Boolean> inDatabase() {
-        return inDatabase;
+    public DatabaseCheckManager getDatabaseCheckManager() {
+        return databaseCheckManager;
     }
 
     public Optional<ResultLogFile> findIRSpectra() {
+
+        databaseCheckManager.checkIRSpectra();
+
         if (IRSpectra == null) {
 
             String name = benzenoid.getNames().get(0);
@@ -47,8 +53,6 @@ public class BenzenoidDatabaseInformations {
 
                     System.out.println(IRSpectraData);
 
-                    inDatabase = Optional.of(true);
-
                     return IRSpectra;
                 }
 
@@ -56,7 +60,6 @@ public class BenzenoidDatabaseInformations {
                 System.out.println("Connection to database failed");
             }
 
-            inDatabase = Optional.of(false);
             IRSpectra = Optional.empty();
             return IRSpectra;
         }
@@ -64,6 +67,9 @@ public class BenzenoidDatabaseInformations {
     }
 
     public Optional<String> findimsMap() {
+
+        databaseCheckManager.checkImsMap();
+
         if (imsMap == null) {
             String name = benzenoid.getNames().get(0);
             String url = "https://benzenoids.lis-lab.fr/find_ims2d_1a_by_name/";
