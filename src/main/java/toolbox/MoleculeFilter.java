@@ -1,19 +1,14 @@
 package toolbox;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import classifier.Irregularity;
 import molecules.Benzenoid;
 import parsers.GraphParser;
 import utils.Couple;
 
-public enum MoleculeFilter {
-    ;
+import java.io.*;
+import java.util.ArrayList;
+
+public class MoleculeFilter {
 
     private static Couple<Integer, Integer> countCarbonsAndHydrogens(Benzenoid molecule) {
 		
@@ -115,9 +110,5 @@ public enum MoleculeFilter {
 		
 		reader.close();
 		log.close();
-	}
-	
-	public static void main(String [] args) throws IOException{
-		readAllFiles("C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\graph_files\\list_graph_files.txt");
 	}
 }

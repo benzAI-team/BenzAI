@@ -1,12 +1,11 @@
 package solveur;
 
-import java.util.ArrayList;
-
 import Jama.Matrix;
 import molecules.Benzenoid;
 import molecules.SubGraph;
-import parsers.GraphParser;
 import solveur.LinAlgorithm.PerfectMatchingType;
+
+import java.util.ArrayList;
 
 public enum RispoliAlgorithm {
     ;
@@ -128,93 +127,5 @@ public enum RispoliAlgorithm {
 			return new Matrix(matrix);
 		else
 			return null;
-	}
-
-	public static void main(String[] args) {
-
-		Benzenoid molecule = GraphParser
-				.parseUndirectedGraph("C:\\Users\\adrie\\Desktop\\molecules_test\\coro_3.graph_coord", null, true);
-		ArrayList<Integer> circuit = new ArrayList<>();
-
-// Circuit acene-4
-//		circuit.add(10);
-//		circuit.add(12);
-//		circuit.add(13);
-//		circuit.add(11);
-//		circuit.add(9);
-//		circuit.add(8);
-
-// Circuit coro-2 (OK)
-//		circuit.add(0);
-//		circuit.add(1);
-//		circuit.add(3);
-//		circuit.add(5);
-//		circuit.add(7);
-//		circuit.add(2);
-//		
-//		circuit.add(6);
-//		circuit.add(13);
-//		circuit.add(15);
-//		circuit.add(8);
-
-//		circuit.add(18);
-//		circuit.add(21);
-//		circuit.add(23);
-//		circuit.add(19);
-
-// Circuit coro-2 bug #1 (OK)
-//		circuit.add(3);
-//		circuit.add(5);
-//		circuit.add(6);
-//		circuit.add(8);
-//		circuit.add(13);
-//		circuit.add(15);
-
-// Circuit coro-2 bug #2 (OK)
-
-//		circuit.add(13);
-//		circuit.add(18);
-//		circuit.add(21);
-//		circuit.add(23);
-//		circuit.add(19);
-//		circuit.add(15);
-
-// Circuit coro-2 full
-//		circuit.add(0);
-//		circuit.add(1);
-//		circuit.add(4);
-//		circuit.add(10);
-//		circuit.add(11);
-//		circuit.add(12);
-//		circuit.add(20);
-//		circuit.add(18);
-//		circuit.add(21);
-//		circuit.add(23);
-//		circuit.add(19);
-//		circuit.add(22);
-//		circuit.add(17);
-//		circuit.add(14);
-//		circuit.add(16);
-//		circuit.add(9);
-//		circuit.add(7);
-//		circuit.add(2);
-
-//		Circuit coro-3 bug
-
-		assert molecule != null;
-		for (Integer u : molecule.getHexagons()[16])
-			if (!circuit.contains(u))
-				circuit.add(u);
-
-		for (Integer u : molecule.getHexagons()[17])
-			if (!circuit.contains(u))
-				circuit.add(u);
-
-		for (Integer u : molecule.getHexagons()[18])
-			if (!circuit.contains(u))
-				circuit.add(u);
-
-		SubGraph subGraph = removeCircuit(molecule, circuit, PerfectMatchingType.DET);
-		System.out.println(subGraph.getNbPerfectMatching() + " perfect matchings");
 	}
 }

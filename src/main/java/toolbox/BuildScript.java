@@ -2,8 +2,7 @@ package toolbox;
 
 import java.io.*;
 
-public enum BuildScript {
-    ;
+public class BuildScript {
 
     private static void buildScript(String filename) throws IOException {
 		

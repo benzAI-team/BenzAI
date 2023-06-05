@@ -3,57 +3,7 @@ package solution;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
-import molecules.Benzenoid;
-
 public class GraphConversion {
-
-    public static SimpleGraph<Integer, DefaultEdge> buildCarbonGraph(Benzenoid molecule) {
-		
-		SimpleGraph<Integer, DefaultEdge> carbonGraph = new SimpleGraph<>(DefaultEdge.class);
-		
-		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
-			carbonGraph.addVertex(i);
-		}
-		
-		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
-			for (int j = i + 1 ; j < molecule.getNbNodes() ; j++) {
-				if (molecule.getEdgeMatrix()[i][j] == 1) {
-					carbonGraph.addEdge(i, j);
-				}
-			}
-		}
-		
-		return carbonGraph;
-	}
-	
-	public static SimpleGraph<Integer, DefaultEdge> buildHexagonGraph(Benzenoid molecule) {
-		
-		int [][] dualGraph = molecule.getDualGraph();
-		SimpleGraph<Integer, DefaultEdge> hexagonGraph = new SimpleGraph<>(DefaultEdge.class);
-		
-		for (int i = 0 ; i < molecule.getNbHexagons() ; i++) {
-			hexagonGraph.addVertex(i);
-		}
-		
-		int [][] matrix = new int[molecule.getNbNodes()][molecule.getNbNodes()];
-		
-		for (int i = 0 ; i < molecule.getNbHexagons() ; i++) {
-			for (int j = 0 ; j < 6 ; j++) {
-				
-				int v = dualGraph[i][j];
-				
-				if (v != -1 && matrix[i][v] == 0) {
-					
-					matrix[i][v] = 1;
-					matrix[v][i] = 1;
-					hexagonGraph.addEdge(i, v);
-				}
-				
-			}
-		}
-		
-		return hexagonGraph;
-	}
 	
 	public static SimpleGraph<Integer, DefaultEdge> toCarbonGraph(SimpleGraph<Integer, DefaultEdge> hexagonGraph,
                                                                   int largeur) {
@@ -108,7 +58,6 @@ public class GraphConversion {
 				}
 				k = k + 6;
 			}
-		// System.out.println(carbonGraph);
 		return carbonGraph;
 
 	}
