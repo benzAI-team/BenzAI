@@ -3,6 +3,7 @@ package collection_operations;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import molecules.Benzenoid;
+import molecules.BenzenoidParser;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidPane;
@@ -26,7 +27,8 @@ public class CollectionExportProperties extends CollectionOperation {
 
                 if (file != null) {
                     try {
-                        currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex()).exportProperties(file);
+                        Benzenoid benzenoid = currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex());
+                        BenzenoidParser.exportProperties(benzenoid, file);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -44,7 +46,8 @@ public class CollectionExportProperties extends CollectionOperation {
 
                 if (file != null) {
                     try {
-                        currentPane.getMolecule(benzenoidPane.getIndex()).exportProperties(file);
+                        Benzenoid benzenoid = currentPane.getMolecule(benzenoidPane.getIndex());
+                        BenzenoidParser.exportProperties(benzenoid, file);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -63,17 +66,17 @@ public class CollectionExportProperties extends CollectionOperation {
                     for (int i = 0; i < currentPane.getSelectedBenzenoidPanes().size(); i++) {
 
                         BenzenoidPane benzenoidPane = currentPane.getSelectedBenzenoidPanes().get(i);
-                        Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
+                        Benzenoid benzenoid = currentPane.getMolecule(benzenoidPane.getIndex());
 
                         try {
-                            File moleculeFile;
-                            if (molecule.getDescription() != null && !"".equals(molecule.getDescription()))
-                                moleculeFile = new File(
-                                        directoryPath + "/" + molecule.getDescription().replace("\n", "") + ".csv");
+                            File benzenoidFile;
+                            if (benzenoid.getDescription() != null && !"".equals(benzenoid.getDescription()))
+                                benzenoidFile = new File(
+                                        directoryPath + "/" + benzenoid.getDescription().replace("\n", "") + ".csv");
                             else
-                                moleculeFile = new File(directoryPath + "/" + "solution_" + i + ".csv");
+                                benzenoidFile = new File(directoryPath + "/" + "solution_" + i + ".csv");
 
-                            molecule.exportProperties(moleculeFile);
+                            BenzenoidParser.exportProperties(benzenoid, benzenoidFile);
 
                         } catch (IOException e) {
                             e.printStackTrace();

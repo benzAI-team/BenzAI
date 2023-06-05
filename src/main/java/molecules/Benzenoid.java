@@ -558,44 +558,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 
 
-	public void exportProperties(File file) throws IOException {
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
-		writer.write("molecule_name\t" + description + "\n");
-		writer.write("nb_carbons\t" + nbNodes + "\n");
-		writer.write("nb_hydrogens\t" + this.getNbHydrogens() + "\n");
-		writer.write("nb_hexagons\t" + nbHexagons + "\n");
-
-		String nbKekuleStructures = Double.toString(getNbKekuleStructures()).split(java.util.regex.Pattern.quote("."))[0];
-
-		writer.write(
-				new String(("nb_kekule_structures\t" + nbKekuleStructures).getBytes(), StandardCharsets.UTF_8)
-						+ "\n");
-
-		getIrregularity();
-		writer.write("XI\t" + irregularity.getXI() + "\n");
-		writer.write("#solo\t" + irregularity.getGroup(0) + "\n");
-		writer.write("#duo\t" + irregularity.getGroup(1) + "\n");
-		writer.write("#trio\t" + irregularity.getGroup(2) + "\n");
-		writer.write("#quatuors\t" + irregularity.getGroup(3) + "\n");
-
-		if (aromaticity != null) {
-			for (int i = 0; i < aromaticity.getLocalAromaticity().length; i++)
-				writer.write("E(H_" + i + ")\t" + aromaticity.getLocalAromaticity()[i] + "\n");
-		}
-
-		ArrayList<ClarCoverSolution> clarCoverSolutions = this.getClarCoverSolutions();
-		if (clarCoverSolutions != null) {
-			writer.write("\nradicalar statistics\n");
-			double[] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
-			for (int i = 0; i < Objects.requireNonNull(stats).length; i++)
-				writer.write("C" + (i + 1) + " : " + stats[i] + "\n");
-		}
-
-		writer.close();
-
-	}
 
 	public BenzenoidSolution buildBenzenoidSolution() {
 

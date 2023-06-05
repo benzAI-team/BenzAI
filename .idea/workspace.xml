@@ -7,122 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="before refactoring Molecule">
-      <change afterPath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidParser.java" afterDir="false" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="creating BenzenoidParser">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/CarbonHydrogenClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/CarbonHydrogenClassifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/IrregularityClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/IrregularityClassifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/MoleculeInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/MoleculeInformation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/AllKekuleStructureComputation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/AllKekuleStructureComputation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CheckDatabaseTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CheckDatabaseTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/ClarCoverTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/ClarCoverTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionDraw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionDraw.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportCML.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportCML.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportCOM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportCOM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportPNG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportPNG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionExportProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionPaste.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CollectionPaste.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/FixedBondClarCoverComputation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/FixedBondClarCoverComputation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/ForcedSingleClarCoverTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/ForcedSingleClarCoverTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/ForcedSingleStatisticsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/ForcedSingleStatisticsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/IRSpectraTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/IRSpectraTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/Ims2d1aComputation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/Ims2d1aComputation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/IrregularityComputation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/IrregularityComputation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/LinFanResonanceEnergyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/LinFanResonanceEnergyTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/LinResonanceEnergyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/LinResonanceEnergyTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/RadicalarStatisticsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/RadicalarStatisticsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/RingBoundOrderTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/RingBoundOrderTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLinFan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLinFan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLinOpt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/CorrelationLinOpt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/correlations/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/correlations/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildInsertScript3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/InsertMolecules.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/InsertMolecules.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/InsertScriptFinal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/InsertScriptFinal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/models/IRSpectraEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/models/IRSpectraEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/AmpacBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/AmpacBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/ComBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/ComBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/GaussChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/GaussChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/GaussMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/GaussMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/GeometryBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/GeometryBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gaussbuilder/NewFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gaussbuilder/NewFormat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/SolverResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/SolverResults.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/Checker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/Checker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/ConcealedNonKekuleanChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/ConcealedNonKekuleanChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/NbKekuleStructureChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/NbKekuleStructureChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/SymmetryChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/SymmetryChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/CarbonNumberFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/CarbonNumberFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/ConcealedNonKekuleanFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/ConcealedNonKekuleanFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/DefaultFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/DefaultFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/Filter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/HexagonNumberFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/HexagonNumberFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/HydrogenNumberFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/HydrogenNumberFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/IrregularityFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/IrregularityFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/NbKekuleStructureFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/NbKekuleStructureFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/SymmetryFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/SymmetryFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Molecule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/OrientedCycle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/OrientedCycle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/RBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/RBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/SubGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/SubGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/sort/IrregularityComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/sort/IrregularityComparator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/sort/MoleculeComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/sort/MoleculeComparator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/sort/NbCarbonsComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/sort/NbCarbonsComparator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/sort/NbHexagonsComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/sort/NbHexagonsComparator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/sort/NbHydrogensComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/sort/NbHydrogensComparator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/sort/NbKekuleStructuresComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/sort/NbKekuleStructuresComparator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/sort/ResonanceEnergyComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/sort/ResonanceEnergyComparator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/new_classifier/NewCarbonsHydrogensClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/new_classifier/NewCarbonsHydrogensClassifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/new_classifier/NewClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/new_classifier/NewClassifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/CMLConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/CMLConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/COMConverter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/COMConverter2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/ComConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/ComConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/Aromaticity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/Aromaticity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverForcedRadicalsSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverForcedRadicalsSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverResonanceEnergy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverResonanceEnergy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/ClarCoverSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/KekuleStructureSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/KekuleStructureSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/LinAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/LinAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/LinFanAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/LinFanAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/PerfectMatchingSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/PerfectMatchingSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RBOSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RBOSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RandicMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RandicMethod.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RispoliAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RispoliAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/disjunct_circuits/DisjunctCircuitsSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/disjunct_circuits/DisjunctCircuitsSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/PerfectMatchingMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/matrix_determinant/PerfectMatchingMatrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/IRSpectra.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spectrums/IRSpectra.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/SpectrumsComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spectrums/SpectrumsComputer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/toolbox/MoleculeFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/toolbox/MoleculeFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/catalog/CatalogPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/catalog/CatalogPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections_operations/CollectionsOperationsPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections_operations/CollectionsOperationsPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/database/DatabasePane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/database/DatabasePane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/AddToNewCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/AddToNewCollectionPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/DrawBenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/DrawBenzenoidPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/draw/MoleculeGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/draw/MoleculeGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/FilteringPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/filtering/FilteringPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/GeneratorPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/GeneratorPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/AromaticityGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/AromaticityGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/ClarCoverFixedBondGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/ClarCoverFixedBondGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/ClarCoverGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/ClarCoverGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/ClarCoverREGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/ClarCoverREGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/IMS2D1AGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/IMS2D1AGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/KekuleStructureGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/KekuleStructureGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/MoleculeGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/MoleculeGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/RBOGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/RBOGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/groups/RadicalarClarCoverGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/groups/RadicalarClarCoverGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/irregularity/IrregularityPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/irregularity/IrregularityPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/primaryStage/menus/InputMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/primaryStage/menus/InputMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -493,7 +382,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685965035944</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="creating BenzenoidParser">
+      <created>1685965786916</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1685965786916</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -557,7 +453,8 @@
     <MESSAGE value="fixing drawing bug" />
     <MESSAGE value="fixing pattern drawing bug" />
     <MESSAGE value="before refactoring Molecule" />
-    <option name="LAST_COMMIT_MESSAGE" value="before refactoring Molecule" />
+    <MESSAGE value="creating BenzenoidParser" />
+    <option name="LAST_COMMIT_MESSAGE" value="creating BenzenoidParser" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
