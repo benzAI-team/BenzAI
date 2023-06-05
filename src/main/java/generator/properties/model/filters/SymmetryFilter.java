@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.ParameterizedExpression;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import generator.properties.model.SymmetryHandler;
 
 public class SymmetryFilter extends Filter {

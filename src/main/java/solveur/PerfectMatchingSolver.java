@@ -14,8 +14,8 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
 import Jama.Matrix;
-import molecules.Benzenoid;
-import molecules.SubGraph;
+import benzenoid.Benzenoid;
+import benzenoid.SubGraph;
 import parsers.GraphParser;
 import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.matrix_determinant.PerfectMatchingMatrix;

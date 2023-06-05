@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import classifier.PAHClass;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Couple;
 
 public enum SpectrumsComputer {

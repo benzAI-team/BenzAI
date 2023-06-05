@@ -1,7 +1,7 @@
 package parsers;
 
-import molecules.Benzenoid;
-import molecules.Node;
+import benzenoid.Benzenoid;
+import benzenoid.Node;
 import utils.Couple;
 import utils.Triplet;
 

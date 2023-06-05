@@ -1,6 +1,6 @@
 package solveur;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 import java.util.Arrays;
 

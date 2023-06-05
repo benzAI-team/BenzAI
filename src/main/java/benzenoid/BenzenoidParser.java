@@ -1,4 +1,4 @@
-package molecules;
+package benzenoid;
 
 import classifier.Irregularity;
 import solution.ClarCoverSolution;

@@ -1,8 +1,7 @@
-package molecules;
+package benzenoid;
 
 import database.models.IRSpectraEntry;
 import http.Post;
-import org.chocosolver.solver.constraints.nary.nvalue.amnv.differences.D;
 import spectrums.ResultLogFile;
 
 import java.util.List;

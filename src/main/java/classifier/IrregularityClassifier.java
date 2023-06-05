@@ -1,6 +1,6 @@
 package classifier;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 import java.io.IOException;
 import java.math.BigDecimal;

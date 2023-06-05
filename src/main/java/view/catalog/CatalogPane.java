@@ -34,7 +34,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import spectrums.Parameter;
 import spectrums.ResultLogFile;
 import spectrums.ResultSpectrums;

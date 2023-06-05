@@ -3,7 +3,7 @@ package collection_operations;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;

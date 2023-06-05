@@ -1,6 +1,6 @@
 package collection_operations;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 import solveur.ClarCoverSolver;
 import utils.Utils;

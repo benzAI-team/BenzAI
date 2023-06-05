@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 
 public class RadicalarClarCoverGroup extends MoleculeGroup {

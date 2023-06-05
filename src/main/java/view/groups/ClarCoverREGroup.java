@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Couple;
 import utils.HexagonAromaticity;
 

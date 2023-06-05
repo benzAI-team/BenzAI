@@ -2,7 +2,7 @@ package utils;
 
 import java.util.List;
 
-import molecules.Node;
+import benzenoid.Node;
 
 public class EdgeSet {
 

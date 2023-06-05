@@ -1,15 +1,13 @@
-package molecules;
+package benzenoid;
 
 import classifier.Irregularity;
-import database.models.IRSpectraEntry;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
 import generator.properties.Property;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
-import http.Post;
-import molecules.sort.MoleculeComparator;
-import molecules.sort.NbHexagonsComparator;
+import benzenoid.sort.MoleculeComparator;
+import benzenoid.sort.NbHexagonsComparator;
 import parsers.GraphCoordFileBuilder;
 import parsers.GraphFileBuilder;
 import parsers.GraphParser;
@@ -18,7 +16,6 @@ import solveur.Aromaticity;
 import solveur.LinAlgorithm;
 import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.RBOSolver;
-import spectrums.ResultLogFile;
 import utils.Couple;
 import utils.HexNeighborhood;
 import utils.Interval;
@@ -77,12 +74,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	private ArrayList<String> names;
 
-
-	private boolean databaseCheckedIMS2D1A;
-
 	private int nbCrowns = -1;
-
-	private String ims2d1a;
 
 	private BenzenoidDatabaseInformations databaseInformation;
 
@@ -1138,42 +1130,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		}
 
 	}
-
-	// "/find_ims2d_1a_by_name"
-	public String getIms2d1a() {
-
-		if (ims2d1a != null || databaseCheckedIMS2D1A)
-			return ims2d1a;
-
-		if (!Post.isDatabaseConnected)
-			return null;
-
-		databaseCheckedIMS2D1A = true;
-
-		String name = getNames().get(0);
-		String url = "https://benzenoids.lis-lab.fr/find_ims2d_1a_by_name/";
-		String json = "{\"name\": \"" + name + "\"}";
-
-		try {
-			List<Map> results = Post.post(url, json);
-
-			if (!results.isEmpty()) {
-				Map map = results.get(0);
-				ims2d1a = (String) map.get("picture");
-				return ims2d1a;
-			}
-
-		} catch (Exception e) {
-			System.out.println("Connection to database failed");
-			return null;
-		}
-
-		return ims2d1a;
-	}
-
-
-
-
 
 	public static ArrayList<Benzenoid> union(ArrayList<Benzenoid> molecules1, ArrayList<Benzenoid> molecules2) {
 

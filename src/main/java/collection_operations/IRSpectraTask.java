@@ -6,7 +6,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import spectrums.ResultLogFile;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;

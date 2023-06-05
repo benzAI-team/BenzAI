@@ -10,7 +10,7 @@ import org.chocosolver.solver.constraints.nary.cnf.LogOp;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 import utils.Couple;
 

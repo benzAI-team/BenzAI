@@ -1,7 +1,7 @@
 package collection_operations;
 
 import application.BenzenoidApplication;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 

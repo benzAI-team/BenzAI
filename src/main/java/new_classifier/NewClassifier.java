@@ -3,7 +3,7 @@ package new_classifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public abstract class NewClassifier {
 

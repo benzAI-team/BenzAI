@@ -1,6 +1,6 @@
-package molecules.sort;
+package benzenoid.sort;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public class NbCarbonsComparator implements MoleculeComparator{
 

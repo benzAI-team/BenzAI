@@ -1,6 +1,6 @@
 package collection_operations;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solveur.KekuleStructureSolver;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;

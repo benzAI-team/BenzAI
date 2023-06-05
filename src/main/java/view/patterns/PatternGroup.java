@@ -3,7 +3,7 @@ package view.patterns;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
 import javafx.scene.Group;
-import molecules.Node;
+import benzenoid.Node;
 import utils.Couple;
 import utils.HexNeighborhood;
 import utils.RelativeMatrix;

@@ -1,6 +1,6 @@
-package molecules.sort;
+package benzenoid.sort;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solveur.Aromaticity;
 
 public class ResonanceEnergyComparator implements MoleculeComparator {

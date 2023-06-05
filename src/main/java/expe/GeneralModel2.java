@@ -2,7 +2,7 @@ package expe;
 
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
-import molecules.Node;
+import benzenoid.Node;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.extension.Tuples;

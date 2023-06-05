@@ -10,7 +10,7 @@ import java.util.List;
 import classifier.Irregularity;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solveur.LinAlgorithm;
 
 public enum Utils {

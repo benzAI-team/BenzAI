@@ -5,11 +5,11 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import molecules.RBO;
+import benzenoid.RBO;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import view.collections.BenzenoidCollectionsManagerPane;
 
 public class RBOGroup extends MoleculeGroup {

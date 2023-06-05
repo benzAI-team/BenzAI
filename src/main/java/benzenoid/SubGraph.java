@@ -1,4 +1,4 @@
-package molecules;
+package benzenoid;
 
 import java.util.ArrayList;
 import java.util.Objects;

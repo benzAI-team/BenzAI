@@ -10,7 +10,7 @@ import java.math.RoundingMode;
 import java.util.regex.Pattern;
 
 import classifier.Irregularity;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;

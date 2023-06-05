@@ -1,8 +1,8 @@
 package solveur;
 
 import Jama.Matrix;
-import molecules.Benzenoid;
-import molecules.SubGraph;
+import benzenoid.Benzenoid;
+import benzenoid.SubGraph;
 import solveur.LinAlgorithm.PerfectMatchingType;
 
 import java.util.ArrayList;

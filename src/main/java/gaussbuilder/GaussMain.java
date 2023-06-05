@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.ComConverter.ComType;
 import parsers.GraphParser;
 

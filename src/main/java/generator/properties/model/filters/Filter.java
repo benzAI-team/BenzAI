@@ -6,7 +6,7 @@ import generator.properties.Property;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public abstract class Filter {
 

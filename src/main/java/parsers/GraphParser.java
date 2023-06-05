@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import molecules.Benzenoid;
-import molecules.Node;
-import molecules.UndirPonderateGraph;
+import benzenoid.Benzenoid;
+import benzenoid.Node;
+import benzenoid.UndirPonderateGraph;
 import utils.RelativeMatrix;
 
 public enum GraphParser {

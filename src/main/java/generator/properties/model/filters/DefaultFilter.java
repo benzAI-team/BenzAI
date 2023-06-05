@@ -9,7 +9,7 @@ import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import generator.properties.model.expression.PropertyExpression;
 import constraints.BenzenoidConstraint;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import constraints.BenzAIConstraint;
 
 public class DefaultFilter extends Filter {

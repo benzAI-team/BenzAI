@@ -1,6 +1,6 @@
 package parsers;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;

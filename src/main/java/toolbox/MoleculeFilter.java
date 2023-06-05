@@ -1,7 +1,7 @@
 package toolbox;
 
 import classifier.Irregularity;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 import utils.Couple;
 

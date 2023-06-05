@@ -1,7 +1,7 @@
 package solveur.matrix_determinant;
 
 import Jama.Matrix;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 
 import java.util.ArrayList;

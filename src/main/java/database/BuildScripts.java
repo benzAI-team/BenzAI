@@ -1,7 +1,7 @@
 package database;
 
-import molecules.AtomGeometry;
-import molecules.Benzenoid;
+import benzenoid.AtomGeometry;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;

@@ -20,7 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;

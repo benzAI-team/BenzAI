@@ -1,6 +1,6 @@
-package molecules.sort;
+package benzenoid.sort;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public interface MoleculeComparator {
 	int compare(Benzenoid molecule1, Benzenoid molecule2);

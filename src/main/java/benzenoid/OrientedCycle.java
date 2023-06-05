@@ -1,4 +1,4 @@
-package molecules;
+package benzenoid;
 
 public class OrientedCycle {
 

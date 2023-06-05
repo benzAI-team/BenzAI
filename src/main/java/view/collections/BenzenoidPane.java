@@ -25,7 +25,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.BenzenoidSolution;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity;

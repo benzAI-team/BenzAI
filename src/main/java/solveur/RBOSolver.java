@@ -2,9 +2,9 @@ package solveur;
 
 import java.util.ArrayList;
 
-import molecules.Benzenoid;
-import molecules.RBO;
-import molecules.SubGraph;
+import benzenoid.Benzenoid;
+import benzenoid.RBO;
+import benzenoid.SubGraph;
 import solveur.LinAlgorithm.PerfectMatchingType;
 
 public enum RBOSolver {

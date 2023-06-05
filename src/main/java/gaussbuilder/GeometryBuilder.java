@@ -1,6 +1,6 @@
 package gaussbuilder;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Couple;
 import utils.Triplet;
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import molecules.AtomGeometry;
+import benzenoid.AtomGeometry;
 
 public class IMS2D1A {
 

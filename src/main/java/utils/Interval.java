@@ -1,6 +1,6 @@
 package utils;
 
-import molecules.Node;
+import benzenoid.Node;
 
 public class Interval implements Comparable<Interval>{
 

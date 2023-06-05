@@ -12,9 +12,9 @@ import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
 import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.BoolVar;
 
-import molecules.Edge;
-import molecules.Benzenoid;
-import molecules.UndirPonderateGraph;
+import benzenoid.Edge;
+import benzenoid.Benzenoid;
+import benzenoid.UndirPonderateGraph;
 import parsers.GraphParser;
 import solveur.Aromaticity.RIType;
 

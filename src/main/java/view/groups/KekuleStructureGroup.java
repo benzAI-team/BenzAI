@@ -1,7 +1,7 @@
 package view.groups;
 
 import javafx.scene.shape.Line;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public class KekuleStructureGroup extends MoleculeGroup {
 
