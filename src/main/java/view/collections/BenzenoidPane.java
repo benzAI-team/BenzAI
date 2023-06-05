@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -29,6 +30,7 @@ import solution.BenzenoidSolution;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
+import spectrums.IRSpectra;
 import spectrums.ResultLogFile;
 import view.groups.AromaticityGroup;
 
@@ -380,31 +382,22 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (frequencies != null)
 			return frequencies;
 
-		if (getMolecule().databaseCheckedIR()) {
-
-			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
-			ResultLogFile log = molecule.getIRSpectraResult();
+		Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
+		if (IRSpectra.isPresent()) {
 
 			StringBuilder b = new StringBuilder();
 
-			if (log != null) {
-				int i = 0;
-				for (Double frequencie : log.getFrequencies()) {
-					b.append(i + "\t" + frequencie + "\n");
-					i++;
-				}
+			int i = 0;
+			for (Double frequencie : IRSpectra.get().getFrequencies()) {
+				b.append(i + "\t" + frequencie + "\n");
+				i++;
 			}
 
-			else
-				b.append("Unknown");
-
 			frequencies = b.toString();
-
 		}
 
-		else {
-			return "Unknown";
-		}
+		else
+			frequencies = "Unknown";
 
 		return frequencies;
 	}
@@ -413,20 +406,17 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		
 		if (irData != null)
 			return irData;
-		
-		if (getMolecule().databaseCheckedIR()) {
-			
+
+		Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
+		if (IRSpectra.isPresent()) {
 			StringBuilder b = new StringBuilder();
-			ResultLogFile log = getMolecule().getIRSpectraResult();
-			
-			if (log != null) {
-				b.append("i\tFreq\tInten\n");
-				for (int i = 0 ; i < log.getNbFrequencies() ; i++) {
-					b.append(i + "\t" + log.getFrequency(i) + "\t" + log.getIntensity(i) + "\n");
-				}
-				b.append("final energy: " + log.getFinalEnergy().get(log.getFinalEnergy().size() - 1));
+
+			b.append("i\tFreq\tInten\n");
+			for (int i = 0 ; i < IRSpectra.get().getNbFrequencies() ; i++) {
+				b.append(i + "\t" + IRSpectra.get().getFrequency(i) + "\t" + IRSpectra.get().getIntensity(i) + "\n");
 			}
-			
+			b.append("final energy: " + IRSpectra.get().getFinalEnergy().get(IRSpectra.get().getFinalEnergy().size() - 1));
+
 			irData = b.toString();
 			return irData;
 		}
@@ -439,30 +429,22 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (energies != null)
 			return energies;
 
-		if (getMolecule().databaseCheckedIR()) {
-
-			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
-			ResultLogFile log = molecule.getIRSpectraResult();
-
+		Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
+		if (IRSpectra.isPresent()) {
 			StringBuilder b = new StringBuilder();
 
-			if (log != null) {
-				int i = 0;
-				for (Double energy : log.getFinalEnergy()) {
-					b.append(i + "\t" + energy + "\n");
-					i++;
-				}
+			int i = 0;
+			for (Double energy : IRSpectra.get().getFinalEnergy()) {
+				b.append(i + "\t" + energy + "\n");
+				i++;
 			}
 
-			else
-				b.append("Unknown");
-
 			energies = b.toString();
-
 		}
 
 		else
-			return "Unknown";
+			energies = "Unknown";
+
 		return energies;
 	}
 
@@ -471,31 +453,23 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (intensities != null)
 			return intensities;
 
-		if (getMolecule().databaseCheckedIR()) {
+		Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
 
-			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
-			ResultLogFile log = molecule.getIRSpectraResult();
 
+		if (IRSpectra.isPresent()) {
 			StringBuilder b = new StringBuilder();
-
-			if (log != null) {
-				int i = 0;
-				for (Double intensity : log.getIntensities()) {
-					b.append(i + "\t" + intensity + "\n");
-					i++;
-				}
+			int i = 0;
+			for (Double intensity : IRSpectra.get().getIntensities()) {
+				b.append(i + "\t" + intensity + "\n");
+				i++;
 			}
-
-			else
-				b.append("Unknown");
-
 			intensities = b.toString();
 		}
 
 		else
-			return "Unknown";
-		return intensities;
+			intensities = "Unknown";
 
+		return intensities;
 	}
 
 	public HBox getDescriptionBox() {

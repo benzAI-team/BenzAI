@@ -77,8 +77,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	private ArrayList<String> names;
 
-	private ResultLogFile nicsResult;
-	private boolean databaseCheckedIR;
 
 	private boolean databaseCheckedIMS2D1A;
 
@@ -86,7 +84,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	private String ims2d1a;
 
-	private String amesFormat = "unknown";
+	private BenzenoidDatabaseInformations databaseInformation;
 
 	/**
 	 * Constructors
@@ -125,6 +123,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		computeDualGraph();
 		computeDegrees();
 		buildHexagonsCoords2();
+
+		databaseInformation = new BenzenoidDatabaseInformations(this);
 	}
 
 	public Benzenoid(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeLists,
@@ -163,6 +163,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		computeDualGraph();
 		computeDegrees();
 		buildHexagonsCoords2();
+
+		databaseInformation = new BenzenoidDatabaseInformations(this);
 	}
 
 	/**
@@ -1169,49 +1171,9 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		return ims2d1a;
 	}
 
-	// "{\"name\": \"1-11-20-27-28-29-30-39\"}";
-	@SuppressWarnings("rawtypes")
-	public ResultLogFile getIRSpectraResult() {
 
-		if (nicsResult != null || databaseCheckedIR)
-			return nicsResult;
 
-		if (!Post.isDatabaseConnected)
-			return null;
 
-		databaseCheckedIR = true;
-
-		String name = getNames().get(0);
-		String url = "https://benzenoids.lis-lab.fr/find_by_name/";
-		String json = "{\"name\": \"" + name + "\"}";
-
-		try {
-			List<Map> results = Post.post(url, json);
-
-			if (!results.isEmpty()) {
-				IRSpectraEntry content = IRSpectraEntry.buildQueryContent(results.get(0));
-				amesFormat = content.getAmesFormat();
-				nicsResult = content.buildResultLogFile();
-				System.out.println(nicsResult);
-				return nicsResult;
-			}
-
-		} catch (Exception e) {
-			System.out.println("Connection to database failed");
-			return null;
-		}
-
-		return null;
-	}
-
-	public void setNicsResult(ResultLogFile nicsResult) {
-		this.nicsResult = nicsResult;
-		databaseCheckedIR = true;
-	}
-
-	public boolean databaseCheckedIR() {
-		return databaseCheckedIR;
-	}
 
 	public static ArrayList<Benzenoid> union(ArrayList<Benzenoid> molecules1, ArrayList<Benzenoid> molecules2) {
 
@@ -1327,10 +1289,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		return true;
 	}
 
-	public String getAmesFormat() {
-		return amesFormat;
-	}
-
 	/***
 	 *
 	 */
@@ -1401,4 +1359,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		graphBuilder.buildGraphFile();
 	}
 
+	public BenzenoidDatabaseInformations getDatabaseInformation() {
+		return databaseInformation;
+	}
 }

@@ -234,9 +234,6 @@ public class DatabasePane extends ScrollPane {
 								for (Map map : results) {
 									try {
 
-										if (i == 4968)
-											System.out.print("");
-
 										IRSpectraEntry content = IRSpectraEntry.buildQueryContent(map);
 
 										Benzenoid molecule = null;
@@ -247,7 +244,7 @@ public class DatabasePane extends ScrollPane {
 
 										ResultLogFile resultLog = content.buildResultLogFile();
 
-										molecule.setNicsResult(resultLog);
+										//molecule.setNicsResult(resultLog);
 
 										molecules.add(molecule);
 										logsResults.put(molecule.toString(), resultLog);

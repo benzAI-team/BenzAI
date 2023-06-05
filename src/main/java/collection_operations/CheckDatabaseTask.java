@@ -7,9 +7,12 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import molecules.Benzenoid;
+import spectrums.ResultLogFile;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidPane;
+
+import java.util.Optional;
 
 public class CheckDatabaseTask extends CollectionTask{
     CheckDatabaseTask() {
@@ -30,29 +33,30 @@ public class CheckDatabaseTask extends CollectionTask{
                         setIndex(1);
                         int size = currentPane.getSelectedBenzenoidPanes().size();
                         for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes()) {
-                            Benzenoid molecule = currentPane.getMolecule(pane.getIndex());
-                            if (!molecule.databaseCheckedIR()) {
-                                if (molecule.getIRSpectraResult() != null) {
-                                    System.out.println(molecule);
-                                    Platform.runLater(() -> {
-                                        Image image = new Image("/resources/graphics/icon-database.png");
-                                        ImageView imgView = new ImageView(image);
-                                        imgView.resize(30, 30);
-                                        Tooltip.install(imgView,
-                                                new Tooltip("This molecule exists in the database"));
-                                        pane.getDescriptionBox().getChildren().add(imgView);
-                                        if (getIndex() == 1) {
-                                            collectionManagerPane.log(getIndex() + "/" + size, false);
-                                            setLineIndex(currentPane.getConsole().getNbLines() - 1);
-                                        } else {
-                                            collectionManagerPane.changeLineConsole(getIndex() + "/" + size, getLineIndex());
-                                        }
-                                        setIndex(getIndex() + 1);
-                                    });
-                                    pane.buildFrequencies();
-                                    pane.buildIntensities();
-                                    pane.buildEnergies();
-                                }
+                            Benzenoid benzenoid = currentPane.getMolecule(pane.getIndex());
+
+                            Optional<ResultLogFile> IRSpectra = benzenoid.getDatabaseInformation().findIRSpectra();
+
+                            if (IRSpectra.isPresent()) {
+                                System.out.println(benzenoid);
+                                Platform.runLater(() -> {
+                                    Image image = new Image("/resources/graphics/icon-database.png");
+                                    ImageView imgView = new ImageView(image);
+                                    imgView.resize(30, 30);
+                                    Tooltip.install(imgView,
+                                            new Tooltip("This molecule exists in the database"));
+                                    pane.getDescriptionBox().getChildren().add(imgView);
+                                    if (getIndex() == 1) {
+                                        collectionManagerPane.log(getIndex() + "/" + size, false);
+                                        setLineIndex(currentPane.getConsole().getNbLines() - 1);
+                                    } else {
+                                        collectionManagerPane.changeLineConsole(getIndex() + "/" + size, getLineIndex());
+                                    }
+                                    setIndex(getIndex() + 1);
+                                });
+                                pane.buildFrequencies();
+                                pane.buildIntensities();
+                                pane.buildEnergies();
                             }
                         }
                         return null;

@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/molecules/BenzenoidDatabaseInformations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="before creating new branch">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Launcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/ResultLogFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spectrums/ResultLogFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/CheckDatabaseTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/CheckDatabaseTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/IRSpectraTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/IRSpectraTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/molecules/Benzenoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/SpectrumsComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spectrums/SpectrumsComputer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +26,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -43,6 +47,9 @@
         <option name="workspaceImportEnabled" value="true" />
       </MavenImportingSettings>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2Qn7FEpKPbSuQrUfXD7OMaCaUi5" />
   <component name="ProjectViewState">
@@ -86,6 +93,18 @@
       <option name="presentableId" value="Default" />
       <updated>1685977386429</updated>
     </task>
+    <task id="LOCAL-00001" summary="before creating new branch">
+      <created>1685980407429</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1685980407429</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="before creating new branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="before creating new branch" />
   </component>
 </project>

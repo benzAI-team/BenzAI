@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import classifier.PAHClass;
@@ -447,11 +448,13 @@ public enum SpectrumsComputer {
 		HashMap<String, Couple<ArrayList<Double>, ResultLogFile>> map = new HashMap<>();
 
 		for (Benzenoid molecule : molecules) {
-			ResultLogFile nicsResult = molecule.getIRSpectraResult();
-			ArrayList<Double> spectres = spectres(nicsResult, parameter);
-			map.put(molecule.getNames().get(0), new Couple<ArrayList<Double>, ResultLogFile>(spectres, nicsResult));
-		}
 
+			Optional<ResultLogFile> IRSpectra = molecule.getDatabaseInformation().findIRSpectra();
+			if (IRSpectra.isPresent()) {
+				ArrayList<Double> spectres = spectres(IRSpectra.get(), parameter);
+				map.put(molecule.getNames().get(0), new Couple<>(spectres, IRSpectra.get()));
+			}
+		}
 		return map;
 	}
 
