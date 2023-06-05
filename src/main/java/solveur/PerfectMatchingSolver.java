@@ -261,7 +261,7 @@ public enum PerfectMatchingSolver {
 			System.out.println("method: determinant");
 			long begin = System.currentTimeMillis();
 			fg = new SubGraph(molecule.getEdgeMatrix(), d, molecule.getDegrees(), PerfectMatchingType.DET);
-			System.out.println(fg.getNbPerfectMatching() + " matchings");
+			System.out.println(fg.getNbPerfectMatchings() + " matchings");
 			long end = System.currentTimeMillis();
 			time = end - begin;
 			
@@ -277,7 +277,7 @@ public enum PerfectMatchingSolver {
 				System.out.println("constraint: sum");
 				long begin = System.currentTimeMillis();
 				fg = new SubGraph(molecule.getEdgeMatrix(), d, molecule.getDegrees(), PerfectMatchingType.CHOCO);	
-				System.out.println(fg.getNbPerfectMatching() + " matchings");
+				System.out.println(fg.getNbPerfectMatchings() + " matchings");
 				long end = System.currentTimeMillis();
 				time = end - begin;
 			}

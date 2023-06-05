@@ -28,7 +28,7 @@ public enum RBOSolver {
 					toRemove.add(i);
 					toRemove.add(j);
 					SubGraph subGraph = RispoliAlgorithm.removeCircuit(molecule, toRemove, PerfectMatchingType.DET);
-					double nbPerfectMatchings = subGraph.getNbPerfectMatching();
+					double nbPerfectMatchings = subGraph.getNbPerfectMatchings();
 
 					statistics[i][j] += nbPerfectMatchings;
 					statistics[j][i] += nbPerfectMatchings;

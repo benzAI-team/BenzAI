@@ -14,7 +14,7 @@ import org.chocosolver.solver.variables.BoolVar;
 
 import molecules.Edge;
 import molecules.Benzenoid;
-import molecules.KekuleStructure;
+import molecules.UndirPonderateGraph;
 import parsers.GraphParser;
 import solveur.Aromaticity.RIType;
 
@@ -45,7 +45,7 @@ public enum LinFanAlgorithm {
 		return sum;
 	}
 
-	public static int[] computeDoubleBounds(KekuleStructure kekuleStructure, int hexagon) {
+	public static int[] computeDoubleBounds(UndirPonderateGraph kekuleStructure, int hexagon) {
 
 		int[][] adjacencyMatrix = kekuleStructure.getAdjacencyMatrix();
 		int[] hexagonVertices = kekuleStructure.getHexagons()[hexagon];
@@ -72,7 +72,7 @@ public enum LinFanAlgorithm {
 		return hexagonDoubleBounds;
 	}
 
-	public static int getHexagonConfiguration(KekuleStructure kekuleStructure, int hexagon) {
+	public static int getHexagonConfiguration(UndirPonderateGraph kekuleStructure, int hexagon) {
 
 		int[] hexagonDoubleBounds = computeDoubleBounds(kekuleStructure, hexagon);
 
@@ -129,7 +129,7 @@ public enum LinFanAlgorithm {
 	/**
 	 * Algorithm 1
 	 */
-	public static List<ArrayList<Edge>> computeAllPaths(KekuleStructure kekuleStructure, int a, int b) {
+	public static List<ArrayList<Edge>> computeAllPaths(UndirPonderateGraph kekuleStructure, int a, int b) {
 
 		List<ArrayList<Integer>> candidates = new ArrayList<>();
 		ArrayList<Integer> firstCandidate = new ArrayList<>();
@@ -238,7 +238,7 @@ public enum LinFanAlgorithm {
 
 	}
 
-	public static List<Edge> computeCircuitCase1(KekuleStructure kekuleStructure, int hexagon) {
+	public static List<Edge> computeCircuitCase1(UndirPonderateGraph kekuleStructure, int hexagon) {
 
 		int[] hexagonVertices = kekuleStructure.getHexagons()[hexagon];
 		int[] hexagonDoubleBounds = computeDoubleBounds(kekuleStructure, hexagon);
@@ -381,7 +381,7 @@ public enum LinFanAlgorithm {
 
 	}
 
-	public static List<Edge> computeCircuitCase2(KekuleStructure kekuleStructure, int hexagon) {
+	public static List<Edge> computeCircuitCase2(UndirPonderateGraph kekuleStructure, int hexagon) {
 
 		int[] hexagonVertices = kekuleStructure.getHexagons()[hexagon];
 		int[] hexagonDoubleBounds = computeDoubleBounds(kekuleStructure, hexagon);
@@ -441,7 +441,7 @@ public enum LinFanAlgorithm {
 	}
 
 	@SuppressWarnings("unused")
-	public static List<Edge> computeCircuitCase3(KekuleStructure kekuleStructure, int hexagon) {
+	public static List<Edge> computeCircuitCase3(UndirPonderateGraph kekuleStructure, int hexagon) {
 
 		if (indexStructure == 9 && hexagon == 13)
 			System.out.print("");
@@ -649,7 +649,7 @@ public enum LinFanAlgorithm {
 		 */
 	}
 
-	public static List<Edge> computeCircuitCase4(KekuleStructure kekuleStructure, int hexagon) {
+	public static List<Edge> computeCircuitCase4(UndirPonderateGraph kekuleStructure, int hexagon) {
 
 		if (indexStructure == 23 && hexagon == 12)
 			System.out.print("");
@@ -782,7 +782,7 @@ public enum LinFanAlgorithm {
 
 	}
 
-	public static void computeCircuits(KekuleStructure kekuleStructure) {
+	public static void computeCircuits(UndirPonderateGraph kekuleStructure) {
 
 		//kekuleStructure.displayDoubleBounds();
 		
@@ -859,7 +859,7 @@ public enum LinFanAlgorithm {
 			 * Computing the curent Kekulé's structure
 			 */
 
-			KekuleStructure kekuleStructure = GraphParser.exportSolutionToPonderateGraph(graph, edgesValues);
+			UndirPonderateGraph kekuleStructure = GraphParser.exportSolutionToPonderateGraph(graph, edgesValues);
 
 			computeCircuits(kekuleStructure);
 
