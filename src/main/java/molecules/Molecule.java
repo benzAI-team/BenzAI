@@ -100,7 +100,7 @@ public class Molecule implements Comparable<Molecule> {
 	 */
 
 	public Molecule(int nbNodes, int nbEdges, int nbHexagons, int[][] hexagons, Node[] nodesRefs,
-			int[][] edgeMatrix, RelativeMatrix coords) {
+			int[][] edgeMatrix, RelativeMatrix coordinates) {
 
 		comparator = new NbHexagonsComparator();
 
@@ -110,7 +110,7 @@ public class Molecule implements Comparable<Molecule> {
 		this.hexagons = hexagons;
 		this.nodesRefs = nodesRefs;
 		this.edgeMatrix = edgeMatrix;
-		this.coords = coords;
+		this.coords = coordinates;
 
 		hexagonsString = new ArrayList<>();
 
