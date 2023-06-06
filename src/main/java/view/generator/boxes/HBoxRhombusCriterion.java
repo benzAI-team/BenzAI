@@ -1,10 +1,10 @@
 package view.generator.boxes;
 
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.RhombusExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
@@ -74,7 +74,7 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {
 			int size = "Unspecified".equals(dimensionChoiceBox.getValue()) ? -1 : Integer.decode(dimensionTextField.getText());
-			modelPropertySet.getById("rhombus").addExpression(new BinaryNumericalExpression("rhombus", dimensionChoiceBox.getValue(), size));
+			modelPropertySet.getById("rhombus").addExpression(new RhombusExpression("rhombus", dimensionChoiceBox.getValue(), size));
 		}
 	}
 

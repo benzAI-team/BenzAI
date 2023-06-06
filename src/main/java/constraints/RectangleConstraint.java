@@ -205,7 +205,6 @@ public class RectangleConstraint extends BenzAIConstraint {
 
 		for (PropertyExpression expression : this.getExpressionList()) {
 			RectangleExpression rectangleExpression = (RectangleExpression)expression;
-
 			if(0 <= rectangleExpression.getHeight()) {
 				model.arithm(heightVar, rectangleExpression.getHeightOperator(), rectangleExpression.getHeight()).post();
 				System.out.println("height:" + rectangleExpression.getHeightOperator() + rectangleExpression.getHeight());

@@ -88,11 +88,9 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		for(Property property : GeneralModel.getSolverPropertySet())
 			hBoxesSolverCriterions.add(property.getHBoxCriterion(this, null));
 		gridPane = buildGridPane();
-
 		this.setContent(gridPane);
 
 		checkSettings();
-
 		placeComponents();
 	}
 /***

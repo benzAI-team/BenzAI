@@ -412,14 +412,7 @@
       <option name="project" value="LOCAL" />
       <updated>1685966558846</updated>
     </task>
-    <task id="LOCAL-00040" summary="some corrections">
-      <created>1685966973770</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1685966973770</updated>
-    </task>
-    <option name="localTasksCounter" value="41" />
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -460,6 +453,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Classes renamed, packages moved, symmetry handling bugs fixed" />
     <MESSAGE value="Symmetry OK, rectangle not OK" />
     <MESSAGE value="lot of attributes made final" />
     <MESSAGE value="branch general_model2 merged" />
@@ -484,8 +478,7 @@
     <MESSAGE value="creating BenzenoidParser" />
     <MESSAGE value="refactoring BenzenoidParser.exportProperties()" />
     <MESSAGE value="deleting useless code" />
-    <MESSAGE value="some corrections" />
-    <option name="LAST_COMMIT_MESSAGE" value="some corrections" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleting useless code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -35,7 +35,7 @@ public class ModelPropertySet extends PropertySet {
 		return ((ModelProperty) getById("hexagons")).hasUpperBound()
 				|| ((ModelProperty) getById("carbons")).hasUpperBound()
 				|| ((ModelProperty) getById("hydrogens")).hasUpperBound()
-				|| ((ModelProperty) getById("rhombus")).hasUpperBound()
+				|| ((RhombusProperty) getById("rhombus")).hasUpperBounds()
 				|| ((ModelProperty) getById("diameter")).hasUpperBound()
 				|| ((ModelProperty) getById("coronenoid")).hasUpperBound()
 				|| ((RectangleProperty) getById("rectangle")).hasUpperBounds();
@@ -73,7 +73,6 @@ public class ModelPropertySet extends PropertySet {
 	private void clearPropertyExpressions() {
 		for(Property property : getPropertyList())
 			property.clearExpressions();
-		
 	}
 
 	public boolean symmetryConstraintsAppliable() {
@@ -83,14 +82,13 @@ public class ModelPropertySet extends PropertySet {
 	/***
 	 *
 	 */
-	public boolean buildModelPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
+	public void buildModelPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
 		clearPropertyExpressions();
 		for (HBoxCriterion box : hBoxesCriterions) {
 			if (!box.isValid())
-				return false;
+				return;
 			((HBoxModelCriterion)box).addPropertyExpression(this);
 		}
-		return true;
 	}
 
 }
