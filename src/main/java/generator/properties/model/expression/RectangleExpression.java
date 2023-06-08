@@ -38,7 +38,14 @@ public class RectangleExpression extends PropertyExpression {
 	public String getWidthOperator() {
 		return widthOperator;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return super.toString() + " " + heightOperator + " " + height + " " + widthOperator + " " + width;
+	}
+
+	static RectangleExpression fromString(String string){
+		String [] elements = string.split(" ");
+		return new RectangleExpression(elements[0], elements[1], Integer.parseInt(elements[2]), elements[3], Integer.parseInt(elements[4]));
+	}
 }

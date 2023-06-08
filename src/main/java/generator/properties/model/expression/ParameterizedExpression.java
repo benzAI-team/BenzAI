@@ -15,6 +15,14 @@ public class ParameterizedExpression extends PropertyExpression {
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return super.toString() + " " + getOperator();
+	}
+
+	public static ParameterizedExpression fromString(String string){
+		String [] elements = string.split(" ");
+		return new ParameterizedExpression(elements[0], elements[1]);
+	}
 }

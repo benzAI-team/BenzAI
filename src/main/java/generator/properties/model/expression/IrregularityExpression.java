@@ -16,4 +16,14 @@ public class IrregularityExpression extends BinaryNumericalExpression {
 	public void setParameter(String parameter) {
 		this.parameter = parameter;
 	}
+
+	@Override
+	public String toString() {
+		return getId() + " " + getParameter() + " " + getOperator() + " " + getValue();
+	}
+
+	public static IrregularityExpression fromString(String string) {
+		String [] elements = string.split(" ");
+		return new IrregularityExpression(elements[0], elements[1], elements[2], Integer.valueOf(elements[3]));
+	}
 }

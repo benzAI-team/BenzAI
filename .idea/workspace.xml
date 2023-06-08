@@ -7,20 +7,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="some corrections">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solveur/RispoliAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solveur/RispoliAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/GeneralModelMode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/ParameterIrregularity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/RectangleModuleMode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/SolvingMode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solving_modes/SymmetryType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/Test.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/toolbox/BuildScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/toolbox/BuildScript.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/toolbox/MoleculeFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/toolbox/MoleculeFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Ibex.java" beforeDir="false" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Expression save/load + small refacoring of GeneratorPane">
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PropertyExpressionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PropertyExpressionFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +38,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" root0="SKIP_INSPECTION" />
@@ -95,6 +84,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="generator.properties.model.expression" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/target/test-classes" />
@@ -412,10 +404,32 @@
       <option name="project" value="LOCAL" />
       <updated>1685966558846</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Expression save/load + small refacoring of GeneratorPane">
+      <created>1686241602454</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1686241602454</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="Refactoring-collection-operations" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -436,24 +450,8 @@
         </entry>
       </map>
     </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="Refactoring-collection-operations" />
-                </option>
-              </RecentGroup>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Classes renamed, packages moved, symmetry handling bugs fixed" />
     <MESSAGE value="Symmetry OK, rectangle not OK" />
     <MESSAGE value="lot of attributes made final" />
     <MESSAGE value="branch general_model2 merged" />
@@ -478,7 +476,8 @@
     <MESSAGE value="creating BenzenoidParser" />
     <MESSAGE value="refactoring BenzenoidParser.exportProperties()" />
     <MESSAGE value="deleting useless code" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleting useless code" />
+    <MESSAGE value="Expression save/load + small refacoring of GeneratorPane" />
+    <option name="LAST_COMMIT_MESSAGE" value="Expression save/load + small refacoring of GeneratorPane" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -507,7 +506,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1685704892637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1682673901626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1686040765510" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1686051991046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

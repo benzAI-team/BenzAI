@@ -77,11 +77,11 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		buildIcons();
 		buildButtons();
 
-		setChoiceBoxesCriterions(new ArrayList<>());
+		setChoiceBoxCriterions(new ArrayList<>());
 		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
 
 		setHBoxesCriterions(new ArrayList<>());
-		getChoiceBoxesCriterions().add(choiceBoxCriterion);
+		getChoiceBoxCriterions().add(choiceBoxCriterion);
 		getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
 		hBoxesSolverCriterions = new ArrayList<>();
@@ -146,12 +146,10 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		addButton.resize(30, 30);
 		addButton.setStyle("-fx-background-color: transparent;");
 		addButton.setOnAction(e -> {
-
 			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
-
 			if (invalidIndexes.isEmpty()) {
 				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(getNbCriterions(), this, getModelPropertySet());
-				getChoiceBoxesCriterions().add(choiceBoxCriterion);
+				getChoiceBoxCriterions().add(choiceBoxCriterion);
 				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 				setNbCriterions(getNbCriterions() + 1);
 
@@ -164,7 +162,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 				Utils.alert("Invalid criterion(s)");
 			}
 		});
-
 		return addButton;
 	}
 
@@ -197,12 +194,10 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		stopButton.setStyle("-fx-background-color: transparent;");
 
 		stopButton.setOnAction(e -> {
-
 			if (model.isPaused())
 				resumeGeneration();
 
 			model.getProblem().getSolver().limitSearch(() -> model.getGeneratorRun().isStopped());
-
 			model.stop();
 
 			buttonsBox.getChildren().clear();
@@ -280,14 +275,10 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	private ArrayList<Integer> containsInvalidCriterion() {
-
 		ArrayList<Integer> indexes = new ArrayList<>();
-
-		for (int i = 0; i < getHBoxesCriterions().size(); i++) {
+		for (int i = 0; i < getHBoxesCriterions().size(); i++)
 			if (!getHBoxesCriterions().get(i).isValid())
 				indexes.add(i);
-		}
-
 		return indexes;
 	}
 
@@ -295,33 +286,39 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	 * 
 	 */
 	public void placeComponents() {
-
 		gridPane.getChildren().clear();
-
 		gridPane.add(titleLabel, 0, 0, 2, 1);
+		placeModelPropertyComponents();
+		placeSolverPropertyComponents();
+	}
 
-		boolean valid = false;
+	private void placeModelPropertyComponents() {
+		placeCriterionBoxes();
+		placeButtonBox();
+		gridPane.add(buttonsBox, 0, getNbCriterions() + 1);
+	}
 
-		for (int i = 0; i < getNbCriterions(); i++) {
-			GridPane.setValignment(getChoiceBoxesCriterions().get(i), VPos.TOP);
-			gridPane.add(getChoiceBoxesCriterions().get(i), 0, i + 1);
-			gridPane.add(getHBoxesCriterions().get(i), 1, i + 1);
-
-			HBoxCriterion box = getHBoxesCriterions().get(i);
-
-			if ((box instanceof HBoxHexagonNumberCriterion || box instanceof HBoxNbCarbonsCriterion
-					|| box instanceof HBoxNbHydrogensCriterion) && box.isValid()) {
-				valid = true;
-			}
+	private void placeCriterionBoxes() {
+		for (int modelPropertyIndex = 0; modelPropertyIndex < getNbCriterions(); modelPropertyIndex++) {
+			placeCriterionBox(modelPropertyIndex);
 		}
+	}
 
+	private void placeCriterionBox(int modelPropertyIndex) {
+		GridPane.setValignment(getChoiceBoxCriterions().get(modelPropertyIndex), VPos.TOP);
+		gridPane.add(getChoiceBoxCriterions().get(modelPropertyIndex), 0, modelPropertyIndex + 1);
+		gridPane.add(getHBoxesCriterions().get(modelPropertyIndex), 1, modelPropertyIndex + 1);
+	}
+
+	private void placeButtonBox() {
 		buttonsBox = new HBox(5.0);
 		buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-		if (!valid)
+		if(!getHBoxesCriterions().stream().anyMatch(box -> (box instanceof HBoxHexagonNumberCriterion || box instanceof HBoxNbCarbonsCriterion
+				|| box instanceof HBoxNbHydrogensCriterion) && box.isValid()))
 			buttonsBox.getChildren().add(warningIcon);
+	}
 
-		gridPane.add(buttonsBox, 0, getNbCriterions() + 1);
-		
+	private void placeSolverPropertyComponents() {
 		gridPane.add(new Label("Solver properties:"), 0, getNbCriterions() + 2);
 		for(int i = 0; i < hBoxesSolverCriterions.size(); i++) {
 			gridPane.add(new Label(GeneralModel.getSolverPropertySet().getNames()[i]), 0, i + getNbCriterions() + 3);
@@ -329,7 +326,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		}
 	}
 
-	
+
 	@Override
 	protected boolean buildPropertyExpressions() {
 		for (HBoxCriterion box : hBoxesSolverCriterions) {
@@ -369,7 +366,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			application.addTask("Benzenoid generation");
 
 			generatedMolecules = new ArrayList<>();
-			//model.solve();
 
 			final Service<Void> calculateService = new Service<>() {
 				@Override
@@ -406,18 +402,13 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 						buildBenzenoidPanesThread();
 						application.removeTask("Benzenoid generation");
 					}
-
 					break;
-
 				default:
 					break;
 				}
-
 			});
-
 			calculateService.start();
 		}
-
 		else {
 			Utils.alert(
 					"A criterion limiting the number of solutions (e.g. limiting hexagons/carbons/hydrogens/number of lines and columns) is required");
@@ -440,7 +431,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 					@Override
 					protected Void call() {
 						model.getGeneratorRun().resume();
-
 						return null;
 					}
 				};
@@ -458,12 +448,10 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 				Utils.alert("Generation canceled");
 				break;
 			case SUCCEEDED:
-
 				if (model.isPaused()) {
 					buttonsBox.getChildren().clear();
 					buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
 				}
-
 				else {
 					if (!model.isPaused()) {
 						buttonsBox.getChildren().clear();
@@ -471,17 +459,12 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 						buildBenzenoidPanes();
 					}
 				}
-
 				break;
-
 			default:
 				break;
 			}
-
 		});
-
 		calculateService.start();
-
 	}
 
 	/***
