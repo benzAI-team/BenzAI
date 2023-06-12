@@ -383,7 +383,7 @@ public enum GraphParser {
 			int maxValue = nodesMem == null ? -1 : nodesMem.maxValue();
 			assert adjacencyMatrix != null;
 			return new Benzenoid(nbNodes, nbEdges, nbHexagons, edgesMatrix, adjacencyMatrix, edgesStrings,
-					hexagonsStrings, nodes, nodesCoord, nodesMem, maxValue);
+					hexagonsStrings, nodes, nodesCoord, maxValue);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="déplacement de getIrregularity() + suppression de code inutile">
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="avant modifs aromaticité">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphFileBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphFileBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/sort/ResonanceEnergyComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/sort/ResonanceEnergyComparator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686571331210</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="avant modifs aromaticité">
+      <created>1686598139925</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1686598139925</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -181,6 +191,7 @@
     <MESSAGE value="getNbKekuleStructures OK" />
     <MESSAGE value="computeParameterOfIrregularity" />
     <MESSAGE value="déplacement de getIrregularity() + suppression de code inutile" />
-    <option name="LAST_COMMIT_MESSAGE" value="déplacement de getIrregularity() + suppression de code inutile" />
+    <MESSAGE value="avant modifs aromaticité" />
+    <option name="LAST_COMMIT_MESSAGE" value="avant modifs aromaticité" />
   </component>
 </project>

@@ -79,7 +79,7 @@ public class BenzenoidParser {
 
 
 
-        Aromaticity aromaticity = benzenoid.getAromaticity();
+        Aromaticity aromaticity = benzenoid.getAromaticity().get();
 
         if (aromaticity != null) {
             for (int i = 0; i < aromaticity.getLocalAromaticity().length; i++)

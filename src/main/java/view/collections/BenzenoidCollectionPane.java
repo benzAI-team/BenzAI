@@ -290,7 +290,7 @@ public class BenzenoidCollectionPane extends Tab {
 
                                 switch (displayType) {
                                     case RE_LIN: {
-                                        Aromaticity aromaticity = molecule.getAromaticity();
+                                        Aromaticity aromaticity = molecule.getAromaticity().get();
 
                                         double[][] circuits = aromaticity.getLocalCircuits();
 

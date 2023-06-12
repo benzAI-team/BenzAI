@@ -18,10 +18,17 @@ public class BenzenoidComputableInformations {
 
     private Optional<Aromaticity> aromaticity;
 
+    private boolean aromaticityComputed;
+
     private List<Integer> verticesSolutions;
 
     public BenzenoidComputableInformations(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
+        aromaticityComputed = false;
+    }
+
+    public boolean isAromaticityComputed() {
+        return aromaticityComputed;
     }
 
     public double getNbKekuleStructures() {
@@ -110,8 +117,11 @@ public class BenzenoidComputableInformations {
     public Optional<Aromaticity> getAromaticity() {
         if (aromaticity == null) {
             try {
+
                 aromaticity = Optional.of(LinAlgorithm.solve(benzenoid, LinAlgorithm.PerfectMatchingType.DET));
                 aromaticity.get().normalize(getNbKekuleStructures());
+
+                aromaticityComputed = true;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -13,14 +13,11 @@ import parsers.GraphFileBuilder;
 import parsers.GraphParser;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity;
-import solveur.LinAlgorithm;
-import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.RBOSolver;
 import utils.Couple;
 import utils.HexNeighborhood;
 import utils.Interval;
 import utils.RelativeMatrix;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -28,8 +25,6 @@ import java.util.*;
 public class Benzenoid implements Comparable<Benzenoid> {
 
 	private MoleculeComparator comparator;
-
-	private RelativeMatrix nodesMem; // DEBUG
 
 	private final int nbNodes;
 	private final int nbEdges;
@@ -57,9 +52,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private ArrayList<Integer> verticesSolutions;
 
 	private Couple<Integer, Integer>[] hexagonsCoords;
-
-	//private double nbKekuleStructures = -1;
-	private Aromaticity aromaticity;
 
 	private ClarCoverSolution clarCoverSolution;
 	private int[][] fixedBonds;
@@ -122,7 +114,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	public Benzenoid(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeLists,
 					 int[][] edgeMatrix, ArrayList<String> edgesString, ArrayList<String> hexagonsString, Node[] nodesRefs,
-					 RelativeMatrix coords, RelativeMatrix nodesMem, int maxIndex) {
+					 RelativeMatrix coords, int maxIndex) {
 
 		this.nbNodes = nbNodes;
 		this.nbEdges = nbEdges;
@@ -133,7 +125,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.hexagonsString = hexagonsString;
 		this.nodesRefs = nodesRefs;
 		this.coords = coords;
-		this.nodesMem = nodesMem;
+
 		this.maxIndex = maxIndex;
 
 		hexagons = new int[nbHexagons][6];
@@ -300,9 +292,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		}
 	}
 
-	public RelativeMatrix getNodesMem() {
-		return nodesMem;
-	}
 
 	private int findHexagon(int u, int v) {
 
@@ -569,26 +558,16 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		return computableInformations.computeParameterOfIrregularity();
 	}
 
-	public Aromaticity getAromaticity() {
-
-		if (aromaticity != null)
-			return aromaticity;
-
-		try {
-			aromaticity = LinAlgorithm.solve(this, PerfectMatchingType.DET);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		aromaticity.normalize(getNbKekuleStructures());
-		return aromaticity;
+	public Optional<Aromaticity> getAromaticity() {
+		return computableInformations.getAromaticity();
 	}
 
 	public double getNbKekuleStructures() {
 		return computableInformations.getNbKekuleStructures();
 	}
 
-	public boolean isAromaticitySet() {
-		return aromaticity != null;
+	public boolean isAromaticityComputed() {
+		return computableInformations.isAromaticityComputed();
 	}
 
 	public boolean edgeExists(int i, int j) {
