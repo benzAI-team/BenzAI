@@ -307,10 +307,10 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				builder.append(new String((nbKekuleStructures + " Kekulé structure").getBytes(),
 						StandardCharsets.UTF_8) + "\n");
 
-			Irregularity irregularity = molecule.getIrregularity();
+			Optional<Irregularity> irregularity = molecule.getIrregularity();
 
-			if (irregularity != null)
-				builder.append(irregularity + "\n");
+			if (irregularity.isPresent())
+				builder.append(irregularity.get() + "\n");
 			else
 				builder.append("XI = UNKNOWN");
 
@@ -323,7 +323,6 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				}
 			}
 
-			// ClarCoverSolution clarCoverSolution = molecule.getClarCoverSolution();
 			ArrayList<ClarCoverSolution> clarCoverSolutions = molecule.getClarCoverSolutions();
 			if (clarCoverSolutions != null) {
 				builder.append("\nradicalar statistics\n");
@@ -331,10 +330,6 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				for (int i = 0; i < stats.length; i++)
 					builder.append("C" + (i + 1) + " : " + stats[i] + "\n");
 			}
-//			if (clarCoverSolution != null) {
-//				builder.append("\nradicalar statistics\n");
-//				//double [] stats = clarCoverSolution
-//			}
 
 			description = builder.toString();
 			return description;

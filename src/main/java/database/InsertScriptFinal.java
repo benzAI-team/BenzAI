@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import classifier.Irregularity;
@@ -250,7 +251,7 @@ public enum InsertScriptFinal {
 			return "unknown";
 
 		Benzenoid molecule = GraphParser.parseUndirectedGraph(molFile);
-		Irregularity irregularity = molecule.getIrregularity();
+		Optional<Irregularity> irregularity = molecule.getIrregularity();
 		String geometry = getGeometry(comFile);
 		String [] geometries = geometry.split(" ");
 		ArrayList<Double> frequencies = log.getFrequencies();
@@ -277,11 +278,12 @@ public enum InsertScriptFinal {
 		builder.append("<charge>0</charge>");
 		builder.append("<method>B3LYP</method>");
 
-		if (irregularity != null) {
-			builder.append("<n_solo>" + irregularity.getGroup(0) + "</n_solo>");
-			builder.append("<n_duo>" + irregularity.getGroup(1) + "</n_duo>");
-			builder.append("<n_trio>" + irregularity.getGroup(2) + "</n_trio>");
-			builder.append("<n_quartet>" + irregularity.getGroup(3) + "</n_quartet>");
+		if (irregularity.isPresent()) {
+			Irregularity irregularityData = irregularity.get();
+			builder.append("<n_solo>" + irregularityData.getGroup(0) + "</n_solo>");
+			builder.append("<n_duo>" + irregularityData.getGroup(1) + "</n_duo>");
+			builder.append("<n_trio>" + irregularityData.getGroup(2) + "</n_trio>");
+			builder.append("<n_quartet>" + irregularityData.getGroup(3) + "</n_quartet>");
 			builder.append("<n_quintet>" + 0 + "</n_quintet>");
 		}
 

@@ -1,10 +1,7 @@
 package view.catalog;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import application.BenzenoidApplication;
 import classifier.CarbonHydrogenClassifier;
@@ -561,11 +558,10 @@ public class CatalogPane extends GridPane {
 
 								Benzenoid molecule = value.getMolecule();
 
-								Irregularity irregularity = IrregularityClassifier
-										.computeParameterOfIrregularity(molecule);
+								Optional<Irregularity> irregularity = molecule.getIrregularity();
 
-								if (irregularity != null)
-									irregularities.put(key, irregularity.getXI());
+								if (irregularity.isPresent())
+									irregularities.put(key, irregularity.get().getXI());
 								else
 									irregularities.put(key, -1.0);
 							}

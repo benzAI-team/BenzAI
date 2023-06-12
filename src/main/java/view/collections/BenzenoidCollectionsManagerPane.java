@@ -1256,11 +1256,13 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 					finalEnergies.put(molecule.getNames().get(0),
 							IRSpectra.get().getFinalEnergy().get(IRSpectra.get().getFinalEnergy().size() - 1));
 
-					Irregularity irregularity = molecule.getIrregularity();
-					if (irregularity == null)
+					//Irregularity irregularity = molecule.getIrregularity();
+					Optional<Irregularity> irregularity = molecule.getIrregularity();
+
+					if (irregularity.isEmpty())
 						irregularities.put(molecule.getNames().get(0), -1.0);
 					else
-						irregularities.put(molecule.getNames().get(0), irregularity.getXI());
+						irregularities.put(molecule.getNames().get(0), irregularity.get().getXI());
 
 					amesFormats.add(IRSpectra.get().getAmesFormat());
 				}

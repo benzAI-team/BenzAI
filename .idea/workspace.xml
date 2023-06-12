@@ -4,10 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="avant BenzenoidComputableInformations">
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="computeParameterOfIrregularity">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/sort/IrregularityComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/sort/IrregularityComparator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/IrregularityClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/IrregularityClassifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/database/InsertScriptFinal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/InsertScriptFinal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/IrregularityFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/IrregularityFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/catalog/CatalogPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/catalog/CatalogPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +146,21 @@
       <option name="project" value="LOCAL" />
       <updated>1686558988277</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="getNbKekuleStructures OK">
+      <created>1686559416098</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1686559416098</updated>
+    </task>
+    <task id="LOCAL-00009" summary="computeParameterOfIrregularity">
+      <created>1686559981134</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1686559981134</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -149,17 +171,8 @@
     <MESSAGE value="avant modif get ims" />
     <MESSAGE value="avant modifs" />
     <MESSAGE value="avant BenzenoidComputableInformations" />
-    <option name="LAST_COMMIT_MESSAGE" value="avant BenzenoidComputableInformations" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidDatabaseInformation.java</url>
-          <line>36</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="getNbKekuleStructures OK" />
+    <MESSAGE value="computeParameterOfIrregularity" />
+    <option name="LAST_COMMIT_MESSAGE" value="computeParameterOfIrregularity" />
   </component>
 </project>
