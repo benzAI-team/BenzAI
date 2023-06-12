@@ -60,7 +60,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	private Couple<Integer, Integer>[] hexagonsCoords;
 
-	private double nbKekuleStructures = -1;
+	//private double nbKekuleStructures = -1;
 	private Aromaticity aromaticity;
 
 	private ClarCoverSolution clarCoverSolution;
@@ -77,6 +77,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private int nbCrowns = -1;
 
 	private BenzenoidDatabaseInformation databaseInformation;
+
+	private BenzenoidComputableInformations computableInformations;
 
 	/**
 	 * Constructors
@@ -117,6 +119,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		buildHexagonsCoords2();
 
 		databaseInformation = new BenzenoidDatabaseInformation(this);
+		computableInformations = new BenzenoidComputableInformations(this);
 	}
 
 	public Benzenoid(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeLists,
@@ -157,6 +160,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		buildHexagonsCoords2();
 
 		databaseInformation = new BenzenoidDatabaseInformation(this);
+		computableInformations = new BenzenoidComputableInformations(this);
 	}
 
 	/**
@@ -650,17 +654,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	}
 
 	public double getNbKekuleStructures() {
-
-		if (nbKekuleStructures == -1) {
-			int[] disabledVertices = new int[getNbNodes()];
-			int[] degrees = getDegrees();
-
-			SubGraph subGraph = new SubGraph(getEdgeMatrix(), disabledVertices, degrees, PerfectMatchingType.DET);
-
-			nbKekuleStructures = subGraph.getNbPerfectMatchings();
-		}
-
-		return nbKekuleStructures;
+		return computableInformations.getNbKekuleStructures();
 	}
 
 	public boolean isAromaticitySet() {

@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="avant modifs">
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="avant BenzenoidComputableInformations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidDatabaseInformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidDatabaseInformation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +45,7 @@
     </option>
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2Qn7FEpKPbSuQrUfXD7OMaCaUi5" />
   <component name="ProjectViewState">
@@ -53,13 +53,13 @@
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/adrie/eclipse-workspace/BenzAI"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/adrie/eclipse-workspace/BenzAI&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="application.Launcher" />
@@ -131,7 +131,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686000352724</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="avant BenzenoidComputableInformations">
+      <created>1686558988277</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1686558988277</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -141,7 +148,8 @@
     <MESSAGE value="avant modifs benzenoid set pane" />
     <MESSAGE value="avant modif get ims" />
     <MESSAGE value="avant modifs" />
-    <option name="LAST_COMMIT_MESSAGE" value="avant modifs" />
+    <MESSAGE value="avant BenzenoidComputableInformations" />
+    <option name="LAST_COMMIT_MESSAGE" value="avant BenzenoidComputableInformations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
