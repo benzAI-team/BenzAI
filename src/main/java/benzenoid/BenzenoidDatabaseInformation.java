@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class BenzenoidDatabaseInformations {
+public class BenzenoidDatabaseInformation {
 
     private Benzenoid benzenoid;
 
@@ -18,7 +18,7 @@ public class BenzenoidDatabaseInformations {
     private Optional<ResultLogFile> IRSpectra;
     private Optional<String> NICS;
 
-    public BenzenoidDatabaseInformations(Benzenoid benzenoid) {
+    public BenzenoidDatabaseInformation(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
         databaseCheckManager = new DatabaseCheckManager(benzenoid);
     }

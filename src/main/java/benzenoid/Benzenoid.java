@@ -76,7 +76,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	private int nbCrowns = -1;
 
-	private BenzenoidDatabaseInformations databaseInformation;
+	private BenzenoidDatabaseInformation databaseInformation;
 
 	/**
 	 * Constructors
@@ -116,7 +116,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		computeDegrees();
 		buildHexagonsCoords2();
 
-		databaseInformation = new BenzenoidDatabaseInformations(this);
+		databaseInformation = new BenzenoidDatabaseInformation(this);
 	}
 
 	public Benzenoid(int nbNodes, int nbEdges, int nbHexagons, ArrayList<ArrayList<Integer>> edgeLists,
@@ -156,7 +156,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		computeDegrees();
 		buildHexagonsCoords2();
 
-		databaseInformation = new BenzenoidDatabaseInformations(this);
+		databaseInformation = new BenzenoidDatabaseInformation(this);
 	}
 
 	/**
@@ -1315,7 +1315,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		graphBuilder.buildGraphFile();
 	}
 
-	public BenzenoidDatabaseInformations getDatabaseInformation() {
+	public BenzenoidDatabaseInformation getDatabaseInformation() {
 		return databaseInformation;
 	}
 }
