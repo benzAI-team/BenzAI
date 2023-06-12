@@ -574,7 +574,6 @@ public class CatalogPane extends GridPane {
 								resultSpectrum.setIrregularities(irregularities);
 
 								results.add(resultSpectrum);
-								// results.add(SpectrumsComputer.treatClass(PAHClass, parameter, classResults));
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
