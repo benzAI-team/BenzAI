@@ -46,8 +46,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private int[][] dualGraph;
 	private int[] degrees;
 
-	//private Irregularity irregularity;
-
 	private ArrayList<ArrayList<Integer>> hexagonsVertices;
 
 	private int nbHydrogens;

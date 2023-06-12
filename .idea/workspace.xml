@@ -4,18 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="computeParameterOfIrregularity">
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="déplacement de getIrregularity() + suppression de code inutile">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/sort/IrregularityComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/sort/IrregularityComparator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/classifier/IrregularityClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classifier/IrregularityClassifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/BuildScripts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/InsertScriptFinal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/InsertScriptFinal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/IrregularityFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/IrregularityFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/catalog/CatalogPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/catalog/CatalogPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionsManagerPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphFileBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphFileBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +153,21 @@
       <option name="project" value="LOCAL" />
       <updated>1686559981134</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="déplacement de getIrregularity() + suppression de code inutile">
+      <created>1686566702347</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1686566702347</updated>
+    </task>
+    <task id="LOCAL-00011" summary="déplacement de getIrregularity() + suppression de code inutile">
+      <created>1686571331210</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1686571331210</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -173,6 +180,7 @@
     <MESSAGE value="avant BenzenoidComputableInformations" />
     <MESSAGE value="getNbKekuleStructures OK" />
     <MESSAGE value="computeParameterOfIrregularity" />
-    <option name="LAST_COMMIT_MESSAGE" value="computeParameterOfIrregularity" />
+    <MESSAGE value="déplacement de getIrregularity() + suppression de code inutile" />
+    <option name="LAST_COMMIT_MESSAGE" value="déplacement de getIrregularity() + suppression de code inutile" />
   </component>
 </project>

@@ -1,9 +1,12 @@
 package benzenoid;
 
 import classifier.Irregularity;
+import solveur.Aromaticity;
 import solveur.LinAlgorithm;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class BenzenoidComputableInformations {
@@ -12,6 +15,10 @@ public class BenzenoidComputableInformations {
     private double nbKekuleStructures = -1;
 
     private Optional<Irregularity> irregularity;
+
+    private Optional<Aromaticity> aromaticity;
+
+    private List<Integer> verticesSolutions;
 
     public BenzenoidComputableInformations(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
@@ -98,5 +105,18 @@ public class BenzenoidComputableInformations {
         }
 
         return irregularity;
+    }
+
+    public Optional<Aromaticity> getAromaticity() {
+        if (aromaticity == null) {
+            try {
+                aromaticity = Optional.of(LinAlgorithm.solve(benzenoid, LinAlgorithm.PerfectMatchingType.DET));
+                aromaticity.get().normalize(getNbKekuleStructures());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return aromaticity;
     }
 }
