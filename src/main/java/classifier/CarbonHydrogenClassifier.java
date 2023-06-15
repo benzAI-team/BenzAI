@@ -61,7 +61,7 @@ public class CarbonHydrogenClassifier extends Classifier{
 	
 	private Couple<Integer, Integer> countCarbonsAndHydrogens(Benzenoid molecule) {
 		
-		return new Couple<>(molecule.getNbNodes(), molecule.getNbHydrogens());
+		return new Couple<>(molecule.getNbCarbons(), molecule.getNbHydrogens());
 	}
 
 }

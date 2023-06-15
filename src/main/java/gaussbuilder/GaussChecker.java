@@ -176,7 +176,7 @@ public enum GaussChecker {
 		 * Nb carbons
 		 */
 		
-		int nbCarbonsExpected = molecule.getNbNodes();
+		int nbCarbonsExpected = molecule.getNbCarbons();
 		int nbCarbonsGot = geometry.getCarbons().length;
 		boolean nbCarbons;
 

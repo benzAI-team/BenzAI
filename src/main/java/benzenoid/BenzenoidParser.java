@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -21,10 +22,10 @@ public class BenzenoidParser {
 
         int [][] edgeMatrix = benzenoid.getEdgeMatrix();
 
-        writer.write("p DIMACS " + benzenoid.getNbNodes() + " " + benzenoid.getNbEdges() + " " + benzenoid.getNbHexagons() + "\n");
+        writer.write("p DIMACS " + benzenoid.getNbCarbons() + " " + benzenoid.getNbBonds() + " " + benzenoid.getNbHexagons() + "\n");
 
-        for (int i = 0; i < benzenoid.getNbNodes(); i++) {
-            for (int j = (i + 1); j < benzenoid.getNbNodes(); j++) {
+        for (int i = 0; i < benzenoid.getNbCarbons(); i++) {
+            for (int j = (i + 1); j < benzenoid.getNbCarbons(); j++) {
                 if (edgeMatrix[i][j] == 1) {
 
                     Node u = benzenoid.getNodeRef(i);
@@ -57,7 +58,7 @@ public class BenzenoidParser {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
         writer.write("molecule_name\t" + benzenoid.getDescription() + "\n");
-        writer.write("nb_carbons\t" + benzenoid.getNbNodes() + "\n");
+        writer.write("nb_carbons\t" + benzenoid.getNbCarbons() + "\n");
         writer.write("nb_hydrogens\t" + benzenoid.getNbHydrogens() + "\n");
         writer.write("nb_hexagons\t" + benzenoid.getNbHexagons() + "\n");
 
@@ -86,7 +87,7 @@ public class BenzenoidParser {
                 writer.write("E(H_" + i + ")\t" + aromaticity.getLocalAromaticity()[i] + "\n");
         }
 
-        ArrayList<ClarCoverSolution> clarCoverSolutions = benzenoid.getClarCoverSolutions();
+        List<ClarCoverSolution> clarCoverSolutions = benzenoid.getClarCoverSolutions();
         if (clarCoverSolutions != null) {
             writer.write("\nradicalar statistics\n");
             double[] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);

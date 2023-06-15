@@ -187,7 +187,7 @@ public enum InsertScriptFinal {
 			irregBD = BigDecimal.valueOf(irreg.getXI()).setScale(3, RoundingMode.HALF_UP);
 		
 		int nbHexagons = molecule.getNbHexagons();
-		int nbCarbons = molecule.getNbNodes();
+		int nbCarbons = molecule.getNbCarbons();
 		int nbHydrogens = molecule.getNbHydrogens();
 		String inchie = getInchi(inchiFile);
 		double irregularity = irregBD.doubleValue();
@@ -274,7 +274,7 @@ public enum InsertScriptFinal {
 		builder.append("<total_e>" + finalEnergy + "</total_e>");
 		builder.append("<vib_e>" + log.getZeroPointEnergy() + "</vib_e>");
 
-		builder.append("<formula>C" + molecule.getNbNodes() + "H" + molecule.getNbHydrogens() + "</formula>");
+		builder.append("<formula>C" + molecule.getNbCarbons() + "H" + molecule.getNbHydrogens() + "</formula>");
 		builder.append("<charge>0</charge>");
 		builder.append("<method>B3LYP</method>");
 

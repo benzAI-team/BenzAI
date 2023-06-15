@@ -825,9 +825,9 @@ public enum LinFanAlgorithm {
 
 		Model model = new Model("Kekulé Structures");
 
-		BoolVar[] edges = new BoolVar[graph.getNbEdges()];
+		BoolVar[] edges = new BoolVar[graph.getNbBonds()];
 
-		for (int i = 0; i < graph.getNbEdges(); i++) {
+		for (int i = 0; i < graph.getNbBonds(); i++) {
 			edges[i] = model.boolVar("edge " + (i + 1));
 		}
 
@@ -849,9 +849,9 @@ public enum LinFanAlgorithm {
 			Solution solution = new Solution(model);
 			solution.record();
 
-			int[] edgesValues = new int[graph.getNbEdges()];
+			int[] edgesValues = new int[graph.getNbBonds()];
 
-			for (int j = 0; j < graph.getNbEdges(); j++) {
+			for (int j = 0; j < graph.getNbBonds(); j++) {
 				edgesValues[j] = solution.getIntVal(edges[j]);
 			}
 

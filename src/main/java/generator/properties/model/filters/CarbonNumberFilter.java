@@ -14,7 +14,7 @@ public class CarbonNumberFilter extends Filter {
 	public boolean test(Benzenoid molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
 		for(PropertyExpression expression : propertyExpressionList) {
 			int nbCarbons = ((BinaryNumericalExpression)expression).getValue();
-			if(!((BinaryNumericalExpression)expression).test(molecule.getNbNodes(), ((BinaryNumericalExpression)expression).getOperator(), nbCarbons))
+			if(!((BinaryNumericalExpression)expression).test(molecule.getNbCarbons(), ((BinaryNumericalExpression)expression).getOperator(), nbCarbons))
 				return false;
 		}
 		return true;

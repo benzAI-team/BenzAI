@@ -1,6 +1,7 @@
 package benzenoid;
 
 import classifier.Irregularity;
+import solution.ClarCoverSolution;
 import solveur.Aromaticity;
 import solveur.LinAlgorithm;
 import solveur.RBOSolver;
@@ -27,6 +28,15 @@ public class BenzenoidComputableInformations {
 
     private RBO ringBondOrder;
 
+    private ClarCoverSolution clarCoverSolution;
+
+    private List<ClarCoverSolution> clarCoverSolutions;
+
+    private int [] clarResonanceEnergy;
+
+    private int[][] fixedBonds;
+
+    private int[] fixedCircles;
 
     public BenzenoidComputableInformations(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
@@ -39,7 +49,7 @@ public class BenzenoidComputableInformations {
 
     public double getNbKekuleStructures() {
         if (nbKekuleStructures == -1) {
-            int[] disabledVertices = new int[benzenoid.getNbNodes()];
+            int[] disabledVertices = new int[benzenoid.getNbCarbons()];
             int[] degrees = benzenoid.getDegrees();
 
             SubGraph subGraph = new SubGraph(benzenoid.getEdgeMatrix(), disabledVertices, degrees, LinAlgorithm.PerfectMatchingType.DET);
@@ -58,11 +68,11 @@ public class BenzenoidComputableInformations {
                 irregularity = Optional.empty();
 
             int[] N = new int[4];
-            int[] checkedNodes = new int[benzenoid.getNbNodes()];
+            int[] checkedNodes = new int[benzenoid.getNbCarbons()];
 
             ArrayList<Integer> V = new ArrayList<>();
 
-            for (int u = 0; u < benzenoid.getNbNodes(); u++) {
+            for (int u = 0; u < benzenoid.getNbCarbons(); u++) {
                 int degree = benzenoid.degree(u);
                 if (degree == 2 && !V.contains(u)) {
                     V.add(u);
@@ -97,7 +107,7 @@ public class BenzenoidComputableInformations {
 
                     int candidat = candidats.get(0);
 
-                    for (int i = 0; i < benzenoid.getNbNodes(); i++) {
+                    for (int i = 0; i < benzenoid.getNbCarbons(); i++) {
                         if (benzenoid.getEdgeMatrix()[candidat][i] == 1 && checkedNodes[i] == 0) {
 
                             checkedNodes[i] = 1;
@@ -144,11 +154,41 @@ public class BenzenoidComputableInformations {
         return ringBondOrder;
     }
 
+    public void setClarCoverSolution(ClarCoverSolution clarCoverSolution) {
+        this.clarCoverSolution = clarCoverSolution;
+    }
+
+    public int [] clarResonanceEnergy() {
+        int[] clarValues = new int[benzenoid.getNbHexagons()];
+        if (clarCoverSolutions != null && clarResonanceEnergy == null) {
+
+            for (ClarCoverSolution solution : clarCoverSolutions) {
+                for (int i = 0; i < benzenoid.getNbHexagons(); i++) {
+                    if (solution.isCircle(i))
+                        clarValues[i]++;
+                }
+            }
+        }
+        return clarValues;
+    }
+
     public List<int[][]> getKekuleStructures() {
         return kekuleStructures;
     }
 
     public void setKekuleStructures(List<int[][]> kekuleStructures) {
         this.kekuleStructures = kekuleStructures;
+    }
+
+    public ClarCoverSolution getClarCoverSolution() {
+        return clarCoverSolution;
+    }
+
+    public void setClarCoverSolutions(List<ClarCoverSolution> clarCoverSolutions) {
+        this.clarCoverSolutions = clarCoverSolutions;
+    }
+
+    public List<ClarCoverSolution> getClarCoverSolutions() {
+        return clarCoverSolutions;
     }
 }

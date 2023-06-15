@@ -107,7 +107,7 @@ public class PerfectMatchingMatrix {
 				.parseUndirectedGraph("C:\\Users\\adrie\\Desktop\\molecules_test\\coro_4.graph_coord", null, true);
 		assert molecule != null;
 		PerfectMatchingMatrix matrix = PerfectMatchingMatrix.buildMatrix(molecule.getEdgeMatrix(),
-				molecule.getNbNodes());
+				molecule.getNbCarbons());
 
 		System.out.print("[");
 		for (int i = 0; i < matrix.getMatrix().length; i++) {

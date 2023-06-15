@@ -1,7 +1,6 @@
 package view.groups;
 
-import java.util.ArrayList;
-
+import java.util.List;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -10,7 +9,7 @@ import solution.ClarCoverSolution;
 
 public class RadicalarClarCoverGroup extends MoleculeGroup {
 
-	private final ArrayList<ClarCoverSolution> clarCoverSolutions;
+	private final List<ClarCoverSolution> clarCoverSolutions;
 
 	public RadicalarClarCoverGroup(Benzenoid molecule) {
 		super(molecule);
@@ -23,12 +22,12 @@ public class RadicalarClarCoverGroup extends MoleculeGroup {
 		if (clarCoverSolutions.size() > 0) {
 
 			int nbCarbons = clarCoverSolutions.get(0).getNbCarbons();
-			double[] radicalarStats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
+			double[] radicalarStatistics = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
 
 			for (int i = 0; i < nbCarbons; i++) {
 
-				assert radicalarStats != null;
-				double stat = radicalarStats[i];
+				assert radicalarStatistics != null;
+				double stat = radicalarStatistics[i];
 
 				if (stat > 0.0) {
 

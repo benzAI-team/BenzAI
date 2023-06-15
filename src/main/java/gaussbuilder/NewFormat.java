@@ -30,7 +30,7 @@ public enum NewFormat {
 
 			int carbonIndex = index - 1;
 
-			for (int i = 0; i < molecule.getNbNodes(); i++) {
+			for (int i = 0; i < molecule.getNbCarbons(); i++) {
 				if (molecule.getEdgeMatrix()[carbonIndex][i] == 1) {
 					w.write((i + 1) + " ");
 				}
@@ -38,7 +38,7 @@ public enum NewFormat {
 
 			for (int i = 0; i < molecule.getNbHydrogens(); i++) {
 				if (geometry.getHydrogensConnections().get(i) == carbonIndex)
-					w.write((i + molecule.getNbNodes() + 1) + " ");
+					w.write((i + molecule.getNbCarbons() + 1) + " ");
 			}
 
 			w.write("\n");

@@ -80,7 +80,7 @@ public enum BuildInsertScript2 {
 					new File("C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\insert.sql"), true));
 
 			w.write("INSERT INTO molecule (id_molecule, irregularity, molecule_name, nb_carbons, nb_hexagons, nb_hydrogens)\n");
-			w.write("\tVALUES (" + index + ", " + irregbd.doubleValue() + ", '" + name + "', " + molecule.getNbNodes()
+			w.write("\tVALUES (" + index + ", " + irregbd.doubleValue() + ", '" + name + "', " + molecule.getNbCarbons()
 					+ ", " + molecule.getNbHexagons() + ", " + molecule.getNbHydrogens() + ");\n");
 
 			w.write("INSERT INTO gaussian_result (final_energies, frequencies, id_molecule, intensities, zero_point_energy)\n");

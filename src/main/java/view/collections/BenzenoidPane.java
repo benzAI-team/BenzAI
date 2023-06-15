@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -282,7 +283,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
 
-			builder.append(molecule.getNbNodes() + " carbons\n");
+			builder.append(molecule.getNbCarbons() + " carbons\n");
 			builder.append(molecule.getNbHydrogens() + " hydrogens\n");
 			if (molecule.getNbHexagons() == 1)
 				builder.append(molecule.getNbHexagons() + " hexagon\n");
@@ -323,18 +324,14 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				}
 			}
 
-			// ClarCoverSolution clarCoverSolution = molecule.getClarCoverSolution();
-			ArrayList<ClarCoverSolution> clarCoverSolutions = molecule.getClarCoverSolutions();
+			List<ClarCoverSolution> clarCoverSolutions = molecule.getClarCoverSolutions();
+
 			if (clarCoverSolutions != null) {
 				builder.append("\nradicalar statistics\n");
 				double[] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
 				for (int i = 0; i < stats.length; i++)
 					builder.append("C" + (i + 1) + " : " + stats[i] + "\n");
 			}
-//			if (clarCoverSolution != null) {
-//				builder.append("\nradicalar statistics\n");
-//				//double [] stats = clarCoverSolution
-//			}
 
 			description = builder.toString();
 			return description;

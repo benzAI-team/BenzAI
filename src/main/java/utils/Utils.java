@@ -71,11 +71,11 @@ public enum Utils {
 			return null;
 
 		int[] N = new int[4];
-		int[] checkedNodes = new int[molecule.getNbNodes()];
+		int[] checkedNodes = new int[molecule.getNbCarbons()];
 
 		ArrayList<Integer> V = new ArrayList<>();
 
-		for (int u = 0; u < molecule.getNbNodes(); u++) {
+		for (int u = 0; u < molecule.getNbCarbons(); u++) {
 			int degree = molecule.degree(u);
 			if (degree == 2 && !V.contains(u)) {
 				V.add(u);
@@ -110,7 +110,7 @@ public enum Utils {
 
 				int candidat = candidats.get(0);
 
-				for (int i = 0; i < molecule.getNbNodes(); i++) {
+				for (int i = 0; i < molecule.getNbCarbons(); i++) {
 					if (molecule.getEdgeMatrix()[candidat][i] == 1 && checkedNodes[i] == 0) {
 
 						checkedNodes[i] = 1;

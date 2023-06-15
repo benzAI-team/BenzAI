@@ -18,7 +18,7 @@ public class NewCarbonsHydrogensClassifier extends NewClassifier {
 
 		for (Benzenoid molecule : molecules) {
 
-			String key = molecule.getNbNodes() + "_carbons_" + molecule.getNbHydrogens() + "_hydrogens";
+			String key = molecule.getNbCarbons() + "_carbons_" + molecule.getNbHydrogens() + "_hydrogens";
 
 			if (map.get(key) == null) {
 				map.put(key, new ArrayList<>());

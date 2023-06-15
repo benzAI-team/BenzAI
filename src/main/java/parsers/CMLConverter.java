@@ -31,7 +31,7 @@ public enum CMLConverter {
 
 		ArrayList<Integer> carbons = new ArrayList<>();
 
-		for (int c = 0; c < molecule.getNbNodes(); c++) {
+		for (int c = 0; c < molecule.getNbCarbons(); c++) {
 			if (molecule.degree(c) == 2)
 				carbons.add(c);
 		}
@@ -98,11 +98,11 @@ public enum CMLConverter {
 
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<>();
 
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
 
 			Node u = molecule.getNodeRef(i);
 
-			for (int j = 0; j < molecule.getNbNodes(); j++) {
+			for (int j = 0; j < molecule.getNbCarbons(); j++) {
 
 				if (i != j) {
 
@@ -141,7 +141,7 @@ public enum CMLConverter {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 			int[] hexagon = molecule.getHexagons()[i];
-			int y = molecule.getNodesRefs()[hexagon[0]].getY();
+			int y = molecule.getNodesCoordinates()[hexagon[0]].getY();
 
 			if (y < yMin) {
 				yMin = y;
@@ -182,7 +182,7 @@ public enum CMLConverter {
 		}
 
 		@SuppressWarnings("unchecked")
-		Triplet<Double, Double, Double>[] carbons = new Triplet[molecule.getNbNodes()];
+		Triplet<Double, Double, Double>[] carbons = new Triplet[molecule.getNbCarbons()];
 
 		for (Integer h : hexagonsOrder) {
 
@@ -205,8 +205,8 @@ public enum CMLConverter {
 
 				double xu = 0, yu = 0, xv = 0, yv = 0;
 				if (carbons[u] == null) {
-					xu = molecule.getNodesRefs()[u].getX();
-					yu = molecule.getNodesRefs()[u].getY();
+					xu = molecule.getNodesCoordinates()[u].getX();
+					yu = molecule.getNodesCoordinates()[u].getY();
 				} else {
 					xu = carbons[u].getX();
 					yu = carbons[u].getY();
@@ -254,11 +254,11 @@ public enum CMLConverter {
 		ArrayList<Integer> carbonsWithHydrogens = getCarbonsWithHydrogens(molecule);
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = checkGeometry(molecule);
 
-		int[] hydrogensCorrespondances = new int[molecule.getNbNodes()];
-		for (int i = 0; i < molecule.getNbNodes(); i++)
+		int[] hydrogensCorrespondances = new int[molecule.getNbCarbons()];
+		for (int i = 0; i < molecule.getNbCarbons(); i++)
 			hydrogensCorrespondances[i] = -1;
 
-		int[] treatedCarbons = new int[molecule.getNbNodes()];
+		int[] treatedCarbons = new int[molecule.getNbCarbons()];
 
 		for (Integer u : carbonsWithHydrogens) {
 
@@ -474,8 +474,8 @@ public enum CMLConverter {
 
 		writer.write("\t<bondArray>\n");
 
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 				if (molecule.getEdgeMatrix()[i][j] == 1)
 					writer.write("\t\t<bond atomRefs2=\"" + "c" + (i + 1) + " c" + (j + 1) + "\" order=\"A\" />\n");
 			}

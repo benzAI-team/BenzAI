@@ -1,6 +1,7 @@
 package solution;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClarCoverSolution {
 
@@ -79,7 +80,7 @@ public class ClarCoverSolution {
 		return builder.toString();
 	}
 
-	public static double [] getRadicalarStatistics(ArrayList<ClarCoverSolution> solutions) {
+	public static double [] getRadicalarStatistics(List<ClarCoverSolution> solutions) {
 		
 		if (solutions.size() == 0)
 			return null;

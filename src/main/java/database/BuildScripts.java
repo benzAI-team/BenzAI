@@ -52,7 +52,7 @@ public enum BuildScripts {
 
 
 		writer.write("INSERT INTO benzenoid (id, irregularity, nbCarbons, nbHexagons, nbHydrogens)\n");
-		writer.write("\tVALUES (" + id + ", " + irregbd.doubleValue() + ", " + molecule.getNbNodes() + ", "
+		writer.write("\tVALUES (" + id + ", " + irregbd.doubleValue() + ", " + molecule.getNbCarbons() + ", "
 				+ molecule.getNbHexagons() + ", " + molecule.getNbHydrogens() + ");\n\n");
 
 		for (String moleculeName : names) {

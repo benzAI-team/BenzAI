@@ -1,10 +1,8 @@
 package parsers;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,17 +96,17 @@ public class GraphParser {
 			int x2 = Integer.parseInt(vStr[0]);
 			int y2 = Integer.parseInt(vStr[1]);
 
-			int uIndex = graph.getCoords().get(x1, y1);
-			int vIndex = graph.getCoords().get(x2, y2);
+			int uIndex = graph.getMatrixCoordinates().get(x1, y1);
+			int vIndex = graph.getMatrixCoordinates().get(x2, y2);
 
 			adjacencyMatrix[uIndex][vIndex] = edgeValue;
 			adjacencyMatrix[vIndex][uIndex] = edgeValue;
 			edgesString.add(edgeStr + " " + edgeValue);
 		}
 
-		return new UndirPonderateGraph(graph.getNbNodes(), graph.getNbEdges(), graph.getNbHexagons(),
-				graph.getEdgeLists(), adjacencyMatrix, graph.getHexagonsString(), graph.getNodesRefs(),
-                graph.getCoords(), graph.getMaxIndex());
+		return new UndirPonderateGraph(graph.getNbCarbons(), graph.getNbBonds(), graph.getNbHexagons(),
+				graph.getEdgeLists(), adjacencyMatrix, graph.getHexagonsString(), graph.getNodesCoordinates(),
+                graph.getMatrixCoordinates(), graph.getMaxIndex());
 
 	}
 

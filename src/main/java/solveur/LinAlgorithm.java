@@ -44,18 +44,18 @@ public enum LinAlgorithm {
 		circuits = new double[molecule.getNbHexagons()][MAX_CYCLE_SIZE];
 		circuitCount = new double [energies.length];
 
-		int[] firstVertices = new int[molecule.getNbEdges()];
-		int[] secondVertices = new int[molecule.getNbEdges()];
+		int[] firstVertices = new int[molecule.getNbBonds()];
+		int[] secondVertices = new int[molecule.getNbBonds()];
 
 		Model model = new Model("Cycles");
 
-		UndirectedGraph GLB = new UndirectedGraph(model, molecule.getNbNodes(), SetType.BITSET, false);
-		UndirectedGraph GUB = new UndirectedGraph(model, molecule.getNbNodes(), SetType.BITSET, false);
+		UndirectedGraph GLB = new UndirectedGraph(model, molecule.getNbCarbons(), SetType.BITSET, false);
+		UndirectedGraph GUB = new UndirectedGraph(model, molecule.getNbCarbons(), SetType.BITSET, false);
 
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
 			GUB.addNode(i);
 
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					GUB.addEdge(i, j);
 				}
@@ -64,11 +64,11 @@ public enum LinAlgorithm {
 
 		UndirectedGraphVar g = model.graphVar("g", GLB, GUB);
 
-		BoolVar[] boolEdges = new BoolVar[molecule.getNbEdges()];
+		BoolVar[] boolEdges = new BoolVar[molecule.getNbBonds()];
 
 		int index = 0;
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 
 				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					boolEdges[index] = model.boolVar("(" + i + "--" + j + ")");
@@ -147,8 +147,8 @@ public enum LinAlgorithm {
 			int uIndex = cycle.get(i);
 			int vIndex = cycle.get(i + 1);
 
-			Node u = molecule.getNodesRefs()[uIndex];
-			Node v = molecule.getNodesRefs()[vIndex];
+			Node u = molecule.getNodesCoordinates()[uIndex];
+			Node v = molecule.getNodesCoordinates()[vIndex];
 
 			if (u.getX() == v.getX()) {
 				firstVertices.add(u);
@@ -216,9 +216,9 @@ public enum LinAlgorithm {
 	public static SubMolecule substractCycleAndInterior(Benzenoid molecule,
                                                         ArrayList<Interval> intervals) {
 
-		int[][] newGraph = new int[molecule.getNbNodes()][molecule.getNbNodes()];
-		int[] vertices = new int[molecule.getNbNodes()];
-		int[] subGraphVertices = new int[molecule.getNbNodes()];
+		int[][] newGraph = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
+		int[] vertices = new int[molecule.getNbCarbons()];
+		int[] subGraphVertices = new int[molecule.getNbCarbons()];
 
 		List<Integer> hexagons = getHexagons(molecule, intervals);
 
@@ -232,9 +232,9 @@ public enum LinAlgorithm {
 
 		int nbEdges = 0;
 
-		for (int u = 0; u < molecule.getNbNodes(); u++) {
+		for (int u = 0; u < molecule.getNbCarbons(); u++) {
 			if (vertices[u] == 0) {
-				for (int v = (u + 1); v < molecule.getNbNodes(); v++) {
+				for (int v = (u + 1); v < molecule.getNbCarbons(); v++) {
 					if (vertices[v] == 0) {
 						newGraph[u][v] = molecule.getEdgeMatrix()[u][v];
 						newGraph[v][u] = molecule.getEdgeMatrix()[v][u];
@@ -256,7 +256,7 @@ public enum LinAlgorithm {
 			}
 		}
 
-		return new SubMolecule(subGraphNbNodes, nbEdges, molecule.getNbNodes(), newGraph);
+		return new SubMolecule(subGraphNbNodes, nbEdges, molecule.getNbCarbons(), newGraph);
 	}
 
 	public static boolean intervalsOnSameLine(Interval i1, Interval i2) {
@@ -272,8 +272,8 @@ public enum LinAlgorithm {
 			int[] hexagonsCount = new int[molecule.getNbHexagons()];
 
 			for (int x = interval.x1(); x <= interval.x2(); x += 2) {
-				int u1 = molecule.getCoords().get(x, interval.y1());
-				int u2 = molecule.getCoords().get(x, interval.y2());
+				int u1 = molecule.getMatrixCoordinates().get(x, interval.y1());
+				int u2 = molecule.getMatrixCoordinates().get(x, interval.y2());
 
 				if (u1 == -1 || u2 == -1)
 					return new ArrayList<>();
@@ -323,7 +323,7 @@ public enum LinAlgorithm {
 				double nbPerfectMatchings = 0;
 
 				ArrayList<Integer> circuitForDeterminant = new ArrayList<>();
-				int[] checkedCarbons = new int[molecule.getNbNodes()];
+				int[] checkedCarbons = new int[molecule.getNbCarbons()];
 				for (Integer hexagon : hexagons) {
 					for (int i = 0; i < 6; i++) {
 						int u = molecule.getHexagons()[hexagon][i];
