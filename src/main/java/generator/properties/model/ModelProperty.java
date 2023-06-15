@@ -101,4 +101,11 @@ public abstract class ModelProperty extends Property {
 		this.filter = Filter;
 	}
 
+	@Override
+	public String toString() {
+		String string = "";
+		for(PropertyExpression expression : getExpressions())
+			string = string + expression + "\n";
+		return string;
+	}
 }

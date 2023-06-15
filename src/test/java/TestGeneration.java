@@ -6,10 +6,7 @@ import generator.patterns.PatternGenerationType;
 import generator.patterns.PatternResolutionInformations;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.PatternExpression;
-import generator.properties.model.expression.RectangleExpression;
-import generator.properties.model.expression.SubjectExpression;
+import generator.properties.model.expression.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,15 +18,19 @@ public enum TestGeneration {
     public static void main(String[] args) {
         String diagnostic =
                 test5hexagons()
-                + test6hexagonsCatacondensed()
-                + testRectangle_inf5Xinf5()
-                + testCoronenoid_inf3()
-                + testCoronoid_hex9()
-                + testCarbonsInf24()
-                + testHydrogensInf12()
-                + test6hexagonsCatacondensed()
-                + testDiameter3()
-                + testPattern3();
+                        + testCarbonsInf24()
+                        + testHydrogensInf12()
+                        + test6hexagonsCatacondensed()
+                        + testCoronenoid_inf3()
+                        + testCoronoid_hex9()
+                        + testDiameter3()
+                        + testIrregularitySup60()
+                        + testRectangle_inf5Xinf5()
+                        + testRhombusInf5()
+                        + testRot60()
+                        + testPattern3();
+                        //+ testKekule()
+                        //+ testConcealed();
         System.out.println(diagnostic);
     }
 
@@ -43,7 +44,13 @@ public enum TestGeneration {
         int found = runGeneration(modelPropertySet);
         return diagnostic("Generate molecules with diameter = 3", 102, found);
     }
-
+    private static String testIrregularitySup60() {
+        ModelPropertySet modelPropertySet  = new ModelPropertySet();
+        modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", 5));
+        modelPropertySet.getById("irregularity").addExpression(new IrregularityExpression("irregularity", "XI", ">", 60));
+        int found = runGeneration(modelPropertySet);
+        return diagnostic("Generate molecules with hex=5, Xi>0.6", 10, found);
+    }
     private static String testPattern3() {
         ModelPropertySet modelPropertySet  = new ModelPropertySet();
         modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "=", 5));
@@ -84,6 +91,12 @@ public enum TestGeneration {
         int found = runGeneration(modelPropertySet);
         return diagnostic("Generate rectangles h<=5 X w<=5 : ", 15, found);
     }
+    private static String testRhombusInf5() {
+        ModelPropertySet modelPropertySet  = new ModelPropertySet();
+        modelPropertySet.getById("rhombus").addExpression((new RhombusExpression("rhombus", "<=", 5)));
+        int found = runGeneration(modelPropertySet);
+        return diagnostic("Generate rhombus size<=5 : ", 5, found);
+    }
 
 
     private static String testCoronenoid_inf3() {
@@ -111,6 +124,13 @@ public enum TestGeneration {
         modelPropertySet.getById("hydrogens").addExpression(new BinaryNumericalExpression("hydrogens", "<=", 12));
         int found = runGeneration(modelPropertySet);
         return diagnostic("Generate molecules with <=12 hydrogens", 20, found);
+    }
+    private static String testRot60() {
+        ModelPropertySet modelPropertySet  = new ModelPropertySet();
+        modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "<=", 25));
+        modelPropertySet.getById("symmetry").addExpression(new ParameterizedExpression("symmetry", "C_6h \"(face)-60-rotation\""));
+        int found = runGeneration(modelPropertySet);
+        return diagnostic("Generate molecules with hex<=25 and sym=rot60", 18, found);
     }
 
     /***

@@ -47,7 +47,15 @@ public class BinaryNumericalExpression extends ParameterizedExpression {
 		case ">=": return x >= y;
 		}
 		return true;
-
 	}
 
+	@Override
+	public String toString(){
+		return super.toString() + " " + getValue();
+	}
+
+	public static BinaryNumericalExpression fromString(String string){
+		String [] elements = string.split(" ");
+		return new BinaryNumericalExpression(elements[0], elements[1], Integer.valueOf(elements[2]));
+	}
 }

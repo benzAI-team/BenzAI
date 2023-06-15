@@ -13,27 +13,20 @@ public abstract class HBoxCriterion extends HBox {
 
 	private boolean valid;
 	
-	private final DeleteButton deleteButton;
-	private ImageView warningIcon;
+	private final DeleteButton deleteButton = new DeleteButton();;
+	private ImageView warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
+	;
 	 
 	private ScrollPaneWithPropertyList pane;
-	private ChoiceBoxCriterion choiceBoxCriterion;
-	
+
 	private PropertyExpression expression;
 
 	
 	public HBoxCriterion(ScrollPaneWithPropertyList pane, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(5.0);
-		
 		this.setPane(pane);
-		this.choiceBoxCriterion = choiceBoxCriterion;
-		
-		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
-		deleteButton = new DeleteButton();
-		
 		Tooltip.install(warningIcon, new Tooltip("Invalid entry, criterion will not be considered"));
 		Tooltip.install(deleteButton, new Tooltip("Delete criterion"));
-		
 		deleteButton.setOnAction(e -> pane.removeCriterion(choiceBoxCriterion, this));
 		initialize();
 	}
@@ -59,14 +52,6 @@ public abstract class HBoxCriterion extends HBox {
 
 	void setWarningIcon(ImageView warningIcon) {
 		this.warningIcon = warningIcon;
-	}
-
-	public ChoiceBoxCriterion getChoiceBoxCriterion() {
-		return choiceBoxCriterion;
-	}
-
-	public void setChoiceBoxCriterion(ChoiceBoxCriterion choiceBoxCriterion) {
-		this.choiceBoxCriterion = choiceBoxCriterion;
 	}
 
 	public PropertyExpression getExpression() {

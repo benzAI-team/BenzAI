@@ -261,7 +261,7 @@ public class GeneralModel {
                 applyModelConstraint((ModelProperty) modelProperty);
             }
 
-        if (!modelPropertySet.has("symmetry") && !modelPropertySet.has("rectangle"))
+        if (!modelPropertySet.has("symmetry") && !modelPropertySet.has("rectangle") && !modelPropertySet.has("rhombus"))
             ConstraintBuilder.postBordersConstraints(this);
     }
 

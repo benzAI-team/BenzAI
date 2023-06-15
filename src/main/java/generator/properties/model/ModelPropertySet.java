@@ -4,8 +4,10 @@ import generator.properties.Property;
 import generator.properties.PropertySet;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
-
+import generator.properties.model.expression.PropertyExpressionFactory;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class ModelPropertySet extends PropertySet {
 	private int hexagonNumberUpperBound;
@@ -35,7 +37,7 @@ public class ModelPropertySet extends PropertySet {
 		return ((ModelProperty) getById("hexagons")).hasUpperBound()
 				|| ((ModelProperty) getById("carbons")).hasUpperBound()
 				|| ((ModelProperty) getById("hydrogens")).hasUpperBound()
-				|| ((ModelProperty) getById("rhombus")).hasUpperBound()
+				|| ((RhombusProperty) getById("rhombus")).hasUpperBounds()
 				|| ((ModelProperty) getById("diameter")).hasUpperBound()
 				|| ((ModelProperty) getById("coronenoid")).hasUpperBound()
 				|| ((RectangleProperty) getById("rectangle")).hasUpperBounds();
@@ -73,7 +75,6 @@ public class ModelPropertySet extends PropertySet {
 	private void clearPropertyExpressions() {
 		for(Property property : getPropertyList())
 			property.clearExpressions();
-		
 	}
 
 	public boolean symmetryConstraintsAppliable() {
@@ -83,14 +84,55 @@ public class ModelPropertySet extends PropertySet {
 	/***
 	 *
 	 */
-	public boolean buildModelPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
+	public void buildModelPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
 		clearPropertyExpressions();
 		for (HBoxCriterion box : hBoxesCriterions) {
 			if (!box.isValid())
-				return false;
+				return;
 			((HBoxModelCriterion)box).addPropertyExpression(this);
 		}
-		return true;
+		save();
 	}
 
+	@Override
+	public String toString() {
+		String string = "";
+		for(Property property : this){
+			string = string + ((ModelProperty)property).toString();
+		}
+		return string;
+	}
+
+	/***
+	 * save the constraint set to file 'constraints'
+	 */
+	public void save() {
+		File file = new File("constraints");
+
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer.write(this.toString());
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void load() throws IOException {
+		File file = new File("constraints");
+		if (file.exists()) {
+			clearPropertyExpressions();
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line = reader.readLine();
+			while (line != null) {
+				String[] elements = line.split(Pattern.quote(" "));
+				Property property = getById(elements[0]);
+				if(property != null)
+					property.addExpression(PropertyExpressionFactory.build(line));
+				line = reader.readLine();
+			}
+			reader.close();
+		}
+	}
 }

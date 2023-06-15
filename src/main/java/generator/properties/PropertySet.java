@@ -17,7 +17,6 @@ public class PropertySet implements Iterable<Property> {
 	}
 
 	/***
-	 * 
 	 * @param id : identifier
 	 * @return the model property with 'id'
 	 */
@@ -29,11 +28,10 @@ public class PropertySet implements Iterable<Property> {
 	}
 	
 	/***
-	 * 
 	 * @param name : full name of the property
 	 * @return the property
 	 */
-	public Property getByName(String name) {
+	private Property getByName(String name) {
 		for(Property property : propertyList)
 			if(Objects.equals(property.getName(), name))
 				return property;
@@ -67,16 +65,14 @@ public class PropertySet implements Iterable<Property> {
 	 */
 	public boolean has(String id) {
 		Property property =  getById(id);
-		return property != null && property.getExpressions().size() > 0;
+		return property != null && !property.getExpressions().isEmpty();
 	}
 
-	public ArrayList<Property> getPropertyList() {
+	protected ArrayList<Property> getPropertyList() {
 		return propertyList;
 	}
 
-	public void setPropertyList(ArrayList<Property> propertyList) {
+	protected void setPropertyList(ArrayList<Property> propertyList) {
 		this.propertyList = propertyList;
 	}
-	
-	
 }

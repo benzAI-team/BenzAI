@@ -6,4 +6,8 @@ public class SubjectExpression extends PropertyExpression {
 		super(subject);
 	}
 
+	public static SubjectExpression fromString(String string){
+		return new SubjectExpression(string);
+	}
+
 }

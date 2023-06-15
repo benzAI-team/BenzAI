@@ -1,8 +1,10 @@
 package generator.properties.model;
 
+import constraints.BenzAIConstraint;
 import constraints.RectangleConstraint;
 import generator.properties.model.expression.PropertyExpression;
 import generator.properties.model.expression.RectangleExpression;
+import generator.properties.model.filters.Filter;
 import generator.properties.model.filters.RectangleFilter;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
@@ -15,6 +17,10 @@ public class RectangleProperty extends ModelProperty {
 
 	RectangleProperty() {
 		super("rectangle", "Rectangle", new RectangleConstraint(), new RectangleFilter());
+	}
+
+	RectangleProperty(String id, String name, BenzAIConstraint constraint, Filter filter) {
+		super(id, name, constraint, filter);
 	}
 
 	@Override
@@ -36,7 +42,7 @@ public class RectangleProperty extends ModelProperty {
 		int heightBound = expressions.stream().reduce(Integer.MAX_VALUE, (acc, expression) -> Math.min(acc, ((RectangleExpression)expression).getWidth()), Math::min);
 		return Math.max(widthBound, heightBound);
 	}
-	public boolean hasUpperBounds() {
+	boolean hasUpperBounds() {
 		ArrayList<PropertyExpression> expressions = this.getExpressions();
 		return expressions.stream().anyMatch(expression -> ((RectangleExpression)expression).hasHeightUpperBound())
 				&& expressions.stream().anyMatch(expression -> ((RectangleExpression)expression).hasWidthUpperBound());

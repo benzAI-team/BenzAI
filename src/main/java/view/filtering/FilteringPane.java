@@ -72,11 +72,11 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 		this.setPrefWidth(this.getPrefWidth());
 		this.setContent(gridPane);
 
-		setChoiceBoxesCriterions(new ArrayList<>());
+		setChoiceBoxCriterions(new ArrayList<>());
 		setHBoxesCriterions(new ArrayList<>());
 		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
 		Tooltip.install(addButton, new Tooltip("Add new criterion"));
-		getChoiceBoxesCriterions().add(choiceBoxCriterion);
+		getChoiceBoxCriterions().add(choiceBoxCriterion);
 		getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
 		placeComponents();
@@ -127,14 +127,14 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 		addButton.setOnAction(e -> {
 
-			int nbCriterions = getChoiceBoxesCriterions().size();
+			int nbCriterions = getChoiceBoxCriterions().size();
 
 			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
 
 			if (invalidIndexes.size() == 0) {
 
 				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, getModelPropertySet());
-				getChoiceBoxesCriterions().add(choiceBoxCriterion);
+				getChoiceBoxCriterions().add(choiceBoxCriterion);
 				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
 				nbCriterions++;
@@ -175,7 +175,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 		for (int i = 0; i < nbCriterions; i++) {
 			GridPane.setValignment(getHBoxesCriterions().get(i), VPos.TOP);
-			gridPane.add(getChoiceBoxesCriterions().get(i), 0, i + 1);
+			gridPane.add(getChoiceBoxCriterions().get(i), 0, i + 1);
 			gridPane.add(getHBoxesCriterions().get(i), 1, i + 1);
 		}
 
@@ -340,13 +340,13 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 	public void removeCriterion(ChoiceBoxCriterion choiceBoxCriterion, HBoxCriterion hBoxCriterion) {
 
-		getChoiceBoxesCriterions().remove(choiceBoxCriterion);
+		getChoiceBoxCriterions().remove(choiceBoxCriterion);
 		getHBoxesCriterions().remove(hBoxCriterion);
 
 		int nbCriterions = getHBoxesCriterions().size();
 
 		for (int i = 0; i < nbCriterions; i++)
-			getChoiceBoxesCriterions().get(i).setIndex(i);
+			getChoiceBoxCriterions().get(i).setIndex(i);
 
 		placeComponents();
 	}

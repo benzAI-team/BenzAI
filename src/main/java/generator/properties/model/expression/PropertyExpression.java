@@ -29,6 +29,8 @@ public abstract class PropertyExpression {
 		return ">".equals(operator) || ">=".equals(operator) || "=".equals(operator);
 	}
 
-
-
+	@Override
+	public String toString() {
+		return getId();
+	}
 }

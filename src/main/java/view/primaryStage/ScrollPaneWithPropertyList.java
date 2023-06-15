@@ -1,22 +1,19 @@
 package view.primaryStage;
 
-import java.util.ArrayList;
-
-import generator.patterns.PatternResolutionInformations;
-import javafx.scene.control.ScrollPane;
 import generator.properties.model.ModelPropertySet;
+import javafx.scene.control.ScrollPane;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 
+import java.util.ArrayList;
+
 public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 
 	private int nbCriterions;
-	private ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions;
-	private ArrayList<HBoxCriterion> hBoxesCriterions;
+	private ArrayList<ChoiceBoxCriterion> choiceBoxCriterions;
+	private ArrayList<HBoxCriterion> hBoxCriterions;
 	private final ModelPropertySet modelPropertySet = new ModelPropertySet();
-
-	private PatternResolutionInformations patternsInformations;
 
 	/***
 	 *
@@ -32,14 +29,11 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	 *
 	 */
 	public void removeCriterion(ChoiceBoxCriterion choiceBoxCriterion, HBoxCriterion hBoxCriterion) {
-	
-		getChoiceBoxesCriterions().remove(choiceBoxCriterion);
+		getChoiceBoxCriterions().remove(choiceBoxCriterion);
 		getHBoxesCriterions().remove(hBoxCriterion);
 		setNbCriterions(getNbCriterions() - 1);
-	
 		for (int i = 0; i < getNbCriterions(); i++)
-			getChoiceBoxesCriterions().get(i).setIndex(i);
-	
+			getChoiceBoxCriterions().get(i).setIndex(i);
 		placeComponents();
 	}
 
@@ -60,41 +54,33 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	 * getters, setters
 	 */
 	public ArrayList<HBoxCriterion> getHBoxesCriterions() {
-		return hBoxesCriterions;
+		return hBoxCriterions;
 	}
 
 	public abstract void refreshGenerationPossibility();
 
-	public int getNbCriterions() {
+	protected int getNbCriterions() {
 		return nbCriterions;
 	}
 
-	public void setNbCriterions(int nbCriterions) {
+	protected void setNbCriterions(int nbCriterions) {
 		this.nbCriterions = nbCriterions;
 	}
 
-	public ArrayList<ChoiceBoxCriterion> getChoiceBoxesCriterions() {
-		return choiceBoxesCriterions;
+	protected ArrayList<ChoiceBoxCriterion> getChoiceBoxCriterions() {
+		return choiceBoxCriterions;
 	}
 
-	public void setChoiceBoxesCriterions(ArrayList<ChoiceBoxCriterion> choiceBoxesCriterions) {
-		this.choiceBoxesCriterions = choiceBoxesCriterions;
+	protected void setChoiceBoxCriterions(ArrayList<ChoiceBoxCriterion> choiceBoxCriterions) {
+		this.choiceBoxCriterions = choiceBoxCriterions;
 	}
 
-	public void setHBoxesCriterions(ArrayList<HBoxCriterion> hBoxesCriterions) {
-		this.hBoxesCriterions = hBoxesCriterions;
+	protected void setHBoxesCriterions(ArrayList<HBoxCriterion> hBoxesCriterions) {
+		this.hBoxCriterions = hBoxesCriterions;
 	}
 
 	public ModelPropertySet getModelPropertySet() {
 		return modelPropertySet;
-	}
-
-	public PatternResolutionInformations getPatternsInformations() {
-		return patternsInformations;
-	}
-
-	public void setPatternsInformations(PatternResolutionInformations patternsInformations) {
-		this.patternsInformations = patternsInformations;
 	}
 
 

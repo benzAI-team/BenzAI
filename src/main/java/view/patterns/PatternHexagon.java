@@ -64,6 +64,10 @@ public class PatternHexagon extends Polygon {
 		this.setFill(COLORS[label.ordinal()]);
 	}
 
+	boolean isColored(){
+		return label != PatternLabel.VOID;
+	}
+
 	void disableCenter() {
 		isCenter = false;
 		this.setStrokeWidth(this.getStrokeWidth() / 2);

@@ -13,7 +13,11 @@ public class PatternResolutionInformations {
 		this.patterns = patterns;
 	}
 
-	public void setInterraction(PatternsInterraction interraction) {
+    public static PatternResolutionInformations fromString(String element) {
+		return null;//TODO
+    }
+
+    public void setInterraction(PatternsInterraction interraction) {
 		this.interraction = interraction;
 	}
 	

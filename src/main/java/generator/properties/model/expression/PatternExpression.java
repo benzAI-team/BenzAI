@@ -13,4 +13,15 @@ public class PatternExpression extends SubjectExpression {
 	public PatternResolutionInformations getPatternsInformations() {
 		return patternsInformations;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + " " + patternsInformations;
+	}
+
+	public static PatternExpression fromString(String string){
+		String [] elements = string.split(" ");
+		return new PatternExpression(elements[0], PatternResolutionInformations.fromString(elements[1]));
+	}
+
 }
