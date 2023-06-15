@@ -56,7 +56,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private ClarCoverSolution clarCoverSolution;
 	private int[][] fixedBonds;
 	private int[] fixedCircles;
-	private ArrayList<int[][]> kekuleStructures;
 
 	private ArrayList<ClarCoverSolution> clarCoverSolutions;
 
@@ -889,7 +888,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 				for (int i = 0; i < shiftedCoords.length; i++) {
 					Node node = initialCoords[i];
-					// if (node != null) {
 					Node newNode = new Node(node.getX() + xShift, node.getY() + yShift, i);
 					shiftedCoords[i] = newNode;
 
@@ -900,7 +898,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 						ok = false;
 						break;
 					}
-					// }
 				}
 
 				if (ok) {
@@ -1023,7 +1020,6 @@ public class Benzenoid implements Comparable<Benzenoid> {
 						int y = hexagonsCoords[candidateIndex].getY() + neighbor.dy();
 						checkedHexagons[n] = 1;
 						hexagonsCoords[n] = new Couple<>(x, y);
-						// centersCoords[n] = new Couple<Double, Double>(xCenter, yCenter);
 						candidates.add(n);
 					}
 				}
@@ -1130,12 +1126,12 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		return colorShift;
 	}
 
-	public ArrayList<int[][]> getKekuleStructures() {
-		return kekuleStructures;
+	public List<int[][]> getKekuleStructures() {
+		return computableInformations.getKekuleStructures();
 	}
 
-	public void setKekuleStructures(ArrayList<int[][]> kekuleStructures) {
-		this.kekuleStructures = kekuleStructures;
+	public void setKekuleStructures(List<int[][]> kekuleStructures) {
+		computableInformations.setKekuleStructures(kekuleStructures);
 	}
 
 	/***

@@ -109,12 +109,12 @@ public class GraphFileBuilder {
 		int nbEdges = 0;
 		int nbHexagons = 0;
 
-		for (int[] ints : hexagons) {
-			if (isFull(ints)) {
+		for (int[] hexagon : hexagons) {
+			if (isFull(hexagon)) {
 				nbHexagons++;
 				for (int i = 0; i < 6; i++) {
-					int u = ints[i];
-					int v = ints[(i + 1) % 6];
+					int u = hexagon[i];
+					int v = hexagon[(i + 1) % 6];
 
 					if (edgeMatrix[u][v] == 0) {
 						edgeMatrix[u][v] = 1;
@@ -137,14 +137,14 @@ public class GraphFileBuilder {
 			}
 		}
 
-		for (int[] ints : hexagons) {
+		for (int[] hexagon : hexagons) {
 
-			if (isFull(ints)) {
+			if (isFull(hexagon)) {
 
 				writer.write("h ");
 
 				for (int i = 0; i < 6; i++) {
-					writer.write(ints[i] + " ");
+					writer.write(hexagon[i] + " ");
 				}
 
 				writer.write("\n");

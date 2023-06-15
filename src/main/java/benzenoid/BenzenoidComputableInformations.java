@@ -14,6 +14,8 @@ public class BenzenoidComputableInformations {
     private Benzenoid benzenoid;
     private double nbKekuleStructures = -1;
 
+    private List<int[][]> kekuleStructures;
+
     private Optional<Irregularity> irregularity;
 
     private Optional<Aromaticity> aromaticity;
@@ -21,6 +23,8 @@ public class BenzenoidComputableInformations {
     private boolean aromaticityComputed;
 
     private List<Integer> verticesSolutions;
+
+
 
     public BenzenoidComputableInformations(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
@@ -128,5 +132,13 @@ public class BenzenoidComputableInformations {
         }
 
         return aromaticity;
+    }
+
+    public List<int[][]> getKekuleStructures() {
+        return kekuleStructures;
+    }
+
+    public void setKekuleStructures(List<int[][]> kekuleStructures) {
+        this.kekuleStructures = kekuleStructures;
     }
 }

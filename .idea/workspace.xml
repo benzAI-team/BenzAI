@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="suppression attributs inutiles">
-      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/parsers/SolutionConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphFileBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphFileBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
