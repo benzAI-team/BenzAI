@@ -11,6 +11,7 @@ import benzenoid.sort.NbHexagonsComparator;
 import parsers.GraphCoordFileBuilder;
 import parsers.GraphFileBuilder;
 import parsers.GraphParser;
+import parsers.SolutionConverter;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity;
 import solveur.RBOSolver;
@@ -1148,6 +1149,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	 *
 	 */
 	public static Benzenoid buildMolecule(String description, int nbCrowns, int index, ArrayList<Integer> verticesSolution) {
+
 		Benzenoid molecule = null;
 		try {
 			String graphFilename = "tmp.graph";
@@ -1161,6 +1163,12 @@ public class Benzenoid implements Comparable<Benzenoid> {
 			e1.printStackTrace();
 		}
 		return molecule;
+
+		/*
+		SolutionConverter solutionConverter = new SolutionConverter(verticesSolution, nbCrowns);
+		Benzenoid benzenoid = solutionConverter.buildBenzenoid();
+		return benzenoid;
+		 */
 	}
 
 	/***

@@ -7,6 +7,8 @@ import utils.HexNeighborhood;
 import utils.RelativeMatrix;
 import utils.Utils;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +21,8 @@ public class SolutionConverter {
 
     private int [][] solutionMatrix;
 
+    private int [][] hexagons;
+
     private int [][] adjacencyMatrix;
 
     private int [] hexagonsCovered;
@@ -26,6 +30,8 @@ public class SolutionConverter {
     private Node[] verticesCoordinates;
 
     private RelativeMatrix nodesCoordinates;
+
+    private List<String> hexagonsString;
 
     public SolutionConverter(List<Integer> solution, int nbCrowns) {
         this.solution = solution;
@@ -35,7 +41,7 @@ public class SolutionConverter {
 
     public Benzenoid buildBenzenoid() {
 
-        int nbNodes = solution.size();
+        //int nbNodes = solution.size();
 
         int [] checkedHexagons = new int[diameter * diameter];
         Arrays.fill(checkedHexagons, -1);
@@ -50,7 +56,7 @@ public class SolutionConverter {
 
         int solutionSize = solution.stream().reduce(0, Integer::sum);
 
-        int [][] hexagons = new int [solution.size()][6];
+        hexagons = new int [solution.size()][6];
         for (int[] hexagon : hexagons) Arrays.fill(hexagon, -1);
 
         while (n < solutionSize) {
@@ -94,11 +100,161 @@ public class SolutionConverter {
          * Computing coordinates
          */
 
+        int nbNodes = indexNode;
+
         verticesCoordinates = new Node[nbNodes];
         nodesCoordinates = new RelativeMatrix(8 * nbHexagons + 1, 16 * nbHexagons + 1, 4 * nbHexagons, 8 * nbHexagons);
+        adjacencyMatrix = new int[nbNodes][nbNodes];
+        hexagonsCovered = new int[nbHexagons];
 
+        hexagonsString = new ArrayList<>();
 
-        return null;
+        setFirstHexagon();
+
+        ArrayList<Integer> candidats = new ArrayList<>();
+        candidats.add(0);
+
+        while (!candidats.isEmpty()) {
+            int candidat = candidats.get(0);
+
+            for (int hexagon = 0; hexagon < nbHexagons; hexagon++) {
+                if (hexagon != candidat && hexagonsCovered[hexagon] == 0) {
+
+                    for (int i = 0; i < 6; i++) {
+                        int j = (i + 1) % 6;
+
+                        //CHERCHER SI hexagon est adjacent à candidat
+
+                        for (int i2 = 0; i2 < 6; i2++) {
+                            int j2 = (i2 + 1) % 6;
+
+                            if ((hexagons[candidat][i] == hexagons[hexagon][i2] &&
+                                    hexagons[candidat][j] == hexagons[hexagon][j2]) ||
+                                    (hexagons[candidat][i] == hexagons[hexagon][j2] &&
+                                            hexagons[candidat][j] == hexagons[hexagon][i2])) {
+
+                                Node[] nodesHexagon = new Node[6];
+
+                                if (hexagons[candidat][i] == hexagons[hexagon][i2] &&
+                                        hexagons[candidat][j] == hexagons[hexagon][j2]) {
+
+                                    nodesHexagon[i2] = verticesCoordinates[hexagons[candidat][i]];
+                                    nodesHexagon[j2] = verticesCoordinates[hexagons[candidat][j]];
+
+                                }
+
+                                if (hexagons[candidat][i] == hexagons[hexagon][j2] &&
+                                        hexagons[candidat][j] == hexagons[hexagon][i2]) {
+
+                                    nodesHexagon[i2] = verticesCoordinates[hexagons[candidat][j]];
+                                    nodesHexagon[j2] = verticesCoordinates[hexagons[candidat][i]];
+
+                                }
+
+                                //On cherche si il existe d'autres hexagons déja traités à part candidat qui sont adjacents à $hexagone
+                                for (int hexagon2 = 0; hexagon2 < nbHexagons; hexagon2++) {
+                                    if (hexagon2 != candidat && hexagon2 != hexagon && hexagonsCovered[hexagon2] == 1) {
+
+                                        //test d'adjacence
+                                        for (int i3 = 0; i3 < 6; i3++) {
+                                            int j3 = (i3 + 1) % 6;
+
+                                            for (int i4 = 0; i4 < 6; i4++) {
+                                                int j4 = (i4 + 1) % 6;
+
+                                                if (hexagons[hexagon][i3] == hexagons[hexagon2][i4] &&
+                                                        hexagons[hexagon][j3] == hexagons[hexagon2][j4]) {
+
+                                                    nodesHexagon[i3] = verticesCoordinates[hexagons[hexagon2][i4]];
+                                                    nodesHexagon[j3] = verticesCoordinates[hexagons[hexagon2][j4]];
+                                                }
+
+                                                if (hexagons[hexagon][i3] == hexagons[hexagon2][j4] &&
+                                                        hexagons[hexagon][j3] == hexagons[hexagon2][i4]) {
+
+                                                    nodesHexagon[i3] = verticesCoordinates[hexagons[hexagon2][j4]];
+                                                    nodesHexagon[j3] = verticesCoordinates[hexagons[hexagon2][i4]];
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                                //puis on ajoute les noeuds non renseignés par rapport à ceux déja connus
+
+                                int firstIndex = 0;
+                                for (int index = 0; index < 6; index++) {
+                                    if (nodesHexagon[index] != null) {
+                                        firstIndex = index;
+                                        break;
+                                    }
+                                }
+
+                                int cpt = 0;
+                                while (cpt < 6) {
+                                    int nextIndex = (firstIndex + 1) % 6;
+                                    if (nodesHexagon[nextIndex] == null) {
+                                        assert nodesHexagon[firstIndex] != null;
+                                        Point newCoord = transition(nodesHexagon[firstIndex].getX(), nodesHexagon[firstIndex].getY(), firstIndex);
+                                        int nodeId = hexagons[hexagon][nextIndex];
+                                        nodesHexagon[nextIndex] = new Node((int) newCoord.getX(), (int) newCoord.getY(), nodeId);
+                                    }
+                                    firstIndex = (firstIndex + 1) % 6;
+                                    cpt++;
+                                }
+
+                                StringBuilder builder = new StringBuilder();
+                                builder.append("h ");
+                                for (int index = 0; index < nodesHexagon.length; index++) {
+                                    Node node = nodesHexagon[index];
+                                    Node node2 = nodesHexagon[(index + 1) % 6];
+
+                                    assert node != null;
+                                    adjacencyMatrix[node.getIndex()][node2.getIndex()] = 1;
+                                    adjacencyMatrix[node2.getIndex()][node.getIndex()] = 1;
+
+                                    builder.append(node.getX()).append("_").append(node.getY());
+                                    if (index < nodesHexagon.length - 1)
+                                        builder.append(" ");
+
+                                    nodesCoordinates.set(node.getX(), node.getY(), node.getIndex());
+                                    nodesCoordinates.set(node2.getX(), node2.getY(), node2.getIndex());
+
+                                    verticesCoordinates[node.getIndex()] = node;
+                                }
+
+                                hexagonsString.add(builder.toString());
+                                //on ajoute hexagone aux candidats
+                                candidats.add(hexagon);
+                                hexagonsCovered[hexagon] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+            candidats.remove(0);
+        }
+
+        int [][] finalHexagons = new int[nbHexagons][6];
+        int index = 0;
+        for (int [] hexagon : hexagons) {
+            boolean valid = true;
+            for (int i = 0 ; i < hexagon.length ; i++) {
+                if (hexagon[i] == -1) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) {
+                finalHexagons[index] = hexagon;
+                index ++;
+            }
+
+        }
+
+        Benzenoid benzenoid = new Benzenoid(nbNodes, nbEdges, nbHexagons, finalHexagons, verticesCoordinates, edgeMatrix, nodesCoordinates);
+        return benzenoid;
     }
 
     private void buildCoordinatesMatrix() {
@@ -219,5 +375,58 @@ public class SolutionConverter {
         }
 
         return true;
+    }
+
+    private void setFirstHexagon() {
+        //Adding firstHexagon
+        nodesCoordinates.set(0, 0, hexagons[0][0]);
+        nodesCoordinates.set(1, 1, hexagons[0][1]);
+        nodesCoordinates.set(1, 2, hexagons[0][2]);
+        nodesCoordinates.set(0, 3, hexagons[0][3]);
+        nodesCoordinates.set(-1, 2, hexagons[0][4]);
+        nodesCoordinates.set(-1, 1, hexagons[0][5]);
+
+        verticesCoordinates[hexagons[0][0]] = new Node(0, 0, hexagons[0][0]);
+        verticesCoordinates[hexagons[0][1]] = new Node(1, 1, hexagons[0][1]);
+        verticesCoordinates[hexagons[0][2]] = new Node(1, 2, hexagons[0][2]);
+        verticesCoordinates[hexagons[0][3]] = new Node(0, 3, hexagons[0][3]);
+        verticesCoordinates[hexagons[0][4]] = new Node(-1, 2, hexagons[0][4]);
+        verticesCoordinates[hexagons[0][5]] = new Node(-1, 1, hexagons[0][5]);
+
+        adjacencyMatrix[hexagons[0][0]][hexagons[0][1]] = 1;
+        adjacencyMatrix[hexagons[0][1]][hexagons[0][0]] = 1;
+        adjacencyMatrix[hexagons[0][1]][hexagons[0][2]] = 1;
+        adjacencyMatrix[hexagons[0][2]][hexagons[0][1]] = 1;
+        adjacencyMatrix[hexagons[0][2]][hexagons[0][3]] = 1;
+        adjacencyMatrix[hexagons[0][3]][hexagons[0][2]] = 1;
+        adjacencyMatrix[hexagons[0][3]][hexagons[0][4]] = 1;
+        adjacencyMatrix[hexagons[0][4]][hexagons[0][3]] = 1;
+        adjacencyMatrix[hexagons[0][4]][hexagons[0][5]] = 1;
+        adjacencyMatrix[hexagons[0][5]][hexagons[0][4]] = 1;
+        adjacencyMatrix[hexagons[0][5]][hexagons[0][0]] = 1;
+        adjacencyMatrix[hexagons[0][0]][hexagons[0][5]] = 1;
+
+        hexagonsString.add("h 0_0 1_1 1_2 0_3 -1_2 -1_1");
+
+        hexagonsCovered[0] = 1;
+    }
+
+    private Point transition(int x, int y, int position) {
+
+        //Constants
+        int h = 0;
+        if (position == h) return new Point(x + 1, y + 1);
+        int HD = 1;
+        if (position == HD) return new Point(x, y + 1);
+        int BD = 2;
+        if (position == BD) return new Point(x - 1, y + 1);
+        int b = 3;
+        if (position == b) return new Point(x - 1, y - 1);
+        int BG = 4;
+        if (position == BG) return new Point(x, y - 1);
+        int HG = 5;
+        if (position == HG) return new Point(x + 1, y - 1);
+
+        return null;
     }
 }

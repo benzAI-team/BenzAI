@@ -3,6 +3,7 @@ package benzenoid;
 import classifier.Irregularity;
 import solveur.Aromaticity;
 import solveur.LinAlgorithm;
+import solveur.RBOSolver;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class BenzenoidComputableInformations {
 
     private List<Integer> verticesSolutions;
 
+    private RBO ringBondOrder;
 
 
     public BenzenoidComputableInformations(Benzenoid benzenoid) {
@@ -132,6 +134,14 @@ public class BenzenoidComputableInformations {
         }
 
         return aromaticity;
+    }
+
+    public RBO getRingBondOrder() {
+
+        if (ringBondOrder == null)
+            ringBondOrder = RBOSolver.RBO(benzenoid);
+
+        return ringBondOrder;
     }
 
     public List<int[][]> getKekuleStructures() {
