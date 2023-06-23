@@ -128,7 +128,7 @@ public enum TestGeneration {
     private static String testRot60() {
         ModelPropertySet modelPropertySet  = new ModelPropertySet();
         modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", "<=", 25));
-        modelPropertySet.getById("symmetry").addExpression(new ParameterizedExpression("symmetry", "C_6h \"(face)-60-rotation\""));
+        modelPropertySet.getById("symmetry").addExpression(new ParameterizedExpression("symmetry", "C_6h=\"(face)-60-rotation\""));
         int found = runGeneration(modelPropertySet);
         return diagnostic("Generate molecules with hex<=25 and sym=rot60", 18, found);
     }

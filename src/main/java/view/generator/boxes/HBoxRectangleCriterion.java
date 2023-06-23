@@ -1,6 +1,8 @@
 package view.generator.boxes;
 
+import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.PropertyExpression;
 import generator.properties.model.expression.RectangleExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -30,8 +32,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void updateValidity() {
-
+	public void updateValidity() {
 		String heightChoice = heightChoiceBox.getValue();
 		String widthChoice = widthChoiceBox.getValue();
 
@@ -45,7 +46,6 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 
 		if ("Unspecified".equals(heightChoice))
 			validHeight = true;
-
 		else {
 
 			if (heightChoice == null || !Utils.isNumber(heightTextField.getText())) {
@@ -87,8 +87,10 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 
 		if (!isValid())
 			hBoxHeight.getChildren().add(getWarningIcon());
-
 		hBoxHeight.getChildren().add(getDeleteButton());
+
+		setBounding(validHeight && validWidth && ModelProperty.isBoundingOperator(widthChoice) && ModelProperty.isBoundingOperator(heightChoice));
+		getPane().refreshGenerationPossibility();
 	}
 
 	@Override
@@ -104,16 +106,6 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 
 		heightTextField = new TextField();
 
-		heightChoiceBox.setOnAction(e -> {
-			updateValidity();
-			getPane().refreshGenerationPossibility();
-		});
-
-		heightTextField.setOnKeyReleased(e -> {
-			updateValidity();
-			getPane().refreshGenerationPossibility();
-		});
-
 		hBoxHeight = new HBox(5.0);
 		hBoxHeight.getChildren().addAll(heightLabel, heightChoiceBox, heightTextField, getWarningIcon(), getDeleteButton());
 
@@ -123,16 +115,6 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		widthChoiceBox.getSelectionModel().selectFirst();
 		widthTextField = new TextField();
 
-		widthChoiceBox.setOnAction(e -> {
-			updateValidity();
-			getPane().refreshGenerationPossibility();
-		});
-
-		widthTextField.setOnKeyReleased(e -> {
-			updateValidity();
-			getPane().refreshGenerationPossibility();
-		});
-
 		hBoxWidth = new HBox(5.0);
 		hBoxWidth.getChildren().addAll(widthLabel, widthChoiceBox, widthTextField);
 
@@ -141,8 +123,38 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		gridPane.add(hBoxHeight, 0, 0);
 		gridPane.add(hBoxWidth, 0, 1);
 
-		updateValidity();
+		//updateValidity();
 		this.getChildren().add(gridPane);
+	}
+
+	@Override
+	public void assign(PropertyExpression propertyExpression) {
+		RectangleExpression expression = (RectangleExpression) propertyExpression;
+		heightChoiceBox.getSelectionModel().select(expression.getHeightOperator());
+		heightTextField.setText("" + expression.getHeight());
+		widthChoiceBox.getSelectionModel().select(expression.getWidthOperator());
+		widthTextField.setText("" + expression.getWidth());
+	}
+
+	@Override
+	public void initEventHandling() {
+		heightChoiceBox.setOnAction(e -> {
+			updateValidity();
+			getPane().refreshGenerationPossibility();
+		});
+		heightTextField.setOnKeyReleased(e -> {
+			updateValidity();
+			getPane().refreshGenerationPossibility();
+		});
+		widthChoiceBox.setOnAction(e -> {
+			updateValidity();
+			getPane().refreshGenerationPossibility();
+		});
+		widthTextField.setOnKeyReleased(e -> {
+			updateValidity();
+			getPane().refreshGenerationPossibility();
+		});
+
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ParameterizedExpression extends PropertyExpression {
 		return super.toString() + " " + getOperator();
 	}
 
-	public static ParameterizedExpression fromString(String string){
+	public static ParameterizedExpression from(String string){
 		String [] elements = string.split(" ");
 		return new ParameterizedExpression(elements[0], elements[1]);
 	}

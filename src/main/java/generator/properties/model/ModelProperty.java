@@ -48,7 +48,7 @@ public abstract class ModelProperty extends Property {
 	 * Getting the JavaFX HBox to input one expression for this property
 	 * @return the HBoxCriterion selected in choiceBoxCriterion
 	 */
-	public abstract HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion);
+	public abstract HBoxModelCriterion makeHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion);
 	
 	/***
 	 * Compute the maximal number of hexagons according to the property
@@ -67,7 +67,7 @@ public abstract class ModelProperty extends Property {
 		return (((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound() + 2) / 2;
 	}
 
-	static boolean isBoundingOperator(String operator) {
+	public static boolean isBoundingOperator(String operator) {
 		return Objects.equals(operator, "=") || Objects.equals(operator, "<=") || Objects.equals(operator, "<");
 	}
 

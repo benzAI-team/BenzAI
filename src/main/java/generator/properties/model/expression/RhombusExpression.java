@@ -10,9 +10,9 @@ public class RhombusExpression extends RectangleExpression {
         return getId() + " " + getHeightOperator() + " " + getHeight();
     }
 
-    public static RhombusExpression fromString(String string){
+    public static RhombusExpression from(String string){
         String [] elements = string.split(" ");
-        return new RhombusExpression(elements[0], elements[1], Integer.valueOf(elements[2]));
+        return new RhombusExpression(elements[0], elements[1], Integer.parseInt(elements[2]));
     }
 
 }

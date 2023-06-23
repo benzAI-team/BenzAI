@@ -72,7 +72,7 @@ public class ModelPropertySet extends PropertySet {
 		return nbCrowns;
 	}
 
-	private void clearPropertyExpressions() {
+	public void clearAllPropertyExpressions() {
 		for(Property property : getPropertyList())
 			property.clearExpressions();
 	}
@@ -85,7 +85,7 @@ public class ModelPropertySet extends PropertySet {
 	 *
 	 */
 	public void buildModelPropertySet(ArrayList<HBoxCriterion> hBoxesCriterions) {
-		clearPropertyExpressions();
+		clearAllPropertyExpressions();
 		for (HBoxCriterion box : hBoxesCriterions) {
 			if (!box.isValid())
 				return;
@@ -97,7 +97,7 @@ public class ModelPropertySet extends PropertySet {
 	@Override
 	public String toString() {
 		String string = "";
-		for(Property property : this){
+		for(Property property : getPropertyList()){
 			string = string + ((ModelProperty)property).toString();
 		}
 		return string;
@@ -122,7 +122,7 @@ public class ModelPropertySet extends PropertySet {
 	public void load() throws IOException {
 		File file = new File("constraints");
 		if (file.exists()) {
-			clearPropertyExpressions();
+			clearAllPropertyExpressions();
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line = reader.readLine();
 			while (line != null) {

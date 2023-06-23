@@ -17,7 +17,7 @@ public class CoronenoidProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion makeHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxCoronenoidCriterion(parent, choiceBoxCriterion);
 	}
 

@@ -7,12 +7,12 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class TimeLimitProperty extends SolverProperty {
 
-	public TimeLimitProperty() {
+	TimeLimitProperty() {
 		super("timeout", "Time limit", new TimeLimitSpecifier());
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxCriterion makeHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxTimeoutCriterion(parent, choiceBoxCriterion);
 	}
 

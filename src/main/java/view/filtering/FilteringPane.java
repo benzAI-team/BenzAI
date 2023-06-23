@@ -1,8 +1,7 @@
 package view.filtering;
 
-import java.util.ArrayList;
-
 import application.BenzenoidApplication;
+import generator.properties.model.filters.Filter;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,7 +30,8 @@ import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
-import generator.properties.model.filters.Filter;
+
+import java.util.ArrayList;
 
 public class FilteringPane extends ScrollPaneWithPropertyList {
 
@@ -77,7 +77,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
 		Tooltip.install(addButton, new Tooltip("Add new criterion"));
 		getChoiceBoxCriterions().add(choiceBoxCriterion);
-		getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+		getHBoxCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
 		placeComponents();
 	}
@@ -98,7 +98,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 			if (invalidIndexes.size() == 0)
 				filter();
 			else
-				Utils.alert("Please, select at least one criterion");
+				Utils.alert("Please, assign at least one criterion");
 		});
 	}
 
@@ -135,7 +135,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, getModelPropertySet());
 				getChoiceBoxCriterions().add(choiceBoxCriterion);
-				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+				getHBoxCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 
 				nbCriterions++;
 
@@ -161,22 +161,22 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	}
 
 	public void setHBox(int index, HBoxCriterion hBox) {
-		getHBoxesCriterions().set(index, hBox);
+		getHBoxCriterions().set(index, hBox);
 		placeComponents();
 	}
 
 	@Override
 	public void placeComponents() {
 
-		int nbCriterions = getHBoxesCriterions().size();
+		int nbCriterions = getHBoxCriterions().size();
 		gridPane.getChildren().clear();
 
 		gridPane.add(titleLabel, 0, 0, 2, 1);
 
 		for (int i = 0; i < nbCriterions; i++) {
-			GridPane.setValignment(getHBoxesCriterions().get(i), VPos.TOP);
+			GridPane.setValignment(getHBoxCriterions().get(i), VPos.TOP);
 			gridPane.add(getChoiceBoxCriterions().get(i), 0, i + 1);
-			gridPane.add(getHBoxesCriterions().get(i), 1, i + 1);
+			gridPane.add(getHBoxCriterions().get(i), 1, i + 1);
 		}
 
 		collectionChoiceBox = new ChoiceBox<>();
@@ -210,13 +210,13 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 				managerPane.getNbCollectionPanes(), managerPane.getNextCollectionPaneLabel(collectionPane.getName() + "(filter)"));
 
 		managerPane.log("Filtering collection: " + collectionPane.getName(), true);
-		for (HBoxCriterion criterion : this.getHBoxesCriterions()) 
+		for (HBoxCriterion criterion : this.getHBoxCriterions())
 			managerPane.log(criterion.toString(), false);
 
 
 		int size = collectionPane.getMolecules().size();
 		
-		getModelPropertySet().buildModelPropertySet(getHBoxesCriterions());
+		getModelPropertySet().buildModelPropertySet(getHBoxCriterions());
 
 		///////////////////////////////
 //		for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
@@ -305,7 +305,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 					managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
 
 					collectionsPane.log("Filtering collection " + collectionPane.getName(), true);
-					for (HBoxCriterion criterion : getHBoxesCriterions()) {
+					for (HBoxCriterion criterion : getHBoxCriterions()) {
 						application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
 					}
 					collectionsPane.log("-> " + newCollectionPane.getName(), false);
@@ -331,8 +331,8 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 		ArrayList<Integer> indexes = new ArrayList<>();
 
-		for (int i = 0; i < getHBoxesCriterions().size(); i++) {
-			if (!getHBoxesCriterions().get(i).isValid())
+		for (int i = 0; i < getHBoxCriterions().size(); i++) {
+			if (!getHBoxCriterions().get(i).isValid())
 				indexes.add(i);
 		}
 		return indexes;
@@ -341,9 +341,9 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	public void removeCriterion(ChoiceBoxCriterion choiceBoxCriterion, HBoxCriterion hBoxCriterion) {
 
 		getChoiceBoxCriterions().remove(choiceBoxCriterion);
-		getHBoxesCriterions().remove(hBoxCriterion);
+		getHBoxCriterions().remove(hBoxCriterion);
 
-		int nbCriterions = getHBoxesCriterions().size();
+		int nbCriterions = getHBoxCriterions().size();
 
 		for (int i = 0; i < nbCriterions; i++)
 			getChoiceBoxCriterions().get(i).setIndex(i);

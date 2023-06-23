@@ -7,12 +7,12 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class SolutionNumberProperty extends SolverProperty {
 
-	public SolutionNumberProperty() {
+	SolutionNumberProperty() {
 		super("solution_number", "Number of solutions", new SolutionNumberSpecifier());
 	}
 
 	@Override
-	public HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxCriterion makeHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxNbSolutionsCriterion(parent, choiceBoxCriterion);
 	}
 

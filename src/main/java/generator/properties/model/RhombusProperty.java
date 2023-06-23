@@ -14,7 +14,7 @@ public class RhombusProperty extends RectangleProperty {
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion makeHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxRhombusCriterion(parent, choiceBoxCriterion);
 	}
 }

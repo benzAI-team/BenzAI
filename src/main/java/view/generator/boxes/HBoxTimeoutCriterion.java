@@ -1,5 +1,6 @@
 package view.generator.boxes;
 
+import generator.properties.model.expression.PropertyExpression;
 import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -18,7 +19,7 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 	}
 
 	@Override
-	protected void updateValidity() {
+	public void updateValidity() {
 
 		if (!Utils.isNumber(timeField.getText()) && timeUnitBox.getValue() != null) {
 			setValid(false);
@@ -42,12 +43,19 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 		timeUnitBox.getItems().addAll("milliseconds", "seconds", "minutes", "hours");
 		timeUnitBox.getSelectionModel().select(2);
 
-		timeField.setOnKeyReleased(e -> this.updateValidity());
-
-		timeUnitBox.setOnAction(e -> this.updateValidity());
 
 		this.getChildren().addAll(timeField, timeUnitBox, getWarningIcon(), getDeleteButton());
 		this.updateValidity();
+	}
+
+	@Override
+	public void assign(PropertyExpression expression) { // TODO useless
+	}
+
+	@Override
+	public void initEventHandling() {
+		timeField.setOnKeyReleased(e -> this.updateValidity());
+		timeUnitBox.setOnAction(e -> this.updateValidity());
 	}
 
 

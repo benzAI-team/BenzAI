@@ -5,6 +5,7 @@ import application.Settings;
 import generator.GeneralModel;
 import generator.ModelBuilder;
 import generator.properties.Property;
+import generator.properties.model.expression.PropertyExpression;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -27,6 +28,7 @@ import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.generator.boxes.*;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GeneratorPane extends ScrollPaneWithPropertyList {
@@ -45,7 +47,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private GridPane gridPane;
 
 	private ArrayList<HBoxCriterion> hBoxesSolverCriterions;
-	
+
 
 	private HBox buttonsBox;
 	private Button addButton;
@@ -57,43 +59,122 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private final Label solutionTextLabel = new Label("Number of solutions already found:");
 	private final Label solutionNumberLabel = new Label("0");
 
+	private HBox criterionListBox;
+
 
 	public GeneratorPane(BenzenoidApplication application) {
 		this.application = application;
 		isRunning = false;
-		setNbCriterions(1);
 		initialize();
 	}
 
 	/***
-	 * 
+	 *
 	 */
 	private void initialize() {
-
 		titleLabel = new Label("Benzenoids properties");
 		titleLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
 		setPaneDimensions();
 
 		buildIcons();
-		buildButtons();
+		buildGenerationButtons();
+		buildIOButtons();
 
-		setChoiceBoxCriterions(new ArrayList<>());
-		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
-
-		setHBoxesCriterions(new ArrayList<>());
-		getChoiceBoxCriterions().add(choiceBoxCriterion);
-		getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
-
-		hBoxesSolverCriterions = new ArrayList<>();
-		for(Property property : GeneralModel.getSolverPropertySet())
-			hBoxesSolverCriterions.add(property.getHBoxCriterion(this, null));
 		gridPane = buildGridPane();
 		this.setContent(gridPane);
 
+		initializeCriterionListButtons();
+		hBoxesSolverCriterions = initializeSolverCriterionBoxes();
+
+		loadPropertyExpressionListAutosave();
+		initializeModelCriterionBoxes();
 		checkSettings();
+
 		placeComponents();
+		//getModelPropertySet().clearAllPropertyExpressions();
 	}
-/***
+
+	private void loadPropertyExpressionListAutosave() {
+		try {
+			getModelPropertySet().load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
+	private void initializeCriterionListButtons() {
+		Button resetButton = buildResetButton();
+		Button loadButton = buildLoadButton();
+		Button saveButton = buildSaveButton();
+		criterionListBox = new HBox();
+		criterionListBox.getChildren().addAll(resetButton, loadButton, saveButton);
+	}
+
+	private Button buildResetButton() {
+		Button resetButton =  new Button("Reset");
+		resetButton.setOnAction(e -> {
+			getModelPropertySet().clearAllPropertyExpressions();
+			initializeModelCriterionBoxes();
+			placeComponents();
+		});
+		return resetButton;
+	}
+	private Button buildLoadButton() {
+		Button loadButton =  new Button("Load");
+		loadButton.setOnAction(e -> {
+			loadPropertyExpressionListAutosave();
+			initializeModelCriterionBoxes();
+			placeComponents();
+			getModelPropertySet().clearAllPropertyExpressions();
+		});
+		return loadButton;
+	}
+	private Button buildSaveButton() {
+		Button saveButton =  new Button("Save");
+		saveButton.setOnAction(e -> {
+			getModelPropertySet().buildModelPropertySet(getHBoxCriterions());
+			getModelPropertySet().save();
+			getModelPropertySet().clearAllPropertyExpressions();
+		});
+		return saveButton;
+	}
+
+	private ArrayList<HBoxCriterion> initializeSolverCriterionBoxes() {
+		ArrayList<HBoxCriterion> hBoxSolverCriterions = new ArrayList<>();
+		for(Property property : GeneralModel.getSolverPropertySet())
+			hBoxSolverCriterions.add(property.makeHBoxCriterion(this, null));
+		return hBoxSolverCriterions;
+	}
+
+	private void initializeModelCriterionBoxes() {
+		setChoiceBoxCriterions(new ArrayList<>());
+		setHBoxesCriterions(new ArrayList<>());
+		setNbBoxCriterions(0);
+
+		for(Property modelProperty : getModelPropertySet())
+			if(modelProperty.hasExpressions())
+				for(PropertyExpression expression : modelProperty.getExpressions())
+					addModelPropertyBoxPair(modelProperty, expression);
+		getModelPropertySet().clearAllPropertyExpressions();
+	}
+
+	private void addModelPropertyBoxPair(Property modelProperty, PropertyExpression expression) {
+		ChoiceBoxCriterion choiceBoxCriterion = createAndAddChoiceBoxCriterion();
+		getHBoxCriterions().add(choiceBoxCriterion.getHBoxCriterion());
+		choiceBoxCriterion.getSelectionModel().select(modelProperty.getName());
+		//System.out.println(">>>" + expression);
+		choiceBoxCriterion.getHBoxCriterion().assign(expression);
+		setNbBoxCriterions(getNbBoxCriterions() + 1);
+	}
+
+	private ChoiceBoxCriterion createAndAddChoiceBoxCriterion() {
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(getNbBoxCriterions(), this, getModelPropertySet());
+		getChoiceBoxCriterions().add(choiceBoxCriterion);
+		return choiceBoxCriterion;
+	}
+
+	/***
  * 
  */
 	private void setPaneDimensions() {
@@ -102,10 +183,11 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		this.setPrefWidth(1400);
 		this.setPrefWidth(this.getPrefWidth());
 	}
+
 	/***
-	 * 
+	 *
 	 */
-	private void buildButtons() {
+	private void buildGenerationButtons() {
 		addButton = buildAddButton();
 		closeButton = buildCloseButton();
 		stopButton = buildStopButton();
@@ -135,7 +217,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	/***
-	 * 
+	 *
 	 * @return addButton for adding a criterion
 	 */
 	private Button buildAddButton() {
@@ -146,27 +228,25 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		addButton.resize(30, 30);
 		addButton.setStyle("-fx-background-color: transparent;");
 		addButton.setOnAction(e -> {
-			ArrayList<Integer> invalidIndexes = containsInvalidCriterion();
-			if (invalidIndexes.isEmpty()) {
-				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(getNbCriterions(), this, getModelPropertySet());
-				getChoiceBoxCriterions().add(choiceBoxCriterion);
-				getHBoxesCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
-				setNbCriterions(getNbCriterions() + 1);
-
-
-				System.out.println(getNbCriterions() + " criterions");
-
-				placeComponents();
-
-			} else {
+			if (containsInvalidCriterion()) {
 				Utils.alert("Invalid criterion(s)");
+			} else {
+				addEmptyCriterionBox();
+				//System.out.println(getNbBoxCriterions() + " criterions");
+				placeComponents();
 			}
 		});
 		return addButton;
 	}
 
+	private void addEmptyCriterionBox() {
+		ChoiceBoxCriterion choiceBoxCriterion = createAndAddChoiceBoxCriterion();
+		getHBoxCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+		setNbBoxCriterions(getNbBoxCriterions() + 1);
+	}
+
 	/***
-	 * 
+	 *
 	 * @return closeButton to return to collection pane
 	 */
 	private Button buildCloseButton() {
@@ -182,7 +262,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	/***
-	 * 
+	 *
 	 * @return stopButton to stop generation
 	 */
 	private Button buildStopButton() {
@@ -196,10 +276,8 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		stopButton.setOnAction(e -> {
 			if (model.isPaused())
 				resumeGeneration();
-
 			model.getProblem().getSolver().limitSearch(() -> model.getGeneratorRun().isStopped());
 			model.stop();
-
 			buttonsBox.getChildren().clear();
 			buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
 		});
@@ -207,7 +285,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	/***
-	 * 
+	 *
 	 * @return pauseButton to pause generation
 	 */
 	private Button buildPauseButton() {
@@ -219,14 +297,13 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		Tooltip.install(pauseButton, new Tooltip("Pause"));
 		pauseButton.setOnAction(e -> {
 			model.pause();
-			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
+			resetButtonBox(closeButton, resumeButton, stopButton);
 		});
 		return pauseButton;
 	}
 
 	/***
-	 * 
+	 *
 	 * @return resumeButton to resume generation
 	 */
 	private Button buildResumeButton() {
@@ -241,7 +318,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	/***
-	 * 
+	 *
 	 * @return generateButton to start generation
 	 */
 	private Button buildGenerateButton() {
@@ -262,7 +339,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	/***
-	 * 
+	 *
 	 * @return gridPane
 	 */
 	private GridPane buildGridPane() {
@@ -274,32 +351,38 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		return gridPane;
 	}
 
-	private ArrayList<Integer> containsInvalidCriterion() {
-		ArrayList<Integer> indexes = new ArrayList<>();
-		for (int i = 0; i < getHBoxesCriterions().size(); i++)
-			if (!getHBoxesCriterions().get(i).isValid())
-				indexes.add(i);
-		return indexes;
+	private boolean containsInvalidCriterion() {
+		return getHBoxCriterions().stream().anyMatch(box -> !box.isValid());
+//		for (int i = 0; i < getHBoxCriterions().size(); i++)
+//			if (!getHBoxCriterions().get(i).isValid())
+//				return true;
+//		return false;
 	}
 
 	/***
-	 * 
+	 *
 	 */
 	public void placeComponents() {
 		gridPane.getChildren().clear();
 		gridPane.add(titleLabel, 0, 0, 2, 1);
+		gridPane.add(criterionListBox,1,0, 3, 1);
+		//System.out.println("Place");
 		placeModelPropertyComponents();
+		for(HBoxCriterion box : getHBoxCriterions())
+			System.out.println(box.getExpression());
 		placeSolverPropertyComponents();
+		initEventHandlers();
+		refreshGenerationPossibility();
 	}
 
 	private void placeModelPropertyComponents() {
 		placeCriterionBoxes();
-		placeButtonBox();
-		gridPane.add(buttonsBox, 0, getNbCriterions() + 1);
+		gridPane.add(buttonsBox, 0, getNbBoxCriterions() + 1);
 	}
 
 	private void placeCriterionBoxes() {
-		for (int modelPropertyIndex = 0; modelPropertyIndex < getNbCriterions(); modelPropertyIndex++) {
+		//System.out.println(getNbBoxCriterions());
+		for (int modelPropertyIndex = 0; modelPropertyIndex < getNbBoxCriterions(); modelPropertyIndex++) {
 			placeCriterionBox(modelPropertyIndex);
 		}
 	}
@@ -307,25 +390,33 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private void placeCriterionBox(int modelPropertyIndex) {
 		GridPane.setValignment(getChoiceBoxCriterions().get(modelPropertyIndex), VPos.TOP);
 		gridPane.add(getChoiceBoxCriterions().get(modelPropertyIndex), 0, modelPropertyIndex + 1);
-		gridPane.add(getHBoxesCriterions().get(modelPropertyIndex), 1, modelPropertyIndex + 1);
+		gridPane.add(getHBoxCriterions().get(modelPropertyIndex), 1, modelPropertyIndex + 1);
+		getHBoxCriterions().get(modelPropertyIndex).updateValidity();
 	}
 
-	private void placeButtonBox() {
+	private void buildIOButtons() {
 		buttonsBox = new HBox(5.0);
 		buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-		if(!getHBoxesCriterions().stream().anyMatch(box -> (box instanceof HBoxHexagonNumberCriterion || box instanceof HBoxNbCarbonsCriterion
-				|| box instanceof HBoxNbHydrogensCriterion) && box.isValid()))
-			buttonsBox.getChildren().add(warningIcon);
+//		if(getHBoxCriterions().stream().noneMatch(box -> (box instanceof HBoxHexagonNumberCriterion || box instanceof HBoxNbCarbonsCriterion
+//				|| box instanceof HBoxNbHydrogensCriterion) && box.isValid()))
+//			buttonsBox.getChildren().add(warningIcon);
 	}
 
 	private void placeSolverPropertyComponents() {
-		gridPane.add(new Label("Solver properties:"), 0, getNbCriterions() + 2);
+		int nbCriterions = getNbBoxCriterions();
+		gridPane.add(new Label("Solver properties:"), 0, nbCriterions + 2);
 		for(int i = 0; i < hBoxesSolverCriterions.size(); i++) {
-			gridPane.add(new Label(GeneralModel.getSolverPropertySet().getNames()[i]), 0, i + getNbCriterions() + 3);
-			gridPane.add(this.hBoxesSolverCriterions.get(i), 1, i + getNbCriterions() + 3);
+			gridPane.add(new Label(GeneralModel.getSolverPropertySet().getNames()[i]), 0, i + nbCriterions + 3);
+			gridPane.add(this.hBoxesSolverCriterions.get(i), 1, i + nbCriterions + 3);
 		}
 	}
 
+	private void initEventHandlers() {
+		for(HBoxCriterion box : getHBoxCriterions()){
+			//System.out.println(box);
+			box.initEventHandling();
+		}
+	}
 
 	@Override
 	protected boolean buildPropertyExpressions() {
@@ -335,20 +426,20 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		}
 		return super.buildPropertyExpressions();
 	}
-	
+
 	/***
-	 * 
+	 *
 	 */
 	private void generateBenzenoids() {
 		if (canStartGeneration) {
-			getModelPropertySet().buildModelPropertySet(getHBoxesCriterions());
+			getModelPropertySet().buildModelPropertySet(getHBoxCriterions());
 			GeneralModel.buildSolverPropertySet(hBoxesSolverCriterions);
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
 			for(Property modelProperty : getModelPropertySet())
 				if(getModelPropertySet().has(modelProperty.getId()))
 					application.getBenzenoidCollectionsPane().log(modelProperty.getId(), false);
-				
+
 			selectedCollectionTab = application.getBenzenoidCollectionsPane().getSelectedPane();
 
 			buttonsBox.getChildren().clear();
@@ -383,39 +474,34 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 			calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
 				switch (newValue) {
-				case FAILED:
-					isRunning = false;
-					Utils.alert("Generation failed.");
-					break;
-				case CANCELLED:
-					isRunning = false;
-					Utils.alert("Generation canceled");
-					break;
-				case SUCCEEDED:
-					isRunning = false;
-					if (model.isPaused()) {
-						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
-					} else {
-						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-						buildBenzenoidPanesThread();
-						application.removeTask("Benzenoid generation");
-					}
-					break;
-				default:
-					break;
+					case FAILED:
+						isRunning = false;
+						Utils.alert("Generation failed.");
+						break;
+					case CANCELLED:
+						isRunning = false;
+						Utils.alert("Generation canceled");
+						break;
+					case SUCCEEDED:
+						isRunning = false;
+						if (model.isPaused()) {
+							resetButtonBox(closeButton, resumeButton, stopButton);
+						} else {
+							resetButtonBox(closeButton, addButton, generateButton);
+							buildBenzenoidPanesThread();
+							application.removeTask("Benzenoid generation");
+						}
+						break;
+					default:
+						break;
 				}
 			});
 			calculateService.start();
-		}
-		else {
+		} else {
 			Utils.alert(
 					"A criterion limiting the number of solutions (e.g. limiting hexagons/carbons/hydrogens/number of lines and columns) is required");
 		}
 	}
-
-
 
 	private void resumeGeneration() {
 
@@ -439,57 +525,51 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 		calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
 			switch (newValue) {
-			case FAILED:
-				isRunning = false;
-				Utils.alert("Generation failed.");
-				break;
-			case CANCELLED:
-				isRunning = false;
-				Utils.alert("Generation canceled");
-				break;
-			case SUCCEEDED:
-				if (model.isPaused()) {
-					buttonsBox.getChildren().clear();
-					buttonsBox.getChildren().addAll(closeButton, resumeButton, stopButton);
-				}
-				else {
-					if (!model.isPaused()) {
-						buttonsBox.getChildren().clear();
-						buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-						buildBenzenoidPanes();
+				case FAILED:
+					isRunning = false;
+					Utils.alert("Generation failed.");
+					break;
+				case CANCELLED:
+					isRunning = false;
+					Utils.alert("Generation canceled");
+					break;
+				case SUCCEEDED:
+					if (model.isPaused()) {
+						resetButtonBox(closeButton, resumeButton, stopButton);
+					} else {
+						if (!model.isPaused()) {
+							resetButtonBox(closeButton, addButton, generateButton);
+							buildBenzenoidPanes();
+						}
 					}
-				}
-				break;
-			default:
-				break;
+					break;
+				default:
+					break;
 			}
 		});
 		calculateService.start();
 	}
 
 	/***
-	 * 
+	 *
 	 */
 	private void buildBenzenoidPanesThread() {
 
 		int size = model.getResultSolver().size();
 
 		if (size > 0) {
-
 			Platform.runLater(() -> {
 				buildBenzenoidPanes();
 				application.switchMode(application.getPanes().getCollectionsPane());
 			});
 
-		}
-
-		else {
+		} else {
 			Utils.alert("Generation: No solution found");
 		}
 	}
 
 	/***
-	 * 
+	 *
 	 */
 	private void buildBenzenoidPanes() {
 		if (model.isPaused()) {
@@ -513,9 +593,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 			}
 
 			selectedCollectionTab.refresh();
-
-			buttonsBox.getChildren().clear();
-			buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
+			resetButtonBox(closeButton, addButton, generateButton);
 			application.switchMode(application.getPanes().getCollectionsPane());
 		}
 	}
@@ -527,7 +605,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		//System.out.println("Currently not checking the setting");
 		checkGenerationTime();
 		checkNbMaxSolutions();
-		placeComponents();
 	}
 
 	/***
@@ -562,16 +639,19 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	public void refreshGenerationPossibility() {
-		boolean ok = buildPropertyExpressions();
-		if (ok) {
-			canStartGeneration = getModelPropertySet().hasUpperBound();
-			buttonsBox.getChildren().remove(warningIcon);
-			if (!canStartGeneration)
-				buttonsBox.getChildren().add(warningIcon);
-		}
+		canStartGeneration = getHBoxCriterions().stream().allMatch(box -> box.isValid())
+								&& getHBoxCriterions().stream().anyMatch(box -> box.isBounding());
+		buttonsBox.getChildren().remove(warningIcon);
+		if (!canStartGeneration)
+			buttonsBox.getChildren().add(warningIcon);
 	}
-	
+
 	public BenzenoidApplication getApplication() {
 		return application;
+	}
+
+	private void resetButtonBox(Button... buttons){
+		buttonsBox.getChildren().clear();
+		buttonsBox.getChildren().addAll(buttons);
 	}
 }

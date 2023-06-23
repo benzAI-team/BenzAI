@@ -19,7 +19,7 @@ public class PatternExpression extends SubjectExpression {
 		return super.toString() + " " + patternsInformations;
 	}
 
-	public static PatternExpression fromString(String string){
+	public static PatternExpression from(String string){
 		String [] elements = string.split(" ");
 		return new PatternExpression(elements[0], PatternResolutionInformations.fromString(elements[1]));
 	}

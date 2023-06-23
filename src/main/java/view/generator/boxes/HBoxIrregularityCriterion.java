@@ -1,5 +1,6 @@
 package view.generator.boxes;
 
+import generator.properties.model.expression.PropertyExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -23,12 +24,13 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void updateValidity() {
+	public void updateValidity() {
 
 		String irregularityValue = irregularityChoiceBox.getValue();
 		String operatorValue = operatorChoiceBox.getValue();
 		String fieldStr = fieldValue.getText();
 
+		setBounding(false);
 		if ("Compute irregularity".equals(irregularityValue)) {
 
 			setValid(true);
@@ -36,12 +38,10 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 			this.getChildren().remove(fieldValue);
 			this.getChildren().remove(getWarningIcon());
 		}
-
 		else {
-
 			String [] split = fieldStr.split(",");
 			
-			System.out.println(split.length == 2 && Utils.isNumber(split[0]) && Utils.isNumber(split[1]));
+			System.out.println("#" + (split.length == 2 && Utils.isNumber(split[0]) && Utils.isNumber(split[1])));
 			
 			if ((split.length == 2 && Utils.isNumber(split[0]) && Utils.isNumber(split[1]))) {
 				setValid(true);
@@ -68,6 +68,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 				}
 			}
 		}
+		getPane().refreshGenerationPossibility();
 	}
 
 	private void addFieldValueIfMissing() {
@@ -82,29 +83,33 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 
 	@Override
 	protected void initialize() {
-
 		irregularityChoiceBox = new ChoiceBox<>();
 		irregularityChoiceBox.getItems().addAll("XI", "N0", "N1", "N2", "N3", "N4");
 		irregularityChoiceBox.getSelectionModel().selectFirst();
-
-		irregularityChoiceBox.setOnAction(e -> updateValidity());
 
 		operatorChoiceBox = new ChoiceBox<>();
 		operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=");
 		operatorChoiceBox.getSelectionModel().select(2);
 
-		operatorChoiceBox.setOnAction(e -> updateValidity());
-
 		fieldValue = new TextField();
-
-		fieldValue.setOnKeyReleased(e -> updateValidity());
-
-		//deleteButton = new DeleteButton(this);
-
 		setWarningIcon(new ImageView(new Image("/resources/graphics/icon-warning.png")));
 
 		this.getChildren().addAll(irregularityChoiceBox, operatorChoiceBox, fieldValue, getWarningIcon(), getDeleteButton());
 		updateValidity();
+	}
+
+	public void assign(PropertyExpression propertyExpression) {
+		IrregularityExpression expression = (IrregularityExpression) propertyExpression;
+		irregularityChoiceBox.getSelectionModel().select(expression.getParameter());
+		operatorChoiceBox.getSelectionModel().select(expression.getOperator());
+		fieldValue.setText("" + (expression.getParameter().equals("XI") ? ((double)expression.getValue()) / 100.0 : expression.getValue()));
+	}
+
+	@Override
+	public void initEventHandling() {
+		irregularityChoiceBox.setOnAction(e -> updateValidity());
+		operatorChoiceBox.setOnAction(e -> updateValidity());
+		fieldValue.setOnKeyReleased(e -> updateValidity());
 	}
 
 	@Override

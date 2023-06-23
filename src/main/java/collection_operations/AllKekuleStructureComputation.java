@@ -30,11 +30,11 @@ public class AllKekuleStructureComputation extends CollectionComputation{
                 collectionManagerPane.getNextCollectionPaneLabel("Kekulé structures"));
 
         if (selectedBenzenoidPanes.isEmpty()) {
-            Utils.alert("Please select a benzenoid");
+            Utils.alert("Please assign a benzenoid");
             return;
         } else {
             if (selectedBenzenoidPanes.size() > 1) {
-                Utils.alert("Please select only one benzenoid");
+                Utils.alert("Please assign only one benzenoid");
                 return;
             } else {
                 Benzenoid molecule = selectedBenzenoidPanes.get(0).getMolecule();

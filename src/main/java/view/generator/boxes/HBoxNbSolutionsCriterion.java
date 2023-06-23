@@ -1,5 +1,6 @@
 package view.generator.boxes;
 
+import generator.properties.model.expression.PropertyExpression;
 import generator.properties.solver.SolverPropertySet;
 import javafx.scene.control.TextField;
 import generator.properties.model.expression.BinaryNumericalExpression;
@@ -16,7 +17,7 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 	}
 
 	@Override
-	protected void updateValidity() {
+	public void updateValidity() {
 
 		if (Utils.isNumber(nbSolutionsField.getText())) {
 			setValid(true);
@@ -31,13 +32,19 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 
 	@Override
 	protected void initialize() {
-
 		setValid(false);
-
 		nbSolutionsField = new TextField();
-		nbSolutionsField.setOnKeyReleased(e -> updateValidity());
-
 		this.getChildren().addAll(nbSolutionsField, getWarningIcon(), getDeleteButton());
+	}
+
+	@Override
+	public void assign(PropertyExpression expression) {
+		//TODO useless
+	}
+
+	@Override
+	public void initEventHandling() {
+		nbSolutionsField.setOnKeyReleased(e -> updateValidity());
 	}
 
 	@Override

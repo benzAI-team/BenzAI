@@ -54,7 +54,7 @@ public class BinaryNumericalExpression extends ParameterizedExpression {
 		return super.toString() + " " + getValue();
 	}
 
-	public static BinaryNumericalExpression fromString(String string){
+	public static BinaryNumericalExpression from(String string){
 		String [] elements = string.split(" ");
 		return new BinaryNumericalExpression(elements[0], elements[1], Integer.valueOf(elements[2]));
 	}

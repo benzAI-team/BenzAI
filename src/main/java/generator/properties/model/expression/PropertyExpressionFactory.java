@@ -15,20 +15,20 @@ public enum PropertyExpressionFactory {
             case "coronoid":
             case "diameter":
             case "kekule":
-                return BinaryNumericalExpression.fromString(string);
+                return BinaryNumericalExpression.from(string);
             case "irregularity":
-                return IrregularityExpression.fromString(string);
+                return IrregularityExpression.from(string);
             case "pattern":
-                return PatternExpression.fromString(string);
+                return PatternExpression.from(string);
             case "rectangle":
-                return RectangleExpression.fromString(string);
+                return RectangleExpression.from(string);
             case "rhombus":
-                return RhombusExpression.fromString(string);
+                return RhombusExpression.from(string);
             case "catacondensed":
             case "concealed":
-                return SubjectExpression.fromString(string);
+                return SubjectExpression.from(string);
             case "symmetry":
-                return ParameterizedExpression.fromString(string);
+                return ParameterizedExpression.from(string);
             default:
                 return null;
         }

@@ -2,6 +2,7 @@ package view.generator.boxes;
 
 import application.BenzenoidApplication;
 import generator.patterns.PatternResolutionInformations;
+import generator.properties.model.expression.PropertyExpression;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,10 +37,10 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void updateValidity() {
+	public void updateValidity() {
 
 		setValid(true);
-
+		setBounding(false);
 		removeWarningIconAndDeleteButton();
 		this.getChildren().remove(editButton);
 
@@ -61,6 +62,16 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		patternInformationField.setText("NO_PROPERTY");
 
 		this.getChildren().addAll(patternInformationField, getWarningIcon(), editButton, getDeleteButton());
+	}
+
+	@Override
+	public void assign(PropertyExpression propertyExpression) {
+		//TODO completer
+	}
+
+	@Override
+	public void initEventHandling() {
+
 	}
 
 

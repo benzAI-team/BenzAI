@@ -123,7 +123,7 @@ public class GeneralModel {
      * Properties
      */
 
-    private ModelPropertySet modelPropertySet;
+    private final ModelPropertySet modelPropertySet;
     private static final SolverPropertySet solverPropertySet = new SolverPropertySet();
 
 
@@ -1412,10 +1412,6 @@ public class GeneralModel {
 
     public ModelPropertySet getModelPropertySet() {
         return this.modelPropertySet;
-    }
-
-    public void setModelPropertySet(ModelPropertySet modelPropertySet) {
-        this.modelPropertySet = modelPropertySet;
     }
 
     public static SolverPropertySet getSolverPropertySet() {

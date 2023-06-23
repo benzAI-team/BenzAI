@@ -10,7 +10,7 @@ public abstract class HBoxModelCriterion extends HBoxCriterion {
 	public HBoxModelCriterion(ScrollPaneWithPropertyList pane, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(pane, choiceBoxCriterion);
 	}
-	
+
 	public abstract void addPropertyExpression(ModelPropertySet propertySet);
 
 }

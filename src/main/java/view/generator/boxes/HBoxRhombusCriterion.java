@@ -1,6 +1,7 @@
 package view.generator.boxes;
 
 import generator.properties.model.ModelPropertySet;
+import generator.properties.model.expression.PropertyExpression;
 import generator.properties.model.expression.RhombusExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -19,18 +20,21 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	protected void updateValidity() {
+	public void updateValidity() {
 
 		String dimensionChoice = dimensionChoiceBox.getValue();
 
 		this.getChildren().remove(dimensionTextField);
 		removeWarningIconAndDeleteButton();
-		if (dimensionChoice != null && dimensionChoice.contentEquals("Unspecified"))
+		if (dimensionChoice != null && dimensionChoice.contentEquals("Unspecified")) {
 			setValid(true);
+			setBounding(false);
+		}
 		else {
 
 			if (dimensionChoice == null || !Utils.isNumber(dimensionTextField.getText())) {
 				setValid(false);
+				setBounding(false);
 				this.getChildren().add(dimensionTextField);
 			}
 
@@ -43,31 +47,41 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 		if (!isValid())
 			this.getChildren().add(getWarningIcon());
 		addDeleteButton();
+
+		getPane().refreshGenerationPossibility();
 	}
 
 	@Override
 	protected void initialize() {
-
 		Label dimensionLabel = new Label("Dimension: ");
 
 		dimensionChoiceBox = new ChoiceBox<>();
 		dimensionChoiceBox.getItems().addAll("Unspecified", "<=", "<", "=", ">", ">=");
 		dimensionChoiceBox.getSelectionModel().selectFirst();
 
+		dimensionTextField = new TextField();
+
+		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, getWarningIcon(), getDeleteButton());
+		updateValidity();
+	}
+
+	@Override
+	public void assign(PropertyExpression propertyExpression) {
+		RhombusExpression expression = (RhombusExpression) propertyExpression;
+		dimensionChoiceBox.getSelectionModel().select(expression.getHeightOperator());
+		dimensionTextField.setText("" + expression.getHeight());
+	}
+
+	@Override
+	public void initEventHandling() {
 		dimensionChoiceBox.setOnAction(e -> {
 			updateValidity();
 			getPane().refreshGenerationPossibility();
 		});
-
-		dimensionTextField = new TextField();
-
 		dimensionTextField.setOnKeyReleased(e -> {
 			updateValidity();
 			getPane().refreshGenerationPossibility();
 		});
-
-		this.getChildren().addAll(dimensionLabel, dimensionChoiceBox, dimensionTextField, getWarningIcon(), getDeleteButton());
-		updateValidity();
 	}
 
 	@Override

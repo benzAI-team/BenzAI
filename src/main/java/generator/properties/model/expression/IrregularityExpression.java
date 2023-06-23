@@ -22,7 +22,7 @@ public class IrregularityExpression extends BinaryNumericalExpression {
 		return getId() + " " + getParameter() + " " + getOperator() + " " + getValue();
 	}
 
-	public static IrregularityExpression fromString(String string) {
+	public static IrregularityExpression from(String string) {
 		String [] elements = string.split(" ");
 		return new IrregularityExpression(elements[0], elements[1], elements[2], Integer.valueOf(elements[3]));
 	}

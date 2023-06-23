@@ -3,7 +3,6 @@ package view.generator.boxes;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import generator.properties.model.expression.ParameterizedExpression;
-import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
@@ -18,29 +17,20 @@ public class HBoxNbHydrogensCriterion extends HBoxBoundingCriterion {
 
 	@Override
 	public void updateValidity() {
-		
 		if ("even".equals(getOperatorChoiceBox().getValue()) || "odd".equals(getOperatorChoiceBox().getValue())) {
 			setValid(true);
+			setBounding(false);
 			this.getChildren().remove(getFieldValue());
 			removeWarningIconAndDeleteButton();
 			addDeleteButton();
+			getPane().refreshGenerationPossibility();
 		}
-		else if (! Utils.isNumber(getFieldValue().getText()) || getOperatorChoiceBox().getValue() == null) {
-			setValid(false);
-			removeWarningIconAndDeleteButton();
-			this.getChildren().remove(getFieldValue());
-			this.getChildren().addAll(getFieldValue(), getWarningIcon(), getDeleteButton());
-		}
-		else {
-			setValid(true);
-			removeWarningIconAndDeleteButton();
-			this.getChildren().remove(getFieldValue());
-			this.getChildren().addAll(getFieldValue(), getDeleteButton());
-		}
-		
-		getPane().refreshGenerationPossibility();
+		else
+			super.updateValidity();
 	}
-	
+
+	//TODO initialize
+
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid()) {

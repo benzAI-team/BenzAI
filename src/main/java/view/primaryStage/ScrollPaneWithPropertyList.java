@@ -10,16 +10,17 @@ import java.util.ArrayList;
 
 public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 
-	private int nbCriterions;
+	private int nbBoxCriterions;
 	private ArrayList<ChoiceBoxCriterion> choiceBoxCriterions;
 	private ArrayList<HBoxCriterion> hBoxCriterions;
 	private final ModelPropertySet modelPropertySet = new ModelPropertySet();
 
-	/***
-	 *
-	 */
+
+	public HBoxCriterion getHBox(int index){
+		return getHBoxCriterions().get(index);
+	}
 	public void setHBox(int index, HBoxCriterion box) {
-		getHBoxesCriterions().set(index, box);
+		getHBoxCriterions().set(index, box);
 		placeComponents();
 	}
 
@@ -30,9 +31,9 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	 */
 	public void removeCriterion(ChoiceBoxCriterion choiceBoxCriterion, HBoxCriterion hBoxCriterion) {
 		getChoiceBoxCriterions().remove(choiceBoxCriterion);
-		getHBoxesCriterions().remove(hBoxCriterion);
-		setNbCriterions(getNbCriterions() - 1);
-		for (int i = 0; i < getNbCriterions(); i++)
+		getHBoxCriterions().remove(hBoxCriterion);
+		setNbBoxCriterions(getNbBoxCriterions() - 1);
+		for (int i = 0; i < getNbBoxCriterions(); i++)
 			getChoiceBoxCriterions().get(i).setIndex(i);
 		placeComponents();
 	}
@@ -41,7 +42,7 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	 *
 	 */
 	protected boolean buildPropertyExpressions() {
-		for (HBoxCriterion box : getHBoxesCriterions()) {
+		for (HBoxCriterion box : getHBoxCriterions()) {
 			if (!box.isValid())
 				return false;
 			if(box instanceof HBoxModelCriterion)
@@ -53,18 +54,18 @@ public abstract class ScrollPaneWithPropertyList extends ScrollPane {
 	/***
 	 * getters, setters
 	 */
-	public ArrayList<HBoxCriterion> getHBoxesCriterions() {
+	public ArrayList<HBoxCriterion> getHBoxCriterions() {
 		return hBoxCriterions;
 	}
 
 	public abstract void refreshGenerationPossibility();
 
-	protected int getNbCriterions() {
-		return nbCriterions;
+	protected int getNbBoxCriterions() {
+		return nbBoxCriterions;
 	}
 
-	protected void setNbCriterions(int nbCriterions) {
-		this.nbCriterions = nbCriterions;
+	protected void setNbBoxCriterions(int nbBoxCriterions) {
+		this.nbBoxCriterions = nbBoxCriterions;
 	}
 
 	protected ArrayList<ChoiceBoxCriterion> getChoiceBoxCriterions() {

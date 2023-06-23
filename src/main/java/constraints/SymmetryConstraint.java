@@ -15,52 +15,52 @@ public class SymmetryConstraint extends BenzAIConstraint {
 	@Override
 	public void postConstraints() {
 		switch (((ParameterizedExpression)this.getExpressionList().get(0)).getOperator()) {
-		case "C_2v(a) \"face-mirror\"":
+		case "C_2v(a)=\"face-mirror\"":
 			postHasHexagonAxisSymmetry();
 			break;
-		case "C_6h \"(face)-60-rotation\"" : 
+		case "C_6h=\"(face)-60-rotation\"" :
 			postHasRot60Symmetry();
 			break;
-		case "C_3h(i) \"face-120-rotation\"":			
+		case "C_3h(i)=\"face-120-rotation\"":
 			postHasRot120Symmetry();
 			break;
-		case "C_2h(i) \"face-180-rotation\"": 
+		case "C_2h(i)=\"face-180-rotation\"":
 			postHasRot180Symmetry();
 			break;
-		case "C_2v(b) \"edge-mirror\"" : 
+		case "C_2v(b)=\"edge-mirror\"" :
 			postHasEdgeAxisSymmetry();
 			break;
-		case "C_3h(ii) \"vertex-120-rotation\"" : 
+		case "C_3h(ii)=\"vertex-120-rotation\"" :
 			postHasRot120VertexSymmetry();
 			break;
-		case "C_2h(ii) \"edge-180-rotation\"" : 
+		case "C_2h(ii)=\"edge-180-rotation\"" :
 			postHasRot180EdgeSymmetry();
 			break;
-		case "D_6h \"(face)-60-rotation+(edge)-mirror\"" : 
+		case "D_6h=\"(face)-60-rotation+(edge)-mirror\"" :
 			postHasEdgeAxisSymmetry();
 			postHasRot60Symmetry();
 			break;
-		case "D_3h(ii) \"vertex-120-rotation+(edge)-mirror\"" :
+		case "D_3h(ii)=\"vertex-120-rotation+(edge)-mirror\"" :
 			postHasRot120VertexSymmetry();
 			postHasEdgeAxisSymmetry();
 			break;
-		case "D_3h(ia) \"face-120-rotation+face-mirror\"" :
+		case "D_3h(ia)=\"face-120-rotation+face-mirror\"" :
 			postHasRot120Symmetry();
 			postHasHexagonAxisSymmetry();
 			break;
-		case "D_3h(ib) \"face-120-rotation+edge-mirror\"" :
+		case "D_3h(ib)=\"face-120-rotation+edge-mirror\"" :
 			postHasRot120Symmetry();
 			postHasEdgeAxisSymmetry();
 			break;
-		case "D_2h(ii) \"edge-180-rotation+edge-mirror\"" :
+		case "D_2h(ii)=\"edge-180-rotation+edge-mirror\"" :
 			postHasRot180EdgeSymmetry();
 			postHasEdgeAxisSymmetry();
 			break;
-		case "D_2h(i) \"face-180-rotation+edge-mirror\"" : 
+		case "D_2h(i)=\"face-180-rotation+edge-mirror\"" :
 			postHasRot180Symmetry();
 			postHasEdgeAxisSymmetry();//??
 			break;
-		case "C_s \"no-symmetry\"" :
+		case "C_s=\"no-symmetry\"" :
 			break;
 		}
 	}

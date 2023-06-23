@@ -10,12 +10,12 @@ import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 public abstract class HBoxCriterion extends HBox {
-
 	private boolean valid;
+
+	private boolean bounding;
 	
-	private final DeleteButton deleteButton = new DeleteButton();;
+	private final DeleteButton deleteButton = new DeleteButton();
 	private ImageView warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
-	;
 	 
 	private ScrollPaneWithPropertyList pane;
 
@@ -30,8 +30,8 @@ public abstract class HBoxCriterion extends HBox {
 		deleteButton.setOnAction(e -> pane.removeCriterion(choiceBoxCriterion, this));
 		initialize();
 	}
-	
-	protected abstract void updateValidity();
+
+	public abstract void updateValidity();
 
 	protected void addDeleteButton() {
 		this.getChildren().add(getDeleteButton());
@@ -86,4 +86,17 @@ public abstract class HBoxCriterion extends HBox {
 	protected void addWarningIconAndDeleteButton() {
 		this.getChildren().addAll(getWarningIcon(), getDeleteButton());
 	}
+
+	public abstract void assign(PropertyExpression expression);
+
+	public abstract void initEventHandling();
+
+	public boolean isBounding() {
+		return bounding;
+	}
+
+	public void setBounding(boolean bounding) {
+		this.bounding = bounding;
+	}
+
 }

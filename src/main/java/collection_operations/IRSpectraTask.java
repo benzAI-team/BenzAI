@@ -36,7 +36,7 @@ public class IRSpectraTask extends CollectionTask {
                 + " benzenoids)", true);
 
         if (currentPane.getSelectedBenzenoidPanes().size() == 0) {
-            Utils.alert("Please, select at least one benzenoid having less than 10 hexagons");
+            Utils.alert("Please, assign at least one benzenoid having less than 10 hexagons");
             return;
         }
 

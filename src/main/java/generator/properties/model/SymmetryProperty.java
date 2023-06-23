@@ -18,15 +18,15 @@ public class SymmetryProperty extends ModelProperty {
 	@Override
 	public int computeNbCrowns() {
 		switch(((ParameterizedExpression)this.getExpressions().get(0)).getOperator()) {
-		case "C_6h \"(face)-60-rotation\"" : 
-		case "D_6h \"(face)-60-rotation+(edge)-mirror\"" : 
+		case "C_6h=\"(face)-60-rotation\"" :
+		case "D_6h=\"(face)-60-rotation+(edge)-mirror\"" :
 			return (((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound() + 10) / 6;
 			
-		case "C_3h(i) \"face-120-rotation\"":			
-		case "C_3h(ii) \"vertex-120-rotation\"" : 
-		case "D_3h(ii) \"vertex-120-rotation+(edge)-mirror\"" :
-		case "D_3h(ia) \"face-120-rotation+face-mirror\"" :
-		case "D_3h(ib) \"face-120-rotation+edge-mirror\"" :
+		case "C_3h(i)=\"face-120-rotation\"":
+		case "C_3h(ii)=\"vertex-120-rotation\"" :
+		case "D_3h(ii)=\"vertex-120-rotation+(edge)-mirror\"" :
+		case "D_3h(ia)=\"face-120-rotation+face-mirror\"" :
+		case "D_3h(ib)=\"face-120-rotation+edge-mirror\"" :
 			return (((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound() + 4) / 3;
 
 		default:
@@ -35,7 +35,7 @@ public class SymmetryProperty extends ModelProperty {
 	}
 
 	@Override
-	public HBoxModelCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
+	public HBoxModelCriterion makeHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		return new HBoxSymmetriesCriterion(parent, choiceBoxCriterion);
 	}
 }

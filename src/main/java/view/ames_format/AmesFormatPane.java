@@ -113,7 +113,7 @@ public class AmesFormatPane extends GridPane {
         }
 
         else
-            Utils.alert("Please select a valid file (Gaussian .log)");
+            Utils.alert("Please assign a valid file (Gaussian .log)");
     }
 
     private String buildAmesFormat() throws IOException {

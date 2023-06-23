@@ -43,9 +43,9 @@ public class PropertySet implements Iterable<Property> {
 		return propertyList.iterator();
 	}
 
-	public HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
+	public HBoxCriterion makeHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion, String name) {
 		Property property = getByName(name);
-		return property.getHBoxCriterion(parent, choiceBoxCriterion);
+		return Objects.requireNonNull(property).makeHBoxCriterion(parent, choiceBoxCriterion);
 	}
 
 	public String[] getNames() {
@@ -75,4 +75,5 @@ public class PropertySet implements Iterable<Property> {
 	protected void setPropertyList(ArrayList<Property> propertyList) {
 		this.propertyList = propertyList;
 	}
+
 }

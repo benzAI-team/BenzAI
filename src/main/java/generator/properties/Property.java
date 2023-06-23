@@ -1,11 +1,11 @@
 package generator.properties;
 
-import java.util.ArrayList;
-
 import generator.properties.model.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
+
+import java.util.ArrayList;
 
 /***
 *
@@ -31,7 +31,7 @@ public abstract class Property {
 	 * 
 	 * @return the HBoxCriterion selected in choiceBoxCriterion
 	 */
-	public abstract HBoxCriterion getHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion);
+	public abstract HBoxCriterion makeHBoxCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion);
 	
 	/***
 	 *
@@ -42,13 +42,12 @@ public abstract class Property {
 
 	public void clearExpressions() {
 		expressions.clear();
-		
 	}
 	/***
 	 *
 	 */
 	public boolean hasExpressions() {
-		return expressions.size() > 0;
+		return !expressions.isEmpty();
 	}
 
 	/***

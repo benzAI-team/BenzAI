@@ -44,7 +44,7 @@ public class RectangleExpression extends PropertyExpression {
 		return super.toString() + " " + heightOperator + " " + height + " " + widthOperator + " " + width;
 	}
 
-	static RectangleExpression fromString(String string){
+	static RectangleExpression from(String string){
 		String [] elements = string.split(" ");
 		return new RectangleExpression(elements[0], elements[1], Integer.parseInt(elements[2]), elements[3], Integer.parseInt(elements[4]));
 	}
