@@ -177,7 +177,7 @@ public class AmesFormatPane extends GridPane {
                 position ++;
             }
 
-            builder.append("\t\t<geometry>\n");
+            builder.append("\t\t</geometry>\n");
 
             builder.append("\t\t<transitions>\n");
 
