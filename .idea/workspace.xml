@@ -7,67 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Expression save/load + small refacoring of GeneratorPane">
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Merge remote-tracking branch 'origin/main'">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/AllKekuleStructureComputation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/AllKekuleStructureComputation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/collection_operations/IRSpectraTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/collection_operations/IRSpectraTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SymmetryConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SymmetryConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/Property.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/Property.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/PropertySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/PropertySet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/CarbonNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/CarbonNumberProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/CatacondensedProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/CatacondensedProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ConcealedNonKekuleanProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ConcealedNonKekuleanProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/CoronenoidProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/CoronenoidProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constraints" beforeDir="false" afterPath="$PROJECT_DIR$/constraints" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/CoronoidProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/CoronoidProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/DiameterProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/DiameterProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/HexagonNumberProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/HydrogenNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/HydrogenNumberProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/IrregularityProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/IrregularityProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/NbKekuleStructureProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/NbKekuleStructureProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/PatternProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/PatternProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/RectangleProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/RectangleProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/RhombusProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/RhombusProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/SymmetryProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/SymmetryProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/SymmetryChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/checkers/SymmetryChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/BinaryNumericalExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/BinaryNumericalExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/IrregularityExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/IrregularityExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/ParameterizedExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/ParameterizedExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PatternExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PatternExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PropertyExpressionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/PropertyExpressionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/RectangleExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/RectangleExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/RhombusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/RhombusExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/SubjectExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/expression/SubjectExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/SymmetryFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/SymmetryFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/solver/SolutionNumberProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/solver/SolutionNumberProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/solver/TimeLimitProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/solver/TimeLimitProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/ames_format/AmesFormatPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ames_format/AmesFormatPane.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/FilteringPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/filtering/FilteringPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/ChoiceBoxCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/ChoiceBoxCriterion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/GeneratorPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/GeneratorPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxBoundingCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxBoundingCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCatacondensedCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCatacondensedCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxConcealedCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxConcealedCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronenoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronenoidCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronoidCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxDefaultCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxDefaultCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxHexagonNumberCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxHexagonNumberCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxIrregularityCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxIrregularityCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxModelCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxModelCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbCarbonsCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbCarbonsCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbHydrogensCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbHydrogensCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbKekuleStructuresCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbKekuleStructuresCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbSolutionsCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxNbSolutionsCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxPatternCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxPatternCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRhombusCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRhombusCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxSymmetriesCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxSymmetriesCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxTimeoutCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxTimeoutCriterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/primaryStage/ScrollPaneWithPropertyList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/primaryStage/ScrollPaneWithPropertyList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestGeneration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestGeneration.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +43,6 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" root0="SKIP_INSPECTION" />
@@ -142,7 +87,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/view/filtering/patterns/PatternHexagon.java&quot;
+    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/view/generator/GeneratorPane.java&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -480,7 +425,28 @@
       <option name="project" value="LOCAL" />
       <updated>1686241768483</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="New feature : saving and loading generation property set">
+      <created>1687524025495</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1687524025495</updated>
+    </task>
+    <task id="LOCAL-00043" summary="New feature : saving and loading generation property set">
+      <created>1687524315118</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1687524315118</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Merge remote-tracking branch 'origin/main'">
+      <created>1687524383204</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1687524383204</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -521,8 +487,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Symmetry OK, rectangle not OK" />
-    <MESSAGE value="lot of attributes made final" />
     <MESSAGE value="branch general_model2 merged" />
     <MESSAGE value="add : testing generation" />
     <MESSAGE value="minor refactoring" />
@@ -546,7 +510,9 @@
     <MESSAGE value="refactoring BenzenoidParser.exportProperties()" />
     <MESSAGE value="deleting useless code" />
     <MESSAGE value="Expression save/load + small refacoring of GeneratorPane" />
-    <option name="LAST_COMMIT_MESSAGE" value="Expression save/load + small refacoring of GeneratorPane" />
+    <MESSAGE value="New feature : saving and loading generation property set" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/main'" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/main'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -592,7 +558,7 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1687435747272" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1687536983657" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1686051991046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

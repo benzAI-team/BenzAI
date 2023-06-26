@@ -28,7 +28,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 
 	private IntVar nbConnectedComponents;
 
-	private int nbMaxHoles;
+	private int nbMaxHoles = 0;
 
 
 	@Override
@@ -42,6 +42,8 @@ public class CoronoidConstraint extends BenzAIConstraint {
 			String operator = ((ParameterizedExpression)expression).getOperator();
 			if (Objects.equals(operator, "=") || Objects.equals(operator, "<=") || Objects.equals(operator, "<")) {
 				int nbHoles = ((BinaryNumericalExpression)expression).getValue();
+				if(Objects.equals(operator, "<"))
+					nbHoles --;
 				if (nbHoles > nbMaxHoles)
 					nbMaxHoles = nbHoles;
 			}

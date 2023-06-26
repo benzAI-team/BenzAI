@@ -368,8 +368,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		gridPane.add(criterionListBox,1,0, 3, 1);
 		//System.out.println("Place");
 		placeModelPropertyComponents();
-		for(HBoxCriterion box : getHBoxCriterions())
-			System.out.println(box.getExpression());
 		placeSolverPropertyComponents();
 		initEventHandlers();
 		refreshGenerationPossibility();
@@ -397,9 +395,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private void buildIOButtons() {
 		buttonsBox = new HBox(5.0);
 		buttonsBox.getChildren().addAll(closeButton, addButton, generateButton);
-//		if(getHBoxCriterions().stream().noneMatch(box -> (box instanceof HBoxHexagonNumberCriterion || box instanceof HBoxNbCarbonsCriterion
-//				|| box instanceof HBoxNbHydrogensCriterion) && box.isValid()))
-//			buttonsBox.getChildren().add(warningIcon);
 	}
 
 	private void placeSolverPropertyComponents() {
@@ -413,7 +408,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 	private void initEventHandlers() {
 		for(HBoxCriterion box : getHBoxCriterions()){
-			//System.out.println(box);
 			box.initEventHandling();
 		}
 	}

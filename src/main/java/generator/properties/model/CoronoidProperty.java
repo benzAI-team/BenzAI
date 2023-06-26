@@ -9,6 +9,8 @@ import view.generator.boxes.HBoxCoronoidCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
+import java.util.Objects;
+
 public class CoronoidProperty extends ModelProperty {
 
 	public CoronoidProperty() {
@@ -26,7 +28,9 @@ public class CoronoidProperty extends ModelProperty {
 		for(PropertyExpression expression : this.getExpressions()) {
 			BinaryNumericalExpression binaryNumericalExpression = (BinaryNumericalExpression)expression;
 			if(binaryNumericalExpression.hasLowerBound())
-				nbMinHoles = Math.max(nbMinHoles, binaryNumericalExpression.getValue());
+				nbMinHoles = Objects.equals(binaryNumericalExpression.getOperator(), ">") ?
+						Math.max(nbMinHoles, binaryNumericalExpression.getValue() + 1) :
+						Math.max(nbMinHoles, binaryNumericalExpression.getValue());
 		}
 
 		int nbCrowns;
