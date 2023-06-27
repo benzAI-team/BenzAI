@@ -2,6 +2,7 @@ package generator.properties.model;
 
 import generator.properties.Property;
 import generator.properties.PropertySet;
+import javafx.stage.FileChooser;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 import generator.properties.model.expression.PropertyExpressionFactory;
@@ -102,12 +103,17 @@ public class ModelPropertySet extends PropertySet {
 		return string;
 	}
 
+	public void save(){
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save criterions");
+		File file = fileChooser.showSaveDialog(null);
+		if(file != null)
+			save(file);
+	}
 	/***
 	 * save the constraint set to file 'constraints'
 	 */
-	public void save() {
-		File file = new File("constraints");
-
+	public void save(File file) {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(this.toString());
@@ -118,8 +124,14 @@ public class ModelPropertySet extends PropertySet {
 		}
 	}
 
-	public void load() throws IOException {
-		File file = new File("constraints");
+	public void load() throws IOException{
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Load criterions");
+		File file = fileChooser.showOpenDialog(null);
+		if(file != null)
+			load(file);
+	}
+	public void load(File file) throws IOException {
 		if (file.exists()) {
 			clearAllPropertyExpressions();
 			BufferedReader reader = new BufferedReader(new FileReader(file));

@@ -28,6 +28,7 @@ import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.generator.boxes.*;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -60,6 +61,8 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private final Label solutionNumberLabel = new Label("0");
 
 	private HBox criterionListBox;
+
+	static final File defaultPropertyListFile = new File("constraints");
 
 
 	public GeneratorPane(BenzenoidApplication application) {
@@ -96,7 +99,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 	private void loadPropertyExpressionListAutosave() {
 		try {
-			getModelPropertySet().load();
+			getModelPropertySet().load(defaultPropertyListFile);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -123,7 +126,11 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private Button buildLoadButton() {
 		Button loadButton =  new Button("Load");
 		loadButton.setOnAction(e -> {
-			loadPropertyExpressionListAutosave();
+			try {
+				getModelPropertySet().load();
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
 			initializeModelCriterionBoxes();
 			placeComponents();
 			getModelPropertySet().clearAllPropertyExpressions();
@@ -427,7 +434,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private void generateBenzenoids() {
 		if (canStartGeneration) {
 			getModelPropertySet().buildModelPropertySet(getHBoxCriterions());
-			getModelPropertySet().save();
+			getModelPropertySet().save(defaultPropertyListFile);
 			GeneralModel.buildSolverPropertySet(hBoxesSolverCriterions);
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
