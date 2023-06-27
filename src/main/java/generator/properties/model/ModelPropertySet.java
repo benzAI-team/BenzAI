@@ -91,7 +91,6 @@ public class ModelPropertySet extends PropertySet {
 				return;
 			((HBoxModelCriterion)box).addPropertyExpression(this);
 		}
-		save();
 	}
 
 	@Override

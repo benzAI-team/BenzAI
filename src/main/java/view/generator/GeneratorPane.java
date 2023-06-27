@@ -427,6 +427,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	private void generateBenzenoids() {
 		if (canStartGeneration) {
 			getModelPropertySet().buildModelPropertySet(getHBoxCriterions());
+			getModelPropertySet().save();
 			GeneralModel.buildSolverPropertySet(hBoxesSolverCriterions);
 
 			application.getBenzenoidCollectionsPane().log("Generating benzenoids", true);
