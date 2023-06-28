@@ -7,10 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="small bug fixed : improper saving when filtering">
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Added : Auto/explicit save/load the generation criterion list">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/GeneratorPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/GeneratorPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constraints" beforeDir="false" afterPath="$PROJECT_DIR$/constraints" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/filtering/FilteringPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/filtering/FilteringPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -457,7 +458,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687847339671</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Added : Auto/explicit save/load the generation criterion list">
+      <created>1687856129608</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1687856129608</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -498,7 +506,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="minor refactoring" />
     <MESSAGE value="Rectangle, Carbon number, Hydrogen number properties fixed&#10;TestGeneration class added" />
     <MESSAGE value="class HexNeighborhood added" />
     <MESSAGE value="class Pattern refactored" />
@@ -523,7 +530,8 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/main'" />
     <MESSAGE value="Issue &quot;Filtering with nb of holes &gt;0 #6 &quot; fixed." />
     <MESSAGE value="small bug fixed : improper saving when filtering" />
-    <option name="LAST_COMMIT_MESSAGE" value="small bug fixed : improper saving when filtering" />
+    <MESSAGE value="Added : Auto/explicit save/load the generation criterion list" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added : Auto/explicit save/load the generation criterion list" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -569,7 +577,7 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1687536983657" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1687960866454" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1686051991046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

@@ -38,36 +38,19 @@ public class CoronoidConstraint extends BenzAIConstraint {
 		buildCorrespondancesHexagons();
 		buildBorder();
 		holes = holesGraphVar("holes");
-		for (PropertyExpression expression : this.getExpressionList()) {
-			String operator = ((ParameterizedExpression)expression).getOperator();
-			if (Objects.equals(operator, "=") || Objects.equals(operator, "<=") || Objects.equals(operator, "<")) {
-				int nbHoles = ((BinaryNumericalExpression)expression).getValue();
-				if(Objects.equals(operator, "<"))
-					nbHoles --;
-				if (nbHoles > nbMaxHoles)
-					nbMaxHoles = nbHoles;
-			}
-		}
+		nbMaxHoles = computeNbMaxHoles(generalModel);
+		buildHoleVertices(generalModel);
+		buildHolesEdges(generalModel);
+		nbConnectedComponents = generalModel.getProblem().intVar("nb_connected_components", 1, nbMaxHoles + 1);
+	}
 
-		if (nbMaxHoles == 0)
-			nbMaxHoles = generalModel.getNbMaxHexagons() / 2;
-
-		holesVertices = new BoolVar[generalModel.getHexBoolVars().length + 1];
-		for (int i = 0; i < holesVertices.length; i++) {
-			BoolVar x = generalModel.getProblem().boolVar("nodes[" + i + "]");
-			holesVertices[i] = x;
-		}
-
+	private void buildHolesEdges(GeneralModel generalModel) {
 		holesEdges = new BoolVar[holesVertices.length][holesVertices.length];
-
 		for (int i = 0; i < generalModel.getDiameter() * generalModel.getDiameter(); i++) {
 			for (int j = (i + 1); j < generalModel.getDiameter() * generalModel.getDiameter(); j++) {
-
 				if (generalModel.getAdjacencyMatrix()[i][j] == 1) {
-
 					BoolVar x = generalModel.getProblem()
 							.boolVar("edges[" + correspondancesHexagons[i] + "][" + correspondancesHexagons[j] + "]");
-
 					int u = correspondancesHexagons[i];
 					int v = correspondancesHexagons[j];
 
@@ -101,8 +84,31 @@ public class CoronoidConstraint extends BenzAIConstraint {
 				generalModel.getProblem().edgeChanneling(holes, x, u, v).post();
 			}
 		}
+	}
 
-		nbConnectedComponents = generalModel.getProblem().intVar("nb_connected_components", 1, nbMaxHoles + 1);
+	private void buildHoleVertices(GeneralModel generalModel) {
+		holesVertices = new BoolVar[generalModel.getHexBoolVars().length + 1];
+		for (int i = 0; i < holesVertices.length; i++) {
+			BoolVar x = generalModel.getProblem().boolVar("nodes[" + i + "]");
+			holesVertices[i] = x;
+		}
+	}
+
+	private int computeNbMaxHoles(GeneralModel generalModel) {
+		int nbMaxHoles = 0;
+		for (PropertyExpression expression : this.getExpressionList()) {
+			String operator = ((ParameterizedExpression)expression).getOperator();
+			if (Objects.equals(operator, "=") || Objects.equals(operator, "<=") || Objects.equals(operator, "<")) {
+				int nbHoles = ((BinaryNumericalExpression)expression).getValue();
+				if(Objects.equals(operator, "<"))
+					nbHoles --;
+				if (nbHoles > nbMaxHoles)
+					nbMaxHoles = nbHoles;
+			}
+		}
+		if (nbMaxHoles == 0)
+			nbMaxHoles = generalModel.getNbMaxHexagons() / 2;
+		return nbMaxHoles;
 	}
 
 	private void buildCorrespondancesHexagons() {

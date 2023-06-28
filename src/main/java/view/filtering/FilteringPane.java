@@ -3,11 +3,8 @@ package view.filtering;
 import application.BenzenoidApplication;
 import generator.properties.model.filters.Filter;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker.State;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -48,11 +45,11 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 	private Label titleLabel;
 
-	private int lineConsole;
 	private int indexFiltering;
 	
 	private boolean canStartFiltering;
-	private HBox buttonsBox;
+	private final Label alreadyFilteredLabel = new Label("");
+	private final Label alreadyFilteredNumberLabel = new Label("");
 
 
 	public FilteringPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) {
@@ -63,22 +60,12 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	}
 
 	private void initialize() {
-
 		titleLabel = new Label("Filter a collection");
 		titleLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-
-
 		buildButtons();
 		initializeGridPane();
-
 		this.setContent(gridPane);
-
-		setChoiceBoxCriterions(new ArrayList<>());
-		setHBoxesCriterions(new ArrayList<>());
-		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
-		Tooltip.install(addButton, new Tooltip("Add new criterion"));
-		getChoiceBoxCriterions().add(choiceBoxCriterion);
-		getHBoxCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
+		initBoxCriterions();
 		placeComponents();
 	}
 
@@ -90,7 +77,6 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 	private void buildFilterButton() {
 		filterButton = new Button("Filter");
-
 		filterButton.setOnAction(e -> {
 			if (canStartFiltering)
 				filter();
@@ -119,6 +105,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 		Tooltip.install(addButton, new Tooltip("Add new criterion"));
 		addButton.resize(30, 30);
 		addButton.setStyle("-fx-background-color: transparent;");
+		Tooltip.install(addButton, new Tooltip("Add new criterion"));
 
 		addButton.setOnAction(e -> {
 			int nbCriterions = getChoiceBoxCriterions().size();
@@ -140,12 +127,19 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	}
 
 	private void initializeGridPane() {
-
 		gridPane = new GridPane();
 		gridPane.setPrefWidth(1400);
 		gridPane.setPadding(new Insets(50));
 		gridPane.setHgap(5);
 		gridPane.setVgap(5);
+	}
+
+	private void initBoxCriterions() {
+		setChoiceBoxCriterions(new ArrayList<>());
+		setHBoxesCriterions(new ArrayList<>());
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
+		getChoiceBoxCriterions().add(choiceBoxCriterion);
+		getHBoxCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 	}
 
 	public void setHBox(int index, HBoxCriterion hBox) {
@@ -177,8 +171,8 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 		BenzenoidCollectionPane curentPane = collectionsPane.getSelectedTab();
 		collectionChoiceBox.getSelectionModel().select(curentPane.getIndex());
 
-		buttonsBox = new HBox(5.0);
-		buttonsBox.getChildren().addAll(closeButton, addButton, filterButton, collectionChoiceBox);
+		HBox buttonsBox = new HBox(5.0);
+		buttonsBox.getChildren().addAll(closeButton, addButton, filterButton, collectionChoiceBox, alreadyFilteredNumberLabel, alreadyFilteredLabel);
 
 		gridPane.add(buttonsBox, 0, nbCriterions + 1);
 		initEventHandlers();
@@ -188,153 +182,86 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 /**
  */
 	private void filter() {
-
 		BenzenoidCollectionsManagerPane managerPane = collectionsPane;
-
 		int index = collectionChoiceBox.getSelectionModel().getSelectedIndex();
 		BenzenoidCollectionPane collectionPane = collectionsPane.getBenzenoidSetPanes()
 				.get(index);
-
 		BenzenoidCollectionPane newCollectionPane = new BenzenoidCollectionPane(managerPane,
 				managerPane.getNbCollectionPanes(), managerPane.getNextCollectionPaneLabel(collectionPane.getName() + "(filter)"));
-
 		managerPane.log("Filtering collection: " + collectionPane.getName(), true);
 		for (HBoxCriterion criterion : this.getHBoxCriterions())
 			managerPane.log(criterion.toString(), false);
-
-
-		int size = collectionPane.getMolecules().size();
-		
 		getModelPropertySet().buildModelPropertySet(getHBoxCriterions());
 
-		///////////////////////////////
-//		for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
-//
-//			indexFiltering = i;
-//
-//			Molecule molecule = collectionPane.getMolecules().get(i);
-//			if(Filter.testAll(molecule, getModelPropertySet())) {
-//				DisplayType displayType = collectionPane.getDisplayType(i);
-//				newCollectionPane.addBenzenoid(molecule, displayType);
-//			}
-//
-//			Platform.runLater(new Runnable() {
-//				@Override
-//				public void run() {
-//					if (indexFiltering == 1) {
-//						managerPane.log((indexFiltering+1) + " / " + size , false);
-//						lineConsole = collectionPane.getConsole().getNbLines() - 1;
-//					} else
-//						managerPane.changeLineConsole((indexFiltering+1) + " / " + size, lineConsole);
-//				}
-//			});
-//
-//		}
-		////////////////////////////
 		final Service<Void> calculateService = new Service<>() {
-
 			@Override
 			protected Task<Void> createTask() {
 				return new Task<>() {
-
 					@Override
 					protected Void call() {
+						int nbMolecules = collectionPane.getMolecules().size();
+						Platform.runLater(() -> {
+							alreadyFilteredNumberLabel.setText("0");
+							alreadyFilteredLabel.setText("/ " + nbMolecules + " already filtered");
+						});
 						for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
-
 							indexFiltering = i;
-
 							Benzenoid molecule = collectionPane.getMolecules().get(i);
 							if (Filter.testAll(molecule, getModelPropertySet())) {
 								DisplayType displayType = collectionPane.getDisplayType(i);
 								newCollectionPane.addBenzenoid(molecule, displayType);
 							}
-
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									if (indexFiltering == 1) {
-										managerPane.log((indexFiltering + 1) + " / " + size, false);
-										lineConsole = collectionPane.getConsole().getNbLines() - 1;
-									} else
-										managerPane.changeLineConsole((indexFiltering + 1) + " / " + size, lineConsole);
-								}
-							});
-
+							Platform.runLater(() -> alreadyFilteredNumberLabel.setText(String.valueOf(indexFiltering + 1)));
 						}
-
 						return null;
 					}
 				};
 			}
 		};
 
-		calculateService.stateProperty().addListener(new ChangeListener<>() {
+		calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
+			switch (newValue) {
+				case FAILED:
+					Utils.alert("Filtering failed.");
+					break;
+				case CANCELLED:
+					Utils.alert("Filtering canceled");
+					break;
+				case SUCCEEDED:
+					if (newCollectionPane.getMolecules().isEmpty()) {
+						Utils.alert("There is no remaining benzenoids after filtering ");
+						return;
+					}
+					newCollectionPane.refresh();
 
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+					managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
+					managerPane.addBenzenoidSetPane(newCollectionPane);
+					managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
 
-				switch (newValue) {
-					case FAILED:
+					collectionsPane.log("Filtering collection " + collectionPane.getName(), true);
+					for (HBoxCriterion criterion : getHBoxCriterions()) {
+						application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
+					}
+					collectionsPane.log("-> " + newCollectionPane.getName(), false);
+					collectionsPane.log("", false);
 
-						Utils.alert("Filtering failed.");
-						break;
-					case CANCELLED:
-
-						Utils.alert("Filtering canceled");
-						break;
-					case SUCCEEDED:
-						if (newCollectionPane.getMolecules().isEmpty()) {
-							Utils.alert("There is no remaining benzenoids after filtering ");
-							return;
-						}
-						newCollectionPane.refresh();
-
-						managerPane.getTabPane().getSelectionModel().clearAndSelect(0);
-						managerPane.addBenzenoidSetPane(newCollectionPane);
-						managerPane.getTabPane().getSelectionModel().clearAndSelect(managerPane.getBenzenoidSetPanes().size() - 2);
-
-						collectionsPane.log("Filtering collection " + collectionPane.getName(), true);
-						for (HBoxCriterion criterion : getHBoxCriterions()) {
-							application.getBenzenoidCollectionsPane().log(criterion.toString(), false);
-						}
-						collectionsPane.log("-> " + newCollectionPane.getName(), false);
-						collectionsPane.log("", false);
-
-						application.switchMode(application.getPanes().getCollectionsPane());
-
-						break;
-
-					default:
-						break;
-				}
-
+					application.switchMode(application.getPanes().getCollectionsPane());
+					break;
+				default:
+					break;
 			}
-
 		});
-
 		calculateService.start();
 
 	}
 
-	private boolean containsInvalidCriterion() {
-		return getHBoxCriterions().stream().anyMatch(box -> !box.isValid());
-	}
-
 	public void removeCriterion(ChoiceBoxCriterion choiceBoxCriterion, HBoxCriterion hBoxCriterion) {
-
 		getChoiceBoxCriterions().remove(choiceBoxCriterion);
 		getHBoxCriterions().remove(hBoxCriterion);
-
 		int nbCriterions = getHBoxCriterions().size();
-
 		for (int i = 0; i < nbCriterions; i++)
 			getChoiceBoxCriterions().get(i).setIndex(i);
-
 		placeComponents();
-	}
-
-	public void selectChoiceBox(BenzenoidCollectionPane collectionPane) {
-		collectionChoiceBox.getSelectionModel().select(collectionPane.getName());
 	}
 
 	public BenzenoidApplication getApplication() {
@@ -343,7 +270,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 
 	@Override
 	public void refreshGenerationPossibility() {
-		canStartFiltering = getHBoxCriterions().stream().allMatch(box -> box.isValid());
+		canStartFiltering = getHBoxCriterions().stream().allMatch(HBoxCriterion::isValid);
 	}
 	private void initEventHandlers() {
 		for(HBoxCriterion box : getHBoxCriterions()){
