@@ -1,6 +1,6 @@
 package correlations;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 
 import java.io.*;

@@ -3,7 +3,7 @@ package spectrums;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Couple;
 
 public class IRSpectra {

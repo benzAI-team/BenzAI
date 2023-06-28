@@ -9,10 +9,11 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import classifier.Irregularity;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
@@ -186,7 +187,7 @@ public enum InsertScriptFinal {
 			irregBD = BigDecimal.valueOf(irreg.getXI()).setScale(3, RoundingMode.HALF_UP);
 		
 		int nbHexagons = molecule.getNbHexagons();
-		int nbCarbons = molecule.getNbNodes();
+		int nbCarbons = molecule.getNbCarbons();
 		int nbHydrogens = molecule.getNbHydrogens();
 		String inchie = getInchi(inchiFile);
 		double irregularity = irregBD.doubleValue();
@@ -250,7 +251,7 @@ public enum InsertScriptFinal {
 			return "unknown";
 
 		Benzenoid molecule = GraphParser.parseUndirectedGraph(molFile);
-		Irregularity irregularity = molecule.getIrregularity();
+		Optional<Irregularity> irregularity = molecule.getIrregularity();
 		String geometry = getGeometry(comFile);
 		String [] geometries = geometry.split(" ");
 		ArrayList<Double> frequencies = log.getFrequencies();
@@ -273,15 +274,16 @@ public enum InsertScriptFinal {
 		builder.append("<total_e>" + finalEnergy + "</total_e>");
 		builder.append("<vib_e>" + log.getZeroPointEnergy() + "</vib_e>");
 
-		builder.append("<formula>C" + molecule.getNbNodes() + "H" + molecule.getNbHydrogens() + "</formula>");
+		builder.append("<formula>C" + molecule.getNbCarbons() + "H" + molecule.getNbHydrogens() + "</formula>");
 		builder.append("<charge>0</charge>");
 		builder.append("<method>B3LYP</method>");
 
-		if (irregularity != null) {
-			builder.append("<n_solo>" + irregularity.getGroup(0) + "</n_solo>");
-			builder.append("<n_duo>" + irregularity.getGroup(1) + "</n_duo>");
-			builder.append("<n_trio>" + irregularity.getGroup(2) + "</n_trio>");
-			builder.append("<n_quartet>" + irregularity.getGroup(3) + "</n_quartet>");
+		if (irregularity.isPresent()) {
+			Irregularity irregularityData = irregularity.get();
+			builder.append("<n_solo>" + irregularityData.getGroup(0) + "</n_solo>");
+			builder.append("<n_duo>" + irregularityData.getGroup(1) + "</n_duo>");
+			builder.append("<n_trio>" + irregularityData.getGroup(2) + "</n_trio>");
+			builder.append("<n_quartet>" + irregularityData.getGroup(3) + "</n_quartet>");
 			builder.append("<n_quintet>" + 0 + "</n_quintet>");
 		}
 

@@ -2,8 +2,8 @@ package constraints;
 
 import generator.GeneralModel;
 import generator.patterns.Pattern;
-import molecules.Benzenoid;
-import molecules.Node;
+import benzenoid.Benzenoid;
+import benzenoid.Node;
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.IntVar;
 

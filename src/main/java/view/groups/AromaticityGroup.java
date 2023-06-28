@@ -3,7 +3,7 @@ package view.groups;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solveur.Aromaticity;
 import solveur.Aromaticity.RIType;
 import utils.HexagonAromaticity;

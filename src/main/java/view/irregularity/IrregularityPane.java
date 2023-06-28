@@ -36,7 +36,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import view.collections.BenzenoidCollectionsManagerPane;
 
 public class IrregularityPane extends BorderPane {

@@ -14,8 +14,8 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
 import Jama.Matrix;
-import molecules.Benzenoid;
-import molecules.SubGraph;
+import benzenoid.Benzenoid;
+import benzenoid.SubGraph;
 import parsers.GraphParser;
 import solveur.LinAlgorithm.PerfectMatchingType;
 import solveur.matrix_determinant.PerfectMatchingMatrix;
@@ -148,7 +148,7 @@ public enum PerfectMatchingSolver {
 	// filtering = AC_REGIN, AC_ZHANG
 	public static int computeKekuleStructuresAllDiffConstraint(Benzenoid molecule, String filtering) {
 
-		int nbNode = molecule.getNbNodes();
+		int nbNode = molecule.getNbCarbons();
 
 		int[] nodesSet = new int[nbNode];
 		int[] visitedNodes = new int[nbNode];
@@ -178,7 +178,7 @@ public enum PerfectMatchingSolver {
 					n++;
 				}
 
-				for (int j = 0; j < molecule.getNbNodes(); j++) {
+				for (int j = 0; j < molecule.getNbCarbons(); j++) {
 					if (molecule.getEdgeMatrix()[u][j] != 0) {
 
 						if (visitedNodes[j] == 0) {
@@ -202,7 +202,7 @@ public enum PerfectMatchingSolver {
 
 		Model model = new Model("Kekule structures with all diff constraint");
 
-		IntVar[] variables = new IntVar[molecule.getNbNodes() / 2];
+		IntVar[] variables = new IntVar[molecule.getNbCarbons() / 2];
 
 		int indexVariable = 0;
 
@@ -214,7 +214,7 @@ public enum PerfectMatchingSolver {
 
 				int indexDomain = 0;
 
-				for (int j = 0; j < molecule.getNbNodes(); j++) {
+				for (int j = 0; j < molecule.getNbCarbons(); j++) {
 					if (molecule.getEdgeMatrix()[i][j] != 0) {
 						domain[indexDomain] = j;
 						indexDomain++;
@@ -248,7 +248,7 @@ public enum PerfectMatchingSolver {
 	public static void main(String[] args) {
 
 		Benzenoid molecule = GraphParser.parseUndirectedGraph(new File(args[0]));
-		int [] d = new int [molecule.getNbNodes()];
+		int [] d = new int [molecule.getNbCarbons()];
 		String mode = args[1];
 		
 		System.out.println(args[0]);
@@ -261,7 +261,7 @@ public enum PerfectMatchingSolver {
 			System.out.println("method: determinant");
 			long begin = System.currentTimeMillis();
 			fg = new SubGraph(molecule.getEdgeMatrix(), d, molecule.getDegrees(), PerfectMatchingType.DET);
-			System.out.println(fg.getNbPerfectMatching() + " matchings");
+			System.out.println(fg.getNbPerfectMatchings() + " matchings");
 			long end = System.currentTimeMillis();
 			time = end - begin;
 			
@@ -277,7 +277,7 @@ public enum PerfectMatchingSolver {
 				System.out.println("constraint: sum");
 				long begin = System.currentTimeMillis();
 				fg = new SubGraph(molecule.getEdgeMatrix(), d, molecule.getDegrees(), PerfectMatchingType.CHOCO);	
-				System.out.println(fg.getNbPerfectMatching() + " matchings");
+				System.out.println(fg.getNbPerfectMatchings() + " matchings");
 				long end = System.currentTimeMillis();
 				time = end - begin;
 			}

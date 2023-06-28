@@ -1,8 +1,8 @@
 package solveur;
 
 import Jama.Matrix;
-import molecules.Benzenoid;
-import molecules.SubGraph;
+import benzenoid.Benzenoid;
+import benzenoid.SubGraph;
 import solveur.LinAlgorithm.PerfectMatchingType;
 
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ public enum RispoliAlgorithm {
 
     public static SubGraph removeCircuit(Benzenoid molecule, ArrayList<Integer> circuit, PerfectMatchingType type) {
 
-		int nbNodes = molecule.getNbNodes();
+		int nbNodes = molecule.getNbCarbons();
 		int[][] matrix = molecule.getEdgeMatrix();
-		int[] disabledVertices = new int[molecule.getNbNodes()];
+		int[] disabledVertices = new int[molecule.getNbCarbons()];
 
 		for (Integer i : circuit) {
 			disabledVertices[i] = 1;

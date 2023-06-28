@@ -1,6 +1,6 @@
 package generator;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import org.chocosolver.solver.Solver;
 import solution.BenzenoidSolution;
 

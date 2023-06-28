@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public class NbKekuleStructureChecker extends Checker {
 

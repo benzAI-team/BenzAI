@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.regex.Pattern;
 
 import classifier.Irregularity;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
@@ -75,7 +75,7 @@ public class InsertMolecules {
 					new File("C:\\Users\\adrie\\Documents\\These\\molecules\\bdd_app\\insert.sql"), true));
 
             String insertMolecule = "INSERT INTO molecule (id_molecule, irregularity, molecule_name, nb_carbons, nb_hexagons, nb_hydrogens)\n" +
-                    "\tVALUES (" + index + ", " + irregbd.doubleValue() + ", '" + name + "', " + molecule.getNbNodes()
+                    "\tVALUES (" + index + ", " + irregbd.doubleValue() + ", '" + name + "', " + molecule.getNbCarbons()
                     + ", " + molecule.getNbHexagons() + ", " + molecule.getNbHydrogens() + ");";
 
             String insertResult = "INSERT INTO gaussian_result (final_energies, frequencies, id_molecule, intensities, zero_point_energy)\n" +

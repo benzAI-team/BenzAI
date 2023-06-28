@@ -16,10 +16,10 @@ import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import molecules.Benzenoid;
-import molecules.BenzenoidParser;
-import molecules.sort.MoleculeComparator;
-import molecules.sort.ResonanceEnergyComparator;
+import benzenoid.Benzenoid;
+import benzenoid.BenzenoidParser;
+import benzenoid.sort.MoleculeComparator;
+import benzenoid.sort.ResonanceEnergyComparator;
 import new_classifier.NewCarbonsHydrogensClassifier;
 import new_classifier.NewClassifier;
 import parsers.CMLConverter;
@@ -1224,9 +1224,11 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 
 		for (BenzenoidPane pane : panes) {
 
-			Benzenoid molecule = currentPane.getMolecule(pane.getIndex());
-			if (molecule.getIRSpectraResult() != null)
-				moleculesInDB.add(molecule);
+			Benzenoid benzenoid = currentPane.getMolecule(pane.getIndex());
+			Optional<ResultLogFile> IRSpectra = benzenoid.getDatabaseInformation().findIRSpectra();
+
+			if (IRSpectra.isPresent())
+				moleculesInDB.add(benzenoid);
 		}
 
 		log("IR Spectra (" + currentPane.getName() + ", " + moleculesInDB.size() + " benzenoids)", true);
@@ -1248,17 +1250,22 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 			ArrayList<String> amesFormats = new ArrayList<>();
 
 			for (Benzenoid molecule : moleculesClasses) {
-				ResultLogFile result = molecule.getIRSpectraResult();
-				finalEnergies.put(molecule.getNames().get(0),
-						result.getFinalEnergy().get(result.getFinalEnergy().size() - 1));
 
-				Irregularity irregularity = molecule.getIrregularity();
-				if (irregularity == null)
-					irregularities.put(molecule.getNames().get(0), -1.0);
-				else
-					irregularities.put(molecule.getNames().get(0), irregularity.getXI());
+				Optional<ResultLogFile> IRSpectra = molecule.getDatabaseInformation().findIRSpectra();
+				if (IRSpectra.isPresent()) {
+					finalEnergies.put(molecule.getNames().get(0),
+							IRSpectra.get().getFinalEnergy().get(IRSpectra.get().getFinalEnergy().size() - 1));
 
-				amesFormats.add(molecule.getAmesFormat());
+					//Irregularity irregularity = molecule.getIrregularity();
+					Optional<Irregularity> irregularity = molecule.getIrregularity();
+
+					if (irregularity.isEmpty())
+						irregularities.put(molecule.getNames().get(0), -1.0);
+					else
+						irregularities.put(molecule.getNames().get(0), irregularity.get().getXI());
+
+					amesFormats.add(IRSpectra.get().getAmesFormat());
+				}
 			}
 
 			try {

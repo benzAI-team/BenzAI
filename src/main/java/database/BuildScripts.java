@@ -1,7 +1,8 @@
 package database;
 
-import molecules.AtomGeometry;
-import molecules.Benzenoid;
+import benzenoid.AtomGeometry;
+import benzenoid.Benzenoid;
+import classifier.Irregularity;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
@@ -11,6 +12,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public enum BuildScripts {
@@ -40,13 +42,17 @@ public enum BuildScripts {
 
 		ArrayList<String> names = molecule.getNames();
 
-		if (molecule.getIrregularity() != null)
-			irregbd = BigDecimal.valueOf(molecule.getIrregularity().getXI()).setScale(3, RoundingMode.HALF_UP);
+		Optional<Irregularity> irregularity = molecule.getIrregularity();
+
+		if (irregularity.isPresent())
+			irregbd = BigDecimal.valueOf(irregularity.get().getXI()).setScale(3, RoundingMode.HALF_UP);
+
 		else
 			irregbd = BigDecimal.valueOf(-1.0).setScale(3, RoundingMode.HALF_UP);
 
+
 		writer.write("INSERT INTO benzenoid (id, irregularity, nbCarbons, nbHexagons, nbHydrogens)\n");
-		writer.write("\tVALUES (" + id + ", " + irregbd.doubleValue() + ", " + molecule.getNbNodes() + ", "
+		writer.write("\tVALUES (" + id + ", " + irregbd.doubleValue() + ", " + molecule.getNbCarbons() + ", "
 				+ molecule.getNbHexagons() + ", " + molecule.getNbHydrogens() + ");\n\n");
 
 		for (String moleculeName : names) {

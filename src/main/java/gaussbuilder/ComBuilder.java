@@ -1,6 +1,6 @@
 package gaussbuilder;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.ComConverter.ComType;
 import parsers.GraphParser;
 import utils.Triplet;

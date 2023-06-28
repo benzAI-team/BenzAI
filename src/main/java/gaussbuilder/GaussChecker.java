@@ -14,7 +14,7 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Couple;
 import utils.Triplet;
 
@@ -176,7 +176,7 @@ public enum GaussChecker {
 		 * Nb carbons
 		 */
 		
-		int nbCarbonsExpected = molecule.getNbNodes();
+		int nbCarbonsExpected = molecule.getNbCarbons();
 		int nbCarbonsGot = geometry.getCarbons().length;
 		boolean nbCarbons;
 

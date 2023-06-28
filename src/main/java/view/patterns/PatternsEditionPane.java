@@ -19,7 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import molecules.Node;
+import benzenoid.Node;
 import utils.Utils;
 import view.generator.boxes.HBoxPatternCriterion;
 

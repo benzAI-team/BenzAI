@@ -3,7 +3,7 @@ package view.groups;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 import utils.Couple;
 

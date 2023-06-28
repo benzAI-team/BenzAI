@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import http.Post;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
 

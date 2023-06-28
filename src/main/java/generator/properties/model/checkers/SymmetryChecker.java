@@ -4,7 +4,7 @@ import generator.properties.model.ModelProperty;
 import generator.properties.model.SymmetryHandler;
 import generator.properties.model.expression.ParameterizedExpression;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 import java.util.ArrayList;
 

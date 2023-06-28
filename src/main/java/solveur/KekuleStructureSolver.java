@@ -1,6 +1,6 @@
 package solveur;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
@@ -25,19 +25,19 @@ public enum KekuleStructureSolver {
 
 		Model model = new Model("Kekulé Structures");
 
-		BoolVar[] edges = new BoolVar[molecule.getNbEdges()];
+		BoolVar[] edges = new BoolVar[molecule.getNbBonds()];
 
-		Couple<Integer, Integer> [] indexesEdges = new Couple[molecule.getNbEdges()];
-		int [][] edgesIndexes = new int[molecule.getNbNodes()][molecule.getNbNodes()];
-		int [] adjacentEdges = new int[molecule.getNbNodes()];
+		Couple<Integer, Integer> [] indexesEdges = new Couple[molecule.getNbBonds()];
+		int [][] edgesIndexes = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
+		int [] adjacentEdges = new int[molecule.getNbCarbons()];
 		int index = 0;
 		
-		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
+		for (int i = 0; i < molecule.getNbCarbons() ; i++) {
 			Arrays.fill(edgesIndexes[i], -1);
 		}
 		
-		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
-			for (int j = (i + 1) ; j < molecule.getNbNodes() ; j++) {
+		for (int i = 0; i < molecule.getNbCarbons() ; i++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons() ; j++) {
 				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					edges[index] = model.boolVar("e_" + i + "_" + j);
 					edgesIndexes[i][j] = index;
@@ -51,10 +51,10 @@ public enum KekuleStructureSolver {
 			}
 		}
 		
-		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
+		for (int i = 0; i < molecule.getNbCarbons() ; i++) {
 			BoolVar[] edgeSum = new BoolVar[adjacentEdges[i]];
 			index = 0;
-			for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
+			for (int j = 0; j < molecule.getNbCarbons() ; j++) {
 				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					int edgeIndex = edgesIndexes[i][j];
 					edgeSum[index] = edges[edgeIndex];
@@ -72,9 +72,9 @@ public enum KekuleStructureSolver {
 			Solution solution = new Solution(model);
 			solution.record();
 
-			int[] edgesValues = new int[molecule.getNbEdges()];
+			int[] edgesValues = new int[molecule.getNbBonds()];
 
-			for (int j = 0; j < molecule.getNbEdges(); j++) {
+			for (int j = 0; j < molecule.getNbBonds(); j++) {
 				edgesValues[j] = solution.getIntVal(edges[j]);
 			}
 
@@ -82,9 +82,9 @@ public enum KekuleStructureSolver {
 			 * Computing the curent Kekulé's structure
 			 */
 
-			int [][] structure = new int[molecule.getNbNodes()][molecule.getNbNodes()];
-			for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
-				for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
+			int [][] structure = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
+			for (int i = 0; i < molecule.getNbCarbons() ; i++) {
+				for (int j = 0; j < molecule.getNbCarbons() ; j++) {
 					if (molecule.getEdgeMatrix()[i][j] == 0)
 						structure[i][j] = -1;
 					else
@@ -114,10 +114,10 @@ public enum KekuleStructureSolver {
 		Model model = new Model("Clar Cover");
 
 		BoolVar[] circles = new BoolVar[molecule.getNbHexagons()];
-		BoolVar[] bonds = new BoolVar[molecule.getNbEdges()];
-		BoolVar[] singleElectrons = new BoolVar[molecule.getNbNodes()];
+		BoolVar[] bonds = new BoolVar[molecule.getNbBonds()];
+		BoolVar[] singleElectrons = new BoolVar[molecule.getNbCarbons()];
 
-		BoolVar[][] bondsMatrix = new BoolVar[molecule.getNbNodes()][molecule.getNbNodes()];
+		BoolVar[][] bondsMatrix = new BoolVar[molecule.getNbCarbons()][molecule.getNbCarbons()];
 
 		IntVar nbCircles = model.intVar("nb_circles", 0, molecule.getNbHexagons());
 		IntVar nbSingleElectrons = model.intVar("nb_single_electrons", 0, 2);
@@ -126,8 +126,8 @@ public enum KekuleStructureSolver {
 			circles[i] = model.boolVar("circle[" + i + "]");
 
 		int index = 0;
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 				if (molecule.edgeExists(i, j)) {
 					BoolVar bondVariable = model.boolVar("bond[" + i + "][" + j + "]");
 					bonds[index] = bondVariable;
@@ -179,17 +179,17 @@ public enum KekuleStructureSolver {
 		for (Solution solution : solutions) {
 
 			int[] circlesInt = new int[circles.length];
-			int[][] bondsInt = new int[molecule.getNbNodes()][molecule.getNbNodes()];
-			int[] singleElectronsInt = new int[molecule.getNbNodes()];
+			int[][] bondsInt = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
+			int[] singleElectronsInt = new int[molecule.getNbCarbons()];
 
 			for (int i = 0; i < circles.length; i++)
 				circlesInt[i] = solution.getIntVal(circles[i]);
 
-			for (int i = 0; i < molecule.getNbNodes(); i++) {
+			for (int i = 0; i < molecule.getNbCarbons(); i++) {
 
 				singleElectronsInt[i] = solution.getIntVal(singleElectrons[i]);
 
-				for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+				for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 					if (bondsMatrix[i][j] != null) {
 						int value = solution.getIntVal(bondsMatrix[i][j]);
 						bondsInt[i][j] = value;

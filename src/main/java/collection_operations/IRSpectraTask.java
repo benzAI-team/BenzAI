@@ -6,13 +6,15 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
+import spectrums.ResultLogFile;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidPane;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class IRSpectraTask extends CollectionTask {
     private int indexDatabase;
@@ -55,34 +57,32 @@ public class IRSpectraTask extends CollectionTask {
 
                         for (BenzenoidPane pane : panes) {
 
-                            Benzenoid molecule = currentPane.getMolecule(pane.getIndex());
+                            Benzenoid benzenoid = currentPane.getMolecule(pane.getIndex());
 
-                            if (!molecule.databaseCheckedIR()) {
-                                if (molecule.getIRSpectraResult() != null) {
-                                    System.out.println(molecule);
+                            Optional<ResultLogFile> IRSpectra = benzenoid.getDatabaseInformation().findIRSpectra();
 
-                                    Platform.runLater(() -> {
-                                        Image image = new Image("/resources/graphics/icon-database.png");
-                                        ImageView imgView = new ImageView(image);
-                                        imgView.resize(30, 30);
-                                        Tooltip.install(imgView,
-                                                new Tooltip("This molecule exists in the database"));
-                                        pane.getDescriptionBox().getChildren().add(imgView);
+                            if (IRSpectra.isPresent()) {
+                                System.out.println(benzenoid);
 
-                                        if (indexDatabase == 1) {
-                                            collectionManagerPane.log(indexDatabase + "/" + size, false);
-                                            lineIndexDatabase = currentPane.getConsole().getNbLines() - 1;
-                                        } else {
-                                            collectionManagerPane.changeLineConsole(indexDatabase + "/" + size, lineIndexDatabase);
-                                        }
+                                Platform.runLater(() -> {
+                                    Image image = new Image("/resources/graphics/icon-database.png");
+                                    ImageView imgView = new ImageView(image);
+                                    imgView.resize(30, 30);
+                                    Tooltip.install(imgView,
+                                            new Tooltip("This molecule exists in the database"));
+                                    pane.getDescriptionBox().getChildren().add(imgView);
 
-                                        indexDatabase++;
-                                    });
+                                    if (indexDatabase == 1) {
+                                        collectionManagerPane.log(indexDatabase + "/" + size, false);
+                                        lineIndexDatabase = currentPane.getConsole().getNbLines() - 1;
+                                    } else {
+                                        collectionManagerPane.changeLineConsole(indexDatabase + "/" + size, lineIndexDatabase);
+                                    }
 
-                                    pane.buildFrequencies();
-                                    pane.buildIntensities();
-                                    pane.buildEnergies();
-                                }
+                                    indexDatabase++;
+                                });
+
+                                pane.buildFrequencies();
                             }
                         }
 

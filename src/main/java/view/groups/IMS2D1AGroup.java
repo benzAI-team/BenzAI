@@ -8,7 +8,7 @@ import java.io.InputStream;
 import database.PictureConverter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public class IMS2D1AGroup extends MoleculeGroup {
 
@@ -16,7 +16,7 @@ public class IMS2D1AGroup extends MoleculeGroup {
 
 	public IMS2D1AGroup(Benzenoid molecule) {
 		super(molecule);
-		this.pictureData = molecule.getIms2d1a();
+		this.pictureData = molecule.getDatabaseInformation().findimsMap().get();
 		try {
 			buildImage();
 		} catch (IOException e) {

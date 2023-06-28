@@ -1,4 +1,4 @@
-package molecules;
+package benzenoid;
 
 import classifier.Irregularity;
 import solution.ClarCoverSolution;
@@ -10,7 +10,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class BenzenoidParser {
 
@@ -20,10 +22,10 @@ public class BenzenoidParser {
 
         int [][] edgeMatrix = benzenoid.getEdgeMatrix();
 
-        writer.write("p DIMACS " + benzenoid.getNbNodes() + " " + benzenoid.getNbEdges() + " " + benzenoid.getNbHexagons() + "\n");
+        writer.write("p DIMACS " + benzenoid.getNbCarbons() + " " + benzenoid.getNbBonds() + " " + benzenoid.getNbHexagons() + "\n");
 
-        for (int i = 0; i < benzenoid.getNbNodes(); i++) {
-            for (int j = (i + 1); j < benzenoid.getNbNodes(); j++) {
+        for (int i = 0; i < benzenoid.getNbCarbons(); i++) {
+            for (int j = (i + 1); j < benzenoid.getNbCarbons(); j++) {
                 if (edgeMatrix[i][j] == 1) {
 
                     Node u = benzenoid.getNodeRef(i);
@@ -56,7 +58,7 @@ public class BenzenoidParser {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
         writer.write("molecule_name\t" + benzenoid.getDescription() + "\n");
-        writer.write("nb_carbons\t" + benzenoid.getNbNodes() + "\n");
+        writer.write("nb_carbons\t" + benzenoid.getNbCarbons() + "\n");
         writer.write("nb_hydrogens\t" + benzenoid.getNbHydrogens() + "\n");
         writer.write("nb_hexagons\t" + benzenoid.getNbHexagons() + "\n");
 
@@ -66,22 +68,26 @@ public class BenzenoidParser {
                 new String(("nb_kekule_structures\t" + nbKekuleStructures).getBytes(), StandardCharsets.UTF_8)
                         + "\n");
 
+        Optional<Irregularity> irregularity = benzenoid.getIrregularity();
+        if (irregularity.isPresent()) {
+            Irregularity irregularityData = benzenoid.getIrregularity().get();
+            writer.write("XI\t" + irregularityData.getXI() + "\n");
+            writer.write("#solo\t" + irregularityData.getGroup(0) + "\n");
+            writer.write("#duo\t" + irregularityData.getGroup(1) + "\n");
+            writer.write("#trio\t" + irregularityData.getGroup(2) + "\n");
+            writer.write("#quatuors\t" + irregularityData.getGroup(3) + "\n");
+        }
 
-        Irregularity irregularity = benzenoid.getIrregularity();
-        writer.write("XI\t" + irregularity.getXI() + "\n");
-        writer.write("#solo\t" + irregularity.getGroup(0) + "\n");
-        writer.write("#duo\t" + irregularity.getGroup(1) + "\n");
-        writer.write("#trio\t" + irregularity.getGroup(2) + "\n");
-        writer.write("#quatuors\t" + irregularity.getGroup(3) + "\n");
 
-        Aromaticity aromaticity = benzenoid.getAromaticity();
+
+        Aromaticity aromaticity = benzenoid.getAromaticity().get();
 
         if (aromaticity != null) {
             for (int i = 0; i < aromaticity.getLocalAromaticity().length; i++)
                 writer.write("E(H_" + i + ")\t" + aromaticity.getLocalAromaticity()[i] + "\n");
         }
 
-        ArrayList<ClarCoverSolution> clarCoverSolutions = benzenoid.getClarCoverSolutions();
+        List<ClarCoverSolution> clarCoverSolutions = benzenoid.getClarCoverSolutions();
         if (clarCoverSolutions != null) {
             writer.write("\nradicalar statistics\n");
             double[] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);

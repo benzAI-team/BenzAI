@@ -19,10 +19,10 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 
-import molecules.Benzenoid;
-import molecules.Node;
-import molecules.NodeSameLine;
-import molecules.SubGraph;
+import benzenoid.Benzenoid;
+import benzenoid.Node;
+import benzenoid.NodeSameLine;
+import benzenoid.SubGraph;
 import parsers.GraphParser;
 import solveur.LinAlgorithm.PerfectMatchingType;
 import utils.Couple;
@@ -47,11 +47,11 @@ public enum DisjunctCircuitsSolver {
 
 	private static void treatCycle(Benzenoid molecule, SubGraph subGraph, ArrayList<Integer> cycle) {
 
-		int[][] circuit = new int[molecule.getNbNodes()][molecule.getNbNodes()];
+		int[][] circuit = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
 
-		int[] checkedNodes = new int[molecule.getNbNodes()];
+		int[] checkedNodes = new int[molecule.getNbCarbons()];
 
-		for (int i = 0; i < molecule.getNbNodes(); i++)
+		for (int i = 0; i < molecule.getNbCarbons(); i++)
 			checkedNodes[i] = 1;
 
 		for (Integer i : cycle)
@@ -233,7 +233,7 @@ public enum DisjunctCircuitsSolver {
                                                              ArrayList<Integer> allHexagons) {
 
 		ArrayList<Integer> hexagons = new ArrayList<>();
-		int[] checkedNodes = new int[molecule.getNbNodes()];
+		int[] checkedNodes = new int[molecule.getNbCarbons()];
 
 		for (Integer u : cycle) {
 			if (checkedNodes[u] == 0) {
@@ -423,8 +423,8 @@ public enum DisjunctCircuitsSolver {
 			int[] hexagonsCount = new int[molecule.getNbHexagons()];
 
 			for (int x = interval.x1(); x <= interval.x2(); x += 2) {
-				int u1 = molecule.getCoords().get(x, interval.y1());
-				int u2 = molecule.getCoords().get(x, interval.y2());
+				int u1 = molecule.getMatrixCoordinates().get(x, interval.y1());
+				int u2 = molecule.getMatrixCoordinates().get(x, interval.y2());
 
 				if (u1 == -1 || u2 == -1)
 					return new ArrayList<>();
@@ -625,8 +625,8 @@ public enum DisjunctCircuitsSolver {
 			int uIndex = cycle.get(i);
 			int vIndex = cycle.get(i + 1);
 
-			Node u = molecule.getNodesRefs()[uIndex];
-			Node v = molecule.getNodesRefs()[vIndex];
+			Node u = molecule.getNodesCoordinates()[uIndex];
+			Node v = molecule.getNodesCoordinates()[vIndex];
 
 			if (u.getX() == v.getX()) {
 				firstVertices.add(u);
@@ -640,10 +640,10 @@ public enum DisjunctCircuitsSolver {
 	public static SubGraph buildSubGraph(Benzenoid molecule) {
 
 		int[][] matrix = molecule.getEdgeMatrix();
-		int[] disabledVertices = new int[molecule.getNbNodes()];
+		int[] disabledVertices = new int[molecule.getNbCarbons()];
 
-		int[] degrees = new int[molecule.getNbNodes()];
-		for (int i = 0; i < molecule.getNbNodes(); i++)
+		int[] degrees = new int[molecule.getNbCarbons()];
+		for (int i = 0; i < molecule.getNbCarbons(); i++)
 			degrees[i] = molecule.getDegrees()[i];
 
 		PerfectMatchingType type = PerfectMatchingType.DET;
@@ -653,18 +653,18 @@ public enum DisjunctCircuitsSolver {
 
 	public static void solve(Benzenoid molecule, PerfectMatchingType type) throws IOException {
 
-		int[] firstVertices = new int[molecule.getNbEdges()];
-		int[] secondVertices = new int[molecule.getNbEdges()];
+		int[] firstVertices = new int[molecule.getNbBonds()];
+		int[] secondVertices = new int[molecule.getNbBonds()];
 
 		Model model = new Model("Cycles");
 
-		UndirectedGraph GLB = new UndirectedGraph(model, molecule.getNbNodes(), SetType.BITSET, false);
-		UndirectedGraph GUB = new UndirectedGraph(model, molecule.getNbNodes(), SetType.BITSET, false);
+		UndirectedGraph GLB = new UndirectedGraph(model, molecule.getNbCarbons(), SetType.BITSET, false);
+		UndirectedGraph GUB = new UndirectedGraph(model, molecule.getNbCarbons(), SetType.BITSET, false);
 
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
 			GUB.addNode(i);
 
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					GUB.addEdge(i, j);
 				}
@@ -673,11 +673,11 @@ public enum DisjunctCircuitsSolver {
 
 		UndirectedGraphVar g = model.graphVar("g", GLB, GUB);
 
-		BoolVar[] boolEdges = new BoolVar[molecule.getNbEdges()];
+		BoolVar[] boolEdges = new BoolVar[molecule.getNbBonds()];
 
 		int index = 0;
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 
 				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					boolEdges[index] = model.boolVar("(" + i + "--" + j + ")");
@@ -693,7 +693,7 @@ public enum DisjunctCircuitsSolver {
 		model.maxDegree(g, 2).post();
 		model.connected(g).post();
 
-		int maxCycleSize = (int) Math.ceil((double) molecule.getNbNodes() / 2.0);
+		int maxCycleSize = (int) Math.ceil((double) molecule.getNbCarbons() / 2.0);
 		int sum = 2;
 
 		Constraint[] or = new Constraint[maxCycleSize];

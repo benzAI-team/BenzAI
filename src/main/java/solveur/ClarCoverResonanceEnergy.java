@@ -1,6 +1,6 @@
 package solveur;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.GraphParser;
 import solution.ClarCoverSolution;
 

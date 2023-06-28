@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextInputDialog;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 import solveur.ClarCoverForcedRadicalsSolver;
 import utils.Utils;

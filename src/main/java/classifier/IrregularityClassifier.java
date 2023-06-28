@@ -1,6 +1,6 @@
 package classifier;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 public class IrregularityClassifier extends Classifier {
 
@@ -17,10 +18,6 @@ public class IrregularityClassifier extends Classifier {
 			throws IOException {
 		super(moleculesInformations);
 		this.step = step;
-	}
-
-	public static Irregularity computeParameterOfIrregularity(Benzenoid molecule) {
-		return molecule.getIrregularity();
 	}
 
 	@Override
@@ -71,11 +68,9 @@ public class IrregularityClassifier extends Classifier {
 			String moleculeName = moleculeInformation.getMoleculeName();
 			Benzenoid molecule = moleculeInformation.getMolecule();
 
-			Irregularity irregularity = computeParameterOfIrregularity(molecule);
-
-			if (irregularity != null) {
-
-				double XI = irregularity.getXI();
+			Optional<Irregularity> irregularity = molecule.getIrregularity();
+			if (irregularity.isPresent()) {
+				double XI = irregularity.get().getXI();
 
 				int index;
 
@@ -88,11 +83,7 @@ public class IrregularityClassifier extends Classifier {
 				}
 			}
 		}
-		/*
-		 * for (int i = 0 ; i < classes.size() ; i++) { if
-		 * (classes.get(i).getMoleculesNames().size() == 0) { classes.remove(i); i --; }
-		 * }
-		 */
+
 		return classes;
 	}
 }

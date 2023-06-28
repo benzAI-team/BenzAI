@@ -3,12 +3,12 @@ package view.primaryStage.menus;
 import application.BenzenoidApplication;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import molecules.sort.IrregularityComparator;
-import molecules.sort.NbCarbonsComparator;
-import molecules.sort.NbHexagonsComparator;
-import molecules.sort.NbHydrogensComparator;
-import molecules.sort.NbKekuleStructuresComparator;
-import molecules.sort.ResonanceEnergyComparator;
+import benzenoid.sort.IrregularityComparator;
+import benzenoid.sort.NbCarbonsComparator;
+import benzenoid.sort.NbHexagonsComparator;
+import benzenoid.sort.NbHydrogensComparator;
+import benzenoid.sort.NbKekuleStructuresComparator;
+import benzenoid.sort.ResonanceEnergyComparator;
 import view.collections.BenzenoidCollectionsManagerPane;
 
 public class SortMenu {

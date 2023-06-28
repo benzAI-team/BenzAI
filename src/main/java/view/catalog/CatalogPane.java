@@ -1,10 +1,7 @@
 package view.catalog;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import application.BenzenoidApplication;
 import classifier.CarbonHydrogenClassifier;
@@ -34,7 +31,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import spectrums.Parameter;
 import spectrums.ResultLogFile;
 import spectrums.ResultSpectrums;
@@ -561,11 +558,10 @@ public class CatalogPane extends GridPane {
 
 								Benzenoid molecule = value.getMolecule();
 
-								Irregularity irregularity = IrregularityClassifier
-										.computeParameterOfIrregularity(molecule);
+								Optional<Irregularity> irregularity = molecule.getIrregularity();
 
-								if (irregularity != null)
-									irregularities.put(key, irregularity.getXI());
+								if (irregularity.isPresent())
+									irregularities.put(key, irregularity.get().getXI());
 								else
 									irregularities.put(key, -1.0);
 							}
@@ -578,7 +574,6 @@ public class CatalogPane extends GridPane {
 								resultSpectrum.setIrregularities(irregularities);
 
 								results.add(resultSpectrum);
-								// results.add(SpectrumsComputer.treatClass(PAHClass, parameter, classResults));
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}

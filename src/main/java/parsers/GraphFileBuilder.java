@@ -56,53 +56,6 @@ public class GraphFileBuilder {
 						neighborhood[neighbor.getIndex()] = v;
 			}
 		}
-//		//0 - HIGH-RIGHT
-//		if (y > 0) {
-//			int v = coordsMatrix[y - 1][x];
-//			if (v != -1)
-//				if (solution.get(v) == 1)
-//					neighborhood[0] = v;
-//		}
-//
-//		//1 - RIGHT
-//		if (x < diameter - 1) {
-//			int v = coordsMatrix[y][x + 1];
-//			if (v != -1)
-//				if (solution.get(v) == 1)
-//					neighborhood[1] = v;
-//		}
-//
-//		//2 - DOWN-RIGHT
-//		if (x < diameter - 1 && y < diameter - 1) {
-//			int v = coordsMatrix[y + 1][x + 1];
-//			if (v != -1)
-//				if (solution.get(v) == 1)
-//					neighborhood[2] = v;
-//		}
-//
-//		//3 - DOWN-LEFT
-//		if (y < diameter - 1) {
-//			int v = coordsMatrix[y + 1][x];
-//			if (v != -1)
-//				if (solution.get(v) == 1)
-//					neighborhood[3] = v;
-//		}
-//
-//		//4 - LEFT
-//		if (x > 0) {
-//			int v = coordsMatrix[y][x - 1];
-//			if (v != -1)
-//				if (solution.get(v) == 1)
-//					neighborhood[4] = v;
-//		}
-//
-//		//5 - HIGH-LEFT
-//		if (x > 0 && y > 0) {
-//			int v = coordsMatrix[y - 1][x - 1];
-//			if (v != -1)
-//				if (solution.get(v) == 1)
-//					neighborhood[5] = v;
-//		}
 
 		return neighborhood;
 	}
@@ -156,12 +109,12 @@ public class GraphFileBuilder {
 		int nbEdges = 0;
 		int nbHexagons = 0;
 
-		for (int[] ints : hexagons) {
-			if (isFull(ints)) {
+		for (int[] hexagon : hexagons) {
+			if (isFull(hexagon)) {
 				nbHexagons++;
 				for (int i = 0; i < 6; i++) {
-					int u = ints[i];
-					int v = ints[(i + 1) % 6];
+					int u = hexagon[i];
+					int v = hexagon[(i + 1) % 6];
 
 					if (edgeMatrix[u][v] == 0) {
 						edgeMatrix[u][v] = 1;
@@ -184,14 +137,14 @@ public class GraphFileBuilder {
 			}
 		}
 
-		for (int[] ints : hexagons) {
+		for (int[] hexagon : hexagons) {
 
-			if (isFull(ints)) {
+			if (isFull(hexagon)) {
 
 				writer.write("h ");
 
 				for (int i = 0; i < 6; i++) {
-					writer.write(ints[i] + " ");
+					writer.write(hexagon[i] + " ");
 				}
 
 				writer.write("\n");

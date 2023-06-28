@@ -12,6 +12,8 @@ public class ResultLogFile {
 	private ArrayList<Double> finalEnergies;
 	private double zeroPointEnergy;
 
+	private String amesFormat;
+
 	private double molecularMass;
 	public ResultLogFile(String filename, ArrayList<Double> frequencies, ArrayList<Double> intensities, ArrayList<Double> finalEnergies, double zeroPointEnergy) {
 		this.frequencies = frequencies;
@@ -79,6 +81,14 @@ public class ResultLogFile {
 
 	public double getMolecularMass() {
 		return molecularMass;
+	}
+
+	public String getAmesFormat() {
+		return amesFormat;
+	}
+
+	public void setAmesFormat(String amesFormat) {
+		this.amesFormat = amesFormat;
 	}
 
 	@Override

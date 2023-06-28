@@ -28,7 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import spectrums.ResultLogFile;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane.DisplayType;
@@ -234,9 +234,6 @@ public class DatabasePane extends ScrollPane {
 								for (Map map : results) {
 									try {
 
-										if (i == 4968)
-											System.out.print("");
-
 										IRSpectraEntry content = IRSpectraEntry.buildQueryContent(map);
 
 										Benzenoid molecule = null;
@@ -246,8 +243,6 @@ public class DatabasePane extends ScrollPane {
 										i++;
 
 										ResultLogFile resultLog = content.buildResultLogFile();
-
-										molecule.setNicsResult(resultLog);
 
 										molecules.add(molecule);
 										logsResults.put(molecule.toString(), resultLog);

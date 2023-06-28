@@ -1,6 +1,6 @@
 package gaussbuilder;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Couple;
 import utils.Triplet;
 
@@ -27,7 +27,7 @@ enum GeometryBuilder {
 
 		ArrayList<Integer> carbons = new ArrayList<>();
 
-		for (int c = 0; c < molecule.getNbNodes(); c++) {
+		for (int c = 0; c < molecule.getNbCarbons(); c++) {
 			if (molecule.degree(c) == 2)
 				carbons.add(c);
 		}
@@ -56,7 +56,7 @@ enum GeometryBuilder {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 			int[] hexagon = molecule.getHexagons()[i];
-			int y = molecule.getNodesRefs()[hexagon[0]].getY();
+			int y = molecule.getNodesCoordinates()[hexagon[0]].getY();
 
 			if (y < yMin) {
 				yMin = y;
@@ -96,7 +96,7 @@ enum GeometryBuilder {
 			candidates.remove(candidates.get(0));
 		}
 
-		Triplet<Double, Double, Double>[] carbons = new Triplet[molecule.getNbNodes()];
+		Triplet<Double, Double, Double>[] carbons = new Triplet[molecule.getNbCarbons()];
 
 		for (Integer h : hexagonsOrder) {
 
@@ -117,8 +117,8 @@ enum GeometryBuilder {
 				int v = hexagon[(index + 1) % 6];
 				double xu, yu, xv = 0, yv = 0;
 				if (carbons[u] == null) {
-					xu = molecule.getNodesRefs()[u].getX();
-					yu = molecule.getNodesRefs()[u].getY();
+					xu = molecule.getNodesCoordinates()[u].getX();
+					yu = molecule.getNodesCoordinates()[u].getY();
 				}
 				else {
 					xu = carbons[u].getX();
@@ -167,7 +167,7 @@ enum GeometryBuilder {
 		// hc[i] = j => l'hydrogene i est lié au carbone j
 		ArrayList<Integer> hydrogensConnections = new ArrayList<>();
 
-		int[] treatedCarbons = new int[molecule.getNbNodes()];
+		int[] treatedCarbons = new int[molecule.getNbCarbons()];
 
 		for (Integer u : carbonsWithHydrogens) {
 

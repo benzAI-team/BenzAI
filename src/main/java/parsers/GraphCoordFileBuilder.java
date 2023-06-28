@@ -1,6 +1,6 @@
 package parsers;
 
-import molecules.Node;
+import benzenoid.Node;
 import utils.RelativeMatrix;
 
 import java.awt.*;
@@ -17,7 +17,7 @@ public class GraphCoordFileBuilder {
     private int nbHexagons = -1;
 
     private int[][] adjacencyMatrix = null;
-    private molecules.Node[] nodes = null;
+    private benzenoid.Node[] nodes = null;
     private ArrayList<String> hexagonsString;
 
     private RelativeMatrix nodesCoord = null;

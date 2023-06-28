@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public class IrregularityFilter extends Filter {
 
@@ -13,7 +13,7 @@ public class IrregularityFilter extends Filter {
 	public boolean test(Benzenoid molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
 		for(PropertyExpression expression : propertyExpressionList) {
 			int irregularity = ((BinaryNumericalExpression)expression).getValue();
-			if(!((BinaryNumericalExpression)expression).test(molecule.getIrregularity().getXI(), ((BinaryNumericalExpression)expression).getOperator(), irregularity))
+			if(!((BinaryNumericalExpression)expression).test(molecule.getIrregularity().get().getXI(), ((BinaryNumericalExpression)expression).getOperator(), irregularity))
 				return false;
 		}
 		return true;

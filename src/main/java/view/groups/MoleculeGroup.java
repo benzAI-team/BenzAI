@@ -3,7 +3,7 @@ package view.groups;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Couple;
 import utils.HexNeighborhood;
 

@@ -2,7 +2,7 @@ package view.ames_format;
 
 import application.BenzenoidApplication;
 import javafx.scene.layout.ColumnConstraints;
-import molecules.Geometry;
+import benzenoid.Geometry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

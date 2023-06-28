@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -24,7 +26,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.BenzenoidSolution;
 import solution.ClarCoverSolution;
 import solveur.Aromaticity;
@@ -90,9 +92,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			if (!benzenoidSetPane.isLock()) {
 				benzenoidSetPane.setHoveringPane(this);
 				benzenoidSetPane.setDescription(buildDescription());
-				benzenoidSetPane.setFrequencies(buildIRDATA());
-				benzenoidSetPane.setEnergies(buildEnergies());
-				benzenoidSetPane.setIntensities(buildIntensities());
+				benzenoidSetPane.setIRSpectraData(buildIRDATA());
 			}
 		});
 
@@ -100,9 +100,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			if (!benzenoidSetPane.isLock()) {
 				benzenoidSetPane.setHoveringPane(null);
 				benzenoidSetPane.setDescription("");
-				benzenoidSetPane.setFrequencies("");
-				benzenoidSetPane.setEnergies("");
-				benzenoidSetPane.setIntensities("");
+				benzenoidSetPane.setIRSpectraData("");
 			}
 		});
 	}
@@ -154,11 +152,8 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		benzenoidSetPane.removeSelectedBenzenoidPane(this);
 
 		benzenoidSetPane.setDescription("");
-		benzenoidSetPane.setFrequencies("");
-		benzenoidSetPane.setEnergies("");
-		benzenoidSetPane.setIntensities("");
+		benzenoidSetPane.setIRSpectraData("");
 
-		// benzenoidSetPane.setCommentArea("");
 
 		this.setStyle("-fx-border-color: black;" + "-fx-border-width: 4;" + "-fx-border-radius: 10px;");
 
@@ -177,9 +172,8 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		isSelected = true;
 
 		benzenoidSetPane.setDescription(buildDescription());
-		benzenoidSetPane.setFrequencies(buildIRDATA());
-		benzenoidSetPane.setEnergies(buildEnergies());
-		benzenoidSetPane.setIntensities(buildIntensities());
+		benzenoidSetPane.setIRSpectraData(buildIRDATA());
+
 
 		setStyle("-fx-border-color: blue;" + "-fx-border-width: 4;" + "-fx-border-radius: 10px;");
 		benzenoidSetPane.refreshCollectionProperties();
@@ -289,7 +283,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
 
-			builder.append(molecule.getNbNodes() + " carbons\n");
+			builder.append(molecule.getNbCarbons() + " carbons\n");
 			builder.append(molecule.getNbHydrogens() + " hydrogens\n");
 			if (molecule.getNbHexagons() == 1)
 				builder.append(molecule.getNbHexagons() + " hexagon\n");
@@ -314,15 +308,15 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				builder.append(new String((nbKekuleStructures + " Kekulé structure").getBytes(),
 						StandardCharsets.UTF_8) + "\n");
 
-			Irregularity irregularity = molecule.getIrregularity();
+			Optional<Irregularity> irregularity = molecule.getIrregularity();
 
-			if (irregularity != null)
+			if (irregularity.isPresent())
 				builder.append(irregularity + "\n");
 			else
 				builder.append("XI = UNKNOWN");
 
-			if (molecule.isAromaticitySet()) {
-				Aromaticity aromaticity = molecule.getAromaticity();
+			if (molecule.isAromaticityComputed()) {
+				Aromaticity aromaticity = molecule.getAromaticity().get();
 				for (int i = 0; i < aromaticity.getLocalAromaticity().length; i++) {
 					BigDecimal bd = BigDecimal.valueOf(aromaticity.getLocalAromaticity()[i]).setScale(2,
 							RoundingMode.HALF_UP);
@@ -330,18 +324,14 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				}
 			}
 
-			// ClarCoverSolution clarCoverSolution = molecule.getClarCoverSolution();
-			ArrayList<ClarCoverSolution> clarCoverSolutions = molecule.getClarCoverSolutions();
+			List<ClarCoverSolution> clarCoverSolutions = molecule.getClarCoverSolutions();
+
 			if (clarCoverSolutions != null) {
 				builder.append("\nradicalar statistics\n");
 				double[] stats = ClarCoverSolution.getRadicalarStatistics(clarCoverSolutions);
 				for (int i = 0; i < stats.length; i++)
 					builder.append("C" + (i + 1) + " : " + stats[i] + "\n");
 			}
-//			if (clarCoverSolution != null) {
-//				builder.append("\nradicalar statistics\n");
-//				//double [] stats = clarCoverSolution
-//			}
 
 			description = builder.toString();
 			return description;
@@ -380,31 +370,22 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (frequencies != null)
 			return frequencies;
 
-		if (getMolecule().databaseCheckedIR()) {
-
-			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
-			ResultLogFile log = molecule.getIRSpectraResult();
+		Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
+		if (IRSpectra.isPresent()) {
 
 			StringBuilder b = new StringBuilder();
 
-			if (log != null) {
-				int i = 0;
-				for (Double frequencie : log.getFrequencies()) {
-					b.append(i + "\t" + frequencie + "\n");
-					i++;
-				}
+			int i = 0;
+			for (Double frequencie : IRSpectra.get().getFrequencies()) {
+				b.append(i + "\t" + frequencie + "\n");
+				i++;
 			}
 
-			else
-				b.append("Unknown");
-
 			frequencies = b.toString();
-
 		}
 
-		else {
-			return "Unknown";
-		}
+		else
+			frequencies = "Unknown";
 
 		return frequencies;
 	}
@@ -413,89 +394,25 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		
 		if (irData != null)
 			return irData;
-		
-		if (getMolecule().databaseCheckedIR()) {
-			
-			StringBuilder b = new StringBuilder();
-			ResultLogFile log = getMolecule().getIRSpectraResult();
-			
-			if (log != null) {
+
+		if (getMolecule().getDatabaseInformation().getDatabaseCheckManager().isIRSpectraChecked()) {
+
+			Optional<ResultLogFile> IRSpectra = getMolecule().getDatabaseInformation().findIRSpectra();
+			if (IRSpectra.isPresent()) {
+				StringBuilder b = new StringBuilder();
+
 				b.append("i\tFreq\tInten\n");
-				for (int i = 0 ; i < log.getNbFrequencies() ; i++) {
-					b.append(i + "\t" + log.getFrequency(i) + "\t" + log.getIntensity(i) + "\n");
+				for (int i = 0; i < IRSpectra.get().getNbFrequencies(); i++) {
+					b.append(i + "\t" + IRSpectra.get().getFrequency(i) + "\t" + IRSpectra.get().getIntensity(i) + "\n");
 				}
-				b.append("final energy: " + log.getFinalEnergy().get(log.getFinalEnergy().size() - 1));
-			}
-			
-			irData = b.toString();
-			return irData;
-		}
-		
-		return "";
-	}
-	
-	public String buildEnergies() {
+				b.append("final energy: " + IRSpectra.get().getFinalEnergy().get(IRSpectra.get().getFinalEnergy().size() - 1));
 
-		if (energies != null)
-			return energies;
-
-		if (getMolecule().databaseCheckedIR()) {
-
-			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
-			ResultLogFile log = molecule.getIRSpectraResult();
-
-			StringBuilder b = new StringBuilder();
-
-			if (log != null) {
-				int i = 0;
-				for (Double energy : log.getFinalEnergy()) {
-					b.append(i + "\t" + energy + "\n");
-					i++;
-				}
+				irData = b.toString();
+				return irData;
 			}
 
-			else
-				b.append("Unknown");
-
-			energies = b.toString();
-
 		}
-
-		else
-			return "Unknown";
-		return energies;
-	}
-
-	public String buildIntensities() {
-
-		if (intensities != null)
-			return intensities;
-
-		if (getMolecule().databaseCheckedIR()) {
-
-			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
-			ResultLogFile log = molecule.getIRSpectraResult();
-
-			StringBuilder b = new StringBuilder();
-
-			if (log != null) {
-				int i = 0;
-				for (Double intensity : log.getIntensities()) {
-					b.append(i + "\t" + intensity + "\n");
-					i++;
-				}
-			}
-
-			else
-				b.append("Unknown");
-
-			intensities = b.toString();
-		}
-
-		else
-			return "Unknown";
-		return intensities;
-
+		return "Unknown";
 	}
 
 	public HBox getDescriptionBox() {

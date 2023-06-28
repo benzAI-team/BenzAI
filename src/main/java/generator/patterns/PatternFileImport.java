@@ -1,6 +1,6 @@
 package generator.patterns;
 
-import molecules.Node;
+import benzenoid.Node;
 import utils.RelativeMatrix;
 
 import java.io.BufferedReader;

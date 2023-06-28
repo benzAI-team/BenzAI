@@ -1,6 +1,6 @@
 package collection_operations;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 import solveur.ClarCoverSolver;
 import utils.Utils;
@@ -49,7 +49,7 @@ public class FixedBondClarCoverComputation extends CollectionComputation{
                 // 0 = non défini // 1 = pas de cercle // 2 = cercle
                 int[] circles = new int[molecule.getNbHexagons()];
                 // (i,j) = 1 => full simple // (i,j) = 2 => full double
-                int[][] bonds = new int[molecule.getNbNodes()][molecule.getNbNodes()];
+                int[][] bonds = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
                 for (ClarCoverSolution solution : clarCoverSolutions) {
 
                     for (int i = 0; i < molecule.getNbHexagons(); i++) {
@@ -80,8 +80,8 @@ public class FixedBondClarCoverComputation extends CollectionComputation{
                         }
                     }
 
-                    for (int i = 0; i < molecule.getNbNodes(); i++) {
-                        for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+                    for (int i = 0; i < molecule.getNbCarbons(); i++) {
+                        for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
                             if (molecule.getEdgeMatrix()[i][j] == 1) {
                                 if (solution.isDoubleBond(i, j)) {
                                     if (bonds[i][j] == 0) {

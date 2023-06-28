@@ -10,7 +10,7 @@ import org.chocosolver.solver.constraints.nary.cnf.LogOp;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 import utils.Couple;
 
@@ -22,10 +22,10 @@ public enum ClarCoverForcedRadicalsSolver {
 		Model model = new Model("Clar Cover");
 
 		BoolVar[] circles = new BoolVar[molecule.getNbHexagons()];
-		BoolVar[] bonds = new BoolVar[molecule.getNbEdges()];
-		BoolVar[] singleElectrons = new BoolVar[molecule.getNbNodes()];
+		BoolVar[] bonds = new BoolVar[molecule.getNbBonds()];
+		BoolVar[] singleElectrons = new BoolVar[molecule.getNbCarbons()];
 
-		BoolVar[][] bondsMatrix = new BoolVar[molecule.getNbNodes()][molecule.getNbNodes()];
+		BoolVar[][] bondsMatrix = new BoolVar[molecule.getNbCarbons()][molecule.getNbCarbons()];
 
 		IntVar nbCircles = model.intVar("nb_circles", 0, molecule.getNbHexagons());
 		IntVar nbSingleElectrons = model.intVar("nb_single_electrons", 0, molecule.getNbHexagons());
@@ -34,8 +34,8 @@ public enum ClarCoverForcedRadicalsSolver {
 			circles[i] = model.boolVar("circle[" + i + "]");
 
 		int index = 0;
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 				if (molecule.edgeExists(i, j)) {
 
 					BoolVar bondVariable = model.boolVar("bond[" + i + "][" + j + "]");
@@ -72,8 +72,8 @@ public enum ClarCoverForcedRadicalsSolver {
 		}
 
 		// Contrainte : deux radicaux ne doivent pas se jouxter (pour chaque carbone, s'il est un radical, ses voisins ne le sont pas)
-		for (int i = 0; i < molecule.getNbNodes(); i++)
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++)
+		for (int i = 0; i < molecule.getNbCarbons(); i++)
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++)
 				if (molecule.edgeExists(i, j)) {
 					model.addClauses(LogOp.nand(singleElectrons[i], singleElectrons[j]));
 					//System.out.println(i + "-" + j);
@@ -100,17 +100,17 @@ public enum ClarCoverForcedRadicalsSolver {
 		for (Solution solution : solutions) {
 
 			int[] circlesInt = new int[circles.length];
-			int[][] bondsInt = new int[molecule.getNbNodes()][molecule.getNbNodes()];
-			int[] singleElectronsInt = new int[molecule.getNbNodes()];
+			int[][] bondsInt = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
+			int[] singleElectronsInt = new int[molecule.getNbCarbons()];
 
 			for (int i = 0; i < circles.length; i++)
 				circlesInt[i] = solution.getIntVal(circles[i]);
 
-			for (int i = 0; i < molecule.getNbNodes(); i++) {
+			for (int i = 0; i < molecule.getNbCarbons(); i++) {
 
 				singleElectronsInt[i] = solution.getIntVal(singleElectrons[i]);
 
-				for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+				for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 					if (bondsMatrix[i][j] != null) {
 						int value = solution.getIntVal(bondsMatrix[i][j]);
 						bondsInt[i][j] = value;

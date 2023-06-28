@@ -3,7 +3,7 @@ package collection_operations;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 import solveur.ClarCoverSolver;
 import utils.Utils;

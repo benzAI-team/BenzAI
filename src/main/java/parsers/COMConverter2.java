@@ -1,6 +1,6 @@
 package parsers;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
@@ -135,7 +135,7 @@ public enum COMConverter2 {
 
 		ArrayList<Integer> carbons = new ArrayList<>();
 
-		for (int c = 0; c < molecule.getNbNodes(); c++) {
+		for (int c = 0; c < molecule.getNbCarbons(); c++) {
 			if (molecule.degree(c) == 2)
 				carbons.add(c);
 		}
@@ -203,7 +203,7 @@ public enum COMConverter2 {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 			int[] hexagon = molecule.getHexagons()[i];
-			int y = molecule.getNodesRefs()[hexagon[0]].getY();
+			int y = molecule.getNodesCoordinates()[hexagon[0]].getY();
 
 			if (y < yMin) {
 				yMin = y;
@@ -243,7 +243,7 @@ public enum COMConverter2 {
 			candidates.remove(candidates.get(0));
 		}
 
-		Triplet<Double, Double, Double>[] carbons = new Triplet[molecule.getNbNodes()];
+		Triplet<Double, Double, Double>[] carbons = new Triplet[molecule.getNbCarbons()];
 
 		for (Integer h : hexagonsOrder) {
 
@@ -267,8 +267,8 @@ public enum COMConverter2 {
 				double xu = 0, yu = 0, xv = 0, yv = 0;
 
 				if (carbons[u] == null) {
-					xu = molecule.getNodesRefs()[u].getX();
-					yu = molecule.getNodesRefs()[u].getY();
+					xu = molecule.getNodesCoordinates()[u].getX();
+					yu = molecule.getNodesCoordinates()[u].getY();
 				} else {
 					xu = carbons[u].getX();
 					yu = carbons[u].getY();
@@ -315,7 +315,7 @@ public enum COMConverter2 {
 
 		ArrayList<ArrayList<Integer>> cycles = countCycles(carbons);
 
-		System.out.println("nb_carbons\texpected: " + molecule.getNbNodes() + "\t got: " + carbons.length);
+		System.out.println("nb_carbons\texpected: " + molecule.getNbCarbons() + "\t got: " + carbons.length);
 		System.out.println("nb_cycles\texpected: " + molecule.getNbHexagons() + "\t got: " + cycles.size());
 
 //		for (Integer u : carbonsWithHydrogens) {
@@ -398,7 +398,7 @@ public enum COMConverter2 {
 		
 		
 		
-		int[] treatedCarbons = new int[molecule.getNbNodes()];
+		int[] treatedCarbons = new int[molecule.getNbCarbons()];
 
 		for (Integer u : carbonsWithHydrogens) {
 

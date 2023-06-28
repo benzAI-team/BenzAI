@@ -1,4 +1,4 @@
-package molecules;
+package benzenoid;
 
 public class OrientedCycle {
 
@@ -8,8 +8,8 @@ public class OrientedCycle {
 	
 	public OrientedCycle(Benzenoid molecule) {
 		size = 0;
-		nodes = new int [molecule.getNbNodes()];
-		matrix = new int [molecule.getNbNodes()][molecule.getNbNodes()];
+		nodes = new int [molecule.getNbCarbons()];
+		matrix = new int [molecule.getNbCarbons()][molecule.getNbCarbons()];
 	}
 
 	public int getSize() {

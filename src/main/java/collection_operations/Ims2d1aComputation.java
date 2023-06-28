@@ -1,12 +1,13 @@
 package collection_operations;
 
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidPane;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Ims2d1aComputation extends CollectionComputation{
     Ims2d1aComputation() {
@@ -29,9 +30,13 @@ public class Ims2d1aComputation extends CollectionComputation{
 
         int nbNotAvailable = 0; // the number of benzenoids for which the map is not available
         for (BenzenoidPane pane : panes) {
-            Benzenoid molecule = currentPane.getMolecule(pane.getIndex());
-            if (molecule.getIms2d1a() != null)
-                benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.IMS2D1A);
+
+            Benzenoid benzenoid = currentPane.getMolecule(pane.getIndex());
+            Optional<String> imsMap = benzenoid.getDatabaseInformation().findimsMap();
+
+            if (imsMap.isPresent()) {
+                benzenoidSetPane.addBenzenoid(benzenoid, BenzenoidCollectionPane.DisplayType.IMS2D1A);
+            }
             else
                 nbNotAvailable++;
         }

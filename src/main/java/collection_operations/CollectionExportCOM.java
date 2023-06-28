@@ -2,7 +2,7 @@ package collection_operations;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 import parsers.ComConverter;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;

@@ -1,7 +1,7 @@
 package parsers;
 
-import molecules.Benzenoid;
-import molecules.Node;
+import benzenoid.Benzenoid;
+import benzenoid.Node;
 import utils.Couple;
 import utils.Triplet;
 
@@ -20,7 +20,7 @@ public enum ComConverter {
 
 		ArrayList<Integer> carbons = new ArrayList<Integer>();
 
-		for (int c = 0; c < molecule.getNbNodes(); c++) {
+		for (int c = 0; c < molecule.getNbCarbons(); c++) {
 			if (molecule.degree(c) == 2)
 				carbons.add(c);
 		}
@@ -123,11 +123,11 @@ public enum ComConverter {
 
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<Couple<Integer, Integer>>();
 
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
 
 			Node u = molecule.getNodeRef(i);
 
-			for (int j = 0; j < molecule.getNbNodes(); j++) {
+			for (int j = 0; j < molecule.getNbCarbons(); j++) {
 
 				if (i != j) {
 
@@ -198,7 +198,7 @@ public enum ComConverter {
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 			int[] hexagon = molecule.getHexagons()[i];
-			int y = molecule.getNodesRefs()[hexagon[0]].getY();
+			int y = molecule.getNodesCoordinates()[hexagon[0]].getY();
 
 			if (y < yMin) {
 				yMin = y;
@@ -238,7 +238,7 @@ public enum ComConverter {
 			candidates.remove(candidates.get(0));
 		}
 
-		Triplet<Double, Double, Double>[] carbons = new Triplet[molecule.getNbNodes()];
+		Triplet<Double, Double, Double>[] carbons = new Triplet[molecule.getNbCarbons()];
 
 		for (Integer h : hexagonsOrder) {
 
@@ -262,8 +262,8 @@ public enum ComConverter {
 				double xu = 0, yu = 0, xv = 0, yv = 0;
 
 				if (carbons[u] == null) {
-					xu = molecule.getNodesRefs()[u].getX();
-					yu = molecule.getNodesRefs()[u].getY();
+					xu = molecule.getNodesCoordinates()[u].getX();
+					yu = molecule.getNodesCoordinates()[u].getY();
 				} else {
 					xu = carbons[u].getX();
 					yu = carbons[u].getY();
@@ -309,7 +309,7 @@ public enum ComConverter {
 		ArrayList<Integer> carbonsWithHydrogens = getCarbonsWithHydrogens(molecule);
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = checkGeometry(molecule, carbonsWithHydrogens);
 
-		int[] treatedCarbons = new int[molecule.getNbNodes()];
+		int[] treatedCarbons = new int[molecule.getNbCarbons()];
 
 		for (Integer u : carbonsWithHydrogens) {
 

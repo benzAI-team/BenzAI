@@ -1,7 +1,7 @@
 package generator.properties.model.checkers;
 
 import generator.properties.model.ModelProperty;
-import molecules.Benzenoid;
+import benzenoid.Benzenoid;
 
 public class ConcealedNonKekuleanChecker extends Checker {
 

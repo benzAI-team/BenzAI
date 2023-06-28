@@ -14,10 +14,10 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
-import molecules.Benzenoid;
-import molecules.Node;
-import molecules.NodeSameLine;
-import molecules.OrientedCycle;
+import benzenoid.Benzenoid;
+import benzenoid.Node;
+import benzenoid.NodeSameLine;
+import benzenoid.OrientedCycle;
 import parsers.GraphParser;
 import utils.EdgeSet;
 import utils.Interval;
@@ -62,8 +62,8 @@ public enum RandicMethod {
 				
 				if (cycle[i][j] == 1) {
 					
-					Node u = molecule.getNodesRefs()[i];
-					Node v = molecule.getNodesRefs()[j];
+					Node u = molecule.getNodesCoordinates()[i];
+					Node v = molecule.getNodesCoordinates()[j];
 					
 					if (u.getX() == v.getX()) {
 						firstVertices.add(u);
@@ -145,8 +145,8 @@ public enum RandicMethod {
 			int [] hexagonsCount = new int [molecule.getNbHexagons()];
 
 			for (int x = interval.x1() ; x <= interval.x2() ; x += 2){
-				int u1 = molecule.getCoords().get(x, interval.y1());
-				int u2 = molecule.getCoords().get(x, interval.y2());
+				int u1 = molecule.getMatrixCoordinates().get(x, interval.y1());
+				int u2 = molecule.getMatrixCoordinates().get(x, interval.y2());
 
 				for (Integer hexagon : molecule.getHexagonsVertices().get(u1)) {
 					hexagonsCount[hexagon] ++;
@@ -193,9 +193,9 @@ public enum RandicMethod {
 		ArrayList<Integer> hexagonsCycle = getHexagons(molecule, cycle);
 		int [] topLeftHexagon = molecule.getHexagons()[getTopLeftHexagon(molecule, hexagonsCycle)];
 		
-		int [] checkedNodes = new int [molecule.getNbNodes()];
+		int [] checkedNodes = new int [molecule.getNbCarbons()];
 		
-		for (int u = 0 ; u < molecule.getNbNodes() ; u++) {
+		for (int u = 0; u < molecule.getNbCarbons() ; u++) {
 			
 			if (!containsNode(cycle, u))
 				checkedNodes[u] = -1;
@@ -214,7 +214,7 @@ public enum RandicMethod {
 		
 		while (nbNodes < cycleSize(cycle)) {
 			
-			for (int v = 0 ; v < molecule.getNbNodes() ; v++) {
+			for (int v = 0; v < molecule.getNbCarbons() ; v++) {
 				
 				if (u == u1) {
 					
@@ -245,9 +245,9 @@ public enum RandicMethod {
 	
 	private static SubMolecule substractCycleAndInterior(Benzenoid molecule, int [][] cycle) {
 		
-		int [][] newGraph = new int [molecule.getNbNodes()][molecule.getNbNodes()];
-		int [] vertices = new int [molecule.getNbNodes()];
-		int [] subGraphVertices = new int[molecule.getNbNodes()];
+		int [][] newGraph = new int [molecule.getNbCarbons()][molecule.getNbCarbons()];
+		int [] vertices = new int [molecule.getNbCarbons()];
+		int [] subGraphVertices = new int[molecule.getNbCarbons()];
 		
 		List<Integer> hexagons = getHexagons(molecule, cycle);
 		
@@ -261,9 +261,9 @@ public enum RandicMethod {
 		
 		int nbEdges = 0;
 		
-		for (int u = 0 ; u < molecule.getNbNodes() ; u++) {
+		for (int u = 0; u < molecule.getNbCarbons() ; u++) {
 			if (vertices[u] == 0) {
-				for (int v = (u+1) ; v < molecule.getNbNodes() ; v++) {
+				for (int v = (u+1); v < molecule.getNbCarbons() ; v++) {
 					if (vertices[v] == 0) {
 						newGraph[u][v] = molecule.getEdgeMatrix()[u][v];
 						newGraph[v][u] = molecule.getEdgeMatrix()[v][u];
@@ -285,7 +285,7 @@ public enum RandicMethod {
 			}
 		}
 		
-		return new SubMolecule(subGraphNbNodes, nbEdges, molecule.getNbNodes(), newGraph);
+		return new SubMolecule(subGraphNbNodes, nbEdges, molecule.getNbCarbons(), newGraph);
 	}
 	
 	private static void treatCycle(Benzenoid molecule, int [][] cycle) {
@@ -317,20 +317,20 @@ public enum RandicMethod {
 	
 	private static void solve(Benzenoid molecule) {
 		
-		globalMatrix = new int[molecule.getNbNodes()][molecule.getNbNodes()];
+		globalMatrix = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
 		
-		int [] firstVertices = new int [molecule.getNbEdges()];
-		int [] secondVertices = new int [molecule.getNbEdges()];
+		int [] firstVertices = new int [molecule.getNbBonds()];
+		int [] secondVertices = new int [molecule.getNbBonds()];
 		
 		Model model = new Model("Cycles");
 
-		UndirectedGraph GLB = new UndirectedGraph(model, molecule.getNbNodes(), SetType.BITSET, false);
-		UndirectedGraph GUB = new UndirectedGraph(model, molecule.getNbNodes(), SetType.BITSET, false);
+		UndirectedGraph GLB = new UndirectedGraph(model, molecule.getNbCarbons(), SetType.BITSET, false);
+		UndirectedGraph GUB = new UndirectedGraph(model, molecule.getNbCarbons(), SetType.BITSET, false);
 
-		for (int i = 0; i < molecule.getNbNodes(); i++) {
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
 			GUB.addNode(i);
 
-			for (int j = (i + 1); j < molecule.getNbNodes(); j++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					GUB.addEdge(i, j);
 				}
@@ -339,11 +339,11 @@ public enum RandicMethod {
 
 		UndirectedGraphVar g = model.graphVar("g", GLB, GUB);
 
-		BoolVar[] boolEdges = new BoolVar[molecule.getNbEdges()];
+		BoolVar[] boolEdges = new BoolVar[molecule.getNbBonds()];
 			
 		int index = 0;
-		for (int i = 0 ; i < molecule.getNbNodes() ; i++) {
-			for (int j = (i+1) ; j < molecule.getNbNodes() ; j++) {
+		for (int i = 0; i < molecule.getNbCarbons() ; i++) {
+			for (int j = (i+1); j < molecule.getNbCarbons() ; j++) {
 
 				if (molecule.getEdgeMatrix()[i][j] == 1) {
 					boolEdges[index] = model.boolVar("(" + i + "--" + j + ")");
@@ -375,7 +375,7 @@ public enum RandicMethod {
 			solution = new Solution(model);
 			solution.record();
 					
-			int [][] cycle = new int [molecule.getNbNodes()][molecule.getNbNodes()];
+			int [][] cycle = new int [molecule.getNbCarbons()][molecule.getNbCarbons()];
 			
 			for (int i = 0 ; i < boolEdges.length ; i++) {
 				if (solution.getIntVal(boolEdges[i]) == 1) {
@@ -388,10 +388,10 @@ public enum RandicMethod {
 			treatCycle(molecule, cycle);
 		}
 		
-		int [][] matrixSolution = new int [molecule.getNbNodes()][molecule.getNbNodes()];
+		int [][] matrixSolution = new int [molecule.getNbCarbons()][molecule.getNbCarbons()];
 		
-		for (int i = 0 ; i < molecule.getNbNodes() ; i ++) {
-			for (int j = 0 ; j < molecule.getNbNodes() ; j++) {
+		for (int i = 0; i < molecule.getNbCarbons() ; i ++) {
+			for (int j = 0; j < molecule.getNbCarbons() ; j++) {
 				
 				int sens1 = globalMatrix[i][j];
 				int sens2 = globalMatrix[j][i];
@@ -402,8 +402,8 @@ public enum RandicMethod {
 			}
 		}
 		
-		for (int i = 0 ; i < molecule.getNbNodes() ; i ++) {
-			for (int j = (i+1) ; j < molecule.getNbNodes() ; j++) {
+		for (int i = 0; i < molecule.getNbCarbons() ; i ++) {
+			for (int j = (i+1); j < molecule.getNbCarbons() ; j++) {
 				
 				if (matrixSolution[i][j] != 0) {
 					System.out.println("(" + i + " - " + j + ") -> " + matrixSolution[i][j]);

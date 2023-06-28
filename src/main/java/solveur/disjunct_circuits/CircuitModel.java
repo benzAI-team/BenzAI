@@ -14,7 +14,7 @@ import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 
-import molecules.SubGraph;
+import benzenoid.SubGraph;
 
 public class CircuitModel extends Model {
 
