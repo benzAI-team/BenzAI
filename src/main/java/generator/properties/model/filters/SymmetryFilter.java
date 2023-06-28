@@ -1,14 +1,12 @@
 package generator.properties.model.filters;
 
+import benzenoid.Benzenoid;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.SymmetryHandler;
 import generator.properties.model.expression.ParameterizedExpression;
 import generator.properties.model.expression.PropertyExpression;
-import molecules.Benzenoid;
 
 import java.util.ArrayList;
-import benzenoid.Benzenoid;
-import generator.properties.model.SymmetryHandler;
 
 public class SymmetryFilter extends Filter {
 
