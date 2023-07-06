@@ -31,6 +31,10 @@ public class CheckDatabaseTask extends CollectionTask{
                     @Override
                     protected Void call() {
                         setIndex(1);
+
+                        if (currentPane.getSelectedBenzenoidPanes().size() == 0)
+                            currentPane.selectAll();
+
                         int size = currentPane.getSelectedBenzenoidPanes().size();
                         for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes()) {
                             Benzenoid benzenoid = currentPane.getMolecule(pane.getIndex());
