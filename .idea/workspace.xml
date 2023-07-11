@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="select all check database">
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="avant modif irpane">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/collections/BenzenoidCollectionPane.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/ir_spectra/IRSpectraPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ir_spectra/IRSpectraPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -195,7 +194,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688631628045</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="avant modif irpane">
+      <created>1689066885070</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1689066885070</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -224,7 +230,8 @@
     <MESSAGE value="suppression attributs inutiles" />
     <MESSAGE value="bug conversion solution" />
     <MESSAGE value="select all check database" />
-    <option name="LAST_COMMIT_MESSAGE" value="select all check database" />
+    <MESSAGE value="avant modif irpane" />
+    <option name="LAST_COMMIT_MESSAGE" value="avant modif irpane" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

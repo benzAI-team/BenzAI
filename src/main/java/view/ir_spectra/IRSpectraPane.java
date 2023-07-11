@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
@@ -24,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-public class IRSpectraPane extends GridPane {
+public class IRSpectraPane extends BorderPane {
+
+	private GridPane gridPane;
 
 	private final BenzenoidCollectionsManagerPane parent;
 
@@ -51,49 +54,32 @@ public class IRSpectraPane extends GridPane {
 
 	private void initialize() {
 
-		this.setPadding(new Insets(20));
-		this.setHgap(25);
-		this.setVgap(15);
+		gridPane = new GridPane();
 
-		//this.setMaxSize(973, 615);
-		//this.setMinSize(973, 615);
+		gridPane.setPadding(new Insets(20));
+		gridPane.setHgap(25);
+		gridPane.setVgap(15);
 
-
-
-		this.add(selectedPlotPane, 0, 0);
+		gridPane.add(selectedPlotPane, 0, 0);
 
 		buildList();
 
 		GridPane pane = new GridPane();
 		pane.add(listView, 0, 0);
 
-		this.add(pane, 1, 0, 1, 2);
+		gridPane.add(pane, 1, 0, 1, 2);
 
 		Button beginButton = new Button("|<");
 		Button prevButton = new Button("<");
 		Button nextButton = new Button(">");
 		Button endButton = new Button(">|");
+		/*
 		Button exportButton = new Button("Export");
 		Button exportAllButton = new Button("Export all");
 		Button saveDataButton = new Button("Save data");
-
 		Button exportAmesButton = new Button("Export Ames Formats");
+		*/
 
-		exportAmesButton.setOnAction(e -> {
-			//exportAmesFormats();
-
-			DirectoryChooser directoryChooser = new DirectoryChooser();
-			directoryChooser.setTitle("Select directory");
-			File file = directoryChooser.showDialog(parent.getApplication().getStage());
-
-			if (file != null) {
-				try {
-					exportAmesFormats(file);
-				} catch (IOException ex) {
-					throw new RuntimeException(ex);
-				}
-			}
-		});
 
 		beginButton.setOnAction(e -> {
 			index = 0;
@@ -119,98 +105,22 @@ public class IRSpectraPane extends GridPane {
 			updatePane();
 		});
 
-		saveDataButton.setOnAction(e -> {
 
-			DirectoryChooser directoryChooser = new DirectoryChooser();
-			directoryChooser.setTitle("Select directory");
-			File file = directoryChooser.showDialog(parent.getApplication().getStage());
-
-			if (file != null) {
-
-				String directoryPath = file.getAbsolutePath();
-
-				String separator;
-
-				if (directoryPath.split(Pattern.quote("\\")).length > 1) {
-					separator = "\\";
-				} else {
-					separator = "/";
-				}
-
-				File parametersFile = new File(directoryPath + separator + "parameters.txt");
-				File spectraFile = new File(directoryPath + separator + "spectras.csv");
-				File moleculeFile = new File(directoryPath + separator + "molecules_informations.csv");
-				File intensitiesFile = new File(directoryPath + separator + "intensities.csv");
-
-				try {
-					exportParameters(parametersFile);
-					exportSpectres(spectraFile);
-					exportMoleculesInformations(moleculeFile);
-					exportIntensities(intensitiesFile);
-
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-
-			}
-		});
-
-		exportButton.setOnAction(e -> {
-
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Export");
-			fileChooser.setInitialFileName(selectedPlotPane.getResult().getClassName() + ".png");
-			File file = fileChooser.showSaveDialog(parent.getApplication().getStage());
-
-			if (file != null)
-				selectedPlotPane.exportAsPDF(file);
-		});
-
-		exportAllButton.setOnAction(e -> {
-
-			DirectoryChooser directoryChooser = new DirectoryChooser();
-			directoryChooser.setTitle("Select directory");
-			File file = directoryChooser.showDialog(parent.getApplication().getStage());
-
-			if (file != null) {
-
-				String directoryPath = file.getAbsolutePath();
-				boolean unix;
-
-				unix = directoryPath.split(Pattern.quote("\\")).length == 0;
-
-				for (int i = 0; i < panes.size(); i++) {
-
-					index = (index + 1) % panes.size();
-					updatePane();
-
-					File plotFile;
-					if (unix)
-						plotFile = new File(directoryPath + "/" + selectedPlotPane.getResult().getClassName() + ".png");
-					else
-						plotFile = new File(
-								directoryPath + "\\" + selectedPlotPane.getResult().getClassName() + ".png");
-
-					selectedPlotPane.exportAsPDF(plotFile);
-
-				}
-			}
-
-		});
 
 		HBox buttonsHBox = new HBox(5);
-		buttonsHBox.getChildren().addAll(beginButton, prevButton, nextButton, endButton, exportButton, exportAmesButton, exportAllButton,
-				saveDataButton);
+		buttonsHBox.getChildren().addAll(beginButton, prevButton, nextButton, endButton);
 		buttonsHBox.setAlignment(Pos.CENTER);
 
-		this.add(buttonsHBox, 0, 1);
+		gridPane.add(buttonsHBox, 0, 1);
 
-		this.autosize();
+		//this.autosize();
 
 		//this.setMaxSize(973, 615);
 		//this.setMinSize(973, 615);
 
-		this.resize(973,615);
+		this.setTop(buildMenu());
+		this.setBottom(gridPane);
+		//this.resize(973,615);
 	}
 
 	private void buildList() {
@@ -352,7 +262,7 @@ public class IRSpectraPane extends GridPane {
 
 	}
 
-	private void buildMenu() {
+	private MenuBar buildMenu() {
 
 		MenuBar menuBar = new MenuBar();
 
@@ -361,15 +271,108 @@ public class IRSpectraPane extends GridPane {
 		MenuItem exportCurveItem = new MenuItem("Export curve");
 		MenuItem exportAllCurvesItem = new MenuItem("Export all curves");
 		MenuItem exportAmesFormatsItem = new MenuItem("Export to Ames Format");
+		MenuItem exportDataItem = new MenuItem("Export IR spectra data");
 
-		fileMenu.getItems().addAll(exportCurveItem, exportAllCurvesItem, exportAmesFormatsItem);
+		exportCurveItem.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Export");
+			fileChooser.setInitialFileName(selectedPlotPane.getResult().getClassName() + ".png");
+			File file = fileChooser.showSaveDialog(parent.getApplication().getStage());
 
+			if (file != null)
+				selectedPlotPane.exportAsPDF(file);
+		});
+
+		exportAllCurvesItem.setOnAction(e -> {
+			DirectoryChooser directoryChooser = new DirectoryChooser();
+			directoryChooser.setTitle("Select directory");
+			File file = directoryChooser.showDialog(parent.getApplication().getStage());
+
+			if (file != null) {
+
+				String directoryPath = file.getAbsolutePath();
+				boolean unix;
+
+				unix = directoryPath.split(Pattern.quote("\\")).length == 0;
+
+				for (int i = 0; i < panes.size(); i++) {
+
+					index = (index + 1) % panes.size();
+					updatePane();
+
+					File plotFile;
+					if (unix)
+						plotFile = new File(directoryPath + "/" + selectedPlotPane.getResult().getClassName() + ".png");
+					else
+						plotFile = new File(
+								directoryPath + "\\" + selectedPlotPane.getResult().getClassName() + ".png");
+
+					selectedPlotPane.exportAsPDF(plotFile);
+
+				}
+			}
+		});
+
+		exportAmesFormatsItem.setOnAction(e -> {
+			DirectoryChooser directoryChooser = new DirectoryChooser();
+			directoryChooser.setTitle("Select directory");
+			File file = directoryChooser.showDialog(parent.getApplication().getStage());
+
+			if (file != null) {
+				try {
+					exportAmesFormats(file);
+				} catch (IOException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+		});
+
+		exportDataItem.setOnAction(e -> {
+			DirectoryChooser directoryChooser = new DirectoryChooser();
+			directoryChooser.setTitle("Select directory");
+			File file = directoryChooser.showDialog(parent.getApplication().getStage());
+
+			if (file != null) {
+
+				String directoryPath = file.getAbsolutePath();
+
+				String separator;
+
+				if (directoryPath.split(Pattern.quote("\\")).length > 1) {
+					separator = "\\";
+				} else {
+					separator = "/";
+				}
+
+				File parametersFile = new File(directoryPath + separator + "parameters.txt");
+				File spectraFile = new File(directoryPath + separator + "spectras.csv");
+				File moleculeFile = new File(directoryPath + separator + "molecules_informations.csv");
+				File intensitiesFile = new File(directoryPath + separator + "intensities.csv");
+
+				try {
+					exportParameters(parametersFile);
+					exportSpectres(spectraFile);
+					exportMoleculesInformations(moleculeFile);
+					exportIntensities(intensitiesFile);
+
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+		});
+
+		fileMenu.getItems().addAll(exportCurveItem, exportAllCurvesItem, exportAmesFormatsItem, exportDataItem);
+
+		menuBar.getMenus().add(fileMenu);
+
+		return menuBar;
 	}
 
 	private void updatePane() {
-		this.getChildren().remove(selectedPlotPane);
+		gridPane.getChildren().remove(selectedPlotPane);
 		selectedPlotPane = panes.get(index);
-		this.add(selectedPlotPane, 0, 0);
+		gridPane.add(selectedPlotPane, 0, 0);
 		listView.getSelectionModel().select(index);
 	}
 }
