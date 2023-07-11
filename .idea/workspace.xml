@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="avant modif irpane">
+    <list default="true" id="57e39c73-cbb5-4c59-a82f-1f19dfd66a6a" name="Changes" comment="Adding menuBar to IRSpectraPane">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/ir_spectra/IRSpectraPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ir_spectra/IRSpectraPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/ames_format/AmesFormatPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ames_format/AmesFormatPane.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +201,14 @@
       <option name="project" value="LOCAL" />
       <updated>1689066885070</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Adding menuBar to IRSpectraPane">
+      <created>1689067722959</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1689067722959</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -231,7 +238,8 @@
     <MESSAGE value="bug conversion solution" />
     <MESSAGE value="select all check database" />
     <MESSAGE value="avant modif irpane" />
-    <option name="LAST_COMMIT_MESSAGE" value="avant modif irpane" />
+    <MESSAGE value="Adding menuBar to IRSpectraPane" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding menuBar to IRSpectraPane" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

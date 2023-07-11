@@ -16,7 +16,10 @@ import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
 import utils.Triplet;
 import utils.Utils;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +94,15 @@ public class AmesFormatPane extends GridPane {
                 exception.printStackTrace();
             }
         });
+
+        saveButton.setOnAction(e -> {
+            try {
+                saveFile();
+            }
+            catch(IOException exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 
     private void refreshListView() throws IOException{
@@ -99,6 +111,17 @@ public class AmesFormatPane extends GridPane {
 
         String amesFormat = buildAmesFormat();
         textArea.setText(amesFormat);
+    }
+
+    private void saveFile() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showSaveDialog(application.getStage());
+
+        if (file != null) {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(textArea.getText());
+            writer.close();
+        }
     }
 
     private void addFile() throws IOException {
