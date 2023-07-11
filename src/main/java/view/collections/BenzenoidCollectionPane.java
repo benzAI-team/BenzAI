@@ -659,6 +659,14 @@ public class BenzenoidCollectionPane extends Tab {
         }
     }
 
+    public void selectAll() {
+        for (BenzenoidPane benzenoidPane : benzenoidPanes) {
+
+            if (! benzenoidPane.isSelected())
+                benzenoidPane.select();
+        }
+    }
+
     public boolean isLock() {
         return lock;
     }

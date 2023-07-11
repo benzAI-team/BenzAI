@@ -4,8 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -56,8 +55,10 @@ public class IRSpectraPane extends GridPane {
 		this.setHgap(25);
 		this.setVgap(15);
 
-		this.setMaxSize(823, 515);
-		this.setMinSize(823, 515);
+		//this.setMaxSize(973, 615);
+		//this.setMinSize(973, 615);
+
+
 
 		this.add(selectedPlotPane, 0, 0);
 
@@ -203,6 +204,13 @@ public class IRSpectraPane extends GridPane {
 		buttonsHBox.setAlignment(Pos.CENTER);
 
 		this.add(buttonsHBox, 0, 1);
+
+		this.autosize();
+
+		//this.setMaxSize(973, 615);
+		//this.setMinSize(973, 615);
+
+		this.resize(973,615);
 	}
 
 	private void buildList() {
@@ -341,6 +349,20 @@ public class IRSpectraPane extends GridPane {
 
 		}
 
+
+	}
+
+	private void buildMenu() {
+
+		MenuBar menuBar = new MenuBar();
+
+		Menu fileMenu = new Menu("_File");
+
+		MenuItem exportCurveItem = new MenuItem("Export curve");
+		MenuItem exportAllCurvesItem = new MenuItem("Export all curves");
+		MenuItem exportAmesFormatsItem = new MenuItem("Export to Ames Format");
+
+		fileMenu.getItems().addAll(exportCurveItem, exportAllCurvesItem, exportAmesFormatsItem);
 
 	}
 
