@@ -12,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import spectrums.ResultLogFile;
 import spectrums.SpectrumsComputer;
 import utils.Triplet;
@@ -29,6 +30,7 @@ public class AmesFormatPane extends GridPane {
     private static final int AREAS_HEIGHT = 1000;
 
     private BenzenoidApplication application;
+    private Stage stage;
     private ListView<LogFileBox> listView;
     private List<LogFileBox> logFileBoxes;
     private Button addButton;
@@ -36,9 +38,10 @@ public class AmesFormatPane extends GridPane {
     private TextArea textArea;
     private int index;
 
-    public AmesFormatPane(BenzenoidApplication application) throws IOException {
+    public AmesFormatPane(BenzenoidApplication application, Stage stage) throws IOException {
         super();
         this.application = application;
+        this.stage = stage;
         index = 0;
         initialize();
     }
@@ -108,7 +111,6 @@ public class AmesFormatPane extends GridPane {
     private void refreshListView() throws IOException{
         ObservableList<LogFileBox> items = FXCollections.observableArrayList(logFileBoxes);
         listView.setItems(items);
-
         String amesFormat = buildAmesFormat();
         textArea.setText(amesFormat);
     }
@@ -137,6 +139,8 @@ public class AmesFormatPane extends GridPane {
 
         else
             Utils.alert("Please select a valid file (Gaussian .log)");
+
+        stage.requestFocus();
     }
 
     private String buildAmesFormat() throws IOException {

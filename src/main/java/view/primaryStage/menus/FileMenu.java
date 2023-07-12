@@ -70,8 +70,12 @@ public static Menu build(BenzenoidApplication app) {
 		generateAmesFile.setOnAction(e -> {
 
 			try {
-				Region amesPane = new AmesFormatPane(app);
+
 				Stage stage = new Stage();
+				Region amesPane = new AmesFormatPane(app, stage);
+
+
+
 				stage.setTitle("Intensities");
 
 				Scene scene = new Scene(amesPane, 823, 515);
