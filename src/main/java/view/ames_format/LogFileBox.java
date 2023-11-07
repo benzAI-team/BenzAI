@@ -12,11 +12,11 @@ import java.io.IOException;
 
 public class LogFileBox extends HBox {
 
-    private AmesFormatPane parent;
-    private File file;
+    private final AmesFormatPane parent;
+    private final File file;
     private Label fileLabel;
     private Button deleteButton;
-    private int index;
+    private final int index;
 
     public LogFileBox(AmesFormatPane parent, File file, int index) {
         super(5.0);

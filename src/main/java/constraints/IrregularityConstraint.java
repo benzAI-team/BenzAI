@@ -39,7 +39,7 @@ public class IrregularityConstraint extends BenzAIConstraint {
 
 		for (int index = 0; index < generalModel.getDiameter() * generalModel.getDiameter(); index++) {
 
-			if (generalModel.getCorrespondancesHexagons()[index] != -1) {
+			if (generalModel.getHexagonCompactIndices()[index] != -1) {
 				NULL[index] = generalModel.getProblem().intVar("NULL_" + index, new int[] { 0, 1 });
 				SOLOS[index] = generalModel.getProblem().intVar("SOLOS_" + index, new int[] { 0, 1, 2 });
 				DUOS[index] = generalModel.getProblem().intVar("DUOS_" + index, new int[] { 0, 2 });

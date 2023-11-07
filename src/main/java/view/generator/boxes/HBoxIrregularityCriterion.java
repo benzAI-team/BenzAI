@@ -102,7 +102,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 		IrregularityExpression expression = (IrregularityExpression) propertyExpression;
 		irregularityChoiceBox.getSelectionModel().select(expression.getParameter());
 		operatorChoiceBox.getSelectionModel().select(expression.getOperator());
-		fieldValue.setText("" + (expression.getParameter().equals("XI") ? ((double)expression.getValue()) / 100.0 : expression.getValue()));
+		fieldValue.setText(String.valueOf("XI".equals(expression.getParameter()) ? ((double) expression.getValue()) / 100.0 : expression.getValue()));
 	}
 
 	@Override

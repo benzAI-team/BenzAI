@@ -131,9 +131,9 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 	public void assign(PropertyExpression propertyExpression) {
 		RectangleExpression expression = (RectangleExpression) propertyExpression;
 		heightChoiceBox.getSelectionModel().select(expression.getHeightOperator());
-		heightTextField.setText("" + expression.getHeight());
+		heightTextField.setText(String.valueOf(expression.getHeight()));
 		widthChoiceBox.getSelectionModel().select(expression.getWidthOperator());
-		widthTextField.setText("" + expression.getWidth());
+		widthTextField.setText(String.valueOf(expression.getWidth()));
 	}
 
 	@Override

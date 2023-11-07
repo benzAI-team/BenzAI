@@ -85,7 +85,7 @@ public class CoronenoidConstraint extends BenzAIConstraint {
 	private int[] getNbHexagons() {
 		int[] nbHexagons = new int[getGeneralModel().getNbCrowns()];
 		for (int nbCrowns = 1; nbCrowns <= getGeneralModel().getNbCrowns(); nbCrowns++)
-			nbHexagons[nbCrowns - 1] = (int) (6.0 * (((nbCrowns * (nbCrowns - 1)) / 2.0)) + 1.0);;
+			nbHexagons[nbCrowns - 1] = (int) (6.0 * (((nbCrowns * (nbCrowns - 1)) / 2.0)) + 1.0);
 		return nbHexagons;
 	}
 

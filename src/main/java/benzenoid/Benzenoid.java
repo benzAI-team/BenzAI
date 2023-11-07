@@ -59,9 +59,9 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	private int nbCrowns = -1;
 
-	private BenzenoidDatabaseInformation databaseInformation;
+	private final BenzenoidDatabaseInformation databaseInformation;
 
-	private BenzenoidComputableInformations computableInformations;
+	private final BenzenoidComputableInformations computableInformations;
 
 	/**
 	 * Constructors

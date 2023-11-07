@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public class BenzenoidDatabaseInformation {
 
-    private Benzenoid benzenoid;
+    private final Benzenoid benzenoid;
 
-    private DatabaseCheckManager databaseCheckManager;
+    private final DatabaseCheckManager databaseCheckManager;
 
     private Optional<String> imsMap;
     private Optional<ResultLogFile> IRSpectra;

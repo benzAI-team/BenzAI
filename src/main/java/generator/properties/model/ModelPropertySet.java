@@ -98,7 +98,7 @@ public class ModelPropertySet extends PropertySet {
 	public String toString() {
 		String string = "";
 		for(Property property : getPropertyList()){
-			string = string + ((ModelProperty)property).toString();
+			string = string + property.toString();
 		}
 		return string;
 	}

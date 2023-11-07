@@ -25,7 +25,7 @@ public class AmesFormatPane extends GridPane {
 
     private static final int AREAS_HEIGHT = 1000;
 
-    private BenzenoidApplication application;
+    private final BenzenoidApplication application;
     private ListView<LogFileBox> listView;
     private List<LogFileBox> logFileBoxes;
     private Button addButton;

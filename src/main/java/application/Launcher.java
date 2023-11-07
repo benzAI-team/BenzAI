@@ -1,6 +1,8 @@
 package application;
 
-public class Launcher {
+public enum Launcher {
+    ;
+
     public static void main(String[] args) {
 		BenzenoidApplication.main(args);
 	}

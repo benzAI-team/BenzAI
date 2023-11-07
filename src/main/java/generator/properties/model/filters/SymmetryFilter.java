@@ -9,7 +9,6 @@ import generator.properties.model.expression.PropertyExpression;
 import java.util.ArrayList;
 
 public class SymmetryFilter extends Filter {
-
 	@Override
 	public boolean test(Benzenoid molecule, ArrayList<PropertyExpression> propertyExpressionList, ModelPropertySet modelPropertySet) {
 		ArrayList<Integer> flatBooleanGrid = molecule.getVerticesSolutions();

@@ -13,8 +13,8 @@ public enum ConstraintBuilder {
 
 	public static void postFillNodesConnection(GeneralModel model) {
 
-		int[] correspondancesHexagons = model.getCorrespondancesHexagons();
-		int[][] adjacencyMatrix = model.getAdjacencyMatrix();
+		int[] correspondancesHexagons = model.getHexagonCompactIndices();
+		int[][] adjacencyMatrix = model.getSideSharing();
 		BoolVar[] benzenoidVertices = model.getBenzenoidVerticesBVArray();
 		BoolVar[][] benzenoidEdges = model.getBenzenoidEdges();
 

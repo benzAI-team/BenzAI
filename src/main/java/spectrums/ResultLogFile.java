@@ -7,10 +7,10 @@ public class ResultLogFile {
 
 	private final String filename;
 	
-	private ArrayList<Double> frequencies;
-	private ArrayList<Double> intensities;
-	private ArrayList<Double> finalEnergies;
-	private double zeroPointEnergy;
+	private final ArrayList<Double> frequencies;
+	private final ArrayList<Double> intensities;
+	private final ArrayList<Double> finalEnergies;
+	private final double zeroPointEnergy;
 
 	private String amesFormat;
 

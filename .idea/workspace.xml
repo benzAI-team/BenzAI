@@ -7,7 +7,43 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="Added : show progress during filtering" />
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="merging refactoring_adrien">
+      <change afterPath="$PROJECT_DIR$/src/test/java/TestNbCC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/Benzenoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidComputableInformations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidDatabaseInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidDatabaseInformation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/BenzenoidParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/DatabaseCheckManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/DatabaseCheckManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/benzenoid/Geometry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/benzenoid/Geometry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronenoidConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/ModelPropertySet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/SymmetryFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/properties/model/filters/SymmetryFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphCoordFileBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphCoordFileBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/GraphParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parsers/SolutionConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parsers/SolutionConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spectrums/ResultLogFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spectrums/ResultLogFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/toolbox/BuildScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/toolbox/BuildScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/ames_format/AmesFormatPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ames_format/AmesFormatPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/ames_format/LogFileBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ames_format/LogFileBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxBoundingCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxBoundingCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronenoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronenoidCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronoidCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxCoronoidCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxIrregularityCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxIrregularityCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRectangleCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRhombusCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxRhombusCriterion.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,12 +110,12 @@
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/horloge&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
     &quot;two.files.diff.last.used.file&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/view/generator/GeneratorPane.java&quot;
   }
 }</component>
@@ -88,6 +124,7 @@
       <recent name="generator.properties.model.expression" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/horloge" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/target/test-classes" />
     </key>
@@ -109,6 +146,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CompteurApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="horloge.CompteurApp" />
+      <module name="BenzAI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="horloge.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TestGeneration" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TestGeneration" />
       <module name="BenzAI" />
@@ -116,9 +166,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestNbCC" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TestNbCC" />
+      <module name="BenzAI" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TimerApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="horloge.TimerApp" />
+      <module name="BenzAI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="horloge.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TestNbCC" />
         <item itemvalue="Application.TestGeneration" />
+        <item itemvalue="Application.CompteurApp" />
+        <item itemvalue="Application.TimerApp" />
       </list>
     </recent_temporary>
   </component>
@@ -467,8 +540,19 @@
       <option name="project" value="LOCAL" />
       <updated>1687966839685</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="merging refactoring_adrien">
+      <created>1687967546197</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1687967546197</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:com.google.protobuf:protobuf-java" />
+    <option featureType="dependencySupport" implementationName="java:org.openjfx:javafx-base" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="RECENT_FILTERS">
@@ -508,7 +592,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="class HexNeighborhood added" />
     <MESSAGE value="class Pattern refactored" />
     <MESSAGE value="class Pattern delegates export and import file to new classes PatternFileImport and PatternFileWriter" />
     <MESSAGE value="class HBox and derivates lightly refactored" />
@@ -533,7 +616,8 @@
     <MESSAGE value="small bug fixed : improper saving when filtering" />
     <MESSAGE value="Added : Auto/explicit save/load the generation criterion list" />
     <MESSAGE value="Added : show progress during filtering" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added : show progress during filtering" />
+    <MESSAGE value="merging refactoring_adrien" />
+    <option name="LAST_COMMIT_MESSAGE" value="merging refactoring_adrien" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -553,24 +637,10 @@
           <line>131</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/TestGeneration.java</url>
-          <line>66</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.util.ConcurrentModificationException" package="java.util" />
           <option name="timeStamp" value="10" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/view/generator/boxes/HBoxModelCriterion.java</url>
-          <line>13</line>
-          <properties class="view.generator.boxes.HBoxModelCriterion" method="addPropertyExpression">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -579,7 +649,7 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1687960866454" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BenzAI$BenzAI.ic" NAME="BenzAI Coverage Results" MODIFIED="1698157569104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/BenzAI$TestGeneration.ic" NAME="TestGeneration Coverage Results" MODIFIED="1686051991046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

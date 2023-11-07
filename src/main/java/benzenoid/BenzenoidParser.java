@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class BenzenoidParser {
+public enum BenzenoidParser {
+    ;
 
     public static void exportToGraphFile(Benzenoid benzenoid, File file) throws IOException {
 

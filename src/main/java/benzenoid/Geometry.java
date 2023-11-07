@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Geometry {
 
-    private List<Triplet<Double, Double, Double>> carbons;
-    private List<Triplet<Double, Double, Double>> hydrogens;
+    private final List<Triplet<Double, Double, Double>> carbons;
+    private final List<Triplet<Double, Double, Double>> hydrogens;
 
     public Geometry(List<Triplet<Double, Double, Double>> carbons, List<Triplet<Double, Double, Double>> hydrogens) {
         this.carbons = carbons;

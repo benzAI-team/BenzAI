@@ -14,8 +14,8 @@ import java.util.List;
 
 public class SolutionConverter {
 
-    private List<Integer> solution;
-    private int nbCrowns;
+    private final List<Integer> solution;
+    private final int nbCrowns;
 
     private int diameter;
 
@@ -123,7 +123,7 @@ public class SolutionConverter {
                     for (int i = 0; i < 6; i++) {
                         int j = (i + 1) % 6;
 
-                        //CHERCHER SI hexagon est adjacent à candidat
+                        //CHERCHER SI hexagon est sharesSide à candidat
 
                         for (int i2 = 0; i2 < 6; i2++) {
                             int j2 = (i2 + 1) % 6;

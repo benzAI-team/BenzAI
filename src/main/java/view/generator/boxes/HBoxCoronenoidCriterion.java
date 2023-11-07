@@ -72,7 +72,7 @@ public class HBoxCoronenoidCriterion extends HBoxModelCriterion {
 	public void assign(PropertyExpression propertyExpression) {
 		BinaryNumericalExpression expression = (BinaryNumericalExpression) propertyExpression;
 		operatorChoiceBox.getSelectionModel().select(expression.getOperator());
-		fieldValue.setText("" + expression.getValue());
+		fieldValue.setText(String.valueOf(expression.getValue()));
 	}
 
 	@Override

@@ -52,11 +52,11 @@ public class GeneralModel {
 
     private int[][] neighborIndices;
 
-    private final ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
+    //private final ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
     private final ArrayList<Integer> outterHexagonsIndexes = new ArrayList<>();
 
     private ArrayList<ArrayList<Integer>> neighborGraphOutterHexagons;
-    private int indexOutterHexagon;
+    //private int indexOutterHexagon;
 
     private Couple<Integer, Integer>[] coordsCorrespondance;
 
@@ -71,7 +71,7 @@ public class GeneralModel {
     //private int nbHexagons;
     private final int diameter;
 
-    private int nbEdges;
+    //private int nbEdges;
     private int nbClausesLexLead = 0;
 
     boolean verbose = false;
@@ -85,12 +85,12 @@ public class GeneralModel {
     private Node[] nodesRefs;
 
     private int[][] hexagonIndices;
-    private int[] hexagonsCorrespondances;
-    private int[] correspondancesHexagons;
+    private int[] hexagonSparseIndices;
+    private int[] hexagonCompactIndices;
 
     private int nbHexagonsCoronenoid;
 
-    private int[][] adjacencyMatrix;
+    private int[][] sideSharing;
     private int[][] adjacencyMatrixWithOutterHexagons;
 
     /***
@@ -116,8 +116,6 @@ public class GeneralModel {
     private final SimpleIntegerProperty nbTotalSolutions = new SimpleIntegerProperty(0);
     private int indexSolution;
 
-    private ArrayList<Integer> topBorder;
-    private ArrayList<Integer> leftBorder;
 
     /*
      * Properties
@@ -157,36 +155,28 @@ public class GeneralModel {
      */
 
     private void initialize() {
-        initializeHexagonIndices();
+        nbHexagonsCoronenoid = 1 + (diameter + 1) * (diameter - 1) * 3 / 4;
+        //hexagonIndices = initializeHexagonIndices(diameter);
         initializeVariables();
         initializeConstraints();
         buildNodesRefs();
         System.out.print("");
     }
 
-    private void initializeHexagonIndices() {
-        hexagonIndices = new int[diameter][diameter];
-        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
-            Arrays.fill(hexagonIndices[lineIndex], -1);
-        }
-    }
 
     private void initializeVariables() {
         System.out.println("00 " + nbMaxHexagons);
-
         nbHexagonsReifies = new BoolVar[nbMaxHexagons + 1];
         System.out.println("1");
-
-        buildHexagonIndices();
+        hexagonIndices = buildHexagonIndices();
+        hexagonSparseIndices = buildHexagonSparseIndices(hexagonIndices, diameter, nbHexagonsCoronenoid);
+        hexagonCompactIndices = buildHexagonCompactIndices(hexagonSparseIndices, diameter);
         System.out.println("2");
-
         UndirectedGraph GLB = BoundsBuilder.buildGLB2(this);
         GUB = BoundsBuilder.buildGUB2(this);
-
-        indexOutterHexagon = diameter * diameter;
+        //indexOutterHexagon = diameter * diameter;
         System.out.println("3");
-
-        buildAdjacencyMatrix();
+        sideSharing = buildAdjacencyMatrix();
 
 
         benzenoidGraphVar = chocoModel.graphVar("g", GLB, GUB);
@@ -203,23 +193,29 @@ public class GeneralModel {
         nbVertices = chocoModel.intVar("nbVertices", 1, nbHexagonsCoronenoid);
         //graphDiameter = chocoModel.intVar("diameter", 0, diameter);
 
-        leftBorder = new ArrayList<>();
-        topBorder = new ArrayList<>();
+    }
 
-        for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
-
-            if (validHexagonIndex(0, columnIndex))
-                topBorder.add(correspondancesHexagons[hexagonIndices[0][columnIndex]]);
-        }
+    private int[] buildHexagonSparseIndices(int[][] hexagonIndices, int diameter, int nbHexagonsCoronenoid) {
+        int [] hexagonSparseIndices = new int[nbHexagonsCoronenoid];
+        int hexagonSparseIndex = 0;
 
         for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
             for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
                 if (validHexagonIndex(lineIndex, columnIndex)) {
-                    leftBorder.add(correspondancesHexagons[hexagonIndices[lineIndex][columnIndex]]);
-                    break;
+                    hexagonSparseIndices[hexagonSparseIndex] = hexagonIndices[lineIndex][columnIndex];
+                    hexagonSparseIndex++;
                 }
             }
         }
+        return hexagonSparseIndices;
+    }
+
+    private int[] buildHexagonCompactIndices(int[] hexagonSparseIndices, int diameter) {
+        int [] hexagonCompactIndices = new int[diameter * diameter];
+        Arrays.fill(hexagonCompactIndices, -1);
+        for (int i = 0; i < hexagonSparseIndices.length; i++)
+            hexagonCompactIndices[hexagonSparseIndices[i]] = i;
+        return hexagonCompactIndices;
     }
 
     private void initializeConstraints() {
@@ -266,49 +262,6 @@ public class GeneralModel {
     }
 
 
-    /*
-     * Getters & Setters
-     */
-
-    public int getNbCrowns() {
-        return nbCrowns;
-    }
-
-    public int getDiameter() {
-        return diameter;
-    }
-
-    public Model getProblem() {
-        return chocoModel;
-    }
-
-    public int[][] getHexagonIndices() {
-        return hexagonIndices;
-    }
-
-    public int getHexagonIndex(int lineIndex, int columnIndex){
-        return hexagonIndices[lineIndex][columnIndex];
-    }
-
-    public int[][] getAdjacencyMatrix() {
-        return adjacencyMatrix;
-    }
-
-    public BoolVar[] getBenzenoidVerticesBVArray() {
-        return benzenoidVerticesBVArray;
-    }
-
-    public BoolVar getBenzenoidVerticesBVArray(int index) {
-        return benzenoidVerticesBVArray[index];
-    }
-
-    public UndirectedGraphVar getGraphVar() {
-        return benzenoidGraphVar;
-    }
-
-    public BoolVar[][] getBenzenoidEdges() {
-        return benzenoidEdges;
-    }
 
 
     /*
@@ -424,7 +377,7 @@ public class GeneralModel {
                 int v = hexagonsSolutions.get(j);
                 Node n2 = nodes[j];
 
-                if (adjacencyMatrix[u][v] == 1) {
+                if (sideSharing[u][v] == 1) {
 
                     // Setting matrix
                     matrix[nodeIndex][j] = 1;
@@ -475,15 +428,28 @@ public class GeneralModel {
             if (hexBoolVars[i].getValue() == 1)
                 vertices.add(i);
 
-        int center = correspondancesHexagons[hexagonIndices[(diameter - 1) / 2][(diameter - 1) / 2]];
+        int center = hexagonCompactIndices[hexagonIndices[(diameter - 1) / 2][(diameter - 1) / 2]];
 
-        Solution solution = new Solution(nodesRefs, correspondancesHexagons, hexagonsCorrespondances, hexagonIndices,
+        Solution solution = new Solution(nodesRefs, hexagonCompactIndices, hexagonSparseIndices, hexagonIndices,
                 center, nbCrowns, vertices);
 
         NoGoodRecorder noGoodRecorder;// = null;
 
         if (!modelPropertySet.has("symmetry")) {
-
+            ArrayList<Integer> topBorder = new ArrayList<>();
+            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+                if (validHexagonIndex(0, columnIndex))
+                    topBorder.add(hexagonCompactIndices[hexagonIndices[0][columnIndex]]);
+            }
+            ArrayList<Integer> leftBorder = new ArrayList<>();
+            for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+                for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
+                    if (validHexagonIndex(lineIndex, columnIndex)) {
+                        leftBorder.add(hexagonCompactIndices[hexagonIndices[lineIndex][columnIndex]]);
+                        break;
+                    }
+                }
+            }
             solution.setPattern(convertToPattern());
             noGoodRecorder = new NoGoodBorderRecorder(this, solution, topBorder, leftBorder);
         } else {
@@ -549,7 +515,7 @@ public class GeneralModel {
                 recordNoGoods();
 
                 BenzenoidSolution solverSolution = new BenzenoidSolution(GUB, nbCrowns,
-                        chocoModel.getName() + indexSolution, hexagonsCorrespondances);
+                        chocoModel.getName() + indexSolution, hexagonSparseIndices);
 
                 solverResults.addSolution(solverSolution, description, nbCrowns);
                 solverResults.addVerticesSolution(verticesSolution);
@@ -610,10 +576,10 @@ public class GeneralModel {
         return verticesSolution;
     }
 
-    private void buildAdjacencyMatrix() {
+    private int[][] buildAdjacencyMatrix() {
 
-        nbEdges = 0;
-        adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
+        int nbEdges = 0;
+        int [][] adjacencyMatrix = new int[diameter * diameter][diameter * diameter];
 
         for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
             for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
@@ -696,11 +662,12 @@ public class GeneralModel {
                 }
             }
         }
+        return adjacencyMatrix;
     }
 
-    public int getNbEdges() {
+    /*public int getNbEdges() {
         return nbEdges;
-    }
+    }*/
 
     public ArrayList<Integer> getOutterHexagonsIndexes() {
         return outterHexagonsIndexes;
@@ -968,7 +935,7 @@ public class GeneralModel {
             for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
                 if (validHexagonIndex(lineIndex, columnIndex)) {
 
-                    BoolVar hexBV = hexBoolVars[correspondancesHexagons[hexagonIndices[lineIndex][columnIndex]]];
+                    BoolVar hexBV = hexBoolVars[hexagonCompactIndices[hexagonIndices[lineIndex][columnIndex]]];
                     benzenoidVerticesBVArray[index] = hexBV;
                 }
                 index++;
@@ -977,36 +944,26 @@ public class GeneralModel {
     }
 
     private void buildBenzenoidEdges() {
-
         benzenoidEdges = new BoolVar[nbHexagonsCoronenoid][nbHexagonsCoronenoid];
-
-        for (int lineIndex = 0; lineIndex < adjacencyMatrix.length; lineIndex++) {
-            for (int columnIndex = (lineIndex + 1); columnIndex < adjacencyMatrix.length; columnIndex++) {
-
-                if (adjacencyMatrix[lineIndex][columnIndex] == 1) {
-
-                    int u = correspondancesHexagons[lineIndex];
-                    int v = correspondancesHexagons[columnIndex];
-
-                    BoolVar x = chocoModel.boolVar("e_" + u + "_" + v);
-                    benzenoidEdges[u][v] = x;
-                    benzenoidEdges[v][u] = x;
-
-                    chocoModel.edgeChanneling(benzenoidGraphVar, x, u, v).post();
-                    // chocoModel.edgeChanneling(benzenoid, x, v, u).post();
+        for (int lineIndex = 0; lineIndex < sideSharing.length; lineIndex++) {
+            for (int columnIndex = (lineIndex + 1); columnIndex < sideSharing.length; columnIndex++) {
+                if (sideSharing[lineIndex][columnIndex] == 1) {
+                    int hexCompactIndex1 = hexagonCompactIndices[lineIndex];
+                    int hexCompactIndex2 = hexagonCompactIndices[columnIndex];
+                    BoolVar benzenoidEdgeBoolVar = chocoModel.boolVar("e_" + hexCompactIndex1 + "_" + hexCompactIndex2);
+                    benzenoidEdges[hexCompactIndex1][hexCompactIndex2] = benzenoidEdgeBoolVar;
+                    benzenoidEdges[hexCompactIndex2][hexCompactIndex1] = benzenoidEdgeBoolVar;
+                    chocoModel.edgeChanneling(benzenoidGraphVar, benzenoidEdgeBoolVar, hexCompactIndex1, hexCompactIndex2).post();
                 }
             }
         }
     }
 
-    private void buildHexagonIndices() {
+    private int[][] buildHexagonIndices() {
 
-        hexagonIndices = new int[diameter][diameter];
-        nbHexagonsCoronenoid = 0;
+        int [][] hexagonIndices = initializeHexagonIndices(diameter);
 
-        initializeHexagonIndices();
-
-        int hexagonIndex = 0;
+        int hexagonSparseIndex = 0;
         int centerIndex = (diameter - 1) / 2;
 
         int shift = diameter - nbCrowns;
@@ -1014,54 +971,42 @@ public class GeneralModel {
         for (int lineIndex = 0; lineIndex < centerIndex; lineIndex++) {
 
             for (int columnIndex = 0; columnIndex < diameter - shift; columnIndex++) {
-                hexagonIndices[lineIndex][columnIndex] = hexagonIndex;
-                hexagonIndex++;
-                nbHexagonsCoronenoid++;
+                hexagonIndices[lineIndex][columnIndex] = hexagonSparseIndex;
+                System.out.println("###"+lineIndex+","+columnIndex+":"+hexagonSparseIndex);
+                hexagonSparseIndex++;
             }
-            hexagonIndex += shift;
+            hexagonSparseIndex += shift;
             shift--;
         }
 
         for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
-            hexagonIndices[centerIndex][columnIndex] = hexagonIndex;
-            hexagonIndex++;
-            nbHexagonsCoronenoid++;
+            hexagonIndices[centerIndex][columnIndex] = hexagonSparseIndex;
+            System.out.println("###"+centerIndex+","+columnIndex+":"+hexagonSparseIndex);
+            hexagonSparseIndex++;
         }
 
         shift = 1;
 
         for (int lineIndex = centerIndex + 1; lineIndex < diameter; lineIndex++) {
-            hexagonIndex += shift;
+            hexagonSparseIndex += shift;
             for (int columnIndex = shift; columnIndex < diameter; columnIndex++) {
-                hexagonIndices[lineIndex][columnIndex] = hexagonIndex;
-                hexagonIndex++;
-                nbHexagonsCoronenoid++;
+                hexagonIndices[lineIndex][columnIndex] = hexagonSparseIndex;
+                System.out.println("###"+lineIndex+","+columnIndex+":"+hexagonSparseIndex);
+                hexagonSparseIndex++;
             }
             shift++;
         }
 
-        hexagonsCorrespondances = new int[nbHexagonsCoronenoid];
-        hexagonIndex = 0;
-
-        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
-            for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
-                if (validHexagonIndex(lineIndex, columnIndex)) {
-                    hexagonsCorrespondances[hexagonIndex] = hexagonIndices[lineIndex][columnIndex];
-                    hexagonIndex++;
-                }
-            }
-        }
-
-        correspondancesHexagons = new int[diameter * diameter];
-
-        Arrays.fill(correspondancesHexagons, -1);
-
-        for (int i = 0; i < hexagonsCorrespondances.length; i++)
-            correspondancesHexagons[hexagonsCorrespondances[i]] = i;
-
+        return hexagonIndices;
     }
-
-    private boolean validHexagonIndex(int lineIndex, int columnIndex) {
+    private int[][] initializeHexagonIndices(int diameter) {
+        int[][] hexagonIndices = new int[diameter][diameter];
+        for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
+            Arrays.fill(hexagonIndices[lineIndex], -1);
+        }
+        return hexagonIndices;
+    }
+    public boolean validHexagonIndex(int lineIndex, int columnIndex) {
         return hexagonIndices[lineIndex][columnIndex] != -1;
     }
 
@@ -1069,10 +1014,13 @@ public class GeneralModel {
         return nbHexagonsCoronenoid;
     }
 
-    public int[] getCorrespondancesHexagons() {
-        return correspondancesHexagons;
+    public int[] getHexagonCompactIndices() {
+        return hexagonCompactIndices;
     }
 
+    public int getHexagonCompactIndex(int i) {
+        return hexagonCompactIndices[i];
+    }
     public BoolVar[] getNeighbors(int lineIndex, int columnIndex) {
 
         if (validHexagonIndex(lineIndex, columnIndex)) {
@@ -1096,6 +1044,10 @@ public class GeneralModel {
 
     public BoolVar[] getHexBoolVars() {
         return hexBoolVars;
+    }
+
+    public BoolVar getHexBoolVar(int i) {
+        return hexBoolVars[i];
     }
 
     public int[][] getNeighborIndices() {
@@ -1139,7 +1091,7 @@ public class GeneralModel {
             recordNoGoods();
 
             BenzenoidSolution solution = new BenzenoidSolution(GUB, nbCrowns, chocoModel.getName() + indexSolution,
-                    hexagonsCorrespondances);
+                    hexagonSparseIndices);
             String description = buildDescription(indexSolution);
             solverResults.addSolution(solution, description, nbCrowns);
 
@@ -1187,7 +1139,7 @@ public class GeneralModel {
         for (int lineIndex = 0; lineIndex < diameter; lineIndex++) {
             for (int columnIndex = 0; columnIndex < diameter; columnIndex++) {
                 if (validHexagonIndex(lineIndex, columnIndex)) {
-                    int index = correspondancesHexagons[hexagonIndices[lineIndex][columnIndex]];
+                    int index = hexagonCompactIndices[hexagonIndices[lineIndex][columnIndex]];
                     nodesRefs[index] = new Node(lineIndex, columnIndex, index);
                 }
             }
@@ -1307,11 +1259,12 @@ public class GeneralModel {
                             valid = false;
                     }
                     if (valid) {
+                        ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
                         Integer[] occurence = new Integer[pattern.getNbNodes()];
 
                         for (int i = 0; i < coords.length; i++) {
                             Couple<Integer, Integer> coord = coords[i];
-
+                            int indexOutterHexagon = diameter * diameter;
                             if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
                                     && coord.getY() < diameter) {
                                 occurence[i] = hexagonIndices[coord.getY()][coord.getX()];
@@ -1439,6 +1392,54 @@ public class GeneralModel {
 
             System.out.println("d(" + key + ") = " + value);
         }
+    }
+
+    /*
+     * Getters & Setters
+     */
+
+    public int getNbCrowns() {
+        return nbCrowns;
+    }
+
+    public int getDiameter() {
+        return diameter;
+    }
+
+    public Model getProblem() {
+        return chocoModel;
+    }
+
+    public int[][] getHexagonIndices() {
+        return hexagonIndices;
+    }
+
+    public int getHexagonIndex(int lineIndex, int columnIndex){
+        return hexagonIndices[lineIndex][columnIndex];
+    }
+
+    public int[][] getSideSharing() {
+        return sideSharing;
+    }
+
+    public boolean sharesSide(int i, int j) {
+        return sideSharing[i][j] == 1;
+    }
+
+    public BoolVar[] getBenzenoidVerticesBVArray() {
+        return benzenoidVerticesBVArray;
+    }
+
+    public BoolVar getBenzenoidVerticesBVArray(int index) {
+        return benzenoidVerticesBVArray[index];
+    }
+
+    public UndirectedGraphVar getGraphVar() {
+        return benzenoidGraphVar;
+    }
+
+    public BoolVar[][] getBenzenoidEdges() {
+        return benzenoidEdges;
     }
 
     public void setInTestMode(boolean inTestMode) {

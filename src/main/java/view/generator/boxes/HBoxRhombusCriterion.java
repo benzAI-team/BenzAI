@@ -69,7 +69,7 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 	public void assign(PropertyExpression propertyExpression) {
 		RhombusExpression expression = (RhombusExpression) propertyExpression;
 		dimensionChoiceBox.getSelectionModel().select(expression.getHeightOperator());
-		dimensionTextField.setText("" + expression.getHeight());
+		dimensionTextField.setText(String.valueOf(expression.getHeight()));
 	}
 
 	@Override

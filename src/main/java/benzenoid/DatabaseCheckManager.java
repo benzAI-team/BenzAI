@@ -2,7 +2,7 @@ package benzenoid;
 
 public class DatabaseCheckManager {
 
-    private Benzenoid benzenoid;
+    private final Benzenoid benzenoid;
 
     private boolean IRSpectraChecked;
 

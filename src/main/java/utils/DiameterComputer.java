@@ -1,6 +1,7 @@
 package utils;
 
-public class DiameterComputer {
+public enum DiameterComputer {
+    ;
 
     static final int INF = 99999, V = 4;
 

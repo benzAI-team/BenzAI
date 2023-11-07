@@ -13,7 +13,8 @@ import benzenoid.Node;
 import benzenoid.UndirPonderateGraph;
 import utils.RelativeMatrix;
 
-public class GraphParser {
+public enum GraphParser {
+	;
 
 	public static boolean isNoCommentary(String[] splittedLine) {
 		return (!"c".equals(splittedLine[0]));

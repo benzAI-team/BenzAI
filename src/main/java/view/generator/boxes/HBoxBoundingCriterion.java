@@ -50,7 +50,7 @@ public abstract class HBoxBoundingCriterion extends HBoxModelCriterion {
 	@Override
 	public void assign(PropertyExpression propertyExpression) {
 		BinaryNumericalExpression expression = (BinaryNumericalExpression) propertyExpression;
-		fieldValue.setText(expression.getValue() + "");
+		fieldValue.setText(String.valueOf(expression.getValue()));
 		getOperatorChoiceBox().getSelectionModel().select(expression.getOperator());
 		//System.out.println(getOperatorChoiceBox().getSelectionModel().getSelectedItem() + fieldValue.getText());
 		//updateValidity();

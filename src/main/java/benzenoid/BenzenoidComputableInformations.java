@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class BenzenoidComputableInformations {
 
-    private Benzenoid benzenoid;
+    private final Benzenoid benzenoid;
     private double nbKekuleStructures = -1;
 
     private List<int[][]> kekuleStructures;
