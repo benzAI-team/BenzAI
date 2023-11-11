@@ -5,6 +5,8 @@
 dependency-reduced-pom.xml
 config
 bin/*
-.gitignore
 *.graph_coord
 results.txt
+.DS_Store
+.git
+.idea
