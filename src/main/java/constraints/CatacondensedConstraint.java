@@ -63,7 +63,7 @@ public class CatacondensedConstraint extends BenzAIConstraint {
 	private ArrayList<BoolVar []> computeTriangles() {
 		GeneralModel generalModel = getGeneralModel();
 		int diameter = generalModel.getDiameter();
-		int [][] coordsMatrix = generalModel.getHexagonIndices();
+		int [][] coordsMatrix = generalModel.getHexagonIndicesMatrix();
 		
 		ArrayList<BoolVar []> triangles = new ArrayList<>();
 		

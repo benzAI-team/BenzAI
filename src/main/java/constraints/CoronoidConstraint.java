@@ -26,30 +26,31 @@ public class CoronoidConstraint extends BenzAIConstraint {
 	private IntVar nbConnectedComponents;
 
 	private ArrayList<Integer> coronenoidBorder;
-	private int[] hexagonSparseIndices;
 	private int [] hexagonCompactIndices;
-
 
 
 	@Override
 	public void buildVariables() {
 		GeneralModel generalModel = getGeneralModel();
-		hexagonSparseIndices = buildHexagonSparseIndices(generalModel);
-		System.out.println(hexagonSparseIndices);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		int[] hexagonSparseIndices = buildHexagonSparseIndices(generalModel);
+		Arrays.stream(hexagonSparseIndices).forEach(System.out::println);
 		hexagonCompactIndices = buildHexagonCompactIndices(hexagonSparseIndices, getGeneralModel().getDiameter());
-		System.out.println(hexagonCompactIndices);
-		coronenoidBorder = buildCoronenoidBorder(generalModel.getDiameter(), generalModel.getHexagonIndices());
+		Arrays.stream(hexagonCompactIndices).forEach(System.out::println);
+		coronenoidBorder = buildCoronenoidBorder(generalModel.getDiameter(), generalModel.getHexagonIndicesMatrix());
 		System.out.println(coronenoidBorder);
 		holesGraph = buildHolesGraphVar(generalModel);
 		System.out.println(holesGraph);
 		holesVertices = buildHoleVertices(generalModel);
-		Arrays.stream(holesVertices).forEach(System.out::print);
-		System.out.println(holesVertices);
+		Arrays.stream(holesVertices).forEach(System.out::println);
 		holesEdges = buildHoleEdges(generalModel);
-		Arrays.stream(holesEdges).forEach(System.out::print);
-		System.out.println(holesEdges);
+		Arrays.stream(holesEdges).forEach(line -> {
+			Arrays.stream(line).forEach(System.out::print);
+			System.out.println();
+		});
 		int nbMaxHoles = computeNbMaxHoles(generalModel.getNbMaxHexagons());
 		nbConnectedComponents = generalModel.getProblem().intVar("nb_connected_components", 1, nbMaxHoles + 1);
+		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 
 	private int[] buildHexagonSparseIndices(GeneralModel generalModel) {
@@ -67,7 +68,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 				}
 			}
 		}
-		hexagonSparseIndices[index] = lastIndex + 1;
+		hexagonSparseIndices[index] = lastIndex + 1; // external face index
 		return hexagonSparseIndices;
 	}
 
@@ -81,97 +82,100 @@ public class CoronoidConstraint extends BenzAIConstraint {
 
 	private ArrayList<Integer> buildCoronenoidBorder(int diameter, int[][] hexagonIndices) {
 		ArrayList<Integer> border = new ArrayList<>();
-		for (int i = 0; i < diameter; i++) {
-			if (i == 0 || i == diameter - 1) {
-				for (int j = 0; j < diameter; j++) {
-					if (hexagonIndices[i][j] != -1)
-						border.add(hexagonCompactIndices[hexagonIndices[i][j]]);
-				}
-			}
-			else {
-				for (int j = 0; j < diameter; j++)
-					if (hexagonIndices[i][j] != -1) {
-						border.add(hexagonCompactIndices[hexagonIndices[i][j]]);
-						break;
-					}
-				for (int j = diameter - 1; j >= 0; j--)
-					if (hexagonIndices[i][j] != -1) {
-						border.add(hexagonCompactIndices[hexagonIndices[i][j]]);
-						break;
-					}
-			}
+		buildVerticalBorder(diameter, hexagonIndices, border, 0); // top
+		buildVerticalBorder(diameter, hexagonIndices, border, diameter - 1); // bottom
+		for (int i = 1; i < diameter - 1; i++) {
+			addLeftBorder(diameter, hexagonIndices, border, i);
+			addRightBorder(diameter, hexagonIndices, border, i);
 		}
 		return border;
 	}
 
+	private void buildVerticalBorder(int diameter, int[][] hexagonIndices, ArrayList<Integer> border, int i) {
+		for (int j = 0; j < diameter; j++) {
+			if (hexagonIndices[i][j] != -1)
+				border.add(hexagonCompactIndices[hexagonIndices[i][j]]);
+		}
+	}
+
+	private void addLeftBorder(int diameter, int[][] hexagonIndices, ArrayList<Integer> border, int i) {
+		int j = 0;
+		while(j < diameter && hexagonIndices[i][j] == -1)
+			j++;
+		if(j < diameter)
+			border.add(hexagonCompactIndices[hexagonIndices[i][j]]);
+	}
+
+	private void addRightBorder(int diameter, int[][] hexagonIndices, ArrayList<Integer> border, int i) {
+		int j = diameter - 1;
+		while(j >= 0 && hexagonIndices[i][j] == -1)
+			j--;
+		if(j >= 0 )
+			border.add(hexagonCompactIndices[hexagonIndices[i][j]]);
+	}
+
 	private UndirectedGraphVar buildHolesGraphVar(GeneralModel generalModel) {
-		int[][] hexagonIndices = generalModel.getHexagonIndices();
+		int[][] hexagonIndices = generalModel.getHexagonIndicesMatrix();
 		int diameter = generalModel.getDiameter();
 
-		UndirectedGraph GUB = buildHolesGraphVarNodes(hexagonIndices, generalModel);
+		UndirectedGraph GUB = buildHolesGraphVarNodes(generalModel.getProblem(), generalModel.getNbHexagonsCoronenoid());
 		UndirectedGraph GLB = new UndirectedGraph(generalModel.getProblem(), generalModel.getNbHexagonsCoronenoid() + 1,
 				SetType.LINKED_LIST, false);
-		int externalFaceIndex = generalModel.getNbHexagonsCoronenoid();
-		GLB.addNode(externalFaceIndex);
-		buildHolesGraphVarEdges(generalModel, hexagonIndices, diameter, GUB, externalFaceIndex);
+		GLB.addNode(generalModel.getNbHexagonsCoronenoid());
+		buildHolesGraphVarEdges(generalModel, hexagonIndices, diameter, GUB);
 		return generalModel.getProblem().nodeInducedGraphVar("holes", GLB, GUB);
 	}
 
-	private static UndirectedGraph buildHolesGraphVarNodes(int[][] hexagonIndices, GeneralModel generalModel) {
-		UndirectedGraph GUB = new UndirectedGraph(generalModel.getProblem(), generalModel.getNbHexagonsCoronenoid() + 1,
+	private static UndirectedGraph buildHolesGraphVarNodes(Model problem, int nbHexagonsCoronenoid) {
+		UndirectedGraph GUB = new UndirectedGraph(problem, nbHexagonsCoronenoid + 1,
 				SetType.LINKED_LIST, false);
-		int hexagonIndex = 0;
-		for (int[] indexLine : hexagonIndices) {
-			for (int j = 0; j < hexagonIndices.length; j++) {
-				if (indexLine[j] != -1) {
-					GUB.addNode(hexagonIndex);
-					hexagonIndex++;
-				}
-			}
-		}
-		GUB.addNode(hexagonIndex); // the external face is in GUB
+		for(int i = 0; i <= nbHexagonsCoronenoid; i++)
+			GUB.addNode(i);
 		return GUB;
 	}
 
-	private void buildHolesGraphVarEdges(GeneralModel generalModel, int[][] hexagonIndices, int diameter, UndirectedGraph GUB, int externalFaceIndex) {
+	private void buildHolesGraphVarEdges(GeneralModel generalModel, int[][] hexagonIndices, int diameter, UndirectedGraph GUB) {
 		int[][] edges = new int[generalModel.getNbHexagonsCoronenoid() + 1][generalModel.getNbHexagonsCoronenoid() + 1];
-
-		for (int i = 0; i < hexagonIndices.length; i++) {
-			for (int j = 0; j < hexagonIndices.length; j++) {
-				if (hexagonIndices[i][j] != -1) {
-					int hexagonCompactIndex1 = generalModel.getHexagonCompactIndex(hexagonIndices[i][j]);
-					int[] N = new int[6];
-
-					for (int k = 0; k < 6; k++)
-						N[k] = -1;
-					for(HexNeighborhood neighbor : HexNeighborhood.values()){
-						int i2 = i + neighbor.dy();
-						int j2 = j + neighbor.dx();
-						if(i2 >= 0 && i2 <= diameter - 1 && j2 >= 0 && j2 <= diameter - 1)
-							N[neighbor.getIndex()] = hexagonIndices[i2][j2];
-					}
-
-					for (int k = 0; k < 6; k++) {
-						int hexagonCompactIndex2;
-						if (N[k] == -1)
-							hexagonCompactIndex2 = -1;
-						else
-							hexagonCompactIndex2 = generalModel.getHexagonCompactIndex(N[k]);
-						if (hexagonCompactIndex1 != -1 && hexagonCompactIndex2 != -1) {
-							if (edges[hexagonCompactIndex1][hexagonCompactIndex2] == 0) {
-								edges[hexagonCompactIndex1][hexagonCompactIndex2] = 1;
-								edges[hexagonCompactIndex2][hexagonCompactIndex1] = 1;
-								GUB.addEdge(hexagonCompactIndex1, hexagonCompactIndex2);
-							}
-						}
-					}
-				}
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+				if (generalModel.validHexagonIndex(i, j))
+					buildHolesGraphVarInternalEdges(generalModel, hexagonIndices, diameter, GUB, edges, i, j);
 			}
 		}
-
 		// an edge between any border hex and the external face "index"
+		int externalFaceIndex = generalModel.getNbHexagonsCoronenoid();
 		for (Integer i : coronenoidBorder)
-			GUB.addEdge(externalFaceIndex, i);
+			GUB.addEdge(i, externalFaceIndex);
+	}
+
+	private static void buildHolesGraphVarInternalEdges(GeneralModel generalModel, int[][] hexagonIndices, int diameter, UndirectedGraph GUB, int[][] edges, int i, int j) {
+		int hexagonCompactIndex = generalModel.getHexagonCompactIndex(generalModel.getHexagonIndex(i, j));
+		int[] neighborIndicesTab = buildNeighborIndicesTab(hexagonIndices, diameter, i, j);
+		addHolesGraphVarInternalEdges(generalModel, GUB, edges, hexagonCompactIndex, neighborIndicesTab);
+	}
+
+	private static void addHolesGraphVarInternalEdges(GeneralModel generalModel, UndirectedGraph GUB, int[][] edges, int hexagonCompactIndex, int[] neighborIndicesTab) {
+		for (int k = 0; k < 6; k++) {
+			int neighborCompactIndex = neighborIndicesTab[k] == -1 ?
+					-1 : generalModel.getHexagonCompactIndex(neighborIndicesTab[k]);
+			if (hexagonCompactIndex != -1 && neighborCompactIndex != -1 && edges[hexagonCompactIndex][neighborCompactIndex] == 0) {
+				edges[hexagonCompactIndex][neighborCompactIndex] = 1;
+				edges[neighborCompactIndex][hexagonCompactIndex] = 1;
+				GUB.addEdge(hexagonCompactIndex, neighborCompactIndex);
+			}
+		}
+	}
+
+	private static int[] buildNeighborIndicesTab(int[][] hexagonIndices, int diameter, int i, int j) {
+		int[] neighborIndicesTab = new int[]{-1, -1, -1, -1, -1, -1};
+		//Arrays.fill(neighborIndicesTab, -1);
+		for(HexNeighborhood neighbor : HexNeighborhood.values()){
+			int i2 = i + neighbor.dy();
+			int j2 = j + neighbor.dx();
+			if(i2 >= 0 && i2 <= diameter - 1 && j2 >= 0 && j2 <= diameter - 1)
+				neighborIndicesTab[neighbor.getIndex()] = hexagonIndices[i2][j2];
+		}
+		return neighborIndicesTab;
 	}
 
 
@@ -194,7 +198,6 @@ public class CoronoidConstraint extends BenzAIConstraint {
 					BoolVar holeEdgeBoolVar = problem.boolVar("edges[" + hexIndex1 + "][" + hexIndex2 + "]");
 					holesEdges[hexIndex1][hexIndex2] = holeEdgeBoolVar;
 					holesEdges[hexIndex2][hexIndex1] = holeEdgeBoolVar;
-
 					problem.edgeChanneling(holesGraph, holeEdgeBoolVar, hexIndex1, hexIndex2).post();
 
 					// if two hole vertex neighbors exists then their linking edge exists
@@ -206,29 +209,17 @@ public class CoronoidConstraint extends BenzAIConstraint {
 					problem.getClauseConstraint().addClause(varClause, valClause);
 				}
 			}
-
-			/*int hexagonCompactIndex = hexagonCompactIndices[i];
-			int externalFaceCompactIndex = hexagonCompactIndices[diameter * diameter];
-			int externalFaceIndex = holesEdges.length - 1;
-			if (hexagonCompactIndex != -1 && externalFaceCompactIndex != -1) {
-				BoolVar edgeToExternalFaceBoolVar = problem
-						.boolVar("edges[" + externalFaceIndex + "][" + hexagonCompactIndices[i] + "]");
-				holesEdges[externalFaceIndex][hexagonCompactIndex] = edgeToExternalFaceBoolVar;
-				holesEdges[hexagonCompactIndex][externalFaceIndex] = edgeToExternalFaceBoolVar;
-				problem.edgeChanneling(holesGraph, edgeToExternalFaceBoolVar, hexagonCompactIndex, externalFaceCompactIndex).post();
-			}*/
 		}
 
-		int externalFaceCompactIndex = hexagonCompactIndices[diameter * diameter];
-		int externalFaceIndex = holesEdges.length - 1;
-		for(int i : coronenoidBorder) {
-			int hexagonCompactIndex = hexagonCompactIndices[i];
-			if (hexagonCompactIndex != -1 && externalFaceCompactIndex != -1) {
+		int externalFaceIndex = generalModel.getNbHexagonsCoronenoid();
+		for(int hexagonCompactIndex : coronenoidBorder) {
+			if (hexagonCompactIndex != -1 && externalFaceIndex != -1) {
 				BoolVar edgeToExternalFaceBoolVar = problem
-						.boolVar("edges[" + externalFaceIndex + "][" + hexagonCompactIndices[i] + "]");
+						.boolVar("edges[" + hexagonCompactIndex + "][" + externalFaceIndex + "]");
 				holesEdges[externalFaceIndex][hexagonCompactIndex] = edgeToExternalFaceBoolVar;
 				holesEdges[hexagonCompactIndex][externalFaceIndex] = edgeToExternalFaceBoolVar;
-				problem.edgeChanneling(holesGraph, edgeToExternalFaceBoolVar, hexagonCompactIndex, externalFaceCompactIndex).post();
+				problem.edgeChanneling(holesGraph, edgeToExternalFaceBoolVar, hexagonCompactIndex, externalFaceIndex).post();
+				//System.out.println(hexagonCompactIndex+"-"+externalFaceIndex);
 			}
 		}
 		return holesEdges;
@@ -250,28 +241,21 @@ public class CoronoidConstraint extends BenzAIConstraint {
 		return nbMaxHoles;
 	}
 
-
 	@Override
 	public void postConstraints() {
 		Model problem = getGeneralModel().getProblem();
 		problem.nodesChanneling(holesGraph, holesVertices).post();
-		problem.minDegree(holesGraph, 1).post();
 		postBenzenoidXORHoles();
 		problem.nbConnectedComponents(holesGraph, nbConnectedComponents).post();
-        /*if (this.getExpressionList().size() == 1)
-			problem.arithm(nbConnectedComponents, ">", 1).post();
-		else*/
-		//problem.arithm(nbConnectedComponents, ">=", 1).post();
-		problem.sum(holesVertices, "<=", getGeneralModel().getNbHexagonsCoronenoid()).post();
+		//problem.sum(holesVertices, "<=", getGeneralModel().getNbHexagonsCoronenoid()).post();
+		postHolesExternalFaceConnection();
 		// The external face exists (index = holesVertices - 1)
 		//problem.arithm(holesVertices[holesVertices.length - 1], "=", 1).post();
-
 		for (PropertyExpression expression : this.getExpressionList()) {
 			String operator = ((BinaryNumericalExpression)expression).getOperator();
 			int value = ((BinaryNumericalExpression)expression).getValue();
 			problem.arithm(nbConnectedComponents, operator, value + 1).post();
 		}
-		postHolesExternalFaceConnection();
 	}
 
 	@Override
@@ -296,7 +280,7 @@ public class CoronoidConstraint extends BenzAIConstraint {
 	}
 
 	private void postHolesExternalFaceConnection() {
-		int faceExterne = hexagonSparseIndices.length - 1;
+		int faceExterne = getGeneralModel().getNbHexagonsCoronenoid();
 		for (Integer i : coronenoidBorder) {
 			// If a hex of the border exists then it is linked to the external face
 			addBinaryClause(getGeneralModel(), holesVertices[i], 0, holesEdges[i][faceExterne], 1 );

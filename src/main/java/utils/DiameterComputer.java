@@ -3,9 +3,10 @@ package utils;
 public enum DiameterComputer {
     ;
 
-    static final int INF = 99999, V = 4;
+    private static final int INF = 99999;
+	private static final int V = 4;
 
-	public static int[][] floydWarshall(int[][] graph) {
+	private static int[][] floydWarshall(int[][] graph) {
 		int[][] dist = new int[V][V];
 
 		for (int i = 0; i < V; i++)

@@ -76,7 +76,7 @@ public class BenzenoidConstraint extends BenzAIConstraint {
 		ArrayList<Integer[]> translations = new ArrayList<>();
 
 		int diameter = getGeneralModel().getDiameter();
-		int[][] coordsMatrix = getGeneralModel().getHexagonIndices();
+		int[][] coordsMatrix = getGeneralModel().getHexagonIndicesMatrix();
 
 		int xMin = Integer.MAX_VALUE;
 		int yMin = Integer.MAX_VALUE;

@@ -47,7 +47,7 @@ public class RectangleConstraint extends BenzAIConstraint {
 		int diameter = generalModel.getDiameter();
 		int nbCrowns = generalModel.getNbCrowns();
 
-		int[][] hexagonIndices = generalModel.getHexagonIndices();
+		int[][] hexagonIndices = generalModel.getHexagonIndicesMatrix();
 		ArrayList<ArrayList<Integer>> linesLists = new ArrayList<>();
 		for (int lineIndex = nbCrowns - 1; 0 <= lineIndex; lineIndex--) {
 			ArrayList<Integer> lineList = new ArrayList<>(Collections.nCopies(lineIndex, -1));

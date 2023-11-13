@@ -13,7 +13,7 @@ public enum ConstraintBuilder {
 
 	public static void postFillNodesConnection(GeneralModel model) {
 
-		int[] correspondancesHexagons = model.getHexagonCompactIndices();
+		int[] correspondancesHexagons = model.getHexagonCompactIndicesTab();
 		int[][] adjacencyMatrix = model.getSideSharing();
 		BoolVar[] benzenoidVertices = model.getBenzenoidVerticesBVArray();
 		BoolVar[][] benzenoidEdges = model.getBenzenoidEdges();
@@ -42,7 +42,7 @@ public enum ConstraintBuilder {
 					varBinaryClause[0] = benzenoidEdges[correspondancesHexagons[i]][correspondancesHexagons[j]];
 					varBinaryClause[1] = benzenoidVertices[i];
 
-					valBinaryClause[0] = new IntIterableRangeSet(0);
+					//valBinaryClause[0] = new IntIterableRangeSet(0);
 					valBinaryClause[0] = new IntIterableRangeSet(0);
 					valBinaryClause[1] = new IntIterableRangeSet(1);
 
@@ -69,7 +69,7 @@ public enum ConstraintBuilder {
 	public static void postNoHolesOfSize1Constraint(GeneralModel model) {
 
 		BoolVar[] benzenoidVertices = model.getBenzenoidVerticesBVArray();
-		int[][] coordsMatrix = model.getHexagonIndices();
+		int[][] coordsMatrix = model.getHexagonIndicesMatrix();
 
 		BoolVar[] varClause = new BoolVar[7];
 		IntIterableRangeSet[] valClause = new IntIterableRangeSet[7];

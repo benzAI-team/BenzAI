@@ -15,7 +15,7 @@ enum BoundsBuilder {
 		
 		UndirectedGraph GUB = new UndirectedGraph(model.getProblem(), model.getNbHexagonsCoronenoid(), SetType.LINKED_LIST, false);
 		
-		int [][] matrix = model.getHexagonIndices();
+		int [][] matrix = model.getHexagonIndicesMatrix();
 		int diameter = model.getDiameter();
 		
 		/*
@@ -25,7 +25,7 @@ enum BoundsBuilder {
 		for (int[] ints : matrix) {
 			for (int j = 0; j < matrix.length; j++) {
 				if (ints[j] != -1) {
-					GUB.addNode(model.getHexagonCompactIndices()[ints[j]]);
+					GUB.addNode(model.getHexagonCompactIndicesTab()[ints[j]]);
 				}
 			}
 		} 
@@ -41,7 +41,7 @@ enum BoundsBuilder {
 				
 				if (matrix[i][j] != -1) {
 				
-					int u = model.getHexagonCompactIndices()[matrix[i][j]];
+					int u = model.getHexagonCompactIndicesTab()[matrix[i][j]];
 					
 					int [] N = new int [6];
 					
@@ -77,7 +77,7 @@ enum BoundsBuilder {
 						
 						if (N[k] == -1)
 							v = -1;
-						else v = model.getHexagonCompactIndices()[N[k]];
+						else v = model.getHexagonCompactIndicesTab()[N[k]];
 						
 						if (u != -1 && v != -1) {
 							if (edges[u][v] == 0) {

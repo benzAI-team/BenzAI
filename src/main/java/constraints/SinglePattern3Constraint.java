@@ -57,8 +57,8 @@ public class SinglePattern3Constraint extends BenzAIConstraint {
 
 		for (int i = 0; i < generalModel.getDiameter(); i++) {
 			for (int j = 0; j < generalModel.getDiameter(); j++) {
-				if (generalModel.getHexagonIndices()[i][j] != -1)
-					domainList.add(generalModel.getHexagonIndices()[i][j]);
+				if (generalModel.getHexagonIndicesMatrix()[i][j] != -1)
+					domainList.add(generalModel.getHexagonIndicesMatrix()[i][j]);
 			}
 		}
 

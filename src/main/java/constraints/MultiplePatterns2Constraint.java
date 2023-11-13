@@ -78,7 +78,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 		int nbInternalHexagons = 0;
 		for (int line = 0; line < generalModel.getDiameter(); line++) {
 			for (int column = 0; column < generalModel.getDiameter(); column++) {
-				if (generalModel.getHexagonIndices()[line][column] != -1)
+				if (generalModel.getHexagonIndicesMatrix()[line][column] != -1)
 					nbInternalHexagons++;
 			}
 		}
@@ -116,8 +116,8 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 		int index = 0;
 		for (int line = 0; line < generalModel.getDiameter(); line++) {
 			for (int column = 0; column < generalModel.getDiameter(); column++) {
-				if (generalModel.getHexagonIndices()[line][column] != -1) {
-					T1[generalModel.getHexagonIndices()[line][column]] = index;
+				if (generalModel.getHexagonIndicesMatrix()[line][column] != -1) {
+					T1[generalModel.getHexagonIndicesMatrix()[line][column]] = index;
 					index++;
 				}
 			}
@@ -188,7 +188,7 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 
 			for (int line = 0; line < generalModel.getDiameter(); line++) {
 				for (int column = 0; column < generalModel.getDiameter(); column++) {
-					if (generalModel.getHexagonIndices()[line][column] != -1) {
+					if (generalModel.getHexagonIndicesMatrix()[line][column] != -1) {
 
 						patternCorrespondancesAllHexagons.get(i)[index] = generalModel.getProblem()
 								.intVar("fc_" + i + "_" + coroIndex, domainInternalHexagons);
@@ -810,37 +810,37 @@ public class MultiplePatterns2Constraint extends BenzAIConstraint {
 			Arrays.fill(ints, -1);
 		}
 
-		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {
-			for (int column = 0; column < generalModel.getHexagonIndices()[line].length; column++) {
+		for (int line = 0; line < generalModel.getHexagonIndicesMatrix().length; line++) {
+			for (int column = 0; column < generalModel.getHexagonIndicesMatrix()[line].length; column++) {
 
-				if (generalModel.getHexagonIndices()[line][column] != -1) {
+				if (generalModel.getHexagonIndicesMatrix()[line][column] != -1) {
 
-					int index = generalModel.getHexagonIndices()[line][column];
+					int index = generalModel.getHexagonIndicesMatrix()[line][column];
 
 					// High-Right
 					if (line > 0)
-						neighborGraph[index][0] = generalModel.getHexagonIndices()[line - 1][column];
+						neighborGraph[index][0] = generalModel.getHexagonIndicesMatrix()[line - 1][column];
 
 					// Right
-					if (column < generalModel.getHexagonIndices()[line].length - 1)
-						neighborGraph[index][1] = generalModel.getHexagonIndices()[line][column + 1];
+					if (column < generalModel.getHexagonIndicesMatrix()[line].length - 1)
+						neighborGraph[index][1] = generalModel.getHexagonIndicesMatrix()[line][column + 1];
 
 					// Down-Right
-					if (line < generalModel.getHexagonIndices()[line].length - 1
-							&& column < generalModel.getHexagonIndices()[line].length - 1)
-						neighborGraph[index][2] = generalModel.getHexagonIndices()[line + 1][column + 1];
+					if (line < generalModel.getHexagonIndicesMatrix()[line].length - 1
+							&& column < generalModel.getHexagonIndicesMatrix()[line].length - 1)
+						neighborGraph[index][2] = generalModel.getHexagonIndicesMatrix()[line + 1][column + 1];
 
 					// Down-Left
-					if (line < generalModel.getHexagonIndices()[line].length - 1)
-						neighborGraph[index][3] = generalModel.getHexagonIndices()[line + 1][column];
+					if (line < generalModel.getHexagonIndicesMatrix()[line].length - 1)
+						neighborGraph[index][3] = generalModel.getHexagonIndicesMatrix()[line + 1][column];
 
 					// Left
 					if (column > 0)
-						neighborGraph[index][4] = generalModel.getHexagonIndices()[line][column - 1];
+						neighborGraph[index][4] = generalModel.getHexagonIndicesMatrix()[line][column - 1];
 
 					// High-Left
 					if (line > 0 && column > 0)
-						neighborGraph[index][5] = generalModel.getHexagonIndices()[line - 1][column - 1];
+						neighborGraph[index][5] = generalModel.getHexagonIndicesMatrix()[line - 1][column - 1];
 				}
 			}
 		}

@@ -156,8 +156,8 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 		
 		for (int i = 0 ; i < generalModel.getDiameter() ; i ++) {
 			for (int j = 0 ; j < generalModel.getDiameter() ; j++) {
-				if (generalModel.getHexagonIndices()[i][j] != -1)
-					hexagons.add(generalModel.getHexagonIndices()[i][j]);
+				if (generalModel.getHexagonIndicesMatrix()[i][j] != -1)
+					hexagons.add(generalModel.getHexagonIndicesMatrix()[i][j]);
 			}
 		}
 

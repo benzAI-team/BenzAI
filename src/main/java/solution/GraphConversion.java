@@ -3,11 +3,11 @@ package solution;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
-public enum GraphConversion {
+enum GraphConversion {
     ;
 
-    public static SimpleGraph<Integer, DefaultEdge> toCarbonGraph(SimpleGraph<Integer, DefaultEdge> hexagonGraph,
-                                                                  int largeur) {
+    static SimpleGraph<Integer, DefaultEdge> toCarbonGraph(SimpleGraph<Integer, DefaultEdge> hexagonGraph,
+														   int largeur) {
 		int k = 0;
 		int i, j;
 		int haut, hautdroit, basdroit, bas, basgauche, hautgauche;

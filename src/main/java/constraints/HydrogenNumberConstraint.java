@@ -105,11 +105,11 @@ public class HydrogenNumberConstraint extends BenzAIConstraint {
 
 		Tuples tableHydrogens = buildTable();
 
-		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {
-			for (int column = 0; column < generalModel.getHexagonIndices()[line].length; column++) {
-				if (generalModel.getHexagonIndices()[line][column] != -1) {
+		for (int line = 0; line < generalModel.getHexagonIndicesMatrix().length; line++) {
+			for (int column = 0; column < generalModel.getHexagonIndicesMatrix()[line].length; column++) {
+				if (generalModel.getHexagonIndicesMatrix()[line][column] != -1) {
 
-					int index = generalModel.getHexagonCompactIndices()[generalModel.getHexagonIndices()[line][column]];
+					int index = generalModel.getHexagonCompactIndicesTab()[generalModel.getHexagonIndicesMatrix()[line][column]];
 
 					IntVar[] nH = xN[index];
 					IntVar[] tuple = new IntVar[] { nH[0], nH[1], nH[2], nH[3], nH[4], nH[5], NULL[index], SOLOS[index],
@@ -203,46 +203,46 @@ public class HydrogenNumberConstraint extends BenzAIConstraint {
 			Arrays.fill(ints, -1);
 		}
 
-		for (int line = 0; line < generalModel.getHexagonIndices().length; line++) {
-			for (int column = 0; column < generalModel.getHexagonIndices()[line].length; column++) {
+		for (int line = 0; line < generalModel.getHexagonIndicesMatrix().length; line++) {
+			for (int column = 0; column < generalModel.getHexagonIndicesMatrix()[line].length; column++) {
 
-				if (generalModel.getHexagonIndices()[line][column] != -1) {
+				if (generalModel.getHexagonIndicesMatrix()[line][column] != -1) {
 
-					int index = generalModel.getHexagonCompactIndices()[generalModel.getHexagonIndices()[line][column]];
+					int index = generalModel.getHexagonCompactIndicesTab()[generalModel.getHexagonIndicesMatrix()[line][column]];
 
 					// High-Right
-					if (line > 0 && generalModel.getHexagonIndices()[line - 1][column] != -1)
+					if (line > 0 && generalModel.getHexagonIndicesMatrix()[line - 1][column] != -1)
 						dualGraph[index][0] = generalModel
-								.getHexagonCompactIndices()[generalModel.getHexagonIndices()[line - 1][column]];
+								.getHexagonCompactIndicesTab()[generalModel.getHexagonIndicesMatrix()[line - 1][column]];
 
 					// Right
-					if (column < generalModel.getHexagonIndices()[line].length - 1
-							&& generalModel.getHexagonIndices()[line][column + 1] != -1)
+					if (column < generalModel.getHexagonIndicesMatrix()[line].length - 1
+							&& generalModel.getHexagonIndicesMatrix()[line][column + 1] != -1)
 						dualGraph[index][1] = generalModel
-								.getHexagonCompactIndices()[generalModel.getHexagonIndices()[line][column + 1]];
+								.getHexagonCompactIndicesTab()[generalModel.getHexagonIndicesMatrix()[line][column + 1]];
 
 					// Down-Right
-					if (line < generalModel.getHexagonIndices()[line].length - 1
-							&& column < generalModel.getHexagonIndices()[line].length - 1
-							&& generalModel.getHexagonIndices()[line + 1][column + 1] != -1)
+					if (line < generalModel.getHexagonIndicesMatrix()[line].length - 1
+							&& column < generalModel.getHexagonIndicesMatrix()[line].length - 1
+							&& generalModel.getHexagonIndicesMatrix()[line + 1][column + 1] != -1)
 						dualGraph[index][2] = generalModel
-								.getHexagonCompactIndices()[generalModel.getHexagonIndices()[line + 1][column + 1]];
+								.getHexagonCompactIndicesTab()[generalModel.getHexagonIndicesMatrix()[line + 1][column + 1]];
 
 					// Down-Left
-					if (line < generalModel.getHexagonIndices()[line].length - 1
-							&& generalModel.getHexagonIndices()[line + 1][column] != -1)
+					if (line < generalModel.getHexagonIndicesMatrix()[line].length - 1
+							&& generalModel.getHexagonIndicesMatrix()[line + 1][column] != -1)
 						dualGraph[index][3] = generalModel
-								.getHexagonCompactIndices()[generalModel.getHexagonIndices()[line + 1][column]];
+								.getHexagonCompactIndicesTab()[generalModel.getHexagonIndicesMatrix()[line + 1][column]];
 
 					// Left
-					if (column > 0 && generalModel.getHexagonIndices()[line][column - 1] != -1)
+					if (column > 0 && generalModel.getHexagonIndicesMatrix()[line][column - 1] != -1)
 						dualGraph[index][4] = generalModel
-								.getHexagonCompactIndices()[generalModel.getHexagonIndices()[line][column - 1]];
+								.getHexagonCompactIndicesTab()[generalModel.getHexagonIndicesMatrix()[line][column - 1]];
 
 					// High-Left
-					if (line > 0 && column > 0 && generalModel.getHexagonIndices()[line - 1][column - 1] != -1)
+					if (line > 0 && column > 0 && generalModel.getHexagonIndicesMatrix()[line - 1][column - 1] != -1)
 						dualGraph[index][5] = generalModel
-								.getHexagonCompactIndices()[generalModel.getHexagonIndices()[line - 1][column - 1]];
+								.getHexagonCompactIndicesTab()[generalModel.getHexagonIndicesMatrix()[line - 1][column - 1]];
 				}
 			}
 		}
