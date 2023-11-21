@@ -32,25 +32,14 @@ public class CoronoidConstraint extends BenzAIConstraint {
 	@Override
 	public void buildVariables() {
 		GeneralModel generalModel = getGeneralModel();
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		int[] hexagonSparseIndices = buildHexagonSparseIndices(generalModel);
-		Arrays.stream(hexagonSparseIndices).forEach(System.out::println);
 		hexagonCompactIndices = buildHexagonCompactIndices(hexagonSparseIndices, getGeneralModel().getDiameter());
-		Arrays.stream(hexagonCompactIndices).forEach(System.out::println);
 		coronenoidBorder = buildCoronenoidBorder(generalModel.getDiameter(), generalModel.getHexagonIndicesMatrix());
-		System.out.println(coronenoidBorder);
 		holesGraph = buildHolesGraphVar(generalModel);
-		System.out.println(holesGraph);
 		holesVertices = buildHoleVertices(generalModel);
-		Arrays.stream(holesVertices).forEach(System.out::println);
 		holesEdges = buildHoleEdges(generalModel);
-		Arrays.stream(holesEdges).forEach(line -> {
-			Arrays.stream(line).forEach(System.out::print);
-			System.out.println();
-		});
 		int nbMaxHoles = computeNbMaxHoles(generalModel.getNbMaxHexagons());
 		nbConnectedComponents = generalModel.getProblem().intVar("nb_connected_components", 1, nbMaxHoles + 1);
-		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 
 	private int[] buildHexagonSparseIndices(GeneralModel generalModel) {

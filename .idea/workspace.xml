@@ -7,26 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="merging refactoring_adrien">
+    <list default="true" id="f8978a33-35bd-4fd6-b153-ba63c29d7d2f" name="Changes" comment="fixing the coronoid property">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/BenzenoidConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CarbonNumberConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CatacondensedConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CatacondensedConstraint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/CoronoidConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/HydrogenNumberConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/IrregularityConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns2Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/MultiplePatterns3Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/OccurencePatternConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/RectangleConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern2Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/SinglePattern3Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/BoundsBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/ConstraintBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/generator/GeneralModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solution/GraphConversion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/DiameterComputer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestNbCC.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,11 +78,11 @@
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/horloge&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;two.files.diff.last.used.file&quot;: &quot;/Users/nicolasprcovic/Nextcloud/BenzAI/src/main/java/view/generator/GeneratorPane.java&quot;
   }
 }</component>
@@ -122,8 +105,10 @@
       <recent name="constraints" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.BenzAI">
+  <component name="RunManager" selected="Application.TestGeneration">
     <configuration name="BenzAI" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-19" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="application.Launcher" />
       <module name="BenzAI" />
       <method v="2">
@@ -170,10 +155,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.BenzAI" />
+      <item itemvalue="Application.CompteurApp" />
+      <item itemvalue="Application.TestGeneration" />
+      <item itemvalue="Application.TestNbCC" />
+      <item itemvalue="Application.TimerApp" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TestNbCC" />
         <item itemvalue="Application.TestGeneration" />
+        <item itemvalue="Application.TestNbCC" />
         <item itemvalue="Application.CompteurApp" />
         <item itemvalue="Application.TimerApp" />
       </list>
@@ -187,13 +179,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1681302335083</updated>
-    </task>
-    <task id="LOCAL-00002" summary="simplified code in BenzenoidCollectionsManagerPane">
-      <created>1681309897594</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1681309897594</updated>
     </task>
     <task id="LOCAL-00003" summary="simplified code in BenzenoidCollectionsManagerPane">
       <created>1681471837145</created>
@@ -531,7 +516,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699362114283</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="fixing the coronoid property">
+      <created>1699894922840</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1699894922840</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -576,7 +568,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="class Pattern refactored" />
     <MESSAGE value="class Pattern delegates export and import file to new classes PatternFileImport and PatternFileWriter" />
     <MESSAGE value="class HBox and derivates lightly refactored" />
     <MESSAGE value="class HBoxCriterion and derivates lightly refactored" />
@@ -601,7 +592,8 @@
     <MESSAGE value="Added : Auto/explicit save/load the generation criterion list" />
     <MESSAGE value="Added : show progress during filtering" />
     <MESSAGE value="merging refactoring_adrien" />
-    <option name="LAST_COMMIT_MESSAGE" value="merging refactoring_adrien" />
+    <MESSAGE value="fixing the coronoid property" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing the coronoid property" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
