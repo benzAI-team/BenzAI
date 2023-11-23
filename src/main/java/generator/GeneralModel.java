@@ -220,7 +220,6 @@ public class GeneralModel {
 
     private void initializeConstraints() {
         chocoModel.connected(benzenoidGraphVar).post();
-
         //chocoModel.diameter(benzenoidGraphVar,graphDiameter).post();
         //chocoModel.arithm(graphDiameter, "<", nbVertices).post();
 
