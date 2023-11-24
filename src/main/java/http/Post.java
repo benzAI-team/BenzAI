@@ -15,15 +15,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public enum Post {
-	;
+public class Post {
 
 	public static boolean isDatabaseConnected;
+  private static String databaseServername = "https://benzenoids.lis-lab.fr";
 
 	@SuppressWarnings("rawtypes")
-	public static List<Map> post(String urlString, String jsonInputString) throws IOException {
+	public static List<Map> post(String service, String jsonInputString) throws IOException {
 
-		System.out.println(jsonInputString);
+    String urlString = databaseServername + "/" + service;
+
+		System.out.println("Ma requete "+jsonInputString+" @ "+urlString);
 
 		URL url = new URL(urlString);
 
@@ -80,9 +82,9 @@ public enum Post {
 		isDatabaseConnected = true;
 
 		try {
-			String url = "https://benzenoids.lis-lab.fr/find_by_name/";
-			String json = "{\"name\": \"1-11-20-27-28-29-30-39\"}";
-			post(url, json);
+			String service = "find_benzenoids/";
+			String json = "{\"label\": \"= 1-11-20-27-28-29-30-39\"}";
+			post(service, json);
 		} catch (Exception e) {
 			isDatabaseConnected = false;
 			Utils.alert("Unable to connect to the database");
@@ -91,9 +93,4 @@ public enum Post {
 		// System.out.println("Connection to database established");
 		return isDatabaseConnected;
 	}
-
-	/*
-	 * String url = "https://benzenoids.lis-lab.fr/find_name/"; String json =
-	 * "{\"name\": \"1-11-20-27-28-29-30-39\"}"; post(url, json);
-	 */
 }

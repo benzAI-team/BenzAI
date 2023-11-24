@@ -156,8 +156,8 @@ public class IMS2D1AEntry {
 	public static IMS2D1AEntry buildQueryContent(Map result) {
 
 		// benzenoid
-		Long idMolecule = (Long) (result.get("id"));
-		String name = (String) result.get("name");
+		Long idMolecule = (Long) (result.get("idBenzenoid"));
+		String label = (String) result.get("label");
 		int nbHexagons = (int) ((double) result.get("nbHexagons"));
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
 		int nbHydrogens = (int) ((double) result.get("nbHydrogens"));
@@ -168,7 +168,6 @@ public class IMS2D1AEntry {
 		double x = (double) result.get("x");
 		double y = (double) result.get("y");
 		double z = (double) result.get("z");
-		String label = (String) result.get("label");
 
 		// ims2d1a
 		Long idIMS2D1A = (Long) result.get("idIms2d1a");
@@ -185,7 +184,7 @@ public class IMS2D1AEntry {
 		int numPoint = (int) result.get("numPoint");
 		double value = (double) result.get("value");
 
-		return new IMS2D1AEntry(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idAtom, x, y, z,
+		return new IMS2D1AEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, idAtom, x, y, z,
 				label, idIMS2D1A, xVector, yVector, nbPointsX, nbPointsY, originX, originY, originZ, idPoint, numPoint, value);
 	}
 }

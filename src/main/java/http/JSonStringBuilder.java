@@ -7,7 +7,7 @@ public enum JSonStringBuilder {
 			double irregularity, String opeId, String opeName, String opeHexagons, String opeCarbons,
 			String opeHydrogens, String opeIrregularity) {
 
-		return "{\"id\": " + id + ", \"name\": \"" + name + "\", \"nbHexagons\": " + nbHexagons
+		return "{\"idBenzenoid\": " + id + ", \"label\": \"" + name + "\", \"nbHexagons\": " + nbHexagons
 				+ ", \"nbCarbons\": " + nbCarbons + ", \"nbHydrogens\": " + nbHydrogens + ", \"irregularity\": "
 				+ irregularity + ", \"operatorId\": \"" + opeId + "\", \"operatorName\": \"" + opeName
 				+ "\", \"operatorHexagons\": \"" + opeHexagons + "\", \"operatorCarbons\": \"" + opeCarbons
@@ -25,14 +25,14 @@ public enum JSonStringBuilder {
 		json.append("{");
 
 		if (!"".equals(opeId))
-			json.append("\"id\": \"").append(opeId).append(" ").append(id).append("\", ");
+			json.append("\"idBenzenoid\": \"").append(opeId).append(" ").append(id).append("\", ");
 		else
-			json.append("\"id\": \"\", ");
+			json.append("\"idBenzenoid\": \"\", ");
 
 		if (!"".equals(opeName))
-			json.append("\"name\": \"").append(opeName).append(" ").append(name).append("\", ");
+			json.append("\"label\": \"").append(opeName).append(" ").append(name).append("\", ");
 		else
-			json.append("\"name\": \"\", ");
+			json.append("\"label\": \"\", ");
 
 		if (!"".equals(opeHexagons))
 			json.append("\"nbHexagons\": \"").append(opeHexagons).append(" ").append(nbHexagons).append("\", ");

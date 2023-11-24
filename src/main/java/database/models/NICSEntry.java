@@ -62,8 +62,8 @@ public class NICSEntry {
 	@SuppressWarnings("rawtypes")
 	public static NICSEntry buildQueryContent(Map result) {
 
-		Long idMolecule = (Long) (result.get("id"));
-		String name = (String) result.get("name");
+		Long idMolecule = (Long) (result.get("idBenzenoid"));
+		String label = (String) result.get("label");
 		int nbHexagons = (int) ((double) result.get("nbHexagons"));
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
 		int nbHydrogens = (int) ((double) result.get("nbHydrogens"));
@@ -73,6 +73,6 @@ public class NICSEntry {
 		int idHexagon = (int) result.get("idHexagon");
 		double value = (int) result.get("value");
 
-		return new NICSEntry(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idHexagon, value);
+		return new NICSEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, idHexagon, value);
 	}
 }

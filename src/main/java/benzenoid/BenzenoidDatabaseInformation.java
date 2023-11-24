@@ -33,12 +33,12 @@ public class BenzenoidDatabaseInformation {
 
         if (IRSpectra == null) {
 
-            String name = benzenoid.getNames().get(0);
-            String url = "https://benzenoids.lis-lab.fr/find_by_name/";
-            String json = "{\"name\": \"" + name + "\"}";
+            String label = benzenoid.getNames().get(0);
+            String service = "find_ir/";
+            String json = "{\"label\": \"= " + label + "\"}";
 
             try {
-                List<Map> results = Post.post(url, json);
+                List<Map> results = Post.post(service, json);
 
                 if (!results.isEmpty()) {
                     IRSpectraEntry content = IRSpectraEntry.buildQueryContent(results.get(0));
@@ -71,11 +71,11 @@ public class BenzenoidDatabaseInformation {
 
         if (imsMap == null) {
             String name = benzenoid.getNames().get(0);
-            String url = "https://benzenoids.lis-lab.fr/find_ims2d_1a_by_name/";
-            String json = "{\"name\": \"" + name + "\"}";
+            String service = "find_ims2d1a/";
+            String json = "{\"label\": \"= " + name + "\"}";
 
             try {
-                List<Map> results = Post.post(url, json);
+                List<Map> results = Post.post(service, json);
 
                 if (!results.isEmpty()) {
                     Map map = results.get(0);

@@ -109,13 +109,14 @@ public class IRSpectraEntry {
 
 		int idMolecule = (int) ((double) result.get("idBenzenoid"));
 		// String name = (String) result.get("inchie");
-		String name = "";
+		String label = (String) result.get("label");
 		int nbHexagons = (int) ((double) result.get("nbHexagons"));
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
 		int nbHydrogens = (int) ((double) result.get("nbHydrogens"));
 		double irregularity = (double) result.get("irregularity");
 
-		int idSpectrum = (int) ((double) result.get("idSpectra"));
+		//~ int idSpectrum = (int) ((double) result.get("idSpectra"));
+		int idSpectrum = (int) ((double) result.get("idBenzenoid"));
 		String frequenciesString = (String) result.get("frequencies");
 		String intensitiesString = (String) result.get("intensities");
 		double finalEnergy = (double) result.get("finalEnergy");
@@ -123,17 +124,17 @@ public class IRSpectraEntry {
 		String amesFormat = (String) result.get("amesFormat");
 
 		// Récupérer le nom
-		String url = "https://benzenoids.lis-lab.fr/find_name/";
-		String json = "{\"idBenzenoid\":" + idMolecule + "}";
+		String service = "find_ir/";
+		String json = "{\"idBenzenoid\": \"= " + idMolecule + "\"}";
 		List<Map> results = null;
 		try {
-			results = Post.post(url, json);
+			results = Post.post(service, json);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		for (Map map : results) {
-			name = (String) map.get("name");
+			label = (String) map.get("label");
 		}
 
 		ArrayList<Double> frequencies = new ArrayList<>();
@@ -159,7 +160,7 @@ public class IRSpectraEntry {
 //		for (String energy : splittedEnergies)
 //			finalEnergies.add(Double.parseDouble(energy));
 
-		return new IRSpectraEntry(idMolecule, name, nbHexagons, nbCarbons, nbHydrogens, irregularity, idSpectrum,
+		return new IRSpectraEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, idSpectrum,
 				finalEnergies, frequencies, intensities, zeroPointEnergy, amesFormat);
 	}
 

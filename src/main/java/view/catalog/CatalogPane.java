@@ -365,7 +365,7 @@ public class CatalogPane extends GridPane {
 
 				String jsonInputString = buildJsonInputString();
 
-				List<Map> results = Post.post("https://benzenoids.lis-lab.fr/find_ir/", jsonInputString);
+				List<Map> results = Post.post("find_ir/", jsonInputString);
 
 				flowPane = new FlowPane();
 

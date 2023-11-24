@@ -7,6 +7,7 @@ import java.util.Map;
 
 import application.BenzenoidApplication;
 import database.BenzenoidCriterion;
+import database.models.BenzenoidEntry;
 import database.models.IRSpectraEntry;
 import http.JSonStringBuilder;
 import http.Post;
@@ -213,7 +214,7 @@ public class DatabasePane extends ScrollPane {
 				managerPane.log(criterion.toString(), false);
 
 			String jsonInputString = buildJsonInputString(criterions);
-			List<Map> results = Post.post("https://benzenoids.lis-lab.fr/find_ir/", jsonInputString);
+			List<Map> results = Post.post("find_benzenoids/", jsonInputString);
 
 			molecules = new ArrayList<>();
 			HashMap<String, ResultLogFile> logsResults = new HashMap<String, ResultLogFile>();
@@ -234,7 +235,7 @@ public class DatabasePane extends ScrollPane {
 								for (Map map : results) {
 									try {
 
-										IRSpectraEntry content = IRSpectraEntry.buildQueryContent(map);
+										BenzenoidEntry content = BenzenoidEntry.buildQueryContent(map);
 
 										Benzenoid molecule = null;
 
@@ -341,7 +342,7 @@ public class DatabasePane extends ScrollPane {
 
 		for (BenzenoidCriterion criterion : criterions) {
 
-			String operator = criterion.getOperatorStringURL();
+			String operator = criterion.getOperatorString();
 			String value = criterion.getValue();
 
 			switch (criterion.getSubject()) {
