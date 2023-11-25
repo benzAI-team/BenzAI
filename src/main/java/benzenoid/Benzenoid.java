@@ -547,7 +547,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		return degrees;
 	}
 
-	public Optional<Irregularity> getIrregularity() {
+	public Irregularity getIrregularity() {
 		return computableInformations.computeParameterOfIrregularity();
 	}
 

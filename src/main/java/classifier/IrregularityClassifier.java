@@ -68,20 +68,17 @@ public class IrregularityClassifier extends Classifier {
 			String moleculeName = moleculeInformation.getMoleculeName();
 			Benzenoid molecule = moleculeInformation.getMolecule();
 
-			Optional<Irregularity> irregularity = molecule.getIrregularity();
-			if (irregularity.isPresent()) {
-				double XI = irregularity.get().getXI();
+      double XI = molecule.getIrregularity().getXI();
 
-				int index;
+      int index;
 
-				for (int j = 0; j < nbClasses; j++) {
-					if (XI <= steps[j]) {
-						index = j;
-						classes.get(index).addMolecule(moleculeName);
-						break;
-					}
-				}
-			}
+      for (int j = 0; j < nbClasses; j++) {
+        if (XI <= steps[j]) {
+          index = j;
+          classes.get(index).addMolecule(moleculeName);
+          break;
+        }
+      }
 		}
 
 		return classes;

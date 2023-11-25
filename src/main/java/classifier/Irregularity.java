@@ -29,8 +29,13 @@ public class Irregularity {
 		for (int i = 0; i < groups.length; i++) {
 			builder.append("N_").append(i + 1).append(" = ").append(groups[i]).append("\n");
 		}
-
-		builder.append("XI = ").append(new BigDecimal(XI).setScale(2, RoundingMode.FLOOR).doubleValue());
+    
+    if (XI == -1.0) {
+      builder.append("XI = n/a");
+    }
+    else {  
+      builder.append("XI = ").append(new BigDecimal(XI).setScale(2, RoundingMode.FLOOR).doubleValue());
+    }
 
 		return builder.toString();
 	}

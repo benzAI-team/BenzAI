@@ -18,7 +18,7 @@ public class BenzenoidComputableInformations {
 
     private List<int[][]> kekuleStructures;
 
-    private Optional<Irregularity> irregularity;
+    private Irregularity irregularity;
 
     private Optional<Aromaticity> aromaticity;
 
@@ -60,12 +60,9 @@ public class BenzenoidComputableInformations {
         return nbKekuleStructures;
     }
 
-    public Optional<Irregularity> computeParameterOfIrregularity() {
+    public Irregularity computeParameterOfIrregularity() {
 
         if (irregularity == null) {
-
-            if (benzenoid.getNbHexagons() == 1)
-                irregularity = Optional.empty();
 
             int[] N = new int[4];
             int[] checkedNodes = new int[benzenoid.getNbCarbons()];
@@ -119,12 +116,20 @@ public class BenzenoidComputableInformations {
                     candidats.remove(candidats.get(0));
                 }
 
-                N[nbNeighbors - 1] += nbNeighbors;
+                if (nbNeighbors <= 4) {
+                  N[nbNeighbors - 1] += nbNeighbors;
+                }
             }
 
-            double XI = ((double) N[2] + (double) N[3]) / ((double) N[0] + (double) N[1] + (double) N[2] + (double) N[3]);
-            Irregularity irregularityData = new Irregularity(N, XI);
-            irregularity = Optional.of(irregularityData);
+            double XI;
+            if (benzenoid.getNbHexagons() == 1) {
+              XI = -1.0;
+            }
+            else {
+              XI = ((double) N[2] + (double) N[3]) / ((double) N[0] + (double) N[1] + (double) N[2] + (double) N[3]);
+            }
+            
+            irregularity = new Irregularity(N, XI);
         }
 
         return irregularity;

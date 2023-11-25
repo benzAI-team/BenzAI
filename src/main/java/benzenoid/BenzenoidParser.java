@@ -69,16 +69,12 @@ public enum BenzenoidParser {
                 new String(("nb_kekule_structures\t" + nbKekuleStructures).getBytes(), StandardCharsets.UTF_8)
                         + "\n");
 
-        Optional<Irregularity> irregularity = benzenoid.getIrregularity();
-        if (irregularity.isPresent()) {
-            Irregularity irregularityData = benzenoid.getIrregularity().get();
-            writer.write("XI\t" + irregularityData.getXI() + "\n");
-            writer.write("#solo\t" + irregularityData.getGroup(0) + "\n");
-            writer.write("#duo\t" + irregularityData.getGroup(1) + "\n");
-            writer.write("#trio\t" + irregularityData.getGroup(2) + "\n");
-            writer.write("#quatuors\t" + irregularityData.getGroup(3) + "\n");
-        }
-
+        Irregularity irregularityData = benzenoid.getIrregularity();
+        writer.write("XI\t" + irregularityData.getXI() + "\n");
+        writer.write("#solo\t" + irregularityData.getGroup(0) + "\n");
+        writer.write("#duo\t" + irregularityData.getGroup(1) + "\n");
+        writer.write("#trio\t" + irregularityData.getGroup(2) + "\n");
+        writer.write("#quatuors\t" + irregularityData.getGroup(3) + "\n");
 
 
         Aromaticity aromaticity = benzenoid.getAromaticity().get();

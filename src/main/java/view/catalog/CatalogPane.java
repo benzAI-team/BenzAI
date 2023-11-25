@@ -558,12 +558,9 @@ public class CatalogPane extends GridPane {
 
 								Benzenoid molecule = value.getMolecule();
 
-								Optional<Irregularity> irregularity = molecule.getIrregularity();
+								Irregularity irregularity = molecule.getIrregularity();
 
-								if (irregularity.isPresent())
-									irregularities.put(key, irregularity.get().getXI());
-								else
-									irregularities.put(key, -1.0);
+								irregularities.put(key, irregularity.getXI());
 							}
 
 							try {

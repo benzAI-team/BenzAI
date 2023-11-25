@@ -308,12 +308,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				builder.append(new String((nbKekuleStructures + " Kekulé structure").getBytes(),
 						StandardCharsets.UTF_8) + "\n");
 
-			Optional<Irregularity> irregularity = molecule.getIrregularity();
-
-			if (irregularity.isPresent())
-				builder.append(irregularity + "\n");
-			else
-				builder.append("XI = UNKNOWN");
+      builder.append(molecule.getIrregularity() + "\n");
 
 			if (molecule.isAromaticityComputed()) {
 				Aromaticity aromaticity = molecule.getAromaticity().get();
