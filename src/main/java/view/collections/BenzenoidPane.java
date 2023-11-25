@@ -309,6 +309,8 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 						StandardCharsets.UTF_8) + "\n");
 
       builder.append(molecule.getIrregularity() + "\n");
+      
+      builder.append("Label = " + molecule.getNames().get(0) + "\n");
 
 			if (molecule.isAromaticityComputed()) {
 				Aromaticity aromaticity = molecule.getAromaticity().get();
