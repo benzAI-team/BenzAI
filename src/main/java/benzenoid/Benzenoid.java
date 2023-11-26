@@ -45,6 +45,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private int nbHydrogens;
 
 	private String name;
+	private String inchi;
 
 	private String description;
 
@@ -79,6 +80,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.nodesCoordinates = nodesRefs;
 		this.edgeMatrix = edgeMatrix;
 		this.matrixCoordinates = coordinates;
+    this.inchi = "";
 
 		hexagonsString = new ArrayList<>();
 
@@ -118,6 +120,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.hexagonsString = hexagonsString;
 		this.nodesCoordinates = nodesRefs;
 		this.matrixCoordinates = coords;
+    this.inchi = "";
 
 		this.maxIndex = maxIndex;
 
@@ -1204,4 +1207,12 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	public BenzenoidDatabaseInformation getDatabaseInformation() {
 		return databaseInformation;
 	}
+  
+  public void setInchi (String inchi) {
+    this.inchi = inchi;
+  }
+  
+  public String getInchi () {
+    return this.inchi;
+  }
 }

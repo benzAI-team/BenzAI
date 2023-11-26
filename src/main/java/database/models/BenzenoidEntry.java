@@ -15,6 +15,7 @@ public class BenzenoidEntry {
 
 	private final int idMolecule;
 	private final String moleculeLabel;
+	private final String inchi;
 	private final int nbHexagons;
 	private final int nbCarbons;
 	private final int nbHydrogens;
@@ -25,7 +26,7 @@ public class BenzenoidEntry {
 	 * Constructor
 	 */
 
-	public BenzenoidEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity) {
+	public BenzenoidEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity, String inchi) {
 
 		this.idMolecule = idMolecule;
 		this.moleculeLabel = moleculeLabel;
@@ -33,6 +34,7 @@ public class BenzenoidEntry {
 		this.nbCarbons = nbCarbons;
 		this.nbHydrogens = nbHydrogens;
 		this.irregularity = irregularity;
+    this.inchi = inchi;
 	}
 
 	/*
@@ -46,9 +48,17 @@ public class BenzenoidEntry {
 	public String getMoleculeLabel() {
 		return moleculeLabel;
 	}
+	
+  public String getInchi() {
+		return inchi;
+	}
 
 	public int getNbHexagons() {
 		return nbHexagons;
+	}
+
+	public int getNbCarbons() {
+		return nbCarbons;
 	}
 
 	public int getNbHydrogens() {
@@ -68,7 +78,7 @@ public class BenzenoidEntry {
 	public static BenzenoidEntry buildQueryContent(Map result) {
 
 		int idMolecule = (int) ((double) result.get("idBenzenoid"));
-		//~ String label = (String) result.get("inchie");
+		String inchi = (String) result.get("inchi");
 		String label = (String) result.get("label");
 		int nbHexagons = (int) ((double) result.get("nbHexagons"));
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
@@ -89,47 +99,14 @@ public class BenzenoidEntry {
 			label = (String) map.get("label");
 		}
 
-		return new BenzenoidEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity);
+		return new BenzenoidEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi);
 	}
 
-	public static BenzenoidEntry buildQueryContent(ArrayList<String> result) {
-
-		int idMolecule = -1;
-		String moleculeLabel = "";
-		int nbHexagons = -1;
-		int nbCarbons = -1;
-		int nbHydrogens = -1;
-		double irregularity = -1.0;
-
-
-		for (String line : result) {
-
-			String[] splittedLine = line.split(Pattern.quote(" = "));
-
-			if ("id_molecule".equals(splittedLine[0]))
-				idMolecule = Integer.parseInt(splittedLine[1]);
-
-			else if ("molecule_label".equals(splittedLine[0]))
-				moleculeLabel = splittedLine[1];
-
-			else if ("nb_hexagons".equals(splittedLine[0]))
-				nbHexagons = Integer.parseInt(splittedLine[1]);
-
-			else if ("nb_carbons".equals(splittedLine[0]))
-				nbCarbons = Integer.parseInt(splittedLine[1]);
-
-			else if ("nb_hydrogens".equals(splittedLine[0]))
-				nbHydrogens = Integer.parseInt(splittedLine[1]);
-
-			else if ("irregularity".equals(splittedLine[0]))
-				irregularity = Double.parseDouble(splittedLine[1]);
-		}
-
-		return new BenzenoidEntry(idMolecule, moleculeLabel, nbHexagons, nbCarbons, nbHydrogens, irregularity);
-	}
 
 	public Benzenoid buildMolecule() throws IOException {
-		return GraphParser.parseBenzenoidCode(moleculeLabel);
+		Benzenoid b = GraphParser.parseBenzenoidCode(moleculeLabel);
+    b.setInchi (this.inchi);
+    return b;
 	}
 
 	public ResultLogFile buildResultLogFile() {

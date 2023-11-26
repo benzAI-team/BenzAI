@@ -52,6 +52,8 @@ public class BenzenoidDatabaseInformation {
 
                     System.out.println(IRSpectraData);
 
+                    benzenoid.setInchi(content.getInchi());
+
                     return IRSpectra;
                 }
 

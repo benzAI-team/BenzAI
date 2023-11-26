@@ -277,11 +277,11 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 	public String buildDescription() {
 
+    Benzenoid molecule = benzenoidSetPane.getMolecule(index);
+
 		if (description == null) {
 
 			StringBuilder builder = new StringBuilder();
-
-			Benzenoid molecule = benzenoidSetPane.getMolecule(index);
 
 			builder.append(molecule.getNbCarbons() + " carbons\n");
 			builder.append(molecule.getNbHydrogens() + " hydrogens\n");
@@ -331,11 +331,8 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			}
 
 			description = builder.toString();
-			return description;
-
 		}
-
-		return description;
+		return description + "InChI = " + molecule.getInchi() + "\n";
 	}
 
 	public void exportAsPNG(File file) {
