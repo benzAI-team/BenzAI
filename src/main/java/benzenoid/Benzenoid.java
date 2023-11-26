@@ -61,6 +61,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private int nbCrowns = -1;
 
 	private final BenzenoidDatabaseInformation databaseInformation;
+  private boolean databaseCheck;    // true if the database has been check, false otherwise
 
 	private final BenzenoidComputableInformations computableInformations;
 
@@ -104,6 +105,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		buildHexagonsCoords2();
 
 		databaseInformation = new BenzenoidDatabaseInformation(this);
+    databaseCheck = false;
 		computableInformations = new BenzenoidComputableInformations(this);
 	}
 
@@ -146,6 +148,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		buildHexagonsCoords2();
 
 		databaseInformation = new BenzenoidDatabaseInformation(this);
+    databaseCheck = false;
 		computableInformations = new BenzenoidComputableInformations(this);
 	}
 
@@ -216,6 +219,14 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	public int degree(int u) {
 		return degrees[u];
 	}
+  
+  public boolean hasCheckedDatabase() {
+    return databaseCheck;
+  }
+  
+  public void performCheckDatabase() {
+    databaseCheck = true;
+  }
 
 	/**
 	 * Class's methods

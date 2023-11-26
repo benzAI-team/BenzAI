@@ -240,6 +240,7 @@ public class DatabasePane extends ScrollPane {
 										Benzenoid molecule = null;
 
 										molecule = content.buildMolecule();
+                    molecule.performCheckDatabase();
 
 										i++;
 

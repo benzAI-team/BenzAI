@@ -39,7 +39,10 @@ public class CheckDatabaseTask extends CollectionTask{
 
                             if (IRSpectra.isPresent()) {
                                 System.out.println(benzenoid);
-                                Platform.runLater(() -> {
+                                if (! benzenoid.hasCheckedDatabase())
+                                {
+                                  benzenoid.performCheckDatabase();
+                                  Platform.runLater(() -> {
                                     Image image = new Image("/resources/graphics/icon-database.png");
                                     ImageView imgView = new ImageView(image);
                                     imgView.resize(30, 30);
@@ -53,8 +56,9 @@ public class CheckDatabaseTask extends CollectionTask{
                                         collectionManagerPane.changeLineConsole(getIndex() + "/" + size, getLineIndex());
                                     }
                                     setIndex(getIndex() + 1);
-                                });
-                                pane.buildFrequencies();
+                                  });
+                                  pane.buildFrequencies();
+                                }
                             }
                         }
                         return null;

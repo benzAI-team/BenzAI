@@ -369,7 +369,7 @@ public class BenzenoidCollectionPane extends Tab {
 								}
 
                                 BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group,
-                                        description, molecule.getVerticesSolutions(), index, false);
+                                        description, molecule.getVerticesSolutions(), index, false, molecule.hasCheckedDatabase());
                                 benzenoidPanes.add(benzenoidPane);
 
                             } catch (IOException e) {
@@ -640,6 +640,15 @@ public class BenzenoidCollectionPane extends Tab {
 
     public ArrayList<BenzenoidPane> getBenzenoidPanes() {
         return benzenoidPanes;
+    }
+
+    public BenzenoidPane getLastBenzenoidPane() {
+      if (benzenoidPanes.size() == 0) {
+        return null;
+      }
+      else {
+        return benzenoidPanes.get(benzenoidPanes.size()-1);
+      }
     }
 
     public BenzenoidPane getHoveringPane() {

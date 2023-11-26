@@ -1,5 +1,9 @@
 package view.collections;
 
+import javafx.application.Platform;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -64,7 +68,7 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 	private HBox descriptionBox;
 
 	public BenzenoidPane(BenzenoidCollectionPane parameterPane, String solution, Group benzenoidDraw,
-			String description, ArrayList<Integer> verticesSolution, int index, boolean isDrawMolecule) {
+			String description, ArrayList<Integer> verticesSolution, int index, boolean isDrawMolecule, boolean withDatabaseLabel) {
 
 		super();
 
@@ -103,6 +107,17 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				benzenoidSetPane.setIRSpectraData("");
 			}
 		});
+    
+    if (withDatabaseLabel){
+    
+      Platform.runLater(() -> {
+                                    Image image = new Image("/resources/graphics/icon-database.png");
+                                    ImageView imgView = new ImageView(image);
+                                    imgView.resize(30, 30);
+                                    this.getDescriptionBox().getChildren().add(imgView);
+
+                                  });
+    }
 	}
 
 
