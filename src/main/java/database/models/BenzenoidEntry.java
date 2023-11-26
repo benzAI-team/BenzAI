@@ -106,6 +106,7 @@ public class BenzenoidEntry {
 	public Benzenoid buildMolecule() throws IOException {
 		Benzenoid b = GraphParser.parseBenzenoidCode(moleculeLabel);
     b.setInchi (this.inchi);
+    b.setBenzdbId (this.idMolecule);
     return b;
 	}
 

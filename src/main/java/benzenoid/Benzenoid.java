@@ -28,6 +28,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private final int nbCarbons;
 	private final int nbBonds;
 	private final int nbHexagons;
+  private int benzdbId;
 	private int nbStraightEdges;
 	private int maxIndex;
 	private ArrayList<ArrayList<Integer>> edgeLists;
@@ -82,6 +83,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.edgeMatrix = edgeMatrix;
 		this.matrixCoordinates = coordinates;
     this.inchi = "";
+    this.benzdbId = -1;
 
 		hexagonsString = new ArrayList<>();
 
@@ -123,6 +125,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.nodesCoordinates = nodesRefs;
 		this.matrixCoordinates = coords;
     this.inchi = "";
+    this.benzdbId = -1;
 
 		this.maxIndex = maxIndex;
 
@@ -175,6 +178,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	public int getMaxIndex() {
 		return maxIndex;
 	}
+  
 
 	public ArrayList<ArrayList<Integer>> getEdgeLists() {
 		return edgeLists;
@@ -1226,4 +1230,13 @@ public class Benzenoid implements Comparable<Benzenoid> {
   public String getInchi () {
     return this.inchi;
   }
+
+	public void setBenzdbId(int id) {
+		benzdbId = id;
+	}
+
+	public int getBenzdbId() {
+		return benzdbId;
+	}
+
 }

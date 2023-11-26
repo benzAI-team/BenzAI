@@ -347,7 +347,14 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 
 			description = builder.toString();
 		}
-		return description + "InChI = " + molecule.getInchi() + "\n";
+    
+    String additionalDescription = "";
+    if (molecule.hasCheckedDatabase()) {
+      additionalDescription += "InChI = " + molecule.getInchi() + "\n";
+      additionalDescription += "BenzDB id = " + molecule.getBenzdbId() + "\n";
+    }
+    
+		return description + additionalDescription;
 	}
 
 	public void exportAsPNG(File file) {
