@@ -47,7 +47,7 @@ These problems are modeled and solved thanks to constraint programming and, in p
 # BenzAI team
 * Adrien VARET
 * [Yannick CARISSAN](https://ism2.univ-amu.fr/fr/annuaire/ctom/carissanyannick)
-* [Denis HAGEBAUM-REIGNER](https://ism2.univ-amu.fr/fr/annuaire/ctom/hagebaum-reignierdenis)
+* [Denis HAGEBAUM-REIGNIER](https://ism2.univ-amu.fr/fr/annuaire/ctom/hagebaum-reignierdenis)
 * Nicolas PRCOVIC
 * [Cyril TERRIOUX](https://pageperso.lis-lab.fr/cyril.terrioux/en/index.html)
 
