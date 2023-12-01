@@ -1,5 +1,6 @@
 package parsers;
 
+import java.util.Locale;
 import benzenoid.Benzenoid;
 import benzenoid.Node;
 import utils.Couple;
@@ -546,17 +547,16 @@ public enum ComConverter {
 			break;
 		}
 
-		String s = "";
+    Locale locale = new Locale( "en", "US" );
 
 		for (Triplet<Double, Double, Double> carbon : carbons) {
-			writer.write(" C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n");
-			s += " C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n";
+			writer.write(" C " + String.format(locale,"%1.8f",carbon.getX()) + " " + String.format(locale,"%1.8f",carbon.getY()) + " " + String.format(locale,"%1.8f",carbon.getZ()) + "\n");
 		}
 
 		for (Triplet<Double, Double, Double> hydrogen : hydrogens) {
-			writer.write(" H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n");
-			s += " H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n";
+			writer.write(" H " + String.format(locale,"%1.8f",hydrogen.getX()) + " " + String.format(locale,"%1.8f",hydrogen.getY()) + " " + String.format(locale,"%1.8f",hydrogen.getZ()) + "\n");
 		}
+
 
 		writer.write("\n");
 
