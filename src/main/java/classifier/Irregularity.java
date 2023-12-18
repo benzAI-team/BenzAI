@@ -1,7 +1,6 @@
 package classifier;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.util.Locale;
 
 public class Irregularity {
 
@@ -33,8 +32,9 @@ public class Irregularity {
     if (XI == -1.0) {
       builder.append("XI = n/a");
     }
-    else {  
-      builder.append("XI = ").append(new BigDecimal(XI).setScale(2, RoundingMode.FLOOR).doubleValue());
+    else {
+		Locale locale = new Locale( "en", "US" );
+	    builder.append("XI = ").append(String.format(locale,"%1.2f",XI));
     }
 
 		return builder.toString();
