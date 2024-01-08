@@ -548,35 +548,6 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 		calculateServiceLin.start();
 	}
 
-	public void resonanceEnergyLinFan() {
-		BenzenoidCollectionPane currentPane = getSelectedTab();
-
-		if (currentPane.getBenzenoidPanes().size() == 0) {
-			Utils.alert("There is no benzenoid!");
-			return;
-		}
-
-		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
-
-		if (selectedBenzenoidPanes.size() == 0)
-			selectAll();
-
-		String name = "RE Lin&Fan";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
-				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
-
-		for (BenzenoidPane benzenoidPane : selectedBenzenoidPanes) {
-			Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
-			benzenoidSetPane.addBenzenoid(molecule, DisplayType.RE_LIN_FAN);
-		}
-
-		benzenoidSetPane.refresh();
-
-		tabPane.getSelectionModel().clearAndSelect(0);
-		addBenzenoidSetPane(benzenoidSetPane);
-		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
-	}
-
 	public void clarCover() {
 
 		BenzenoidCollectionPane currentPane = getSelectedTab();
