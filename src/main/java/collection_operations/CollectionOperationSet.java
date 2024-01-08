@@ -33,6 +33,7 @@ public enum CollectionOperationSet {
 
 		collectionComputationSet.add(new LinResonanceEnergyTask());
 		collectionComputationSet.add(new LinFanResonanceEnergyTask());
+		collectionComputationSet.add(new NicsTask());
 		collectionComputationSet.add(new ClarCoverTask());
 		collectionComputationSet.add(new FixedBondClarCoverComputation());
 		collectionComputationSet.add(new ForcedSingleClarCoverTask());

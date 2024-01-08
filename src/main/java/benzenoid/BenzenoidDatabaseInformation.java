@@ -17,6 +17,7 @@ public class BenzenoidDatabaseInformation {
     private Optional<String> imsMap;
     private Optional<ResultLogFile> IRSpectra;
     private Optional<String> NICS;
+    private Optional<String> graphFile;
 
     public BenzenoidDatabaseInformation(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
@@ -98,5 +99,41 @@ public class BenzenoidDatabaseInformation {
 
         return imsMap;
     }
+    
+    
+    public Optional<String> findNICS() {
 
+        databaseCheckManager.checkNICS();
+
+        if (imsMap == null) {
+            String label = benzenoid.getNames().get(0);
+            String service = "find_nics/";
+            String json = "{\"label\": \"= " + label + "\"}";
+
+            try {
+                List<Map> results = Post.post(service, json);
+
+                if (!results.isEmpty()) {
+                    Map map = results.get(0);
+                    String stringData = (String) map.get("nics");
+                    if (stringData.length() > 0) {
+                      NICS = Optional.of(stringData);
+                      graphFile = Optional.of((String) map.get("graphFile"));
+                    }
+                    return NICS;
+                }
+            } catch (Exception e) {
+                System.out.println("Connection to database failed");
+            }
+
+            NICS = Optional.empty();
+            return NICS;
+        }
+
+        return NICS;
+    }
+
+    public Optional<String> findGraphFile() {
+      return graphFile;
+    }
 }
