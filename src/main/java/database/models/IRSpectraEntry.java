@@ -24,9 +24,9 @@ public class IRSpectraEntry extends BenzenoidEntry {
 	 */
 
 	public IRSpectraEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens,
-			double irregularity, String inchi, ArrayList<Double> finalEnergies, ArrayList<Double> frequencies,
+			double irregularity, String inchi, String graphFile, ArrayList<Double> finalEnergies, ArrayList<Double> frequencies,
 			ArrayList<Double> intensities, double zeroPointEnergy, String amesFormat) {
-    super(idMolecule, moleculeLabel, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi);
+    super(idMolecule, moleculeLabel, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile);
 		this.finalEnergies = finalEnergies;
 		this.frequencies = frequencies;
 		this.intensities = intensities;
@@ -72,6 +72,7 @@ public class IRSpectraEntry extends BenzenoidEntry {
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
 		int nbHydrogens = (int) ((double) result.get("nbHydrogens"));
 		double irregularity = (double) result.get("irregularity");
+    String graphFile = (String) result.get("graphFile");
 
 		String frequenciesString = (String) result.get("frequencies");
 		String intensitiesString = (String) result.get("intensities");
@@ -112,7 +113,7 @@ public class IRSpectraEntry extends BenzenoidEntry {
 		ArrayList<Double> finalEnergies = new ArrayList<>();
 		finalEnergies.add(finalEnergy);
 
-		return new IRSpectraEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi,	finalEnergies, frequencies, intensities, zeroPointEnergy, amesFormat);
+		return new IRSpectraEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi,	graphFile, finalEnergies, frequencies, intensities, zeroPointEnergy, amesFormat);
 	}
 
 
