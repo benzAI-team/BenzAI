@@ -128,18 +128,10 @@ public class IRSpectraPane extends GridPane {
 
 				String directoryPath = file.getAbsolutePath();
 
-				String separator;
-
-				if (directoryPath.split(Pattern.quote("\\")).length > 1) {
-					separator = "\\";
-				} else {
-					separator = "/";
-				}
-
-				File parametersFile = new File(directoryPath + separator + "parameters.txt");
-				File spectraFile = new File(directoryPath + separator + "spectras.csv");
-				File moleculeFile = new File(directoryPath + separator + "molecules_informations.csv");
-				File intensitiesFile = new File(directoryPath + separator + "intensities.csv");
+				File parametersFile = new File(directoryPath + File.separator + "parameters.txt");
+				File spectraFile = new File(directoryPath + File.separator + "spectras.csv");
+				File moleculeFile = new File(directoryPath + File.separator + "molecules_informations.csv");
+				File intensitiesFile = new File(directoryPath + File.separator + "intensities.csv");
 
 				try {
 					exportParameters(parametersFile);
@@ -174,21 +166,15 @@ public class IRSpectraPane extends GridPane {
 			if (file != null) {
 
 				String directoryPath = file.getAbsolutePath();
-				boolean unix;
-
-				unix = directoryPath.split(Pattern.quote("\\")).length == 0;
 
 				for (int i = 0; i < panes.size(); i++) {
 
 					index = (index + 1) % panes.size();
 					updatePane();
 
-					File plotFile;
-					if (unix)
-						plotFile = new File(directoryPath + "/" + selectedPlotPane.getResult().getClassName() + ".png");
-					else
-						plotFile = new File(
-								directoryPath + "\\" + selectedPlotPane.getResult().getClassName() + ".png");
+          System.out.println(directoryPath + File.separator + selectedPlotPane.getResult().getClassName() + ".png");
+
+					File plotFile = new File(directoryPath + File.separator + selectedPlotPane.getResult().getClassName() + ".png");
 
 					selectedPlotPane.exportAsPDF(plotFile);
 
@@ -323,7 +309,7 @@ public class IRSpectraPane extends GridPane {
 			ArrayList<String> amesFormats = pane.getAmesFormat();
 			IRSpectra result = pane.getResult();
 
-			File file = new File(directory.getAbsolutePath() + "/" + result.getClassName() + ".xml");
+			File file = new File(directory.getAbsolutePath() + File.separator + result.getClassName() + ".xml");
 
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
