@@ -9,6 +9,7 @@ import view.draw.DrawBenzenoidPane;
 import view.filtering.FilteringPane;
 import view.generator.GeneratorPane;
 import view.generator.preferences.GeneratorPreferencesPane;
+import java.io.IOException;
 
 public class Panes {
 	private final Region generatorPane;
@@ -19,7 +20,7 @@ public class Panes {
 	private final Region operationPane;
 	private final Region generationPreferencesPane;
 
-	public Panes(BenzenoidApplication app) {
+	public Panes(BenzenoidApplication app) throws Exception, IOException {
 		collectionsPane = new BenzenoidCollectionsManagerPane(app);
 		generatorPane = new GeneratorPane(app);
 		drawPane = new DrawBenzenoidPane(app, (BenzenoidCollectionsManagerPane) collectionsPane);
