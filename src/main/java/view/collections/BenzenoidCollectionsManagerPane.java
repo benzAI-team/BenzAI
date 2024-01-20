@@ -339,23 +339,22 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 		MenuItem exportCom = CollectionOperationSet.getMenuItemByName(".com");
 		exportBenzenoidItem.getItems().addAll(exportGraph, exportPng, exportCml, exportCom);
 
+    exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
+
 		MenuItem importCollectionItem = CollectionOperationSet.getMenuItemByName("Import collection");
-		MenuItem exportCollectionItem = CollectionOperationSet.getMenuItemByName("Export collection");
-		exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
 
+    Menu exportMenuCollection = new Menu("Export collection");
+    MenuItem exportCollectionGraph = CollectionOperationSet.getMenuItemByName(".graph ");
+		MenuItem exportCollectionPng = CollectionOperationSet.getMenuItemByName(".png ");
+		MenuItem exportCollectionCml = CollectionOperationSet.getMenuItemByName(".cml ");
+		MenuItem exportCollectionCom = CollectionOperationSet.getMenuItemByName(".com ");
+		
+    exportMenuCollection.getItems().addAll(exportCollectionGraph, exportCollectionPng, exportCollectionCml, exportCollectionCom);
 
-//		//MenuItem dbItem = new MenuItem("Find in database (DEBUG)");
-//		dbItem.setOnAction(e -> {
-//			BenzenoidCollectionPane currentPane = getSelectedTab();
-//			for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes()) {
-//				Molecule molecule = currentPane.getMolecule(pane.getIndex());
-//				System.out.println(molecule.getIRSpectraResult());
-//			}
-//		});
 
 		// Organisation des items
 		contextMenu.getItems().addAll(
-				exportMenu, importCollectionItem, exportCollectionItem, new SeparatorMenuItem());
+				exportMenu, importCollectionItem, exportMenuCollection, new SeparatorMenuItem());
 		for(CollectionOperation operation : CollectionOperationSet.getCollectionSimpleOperationSet())
 			contextMenu.getItems().add(operation.getMenuItem());
 		contextMenu.getItems().addAll(new SeparatorMenuItem(), moveItem);
