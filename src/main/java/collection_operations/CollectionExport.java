@@ -50,6 +50,11 @@ abstract public class CollectionExport extends CollectionOperation{
          }
        }
     }
+    
+    // we check if there is at least one benzenoid to export
+    if (exportList.size() == 0) {
+      return;
+    }
 
     // we select the filename or the directory (depending on the number of benzenoids to export)
     String filename = "";
