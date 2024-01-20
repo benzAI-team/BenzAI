@@ -7,7 +7,7 @@ import javafx.scene.control.MenuItem;
 
 public enum CollectionOperationSet {
     ;
-    private static final ArrayList<CollectionOperation> collectionSimpleOperationSet = new ArrayList<>();
+  private static final ArrayList<CollectionOperation> collectionSimpleOperationSet = new ArrayList<>();
 	private static final ArrayList<CollectionOperation> collectionComputationSet = new ArrayList<>();
 	private static final ArrayList<CollectionOperation> collectionIOSet = new ArrayList<>();
 
@@ -24,11 +24,14 @@ public enum CollectionOperationSet {
 		collectionSimpleOperationSet.add(new CheckDatabaseTask());
 
 		collectionIOSet.add(new CollectionExportProperties());
-		collectionIOSet.add(new CollectionExportGraph());
-		collectionIOSet.add(new CollectionExportPNG());
-		collectionIOSet.add(new CollectionExportCOM());
-		collectionIOSet.add(new CollectionExportCML());
-		collectionIOSet.add(new CollectionExport());
+		collectionIOSet.add(new CollectionExportGraph(false));
+		collectionIOSet.add(new CollectionExportPNG(false));
+		collectionIOSet.add(new CollectionExportCOM(false));
+		collectionIOSet.add(new CollectionExportCML(false));
+		collectionIOSet.add(new CollectionExportGraph(true));
+		collectionIOSet.add(new CollectionExportPNG(true));
+		collectionIOSet.add(new CollectionExportCOM(true));
+		collectionIOSet.add(new CollectionExportCML(true));
 		collectionIOSet.add(new CollectionImport());
 
 		collectionComputationSet.add(new LinResonanceEnergyTask());
