@@ -334,10 +334,11 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 		MenuItem exportPropertiesItem = CollectionOperationSet.getMenuItemByName("Export properties");
 
 		MenuItem exportGraph = CollectionOperationSet.getMenuItemByName(".graph");
+		MenuItem exportDot = CollectionOperationSet.getMenuItemByName(".dot");
 		MenuItem exportPng = CollectionOperationSet.getMenuItemByName(".png");
 		MenuItem exportCml = CollectionOperationSet.getMenuItemByName(".cml");
 		MenuItem exportCom = CollectionOperationSet.getMenuItemByName(".com");
-		exportBenzenoidItem.getItems().addAll(exportGraph, exportPng, exportCml, exportCom);
+		exportBenzenoidItem.getItems().addAll(exportGraph, exportDot, exportPng, exportCml, exportCom);
 
     exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
 
@@ -345,11 +346,12 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 
     Menu exportMenuCollection = new Menu("Export collection");
     MenuItem exportCollectionGraph = CollectionOperationSet.getMenuItemByName(".graph ");
+		MenuItem exportCollectionDot = CollectionOperationSet.getMenuItemByName(".dot ");
 		MenuItem exportCollectionPng = CollectionOperationSet.getMenuItemByName(".png ");
 		MenuItem exportCollectionCml = CollectionOperationSet.getMenuItemByName(".cml ");
 		MenuItem exportCollectionCom = CollectionOperationSet.getMenuItemByName(".com ");
 		
-    exportMenuCollection.getItems().addAll(exportCollectionGraph, exportCollectionPng, exportCollectionCml, exportCollectionCom);
+    exportMenuCollection.getItems().addAll(exportCollectionGraph, exportCollectionDot, exportCollectionPng, exportCollectionCml, exportCollectionCom);
 
 
 		// Organisation des items

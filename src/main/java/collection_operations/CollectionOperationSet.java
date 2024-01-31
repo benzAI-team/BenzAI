@@ -25,10 +25,12 @@ public enum CollectionOperationSet {
 
 		collectionIOSet.add(new CollectionExportProperties());
 		collectionIOSet.add(new CollectionExportGraph(false));
+		collectionIOSet.add(new CollectionExportDot(false));
 		collectionIOSet.add(new CollectionExportPNG(false));
 		collectionIOSet.add(new CollectionExportCOM(false));
 		collectionIOSet.add(new CollectionExportCML(false));
 		collectionIOSet.add(new CollectionExportGraph(true));
+		collectionIOSet.add(new CollectionExportDot(true));
 		collectionIOSet.add(new CollectionExportPNG(true));
 		collectionIOSet.add(new CollectionExportCOM(true));
 		collectionIOSet.add(new CollectionExportCML(true));
