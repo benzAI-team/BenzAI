@@ -23,7 +23,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
 public class IRSpectraPane extends GridPane {
 
@@ -88,7 +87,7 @@ public class IRSpectraPane extends GridPane {
 			if (file != null) {
 				try {
 					exportAmesFormats(file);
-				} catch (IOException ex) {
+				} catch (Exception ex) {
 					throw new RuntimeException(ex);
 				}
 			}
@@ -303,7 +302,8 @@ public class IRSpectraPane extends GridPane {
 		writer.close();
 	}
 
-	private void exportAmesFormats(File directory) throws IOException{
+
+	private void exportAmesFormats(File directory) throws IOException, Exception{
 
 		for (ComputedPlotPane pane : panes) {
 			ArrayList<String> amesFormats = pane.getAmesFormat();
@@ -315,19 +315,19 @@ public class IRSpectraPane extends GridPane {
 
 			writer.write("<pahdatabase database=\"theoretical\" version=\"3.00\" date=\"2017-08-18\" full=\"false\">\n");
 
-			writer.write("<comment>This file was generated with BenzAI software.</comment>\n");
+			writer.write("<comment>This file was generated with BenzAI software with data from BenzDB database, version 1.1. See: https://benzenoids.lis-lab.fr/.</comment>\n");
 
-			writer.write("<species>\n");
+			writer.write("  <species>\n");
 			for (String amesFormat : amesFormats) {
-				writer.write(amesFormat + "\n");
+        int index1 = amesFormat.indexOf("<specie ");
+        int index2 = amesFormat.indexOf("</specie>");
+        
+				writer.write("    "+amesFormat.substring(index1,index2+9)+ "\n");
 			}
 			writer.write("</species>\n");
 			writer.write("</pahdatabase>\n");
 			writer.close();
-
 		}
-
-
 	}
 
 	private void updatePane() {
