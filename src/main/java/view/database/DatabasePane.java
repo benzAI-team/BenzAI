@@ -324,7 +324,7 @@ public class DatabasePane extends ScrollPane {
 	private String buildJsonInputString(ArrayList<BenzenoidCriterion> criterions) {
 
 		Long id = -1L;
-		String name = "none";
+		String name = "";
 		String nbHexagons = "";
 		String nbCarbons = "";
 		String nbHydrogens = "";

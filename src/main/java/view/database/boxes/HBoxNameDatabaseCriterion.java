@@ -12,7 +12,7 @@ import view.database.DatabasePane;
 
 public class HBoxNameDatabaseCriterion extends HBoxDatabaseCriterion {
 
-	private ChoiceBox<String> operatorChoiceBox;
+	//~ private ChoiceBox<String> operatorChoiceBox;
 	private TextField fieldValue;
 
 	public HBoxNameDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
@@ -22,7 +22,7 @@ public class HBoxNameDatabaseCriterion extends HBoxDatabaseCriterion {
 
 	@Override
 	protected void checkValidity() {
-		if (!Utils.isNumber(fieldValue.getText()) || operatorChoiceBox.getValue() == null) {
+		if (fieldValue.getText().length() == 0) {
 			valid = false;
 			this.getChildren().remove(warningIcon);
 			this.getChildren().remove(deleteButton);
@@ -41,21 +41,13 @@ public class HBoxNameDatabaseCriterion extends HBoxDatabaseCriterion {
 	protected void initialize() {
 		valid = false;
 
-		operatorChoiceBox = new ChoiceBox<String>();
-		operatorChoiceBox.getItems().addAll("=", "!=");
 		fieldValue = new TextField();
-
-		operatorChoiceBox.getSelectionModel().select(0);
 
 		fieldValue.setOnKeyReleased(e -> {
 			checkValidity();
 		});
 
-		operatorChoiceBox.setOnAction(e -> {
-			checkValidity();
-		});
-
-		this.getChildren().addAll(operatorChoiceBox, fieldValue, warningIcon, deleteButton);
+		this.getChildren().addAll(fieldValue, warningIcon, deleteButton);
 	}
 
 	@Override
@@ -64,7 +56,7 @@ public class HBoxNameDatabaseCriterion extends HBoxDatabaseCriterion {
 
 		if (valid) {
 			criterions.add(new BenzenoidCriterion(Subject.MOLECULE_NAME,
-					BenzenoidCriterion.getOperator(operatorChoiceBox.getValue()), fieldValue.getText()));
+					BenzenoidCriterion.getOperator("="), fieldValue.getText()));
 		}
 
 		return criterions;
