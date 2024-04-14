@@ -1,4 +1,6 @@
 package http;
+import jakarta.json.*;
+
 
 public enum JSonStringBuilder {
     ;
@@ -15,60 +17,37 @@ public enum JSonStringBuilder {
 				+ "\"}";
 	}
 
-	public static String buildNewJsonString(Long id, String name, String nbHexagons, String nbCarbons,
-			String nbHydrogens, String irregularity, String frequency, String intensity, String opeId, String opeName,
-			String opeHexagons, String opeCarbons, String opeHydrogens, String opeIrregularity, String opeFrequency,
-			String opeIntensity) {
-
-		StringBuilder json = new StringBuilder();
-
-		json.append("{");
+	public static String buildNewJsonString(String id, String label, String nbHexagons, String nbCarbons, String nbHydrogens, String irregularity, String frequency, String intensity, String inchi,
+        String opeId, String opeLabel, String opeHexagons, String opeCarbons, String opeHydrogens, String opeIrregularity, String opeFrequency, String opeIntensity, String opeInchi) {
+    JsonObjectBuilder json = Json.createObjectBuilder();
 
 		if (!"".equals(opeId))
-			json.append("\"idBenzenoid\": \"").append(opeId).append(" ").append(id).append("\", ");
-		else
-			json.append("\"idBenzenoid\": \"\", ");
+			json.add("idBenzenoid",opeId+" "+id);
 
-		if (!"".equals(opeName))
-			json.append("\"label\": \"").append(opeName).append(" ").append(name).append("\", ");
-		else
-			json.append("\"label\": \"\", ");
+		if (!"".equals(opeLabel))
+			json.add("label",opeLabel+" "+label);
 
 		if (!"".equals(opeHexagons))
-			json.append("\"nbHexagons\": \"").append(opeHexagons).append(" ").append(nbHexagons).append("\", ");
-		else
-			json.append("\"nbHexagons\": \"\", ");
+			json.add("nbHexagons",opeHexagons+" "+nbHexagons);
 
 		if (!"".equals(opeCarbons))
-			json.append("\"nbCarbons\": \"").append(opeCarbons).append(" ").append(nbCarbons).append("\", ");
-		else
-			json.append("\"nbCarbons\": \"\", ");
+			json.add("nbCarbons",opeCarbons+" "+nbCarbons);
 
 		if (!"".equals(opeHydrogens))
-			json.append("\"nbHydrogens\": \"").append(opeHydrogens).append(" ").append(nbHydrogens).append("\", ");
-		else
-			json.append("\"nbHydrogens\": \"\", ");
+			json.add("nbHydrogens",opeHydrogens+" "+nbHydrogens);
 
 		if (!"".equals(opeIrregularity))
-			json.append("\"irregularity\": \"").append(opeIrregularity).append(" ").append(irregularity).append("\", ");
-		else
-			json.append("\"irregularity\": \"\", ");
-
-		// new criterions
+			json.add("irregularity",opeIrregularity+" "+irregularity);
 
 		if (!"".equals(opeFrequency))
-			json.append("\"frequency\": \"").append(opeFrequency).append(" ").append(frequency).append("\", ");
-		else
-			json.append("\"frequency\": \"\", ");
+			json.add("frequency",opeFrequency+" "+frequency);
 
 		if (!"".equals(opeIntensity))
-			json.append("\"intensity\": \"").append(opeIntensity).append(" ").append(intensity).append("\"");
-		else
-			json.append("\"intensity\": \"\"");
+			json.add("intensity",opeIntensity+" "+intensity);
 
-		json.append("}");
+		if (!"".equals(opeInchi))
+			json.add("inchi",opeInchi+" "+inchi);
 
-		System.out.println(json);
-		return json.toString();
+		return json.build().toString();
 	}
 }

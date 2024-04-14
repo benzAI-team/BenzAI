@@ -7,10 +7,10 @@ import database.BenzenoidCriterion.Subject;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
-public class HBoxIrregularityDatabaseCriterion extends HBoxInDatabase {
+public class HBoxIntDatabaseCriterion extends HBoxInDatabase {
 
-	public HBoxIrregularityDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+	public HBoxIntDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, Subject subject, String possible_operators) {
+		super(parent, choiceBoxCriterion, subject, possible_operators);
 	}
 
 	@Override
@@ -23,8 +23,7 @@ public class HBoxIrregularityDatabaseCriterion extends HBoxInDatabase {
 			if ("IN".equals(operatorChoiceBox.getSelectionModel().getSelectedItem()))
 				value = value + " " + fieldValue2.getText();
 
-			// String value = fieldValue1.getText() + " " + fieldValue2.getText();
-			criterions.add(new BenzenoidCriterion(Subject.IRREGULARITY,
+			criterions.add(new BenzenoidCriterion(getSubject(),
 					BenzenoidCriterion.getOperator(operatorChoiceBox.getValue()), value));
 			System.out.println(criterions.get(0));
 		}

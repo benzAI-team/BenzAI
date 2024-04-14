@@ -1,14 +1,9 @@
 package view.database;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import application.BenzenoidApplication;
+import benzenoid.Benzenoid;
 import database.BenzenoidCriterion;
 import database.models.BenzenoidEntry;
-import database.models.IRSpectraEntry;
 import http.JSonStringBuilder;
 import http.Post;
 import javafx.beans.value.ChangeListener;
@@ -29,13 +24,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import benzenoid.Benzenoid;
 import spectrums.ResultLogFile;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.database.boxes.HBoxDatabaseCriterion;
 import view.database.boxes.HBoxDefaultDatabaseCriterion;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DatabasePane extends ScrollPane {
 
@@ -323,7 +322,7 @@ public class DatabasePane extends ScrollPane {
 
 	private String buildJsonInputString(ArrayList<BenzenoidCriterion> criterions) {
 
-		Long id = -1L;
+		String id = "";
 		String label = "";
 		String nbHexagons = "";
 		String nbCarbons = "";
@@ -331,6 +330,7 @@ public class DatabasePane extends ScrollPane {
 		String irregularity = "";
 		String frequency = "";
 		String intensity = "";
+		String inchi = "";
 
 		String opeId = "";
 		String opeLabel = "";
@@ -340,6 +340,7 @@ public class DatabasePane extends ScrollPane {
 		String opeIrregularity = "";
 		String opeFrequency = "";
 		String opeIntensity = "";
+		String opeInchi = "";
 
 		for (BenzenoidCriterion criterion : criterions) {
 
@@ -349,11 +350,11 @@ public class DatabasePane extends ScrollPane {
 			switch (criterion.getSubject()) {
 
 			case ID_MOLECULE:
-				id = Long.parseLong(value);
+				id = value;
 				opeId = operator;
 				break;
 
-			case MOLECULE_NAME:
+			case MOLECULE_LABEL:
 				label = value;
 				opeLabel = operator;
 				break;
@@ -387,13 +388,17 @@ public class DatabasePane extends ScrollPane {
 				intensity = value;
 				opeIntensity = operator;
 				break;
+
+			case INCHI:
+				inchi = value;
+				opeInchi = operator;
+				break;
 			}
 
 		}
 
-		String json = JSonStringBuilder.buildNewJsonString(id, label, nbHexagons, nbCarbons, nbHydrogens, irregularity,
-				frequency, intensity, opeId, opeLabel, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity,
-				opeFrequency, opeIntensity);
+		String json = JSonStringBuilder.buildNewJsonString(id, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, frequency, intensity, inchi,
+        opeId, opeLabel, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity, opeFrequency, opeIntensity, opeInchi);
 
 		System.out.println(json);
 

@@ -7,10 +7,10 @@ import database.BenzenoidCriterion.Subject;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
-public class HBoxNbHexagonsDatabaseCriterion extends HBoxInDatabase {
+public class HBoxFloatDatabaseCriterion extends HBoxInDatabase {
 
-	public HBoxNbHexagonsDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+	public HBoxFloatDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, Subject subject, String possible_operators) {
+		super(parent, choiceBoxCriterion, subject, possible_operators);
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class HBoxNbHexagonsDatabaseCriterion extends HBoxInDatabase {
 				value = value + " " + fieldValue2.getText();
 
 			// String value = fieldValue1.getText() + " " + fieldValue2.getText();
-			criterions.add(new BenzenoidCriterion(Subject.NB_HEXAGONS,
+			criterions.add(new BenzenoidCriterion(getSubject(),
 					BenzenoidCriterion.getOperator(operatorChoiceBox.getValue()), value));
 			System.out.println(criterions.get(0));
 		}

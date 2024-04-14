@@ -10,14 +10,12 @@ import utils.Utils;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
-public class HBoxNameDatabaseCriterion extends HBoxDatabaseCriterion {
+public class HBoxStringDatabaseCriterion extends HBoxDatabaseCriterion {
 
-	//~ private ChoiceBox<String> operatorChoiceBox;
 	private TextField fieldValue;
 
-	public HBoxNameDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
-		// TODO Auto-generated constructor stub
+	public HBoxStringDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, Subject subject, String possible_operators) {
+		super(parent, choiceBoxCriterion,subject, possible_operators);
 	}
 
 	@Override
@@ -55,7 +53,7 @@ public class HBoxNameDatabaseCriterion extends HBoxDatabaseCriterion {
 		ArrayList<BenzenoidCriterion> criterions = new ArrayList<>();
 
 		if (valid) {
-			criterions.add(new BenzenoidCriterion(Subject.MOLECULE_NAME,
+			criterions.add(new BenzenoidCriterion(getSubject(),
 					BenzenoidCriterion.getOperator("="), fieldValue.getText()));
 		}
 

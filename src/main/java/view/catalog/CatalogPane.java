@@ -145,7 +145,7 @@ public class CatalogPane extends GridPane {
 
 			if (!"".equals(moleculeNameField.getText())) {
 
-				BenzenoidCriterion criterion = new BenzenoidCriterion(Subject.MOLECULE_NAME,
+				BenzenoidCriterion criterion = new BenzenoidCriterion(Subject.MOLECULE_LABEL,
 						BenzenoidCriterion.getOperator(moleculeNameChoiceBox.getValue().toString()),
 						moleculeNameField.getText());
 				addEntry(criterion);
@@ -669,7 +669,7 @@ public class CatalogPane extends GridPane {
 				opeId = operator;
 				break;
 
-			case MOLECULE_NAME:
+			case MOLECULE_LABEL:
 				name = value;
 				opeName = operator;
 				break;

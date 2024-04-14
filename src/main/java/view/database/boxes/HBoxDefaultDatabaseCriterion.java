@@ -9,7 +9,7 @@ import view.database.DatabasePane;
 public class HBoxDefaultDatabaseCriterion extends HBoxDatabaseCriterion {
 
 	public HBoxDefaultDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+		super(parent, choiceBoxCriterion, null, null);
 	}
 
 	@Override
