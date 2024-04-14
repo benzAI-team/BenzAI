@@ -324,7 +324,7 @@ public class DatabasePane extends ScrollPane {
 	private String buildJsonInputString(ArrayList<BenzenoidCriterion> criterions) {
 
 		Long id = -1L;
-		String name = "";
+		String label = "";
 		String nbHexagons = "";
 		String nbCarbons = "";
 		String nbHydrogens = "";
@@ -333,7 +333,7 @@ public class DatabasePane extends ScrollPane {
 		String intensity = "";
 
 		String opeId = "";
-		String opeName = "";
+		String opeLabel = "";
 		String opeHexagons = "";
 		String opeCarbons = "";
 		String opeHydrogens = "";
@@ -354,8 +354,8 @@ public class DatabasePane extends ScrollPane {
 				break;
 
 			case MOLECULE_NAME:
-				name = value;
-				opeName = operator;
+				label = value;
+				opeLabel = operator;
 				break;
 
 			case NB_HEXAGONS:
@@ -391,8 +391,8 @@ public class DatabasePane extends ScrollPane {
 
 		}
 
-		String json = JSonStringBuilder.buildNewJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity,
-				frequency, intensity, opeId, opeName, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity,
+		String json = JSonStringBuilder.buildNewJsonString(id, label, nbHexagons, nbCarbons, nbHydrogens, irregularity,
+				frequency, intensity, opeId, opeLabel, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity,
 				opeFrequency, opeIntensity);
 
 		System.out.println(json);
