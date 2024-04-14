@@ -18,7 +18,9 @@ public enum JSonStringBuilder {
 	}
 
 	public static String buildNewJsonString(String id, String label, String nbHexagons, String nbCarbons, String nbHydrogens, String irregularity, String frequency, String intensity, String inchi,
-        String opeId, String opeLabel, String opeHexagons, String opeCarbons, String opeHydrogens, String opeIrregularity, String opeFrequency, String opeIntensity, String opeInchi) {
+        String solo, String duo, String trio, String quartet, String kekule, String catacondensed, String coronenoid, String coronoid, String symmetry,
+        String opeId, String opeLabel, String opeHexagons, String opeCarbons, String opeHydrogens, String opeIrregularity, String opeFrequency, String opeIntensity, String opeInchi,
+        String opeSolo, String opeDuo, String opeTrio, String opeQuartet, String opeKekule, String opeCatacondensed, String opeCoronenoid, String opeCoronoid, String opeSymmetry) {
     JsonObjectBuilder json = Json.createObjectBuilder();
 
 		if (!"".equals(opeId))
@@ -47,6 +49,33 @@ public enum JSonStringBuilder {
 
 		if (!"".equals(opeInchi))
 			json.add("inchi",opeInchi+" "+inchi);
+      
+		if (!"".equals(opeSolo))
+			json.add("solo",opeSolo+" "+solo);
+      
+		if (!"".equals(opeDuo))
+			json.add("duo",opeDuo+" "+duo);
+      
+		if (!"".equals(opeTrio))
+			json.add("trio",opeTrio+" "+trio);
+      
+		if (!"".equals(opeQuartet))
+			json.add("quartet",opeQuartet+" "+quartet);
+      
+		if (!"".equals(opeKekule))
+			json.add("kekule",opeKekule+" "+kekule);
+
+		if (!"".equals(opeCatacondensed))
+			json.add("catacondensed",opeCatacondensed+" "+catacondensed);
+
+		if (!"".equals(opeCoronenoid))
+			json.add("coronenoid",opeCoronenoid+" "+coronenoid);
+
+		if (!"".equals(opeCoronoid))
+			json.add("coronoid",opeCoronoid+" "+coronoid);
+      
+		if (!"".equals(opeSymmetry))
+			json.add("symmetry",opeSymmetry+" "+symmetry);
 
 		return json.build().toString();
 	}

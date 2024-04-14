@@ -38,7 +38,6 @@ public abstract class HBoxInDatabase extends HBoxDatabaseCriterion {
 				this.getChildren().add(deleteButton);
 			}
 		}
-
 		else {
 
 			this.getChildren().remove(fieldValue2);
@@ -68,12 +67,11 @@ public abstract class HBoxInDatabase extends HBoxDatabaseCriterion {
     for (String op : get_possible_operators()) {
       operatorChoiceBox.getItems().add(op);
     }
-		//~ operatorChoiceBox.getItems().addAll("<=", "<", "=", ">", ">=", "!=", "IN");
 
 		fieldValue1 = new TextField();
 		fieldValue2 = new TextField();
 
-		operatorChoiceBox.getSelectionModel().select(2);
+		operatorChoiceBox.getSelectionModel().select(0);
 
 		fieldValue1.setOnKeyReleased(e -> {
 			checkValidity();

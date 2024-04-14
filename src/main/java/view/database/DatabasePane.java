@@ -331,6 +331,15 @@ public class DatabasePane extends ScrollPane {
 		String frequency = "";
 		String intensity = "";
 		String inchi = "";
+		String solo = "";
+		String duo = "";
+		String trio = "";
+		String quartet = "";
+		String kekule = "";
+    String catacondensed = "";
+    String coronenoid = "";
+    String coronoid = "";
+    String symmetry = "";
 
 		String opeId = "";
 		String opeLabel = "";
@@ -341,7 +350,16 @@ public class DatabasePane extends ScrollPane {
 		String opeFrequency = "";
 		String opeIntensity = "";
 		String opeInchi = "";
-
+		String opeSolo = "";
+		String opeDuo = "";
+		String opeTrio = "";
+		String opeQuartet = "";
+		String opeKekule = "";
+    String opeCatacondensed = "";
+    String opeCoronenoid = "";
+    String opeCoronoid = "";
+    String opeSymmetry = "";
+    
 		for (BenzenoidCriterion criterion : criterions) {
 
 			String operator = criterion.getOperatorString();
@@ -393,12 +411,60 @@ public class DatabasePane extends ScrollPane {
 				inchi = value;
 				opeInchi = operator;
 				break;
+        
+			case SOLO:
+				solo = value;
+				opeSolo = operator;
+				break;
+        
+			case DUO:
+				duo = value;
+				opeDuo = operator;
+				break;
+        
+			case TRIO:
+				trio = value;
+				opeTrio = operator;
+				break;
+        
+			case QUARTET:
+				quartet = value;
+				opeQuartet = operator;
+				break;
+        
+			case KEKULE:
+				kekule = value;
+				opeKekule = operator;
+				break;        
+      
+			case CATACONDENSED:
+				catacondensed = value;
+				opeCatacondensed = operator;
+				break;        
+      
+			case CORONENOID:
+				coronenoid = value;
+				opeCoronenoid = operator;
+				break;        
+      
+			case CORONOID:
+				coronoid = value;
+				opeCoronoid = operator;
+				break;        
+      
+			case SYMMETRY:
+				symmetry = value;
+				opeSymmetry = operator;
+				break;        
+      
 			}
 
 		}
 
-		String json = JSonStringBuilder.buildNewJsonString(id, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, frequency, intensity, inchi,
-        opeId, opeLabel, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity, opeFrequency, opeIntensity, opeInchi);
+		String json = JSonStringBuilder.buildNewJsonString(id, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, frequency, intensity, inchi, solo, duo, trio, quartet, kekule, 
+        catacondensed, coronenoid, coronoid, symmetry,
+        opeId, opeLabel, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity, opeFrequency, opeIntensity, opeInchi, opeSolo, opeDuo, opeTrio, opeQuartet, opeKekule,
+        opeCatacondensed, opeCoronenoid, opeCoronoid, opeSymmetry);
 
 		System.out.println(json);
 

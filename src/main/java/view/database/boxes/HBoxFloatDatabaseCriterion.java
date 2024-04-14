@@ -23,7 +23,6 @@ public class HBoxFloatDatabaseCriterion extends HBoxInDatabase {
 			if ("IN".equals(operatorChoiceBox.getSelectionModel().getSelectedItem()))
 				value = value + " " + fieldValue2.getText();
 
-			// String value = fieldValue1.getText() + " " + fieldValue2.getText();
 			criterions.add(new BenzenoidCriterion(getSubject(),
 					BenzenoidCriterion.getOperator(operatorChoiceBox.getValue()), value));
 			System.out.println(criterions.get(0));
