@@ -6,7 +6,7 @@ import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeS
 import generator.GeneralModel;
 import utils.Coords;
 import utils.Utils;
-import generator.properties.model.expression.ParameterizedExpression;
+import properties.expression.ParameterizedExpression;
 
 public class SymmetryConstraint extends BenzAIConstraint {
 	@Override

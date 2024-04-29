@@ -1,8 +1,8 @@
 package constraints;
 
 import generator.GeneralModel;
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.model.expression.RectangleExpression;
+import properties.expression.PropertyExpression;
+import properties.expression.RectangleExpression;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;

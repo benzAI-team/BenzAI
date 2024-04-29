@@ -11,7 +11,6 @@ import solveur.RispoliAlgorithm;
 public class SubGraph {
 
 	private Benzenoid molecule;
-
 	private final int nbNodes;
 	private int nbEdges;
 

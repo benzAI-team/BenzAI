@@ -2,9 +2,9 @@ package constraints;
 
 
 import generator.GeneralModel;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.ParameterizedExpression;
-import generator.properties.model.expression.PropertyExpression;
+import properties.expression.BinaryNumericalExpression;
+import properties.expression.ParameterizedExpression;
+import properties.expression.PropertyExpression;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;

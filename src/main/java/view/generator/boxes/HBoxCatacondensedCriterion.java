@@ -1,8 +1,8 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.model.expression.SubjectExpression;
+import properties.PropertySet;
+import properties.expression.PropertyExpression;
+import properties.expression.SubjectExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
@@ -17,7 +17,7 @@ public class HBoxCatacondensedCriterion extends HBoxModelCriterion {
 	public void updateValidity() {
 		setValid(true);
 		setBounding(false);
-		getPane().refreshGenerationPossibility();
+		getPane().refreshGlobalValidity();
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class HBoxCatacondensedCriterion extends HBoxModelCriterion {
 	public void initEventHandling() {}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		 modelPropertySet.getById("catacondensed").addExpression(new SubjectExpression("catacondensed"));
 	}
 }

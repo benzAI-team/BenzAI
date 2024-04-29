@@ -1,8 +1,8 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.ParameterizedExpression;
+import properties.PropertySet;
+import properties.expression.BinaryNumericalExpression;
+import properties.expression.ParameterizedExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
@@ -23,7 +23,7 @@ public class HBoxNbCarbonsCriterion extends HBoxBoundingCriterion {
 			this.getChildren().remove(getFieldValue());
 			removeWarningIconAndDeleteButton();
 			addDeleteButton();
-			getPane().refreshGenerationPossibility();
+			getPane().refreshGlobalValidity();
 		}
 		else
 			super.updateValidity();
@@ -35,7 +35,7 @@ public class HBoxNbCarbonsCriterion extends HBoxBoundingCriterion {
 	//}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {	
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		if (isValid()) {
 			String operator = getOperatorChoiceBox().getValue();
 			if (!Objects.equals(operator, "even") && !Objects.equals(operator, "odd"))

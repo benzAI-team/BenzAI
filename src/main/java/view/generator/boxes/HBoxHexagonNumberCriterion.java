@@ -1,7 +1,7 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.BinaryNumericalExpression;
+import properties.PropertySet;
+import properties.expression.BinaryNumericalExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
@@ -12,7 +12,7 @@ public class HBoxHexagonNumberCriterion extends HBoxBoundingCriterion {
 	}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {	
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		if (isValid())
 			modelPropertySet.getById("hexagons").addExpression(new BinaryNumericalExpression("hexagons", getOperatorChoiceBox().getValue(), Integer.decode(getFieldValue().getText())));
 	}

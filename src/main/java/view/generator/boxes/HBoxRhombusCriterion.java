@@ -1,8 +1,8 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.model.expression.RhombusExpression;
+import properties.PropertySet;
+import properties.expression.PropertyExpression;
+import properties.expression.RhombusExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -48,7 +48,7 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 			this.getChildren().add(getWarningIcon());
 		addDeleteButton();
 
-		getPane().refreshGenerationPossibility();
+		getPane().refreshGlobalValidity();
 	}
 
 	@Override
@@ -76,16 +76,16 @@ public class HBoxRhombusCriterion extends HBoxModelCriterion {
 	public void initEventHandling() {
 		dimensionChoiceBox.setOnAction(e -> {
 			updateValidity();
-			getPane().refreshGenerationPossibility();
+			getPane().refreshGlobalValidity();
 		});
 		dimensionTextField.setOnKeyReleased(e -> {
 			updateValidity();
-			getPane().refreshGenerationPossibility();
+			getPane().refreshGlobalValidity();
 		});
 	}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		if (isValid()) {
 			int size = "Unspecified".equals(dimensionChoiceBox.getValue()) ? -1 : Integer.decode(dimensionTextField.getText());
 			modelPropertySet.getById("rhombus").addExpression(new RhombusExpression("rhombus", dimensionChoiceBox.getValue(), size));

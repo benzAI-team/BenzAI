@@ -38,7 +38,6 @@ public class AllKekuleStructureComputation extends CollectionComputation{
                 return;
             } else {
                 Benzenoid molecule = selectedBenzenoidPanes.get(0).getMolecule();
-
                 if (molecule.getNbKekuleStructures() == 0) {
                     Utils.alert("The selected benzenoid has no Kekulé structures.");
                     return;

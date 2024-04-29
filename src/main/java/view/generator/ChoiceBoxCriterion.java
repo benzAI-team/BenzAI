@@ -1,10 +1,10 @@
 package view.generator;
 
 import javafx.scene.control.ChoiceBox;
+import properties.PropertySet;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
-import generator.properties.model.ModelPropertySet;
 
 public class ChoiceBoxCriterion extends ChoiceBox<String> {
 
@@ -13,14 +13,14 @@ public class ChoiceBoxCriterion extends ChoiceBox<String> {
 	private HBoxCriterion hBoxCriterion;
 
 
-	public ChoiceBoxCriterion(int index, ScrollPaneWithPropertyList parent, ModelPropertySet modelPropertySet) {
+	public ChoiceBoxCriterion(int index, ScrollPaneWithPropertyList parent, PropertySet modelPropertySet) {
 		super();
 		this.index = index;
 		this.parent = parent;
 		initialize(modelPropertySet);
 	}
 
-	private void initialize(ModelPropertySet modelPropertySet) {
+	private void initialize(PropertySet modelPropertySet) {
 		this.getItems().addAll(modelPropertySet.getNames());
 		sethBoxCriterion(new HBoxDefaultCriterion(parent, this));
 		this.setOnAction(e -> {

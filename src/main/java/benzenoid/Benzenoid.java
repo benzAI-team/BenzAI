@@ -3,9 +3,9 @@ package benzenoid;
 import classifier.Irregularity;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
-import generator.properties.Property;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.ModelPropertySet;
+import properties.Property;
+import properties.ModelProperty;
+import properties.ModelPropertySet;
 import benzenoid.sort.MoleculeComparator;
 import benzenoid.sort.NbHexagonsComparator;
 import parsers.GraphCoordFileBuilder;
@@ -62,7 +62,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private int nbCrowns = -1;
 
 	private final BenzenoidDatabaseInformation databaseInformation;
-  private boolean databaseCheck;    // true if the database has been check, false otherwise
+  	private boolean databaseCheck;    // true if the database has been check, false otherwise
 
 	private final BenzenoidComputableInformations computableInformations;
 

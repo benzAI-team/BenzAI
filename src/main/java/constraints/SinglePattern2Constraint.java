@@ -6,7 +6,7 @@ import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
-import generator.properties.model.expression.BinaryNumericalExpression;
+import properties.expression.BinaryNumericalExpression;
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;

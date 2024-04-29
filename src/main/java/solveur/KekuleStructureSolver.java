@@ -163,7 +163,7 @@ public enum KekuleStructureSolver {
 		}
 
 		model.sum(circles, "=", nbCircles).post();
-		model.arithm(nbCircles, "=", 0).post();
+		//model.arithm(nbCircles, "=", 0).post();
 		model.sum(singleElectrons, "=", nbSingleElectrons).post();
 
 		IntVar OBJ = model.intVar("objectif", -200, 999);

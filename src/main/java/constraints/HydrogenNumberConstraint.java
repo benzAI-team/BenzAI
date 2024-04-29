@@ -5,9 +5,9 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.model.expression.ParameterizedExpression;
+import properties.expression.BinaryNumericalExpression;
+import properties.expression.PropertyExpression;
+import properties.expression.ParameterizedExpression;
 
 import java.util.Arrays;
 import java.util.Objects;

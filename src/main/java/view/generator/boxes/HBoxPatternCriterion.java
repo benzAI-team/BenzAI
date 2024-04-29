@@ -2,7 +2,8 @@ package view.generator.boxes;
 
 import application.BenzenoidApplication;
 import generator.patterns.PatternResolutionInformations;
-import generator.properties.model.expression.PropertyExpression;
+import properties.PropertySet;
+import properties.expression.PropertyExpression;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,10 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import generator.properties.model.PatternProperty;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.PatternExpression;
+import properties.PatternProperty;
+import properties.ModelProperty;
+import properties.expression.PatternExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -95,7 +95,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		if (isValid())
 			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText(), this.patternInformations));
 	}

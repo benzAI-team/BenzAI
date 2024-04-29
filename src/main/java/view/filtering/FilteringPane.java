@@ -1,24 +1,21 @@
 package view.filtering;
 
 import application.BenzenoidApplication;
-import generator.properties.model.filters.Filter;
+import application.Operation;
+import benzenoid.Benzenoid;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import benzenoid.Benzenoid;
+import properties.ModelPropertySet;
+import properties.filters.Filter;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionPane.DisplayType;
@@ -26,6 +23,7 @@ import view.collections.BenzenoidCollectionsManagerPane;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxCriterion;
 import view.generator.boxes.HBoxDefaultCriterion;
+import view.primaryStage.ButtonBox;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
 import java.util.ArrayList;
@@ -35,10 +33,6 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	private final BenzenoidApplication application;
 	private final BenzenoidCollectionsManagerPane collectionsPane;
 
-	private Button addButton;
-	private Button closeButton;
-	private Button filterButton;
-
 	private GridPane gridPane;
 
 	private ChoiceBox<String> collectionChoiceBox;
@@ -46,84 +40,40 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	private Label titleLabel;
 
 	private int indexFiltering;
-	
-	private boolean canStartFiltering;
 	private final Label alreadyFilteredLabel = new Label("");
 	private final Label alreadyFilteredNumberLabel = new Label("");
 
 
 	public FilteringPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) {
-		this.application = application;
+		super(new ModelPropertySet(), new Operation() {
+			@Override
+			public void run(ScrollPaneWithPropertyList pane) {
+				if (pane.getOperation().isPossible())
+					((FilteringPane)pane).filter();
+				else
+					Utils.alert("Invalid criterion(s)");
+
+			}
+			@Override
+			public void stop(ScrollPaneWithPropertyList pane){
+				((FilteringPane)pane).stop();
+			}
+		},
+				application);
+		this.application = application; //TODO application redondant
 		this.collectionsPane = collectionsPane;
 		initialize();
-
 	}
 
 	private void initialize() {
 		titleLabel = new Label("Filter a collection");
 		titleLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-		buildButtons();
+		setButtonBox(new ButtonBox("Filter", this));
+		getButtonBox().buildButtons();
 		initializeGridPane();
 		this.setContent(gridPane);
 		initBoxCriterions();
 		placeComponents();
-	}
-
-	private void buildButtons() {
-		buildAddButton();
-		buildCloseButton();
-		buildFilterButton();
-	}
-
-	private void buildFilterButton() {
-		filterButton = new Button("Filter");
-		filterButton.setOnAction(e -> {
-			if (canStartFiltering)
-				filter();
-			else
-				Utils.alert("Invalid criterion(s)");
-		});
-	}
-
-	private void buildCloseButton() {
-		ImageView imageClose = new ImageView(new Image("/resources/graphics/icon-close.png"));
-		closeButton = new Button();
-		closeButton.setGraphic(imageClose);
-		Tooltip.install(closeButton, new Tooltip("Return to the collection"));
-		closeButton.resize(30, 30);
-		closeButton.setStyle("-fx-background-color: transparent;");
-
-		closeButton.setOnAction(e -> application.switchMode(application.getPanes().getCollectionsPane()));
-	}
-
-	private void buildAddButton() {
-		ImageView image = new ImageView(new Image("/resources/graphics/icon-add.png"));
-
-		addButton = new Button();
-		addButton.setGraphic(image);
-
-		Tooltip.install(addButton, new Tooltip("Add new criterion"));
-		addButton.resize(30, 30);
-		addButton.setStyle("-fx-background-color: transparent;");
-		Tooltip.install(addButton, new Tooltip("Add new criterion"));
-
-		addButton.setOnAction(e -> {
-			int nbCriterions = getChoiceBoxCriterions().size();
-			if (canStartFiltering) {
-				ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(nbCriterions, this, getModelPropertySet());
-				getChoiceBoxCriterions().add(choiceBoxCriterion);
-				getHBoxCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
-
-				nbCriterions++;
-
-				System.out.println(nbCriterions + " criterions");
-
-				placeComponents();
-
-			} else {
-				Utils.alert("Invalid criterion(s)");
-			}
-		});
 	}
 
 	private void initializeGridPane() {
@@ -137,7 +87,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	private void initBoxCriterions() {
 		setChoiceBoxCriterions(new ArrayList<>());
 		setHBoxesCriterions(new ArrayList<>());
-		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getModelPropertySet());
+		ChoiceBoxCriterion choiceBoxCriterion = new ChoiceBoxCriterion(0, this, getPropertySet());
 		getChoiceBoxCriterions().add(choiceBoxCriterion);
 		getHBoxCriterions().add(new HBoxDefaultCriterion(this, choiceBoxCriterion));
 	}
@@ -171,12 +121,12 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 		BenzenoidCollectionPane curentPane = collectionsPane.getSelectedTab();
 		collectionChoiceBox.getSelectionModel().select(curentPane.getIndex());
 
-		HBox buttonsBox = new HBox(5.0);
-		buttonsBox.getChildren().addAll(closeButton, addButton, filterButton, collectionChoiceBox, alreadyFilteredNumberLabel, alreadyFilteredLabel);
+		ButtonBox buttonBox = new ButtonBox("Filter", this);
+		//buttonBox.getChildren().addAll(closeButton, addButton, filterButton, collectionChoiceBox, alreadyFilteredNumberLabel, alreadyFilteredLabel);
 
-		gridPane.add(buttonsBox, 0, nbCriterions + 1);
+		gridPane.add(buttonBox, 0, nbCriterions + 1);
 		initEventHandlers();
-		refreshGenerationPossibility();
+		refreshGlobalValidity();
 	}
 
 /**
@@ -191,7 +141,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 		managerPane.log("Filtering collection: " + collectionPane.getName(), true);
 		for (HBoxCriterion criterion : this.getHBoxCriterions())
 			managerPane.log(criterion.toString(), false);
-		getModelPropertySet().buildModelPropertySet(getHBoxCriterions());
+		getPropertySet().buildPropertySet(getHBoxCriterions());
 
 		final Service<Void> calculateService = new Service<>() {
 			@Override
@@ -207,7 +157,7 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 						for (int i = 0; i < collectionPane.getMolecules().size(); i++) {
 							indexFiltering = i;
 							Benzenoid molecule = collectionPane.getMolecules().get(i);
-							if (Filter.testAll(molecule, getModelPropertySet())) {
+							if (Filter.testAll(molecule, getPropertySet())) {
 								DisplayType displayType = collectionPane.getDisplayType(i);
 								newCollectionPane.addBenzenoid(molecule, displayType);
 							}
@@ -268,14 +218,12 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 		return application;
 	}
 
-	@Override
-	public void refreshGenerationPossibility() {
-		canStartFiltering = getHBoxCriterions().stream().allMatch(HBoxCriterion::isValid);
-	}
-	private void initEventHandlers() {
-		for(HBoxCriterion box : getHBoxCriterions()){
-			box.initEventHandling();
-		}
+	public void stop() {
+		//TODO
 	}
 
+	@Override
+	public void refreshGlobalValidity() {
+		getOperation().setPossible(getHBoxCriterions().stream().allMatch(HBoxCriterion::isValid));
+	}
 }

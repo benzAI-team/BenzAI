@@ -1,6 +1,6 @@
 package view.generator.boxes;
 
-import generator.properties.solver.SolverPropertySet;
+import properties.solver.SolverPropertySet;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 

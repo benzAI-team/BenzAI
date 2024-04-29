@@ -1,7 +1,7 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.PropertyExpression;
+import properties.PropertySet;
+import properties.expression.PropertyExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
@@ -29,7 +29,7 @@ public class HBoxDefaultCriterion extends HBoxModelCriterion {
 	public void initEventHandling() {}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {}
+	public void addPropertyExpression(PropertySet modelPropertySet) {}
 
 	
 }

@@ -1,8 +1,8 @@
 package constraints;
 
 import generator.GeneralModel;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.PropertyExpression;
+import properties.expression.BinaryNumericalExpression;
+import properties.expression.PropertyExpression;
 
 public class HexagonNumberConstraint extends BenzAIConstraint {
 

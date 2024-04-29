@@ -7,8 +7,8 @@ import org.chocosolver.solver.search.strategy.strategy.IntStrategy;
 import org.chocosolver.solver.variables.IntVar;
 
 import generator.GeneralModel;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.PropertyExpression;
+import properties.expression.BinaryNumericalExpression;
+import properties.expression.PropertyExpression;
 
 
 public class CoronenoidConstraint extends BenzAIConstraint {

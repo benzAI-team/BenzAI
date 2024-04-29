@@ -1,6 +1,6 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelPropertySet;
+import properties.PropertySet;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
@@ -11,6 +11,6 @@ public abstract class HBoxModelCriterion extends HBoxCriterion {
 		super(pane, choiceBoxCriterion);
 	}
 
-	public abstract void addPropertyExpression(ModelPropertySet propertySet);
+	public abstract void addPropertyExpression(PropertySet propertySet);
 
 }

@@ -1,12 +1,12 @@
 package view.generator.boxes;
 
-import generator.properties.model.expression.PropertyExpression;
+import properties.PropertySet;
+import properties.expression.PropertyExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.IrregularityExpression;
+import properties.expression.IrregularityExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
@@ -68,7 +68,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 				}
 			}
 		}
-		getPane().refreshGenerationPossibility();
+		getPane().refreshGlobalValidity();
 	}
 
 	private void addFieldValueIfMissing() {
@@ -113,7 +113,7 @@ public class HBoxIrregularityCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		if (isValid()) {
 			String parameter = irregularityChoiceBox.getValue();
 			String operator = operatorChoiceBox.getValue();

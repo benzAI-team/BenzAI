@@ -1,8 +1,8 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelProperty;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.PropertyExpression;
+import properties.ModelProperty;
+import properties.expression.BinaryNumericalExpression;
+import properties.expression.PropertyExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import utils.Utils;
@@ -29,7 +29,7 @@ public abstract class HBoxBoundingCriterion extends HBoxModelCriterion {
 			addDeleteButton();
 		}
 		setBounding(isValid() && ModelProperty.isBoundingOperator(getOperatorChoiceBox().getValue()));
-		getPane().refreshGenerationPossibility();
+		getPane().refreshGlobalValidity();
 	}
 	@Override
 	protected void initialize() {

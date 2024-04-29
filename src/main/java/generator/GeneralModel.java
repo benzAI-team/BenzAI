@@ -1,18 +1,12 @@
 package generator;
 
+import benzenoid.Benzenoid;
+import benzenoid.Node;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
 import generator.patterns.PatternOccurences;
-import generator.properties.Property;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.ParameterizedExpression;
-import generator.properties.solver.SolverProperty;
-import generator.properties.solver.SolverPropertySet;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
-import benzenoid.Benzenoid;
-import benzenoid.Node;
 import nogood.*;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
@@ -24,6 +18,12 @@ import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.UndirectedGraphVar;
 import org.chocosolver.solver.variables.Variable;
 import org.chocosolver.util.objects.graphs.UndirectedGraph;
+import properties.ModelProperty;
+import properties.ModelPropertySet;
+import properties.Property;
+import properties.expression.ParameterizedExpression;
+import properties.solver.SolverProperty;
+import properties.solver.SolverPropertySet;
 import solution.BenzenoidSolution;
 import utils.Couple;
 import utils.HexNeighborhood;
@@ -132,7 +132,7 @@ public class GeneralModel {
      */
 
     public GeneralModel(ModelPropertySet modelPropertySet) {
-        this.modelPropertySet = modelPropertySet;
+        this.modelPropertySet =  modelPropertySet;
         nbMaxHexagons = modelPropertySet.computeHexagonNumberUpperBound();
         nbCrowns = modelPropertySet.computeNbCrowns();
         diameter = (2 * nbCrowns) - 1;
@@ -1366,7 +1366,7 @@ public class GeneralModel {
     }
 
     public static void buildSolverPropertySet(ArrayList<HBoxCriterion> hBoxesSolverCriterions) {
-        solverPropertySet.clearPropertyExpressions();
+        solverPropertySet.clearAllPropertyExpressions();
         for (HBoxCriterion box : hBoxesSolverCriterions) {
             ((HBoxSolverCriterion) box).addPropertyExpression(solverPropertySet);
         }

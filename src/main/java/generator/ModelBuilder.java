@@ -1,8 +1,9 @@
 package generator;
 
-import generator.properties.Property;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.ModelPropertySet;
+import properties.Property;
+import properties.ModelProperty;
+import properties.ModelPropertySet;
+import properties.PropertySet;
 
 
 public enum ModelBuilder {
@@ -17,7 +18,7 @@ public enum ModelBuilder {
 	/***
 	 * Checks if any given model property allows to fix the model size
 	 */
-	private static boolean noLimitingProperties(ModelPropertySet modelPropertySet) {
+	private static boolean noLimitingProperties(PropertySet modelPropertySet) {
 		return !(modelPropertySet.has("hexagons") || modelPropertySet.has("carbons")
 				|| modelPropertySet.has("hydrogens")|| modelPropertySet.has("coronenoid")
 				|| modelPropertySet.has("rectangle")|| modelPropertySet.has("rhombus")

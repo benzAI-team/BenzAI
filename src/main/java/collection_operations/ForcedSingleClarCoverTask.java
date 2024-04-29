@@ -74,10 +74,16 @@ public class ForcedSingleClarCoverTask extends CollectionTask{
 
                                 ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverForcedRadicalsSolver.solve(molecule, nbRadicals);
                                 if (clarCoverSolutions.size() > 0) {
-                                    ClarCoverSolution clarCoverSolution = clarCoverSolutions
-                                            .get(clarCoverSolutions.size() - 1);
-                                    molecule.setClarCoverSolution(clarCoverSolution);
-                                    benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.CLAR_COVER);
+//                                    ClarCoverSolution clarCoverSolution = clarCoverSolutions
+//                                            .get(clarCoverSolutions.size() - 1);
+//                                    molecule.setClarCoverSolution(clarCoverSolution);
+//                                    benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.CLAR_COVER);
+                                    molecule.setClarCoverSolutions(clarCoverSolutions);
+                                    for(ClarCoverSolution clarCoverSolution : clarCoverSolutions){
+                                        System.out.println(clarCoverSolution);
+                                        molecule.setClarCoverSolution(clarCoverSolution);
+                                        benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.CLAR_COVER);
+                                    }
                                 }
                                 setIndex(getIndex() + 1);
                                 System.out.println(getIndex() + " / " + size);

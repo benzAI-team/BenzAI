@@ -1,9 +1,9 @@
 package view.generator.boxes;
 
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.solver.SolverPropertySet;
+import properties.expression.PropertyExpression;
+import properties.solver.SolverPropertySet;
 import javafx.scene.control.TextField;
-import generator.properties.model.expression.BinaryNumericalExpression;
+import properties.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;

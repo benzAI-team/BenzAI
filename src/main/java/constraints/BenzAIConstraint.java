@@ -1,7 +1,7 @@
 package constraints;
 
 import generator.GeneralModel;
-import generator.properties.model.expression.PropertyExpression;
+import properties.expression.PropertyExpression;
 
 import java.util.ArrayList;
 

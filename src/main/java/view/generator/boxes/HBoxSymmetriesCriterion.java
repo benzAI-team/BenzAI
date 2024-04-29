@@ -1,9 +1,9 @@
 package view.generator.boxes;
 
-import generator.properties.model.expression.PropertyExpression;
+import properties.PropertySet;
+import properties.expression.PropertyExpression;
 import javafx.scene.control.ChoiceBox;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.ParameterizedExpression;
+import properties.expression.ParameterizedExpression;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
@@ -26,7 +26,7 @@ public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 			setValid(false);
 			addWarningIconAndDeleteButton();
 		}
-		getPane().refreshGenerationPossibility();
+		getPane().refreshGlobalValidity();
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class HBoxSymmetriesCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		modelPropertySet.getById("symmetry").addExpression(new ParameterizedExpression("symmetry", symmetriesChoiceBox.getValue()));
 	}
 

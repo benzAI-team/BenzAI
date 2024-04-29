@@ -2,8 +2,8 @@ package constraints;
 
 
 import generator.GeneralModel;
-import generator.properties.model.expression.IrregularityExpression;
-import generator.properties.model.expression.PropertyExpression;
+import properties.expression.IrregularityExpression;
+import properties.expression.PropertyExpression;
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;

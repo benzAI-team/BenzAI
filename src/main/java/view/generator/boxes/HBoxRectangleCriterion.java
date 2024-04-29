@@ -1,9 +1,9 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelProperty;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.model.expression.RectangleExpression;
+import properties.ModelProperty;
+import properties.PropertySet;
+import properties.expression.PropertyExpression;
+import properties.expression.RectangleExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -90,7 +90,7 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 		hBoxHeight.getChildren().add(getDeleteButton());
 
 		setBounding(validHeight && validWidth && ModelProperty.isBoundingOperator(widthChoice) && ModelProperty.isBoundingOperator(heightChoice));
-		getPane().refreshGenerationPossibility();
+		getPane().refreshGlobalValidity();
 	}
 
 	@Override
@@ -140,25 +140,25 @@ public class HBoxRectangleCriterion extends HBoxModelCriterion {
 	public void initEventHandling() {
 		heightChoiceBox.setOnAction(e -> {
 			updateValidity();
-			getPane().refreshGenerationPossibility();
+			getPane().refreshGlobalValidity();
 		});
 		heightTextField.setOnKeyReleased(e -> {
 			updateValidity();
-			getPane().refreshGenerationPossibility();
+			getPane().refreshGlobalValidity();
 		});
 		widthChoiceBox.setOnAction(e -> {
 			updateValidity();
-			getPane().refreshGenerationPossibility();
+			getPane().refreshGlobalValidity();
 		});
 		widthTextField.setOnKeyReleased(e -> {
 			updateValidity();
-			getPane().refreshGenerationPossibility();
+			getPane().refreshGlobalValidity();
 		});
 
 	}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		if (isValid()) {
 			int height = "Unspecified".equals(heightTextField.getText()) || heightTextField.getText().isBlank()  ? -1 : Integer.decode(heightTextField.getText());
 			int width = "Unspecified".equals(widthTextField.getText()) || widthTextField.getText().isBlank() ? -1 : Integer.decode(widthTextField.getText());

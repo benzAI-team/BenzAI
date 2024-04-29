@@ -1,12 +1,12 @@
 package view.generator.boxes;
 
-import generator.properties.model.ModelProperty;
-import generator.properties.model.expression.PropertyExpression;
+import properties.ModelProperty;
+import properties.PropertySet;
+import properties.expression.PropertyExpression;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.BinaryNumericalExpression;
+import properties.expression.BinaryNumericalExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
@@ -50,7 +50,7 @@ public class HBoxCoronenoidCriterion extends HBoxModelCriterion {
 				addDeleteButton();
 			}
 		}
-		getPane().refreshGenerationPossibility();
+		getPane().refreshGlobalValidity();
 	}
 
 	private void addFieldIfMissing() {
@@ -82,7 +82,7 @@ public class HBoxCoronenoidCriterion extends HBoxModelCriterion {
 	}
 
 	@Override
-	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
+	public void addPropertyExpression(PropertySet modelPropertySet) {
 		if (isValid()) {
 			int nbCrowns = "Unspecified".equals(operatorChoiceBox.getValue()) ? - 1 : Integer.decode(fieldValue.getText());
 			modelPropertySet.getById("coronenoid").addExpression(new BinaryNumericalExpression("coronenoid", operatorChoiceBox.getValue(), nbCrowns));
