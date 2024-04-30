@@ -4,9 +4,9 @@ import generator.patterns.Pattern;
 import generator.patterns.PatternFileImport;
 import generator.patterns.PatternGenerationType;
 import generator.patterns.PatternResolutionInformations;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.*;
+import properties.ModelProperty;
+import properties.ModelPropertySet;
+import properties.expression.*;
 
 import java.io.File;
 import java.io.IOException;
