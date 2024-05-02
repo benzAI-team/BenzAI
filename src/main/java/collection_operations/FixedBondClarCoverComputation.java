@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class FixedBondClarCoverComputation extends CollectionComputation{
 
     FixedBondClarCoverComputation() {
-        super("Clar cover with fixed bond");
+        super("A Clar cover (with fixed bond)");
     }
 
     @Override

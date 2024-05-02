@@ -1,25 +1,24 @@
 package solveur;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import benzenoid.Benzenoid;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.nary.cnf.LogOp;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
-
-import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
 import utils.Couple;
 
-public enum ClarCoverForcedRadicalsSolver {
+import java.util.ArrayList;
+import java.util.List;
+
+public enum ClarCoverForcedCirclesSolver {
     ;
 
-    public static ArrayList<ClarCoverSolution> solve(Benzenoid molecule, int nbRadicals) {
+    public static ArrayList<ClarCoverSolution> solve(Benzenoid molecule, int nbFixedCircles) {
 
-		Model model = new Model("Clar Cover with forced fixed singles");
+		Model model = new Model("Clar Cover");
 
 		BoolVar[] circles = new BoolVar[molecule.getNbHexagons()];
 		BoolVar[] bonds = new BoolVar[molecule.getNbBonds()];
@@ -82,7 +81,7 @@ public enum ClarCoverForcedRadicalsSolver {
 		
 		model.sum(circles, "=", nbCircles).post();
 		model.sum(singleElectrons, "=", nbSingleElectrons).post();
-		model.arithm(nbSingleElectrons, "=", nbRadicals).post(); //SEULE DIFFERENCE AVEC ClarCoverSolver !!!
+		model.arithm(nbCircles, "=", nbFixedCircles).post(); //SEULE DIFFERENCE AVEC ClarCoverSolver !!!
 
 		int ub = -100 * molecule.getNbHexagons();
 

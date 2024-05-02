@@ -1,11 +1,12 @@
 package collection_operations;
 
+import benzenoid.Benzenoid;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextInputDialog;
-import benzenoid.Benzenoid;
 import solution.ClarCoverSolution;
+import solveur.ClarCoverForcedCirclesSolver;
 import solveur.ClarCoverForcedRadicalsSolver;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane;
@@ -14,21 +15,21 @@ import view.collections.BenzenoidPane;
 
 import java.util.ArrayList;
 
-public class ForcedSingleClarCoverTask extends CollectionTask{
-    ForcedSingleClarCoverTask() {
-        super("All Clar covers with forced singles");
+public class ForcedCircleClarCoverTask extends CollectionTask{
+    ForcedCircleClarCoverTask() {
+        super("All Clar covers with forced circles");
     }
 
     @Override
     public void execute(BenzenoidCollectionsManagerPane collectionManagerPane) {
         TextInputDialog textInputDialog = new TextInputDialog("2");
-        textInputDialog.setHeaderText("Enter number of singles:");
+        textInputDialog.setHeaderText("Enter number of circles:");
         textInputDialog.showAndWait();
         String textInput = textInputDialog.getEditor().getText();
         int nbRadicals = Integer.parseInt(textInput);
-        ForcedSingleClarCoverCompute(nbRadicals, collectionManagerPane);
+        forcedCircleClarCoverCompute(nbRadicals, collectionManagerPane);
     }
-    private void ForcedSingleClarCoverCompute(int nbRadicals, BenzenoidCollectionsManagerPane collectionManagerPane) {
+    private void forcedCircleClarCoverCompute(int nbCircles, BenzenoidCollectionsManagerPane collectionManagerPane) {
 
         BenzenoidCollectionPane currentPane = collectionManagerPane.getSelectedTab();
 
@@ -72,12 +73,8 @@ public class ForcedSingleClarCoverTask extends CollectionTask{
                             if (operationIsRunning()) {
                                 Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
 
-                                ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverForcedRadicalsSolver.solve(molecule, nbRadicals);
+                                ArrayList<ClarCoverSolution> clarCoverSolutions = ClarCoverForcedCirclesSolver.solve(molecule, nbCircles);
                                 if (clarCoverSolutions.size() > 0) {
-//                                    ClarCoverSolution clarCoverSolution = clarCoverSolutions
-//                                            .get(clarCoverSolutions.size() - 1);
-//                                    molecule.setClarCoverSolution(clarCoverSolution);
-//                                    benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.CLAR_COVER);
                                     molecule.setClarCoverSolutions(clarCoverSolutions);
                                     for(ClarCoverSolution clarCoverSolution : clarCoverSolutions){
                                         System.out.println(clarCoverSolution);
@@ -95,10 +92,8 @@ public class ForcedSingleClarCoverTask extends CollectionTask{
                                     } else
                                         collectionManagerPane.changeLineConsole(getIndex() + " / " + size, getLineIndex());
                                 });
-
                             }
                         }
-
                         return null;
                     }
 
@@ -125,5 +120,4 @@ public class ForcedSingleClarCoverTask extends CollectionTask{
         });
         getCalculateService().start();
     }
-
 }
