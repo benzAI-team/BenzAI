@@ -17,15 +17,16 @@ public class CollectionExportCOM extends CollectionOperation{
 
     @Override
     public void execute(BenzenoidCollectionsManagerPane collectionManagerPane) {
-        BenzenoidCollectionPane currentPane = collectionManagerPane.getSelectedTab();
-        if (currentPane.getSelectedBenzenoidPanes().size() == 0) {
+        BenzenoidCollectionPane benzenoidCollectionPane = collectionManagerPane.getSelectedTab();
+        if (benzenoidCollectionPane.getSelectedBenzenoidPanes().size() == 0) {
             if (collectionManagerPane.getHoveringPane() != null) {
                 FileChooser fileChooser = new FileChooser();
                 File file = fileChooser.showSaveDialog(collectionManagerPane.getApplication().getStage());
                 if (file != null) {
-                    Benzenoid molecule = currentPane.getMolecule(collectionManagerPane.getHoveringPane().getIndex());
+                    int index = collectionManagerPane.getHoveringPane().getIndex();
+                    Benzenoid molecule = benzenoidCollectionPane.getMolecule(index);
                     try {
-                        ComConverter.generateComFile(molecule, file, 0, ComConverter.ComType.ER, file.getName());
+                        ComConverter.generateComFile(molecule, index, file, 0, ComConverter.ComType.ER, file.getName());
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -45,15 +46,15 @@ public class CollectionExportCOM extends CollectionOperation{
 
                 int index = 0;
 
-                for (int i = 0; i < currentPane.getSelectedBenzenoidPanes().size(); i++) {
+                for (int i = 0; i < benzenoidCollectionPane.getSelectedBenzenoidPanes().size(); i++) {
 
-                    Benzenoid molecule = currentPane
-                            .getMolecule(currentPane.getSelectedBenzenoidPanes().get(i).getIndex());
+                    Benzenoid molecule = benzenoidCollectionPane
+                            .getMolecule(benzenoidCollectionPane.getSelectedBenzenoidPanes().get(i).getIndex());
 
                     String fileName;
 
-                    if (!"".equals(currentPane.getSelectedBenzenoidPanes().get(i).getName()))
-                        fileName = currentPane.getSelectedBenzenoidPanes().get(i).getName().split("\n")[0] + ".com";
+                    if (!"".equals(benzenoidCollectionPane.getSelectedBenzenoidPanes().get(i).getName()))
+                        fileName = benzenoidCollectionPane.getSelectedBenzenoidPanes().get(i).getName().split("\n")[0] + ".com";
                     else {
                         fileName = "unknown_molecule_" + index + ".com";
                         index++;
@@ -63,7 +64,7 @@ public class CollectionExportCOM extends CollectionOperation{
 
                     File file = new File(directoryPath + "/" + fileName);
                     try {
-                        ComConverter.generateComFile(molecule, file, 0, ComConverter.ComType.ER, file.getName());
+                        ComConverter.generateComFile(molecule, index, file, 0, ComConverter.ComType.ER, file.getName());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

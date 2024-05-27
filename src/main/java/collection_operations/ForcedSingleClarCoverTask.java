@@ -39,11 +39,11 @@ public class ForcedSingleClarCoverTask extends CollectionTask{
 
         ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
 
-        String name = "Clar cover";
+        String name = "Forced single Clar covers";
         BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(collectionManagerPane, collectionManagerPane.getBenzenoidSetPanes().size(),
                 collectionManagerPane.getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
 
-        collectionManagerPane.getApplication().addTask("Clar cover");
+        collectionManagerPane.getApplication().addTask("Forced single Clar covers");
 
         setOperationIsRunning(true);
 
@@ -65,8 +65,8 @@ public class ForcedSingleClarCoverTask extends CollectionTask{
                         setIndex(0);
                         int size = panes.size();
 
-                        System.out.println("Computing Clar Cover of " + size + "benzenoids");
-                        collectionManagerPane.log("Clar Cover (" + size + "benzenoids)", true);
+                        System.out.println("Computing forced single Clar Covers of " + size + "benzenoids");
+                        collectionManagerPane.log("Forced single Clar covers (" + size + "benzenoids)", true);
 
                         for (BenzenoidPane benzenoidPane : panes) {
                             if (operationIsRunning()) {

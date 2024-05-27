@@ -2,12 +2,14 @@ package parsers;
 
 import benzenoid.Benzenoid;
 import benzenoid.Node;
+import solution.ClarCoverSolution;
 import utils.Couple;
 import utils.Triplet;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 public enum ComConverter {
     ;
@@ -18,7 +20,7 @@ public enum ComConverter {
 
 	public static ArrayList<Integer> getCarbonsWithHydrogens(Benzenoid molecule) {
 
-		ArrayList<Integer> carbons = new ArrayList<Integer>();
+		ArrayList<Integer> carbons = new ArrayList<>();
 
 		for (int c = 0; c < molecule.getNbCarbons(); c++) {
 			if (molecule.degree(c) == 2)
@@ -119,9 +121,9 @@ public enum ComConverter {
 	}
 
 	public static ArrayList<Couple<Integer, Integer>> checkGeometry(Benzenoid molecule,
-                                                                    ArrayList<Integer> carbonsWithHydrogens) throws IOException {
+                                                                    ArrayList<Integer> carbonsWithHydrogens) {
 
-		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<Couple<Integer, Integer>>();
+		ArrayList<Couple<Integer, Integer>> invalidsCarbons = new ArrayList<>();
 
 		for (int i = 0; i < molecule.getNbCarbons(); i++) {
 
@@ -150,7 +152,7 @@ public enum ComConverter {
 
 						if (!alreadyExists && !areOnSameHexagon(molecule, i, j) && carbonsWithHydrogens.contains(i)
 								&& carbonsWithHydrogens.contains(j)) {
-							invalidsCarbons.add(new Couple<Integer, Integer>(i, j));
+							invalidsCarbons.add(new Couple<>(i, j));
 						}
 					}
 				}
@@ -176,7 +178,7 @@ public enum ComConverter {
 
 	private static ArrayList<Integer> getHexagons(Benzenoid molecule, int node) {
 
-		ArrayList<Integer> hexagons = new ArrayList<Integer>();
+		ArrayList<Integer> hexagons = new ArrayList<>();
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
 
@@ -190,33 +192,33 @@ public enum ComConverter {
 		return hexagons;
 	}
 
-	@SuppressWarnings({ "unchecked", "unused" })
-	public static void generateComFile(Benzenoid molecule, File file, int nbElectronsDiff, ComType type, String title)
+
+	public static void generateComFile(Benzenoid molecule, int coverIndex, File file, int nbElectronsDiff, ComType type, String title)
 			throws IOException {
 
-		int hexa = -1, yMin = Integer.MAX_VALUE;
+		int hexagonIndex = -1, yMin = Integer.MAX_VALUE;
 
 		for (int i = 0; i < molecule.getNbHexagons(); i++) {
-			int[] hexagon = molecule.getHexagons()[i];
-			int y = molecule.getNodesCoordinates()[hexagon[0]].getY();
+			int[] hexagonCarbonTab = molecule.getHexagons()[i];
+			int y = molecule.getNodesCoordinates()[hexagonCarbonTab[0]].getY();
 
 			if (y < yMin) {
 				yMin = y;
-				hexa = i;
+				hexagonIndex = i;
 			}
 		}
 
 		int[] checkedHexagons = new int[molecule.getNbHexagons()];
 
-		ArrayList<Integer> hexagonsOrder = new ArrayList<Integer>();
-		hexagonsOrder.add(hexa);
+		ArrayList<Integer> hexagonsOrder = new ArrayList<>();
+		hexagonsOrder.add(hexagonIndex);
 
-		ArrayList<Integer> candidates = new ArrayList<Integer>();
-		candidates.add(hexa);
+		ArrayList<Integer> candidates = new ArrayList<>();
+		candidates.add(hexagonIndex);
 
 		int[][] dualGraph = molecule.getDualGraph();
 
-		checkedHexagons[hexa] = 1;
+		checkedHexagons[hexagonIndex] = 1;
 
 		while (candidates.size() > 0) {
 
@@ -259,7 +261,7 @@ public enum ComConverter {
 				int u = hexagon[index];
 				int v = hexagon[(index + 1) % 6];
 
-				double xu = 0, yu = 0, xv = 0, yv = 0;
+				double xu, yu, xv = 0, yv = 0;
 
 				if (carbons[u] == null) {
 					xu = molecule.getNodesCoordinates()[u].getX();
@@ -304,7 +306,7 @@ public enum ComConverter {
 			}
 		}
 
-		ArrayList<Triplet<Double, Double, Double>> hydrogens = new ArrayList<Triplet<Double, Double, Double>>();
+		ArrayList<Triplet<Double, Double, Double>> hydrogens = new ArrayList<>();
 
 		ArrayList<Integer> carbonsWithHydrogens = getCarbonsWithHydrogens(molecule);
 		ArrayList<Couple<Integer, Integer>> invalidsCarbons = checkGeometry(molecule, carbonsWithHydrogens);
@@ -330,14 +332,13 @@ public enum ComConverter {
 					int xvr = 0, yvr = 0;
 
 					Couple<Integer, Integer> couple = findHexagon(molecule, u);
+					assert couple != null;
 					int position = couple.getY();
 
 					if (position == 0) {
 						xv = xu;
 						yv = yu - 1.0;
 
-						xvr = xur;
-						yvr = yur - 1;
 					}
 
 					else if (position == 1) {
@@ -345,8 +346,6 @@ public enum ComConverter {
 						xv = xu + 0.8675;
 						yv = yu - 0.4957;
 
-						xvr = xur + 1;
-						yvr = yur - 1;
 					}
 
 					else if (position == 2) {
@@ -354,8 +353,6 @@ public enum ComConverter {
 						xv = xu + 0.8675;
 						yv = yu + 0.4957;
 
-						xvr = xur + 1;
-						yvr = yur + 1;
 					}
 
 					else if (position == 3) {
@@ -363,8 +360,6 @@ public enum ComConverter {
 						xv = xu;
 						yv = yu + 1.0;
 
-						xvr = xur;
-						yvr = yur + 1;
 					}
 
 					else if (position == 4) {
@@ -372,16 +367,12 @@ public enum ComConverter {
 						xv = xu - 0.8675;
 						yv = yu + 0.4957;
 
-						xvr = xur - 1;
-						yvr = yur + 1;
 					}
 
 					else if (position == 5) {
 						xv = xu - 0.8675;
 						yv = yu - 0.4957;
 
-						xvr = xur - 1;
-						yvr = yur - 1;
 					}
 
 					// if (molecule.getCoords().get(xvr, yvr) == -1)
@@ -404,7 +395,9 @@ public enum ComConverter {
 					Couple<Integer, Integer> uResult = findHexagon(molecule, u);
 					Couple<Integer, Integer> vResult = findHexagon(molecule, carbonPair);
 
+					assert uResult != null;
 					int uHexagon = uResult.getX();
+					assert vResult != null;
 					int vHexagon = vResult.getX();
 
 					int uPosition = uResult.getY();
@@ -506,63 +499,174 @@ public enum ComConverter {
 			}
 		}
 
-		/*
-		 * ligne multiplicit� : charge " " spin charge : +1 si on enl�ve un electron
-		 */
+		writeMolecule(file, nbElectronsDiff, type, title, carbons, hydrogens, molecule, coverIndex);
+	}
+
+	/***
+	 * Write Molecule to a COM file
+	 */
+	private static void writeMolecule(File file, int nbElectronsDiff, ComType type, String title, Triplet<Double, Double, Double>[] carbons, ArrayList<Triplet<Double, Double, Double>> hydrogens, Benzenoid molecule, int coverIndex) throws IOException {
 		int nbCarbons = carbons.length;
 		int nbHydrogens = hydrogens.size();
 		int spin = (6 * nbCarbons) + nbHydrogens + nbElectronsDiff;
 		int charge = -1 * nbElectronsDiff;
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
-		switch (type) {
-
-		case ER:
-			writer.write("%mem=1Gb" + "\n");
-			writer.write("# opt b3lyp/6-31G" + "\n");
-			writer.write("\n");
-			writer.write(title + "\n");
-			writer.write("\n");
-			if (spin % 2 == 0)
-				writer.write(charge + " 1" + "\n");
-			else
-				writer.write(charge + " 2" + "\n");
-			break;
-
-		case IR:
-			writer.write("%nproc=32" + "\n");
-			writer.write("%chk=" + title + ".chk" + "\n");
-			writer.write("%mem=1Gb" + "\n");
-			writer.write("# b3lyp/6-31g opt freq" + "\n");
-			writer.write("\n");
-			writer.write(title + "\n");
-			writer.write("\n");
-
-			if (spin % 2 == 0)
-				writer.write(charge + " 1" + "\n");
-			else
-				writer.write(charge + " 2" + "\n");
-			break;
-		}
-
-		String s = "";
-
-		for (Triplet<Double, Double, Double> carbon : carbons) {
-			writer.write(" C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n");
-			s += " C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n";
-		}
-
-		for (Triplet<Double, Double, Double> hydrogen : hydrogens) {
-			writer.write(" H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n");
-			s += " H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n";
-		}
-
-		writer.write("\n");
-
+		writeHeader(type, title, writer);
+		writeCharge(spin, charge, writer);
+		writeCarbons(carbons, writer);
+		writeHydrogens(hydrogens, writer);
+		writer.write("\n"); // mandatory in a COM file: never remove
+		System.out.println("######################" + coverIndex);
+		if(molecule.getClarCoverSolutions() != null)
+			writeClarCoverInfo(molecule, coverIndex, writer);
 		writer.close();
 	}
 
+	private static void writeHeader(ComType type, String title, BufferedWriter writer) throws IOException {
+		switch (type) {
+		case ER:
+			writeERHeader(title, writer);
+			break;
+		case IR:
+			writeIRHeader(title, writer);
+			break;
+		}
+	}
+
+	private static void writeERHeader(String title, BufferedWriter writer) throws IOException {
+		writer.write("%mem=1Gb" + "\n");
+		writer.write("# opt b3lyp/6-31G" + "\n");
+		writer.write("\n");
+		writer.write(title + "\n");
+		writer.write("\n");
+	}
+
+	private static void writeIRHeader(String title, BufferedWriter writer) throws IOException {
+		writer.write("%nproc=32" + "\n");
+		writer.write("%chk=" + title + ".chk" + "\n");
+		writer.write("%mem=1Gb" + "\n");
+		writer.write("# b3lyp/6-31g opt freq" + "\n");
+		writer.write("\n");
+		writer.write(title + "\n");
+		writer.write("\n");
+	}
+
+	private static void writeCharge(int spin, int charge, BufferedWriter writer) throws IOException {
+		if (spin % 2 == 0)
+			writer.write(charge + " 1" + "\n");
+		else
+			writer.write(charge + " 2" + "\n");
+	}
+
+	private static void writeCarbons(Triplet<Double, Double, Double>[] carbons, BufferedWriter writer) throws IOException {
+		for (Triplet<Double, Double, Double> carbon : carbons) {
+			writer.write(" C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n");
+		}
+	}
+
+	private static void writeHydrogens(ArrayList<Triplet<Double, Double, Double>> hydrogens, BufferedWriter writer) throws IOException {
+		for (Triplet<Double, Double, Double> hydrogen : hydrogens) {
+			writer.write(" H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n");
+		}
+	}
+
+	private static void  writeClarCoverInfo(Benzenoid molecule, int coverIndex, BufferedWriter writer) throws IOException {
+		writeBlockProlog(writer);
+		writeBonds(writer, molecule, coverIndex);
+		writeBlockEpilog(writer);
+	}
+
+
+	private static void writeBlockProlog(BufferedWriter writer) throws IOException {
+		writer.write("$nbo nrt $end\n" +
+				"$NRTSTR ! Trust factor = 22,88% (HLP)\n" +
+				"STR ! HuLiS Wgt = 100,00% (HLP) S1\n" +
+				"LONE END ! pas de Paire libre dans ces familles de système\n");
+	}
+
+	private static void writeBonds(BufferedWriter writer, Benzenoid molecule, int coverIndex) throws IOException {
+		writeBondList(writer, molecule);
+		writeBLWDAT(writer, molecule, coverIndex);
+	}
+
+
+	private static void writeBondList(BufferedWriter writer, Benzenoid molecule) throws IOException {
+		writer.write("BOND ");
+		for (int i = 0; i < molecule.getNbCarbons(); i++) {
+			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
+				if (molecule.getEdgeMatrix()[i][j] == 1)
+					writer.write("S " + (i + 1) + " " + (j + 1) +  " ");
+			}
+		}
+		writer.write("END\n");
+	}
+
+	private static void writeBLWDAT(BufferedWriter writer, Benzenoid molecule, int coverIndex) throws IOException {
+		ClarCoverSolution clarCoverSolution = molecule.getClarCoverSolutions().get(coverIndex);
+		int nbCarbons = clarCoverSolution.getNbCarbons();
+		int nbHexagons = clarCoverSolution.getNbHexagons();
+
+		long nbCircles = IntStream.range(0, nbHexagons).filter(clarCoverSolution::isCircle).count();
+		long nbDoubleBonds = 0;
+		for (int i = 0; i < nbCarbons; i++)
+			for (int j = (i + 1); j < nbCarbons; j++)
+				if(clarCoverSolution.isDoubleBond(i,j))
+					nbDoubleBonds++;
+		long nbSingles = IntStream.range(0, nbCarbons).filter(clarCoverSolution::isSingle).count();
+
+		writer.write("$BLW\n" +
+				(nbCircles + nbDoubleBonds + nbSingles) + "\n" +
+				"$END\n" +
+				"$BLWDAT\n");
+		System.out.println(clarCoverSolution);
+		writeCircleBlocks(writer, clarCoverSolution, molecule);
+		writeDoubleBoundBlocks(writer, clarCoverSolution);
+		writeSingleBlocks(writer, clarCoverSolution);
+	}
+
+	private static void writeCircleBlocks(BufferedWriter writer, ClarCoverSolution clarCoverSolution, Benzenoid molecule) throws IOException {
+		for (int i = 0; i < clarCoverSolution.getNbHexagons(); i++)
+			if (clarCoverSolution.isCircle(i)) {
+				writer.write("6 6\n"); // six carbons (ring)
+				for (int j = 0; j < clarCoverSolution.getNbCarbons(); j++)
+					if (molecule.getHexagonsInvolved(j).contains(i))
+						writer.write((j + 1) + " ");
+				writer.write("\n0\n");
+			}
+	}
+	private static void writeDoubleBoundBlocks(BufferedWriter writer, ClarCoverSolution clarCoverSolution) throws IOException {
+		int nbCarbons = clarCoverSolution.getNbCarbons();
+		for (int i = 0; i < nbCarbons; i++)
+			for (int j = (i + 1); j < nbCarbons; j++)
+				if(clarCoverSolution.isDoubleBond(i, j)){
+					writer.write("2 2\n"); // two carbons
+					writer.write((i+1) + " " + (j+1) + "\n");
+					writer.write("0\n");
+				}
+	}
+
+	private static void writeSingleBlocks(BufferedWriter writer, ClarCoverSolution clarCoverSolution) throws IOException {
+		for(int i = 0; i < clarCoverSolution.getNbCarbons(); i++)
+			if(clarCoverSolution.isSingle(i)){
+				writer.write("1 1\n"); // one carbon
+				writer.write((i+1) + "\n");
+				writer.write("0\n");
+			}
+	}
+
+	private static void writeBlockEpilog(BufferedWriter writer) {
+		try {
+			writer.write("END\n" +
+					"$END");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/***
+	 * Converter as a separate app
+	 */
 	private static void displayUsage() {
 		System.out.println("USAGE : java -jar ComConverter.jar ${list_file} ${nbElectronsDiff} ${type}");
 	}
@@ -582,7 +686,8 @@ public enum ComConverter {
 
 			Benzenoid molecule = GraphParser.parseUndirectedGraph(line, null, false);
 			System.out.println(line.split(Pattern.quote("."))[0] + ".com generated");
-			generateComFile(molecule, new File(line.split(Pattern.quote("."))[0] + ".com"), nbElectronsDiff, type,
+			assert molecule != null;
+			generateComFile(molecule, 0 - 1, new File(line.split(Pattern.quote("."))[0] + ".com"), nbElectronsDiff, type,
 					title/* line.split(Pattern.quote("."))[0] */);
 		}
 

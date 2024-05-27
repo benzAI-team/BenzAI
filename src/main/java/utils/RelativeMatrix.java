@@ -5,14 +5,14 @@ import java.util.Arrays;
 
 public class RelativeMatrix {
 
-	private final int [][] M;
+	private final int [][] matrix;
 	private final int width;
     private final int height;
     private final int xCenter;
     private final int yCenter;
 	
 	public RelativeMatrix(int width, int height, int xCenter, int yCenter) {
-		M = new int[width][height];
+		matrix = new int[width][height];
 		this.width = width;
 		this.height = height;
 		
@@ -20,7 +20,7 @@ public class RelativeMatrix {
 		this.yCenter = yCenter;
 		
 		for (int i = 0 ; i < width ; i++) {
-			Arrays.fill(M[i], -1);
+			Arrays.fill(matrix[i], -1);
 		}
 	}
 	
@@ -28,8 +28,8 @@ public class RelativeMatrix {
 	 * Getters and setters
 	 */
 	
-	public int[][] getM() {
-		return M;
+	public int[][] getMatrix() {
+		return matrix;
 	}
 
 	public int getWidth() {
@@ -45,17 +45,17 @@ public class RelativeMatrix {
 	 */
 	
 	public int get(int x, int y) {
-		return M[xCenter + x][yCenter + y];
+		return matrix[xCenter + x][yCenter + y];
 	}
 	
 	public void set(int x, int y, int value) {
-		M[xCenter + x][yCenter + y] = value;
+		matrix[xCenter + x][yCenter + y] = value;
 	}
 	
 	public Point find(int value) {
 		for (int i = 0 ; i < width ; i++) {
 			for (int j = 0 ; j < height ; j++) {
-				if (M[i][j] == value)
+				if (matrix[i][j] == value)
 					return new Point(i, j);
 			}
 		}
@@ -66,8 +66,8 @@ public class RelativeMatrix {
 		int maxValue = - 1;
 		for (int i = 0 ; i < width ; i++) {
 			for (int j = 0 ; j < height ; j++) {
-				if (M[i][j] > maxValue)
-					maxValue = M[i][j];
+				if (matrix[i][j] > maxValue)
+					maxValue = matrix[i][j];
 			}
 		}
 		return maxValue;

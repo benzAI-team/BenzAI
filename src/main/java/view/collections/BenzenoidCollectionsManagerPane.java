@@ -370,22 +370,22 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 
 			moveItem.getItems().clear();
 			ArrayList<MenuItem> items = new ArrayList<>();
-			BenzenoidCollectionPane currentPane = getSelectedTab();
+			BenzenoidCollectionPane benzenoidCollectionPane = getSelectedTab();
 
-			hoveringPane = currentPane.getHoveringPane();
+			hoveringPane = benzenoidCollectionPane.getHoveringPane();
 
 			if (hoveringPane != null)
-				currentPane.setPropertiesArea(hoveringPane.buildDescription());
+				benzenoidCollectionPane.setPropertiesArea(hoveringPane.buildDescription());
 
 			for (int i = 0; i < benzenoidSetPanes.size() - 1; i++) {
 				BenzenoidCollectionPane collectionPane = benzenoidSetPanes.get(i);
 
-				if (!collectionPane.equals(currentPane)) {
+				if (!collectionPane.equals(benzenoidCollectionPane)) {
 
 					CollectionMenuItem menuItem = new CollectionMenuItem(collectionPane.getIndex(),
 							collectionPane.getName());
 
-					menuItem.setOnAction(e2 -> move(currentPane, collectionPane));
+					menuItem.setOnAction(e2 -> move(benzenoidCollectionPane, collectionPane));
 
 					items.add(menuItem);
 				}
@@ -979,7 +979,7 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 	}
 
 	public void exportCOM() {
-
+		System.out.println(">>>>>>>>>>>>>EXPORT");
 		BenzenoidCollectionPane currentPane = getSelectedTab();
 
 		if (currentPane.getSelectedBenzenoidPanes().size() == 0) {
@@ -990,9 +990,12 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 				File file = fileChooser.showSaveDialog(application.getStage());
 
 				if (file != null) {
-					Benzenoid molecule = currentPane.getMolecule(hoveringPane.getIndex());
+					int index = hoveringPane.getIndex();
+
+					Benzenoid molecule = currentPane.getMolecule(index);
 					try {
-						ComConverter.generateComFile(molecule, file, 0, ComType.ER, file.getName());
+						System.out.println(">>>>>>>>>>>>>>>>>:"+ index);
+						ComConverter.generateComFile(molecule, index,  file, 0, ComType.ER, file.getName());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -1033,7 +1036,8 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 
 					File file = new File(directoryPath + "/" + fileName);
 					try {
-						ComConverter.generateComFile(molecule, file, 0, ComType.ER, file.getName());
+						System.out.println(">>>>>>>>>>>>>>>>>:"+ index);
+						ComConverter.generateComFile(molecule, index, file, 0, ComType.ER, file.getName());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

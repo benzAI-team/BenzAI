@@ -52,31 +52,31 @@ public class FixedBondClarCoverComputation extends CollectionComputation{
                 int[][] bonds = new int[molecule.getNbCarbons()][molecule.getNbCarbons()];
                 for (ClarCoverSolution solution : clarCoverSolutions) {
 
-                    for (int i = 0; i < molecule.getNbHexagons(); i++) {
-                        if (solution.isCircle(i)) {
-                            for (int j = 0; j < 6; j++) {
-                                int k = (j + 1) % 6;
+                    for (int hexagonIndex = 0; hexagonIndex < molecule.getNbHexagons(); hexagonIndex++) {
+                        if (solution.isCircle(hexagonIndex)) {
+                            for (int carbonIndex = 0; carbonIndex < 6; carbonIndex++) {
+                                int nextCarbonIndex = (carbonIndex + 1) % 6;
 
-                                int u = molecule.getHexagon(i)[j];
-                                int v = molecule.getHexagon(i)[k];
+                                int u = molecule.getHexagon(hexagonIndex)[carbonIndex];
+                                int v = molecule.getHexagon(hexagonIndex)[nextCarbonIndex];
 
                                 bonds[u][v] = -1;
                                 bonds[v][u] = -1;
                             }
 
-                            if (circles[i] == 0) // non défini
-                                circles[i] = 2;
+                            if (circles[hexagonIndex] == 0) // non défini
+                                circles[hexagonIndex] = 2;
 
-                            if (circles[i] == 1) // pas de rond
-                                circles[i] = -1;
+                            if (circles[hexagonIndex] == 1) // pas de rond
+                                circles[hexagonIndex] = -1;
                         }
 
                         else {
-                            if (circles[i] == 0) // non défini
-                                circles[i] = 1;
+                            if (circles[hexagonIndex] == 0) // non défini
+                                circles[hexagonIndex] = 1;
 
-                            if (circles[i] == 2) // rond
-                                circles[i] = -1;
+                            if (circles[hexagonIndex] == 2) // rond
+                                circles[hexagonIndex] = -1;
                         }
                     }
 

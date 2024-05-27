@@ -91,17 +91,11 @@ public class DrawBenzenoidPane extends BorderPane {
 			}
 		});
 
-		graphItem.setOnAction(e -> {
-			export(ExportType.GRAPH);
-		});
+		graphItem.setOnAction(e -> export(ExportType.GRAPH));
 
-		cmlItem.setOnAction(e -> {
-			export(ExportType.CML);
-		});
+		cmlItem.setOnAction(e -> export(ExportType.CML));
 
-		comItem.setOnAction(e -> {
-			export(ExportType.COM);
-		});
+		comItem.setOnAction(e -> export(ExportType.COM));
 
 		Menu clearItem = new Menu();
 		Label clearLabel = new Label("Clear");
@@ -144,7 +138,7 @@ public class DrawBenzenoidPane extends BorderPane {
 
 			menuItem.setOnAction(e -> {
 
-				Benzenoid molecule = null;
+				Benzenoid molecule;
 
 				try {
 					molecule = moleculeGroup.exportMolecule();
@@ -199,13 +193,9 @@ public class DrawBenzenoidPane extends BorderPane {
 
 		nbCrownsMenu.setGraphic(nbCrownsBox);
 
-		minusButton.setOnAction(e -> {
-			removeCrown();
-		});
+		minusButton.setOnAction(e -> removeCrown());
 
-		plusButton.setOnAction(e -> {
-			addCrown();
-		});
+		plusButton.setOnAction(e -> addCrown());
 
 		Menu nameMenu = new Menu();
 		HBox nameBox = new HBox(3.0);
@@ -311,7 +301,7 @@ public class DrawBenzenoidPane extends BorderPane {
 					String title = nameField.getText();
 					if ("".equals(title))
 						title = "default_name";
-					ComConverter.generateComFile(benzenoid, file, 0, ComType.IR, title);
+					ComConverter.generateComFile(benzenoid, 0 + 0, file, 0, ComType.IR, title);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
