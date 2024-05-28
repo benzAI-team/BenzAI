@@ -581,8 +581,8 @@ public enum ComConverter {
 	private static void writeBlockProlog(BufferedWriter writer) throws IOException {
 		writer.write("$nbo nrt $end\n" +
 				"$NRTSTR ! Trust factor = 22,88% (HLP)\n" +
-				"STR ! HuLiS Wgt = 100,00% (HLP) S1\n" +
-				"LONE END ! pas de Paire libre dans ces familles de système\n");
+				"\tSTR ! HuLiS Wgt = 100,00% (HLP) S1\n" +
+				"\t\tLONE END ! pas de Paire libre dans ces familles de système\n");
 	}
 
 	private static void writeBonds(BufferedWriter writer, Benzenoid molecule, int coverIndex) throws IOException {
@@ -592,7 +592,7 @@ public enum ComConverter {
 
 
 	private static void writeBondList(BufferedWriter writer, Benzenoid molecule) throws IOException {
-		writer.write("BOND ");
+		writer.write("\t\tBOND ");
 		for (int i = 0; i < molecule.getNbCarbons(); i++) {
 			for (int j = (i + 1); j < molecule.getNbCarbons(); j++) {
 				if (molecule.getEdgeMatrix()[i][j] == 1)
@@ -615,24 +615,25 @@ public enum ComConverter {
 					nbDoubleBonds++;
 		long nbSingles = IntStream.range(0, nbCarbons).filter(clarCoverSolution::isSingle).count();
 
-		writer.write("$BLW\n" +
+		writer.write("\t\t$BLW\n\t\t\t" +
 				(nbCircles + nbDoubleBonds + nbSingles) + "\n" +
-				"$END\n" +
-				"$BLWDAT\n");
+				"\t\t$END\n" +
+				"\t\t$BLWDAT\n");
 		System.out.println(clarCoverSolution);
 		writeCircleBlocks(writer, clarCoverSolution, molecule);
 		writeDoubleBoundBlocks(writer, clarCoverSolution);
 		writeSingleBlocks(writer, clarCoverSolution);
+		writer.write("\t\t$END\n");
 	}
 
 	private static void writeCircleBlocks(BufferedWriter writer, ClarCoverSolution clarCoverSolution, Benzenoid molecule) throws IOException {
 		for (int i = 0; i < clarCoverSolution.getNbHexagons(); i++)
 			if (clarCoverSolution.isCircle(i)) {
-				writer.write("6 6\n"); // six carbons (ring)
+				writer.write("\t\t\t6 6\n\t\t\t"); // six carbons (ring)
 				for (int j = 0; j < clarCoverSolution.getNbCarbons(); j++)
 					if (molecule.getHexagonsInvolved(j).contains(i))
 						writer.write((j + 1) + " ");
-				writer.write("\n0\n");
+				writer.write("\n\t\t\t0\n");
 			}
 	}
 	private static void writeDoubleBoundBlocks(BufferedWriter writer, ClarCoverSolution clarCoverSolution) throws IOException {
@@ -640,25 +641,25 @@ public enum ComConverter {
 		for (int i = 0; i < nbCarbons; i++)
 			for (int j = (i + 1); j < nbCarbons; j++)
 				if(clarCoverSolution.isDoubleBond(i, j)){
-					writer.write("2 2\n"); // two carbons
+					writer.write("\t\t\t2 2\n\t\t\t"); // two carbons
 					writer.write((i+1) + " " + (j+1) + "\n");
-					writer.write("0\n");
+					writer.write("\t\t\t0\n");
 				}
 	}
 
 	private static void writeSingleBlocks(BufferedWriter writer, ClarCoverSolution clarCoverSolution) throws IOException {
 		for(int i = 0; i < clarCoverSolution.getNbCarbons(); i++)
 			if(clarCoverSolution.isSingle(i)){
-				writer.write("1 1\n"); // one carbon
+				writer.write("\t\t\t1 1\n\t\t\t"); // one carbon
 				writer.write((i+1) + "\n");
-				writer.write("0\n");
+				writer.write("\t\t\t0\n");
 			}
 	}
 
 	private static void writeBlockEpilog(BufferedWriter writer) {
 		try {
-			writer.write("END\n" +
-					"$END");
+			writer.write("\tEND\n" +
+					"$END\n");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
