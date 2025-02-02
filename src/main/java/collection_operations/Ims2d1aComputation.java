@@ -46,7 +46,7 @@ public class Ims2d1aComputation extends CollectionComputation{
             return;
         } else if (nbNotAvailable == 1)
             Utils.alert("No map is available yet for one benzenoid of the selection");
-        else
+        else if (nbNotAvailable > 1)
             Utils.alert("No map is available yet for " + nbNotAvailable + " benzenoids of the selection");
 
         addNewSetPane(benzenoidSetPane, collectionManagerPane);
