@@ -32,7 +32,7 @@ public class BenzenoidCollectionPane extends Tab {
     }
 
     public enum DisplayType {
-        BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED, KEKULE, CLAR_RE, NICS
+        BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A_R, IMS2D1A_U, CLAR_COVER_FIXED, KEKULE, CLAR_RE, NICS
     }
 
     private final BenzenoidCollectionsManagerPane parent;
@@ -360,8 +360,11 @@ protected Void call() {
 									group = new RadicalarClarCoverGroup(molecule);
 									break;
 
-								case IMS2D1A:
-									group = new IMS2D1AGroup(molecule);
+								case IMS2D1A_R:
+									group = new IMS2D1AGroup(molecule,"R");
+									break;
+								case IMS2D1A_U:
+									group = new IMS2D1AGroup(molecule,"U");
 									break;
 
                                     case CLAR_RE:

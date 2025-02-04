@@ -5,6 +5,7 @@ import http.Post;
 import spectrums.ResultLogFile;
 
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ public class BenzenoidDatabaseInformation {
 
     private final DatabaseCheckManager databaseCheckManager;
 
-    private Optional<String> imsMap;
+    private HashMap<String,Optional<String>> imsMap;
     private Optional<ResultLogFile> IRSpectra;
     private Optional<String> NICS;
     private Optional<String> graphFile;
@@ -22,6 +23,7 @@ public class BenzenoidDatabaseInformation {
     public BenzenoidDatabaseInformation(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
         databaseCheckManager = new DatabaseCheckManager(benzenoid);
+        imsMap = new HashMap<String,Optional<String>>();
     }
 
     public DatabaseCheckManager getDatabaseCheckManager() {
@@ -40,7 +42,7 @@ public class BenzenoidDatabaseInformation {
 
             try {
                 List<Map> results = Post.post(service, json);
-
+                
                 if (!results.isEmpty()) {
                     IRSpectraEntry content = IRSpectraEntry.buildQueryContent(results.get(0));
 
@@ -55,7 +57,7 @@ public class BenzenoidDatabaseInformation {
 
                     benzenoid.setInchi(content.getInchi());
                     benzenoid.setBenzdbId(content.getIdMolecule());
-
+                    
                     return IRSpectra;
                 }
 
@@ -69,35 +71,42 @@ public class BenzenoidDatabaseInformation {
         return IRSpectra;
     }
 
-    public Optional<String> findimsMap() {
+    public Optional<String> findimsMap(String mapType) {
 
-        databaseCheckManager.checkImsMap();
-
-        if (imsMap == null) {
+        databaseCheckManager.checkImsMap(mapType);
+        
+        if (imsMap.get(mapType) == null) {
             String name = benzenoid.getNames().get(0);
-            String service = "find_ims2d1a/";
-            String json = "{\"label\": \"= " + name + "\"}";
-
+            String service = "find_ims2d1a/";            
+            String json = "{\"label\": \"= " + name + "\"";
+            
+            if (mapType == "R"){
+              json += ", \"type\": \"= R\"";
+            }
+            else if (mapType == "U")
+            {
+              json += ", \"type\": \"= U\"";
+            }
+            
+            json +="}";
+            
+            Optional<String> op = Optional.empty();
             try {
                 List<Map> results = Post.post(service, json);
 
                 if (!results.isEmpty()) {
                     Map map = results.get(0);
                     String stringData = (String) map.get("picture");
-
-                    imsMap = Optional.of(stringData);
-                    return imsMap;
+                    op = Optional.of(stringData);
                 }
 
             } catch (Exception e) {
                 System.out.println("Connection to database failed");
             }
-
-            imsMap = Optional.empty();
-            return imsMap;
+            imsMap.put(mapType, op);
         }
 
-        return imsMap;
+        return imsMap.get(mapType);
     }
     
     

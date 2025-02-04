@@ -1,19 +1,23 @@
 package benzenoid;
 
+import java.util.HashMap;
+
 public class DatabaseCheckManager {
 
     private final Benzenoid benzenoid;
 
     private boolean IRSpectraChecked;
 
-    private boolean imsMapChecked;
+    private HashMap<String,Boolean> imsMapChecked;
 
     private boolean NICSChecked;
 
     public DatabaseCheckManager(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
         IRSpectraChecked = false;
-        imsMapChecked = false;
+        imsMapChecked = new HashMap<String, Boolean>();
+        imsMapChecked.put("R",false);
+        imsMapChecked.put("U",false);
         NICSChecked = false;
     }
 
@@ -21,8 +25,8 @@ public class DatabaseCheckManager {
         return IRSpectraChecked;
     }
 
-    public  boolean isImsMapChecked() {
-        return imsMapChecked;
+    public  boolean isImsMapChecked(String mapType) {
+        return imsMapChecked.get(mapType);
     }
 
     public boolean isNICSChecked() {
@@ -33,8 +37,8 @@ public class DatabaseCheckManager {
         IRSpectraChecked = true;
     }
 
-    public void checkImsMap() {
-        imsMapChecked = true;
+    public void checkImsMap(String mapType) {
+        imsMapChecked.put(mapType,true);
     }
 
     public void checkNICS() {

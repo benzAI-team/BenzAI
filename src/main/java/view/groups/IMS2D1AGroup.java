@@ -13,10 +13,12 @@ import benzenoid.Benzenoid;
 public class IMS2D1AGroup extends MoleculeGroup {
 
 	private final String pictureData;
+	private final String mapType;
 
-	public IMS2D1AGroup(Benzenoid molecule) {
+	public IMS2D1AGroup(Benzenoid molecule, String mapType) {
 		super(molecule);
-		this.pictureData = molecule.getDatabaseInformation().findimsMap().get();
+    this.mapType = mapType;
+		this.pictureData = molecule.getDatabaseInformation().findimsMap(this.mapType).get();
 		try {
 			buildImage();
 		} catch (IOException e) {

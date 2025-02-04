@@ -45,7 +45,9 @@ public enum CollectionOperationSet {
 		collectionComputationSet.add(new ForcedSingleStatisticsTask());
 		collectionComputationSet.add(new AllKekuleStructureComputation());
 		collectionComputationSet.add(new RingBoundOrderTask());
-		collectionComputationSet.add(new Ims2d1aComputation());
+		collectionComputationSet.add(new Ims2d1aComputation("R"));
+		collectionComputationSet.add(new Ims2d1aComputation("U"));
+		collectionComputationSet.add(new Ims2d1aComputation("R&U"));
 		collectionComputationSet.add(new IRSpectraTask());
 		collectionComputationSet.add(new RadicalarStatisticsTask());
 		collectionComputationSet.add(new IrregularityComputation());
