@@ -362,14 +362,16 @@ protected Void call() {
 
 								case IMS2D1A_R:
 									group = new IMS2D1AGroup(molecule,"R");
+									description += "R map";
 									break;
 								case IMS2D1A_U:
 									group = new IMS2D1AGroup(molecule,"U");
+									description += "U map";
 									break;
 
-                                    case CLAR_RE:
-                                        group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
-                                        break;
+                case CLAR_RE:
+                    group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
+                    break;
 
 								default:
 									group = new MoleculeGroup(molecule);
