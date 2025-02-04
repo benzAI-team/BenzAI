@@ -48,8 +48,6 @@ public class Post {
 				response.append(responseLine.trim());
 			}
 
-			// System.out.println(response.toString());
-
 			if ("[]".contentEquals(response))
 				return new ArrayList<>();
 			else {
