@@ -285,6 +285,9 @@ protected Void call() {
 
         MoleculeGroup group;
         String description = molecule.getDescription();
+        if (description == null) {
+          description = "";
+        }
 
         try {
 
