@@ -13,10 +13,10 @@ public abstract class HBoxCriterion extends HBox {
 	private boolean valid;
 
 	private boolean bounding;
-	
-	private final DeleteButton deleteButton = new DeleteButton();
+
 	private ImageView warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
-	 
+	private final DeleteButton deleteButton = new DeleteButton();
+
 	private ScrollPaneWithPropertyList pane;
 
 	private PropertyExpression expression;
@@ -26,25 +26,16 @@ public abstract class HBoxCriterion extends HBox {
 		super(5.0);
 		this.setPane(pane);
 		Tooltip.install(warningIcon, new Tooltip("Invalid entry, criterion will not be considered"));
-		Tooltip.install(deleteButton, new Tooltip("Delete criterion"));
-		deleteButton.setOnAction(e -> pane.removeCriterion(choiceBoxCriterion, this));
-		initialize();
+			initialize();
 	}
 
 	public abstract void updateValidity();
-
-	protected void addDeleteButton() {
-		this.getChildren().add(getDeleteButton());
-	}
 
 	protected abstract void initialize();
 
 	/***
 	 * getters, setters
 	 */
-	public DeleteButton getDeleteButton() {
-		return deleteButton;
-	}
 
 	public ImageView getWarningIcon() {
 		return warningIcon;
@@ -78,13 +69,12 @@ public abstract class HBoxCriterion extends HBox {
 		this.pane = pane;
 	}
 
-	protected void removeWarningIconAndDeleteButton() {
+	protected void removeWarningIcon() {
 		this.getChildren().remove(getWarningIcon());
-		this.getChildren().remove(getDeleteButton());
 	}
 
-	protected void addWarningIconAndDeleteButton() {
-		this.getChildren().addAll(getWarningIcon(), getDeleteButton());
+	protected void addWarningIcon() {
+		this.getChildren().addAll(getWarningIcon());
 	}
 
 	public abstract void assign(PropertyExpression expression);
@@ -99,4 +89,7 @@ public abstract class HBoxCriterion extends HBox {
 		this.bounding = bounding;
 	}
 
+	public DeleteButton getDeleteButton() {
+		return deleteButton;
+	}
 }

@@ -91,7 +91,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 		loadPropertyExpressionListAutosave();
 		initializeModelCriterionBoxes();
-		checkSettings();
+		checkSolverSettings();
 
 		placeComponents();
 		//getModelPropertySet().clearAllPropertyExpressions();
@@ -360,10 +360,6 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 
 	private boolean containsInvalidCriterion() {
 		return getHBoxCriterions().stream().anyMatch(box -> !box.isValid());
-//		for (int i = 0; i < getHBoxCriterions().size(); i++)
-//			if (!getHBoxCriterions().get(i).isValid())
-//				return true;
-//		return false;
 	}
 
 	/***
@@ -417,6 +413,8 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 		for(HBoxCriterion box : getHBoxCriterions()){
 			box.initEventHandling();
 		}
+		for(HBoxCriterion box : hBoxesSolverCriterions)
+			box.initEventHandling();
 	}
 
 	@Override
@@ -603,8 +601,7 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	/***
 	 * Add automatic stop criterions based on the settings
 	 */
-	private void checkSettings() {
-		//System.out.println("Currently not checking the setting");
+	private void checkSolverSettings() {
 		checkGenerationTime();
 		checkNbMaxSolutions();
 	}
@@ -641,8 +638,8 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	}
 
 	public void refreshGenerationPossibility() {
-		canStartGeneration = getHBoxCriterions().stream().allMatch(box -> box.isValid())
-								&& getHBoxCriterions().stream().anyMatch(box -> box.isBounding());
+		canStartGeneration = getHBoxCriterions().stream().allMatch(HBoxCriterion::isValid)
+								&& getHBoxCriterions().stream().anyMatch(HBoxCriterion::isBounding);
 		buttonsBox.getChildren().remove(warningIcon);
 		if (!canStartGeneration)
 			buttonsBox.getChildren().add(warningIcon);

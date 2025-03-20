@@ -20,17 +20,15 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 
 	@Override
 	public void updateValidity() {
-
-		if (!Utils.isNumber(timeField.getText()) && timeUnitBox.getValue() != null) {
-			setValid(false);
-			removeWarningIconAndDeleteButton();
-			addWarningIconAndDeleteButton();
+		if (Utils.isNumber(timeField.getText()) && timeUnitBox.getValue() != null) {
+			setValid(true);
+			removeWarningIcon();
 		}
 
 		else {
-			setValid(true);
-			removeWarningIconAndDeleteButton();
-			addDeleteButton();
+			setValid(false);
+			removeWarningIcon();
+			addWarningIcon();
 		}
 	}
 
@@ -44,7 +42,7 @@ public class HBoxTimeoutCriterion extends HBoxSolverCriterion {
 		timeUnitBox.getSelectionModel().select(2);
 
 
-		this.getChildren().addAll(timeField, timeUnitBox, getWarningIcon(), getDeleteButton());
+		this.getChildren().addAll(timeField, timeUnitBox, getWarningIcon());
 		this.updateValidity();
 	}
 

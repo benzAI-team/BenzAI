@@ -18,15 +18,13 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 
 	@Override
 	public void updateValidity() {
-
 		if (Utils.isNumber(nbSolutionsField.getText())) {
 			setValid(true);
-			removeWarningIconAndDeleteButton();
-			addDeleteButton();
+			removeWarningIcon();
 		} else {
 			setValid(false);
-			removeWarningIconAndDeleteButton();
-			addWarningIconAndDeleteButton();
+			removeWarningIcon();
+			addWarningIcon();
 		}
 	}
 
@@ -34,7 +32,7 @@ public class HBoxNbSolutionsCriterion extends HBoxSolverCriterion {
 	protected void initialize() {
 		setValid(false);
 		nbSolutionsField = new TextField();
-		this.getChildren().addAll(nbSolutionsField, getWarningIcon(), getDeleteButton());
+		this.getChildren().addAll(nbSolutionsField, getWarningIcon());
 	}
 
 	@Override

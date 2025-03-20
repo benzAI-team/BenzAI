@@ -6,6 +6,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 public abstract class HBoxSolverCriterion extends HBoxCriterion {
 
+
 	HBoxSolverCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 	}
