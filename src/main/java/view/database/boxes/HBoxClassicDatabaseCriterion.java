@@ -15,7 +15,7 @@ public class HBoxClassicDatabaseCriterion extends HBoxDatabaseCriterion {
 	protected TextField fieldValue;
 
 	public HBoxClassicDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion);
+		super(parent, choiceBoxCriterion, null, null);
 	}
 
 	@Override

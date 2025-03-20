@@ -334,28 +334,29 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 		MenuItem exportPropertiesItem = CollectionOperationSet.getMenuItemByName("Export properties");
 
 		MenuItem exportGraph = CollectionOperationSet.getMenuItemByName(".graph");
+		MenuItem exportDot = CollectionOperationSet.getMenuItemByName(".dot");
 		MenuItem exportPng = CollectionOperationSet.getMenuItemByName(".png");
 		MenuItem exportCml = CollectionOperationSet.getMenuItemByName(".cml");
 		MenuItem exportCom = CollectionOperationSet.getMenuItemByName(".com");
-		exportBenzenoidItem.getItems().addAll(exportGraph, exportPng, exportCml, exportCom);
+		exportBenzenoidItem.getItems().addAll(exportGraph, exportDot, exportPng, exportCml, exportCom);
+
+    exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
 
 		MenuItem importCollectionItem = CollectionOperationSet.getMenuItemByName("Import collection");
-		MenuItem exportCollectionItem = CollectionOperationSet.getMenuItemByName("Export collection");
-		exportMenu.getItems().addAll(exportBenzenoidItem, exportPropertiesItem);
 
+    Menu exportMenuCollection = new Menu("Export collection");
+    MenuItem exportCollectionGraph = CollectionOperationSet.getMenuItemByName(".graph ");
+		MenuItem exportCollectionDot = CollectionOperationSet.getMenuItemByName(".dot ");
+		MenuItem exportCollectionPng = CollectionOperationSet.getMenuItemByName(".png ");
+		MenuItem exportCollectionCml = CollectionOperationSet.getMenuItemByName(".cml ");
+		MenuItem exportCollectionCom = CollectionOperationSet.getMenuItemByName(".com ");
+		
+    exportMenuCollection.getItems().addAll(exportCollectionGraph, exportCollectionDot, exportCollectionPng, exportCollectionCml, exportCollectionCom);
 
-//		//MenuItem dbItem = new MenuItem("Find in database (DEBUG)");
-//		dbItem.setOnAction(e -> {
-//			BenzenoidCollectionPane currentPane = getSelectedTab();
-//			for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes()) {
-//				Molecule molecule = currentPane.getMolecule(pane.getIndex());
-//				System.out.println(molecule.getIRSpectraResult());
-//			}
-//		});
 
 		// Organisation des items
 		contextMenu.getItems().addAll(
-				exportMenu, importCollectionItem, exportCollectionItem, new SeparatorMenuItem());
+				exportMenu, importCollectionItem, exportMenuCollection, new SeparatorMenuItem());
 		for(CollectionOperation operation : CollectionOperationSet.getCollectionSimpleOperationSet())
 			contextMenu.getItems().add(operation.getMenuItem());
 		contextMenu.getItems().addAll(new SeparatorMenuItem(), moveItem);
@@ -546,35 +547,6 @@ public class BenzenoidCollectionsManagerPane extends BorderPane {
 		});
 
 		calculateServiceLin.start();
-	}
-
-	public void resonanceEnergyLinFan() {
-		BenzenoidCollectionPane currentPane = getSelectedTab();
-
-		if (currentPane.getBenzenoidPanes().size() == 0) {
-			Utils.alert("There is no benzenoid!");
-			return;
-		}
-
-		ArrayList<BenzenoidPane> selectedBenzenoidPanes = currentPane.getSelectedBenzenoidPanes();
-
-		if (selectedBenzenoidPanes.size() == 0)
-			selectAll();
-
-		String name = "RE Lin&Fan";
-		BenzenoidCollectionPane benzenoidSetPane = new BenzenoidCollectionPane(this, getBenzenoidSetPanes().size(),
-				getNextCollectionPaneLabel(currentPane.getName() + "-" + name));
-
-		for (BenzenoidPane benzenoidPane : selectedBenzenoidPanes) {
-			Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
-			benzenoidSetPane.addBenzenoid(molecule, DisplayType.RE_LIN_FAN);
-		}
-
-		benzenoidSetPane.refresh();
-
-		tabPane.getSelectionModel().clearAndSelect(0);
-		addBenzenoidSetPane(benzenoidSetPane);
-		tabPane.getSelectionModel().clearAndSelect(benzenoidSetPanes.size() - 2);
 	}
 
 	public void clarCover() {

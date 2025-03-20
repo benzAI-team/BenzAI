@@ -1,14 +1,11 @@
 package view.database;
 
 import javafx.scene.control.ChoiceBox;
+import database.BenzenoidCriterion;
 import view.database.boxes.HBoxDatabaseCriterion;
-import view.database.boxes.HBoxFrequencyDatabaseCriterion;
-import view.database.boxes.HBoxIDDatabaseCriterion;
-import view.database.boxes.HBoxIntensityDatabaseCriterion;
-import view.database.boxes.HBoxIrregularityDatabaseCriterion;
-import view.database.boxes.HBoxNbCarbonsDatabaseCriterion;
-import view.database.boxes.HBoxNbHexagonsDatabaseCriterion;
-import view.database.boxes.HBoxNbHydrogensDatabaseCriterion;
+import view.database.boxes.HBoxIntDatabaseCriterion;
+import view.database.boxes.HBoxFloatDatabaseCriterion;
+import view.database.boxes.HBoxStringDatabaseCriterion;
 
 public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 
@@ -24,63 +21,108 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 
 	private void initialize() {
 		this.getItems().add("Id");
-		this.getItems().add("Name");
+		this.getItems().add("Label");
+		this.getItems().add("InChi");
 		this.getItems().add("Number of hexagons");
 		this.getItems().add("Number of carbons");
 		this.getItems().add("Number of hydrogens");
 		this.getItems().add("Irregularity");
 		this.getItems().add("Frequency");
 		this.getItems().add("Intensity");
+		this.getItems().add("Solo");
+		this.getItems().add("Duo");
+		this.getItems().add("Trio");
+		this.getItems().add("Quartet");
+		this.getItems().add("Number of Kekulé structures");
+		this.getItems().add("Catacondensed");
+		this.getItems().add("Coronenoid");
+		this.getItems().add("Coronoid");
+		this.getItems().add("Symmetry");
 
 		this.setOnAction(e -> {
 
 			if (getValue() != null) {
 
 				String value = getValue();
-
+        HBoxDatabaseCriterion box  = null;
 				if ("Id".equals(value)) {
-					HBoxDatabaseCriterion box = new HBoxIDDatabaseCriterion(parent, this);
-					parent.setHBox(index, box);
+					box = new HBoxIntDatabaseCriterion(parent, this,BenzenoidCriterion.Subject.ID_MOLECULE,"= < <= != > >= IN");
 				}
 
-				else if ("Name".equals(value)) {
-					// HBoxDatabaseCriterion box = new HBoxNameDatabaseCriterion(parent, this);
-					// parent.setHBox(index, box);
+				else if ("Label".equals(value)) {
+					box = new HBoxStringDatabaseCriterion (parent, this, BenzenoidCriterion.Subject.MOLECULE_LABEL,"=");
+				}
+        
+				else if ("InChi".equals(value)) {
+					box = new HBoxStringDatabaseCriterion (parent, this, BenzenoidCriterion.Subject.INCHI,"=");
 				}
 
 				else if ("Number of hexagons".equals(value)) {
-					HBoxDatabaseCriterion box = new HBoxNbHexagonsDatabaseCriterion(parent, this);
-					parent.setHBox(index, box);
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.NB_HEXAGONS,"= < <= != > >= IN");
 				}
 
 				else if ("Number of carbons".equals(value)) {
-					HBoxDatabaseCriterion box = new HBoxNbCarbonsDatabaseCriterion(parent, this);
-					parent.setHBox(index, box);
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.NB_CARBONS,"= < <= != > >= IN");
 				}
 
 				else if ("Number of hydrogens".equals(value)) {
-					HBoxDatabaseCriterion box = new HBoxNbHydrogensDatabaseCriterion(parent, this);
-					parent.setHBox(index, box);
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.NB_HYDROGENS,"= < <= != > >= IN");
 				}
 
 				else if ("Irregularity".equals(value)) {
-					HBoxDatabaseCriterion box = new HBoxIrregularityDatabaseCriterion(parent, this);
-					parent.setHBox(index, box);
+					box = new HBoxFloatDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.IRREGULARITY,"= < <= != > >= IN");
 				}
 
 				else if ("Frequency".equals(value)) {
-					HBoxDatabaseCriterion box = new HBoxFrequencyDatabaseCriterion(parent, this);
-					parent.setHBox(index, box);
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.FREQUENCY,"= < <= != > >= IN");
 				}
 
 				else if ("Intensity".equals(value)) {
-					HBoxDatabaseCriterion box = new HBoxIntensityDatabaseCriterion(parent, this);
-					parent.setHBox(index, box);
+					box = new HBoxFloatDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.INTENSITY,"< <= > >= IN");
+				}
+
+				else if ("Solo".equals(value)) {
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.SOLO,"< <= = != > >= IN");
+				}
+        
+				else if ("Duo".equals(value)) {
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.DUO,"< <= = != > >= IN");
+				}
+        
+				else if ("Trio".equals(value)) {
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.TRIO,"= < <= != > >= IN");
+				}
+        
+				else if ("Quartet".equals(value)) {
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.QUARTET,"= < <= != > >= IN");
+				}
+        
+				else if ("Number of Kekulé structures".equals(value)) {
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.KEKULE,"= < <= != > >= IN");
+				}
+
+				else if ("Catacondensed".equals(value)) {
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.CATACONDENSED,"=");
+				}
+        
+				else if ("Coronenoid".equals(value)) {
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.CORONENOID,"=");
+				}
+        
+				else if ("Coronoid".equals(value)) {
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.CORONOID,"=");
+				}
+        
+        else if ("Symmetry".equals(value)) {
+					box = new HBoxStringDatabaseCriterion (parent, this, BenzenoidCriterion.Subject.SYMMETRY,"= !=");
 				}
 
 				else {
 
 				}
+        if (box != null) {
+          parent.setHBox(index, box);
+        }
 			}
 		});
 	}

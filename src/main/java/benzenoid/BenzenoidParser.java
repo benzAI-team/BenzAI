@@ -54,6 +54,25 @@ public enum BenzenoidParser {
         writer.close();
     }
 
+    public static void exportToDotFile(Benzenoid benzenoid, File file) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+        int [][] edgeMatrix = benzenoid.getEdgeMatrix();
+
+        writer.write("strict graph {\n");
+
+        for (int i = 0; i < benzenoid.getNbCarbons(); i++) {
+            for (int j = (i + 1); j < benzenoid.getNbCarbons(); j++) {
+                if (edgeMatrix[i][j] == 1) {
+                    writer.write("\t a" + i + " -- a" + j + "\n");
+                }
+            }
+        }
+
+        writer.write("}\n");
+        writer.close();
+    }
+
     public static void exportProperties(Benzenoid benzenoid, File file) throws IOException {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));

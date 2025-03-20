@@ -32,7 +32,7 @@ public class BenzenoidCollectionPane extends Tab {
     }
 
     public enum DisplayType {
-        BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A, CLAR_COVER_FIXED, KEKULE, CLAR_RE
+        BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A_R, IMS2D1A_U, CLAR_COVER_FIXED, KEKULE, CLAR_RE, NICS
     }
 
     private final BenzenoidCollectionsManagerPane parent;
@@ -269,68 +269,76 @@ public class BenzenoidCollectionPane extends Tab {
 
         final Service<Void> calculateService = new Service<>() {
 
-            @Override
-            protected Task<Void> createTask() {
-                return new Task<>() {
+@Override
+protected Task<Void> createTask() {
+return new Task<>() {
 
-                    @Override
-                    protected Void call() {
+@Override
+protected Void call() {
 
-                        int index = 0;
+    int index = 0;
 
-                        for (int i = 0; i < molecules.size(); i++) {
+    for (int i = 0; i < molecules.size(); i++) {
 
-                            Benzenoid molecule = molecules.get(i);
-                            DisplayType displayType = displayTypes.get(i);
+        Benzenoid molecule = molecules.get(i);
+        DisplayType displayType = displayTypes.get(i);
 
-                            MoleculeGroup group;
-                            String description = molecule.getDescription();
+        MoleculeGroup group;
+        String description = molecule.getDescription();
+        if (description == null) {
+          description = "";
+        }
 
-                            try {
+        try {
 
-                                switch (displayType) {
-                                    case RE_LIN: {
-                                        Aromaticity aromaticity = molecule.getAromaticity().get();
+            switch (displayType) {
+                case RE_LIN: {
+                    Aromaticity aromaticity = molecule.getAromaticity().get();
 
-                                        double[][] circuits = aromaticity.getLocalCircuits();
+                    double[][] circuits = aromaticity.getLocalCircuits();
 
-                                        for (int j = 0; j < circuits.length; j++) {
-                                            System.out.print("H" + j + " : ");
-                                            for (int k = 0; k < circuits[j].length; k++) {
-                                                System.out.print(circuits[j][k] + " ");
-                                            }
-                                            System.out.println();
-                                        }
+                    for (int j = 0; j < circuits.length; j++) {
+                        System.out.print("H" + j + " : ");
+                        for (int k = 0; k < circuits[j].length; k++) {
+                            System.out.print(circuits[j][k] + " ");
+                        }
+                        System.out.println();
+                    }
 
-                                        for (int j = 0; j < molecule.getNbHexagons(); j++) {
-                                            System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
-                                        }
+                    for (int j = 0; j < molecule.getNbHexagons(); j++) {
+                        System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
+                    }
 
-                                        group = new AromaticityGroup(molecule, aromaticity);
-                                    }
-                                    break;
+                    group = new AromaticityGroup(molecule, aromaticity);
+                }
+                break;
 
-                                    case RE_LIN_FAN: {
-                                        Aromaticity aromaticity = LinFanAlgorithm.computeEnergy(molecule);
-                                        aromaticity.normalize(molecule.getNbKekuleStructures());
+                case RE_LIN_FAN: {
+                    Aromaticity aromaticity = LinFanAlgorithm.computeEnergy(molecule);
+                    aromaticity.normalize(molecule.getNbKekuleStructures());
 
-                                        double[][] circuits = aromaticity.getLocalCircuits();
+                    double[][] circuits = aromaticity.getLocalCircuits();
 
-                                        for (int j = 0; j < circuits.length; j++) {
-                                            System.out.print("H" + j + " : ");
-                                            for (int k = 0; k < circuits[j].length; k++) {
-                                                System.out.print(circuits[j][k] + " ");
-                                            }
-                                            System.out.println();
-                                        }
+                    for (int j = 0; j < circuits.length; j++) {
+                        System.out.print("H" + j + " : ");
+                        for (int k = 0; k < circuits[j].length; k++) {
+                            System.out.print(circuits[j][k] + " ");
+                        }
+                        System.out.println();
+                    }
 
-                                        for (int j = 0; j < molecule.getNbHexagons(); j++) {
-                                            System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
-                                        }
+                    for (int j = 0; j < molecule.getNbHexagons(); j++) {
+                        System.out.println("H_" + j + " = " + aromaticity.getLocalAromaticity()[j]);
+                    }
 
-                                        group = new AromaticityGroup(molecule, aromaticity);
-                                    }
-                                    break;
+                    group = new AromaticityGroup(molecule, aromaticity);
+                }
+                break;
+
+								case NICS:
+									group = new NicsGroup(molecule);
+                  break;
+
 
 								case CLAR_COVER:
 									group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
@@ -355,13 +363,18 @@ public class BenzenoidCollectionPane extends Tab {
 									group = new RadicalarClarCoverGroup(molecule);
 									break;
 
-								case IMS2D1A:
-									group = new IMS2D1AGroup(molecule);
+								case IMS2D1A_R:
+									group = new IMS2D1AGroup(molecule,"R");
+									description += "R map";
+									break;
+								case IMS2D1A_U:
+									group = new IMS2D1AGroup(molecule,"U");
+									description += "U map";
 									break;
 
-                                    case CLAR_RE:
-                                        group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
-                                        break;
+                case CLAR_RE:
+                    group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
+                    break;
 
 								default:
 									group = new MoleculeGroup(molecule);

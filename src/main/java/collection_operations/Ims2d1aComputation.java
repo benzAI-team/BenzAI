@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class Ims2d1aComputation extends CollectionComputation{
-    Ims2d1aComputation() {
-        super("Ims2D_1A");
+    private final String mapType;   // the type of maps
+  
+    Ims2d1aComputation (String mapType) {
+      super("Ims2D_1A ("+mapType+" maps)");
+      this.mapType = mapType; 
     }
 
     @Override
@@ -30,15 +33,28 @@ public class Ims2d1aComputation extends CollectionComputation{
 
         int nbNotAvailable = 0; // the number of benzenoids for which the map is not available
         for (BenzenoidPane pane : panes) {
+          for (char type: mapType.toCharArray()) {
+            String finalType;
+            BenzenoidCollectionPane.DisplayType displayType;
+            if ((type == 'R') || (type == 'U')) {
+              if (type == 'R') {
+                finalType = "R";
+                displayType = BenzenoidCollectionPane.DisplayType.IMS2D1A_R;
+              }
+              else {
+                finalType = "U";
+                displayType = BenzenoidCollectionPane.DisplayType.IMS2D1A_U;
+              }
+              Benzenoid benzenoid = currentPane.getMolecule(pane.getIndex());
+              Optional<String> imsMap = benzenoid.getDatabaseInformation().findimsMap(finalType);
 
-            Benzenoid benzenoid = currentPane.getMolecule(pane.getIndex());
-            Optional<String> imsMap = benzenoid.getDatabaseInformation().findimsMap();
-
-            if (imsMap.isPresent()) {
-                benzenoidSetPane.addBenzenoid(benzenoid, BenzenoidCollectionPane.DisplayType.IMS2D1A);
+              if (imsMap.isPresent()) {
+                  benzenoidSetPane.addBenzenoid(benzenoid, displayType);
+              }
+              else
+                  nbNotAvailable++;
             }
-            else
-                nbNotAvailable++;
+          }
         }
 
         if (nbNotAvailable == currentPane.getSelectedBenzenoidPanes().size()) {
@@ -46,7 +62,7 @@ public class Ims2d1aComputation extends CollectionComputation{
             return;
         } else if (nbNotAvailable == 1)
             Utils.alert("No map is available yet for one benzenoid of the selection");
-        else
+        else if (nbNotAvailable > 1)
             Utils.alert("No map is available yet for " + nbNotAvailable + " benzenoids of the selection");
 
         addNewSetPane(benzenoidSetPane, collectionManagerPane);

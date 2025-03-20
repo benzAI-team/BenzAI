@@ -1,14 +1,9 @@
 package view.database;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import application.BenzenoidApplication;
+import benzenoid.Benzenoid;
 import database.BenzenoidCriterion;
 import database.models.BenzenoidEntry;
-import database.models.IRSpectraEntry;
 import http.JSonStringBuilder;
 import http.Post;
 import javafx.beans.value.ChangeListener;
@@ -29,13 +24,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import benzenoid.Benzenoid;
 import spectrums.ResultLogFile;
 import utils.Utils;
 import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.database.boxes.HBoxDatabaseCriterion;
 import view.database.boxes.HBoxDefaultDatabaseCriterion;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DatabasePane extends ScrollPane {
 
@@ -323,24 +322,44 @@ public class DatabasePane extends ScrollPane {
 
 	private String buildJsonInputString(ArrayList<BenzenoidCriterion> criterions) {
 
-		Long id = -1L;
-		String name = "none";
+		String id = "";
+		String label = "";
 		String nbHexagons = "";
 		String nbCarbons = "";
 		String nbHydrogens = "";
 		String irregularity = "";
 		String frequency = "";
 		String intensity = "";
+		String inchi = "";
+		String solo = "";
+		String duo = "";
+		String trio = "";
+		String quartet = "";
+		String kekule = "";
+    String catacondensed = "";
+    String coronenoid = "";
+    String coronoid = "";
+    String symmetry = "";
 
 		String opeId = "";
-		String opeName = "";
+		String opeLabel = "";
 		String opeHexagons = "";
 		String opeCarbons = "";
 		String opeHydrogens = "";
 		String opeIrregularity = "";
 		String opeFrequency = "";
 		String opeIntensity = "";
-
+		String opeInchi = "";
+		String opeSolo = "";
+		String opeDuo = "";
+		String opeTrio = "";
+		String opeQuartet = "";
+		String opeKekule = "";
+    String opeCatacondensed = "";
+    String opeCoronenoid = "";
+    String opeCoronoid = "";
+    String opeSymmetry = "";
+    
 		for (BenzenoidCriterion criterion : criterions) {
 
 			String operator = criterion.getOperatorString();
@@ -349,13 +368,13 @@ public class DatabasePane extends ScrollPane {
 			switch (criterion.getSubject()) {
 
 			case ID_MOLECULE:
-				id = Long.parseLong(value);
+				id = value;
 				opeId = operator;
 				break;
 
-			case MOLECULE_NAME:
-				name = value;
-				opeName = operator;
+			case MOLECULE_LABEL:
+				label = value;
+				opeLabel = operator;
 				break;
 
 			case NB_HEXAGONS:
@@ -387,13 +406,65 @@ public class DatabasePane extends ScrollPane {
 				intensity = value;
 				opeIntensity = operator;
 				break;
+
+			case INCHI:
+				inchi = value;
+				opeInchi = operator;
+				break;
+        
+			case SOLO:
+				solo = value;
+				opeSolo = operator;
+				break;
+        
+			case DUO:
+				duo = value;
+				opeDuo = operator;
+				break;
+        
+			case TRIO:
+				trio = value;
+				opeTrio = operator;
+				break;
+        
+			case QUARTET:
+				quartet = value;
+				opeQuartet = operator;
+				break;
+        
+			case KEKULE:
+				kekule = value;
+				opeKekule = operator;
+				break;        
+      
+			case CATACONDENSED:
+				catacondensed = value;
+				opeCatacondensed = operator;
+				break;        
+      
+			case CORONENOID:
+				coronenoid = value;
+				opeCoronenoid = operator;
+				break;        
+      
+			case CORONOID:
+				coronoid = value;
+				opeCoronoid = operator;
+				break;        
+      
+			case SYMMETRY:
+				symmetry = value;
+				opeSymmetry = operator;
+				break;        
+      
 			}
 
 		}
 
-		String json = JSonStringBuilder.buildNewJsonString(id, name, nbHexagons, nbCarbons, nbHydrogens, irregularity,
-				frequency, intensity, opeId, opeName, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity,
-				opeFrequency, opeIntensity);
+		String json = JSonStringBuilder.buildNewJsonString(id, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, frequency, intensity, inchi, solo, duo, trio, quartet, kekule, 
+        catacondensed, coronenoid, coronoid, symmetry,
+        opeId, opeLabel, opeHexagons, opeCarbons, opeHydrogens, opeIrregularity, opeFrequency, opeIntensity, opeInchi, opeSolo, opeDuo, opeTrio, opeQuartet, opeKekule,
+        opeCatacondensed, opeCoronenoid, opeCoronoid, opeSymmetry);
 
 		System.out.println(json);
 

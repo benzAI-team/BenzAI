@@ -105,6 +105,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		computeDualGraph();
 		computeDegrees();
 		buildHexagonsCoords2();
+    
+    edgeLists = new ArrayList<ArrayList<Integer>> ();
 
 		databaseInformation = new BenzenoidDatabaseInformation(this);
     databaseCheck = false;

@@ -13,6 +13,7 @@ import view.collections.BenzenoidCollectionPane.DisplayType;
 import view.collections.BenzenoidCollectionsManagerPane;
 
 import java.io.File;
+import java.io.IOException;
 
 public class InputMenu {
 
@@ -74,7 +75,12 @@ public class InputMenu {
 		generatorMenu.setOnAction(e -> app.switchMode(app.getPanes().getGeneratorPane()));
 
 		drawMenu.setOnAction(e -> {
-			app.getPanes().getDrawPane().refreshMenuBar();
+      try {
+        app.getPanes().getDrawPane().refreshMenuBar();
+      }
+      catch(IOException ex) {
+        ex.printStackTrace();
+      }
 			app.switchMode(app.getPanes().getDrawPane());
 		});
 

@@ -1,6 +1,6 @@
 package database.models;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +20,14 @@ public class BenzenoidEntry {
 	private final int nbCarbons;
 	private final int nbHydrogens;
 	private final double irregularity;
+	private final String graphFile;
 
 
 	/*
 	 * Constructor
 	 */
 
-	public BenzenoidEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity, String inchi) {
+	public BenzenoidEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity, String inchi, String graphFile) {
 
 		this.idMolecule = idMolecule;
 		this.moleculeLabel = moleculeLabel;
@@ -35,6 +36,7 @@ public class BenzenoidEntry {
 		this.nbHydrogens = nbHydrogens;
 		this.irregularity = irregularity;
     this.inchi = inchi;
+    this.graphFile = graphFile;
 	}
 
 	/*
@@ -84,6 +86,7 @@ public class BenzenoidEntry {
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
 		int nbHydrogens = (int) ((double) result.get("nbHydrogens"));
 		double irregularity = (double) result.get("irregularity");
+		String graphFile = (String) result.get("graphFile");
 
 		// Récupérer le nom
 		String service = "find_benzenoids/";
@@ -99,12 +102,20 @@ public class BenzenoidEntry {
 			label = (String) map.get("label");
 		}
 
-		return new BenzenoidEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi);
+		return new BenzenoidEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile);
 	}
 
 
 	public Benzenoid buildMolecule() throws IOException {
-		Benzenoid b = GraphParser.parseBenzenoidCode(moleculeLabel);
+    try {
+      FileWriter f = new FileWriter("tmp.graph_coord");
+      f.write(this.graphFile);
+      f.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    Benzenoid b = GraphParser.parseUndirectedGraph("tmp.graph_coord", null, false);
+    
     b.setInchi (this.inchi);
     b.setBenzdbId (this.idMolecule);
     return b;

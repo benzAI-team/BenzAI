@@ -23,7 +23,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
 public class IRSpectraPane extends GridPane {
 
@@ -88,7 +87,7 @@ public class IRSpectraPane extends GridPane {
 			if (file != null) {
 				try {
 					exportAmesFormats(file);
-				} catch (IOException ex) {
+				} catch (Exception ex) {
 					throw new RuntimeException(ex);
 				}
 			}
@@ -128,18 +127,10 @@ public class IRSpectraPane extends GridPane {
 
 				String directoryPath = file.getAbsolutePath();
 
-				String separator;
-
-				if (directoryPath.split(Pattern.quote("\\")).length > 1) {
-					separator = "\\";
-				} else {
-					separator = "/";
-				}
-
-				File parametersFile = new File(directoryPath + separator + "parameters.txt");
-				File spectraFile = new File(directoryPath + separator + "spectras.csv");
-				File moleculeFile = new File(directoryPath + separator + "molecules_informations.csv");
-				File intensitiesFile = new File(directoryPath + separator + "intensities.csv");
+				File parametersFile = new File(directoryPath + File.separator + "parameters.txt");
+				File spectraFile = new File(directoryPath + File.separator + "spectras.csv");
+				File moleculeFile = new File(directoryPath + File.separator + "molecules_informations.csv");
+				File intensitiesFile = new File(directoryPath + File.separator + "intensities.csv");
 
 				try {
 					exportParameters(parametersFile);
@@ -174,21 +165,15 @@ public class IRSpectraPane extends GridPane {
 			if (file != null) {
 
 				String directoryPath = file.getAbsolutePath();
-				boolean unix;
-
-				unix = directoryPath.split(Pattern.quote("\\")).length == 0;
 
 				for (int i = 0; i < panes.size(); i++) {
 
 					index = (index + 1) % panes.size();
 					updatePane();
 
-					File plotFile;
-					if (unix)
-						plotFile = new File(directoryPath + "/" + selectedPlotPane.getResult().getClassName() + ".png");
-					else
-						plotFile = new File(
-								directoryPath + "\\" + selectedPlotPane.getResult().getClassName() + ".png");
+          System.out.println(directoryPath + File.separator + selectedPlotPane.getResult().getClassName() + ".png");
+
+					File plotFile = new File(directoryPath + File.separator + selectedPlotPane.getResult().getClassName() + ".png");
 
 					selectedPlotPane.exportAsPDF(plotFile);
 
@@ -317,31 +302,32 @@ public class IRSpectraPane extends GridPane {
 		writer.close();
 	}
 
-	private void exportAmesFormats(File directory) throws IOException{
+
+	private void exportAmesFormats(File directory) throws IOException, Exception{
 
 		for (ComputedPlotPane pane : panes) {
 			ArrayList<String> amesFormats = pane.getAmesFormat();
 			IRSpectra result = pane.getResult();
 
-			File file = new File(directory.getAbsolutePath() + "/" + result.getClassName() + ".xml");
+			File file = new File(directory.getAbsolutePath() + File.separator + result.getClassName() + ".xml");
 
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
 			writer.write("<pahdatabase database=\"theoretical\" version=\"3.00\" date=\"2017-08-18\" full=\"false\">\n");
 
-			writer.write("<comment>This file was generated with BenzAI software.</comment>\n");
+			writer.write("<comment>This file was generated with BenzAI software with data from BenzDB database, version 1.1. See: https://benzenoids.lis-lab.fr/.</comment>\n");
 
-			writer.write("<species>\n");
+			writer.write("  <species>\n");
 			for (String amesFormat : amesFormats) {
-				writer.write(amesFormat + "\n");
+        int index1 = amesFormat.indexOf("<specie ");
+        int index2 = amesFormat.indexOf("</specie>");
+        
+				writer.write("    "+amesFormat.substring(index1,index2+9)+ "\n");
 			}
 			writer.write("</species>\n");
 			writer.write("</pahdatabase>\n");
 			writer.close();
-
 		}
-
-
 	}
 
 	private void updatePane() {

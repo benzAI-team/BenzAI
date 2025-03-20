@@ -1,5 +1,6 @@
 package parsers;
 
+import java.util.Locale;
 import benzenoid.Benzenoid;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
@@ -628,18 +629,15 @@ public enum COMConverter2 {
 			break;
 		}
 
-		StringBuilder s = new StringBuilder();
+    Locale locale = new Locale( "en", "US" );
 
 		for (Triplet<Double, Double, Double> carbon : carbons) {
-			writer.write(" C " + carbon.getX() + " " + carbon.getY() + " " + carbon.getZ() + "\n");
-			s.append(" C ").append(carbon.getX()).append(" ").append(carbon.getY()).append(" ").append(carbon.getZ()).append("\n");
+			writer.write(" C " + String.format(locale,"%1.8f",carbon.getX()) + " " + String.format(locale,"%1.8f",carbon.getY()) + " " + String.format(locale,"%1.8f",carbon.getZ()) + "\n");
 		}
 
 		for (Triplet<Double, Double, Double> hydrogen : hydrogens) {
-			writer.write(" H " + hydrogen.getX() + " " + hydrogen.getY() + " " + hydrogen.getZ() + "\n");
-			s.append(" H ").append(hydrogen.getX()).append(" ").append(hydrogen.getY()).append(" ").append(hydrogen.getZ()).append("\n");
+			writer.write(" H " + String.format(locale,"%1.8f",hydrogen.getX()) + " " + String.format(locale,"%1.8f",hydrogen.getY()) + " " + String.format(locale,"%1.8f",hydrogen.getZ()) + "\n");
 		}
-
 		writer.write("\n");
 
 		writer.close();

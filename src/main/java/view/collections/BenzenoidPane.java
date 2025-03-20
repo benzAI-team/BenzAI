@@ -1,5 +1,7 @@
 package view.collections;
 
+import java.util.Locale;
+
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -326,6 +328,10 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
       builder.append(molecule.getIrregularity() + "\n");
       
       builder.append("Label = " + molecule.getNames().get(0) + "\n");
+      
+      Locale locale = new Locale( "en", "US" );
+      double weight = molecule.getNbCarbons() * 12.01074 + molecule.getNbHydrogens() * 1.00794;
+      builder.append("Weight = " + String.format(locale,"%1.5f",weight) + "\n");
 
 			if (molecule.isAromaticityComputed()) {
 				Aromaticity aromaticity = molecule.getAromaticity().get();

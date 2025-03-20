@@ -43,14 +43,14 @@ public class DrawBenzenoidPane extends BorderPane {
 
 	private int nbCrowns;
 
-	public DrawBenzenoidPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) {
+	public DrawBenzenoidPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) throws Exception, IOException {
 
 		this.application = application;
 		this.collectionsPane = collectionsPane;
 		initialize();
 	}
 
-	private void initialize() {
+	private void initialize() throws Exception, IOException {
 
 		nbCrowns = 3;
 
@@ -69,7 +69,7 @@ public class DrawBenzenoidPane extends BorderPane {
 
 	}
 
-	public void refreshMenuBar() {
+	public void refreshMenuBar() throws IOException {
 
 		menuBar = new MenuBar();
 
@@ -157,6 +157,13 @@ public class DrawBenzenoidPane extends BorderPane {
 					molecule.setDescription(nameField.getText());
 					
 					collectionPane.unselectAll();
+
+          try {
+            molecule = GraphParser.parseBenzenoidCode(molecule.getNames().get(0));
+          }
+          catch(IOException ex) {
+            ex.printStackTrace();
+          }
 					collectionPane.addBenzenoid(molecule, DisplayType.BASIC);
 					collectionPane.refresh();
 
