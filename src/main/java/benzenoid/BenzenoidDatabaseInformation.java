@@ -114,7 +114,7 @@ public class BenzenoidDatabaseInformation {
 
         databaseCheckManager.checkNICS();
 
-        if (imsMap == null) {
+        if (NICS == null) {
             String label = benzenoid.getNames().get(0);
             String service = "find_nics/";
             String json = "{\"label\": \"= " + label + "\"}";
