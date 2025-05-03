@@ -50,7 +50,7 @@ A user-friendly graphical interface allows the user to draw the structures of th
 
 
 ## Database
-Our database contains all the benzenoid structures having at most nine hexagons. The user can select the structures they desires by giving some criteria among:
+Our database [BenzDB](https://benzenoids.lis-lab.fr/) contains all the benzenoid structures having at most nine hexagons. The user can select the desired structures by giving some criteria among:
 * Id or name of the structure
 * Total number of hexagons
 * Total number of carbon atoms
