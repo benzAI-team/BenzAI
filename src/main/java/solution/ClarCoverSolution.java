@@ -100,4 +100,19 @@ public class ClarCoverSolution {
 		
 		return radicalarStatistics;	
 	}
+
+	/**
+	 * Computes
+	 * @return the Clar number
+	 */
+	public int getClarNumber() {
+		int nb = 0;
+		for (int i = 0; i < circles.length; i++) {
+			if (isCircle(i)) {
+				nb += 1;
+			}
+		}
+		return nb;
+	}
+
 }

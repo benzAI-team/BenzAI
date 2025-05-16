@@ -325,13 +325,13 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 				builder.append(new String((nbKekuleStructures + " Kekulé structure").getBytes(),
 						StandardCharsets.UTF_8) + "\n");
 
-      builder.append(molecule.getIrregularity() + "\n");
-      
-      builder.append("Label = " + molecule.getNames().get(0) + "\n");
-      
-      Locale locale = new Locale( "en", "US" );
-      double weight = molecule.getNbCarbons() * 12.01074 + molecule.getNbHydrogens() * 1.00794;
-      builder.append("Weight = " + String.format(locale,"%1.5f",weight) + "\n");
+			builder.append(molecule.getIrregularity() + "\n");
+
+			builder.append("Label = " + molecule.getNames().get(0) + "\n");
+
+			Locale locale = new Locale( "en", "US" );
+			double weight = molecule.getNbCarbons() * 12.01074 + molecule.getNbHydrogens() * 1.00794;
+			builder.append("Weight = " + String.format(locale,"%1.5f",weight) + "\n");
 
 			if (molecule.isAromaticityComputed()) {
 				Aromaticity aromaticity = molecule.getAromaticity().get();
@@ -354,11 +354,16 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 			description = builder.toString();
 		}
     
-    String additionalDescription = "";
-    if (molecule.hasCheckedDatabase()) {
-      additionalDescription += "InChI = " + molecule.getInchi() + "\n";
-      additionalDescription += "BenzDB id = " + molecule.getBenzdbId() + "\n";
-    }
+		String additionalDescription = "";
+		if (molecule.hasCheckedDatabase()) {
+		  additionalDescription += "InChI = " + molecule.getInchi() + "\n";
+		  additionalDescription += "BenzDB id = " + molecule.getBenzdbId() + "\n";
+		}
+
+		System.out.println(molecule.isClarCoverComputed());
+		if (molecule.isClarCoverComputed()) {
+		  additionalDescription += "Clar number = " + molecule.getClarNumber() + "\n";
+		}
     
 		return description + additionalDescription;
 	}

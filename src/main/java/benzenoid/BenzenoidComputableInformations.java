@@ -28,6 +28,7 @@ public class BenzenoidComputableInformations {
 
     private RBO ringBondOrder;
 
+    private boolean clarCoverComputed;
     private ClarCoverSolution clarCoverSolution;
 
     private List<ClarCoverSolution> clarCoverSolutions;
@@ -40,17 +41,23 @@ public class BenzenoidComputableInformations {
 
     public BenzenoidComputableInformations(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
-        aromaticityComputed = false;
+        this.aromaticityComputed = false;
+        this.clarCoverComputed = false;
     }
 
     public boolean isAromaticityComputed() {
         return aromaticityComputed;
     }
 
+    public boolean isClarCoverComputed() {
+        return clarCoverComputed;
+    }
+
     public double getNbKekuleStructures() {
         if (nbKekuleStructures == -1) {
             int[] disabledVertices = new int[benzenoid.getNbCarbons()];
             int[] degrees = benzenoid.getDegrees();
+
 
             SubGraph subGraph = new SubGraph(benzenoid.getEdgeMatrix(), disabledVertices, degrees, LinAlgorithm.PerfectMatchingType.DET);
 
@@ -161,6 +168,7 @@ public class BenzenoidComputableInformations {
 
     public void setClarCoverSolution(ClarCoverSolution clarCoverSolution) {
         this.clarCoverSolution = clarCoverSolution;
+        this.clarCoverComputed = true;
     }
 
     public int [] clarResonanceEnergy() {

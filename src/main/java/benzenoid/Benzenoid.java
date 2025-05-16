@@ -28,7 +28,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private final int nbCarbons;
 	private final int nbBonds;
 	private final int nbHexagons;
-  private int benzdbId;
+  	private int benzdbId;
 	private int nbStraightEdges;
 	private int maxIndex;
 	private ArrayList<ArrayList<Integer>> edgeLists;
@@ -62,7 +62,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	private int nbCrowns = -1;
 
 	private final BenzenoidDatabaseInformation databaseInformation;
-  private boolean databaseCheck;    // true if the database has been check, false otherwise
+  	private boolean databaseCheck;    // true if the database has been check, false otherwise
 
 	private final BenzenoidComputableInformations computableInformations;
 
@@ -82,8 +82,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.nodesCoordinates = nodesRefs;
 		this.edgeMatrix = edgeMatrix;
 		this.matrixCoordinates = coordinates;
-    this.inchi = "";
-    this.benzdbId = -1;
+		this.inchi = "";
+		this.benzdbId = -1;
 
 		hexagonsString = new ArrayList<>();
 
@@ -106,10 +106,10 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		computeDegrees();
 		buildHexagonsCoords2();
     
-    edgeLists = new ArrayList<ArrayList<Integer>> ();
+   		edgeLists = new ArrayList<ArrayList<Integer>> ();
 
 		databaseInformation = new BenzenoidDatabaseInformation(this);
-    databaseCheck = false;
+    	databaseCheck = false;
 		computableInformations = new BenzenoidComputableInformations(this);
 	}
 
@@ -126,8 +126,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.hexagonsString = hexagonsString;
 		this.nodesCoordinates = nodesRefs;
 		this.matrixCoordinates = coords;
-    this.inchi = "";
-    this.benzdbId = -1;
+		this.inchi = "";
+		this.benzdbId = -1;
 
 		this.maxIndex = maxIndex;
 
@@ -153,7 +153,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		buildHexagonsCoords2();
 
 		databaseInformation = new BenzenoidDatabaseInformation(this);
-    databaseCheck = false;
+    	databaseCheck = false;
 		computableInformations = new BenzenoidComputableInformations(this);
 	}
 
@@ -581,6 +581,10 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	public boolean isAromaticityComputed() {
 		return computableInformations.isAromaticityComputed();
+	}
+
+	public boolean isClarCoverComputed() {
+		return computableInformations.isClarCoverComputed();
 	}
 
 	public boolean edgeExists(int i, int j) {
@@ -1225,13 +1229,17 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		return databaseInformation;
 	}
   
-  public void setInchi (String inchi) {
-    this.inchi = inchi;
-  }
-  
-  public String getInchi () {
-    return this.inchi;
-  }
+	public void setInchi (String inchi) {
+		this.inchi = inchi;
+	}
+
+	public String getInchi () {
+		return this.inchi;
+	}
+
+	public int getClarNumber () {
+		return this.computableInformations.getClarCoverSolution().getClarNumber();
+	}
 
 	public void setBenzdbId(int id) {
 		benzdbId = id;
