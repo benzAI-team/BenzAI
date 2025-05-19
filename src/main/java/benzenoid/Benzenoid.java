@@ -65,6 +65,10 @@ public class Benzenoid implements Comparable<Benzenoid> {
   	private boolean databaseCheck;    // true if the database has been check, false otherwise
 
 	private final BenzenoidComputableInformations computableInformations;
+	private int clarNumber;
+	private double homo;
+	private double lumo;
+	private double moment;
 
 	/**
 	 * Constructors
@@ -84,6 +88,10 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.matrixCoordinates = coordinates;
 		this.inchi = "";
 		this.benzdbId = -1;
+		this.clarNumber = -1;
+		this.homo = 1000000;
+		this.lumo = 1000000;
+		this.moment = 1000000;
 
 		hexagonsString = new ArrayList<>();
 
@@ -1237,8 +1245,39 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		return this.inchi;
 	}
 
+	public void setClarNumber (int clarNumber) {
+		this.clarNumber = clarNumber;
+	}
+
 	public int getClarNumber () {
-		return this.computableInformations.getClarCoverSolution().getClarNumber();
+		if (clarNumber == -1) {
+			clarNumber = this.computableInformations.getClarCoverSolution().getClarNumber();
+		}
+		return clarNumber;
+	}
+
+	public void setHomo (double homo) {
+		this.homo = homo;
+	}
+
+	public double getHomo () {
+		return this.homo ;
+	}
+
+	public void setLumo (double lumo) {
+		this.lumo = lumo;
+	}
+
+	public double getLumo () {
+		return this.lumo ;
+	}
+
+	public void setMmoment (double moment) {
+		this.moment = moment;
+	}
+
+	public double getMoment () {
+		return this.moment ;
 	}
 
 	public void setBenzdbId(int id) {

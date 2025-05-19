@@ -1,11 +1,27 @@
 package view.collections;
 
-import java.util.Locale;
-
+import benzenoid.Benzenoid;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import solution.BenzenoidSolution;
+import solution.ClarCoverSolution;
+import solveur.Aromaticity;
+import solveur.Aromaticity.RIType;
+import spectrums.ResultLogFile;
+import view.groups.AromaticityGroup;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,29 +32,9 @@ import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
-
-import classifier.Irregularity;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Label;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import benzenoid.Benzenoid;
-import solution.BenzenoidSolution;
-import solution.ClarCoverSolution;
-import solveur.Aromaticity;
-import solveur.Aromaticity.RIType;
-import spectrums.ResultLogFile;
-import view.groups.AromaticityGroup;
 
 public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPane> {
 
@@ -358,10 +354,14 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		if (molecule.hasCheckedDatabase()) {
 		  additionalDescription += "InChI = " + molecule.getInchi() + "\n";
 		  additionalDescription += "BenzDB id = " + molecule.getBenzdbId() + "\n";
+		  additionalDescription += "Clar number = " + molecule.getClarNumber() + "\n";
+		  additionalDescription += "Homo = " + molecule.getHomo() + "\n";
+		  additionalDescription += "Lumo = " + molecule.getLumo() + "\n";
+		  additionalDescription += "Gap Homo/Lumo = " + (molecule.getLumo()-molecule.getHomo()) + "\n";
+		  additionalDescription += "Dipole moment = " + molecule.getMoment() + "\n";
 		}
 
-		System.out.println(molecule.isClarCoverComputed());
-		if (molecule.isClarCoverComputed()) {
+		if ((molecule.isClarCoverComputed()) && (! additionalDescription.contains("Clar number = "))){
 		  additionalDescription += "Clar number = " + molecule.getClarNumber() + "\n";
 		}
     

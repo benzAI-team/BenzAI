@@ -1,18 +1,15 @@
 package collection_operations;
 
+import benzenoid.Benzenoid;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import benzenoid.Benzenoid;
-import spectrums.ResultLogFile;
 import view.collections.BenzenoidCollectionPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections.BenzenoidPane;
-
-import java.util.Optional;
 
 public class CheckDatabaseTask extends CollectionTask{
     CheckDatabaseTask() {
@@ -35,9 +32,8 @@ public class CheckDatabaseTask extends CollectionTask{
                         for (BenzenoidPane pane : currentPane.getSelectedBenzenoidPanes()) {
                             Benzenoid benzenoid = currentPane.getMolecule(pane.getIndex());
 
-                            Optional<ResultLogFile> IRSpectra = benzenoid.getDatabaseInformation().findIRSpectra();
+                            if (benzenoid.getDatabaseInformation().findProperties()) {
 
-                            if (IRSpectra.isPresent()) {
                                 System.out.println(benzenoid);
                                 if (! benzenoid.hasCheckedDatabase())
                                 {
@@ -57,7 +53,6 @@ public class CheckDatabaseTask extends CollectionTask{
                                     }
                                     setIndex(getIndex() + 1);
                                   });
-                                  pane.buildFrequencies();
                                 }
                             }
                         }

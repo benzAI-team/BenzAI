@@ -1,6 +1,7 @@
 package benzenoid;
 
 import database.models.IRSpectraEntry;
+import database.models.PropertiesEntry;
 import http.Post;
 import spectrums.ResultLogFile;
 
@@ -30,6 +31,38 @@ public class BenzenoidDatabaseInformation {
         return databaseCheckManager;
     }
 
+    public Boolean findProperties() {
+
+        databaseCheckManager.checkProperties();
+
+        String label = benzenoid.getNames().get(0);
+        String service = "find_properties/";
+        String json = "{\"label\": \"= " + label + "\"}";
+
+        try {
+            List<Map> results = Post.post(service, json);
+
+            if (!results.isEmpty()) {
+                PropertiesEntry content = PropertiesEntry.buildQueryContent(results.get(0));
+                benzenoid.setInchi(content.getInchi());
+                benzenoid.setBenzdbId(content.getIdMolecule());
+                benzenoid.setClarNumber(content.getClarNumber());
+                benzenoid.setHomo(content.getHomo());
+                benzenoid.setLumo(content.getLumo());
+                benzenoid.setMmoment(content.getMoment());
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Connection to database failed");
+        }
+
+        return false;
+    }
+
     public Optional<ResultLogFile> findIRSpectra() {
 
         databaseCheckManager.checkIRSpectra();
@@ -44,6 +77,8 @@ public class BenzenoidDatabaseInformation {
                 List<Map> results = Post.post(service, json);
                 
                 if (!results.isEmpty()) {
+                    findProperties();
+
                     IRSpectraEntry content = IRSpectraEntry.buildQueryContent(results.get(0));
 
                     String amesFormat = content.getAmesFormat();

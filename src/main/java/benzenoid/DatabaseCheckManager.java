@@ -5,12 +5,10 @@ import java.util.HashMap;
 public class DatabaseCheckManager {
 
     private final Benzenoid benzenoid;
-
     private boolean IRSpectraChecked;
-
     private HashMap<String,Boolean> imsMapChecked;
-
     private boolean NICSChecked;
+    private boolean propertiesChecked;
 
     public DatabaseCheckManager(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
@@ -19,6 +17,7 @@ public class DatabaseCheckManager {
         imsMapChecked.put("R",false);
         imsMapChecked.put("U",false);
         NICSChecked = false;
+        propertiesChecked = false;
     }
 
     public boolean isIRSpectraChecked() {
@@ -33,6 +32,10 @@ public class DatabaseCheckManager {
         return NICSChecked;
     }
 
+    public boolean isPropertiesChecked() {
+        return propertiesChecked;
+    }
+
     public void checkIRSpectra() {
         IRSpectraChecked = true;
     }
@@ -43,5 +46,9 @@ public class DatabaseCheckManager {
 
     public void checkNICS() {
         NICSChecked = true;
+    }
+
+    public void checkProperties() {
+        propertiesChecked = true;
     }
 }

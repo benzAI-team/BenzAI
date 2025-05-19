@@ -3,7 +3,7 @@ package view.database;
 import application.BenzenoidApplication;
 import benzenoid.Benzenoid;
 import database.BenzenoidCriterion;
-import database.models.BenzenoidEntry;
+import database.models.PropertiesEntry;
 import http.JSonStringBuilder;
 import http.Post;
 import javafx.beans.value.ChangeListener;
@@ -213,7 +213,7 @@ public class DatabasePane extends ScrollPane {
 				managerPane.log(criterion.toString(), false);
 
 			String jsonInputString = buildJsonInputString(criterions);
-			List<Map> results = Post.post("find_benzenoids/", jsonInputString);
+			List<Map> results = Post.post("find_properties/", jsonInputString);
 
 			molecules = new ArrayList<>();
 			HashMap<String, ResultLogFile> logsResults = new HashMap<String, ResultLogFile>();
@@ -234,12 +234,12 @@ public class DatabasePane extends ScrollPane {
 								for (Map map : results) {
 									try {
 
-										BenzenoidEntry content = BenzenoidEntry.buildQueryContent(map);
+										PropertiesEntry content = PropertiesEntry.buildQueryContent(map);
 
 										Benzenoid molecule = null;
 
 										molecule = content.buildMolecule();
-                    molecule.performCheckDatabase();
+                    					molecule.performCheckDatabase();
 
 										i++;
 

@@ -1,15 +1,14 @@
 package database.models;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import http.Post;
 import benzenoid.Benzenoid;
+import http.Post;
 import parsers.GraphParser;
 import spectrums.ResultLogFile;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class BenzenoidEntry {
 
@@ -35,8 +34,8 @@ public class BenzenoidEntry {
 		this.nbCarbons = nbCarbons;
 		this.nbHydrogens = nbHydrogens;
 		this.irregularity = irregularity;
-    this.inchi = inchi;
-    this.graphFile = graphFile;
+		this.inchi = inchi;
+		this.graphFile = graphFile;
 	}
 
 	/*
