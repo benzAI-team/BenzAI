@@ -1,14 +1,9 @@
 package view.primaryStage.menus;
 
 import application.BenzenoidApplication;
+import benzenoid.sort.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import benzenoid.sort.IrregularityComparator;
-import benzenoid.sort.NbCarbonsComparator;
-import benzenoid.sort.NbHexagonsComparator;
-import benzenoid.sort.NbHydrogensComparator;
-import benzenoid.sort.NbKekuleStructuresComparator;
-import benzenoid.sort.ResonanceEnergyComparator;
 import view.collections.BenzenoidCollectionsManagerPane;
 
 public class SortMenu {
@@ -24,6 +19,7 @@ public class SortMenu {
 		Menu nbHydrogensItem = new Menu("Number of hydrogens");
 		Menu nbHexagonsItem = new Menu("Number of hexagons");
 		Menu nbKekuleStructuresItem = new Menu("Number of Kekulé structures");
+		Menu clarNumberItem = new Menu("Clar Number");
 		Menu irregularityItem = new Menu("Irregularity");
 		Menu reItem = new Menu("Global Resonance Energy");
 		
@@ -81,6 +77,20 @@ public class SortMenu {
 
 		nbKekuleStructuresItem.getItems().addAll(nbKekuleStructuresIncreasing, nbKekuleStructuresDecreasing);
 
+
+		/*
+		 * Clar Number
+		 */
+
+		MenuItem clarNumberIncreasing = new MenuItem("Increasing");
+		MenuItem clarNumberDecreasing = new MenuItem("Decreasing");
+
+		clarNumberIncreasing.setOnAction(e -> collectionsPane.sort(new ClarNumberComparator(), false));
+
+		clarNumberDecreasing.setOnAction(e -> collectionsPane.sort(new ClarNumberComparator(), true));
+
+		clarNumberItem.getItems().addAll(clarNumberIncreasing, clarNumberDecreasing);
+
 		/*
 		 * Irregularity
 		 */
@@ -107,7 +117,7 @@ public class SortMenu {
 		
 		reItem.getItems().addAll(reIncreasingItem, reDecreasingItem);
 		
-		sortMenu.getItems().addAll(nbCarbonsItem, nbHydrogensItem, nbHexagonsItem, nbKekuleStructuresItem,
+		sortMenu.getItems().addAll(nbCarbonsItem, nbHydrogensItem, nbHexagonsItem, nbKekuleStructuresItem, clarNumberItem,
 				irregularityItem/*, reItem*/);
 
 		return sortMenu;
