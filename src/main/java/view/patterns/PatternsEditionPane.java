@@ -1,7 +1,8 @@
 package view.patterns;
 
-import constraints.ForbiddenPatternConstraint1;
-import constraints.SinglePattern2Constraint;
+import constraints.ForbiddenPatternConstraint3;
+import constraints.MultiplePatterns3Constraint;
+import constraints.SinglePattern3Constraint;
 import generator.OrderStrategy;
 import generator.ValueStrategy;
 import generator.VariableStrategy;
@@ -279,28 +280,34 @@ public class PatternsEditionPane extends BorderPane {
 					type = PatternGenerationType.FORBIDDEN_PATTERN;
 					expression = new SubjectExpression("FORBIDDEN_PATTERN");
 					patternInformations = new PatternResolutionInformations(type, patterns);
-					patternConstraintHBox.getPatternProperty().setConstraint(new ForbiddenPatternConstraint1(patternInformations.getPatterns().get(0),
-							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+					patternConstraintHBox.getPatternProperty().setConstraint(new ForbiddenPatternConstraint3(patternInformations.getPatterns().get(0),
+							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX));
 				} else {
 					if (Utils.isNumber(patternPropertyMenu.getOccurencesField().getText())) {
 						type = PatternGenerationType.PATTERN_OCCURENCES;
-						patternConstraintHBox.refreshPatternInformations("OCCURENCES_PATTERN: " + patternPropertyMenu.getOccurencesField().getText());
+						patternConstraintHBox.refreshPatternInformations("OCCURRENCES_PATTERN: " + patternPropertyMenu.getOccurencesField().getText());
 						expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=",
 								Integer.parseInt(patternPropertyMenu.getOccurencesField().getText()));
 					} else {
 						type = PatternGenerationType.SINGLE_PATTERN_2;
+						type = PatternGenerationType.SINGLE_PATTERN_3;
 						patternConstraintHBox.refreshPatternInformations("SINGLE_PATTERN");
 						expression = new SubjectExpression("SINGLE_PATTERN");
 						patternInformations = new PatternResolutionInformations(type, patterns);
-						patternConstraintHBox.getPatternProperty().setConstraint(new SinglePattern2Constraint(patternInformations.getPatterns().get(0), false,
+						patternConstraintHBox.getPatternProperty().setConstraint(new SinglePattern3Constraint(patternInformations.getPatterns().get(0),
 								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
 					}
 				}
 			}
-			else if (patternPropertyMenu.getItemUndisjunct().isSelected() || patternPropertyMenu.getItemDisjunct().isSelected() || patternPropertyMenu.getItemNNDisjunct().isSelected()) {
-				patternConstraintHBox.refreshPatternInformations("MULTIPLE_PATTERNS");
-				type = PatternGenerationType.MULTIPLE_PATTERN_1;
-				expression = new SubjectExpression("MULTIPLE_PATTERNS");
+			else {
+				if (patternPropertyMenu.getItemUndisjunct().isSelected() || patternPropertyMenu.getItemDisjunct().isSelected() || patternPropertyMenu.getItemNNDisjunct().isSelected()) {
+					patternConstraintHBox.refreshPatternInformations("MULTIPLE_PATTERNS");
+					type = PatternGenerationType.MULTIPLE_PATTERN_3;
+					expression = new SubjectExpression("MULTIPLE_PATTERNS");
+					patternInformations = new PatternResolutionInformations(type, patterns);
+					patternConstraintHBox.getPatternProperty().setConstraint(new MultiplePatterns3Constraint(patternInformations.getPatterns(),
+							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+				}
 			}
 
 			patternInformations = new PatternResolutionInformations(type, patterns);
