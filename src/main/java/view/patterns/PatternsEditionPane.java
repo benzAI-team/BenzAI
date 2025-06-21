@@ -41,6 +41,7 @@ public class PatternsEditionPane extends BorderPane {
 	private int selectedIndex;
 	private TextField fieldName;
 	private PatternLabel lastLabel;   // the label of the last color assign to a hexagon
+	private int patternId; // the nest pattern id
 
 	public PatternsEditionPane(HBoxPatternCriterion patternConstraintHBox) {
 		super();
@@ -210,14 +211,14 @@ public class PatternsEditionPane extends BorderPane {
 
 		Label label = (Label) boxItems.get(index).getChildren().get(0);
 		fieldName.setText(label.getText());
-
-		borderPane.setCenter(selectedPatternGroup);
+		if (borderPane != null) {
+			borderPane.setCenter(selectedPatternGroup);
+		}
 	}
 
 	private void initializePane() {
 		this.setPrefSize(1500, 500);
 		this.setPadding(new Insets(15.0));
-
 		patternGroups = new ArrayList<>();
 		boxItems = new ArrayList<>();
 
@@ -335,8 +336,8 @@ public class PatternsEditionPane extends BorderPane {
 	}
 
 	private void addEntry() {
-
-		Label label = new Label("unknown_pattern");
+		patternId++;
+		Label label = new Label("Pattern_"+patternId);
 
 		PatternCloseButton button = new PatternCloseButton(this, patternGroups.size());
 
@@ -358,6 +359,9 @@ public class PatternsEditionPane extends BorderPane {
 
 		if (patternGroups.size() > 1)
 			patternPropertyMenu.getItemDisjunct().fire();
+
+		listView.getSelectionModel().select(items.size()-1);
+		select(patternGroups.size()-1);
 	}
 
 	private void removePane(int index) {
