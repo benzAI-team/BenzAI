@@ -428,8 +428,8 @@ public class PatternsEditionPane extends BorderPane {
 	private void removeCrown() {
 
 		int nbCrowns = selectedPatternGroup.getNbCrowns();
-
-		if (nbCrowns > 2) {
+		
+		if (nbCrowns > 3) {
 
 			nbCrowns--;
 			PatternGroup newPatternGroup = new PatternGroup(this, nbCrowns, selectedPatternGroup.getIndex());

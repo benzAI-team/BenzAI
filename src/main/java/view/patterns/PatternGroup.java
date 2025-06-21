@@ -130,7 +130,9 @@ public class PatternGroup extends Group {
 		nCurrent = 1;
 
 		for (int x = ((diameter - 1) / 2) + 1; x < diameter; x++) {
-			Arrays.fill(displayedHexagons[x], -1);
+			for (int i = 0; i < nCurrent; i++) {
+				displayedHexagons[x][i] = -1;
+			}
 			nCurrent++;
 		}
 	}
