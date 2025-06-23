@@ -15,7 +15,7 @@ public class PatternGroup extends Group {
 
 	private final PatternsEditionPane parent;
 	private final int nbCrowns;
-	private final int index;
+	private int index;
 
 	private int diameter;
 
@@ -615,6 +615,10 @@ public class PatternGroup extends Group {
 
 	public int getIndex() {
 		return index;
+	}
+
+	public void decrementIndex() {
+		index--;
 	}
 
 	PatternHexagon[][] getHexagonsMatrix() {

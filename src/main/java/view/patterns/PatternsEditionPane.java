@@ -1,5 +1,6 @@
 package view.patterns;
 
+import benzenoid.Node;
 import constraints.ForbiddenPatternConstraint3;
 import constraints.MultiplePatterns3Constraint;
 import constraints.SinglePattern3Constraint;
@@ -10,17 +11,13 @@ import generator.patterns.*;
 import generator.properties.model.expression.BinaryNumericalExpression;
 import generator.properties.model.expression.PropertyExpression;
 import generator.properties.model.expression.SubjectExpression;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import benzenoid.Node;
 import utils.Utils;
 import view.generator.boxes.HBoxPatternCriterion;
 
@@ -33,15 +30,10 @@ public class PatternsEditionPane extends BorderPane {
 	private final HBoxPatternCriterion patternConstraintHBox;
 	private final PatternPropertyMenu patternPropertyMenu = new PatternPropertyMenu();
 	private BorderPane borderPane;
-	private ListView<GridPane> listView;
-	private ArrayList<GridPane> boxItems;
-	private ArrayList<PatternGroup> patternGroups;
-
 	private PatternGroup selectedPatternGroup;
-	private int selectedIndex;
 	private TextField fieldName;
 	private PatternLabel lastLabel;   // the label of the last color assign to a hexagon
-	private int patternId; // the nest pattern id
+	private PatternListBox patternListBox;
 
 	public PatternsEditionPane(HBoxPatternCriterion patternConstraintHBox) {
 		super();
@@ -93,7 +85,7 @@ public class PatternsEditionPane extends BorderPane {
 		fieldName = new TextField("default name");
 		fieldName.setOnKeyReleased(e -> {
 			int index = selectedPatternGroup.getIndex();
-			GridPane gridPane = boxItems.get(index);
+			GridPane gridPane = PatternListBox.getBoxItems().get(index);
 
 			if ("".equals(fieldName.getText())) ((Label) gridPane.getChildren().get(0)).setText("default name");
 			else ((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
@@ -190,13 +182,13 @@ public class PatternsEditionPane extends BorderPane {
 							maxColumn = column;
 					}
 
-					int index = boxItems.size();
-					addEntry();
+					int index = PatternListBox.getBoxItems().size();
+					patternListBox.addEntry();
 
 					PatternGroup group = new PatternGroup(this, maxColumn, index);
 					group.importPattern(pattern);
-					patternGroups.set(index, group);
-					select(index);
+					patternListBox.getPatternGroups().set(index, group);
+					patternListBox.select(index);
 				}
 				else
 					Utils.alert("Error while importing the pattern");
@@ -205,77 +197,46 @@ public class PatternsEditionPane extends BorderPane {
 		return importItem;
 	}
 
-	private void select(int index) {
-		selectedPatternGroup = patternGroups.get(index);
-		selectedIndex = index;
-
-		Label label = (Label) boxItems.get(index).getChildren().get(0);
-		fieldName.setText(label.getText());
-		if (borderPane != null) {
-			borderPane.setCenter(selectedPatternGroup);
-		}
-	}
 
 	private void initializePane() {
 		this.setPrefSize(1500, 500);
 		this.setPadding(new Insets(15.0));
-		patternGroups = new ArrayList<>();
-		boxItems = new ArrayList<>();
 
-		VBox patternListBox = buildPatternListBox();
-		addEntry();
+		patternListBox = new PatternListBox(this);
 
 		borderPane = new BorderPane();
 		borderPane.setCenter(selectedPatternGroup);
-		borderPane.setRight(patternListBox);
+
+		VBox rightPanel = new VBox (5);
+		rightPanel.getChildren().addAll(patternListBox, buildApplyButton());
+		borderPane.setRight(rightPanel);
 		this.setCenter(borderPane);
-		select(0);
+		patternListBox.select(0);
 	}
 
-	private VBox buildPatternListBox() {
-		HBox buttonBox = buildButtonBox();
-		buildListView();
-
-		VBox patternListBox = new VBox(5.0);
-		patternListBox.getChildren().addAll(listView, buttonBox);
-		patternListBox.setPrefHeight(this.getHeight());
-		return patternListBox;
+	private VBox buildApplyBox() {
+		Button buttonBox = buildApplyButton();
+		VBox applyBox = new VBox(3.0);
+		applyBox.getChildren().add(buttonBox);
+//		applyBox.setPrefHeight(this.getHeight());
+		return applyBox;
 	}
 
-	private HBox buildButtonBox() {
-		Button addPatternButton = buildAddPatternButton();
-		Button applyPatternButton = buildApplyPatternButton();
-
-		HBox buttonBox = new HBox(3.0);
-		buttonBox.getChildren().addAll(addPatternButton, applyPatternButton);
-		return buttonBox;
-	}
-
-	private void buildListView() {
-		listView = new ListView<>();
-		listView.setOnMouseClicked(event -> {
-			GridPane selection = listView.getSelectionModel().getSelectedItem();
-			if (selection != null) {
-				PatternCloseButton button = (PatternCloseButton) selection.getChildren().get(1);
-				select(button.getIndex());
-			}
-		});
-	}
-
-	private Button buildApplyPatternButton() {
+	private Button buildApplyButton() {
 		Button applyPatternButton = new Button("Apply");
-		applyPatternButton.setPrefWidth(125);
+		applyPatternButton.setPrefWidth(250);
 		applyPatternButton.setOnAction(e -> {
 			ArrayList<Pattern> patterns = new ArrayList<>();
-			for (PatternGroup group : patternGroups) {
+			for (PatternGroup group : patternListBox.getPatternGroups()) {
 				patterns.add(buildPattern(group));
 			}
+
 
 			PatternGenerationType type = null;
 			PropertyExpression expression = null;
 			PatternResolutionInformations patternInformations;
 
-			if (boxItems.size() == 1) {
+			if (PatternListBox.getBoxItems().size() == 1) {
 				if (patternPropertyMenu.getDisableItem().isSelected()) {
 					patternConstraintHBox.refreshPatternInformations("FORBIDDEN_PATTERN");
 					type = PatternGenerationType.FORBIDDEN_PATTERN;
@@ -328,69 +289,8 @@ public class PatternsEditionPane extends BorderPane {
 		return applyPatternButton;
 	}
 
-	private Button buildAddPatternButton() {
-		Button addPatternButton = new Button("Add pattern");
-		addPatternButton.setPrefWidth(125);
-		addPatternButton.setOnAction(e -> addEntry());
-		return addPatternButton;
-	}
-
-	private void addEntry() {
-		patternId++;
-		Label label = new Label("Pattern_"+patternId);
-
-		PatternCloseButton button = new PatternCloseButton(this, patternGroups.size());
-
-		GridPane pane = new GridPane();
-		pane.setPadding(new Insets(1));
-
-		pane.add(label, 0, 0);
-		label.setAlignment(Pos.BASELINE_CENTER);
-
-		pane.add(button, 1, 0);
-		button.setAlignment(Pos.BASELINE_RIGHT);
-
-		boxItems.add(pane);
-		ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
-		listView.setItems(items);
-
-		PatternGroup patternGroup = new PatternGroup(this, 3, patternGroups.size());
-		patternGroups.add(patternGroup);
-
-		if (patternGroups.size() > 1)
-			patternPropertyMenu.getItemDisjunct().fire();
-
-		listView.getSelectionModel().select(items.size()-1);
-		select(patternGroups.size()-1);
-	}
-
-	private void removePane(int index) {
-		patternGroups.remove(index);
-	}
-
-	void removeEntry(int index) {
-
-		boxItems.remove(index);
-		ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
-		listView.setItems(items);
-
-		removePane(index);
-
-		if (index == selectedIndex)
-			select(0);
-
-		for (int i = 0; i < boxItems.size(); i++) {
-			boxItems.get(i).getChildren().remove(1);
-			boxItems.get(i).add(new PatternCloseButton(this, i), 1, 0);
-		}
-
-		if (patternGroups.size() == 1) {
-			unselectAllMenus(patternPropertyMenu.getItemDisjunct(), patternPropertyMenu.getItemUndisjunct(), patternPropertyMenu.getItemNNDisjunct());
-		}
-	}
-
 	int getNbItems() {
-		return boxItems.size();
+		return PatternListBox.getBoxItems().size();
 	}
 
 	void checkBorder() {
@@ -420,15 +320,15 @@ public class PatternsEditionPane extends BorderPane {
 			}
 		}
 
-		patternGroups.set(newPatternGroup.getIndex(), newPatternGroup);
 		borderPane.getChildren().remove(selectedPatternGroup);
-		select(newPatternGroup.getIndex());
+		patternListBox.getPatternGroups().set(newPatternGroup.getIndex(), newPatternGroup);
+		patternListBox.select(newPatternGroup.getIndex());
 	}
 
 	private void removeCrown() {
 
 		int nbCrowns = selectedPatternGroup.getNbCrowns();
-		
+
 		if (nbCrowns > 3) {
 
 			nbCrowns--;
@@ -445,9 +345,9 @@ public class PatternsEditionPane extends BorderPane {
 				}
 			}
 
-			patternGroups.set(newPatternGroup.getIndex(), newPatternGroup);
 			borderPane.getChildren().remove(selectedPatternGroup);
-			select(newPatternGroup.getIndex());
+			patternListBox.getPatternGroups().set(newPatternGroup.getIndex(), newPatternGroup);
+			patternListBox.select(newPatternGroup.getIndex());
 		}
 	}
 
@@ -455,7 +355,7 @@ public class PatternsEditionPane extends BorderPane {
 		return group.exportPattern();
 	}
 
-	private void unselectAllMenus(CheckMenuItem... items) {
+	public void unselectAllMenus(CheckMenuItem... items) {
 
 		for (CheckMenuItem item : items) {
 			item.setSelected(false);
@@ -472,5 +372,29 @@ public class PatternsEditionPane extends BorderPane {
 
 	private void hide() {
 		patternConstraintHBox.hidePatternStage();
+	}
+
+	BorderPane getBorderPane () {
+		return borderPane;
+	}
+
+	TextField getFieldName() {
+		return fieldName;
+	}
+
+	void selectPatternGroup (PatternGroup patternGroup) {
+		selectedPatternGroup = patternGroup;
+	}
+
+	PatternGroup getSelectedPatternGroup() {
+		return selectedPatternGroup;
+	}
+
+	public PatternListBox getPatternListBox() {
+		return patternListBox;
+	}
+
+	public PatternPropertyMenu getPatternPropertyMenu() {
+		return patternPropertyMenu;
 	}
 }
