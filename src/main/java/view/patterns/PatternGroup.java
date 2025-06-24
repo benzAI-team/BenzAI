@@ -8,12 +8,14 @@ import utils.Couple;
 import utils.HexNeighborhood;
 import utils.RelativeMatrix;
 
+import javafx.scene.control.Label;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PatternGroup extends Group {
 
 	private final PatternsEditionPane parent;
+	private final Label label;
 	private final int nbCrowns;
 	private int index;
 
@@ -29,10 +31,11 @@ public class PatternGroup extends Group {
 	private ArrayList<PatternHexagon> border;
 	private ArrayList<PatternHexagon> extendedBorder;
 
-	PatternGroup(PatternsEditionPane parent, int nbCrowns, int index) {
+	PatternGroup(PatternsEditionPane parent, int nbCrowns, int index, Label label) {
 		this.parent = parent;
 		this.nbCrowns = nbCrowns;
 		this.index = index;
+		this.label = label;
 		this.resize(500, 500);
 		initialize();
 	}
@@ -81,8 +84,7 @@ public class PatternGroup extends Group {
 							extendedBorder.add(hexagons[i - 1][j - 1]);
 					}
 				}
-			}
-			else {
+			} else {
 				for (int j = 0; j < hexagons.length; j++) {
 					if (hexagons[i][j] != null) {
 						hexagons[i][j].setBorderAction();
@@ -292,10 +294,10 @@ public class PatternGroup extends Group {
 					int u = hexagonCoordinates[i][j];
 
 					Arrays.fill(dualGraph[u], -1);
-					for(HexNeighborhood neighbor : HexNeighborhood.values()){
+					for (HexNeighborhood neighbor : HexNeighborhood.values()) {
 						int i2 = i + neighbor.dx();
 						int j2 = j + neighbor.dy();
-						if(i2 >= 0 && i2 <= diameter - 1 && j2 >= 0 && j2 <= diameter - 1)
+						if (i2 >= 0 && i2 <= diameter - 1 && j2 >= 0 && j2 <= diameter - 1)
 							dualGraph[u][neighbor.getIndex()] = hexagonCoordinates[i2][j2];
 					}
 				}
@@ -438,7 +440,7 @@ public class PatternGroup extends Group {
 		for (int y = 0; y < diameter; y++)
 			for (int x = 0; x < diameter; x++)
 				if (hexagons[y][x] != null && hexagons[y][x].isColored())
-						hexagonsList.add(hexagons[y][x]);
+					hexagonsList.add(hexagons[y][x]);
 
 		Couple<Couple<Integer, Integer>, Couple<Integer, Integer>>[] toCheck = new Couple[hexagonsList.size()];
 
@@ -475,9 +477,7 @@ public class PatternGroup extends Group {
 
 			if (pos1 == 0 && pos2 == 0 && pos3 == 0) {
 				// DO_NOTHING
-			}
-
-			else if (pos1 == 0 && pos2 == 0 && pos3 == 1)
+			} else if (pos1 == 0 && pos2 == 0 && pos3 == 1)
 				toCheck[i] = new Couple<>(coordsPos2, coordsPos4);
 
 			else if (pos1 == 0 && pos2 == 1 && pos3 == 0)
@@ -485,9 +485,7 @@ public class PatternGroup extends Group {
 
 			else if (pos1 == 0 && pos2 == 1 && pos3 == 1) {
 				// DO_NOTHING
-			}
-
-			else if (pos1 == 1 && pos2 == 0 && pos3 == 0)
+			} else if (pos1 == 1 && pos2 == 0 && pos3 == 0)
 				toCheck[i] = new Couple<>(coordsPos6, coordsPos2);
 
 			else if (pos1 == 1 && pos2 == 0 && pos3 == 1)
@@ -495,9 +493,7 @@ public class PatternGroup extends Group {
 
 			else if (pos1 == 1 && pos2 == 1 && pos3 == 0) {
 				// DO_NOTHING
-			}
-
-			else if (pos1 == 1 && pos2 == 1 && pos3 == 1) {
+			} else if (pos1 == 1 && pos2 == 1 && pos3 == 1) {
 				// DO_NOTHING
 			}
 		}
@@ -623,6 +619,10 @@ public class PatternGroup extends Group {
 
 	PatternHexagon[][] getHexagonsMatrix() {
 		return hexagons;
+	}
+
+	public Label getLabel() {
+		return label;
 	}
 
 }

@@ -10,14 +10,13 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 
 class PatternListBox extends ListBox {
-    private int patternId; // the nest pattern id
+    private static int patternId; // the nest pattern id
     private static ArrayList<GridPane> boxItems;
-    private ArrayList<PatternGroup> patternGroups;
+    private static ArrayList<PatternGroup> patternGroups = new ArrayList<>();
     private int selectedIndex;
 
     public PatternListBox (PatternsEditionPane patternsEditionPane) {
         super("Add pattern", patternsEditionPane);
-        patternGroups = new ArrayList<>();
         boxItems = new ArrayList<>();
         addEntry();
 
@@ -35,10 +34,26 @@ class PatternListBox extends ListBox {
         }
     }
 
+    static Label getNextLabel() {
+        String new_label;
+        Boolean find_new_label;
+        do {
+            patternId++;
+            new_label = "Pattern_"+patternId;
+            int i = 0;
+            while ((i < patternGroups.size()) && (! patternGroups.get(i).getLabel().getText().equals(new_label))) {
+                i++;
+            }
+            find_new_label = (i == patternGroups.size());
+        }
+        while (! find_new_label);
+
+        return new Label(new_label);
+    }
+
     @Override
     void addEntry() {
-        patternId++;
-        Label label = new Label("Pattern_"+patternId);
+        Label label = getNextLabel();
 
         PatternCloseButton button = new PatternCloseButton(getPatternsEditionPane(), patternGroups.size());
 
@@ -55,7 +70,7 @@ class PatternListBox extends ListBox {
         ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
         getListView().setItems(items);
 
-        PatternGroup patternGroup = new PatternGroup(getPatternsEditionPane(), 3, patternGroups.size());
+        PatternGroup patternGroup = new PatternGroup(getPatternsEditionPane(), 3, patternGroups.size(), label);
         patternGroups.add(patternGroup);
 
         if (patternGroups.size() > 1)
