@@ -24,12 +24,14 @@ public class PatternProperty extends ModelProperty {
 	 */
 	@Override
 	public int computeNbCrowns() {
-		ArrayList<Pattern> patterns = ((PatternExpression) this.getExpressions().get(0)).getPatternsInformations().getPatterns();
-		int diameterSum = patterns.stream().mapToInt(pattern -> pattern.computeGridDiameter() + 1).sum();
-		int nbPositiveNodes = patterns.stream().mapToInt(Pattern::getNbPositiveNodes).sum();
-		int nbHexagons = ((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound();
-		int patternNbCrowns = (diameterSum + nbHexagons - nbPositiveNodes + 2) / 2;
-
-		return (nbHexagons >= nbPositiveNodes) ? patternNbCrowns : 1;
+//		ArrayList<Pattern> patterns = ((PatternExpression) this.getExpressions().get(0)).getPatternsInformations().getPatterns();
+//		int diameterSum = patterns.stream().mapToInt(pattern -> pattern.computeGridDiameter() + 1).sum();
+//		int nbPositiveNodes = patterns.stream().mapToInt(Pattern::getNbPositiveNodes).sum();
+//		int nbHexagons = ((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound();
+//		int patternNbCrowns = (diameterSum + nbHexagons - nbPositiveNodes + 2) / 2;
+//
+//		return (nbHexagons >= nbPositiveNodes) ? patternNbCrowns : 1;
+		// TODO The computation should take into account the property (existence, interaction and exclusion)
+		return 4;
 	}
 }
