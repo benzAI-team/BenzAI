@@ -10,13 +10,13 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 
-class PatternTypeListBox extends ListBox {
+class PropertyListBox extends ListBox {
     private int patternTypeId; // the nest pattern type id
     private static ArrayList<GridPane> boxItems;
     private ArrayList<PatternType> patternTypes;
 
-    public PatternTypeListBox (PatternsEditionPane patternsEditionPane) {
-        super("Add type", patternsEditionPane);
+    public PropertyListBox(PatternsEditionPane patternsEditionPane) {
+        super("Add property", patternsEditionPane);
         boxItems = new ArrayList<>();
         patternTypes = new ArrayList<>();
     }

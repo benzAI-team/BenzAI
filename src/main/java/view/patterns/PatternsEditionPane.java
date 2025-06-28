@@ -25,7 +25,7 @@ public class PatternsEditionPane extends BorderPane {
 	private TextField fieldName;
 	private PatternLabel lastLabel;   // the label of the last color assign to a hexagon
 	private PatternListBox patternListBox;
-	private PatternTypeListBox patternTypeListBox;
+	private PropertyListBox propertyListBox;
 
 	public PatternsEditionPane(HBoxPatternCriterion patternConstraintHBox) {
 		super();
@@ -172,7 +172,7 @@ public class PatternsEditionPane extends BorderPane {
 					PatternGroup newPattern = new PatternGroup(this, maxColumn, null);
 					newPattern.importPattern(pattern);
 					patternListBox.addEntry(newPattern);
-					patternTypeListBox.addEntry(new PatternTypeExistence(newPattern));
+					propertyListBox.addEntry(new PatternTypeExistence(newPattern));
 
 //					patternListBox.getPatternGroups().set(index, group);
 //					patternListBox.select(index);
@@ -190,19 +190,19 @@ public class PatternsEditionPane extends BorderPane {
 		this.setPadding(new Insets(15.0));
 
 		patternListBox = new PatternListBox(this);
-		patternTypeListBox = new PatternTypeListBox(this);
+		propertyListBox = new PropertyListBox(this);
 
 		borderPane = new BorderPane();
 		borderPane.setCenter(selectedPatternGroup);
 
 		VBox rightPanel = new VBox (5);
-		rightPanel.getChildren().addAll(patternListBox, patternTypeListBox, buildApplyButton());
+		rightPanel.getChildren().addAll(patternListBox, propertyListBox, buildApplyButton());
 		borderPane.setRight(rightPanel);
 		this.setCenter(borderPane);
 
 		PatternGroup newPattern = new PatternGroup(this, 3, null);
 		patternListBox.addEntry(newPattern);
-		patternTypeListBox.addEntry(new PatternTypeExistence(newPattern));
+		propertyListBox.addEntry(new PatternTypeExistence(newPattern));
 	}
 
 	private VBox buildApplyBox() {
@@ -217,7 +217,7 @@ public class PatternsEditionPane extends BorderPane {
 		Button applyPatternButton = new Button("Apply");
 		applyPatternButton.setPrefWidth(250);
 		applyPatternButton.setOnAction(e -> {
-			for (PatternType type : patternTypeListBox.getPatternTypes())
+			for (PatternType type : propertyListBox.getPatternTypes())
 				type.setConstraint(patternConstraintHBox);
 
 //			ArrayList<Pattern> patterns = new ArrayList<>();
@@ -381,7 +381,7 @@ public class PatternsEditionPane extends BorderPane {
 		return patternListBox;
 	}
 
-	public PatternTypeListBox getPatternTypeListBox() {
-		return patternTypeListBox;
+	public PropertyListBox getPropertyListBox() {
+		return propertyListBox;
 	}
 }

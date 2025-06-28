@@ -28,7 +28,7 @@ class PatternListBox extends ListBox {
         addButton.setOnAction(e -> {
             PatternGroup newPattern = new PatternGroup(getPatternsEditionPane(), 3, null);
             addEntry(newPattern);
-            getPatternsEditionPane().getPatternTypeListBox().addEntry(new PatternTypeExistence(newPattern));
+            getPatternsEditionPane().getPropertyListBox().addEntry(new PatternTypeExistence(newPattern));
         });
         return addButton;
     }
