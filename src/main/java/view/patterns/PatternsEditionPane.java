@@ -20,7 +20,6 @@ import java.io.IOException;
 public class PatternsEditionPane extends BorderPane {
 
 	private final HBoxPatternCriterion patternConstraintHBox;
-	private final PatternPropertyMenu patternPropertyMenu = new PatternPropertyMenu();
 	private BorderPane borderPane;
 	private PatternGroup selectedPatternGroup;
 	private TextField fieldName;
@@ -46,14 +45,9 @@ public class PatternsEditionPane extends BorderPane {
 		buildDrawingMenu(menuBar);
 		buildNameMenu(menuBar);
 		buildCrownMenu(menuBar);
-		buildPatternMenu(menuBar);
 		this.setTop(menuBar);
 	}
 
-	private void buildPatternMenu(MenuBar menuBar) {
-		Menu patternMenu = patternPropertyMenu.build();
-		menuBar.getMenus().add(patternMenu);
-	}
 
 
 	private void buildCrownMenu(MenuBar menuBar) {
@@ -389,9 +383,5 @@ public class PatternsEditionPane extends BorderPane {
 
 	public PatternTypeListBox getPatternTypeListBox() {
 		return patternTypeListBox;
-	}
-
-	public PatternPropertyMenu getPatternPropertyMenu() {
-		return patternPropertyMenu;
 	}
 }

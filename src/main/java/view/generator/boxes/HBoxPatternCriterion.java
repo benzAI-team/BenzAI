@@ -130,7 +130,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 
 	public void setConstraint (BenzAIConstraint constraint) {
 		System.out.println("setConstraint !!!!");
-		patternInformationField.setText("CONSTRAINT SET");
+		refreshPatternInformations("CONSTRAINT SET");
 		patternProperty.setConstraint(constraint);
 	}
 

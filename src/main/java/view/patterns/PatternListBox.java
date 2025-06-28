@@ -82,9 +82,6 @@ class PatternListBox extends ListBox {
 
         patternGroups.add(newPattern);
 
-        if (patternGroups.size() > 1)
-            getPatternsEditionPane().getPatternPropertyMenu().getItemDisjunct().fire();
-
         getListView().getSelectionModel().select(items.size()-1);
         select(patternGroups.size()-1);
     }
@@ -108,10 +105,6 @@ class PatternListBox extends ListBox {
         for (int i = 0; i < boxItems.size(); i++) {
             boxItems.get(i).getChildren().remove(1);
             boxItems.get(i).add(new PatternCloseButton(getPatternsEditionPane(), i), 1, 0);
-        }
-
-        if (patternGroups.size() == 1) {
-            getPatternsEditionPane().unselectAllMenus(getPatternsEditionPane().getPatternPropertyMenu().getItemDisjunct(), getPatternsEditionPane().getPatternPropertyMenu().getItemUndisjunct(), getPatternsEditionPane().getPatternPropertyMenu().getItemNNDisjunct());
         }
     }
 
