@@ -44,16 +44,9 @@ public abstract class ListBox extends VBox {
         return buttonBox;
     }
 
-    private Button buildAddButton() {
-        Button addButton = new Button(addLabel);
-        addButton.setPrefWidth(250);
-        addButton.setOnAction(e -> addEntry());
-        return addButton;
-    }
+    abstract Button buildAddButton();
 
     abstract void select(int index);
-
-    abstract void addEntry();
 
     abstract void removeEntry(int index);
 
@@ -71,5 +64,9 @@ public abstract class ListBox extends VBox {
 
     void setSelectedIndex (int index) {
         selectedIndex = index;
+    }
+
+    public String getAddLabel() {
+        return addLabel;
     }
 }

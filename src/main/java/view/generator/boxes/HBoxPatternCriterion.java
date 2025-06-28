@@ -1,7 +1,7 @@
 package view.generator.boxes;
 
 import application.BenzenoidApplication;
-import generator.patterns.PatternResolutionInformations;
+import constraints.BenzAIConstraint;
 import generator.properties.model.expression.PropertyExpression;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -22,7 +22,6 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxPatternCriterion extends HBoxModelCriterion {
 
-	private PatternResolutionInformations patternInformations;
 	private PatternProperty patternProperty;
 
 	private PatternsEditionPane patternPane;
@@ -97,7 +96,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid())
-			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText(), this.patternInformations));
+			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText()));
 	}
 
 	private void displayPatternEditionWindows() {
@@ -129,12 +128,10 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		return ((GeneratorPane) getPane()).getApplication();
 	}
 
-	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
-		this.patternInformations = patternsInformations;
-	}
-
-	public PatternProperty getPatternProperty() {
-		return patternProperty;
+	public void setConstraint (BenzAIConstraint constraint) {
+		System.out.println("setConstraint !!!!");
+		patternInformationField.setText("CONSTRAINT SET");
+		patternProperty.setConstraint(constraint);
 	}
 
 	private void setPatternProperty(PatternProperty patternProperty) {

@@ -31,14 +31,34 @@ public class PatternGroup extends Group {
 	private ArrayList<PatternHexagon> border;
 	private ArrayList<PatternHexagon> extendedBorder;
 
+	PatternGroup(PatternsEditionPane parent, int nbCrowns, Label label) {
+		this.parent = parent;
+		this.nbCrowns = nbCrowns;
+		this.index = parent.getPatternListBox().getPatternGroups().size();
+		if (label == null) {
+			this.label = parent.getPatternListBox().getNextLabel();
+		}
+		else {
+			this.label = label;
+		}
+
+		initialize();
+	}
+
 	PatternGroup(PatternsEditionPane parent, int nbCrowns, int index, Label label) {
 		this.parent = parent;
 		this.nbCrowns = nbCrowns;
 		this.index = index;
-		this.label = label;
-		this.resize(500, 500);
+		if (label == null) {
+			this.label = parent.getPatternListBox().getNextLabel();
+		}
+		else {
+			this.label = label;
+		}
+
 		initialize();
 	}
+
 
 	private ArrayList<Double> getHexagonPoints(double xCenter, double yCenter) {
 
@@ -198,6 +218,7 @@ public class PatternGroup extends Group {
 	}
 
 	private void initialize() {
+		this.resize(500, 500);
 		diameter = 2 * nbCrowns - 1;
 		buildDisplayedHexagons();
 		ArrayList<Couple<Double, Double>> centers = getFirstCenters();

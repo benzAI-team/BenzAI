@@ -4,13 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 
 class PatternListBox extends ListBox {
-    private static int patternId; // the nest pattern id
+    private static int patternId = 0; // the nest pattern id
     private static ArrayList<GridPane> boxItems;
     private static ArrayList<PatternGroup> patternGroups = new ArrayList<>();
     private int selectedIndex;
@@ -18,8 +19,18 @@ class PatternListBox extends ListBox {
     public PatternListBox (PatternsEditionPane patternsEditionPane) {
         super("Add pattern", patternsEditionPane);
         boxItems = new ArrayList<>();
-        addEntry();
+    }
 
+    @Override
+    public Button buildAddButton() {
+        Button addButton = new Button(getAddLabel());
+        addButton.setPrefWidth(250);
+        addButton.setOnAction(e -> {
+            PatternGroup newPattern = new PatternGroup(getPatternsEditionPane(), 3, null);
+            addEntry(newPattern);
+            getPatternsEditionPane().getPatternTypeListBox().addEntry(new PatternTypeExistence(newPattern));
+        });
+        return addButton;
     }
 
     @Override
@@ -51,9 +62,8 @@ class PatternListBox extends ListBox {
         return new Label(new_label);
     }
 
-    @Override
-    void addEntry() {
-        Label label = getNextLabel();
+    void addEntry(PatternGroup newPattern) {
+        Label label = newPattern.getLabel();
 
         PatternCloseButton button = new PatternCloseButton(getPatternsEditionPane(), patternGroups.size());
 
@@ -70,8 +80,7 @@ class PatternListBox extends ListBox {
         ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
         getListView().setItems(items);
 
-        PatternGroup patternGroup = new PatternGroup(getPatternsEditionPane(), 3, patternGroups.size(), label);
-        patternGroups.add(patternGroup);
+        patternGroups.add(newPattern);
 
         if (patternGroups.size() > 1)
             getPatternsEditionPane().getPatternPropertyMenu().getItemDisjunct().fire();

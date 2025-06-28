@@ -1,15 +1,11 @@
 package generator.properties.model;
 
 import constraints.PatternConstraint;
-import generator.patterns.Pattern;
-import generator.properties.model.expression.PatternExpression;
 import generator.properties.model.filters.PatternFilter;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxPatternCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
-
-import java.util.ArrayList;
 
 public class PatternProperty extends ModelProperty {
 
