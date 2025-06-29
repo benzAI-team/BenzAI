@@ -16,6 +16,7 @@ import view.generator.boxes.HBoxPatternCriterion;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 public class PatternsEditionPane extends BorderPane {
 
@@ -172,7 +173,7 @@ public class PatternsEditionPane extends BorderPane {
 					PatternGroup newPattern = new PatternGroup(this, maxColumn, null);
 					newPattern.importPattern(pattern);
 					patternListBox.addEntry(newPattern);
-					propertyListBox.addEntry(new PatternTypeExistence(newPattern));
+					propertyListBox.addEntry(new PatternPropertyExistence(newPattern));
 
 //					patternListBox.getPatternGroups().set(index, group);
 //					patternListBox.select(index);
@@ -196,13 +197,17 @@ public class PatternsEditionPane extends BorderPane {
 		borderPane.setCenter(selectedPatternGroup);
 
 		VBox rightPanel = new VBox (5);
-		rightPanel.getChildren().addAll(patternListBox, propertyListBox, buildApplyButton());
+		Separator sep1 = new Separator();
+		sep1.setStyle("-fx-background-color: #0000ff;");
+		Separator sep2 = new Separator();
+		sep2.setStyle("-fx-background-color: #0000ff;");
+		rightPanel.getChildren().addAll(patternListBox, sep1, propertyListBox, sep2,buildApplyButton());
 		borderPane.setRight(rightPanel);
 		this.setCenter(borderPane);
 
 		PatternGroup newPattern = new PatternGroup(this, 3, null);
 		patternListBox.addEntry(newPattern);
-		propertyListBox.addEntry(new PatternTypeExistence(newPattern));
+		propertyListBox.addEntry(new PatternPropertyExistence(newPattern));
 	}
 
 	private VBox buildApplyBox() {
@@ -217,7 +222,7 @@ public class PatternsEditionPane extends BorderPane {
 		Button applyPatternButton = new Button("Apply");
 		applyPatternButton.setPrefWidth(250);
 		applyPatternButton.setOnAction(e -> {
-			for (PatternType type : propertyListBox.getPatternTypes())
+			for (PatternProperty type : propertyListBox.getPatternTypes())
 				type.setConstraint(patternConstraintHBox);
 
 //			ArrayList<Pattern> patterns = new ArrayList<>();
@@ -336,6 +341,102 @@ public class PatternsEditionPane extends BorderPane {
 			patternListBox.getPatternGroups().set(newPatternGroup.getIndex(), newPatternGroup);
 			patternListBox.select(newPatternGroup.getIndex());
 		}
+	}
+
+	Optional<PatternProperty> getPropertyDialogBox () {
+		Dialog<PatternProperty> dialog = new Dialog<>();
+		dialog.setTitle("Property");
+		dialog.setHeaderText("Select the desired property");
+
+		// we create the combo box for property
+		ComboBox propertyBox = new ComboBox();
+		propertyBox.getItems().add(new Label("Existence"));
+		propertyBox.getItems().add(new Label("Exclusion"));
+
+		propertyBox.getItems().add(new Label("Occurrence "));
+		propertyBox.getItems().add(new Label("Occurrence with no positive hexagon sharing"));
+		propertyBox.getItems().add(new Label("Occurrence with no positive edge sharing"));
+		propertyBox.getItems().add(new Label("Occurrence with no hexagon sharing"));
+
+		if (patternListBox.getPatternGroups().size() > 1) {
+			propertyBox.getItems().add(new Label("Interaction with no positive hexagon sharing"));
+			propertyBox.getItems().add(new Label("Interaction with no positive edge sharing"));
+			propertyBox.getItems().add(new Label("Interaction with no hexagon sharing"));
+		}
+
+		// we create the combo box for possible patterns
+		ComboBox patternBox = new ComboBox();
+		ComboBox patternBox2 = new ComboBox();
+		for (PatternGroup pattern : patternListBox.getPatternGroups()) {
+			patternBox.getItems().add(new Label(pattern.getLabel().getText()));
+			patternBox2.getItems().add(new Label (pattern.getLabel().getText()));
+		}
+
+		// we define the buttons of the dialog box
+		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+		// we create the form as a grid
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
+
+		TextField occurrenceField = new TextField();
+		occurrenceField.setPromptText("# occurrences");
+		grid.add(new Label("Property:"), 0, 0);
+		grid.add(propertyBox,1,0);
+		grid.add(new Label("Pattern"), 0, 1);
+		grid.add(patternBox, 1, 1);
+		grid.add(new Label("# occurrence"), 0, 2);
+		grid.add(occurrenceField, 1, 2);
+		grid.add(new Label("Pattern 2"), 0, 3);
+		grid.add(patternBox2, 1, 3);
+
+		dialog.getDialogPane().setContent(grid);
+
+		patternBox2.setDisable(propertyBox.getSelectionModel().getSelectedIndex() < 6);
+		occurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+
+		// event management
+		propertyBox.setOnAction(event -> {
+			patternBox2.setDisable(propertyBox.getSelectionModel().getSelectedIndex() < 6);
+			occurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+		});
+
+		// computes the result
+		dialog.setResultConverter(dialogButton -> {
+			if (dialogButton == ButtonType.OK) {
+				int propertyNum = propertyBox.getSelectionModel().getSelectedIndex();
+
+				PatternProperty property = null;
+				PatternGroup pattern1 = null;
+				if (propertyNum != -1) {
+					pattern1 = getPatternListBox().getPatternGroups().get(patternBox.getSelectionModel().getSelectedIndex());
+				}
+
+				PatternGroup pattern2 = null;
+				if (propertyNum >= 6) {
+					pattern2 = getPatternListBox().getPatternGroups().get(patternBox.getSelectionModel().getSelectedIndex());
+				}
+
+				switch (propertyNum) {
+					case 0: property = new PatternPropertyExistence(pattern1); break;
+					case 1: property = new PatternPropertyExclusion(pattern1); break;
+					case 2: Integer.valueOf(occurrenceField.getText()); break;
+					case 3: Integer.valueOf(occurrenceField.getText()); break;
+					case 4: Integer.valueOf(occurrenceField.getText()); break;
+					case 5: Integer.valueOf(occurrenceField.getText()); break;
+					case 6:  break;
+					case 7:  break;
+					case 8:  break;
+				}
+
+				return property;
+			}
+			return null;
+		});
+
+		return dialog.showAndWait();
 	}
 
 	private static Pattern buildPattern(PatternGroup group) {

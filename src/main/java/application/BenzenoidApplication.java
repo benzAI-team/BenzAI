@@ -24,6 +24,7 @@ import view.primaryStage.Panes;
 import view.primaryStage.menus.*;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class BenzenoidApplication extends Application {
@@ -264,6 +265,7 @@ public class BenzenoidApplication extends Application {
 	}
 
 	public static void main(String[] args) {
+		Locale.setDefault(Locale.US);
 		launch(args);
 	}
 

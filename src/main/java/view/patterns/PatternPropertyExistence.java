@@ -6,9 +6,9 @@ import generator.ValueStrategy;
 import generator.VariableStrategy;
 import view.generator.boxes.HBoxPatternCriterion;
 
-public class PatternTypeExistence extends PatternType {
+public class PatternPropertyExistence extends PatternProperty {
 
-    PatternTypeExistence (PatternGroup pattern) {
+    PatternPropertyExistence(PatternGroup pattern) {
         super(pattern);
     }
 

@@ -5,9 +5,9 @@ import generator.ValueStrategy;
 import generator.VariableStrategy;
 import view.generator.boxes.HBoxPatternCriterion;
 
-public class PatternTypeExclusion extends PatternType {
+public class PatternPropertyExclusion extends PatternProperty {
 
-    PatternTypeExclusion (PatternGroup pattern) {
+    PatternPropertyExclusion(PatternGroup pattern) {
         super (pattern);
     }
 

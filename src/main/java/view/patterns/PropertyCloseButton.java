@@ -28,7 +28,8 @@ public class PropertyCloseButton extends Button {
 
         this.setOnAction(e -> {
             if (parent.getNbItems() == 1) {
-                Utils.alert("You cannot delete the last pattern.");
+                // TODO check whether is the last one related to a given pattern
+                Utils.alert("You cannot delete the last property on a pattern.");
             } else {
                 parent.getPatternListBox().removeEntry(index);
             }

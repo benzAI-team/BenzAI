@@ -2,10 +2,10 @@ package view.patterns;
 
 import view.generator.boxes.HBoxPatternCriterion;
 
-abstract class PatternType {
+abstract class PatternProperty {
     private PatternGroup pattern;
 
-    PatternType (PatternGroup pattern){
+    PatternProperty(PatternGroup pattern){
         this.pattern = pattern;
     }
 
