@@ -17,4 +17,6 @@ abstract class PatternProperty {
     abstract String getLabel ();
 
     abstract void setConstraint(HBoxPatternCriterion patternConstraintHBox);
+
+    abstract int getPropertyType();
 }

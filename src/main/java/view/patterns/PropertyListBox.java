@@ -18,7 +18,7 @@ class PropertyListBox extends VBox {
     private PatternsEditionPane patternsEditionPane;
     private ListView<GridPane> listView;
     private static ArrayList<GridPane> boxItems;
-    private ArrayList<PatternProperty> patternProperties;
+    private static ArrayList<PatternProperty> patternProperties = new ArrayList<>();
     private int selectedIndex;
 
     public PropertyListBox(PatternsEditionPane patternsEditionPane) {
@@ -34,7 +34,6 @@ class PropertyListBox extends VBox {
         this.setPrefHeight(1000);
 
         boxItems = new ArrayList<>();
-        patternProperties = new ArrayList<>();
     }
 
     private void buildListView() {
@@ -53,7 +52,7 @@ class PropertyListBox extends VBox {
         addButton.setPrefWidth(125);
         addButton.setOnAction(e ->
         {
-            Optional<PatternProperty> property = patternsEditionPane.getPropertyDialogBox();
+            Optional<PatternProperty> property = patternsEditionPane.getPropertyDialogBox(-1);
             property.ifPresent (value -> addEntry(value));
         });
         return addButton;
@@ -64,7 +63,7 @@ class PropertyListBox extends VBox {
         modifyButton.setPrefWidth(125);
         modifyButton.setOnAction(e ->
         {
-            Optional<PatternProperty> property = patternsEditionPane.getPropertyDialogBox();
+            Optional<PatternProperty> property = patternsEditionPane.getPropertyDialogBox(selectedIndex);
             property.ifPresent (value -> modifyEntry(value));
         });
         return modifyButton;
@@ -121,7 +120,7 @@ class PropertyListBox extends VBox {
 
     }
 
-    public ArrayList<PatternProperty> getPatternTypes() {
+    public static ArrayList<PatternProperty> getPatternProperties() {
         return patternProperties;
     }
 }

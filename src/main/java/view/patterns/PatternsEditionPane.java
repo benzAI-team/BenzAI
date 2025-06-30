@@ -222,7 +222,7 @@ public class PatternsEditionPane extends BorderPane {
 		Button applyPatternButton = new Button("Apply");
 		applyPatternButton.setPrefWidth(250);
 		applyPatternButton.setOnAction(e -> {
-			for (PatternProperty type : propertyListBox.getPatternTypes())
+			for (PatternProperty type : propertyListBox.getPatternProperties())
 				type.setConstraint(patternConstraintHBox);
 
 //			ArrayList<Pattern> patterns = new ArrayList<>();
@@ -343,13 +343,14 @@ public class PatternsEditionPane extends BorderPane {
 		}
 	}
 
-	Optional<PatternProperty> getPropertyDialogBox () {
+	Optional<PatternProperty> getPropertyDialogBox (int index) {
 		Dialog<PatternProperty> dialog = new Dialog<>();
 		dialog.setTitle("Property");
 		dialog.setHeaderText("Select the desired property");
 
 		// we create the combo box for property
 		ComboBox propertyBox = new ComboBox();
+		propertyBox.setStyle("-fx-fill: black;");
 		propertyBox.getItems().add(new Label("Existence"));
 		propertyBox.getItems().add(new Label("Exclusion"));
 
@@ -394,6 +395,16 @@ public class PatternsEditionPane extends BorderPane {
 
 		dialog.getDialogPane().setContent(grid);
 
+		// we take into account the current property (if any)
+		if (index != -1) {
+			PatternProperty property = PropertyListBox.getPatternProperties().get(index);
+			int type = property.getPropertyType();
+			propertyBox.getSelectionModel().select(type);
+
+			// TODO get the other values (pattern1, pattern 2, ...)
+		}
+
+
 		patternBox2.setDisable(propertyBox.getSelectionModel().getSelectedIndex() < 6);
 		occurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 
@@ -426,9 +437,9 @@ public class PatternsEditionPane extends BorderPane {
 					case 3: Integer.valueOf(occurrenceField.getText()); break;
 					case 4: Integer.valueOf(occurrenceField.getText()); break;
 					case 5: Integer.valueOf(occurrenceField.getText()); break;
-					case 6:  break;
-					case 7:  break;
-					case 8:  break;
+					case 6: property = new PatternPropertyInteraction1(pattern1, pattern2); break;
+					case 7: property = new PatternPropertyInteraction2(pattern1, pattern2); break;
+					case 8: property = new PatternPropertyInteraction3(pattern1, pattern2); break;
 				}
 
 				return property;

@@ -22,4 +22,7 @@ public class PatternPropertyExistence extends PatternProperty {
         patternConstraintHBox.setConstraint(new SinglePattern3Constraint(getPattern().exportPattern(),
                 VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
     }
+
+    @Override
+    int getPropertyType() { return 0; }
 }

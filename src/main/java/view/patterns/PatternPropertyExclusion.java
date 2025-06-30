@@ -20,4 +20,7 @@ public class PatternPropertyExclusion extends PatternProperty {
     void setConstraint(HBoxPatternCriterion patternConstraintHBox) {
         patternConstraintHBox.setConstraint(new ForbiddenPatternConstraint3(getPattern().exportPattern(), VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX));
     }
+
+    @Override
+    int getPropertyType() { return 1; }
 }
