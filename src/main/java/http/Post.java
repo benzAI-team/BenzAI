@@ -18,8 +18,7 @@ import java.util.regex.Pattern;
 public class Post {
 
 	public static boolean isDatabaseConnected;
-//  private static String databaseServername = "https://benzenoids.lis-lab.fr";
-  private static String databaseServername = "http://localhost:8894/benzenoids";
+  private static String databaseServername = "https://benzenoids.lis-lab.fr";
 
 	@SuppressWarnings("rawtypes")
 	public static List<Map> post(String service, String jsonInputString) throws IOException {
