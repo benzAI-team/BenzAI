@@ -16,6 +16,7 @@ import view.generator.boxes.HBoxPatternCriterion;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class PatternsEditionPane extends BorderPane {
@@ -348,30 +349,48 @@ public class PatternsEditionPane extends BorderPane {
 		dialog.setTitle("Property");
 		dialog.setHeaderText("Select the desired property");
 
-		// we create the combo box for property
-		ComboBox propertyBox = new ComboBox();
-		propertyBox.setStyle("-fx-fill: black;");
-		propertyBox.getItems().add(new Label("Existence"));
-		propertyBox.getItems().add(new Label("Exclusion"));
-
-		propertyBox.getItems().add(new Label("Occurrence "));
-		propertyBox.getItems().add(new Label("Occurrence with no positive hexagon sharing"));
-		propertyBox.getItems().add(new Label("Occurrence with no positive edge sharing"));
-		propertyBox.getItems().add(new Label("Occurrence with no hexagon sharing"));
+		// we create the property list
+		ArrayList<String> propertyList = new ArrayList<>();
+		propertyList.add("Existence");
+		propertyList.add("Exclusion");
+		propertyList.add("Occurrence");
+		propertyList.add("Occurrence with no positive hexagon sharing");
+		propertyList.add("Occurrence with no positive edge sharing");
+		propertyList.add("Occurrence with no hexagon sharing");
 
 		if (patternListBox.getPatternGroups().size() > 1) {
-			propertyBox.getItems().add(new Label("Interaction with no positive hexagon sharing"));
-			propertyBox.getItems().add(new Label("Interaction with no positive edge sharing"));
-			propertyBox.getItems().add(new Label("Interaction with no hexagon sharing"));
+			propertyList.add("Interaction with no positive hexagon sharing");
+			propertyList.add("Interaction with no positive edge sharing");
+			propertyList.add("Interaction with no hexagon sharing");
 		}
+
+		// we create the combo box for property
+		ComboBox propertyBox = new ComboBox();
+		propertyBox.getItems().addAll(propertyList);
 
 		// we create the combo box for possible patterns
 		ComboBox patternBox = new ComboBox();
 		ComboBox patternBox2 = new ComboBox();
+		ArrayList<String> patternList = new ArrayList<>();
 		for (PatternGroup pattern : patternListBox.getPatternGroups()) {
-			patternBox.getItems().add(new Label(pattern.getLabel().getText()));
-			patternBox2.getItems().add(new Label (pattern.getLabel().getText()));
+			patternList.add(pattern.getLabel().getText());
 		}
+		patternBox.getItems().addAll(patternList);
+
+
+		// we take into account the current property (if any)
+		if (index != -1) {
+			PatternProperty property = PropertyListBox.getPatternProperties().get(index);
+			int type = property.getPropertyType();
+			propertyBox.getSelectionModel().select(propertyList.get(type));
+
+			patternBox.getSelectionModel().select(property.getPattern().getLabel().getText());
+			if (type >= 6) {
+				patternBox2.setValue(((PatternPropertyInteraction) property).getPattern2().getLabel().getText());
+			}
+			// TODO get the other values (pattern1, pattern 2, ...)
+		}
+
 
 		// we define the buttons of the dialog box
 		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -394,15 +413,7 @@ public class PatternsEditionPane extends BorderPane {
 		grid.add(patternBox2, 1, 3);
 
 		dialog.getDialogPane().setContent(grid);
-
-		// we take into account the current property (if any)
-		if (index != -1) {
-			PatternProperty property = PropertyListBox.getPatternProperties().get(index);
-			int type = property.getPropertyType();
-			propertyBox.getSelectionModel().select(type);
-
-			// TODO get the other values (pattern1, pattern 2, ...)
-		}
+//		System.out.println("pat1",patternBox.getSelectionModel().getSelectedIndex());
 
 
 		patternBox2.setDisable(propertyBox.getSelectionModel().getSelectedIndex() < 6);
@@ -418,6 +429,7 @@ public class PatternsEditionPane extends BorderPane {
 		dialog.setResultConverter(dialogButton -> {
 			if (dialogButton == ButtonType.OK) {
 				int propertyNum = propertyBox.getSelectionModel().getSelectedIndex();
+				System.out.println("Prop "+propertyNum+ " / " +propertyBox.getValue());
 
 				PatternProperty property = null;
 				PatternGroup pattern1 = null;
@@ -427,7 +439,7 @@ public class PatternsEditionPane extends BorderPane {
 
 				PatternGroup pattern2 = null;
 				if (propertyNum >= 6) {
-					pattern2 = getPatternListBox().getPatternGroups().get(patternBox.getSelectionModel().getSelectedIndex());
+					pattern2 = getPatternListBox().getPatternGroups().get(patternBox2.getSelectionModel().getSelectedIndex());;
 				}
 
 				switch (propertyNum) {
