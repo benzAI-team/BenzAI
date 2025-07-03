@@ -41,7 +41,10 @@ class PropertyListBox extends VBox {
         listView.setOnMouseClicked(event -> {
             GridPane selection = listView.getSelectionModel().getSelectedItem();
             if (selection != null) {
+                System.out.println ("Modify "+selectedIndex);
                 PropertyCloseButton button = (PropertyCloseButton) selection.getChildren().get(1);
+                // regarder ce que renvoie button.getIndex
+                System.out.println ("Modify "+button.getIndex());
                 select(button.getIndex());
             }
         });
@@ -63,6 +66,7 @@ class PropertyListBox extends VBox {
         modifyButton.setPrefWidth(125);
         modifyButton.setOnAction(e ->
         {
+            System.out.println("Modify button "+selectedIndex);
             Optional<PatternProperty> property = patternsEditionPane.getPropertyDialogBox(selectedIndex);
             property.ifPresent (value -> modifyEntry(value));
         });
@@ -70,6 +74,7 @@ class PropertyListBox extends VBox {
     }
 
     void select(int index) {
+        System.out.println("Select "+index);
         selectedIndex = index;
     }
 
@@ -98,7 +103,7 @@ class PropertyListBox extends VBox {
 
     void modifyEntry(PatternProperty patternProperty) {
         Label label = new Label(patternProperty.getLabel());
-        PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, patternProperties.size());
+        PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, selectedIndex);
 
         GridPane pane = new GridPane();
         pane.setPadding(new Insets(1));
@@ -114,6 +119,11 @@ class PropertyListBox extends VBox {
         boxItems.set(selectedIndex,pane);
         ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
         listView.setItems(items);
+
+        System.out.println("Index "+selectedIndex);
+
+        listView.getSelectionModel().select(selectedIndex);
+        select(selectedIndex);
     }
 
     void removeEntry(int index) {
