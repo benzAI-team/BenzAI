@@ -56,7 +56,7 @@ class PatternListBox extends VBox {
     }
 
     public Button buildAddButton() {
-        Button addButton = new Button("Add pattern");
+        Button addButton = new Button("Add");
         addButton.setPrefWidth(250);
         addButton.setOnAction(e -> {
             PatternGroup newPattern = new PatternGroup(patternsEditionPane, 3, null);
