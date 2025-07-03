@@ -14,7 +14,7 @@ public class PatternPropertyInteraction1 extends PatternPropertyInteraction {
 
     @Override
     String getLabel () {
-        return "Inter 1" + getPattern().getLabel().getText()  + getPattern2().getLabel().getText();
+        return "Inter 1 " + getPattern().getLabel().getText() + " " + getPattern2().getLabel().getText();
     }
 
     @Override
