@@ -41,10 +41,7 @@ class PropertyListBox extends VBox {
         listView.setOnMouseClicked(event -> {
             GridPane selection = listView.getSelectionModel().getSelectedItem();
             if (selection != null) {
-                System.out.println ("Modify "+selectedIndex);
                 PropertyCloseButton button = (PropertyCloseButton) selection.getChildren().get(1);
-                // regarder ce que renvoie button.getIndex
-                System.out.println ("Modify "+button.getIndex());
                 select(button.getIndex());
             }
         });
