@@ -376,6 +376,7 @@ public class PatternsEditionPane extends BorderPane {
 			patternList.add(pattern.getLabel().getText());
 		}
 		patternBox.getItems().addAll(patternList);
+		patternBox2.getItems().addAll(patternList);
 
 
 		// we take into account the current property (if any)
@@ -391,7 +392,6 @@ public class PatternsEditionPane extends BorderPane {
 			// TODO get the other values (pattern1, pattern 2, ...)
 		}
 
-
 		// we define the buttons of the dialog box
 		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
@@ -401,28 +401,34 @@ public class PatternsEditionPane extends BorderPane {
 		grid.setVgap(10);
 		grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
 
-		TextField occurrenceField = new TextField();
-		occurrenceField.setPromptText("# occurrences");
+		TextField minOccurrenceField = new TextField();
+		TextField maxOccurrenceField = new TextField();
+		minOccurrenceField.setPromptText("min");
+		maxOccurrenceField.setPromptText("max");
+		HBox occurrenceBox = new HBox();
+		occurrenceBox.getChildren().addAll (minOccurrenceField, maxOccurrenceField);
+		minOccurrenceField.setPrefWidth(100);
+		maxOccurrenceField.setPrefWidth(100);
 		grid.add(new Label("Property:"), 0, 0);
 		grid.add(propertyBox,1,0);
 		grid.add(new Label("Pattern"), 0, 1);
 		grid.add(patternBox, 1, 1);
-		grid.add(new Label("# occurrence"), 0, 2);
-		grid.add(occurrenceField, 1, 2);
+		grid.add(new Label("# occurrences"), 0, 2);
+		grid.add(occurrenceBox, 1, 2);
 		grid.add(new Label("Pattern 2"), 0, 3);
 		grid.add(patternBox2, 1, 3);
 
 		dialog.getDialogPane().setContent(grid);
-//		System.out.println("pat1",patternBox.getSelectionModel().getSelectedIndex());
-
 
 		patternBox2.setDisable(propertyBox.getSelectionModel().getSelectedIndex() < 6);
-		occurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+		minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+		maxOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 
 		// event management
 		propertyBox.setOnAction(event -> {
 			patternBox2.setDisable(propertyBox.getSelectionModel().getSelectedIndex() < 6);
-			occurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+			minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+			maxOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 		});
 
 		// computes the result
@@ -445,10 +451,10 @@ public class PatternsEditionPane extends BorderPane {
 				switch (propertyNum) {
 					case 0: property = new PatternPropertyExistence(pattern1); break;
 					case 1: property = new PatternPropertyExclusion(pattern1); break;
-					case 2: Integer.valueOf(occurrenceField.getText()); break;
-					case 3: Integer.valueOf(occurrenceField.getText()); break;
-					case 4: Integer.valueOf(occurrenceField.getText()); break;
-					case 5: Integer.valueOf(occurrenceField.getText()); break;
+					case 2: Integer.valueOf(minOccurrenceField.getText()); break;
+					case 3: Integer.valueOf(minOccurrenceField.getText()); break;
+					case 4: Integer.valueOf(minOccurrenceField.getText()); break;
+					case 5: Integer.valueOf(minOccurrenceField.getText()); break;
 					case 6: property = new PatternPropertyInteraction1(pattern1, pattern2); break;
 					case 7: property = new PatternPropertyInteraction2(pattern1, pattern2); break;
 					case 8: property = new PatternPropertyInteraction3(pattern1, pattern2); break;
