@@ -1,5 +1,6 @@
 package generator.properties.model;
 
+import constraints.PatternCollectionConstraint;
 import constraints.PatternConstraint;
 import generator.properties.model.filters.PatternFilter;
 import view.generator.ChoiceBoxCriterion;
@@ -10,7 +11,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 public class PatternProperty extends ModelProperty {
 
 	PatternProperty() {
-		super("pattern", "Pattern properties", new PatternConstraint(), new PatternFilter());
+		super("pattern", "Pattern properties", new PatternCollectionConstraint(), new PatternFilter());
 	}
 
 	@Override
@@ -33,5 +34,9 @@ public class PatternProperty extends ModelProperty {
 //		return (nbHexagons >= nbPositiveNodes) ? patternNbCrowns : 1;
 		// TODO The computation should take into account the property (existence, interaction and exclusion)
 		return 4;
+	}
+
+	public void addConstraint (PatternConstraint patternConstraint) {
+		((PatternCollectionConstraint) getConstraint()).addPatternConstraint(patternConstraint);
 	}
 }

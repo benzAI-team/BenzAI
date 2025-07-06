@@ -6,7 +6,7 @@ import org.chocosolver.solver.variables.Variable;
 
 import java.util.ArrayList;
 
-public class ExistencePatternConstraint extends PatternConstraint2 {
+public class ExistencePatternConstraint extends PatternConstraint {
 
     public ExistencePatternConstraint (Pattern pattern) {
         super(pattern); //
