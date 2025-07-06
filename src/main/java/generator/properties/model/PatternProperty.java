@@ -39,4 +39,8 @@ public class PatternProperty extends ModelProperty {
 	public void addConstraint (PatternConstraint patternConstraint) {
 		((PatternCollectionConstraint) getConstraint()).addPatternConstraint(patternConstraint);
 	}
+
+	public void reset() {
+		((PatternCollectionConstraint) getConstraint()).reset();
+	}
 }

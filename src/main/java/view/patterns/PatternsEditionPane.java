@@ -223,8 +223,10 @@ public class PatternsEditionPane extends BorderPane {
 		Button applyPatternButton = new Button("Apply");
 		applyPatternButton.setPrefWidth(250);
 		applyPatternButton.setOnAction(e -> {
-			for (PatternProperty type : propertyListBox.getPatternProperties())
+			patternConstraintHBox.reset();
+			for (PatternProperty type : propertyListBox.getPatternProperties()) {
 				type.setConstraint(patternConstraintHBox);
+			}
 
 //			ArrayList<Pattern> patterns = new ArrayList<>();
 //			for (PatternGroup group : patternListBox.getPatternGroups()) {

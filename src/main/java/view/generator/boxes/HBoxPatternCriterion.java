@@ -128,7 +128,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		return ((GeneratorPane) getPane()).getApplication();
 	}
 
-	public void setConstraint (PatternConstraint constraint) {
+	public void addConstraint (PatternConstraint constraint) {
 		System.out.println("setConstraint !!!!");
 		refreshPatternInformations("CONSTRAINT SET");
 		patternProperty.addConstraint(constraint);
@@ -136,5 +136,9 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 
 	private void setPatternProperty(PatternProperty patternProperty) {
 		this.patternProperty = patternProperty;
+	}
+
+	public void reset() {
+		patternProperty.reset();
 	}
 }

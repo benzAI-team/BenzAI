@@ -109,14 +109,10 @@ public class PatternConstraint extends BenzAIConstraint {
 		ArrayList<Pattern> symmetricPatterns = pattern.computeRotations();
 
 		patternOccurences = new PatternOccurences();
-		System.out.println("GM comp "+getGeneralModel());
 
 		for (Pattern f : symmetricPatterns) {
-			System.out.println("FOR ");
 			PatternOccurences x;
-			System.out.println("FOR 2");
 			x = getGeneralModel().computeTranslations(f);
-			System.out.println("FOR 3");
 			patternOccurences.addAll(x);
 		}
 
@@ -128,5 +124,13 @@ public class PatternConstraint extends BenzAIConstraint {
 
 	public PatternOccurences getPatternOccurences() {
 		return patternOccurences;
+	}
+
+	public ArrayList<Integer> getPresentHexagons() {
+		return presentHexagons;
+	}
+
+	public ArrayList<Integer> getAbsentHexagons() {
+		return absentHexagons;
 	}
 }

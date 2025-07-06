@@ -23,6 +23,7 @@ public class PatternCollectionConstraint extends BenzAIConstraint {
     @Override
     public void build(GeneralModel generalModel, ArrayList<PropertyExpression> expressionList) {
         for (BenzAIConstraint c : patternConstraints) {
+            System.out.println("build "+c);
             c.build(generalModel, expressionList);
         }
         super.build(generalModel,expressionList);
@@ -78,5 +79,9 @@ public class PatternCollectionConstraint extends BenzAIConstraint {
 
     public void addPatternConstraint (PatternConstraint patternConstraint) {
         patternConstraints.add(patternConstraint);
+    }
+
+    public void reset () {
+        patternConstraints = new ArrayList<>();
     }
 }

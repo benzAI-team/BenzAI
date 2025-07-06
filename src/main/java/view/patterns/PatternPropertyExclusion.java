@@ -1,5 +1,6 @@
 package view.patterns;
 
+import constraints.ExclusionPatternConstraint;
 import view.generator.boxes.HBoxPatternCriterion;
 
 public class PatternPropertyExclusion extends PatternProperty {
@@ -15,7 +16,7 @@ public class PatternPropertyExclusion extends PatternProperty {
 
     @Override
     void setConstraint(HBoxPatternCriterion patternConstraintHBox) {
-//        patternConstraintHBox.setConstraint(new ForbiddenPatternConstraint3(getPattern().exportPattern(), VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX));
+        patternConstraintHBox.addConstraint(new ExclusionPatternConstraint(getPattern().exportPattern()));
     }
 
     @Override

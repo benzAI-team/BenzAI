@@ -18,7 +18,7 @@ public class PatternPropertyExistence extends PatternProperty {
     void setConstraint(HBoxPatternCriterion patternConstraintHBox) {
 //        patternConstraintHBox.setConstraint(new SinglePattern3Constraint(getPattern().exportPattern(),
 //                VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-        patternConstraintHBox.setConstraint(new ExistencePatternConstraint(getPattern().exportPattern()));
+        patternConstraintHBox.addConstraint(new ExistencePatternConstraint(getPattern().exportPattern()));
     }
 
     @Override

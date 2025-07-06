@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class ExistencePatternConstraint extends PatternConstraint {
 
     public ExistencePatternConstraint (Pattern pattern) {
-        super(pattern); //
+        super(pattern);
     }
 
     public void postConstraints() {
