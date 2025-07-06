@@ -1,9 +1,6 @@
 package view.patterns;
 
-import constraints.SinglePattern3Constraint;
-import generator.OrderStrategy;
-import generator.ValueStrategy;
-import generator.VariableStrategy;
+import constraints.ExistencePatternConstraint;
 import view.generator.boxes.HBoxPatternCriterion;
 
 public class PatternPropertyExistence extends PatternProperty {
@@ -19,8 +16,9 @@ public class PatternPropertyExistence extends PatternProperty {
 
     @Override
     void setConstraint(HBoxPatternCriterion patternConstraintHBox) {
-        patternConstraintHBox.setConstraint(new SinglePattern3Constraint(getPattern().exportPattern(),
-                VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+//        patternConstraintHBox.setConstraint(new SinglePattern3Constraint(getPattern().exportPattern(),
+//                VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+        patternConstraintHBox.setConstraint(new ExistencePatternConstraint(getPattern().exportPattern()));
     }
 
     @Override
