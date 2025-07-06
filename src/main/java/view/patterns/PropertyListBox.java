@@ -20,6 +20,7 @@ class PropertyListBox extends VBox {
     private static ArrayList<GridPane> boxItems;
     private static ArrayList<PatternProperty> patternProperties = new ArrayList<>();
     private int selectedIndex;
+    private Button addButton;
 
     public PropertyListBox(PatternsEditionPane patternsEditionPane) {
         super(5.0);
@@ -48,11 +49,12 @@ class PropertyListBox extends VBox {
     }
 
     public Button buildAddButton() {
-        Button addButton = new Button("Add");
+        addButton = new Button("Add");
+        addButton.setDisable(true);
         addButton.setPrefWidth(125);
         addButton.setOnAction(e ->
         {
-            Optional<PatternProperty> property = patternsEditionPane.getPropertyDialogBox(-1);
+            Optional<PatternProperty> property = patternsEditionPane.getInteractionDialogBox(-1);
             property.ifPresent (value -> addEntry(value));
         });
         return addButton;
@@ -64,7 +66,13 @@ class PropertyListBox extends VBox {
         modifyButton.setOnAction(e ->
         {
             System.out.println("Modify button "+selectedIndex);
-            Optional<PatternProperty> property = patternsEditionPane.getPropertyDialogBox(selectedIndex);
+            Optional<PatternProperty> property;
+            if (patternProperties.get(selectedIndex).getPropertyType() < 6) {
+                property = patternsEditionPane.getPropertyDialogBox(selectedIndex);
+            }
+            else {
+                property = patternsEditionPane.getInteractionDialogBox(selectedIndex);
+            }
             property.ifPresent (value -> modifyEntry(value));
         });
         return modifyButton;
@@ -77,13 +85,14 @@ class PropertyListBox extends VBox {
 
     void addEntry(PatternProperty patternProperty) {
         Label label = new Label(patternProperty.getLabel());
-        PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, patternProperties.size());
 
         GridPane pane = new GridPane();
         pane.setPadding(new Insets(1));
 
         pane.add(label, 0, 0);
         label.setAlignment(Pos.BASELINE_CENTER);
+
+        PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, patternProperties.size(), patternProperty.getPropertyType() > 5);
 
         pane.add(button, 1, 0);
         button.setAlignment(Pos.BASELINE_RIGHT);
@@ -100,7 +109,7 @@ class PropertyListBox extends VBox {
 
     void modifyEntry(PatternProperty patternProperty) {
         Label label = new Label(patternProperty.getLabel());
-        PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, selectedIndex);
+        PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, selectedIndex, patternProperty.getPropertyType() > 5);
 
         GridPane pane = new GridPane();
         pane.setPadding(new Insets(1));
@@ -129,5 +138,9 @@ class PropertyListBox extends VBox {
 
     public static ArrayList<PatternProperty> getPatternProperties() {
         return patternProperties;
+    }
+
+    public Button getAddButton() {
+        return addButton;
     }
 }

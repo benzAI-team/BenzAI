@@ -10,30 +10,36 @@ public class PropertyCloseButton extends Button {
 
     private int index;
 
-    public PropertyCloseButton(PatternsEditionPane parent, int index) {
+    public PropertyCloseButton(PatternsEditionPane parent, int index, boolean print) {
 
         this.index = index;
 
-        Image image;
+        if (print) {
+            Image image;
 
-        image = new Image("/resources/graphics/close_button.png");
+            image = new Image("/resources/graphics/close_button.png");
 
-        ImageView view = new ImageView(image);
+            ImageView view = new ImageView(image);
 
-        this.resize(30, 30);
+            this.resize(30, 30);
 
-        this.setPadding(new Insets(0));
+            this.setPadding(new Insets(0));
 
-        this.setGraphic(view);
+            this.setGraphic(view);
 
-        this.setOnAction(e -> {
-            if (parent.getNbItems() == 1) {
-                // TODO check whether is the last one related to a given pattern
-                Utils.alert("You cannot delete the last property on a pattern.");
-            } else {
-                parent.getPatternListBox().removeEntry(index);
-            }
-        });
+            this.setOnAction(e -> {
+                if (parent.getNbItems() == 1) {
+                    // TODO check whether is the last one related to a given pattern
+                    Utils.alert("You cannot delete the last property on a pattern.");
+                } else {
+                    parent.getPatternListBox().removeEntry(index);
+                }
+            });
+        }
+        else {
+            setVisible(false);
+            setManaged(false);
+        }
     }
 
     public int getIndex() {

@@ -358,25 +358,17 @@ public class PatternsEditionPane extends BorderPane {
 		propertyList.add("Occurrence with no positive edge sharing");
 		propertyList.add("Occurrence with no hexagon sharing");
 
-		if (patternListBox.getPatternGroups().size() > 1) {
-			propertyList.add("Interaction with no positive hexagon sharing");
-			propertyList.add("Interaction with no positive edge sharing");
-			propertyList.add("Interaction with no hexagon sharing");
-		}
-
 		// we create the combo box for property
 		ComboBox propertyBox = new ComboBox();
 		propertyBox.getItems().addAll(propertyList);
 
 		// we create the combo box for possible patterns
 		ComboBox patternBox = new ComboBox();
-		ComboBox patternBox2 = new ComboBox();
 		ArrayList<String> patternList = new ArrayList<>();
 		for (PatternGroup pattern : patternListBox.getPatternGroups()) {
 			patternList.add(pattern.getLabel().getText());
 		}
 		patternBox.getItems().addAll(patternList);
-		patternBox2.getItems().addAll(patternList);
 
 
 		// we take into account the current property (if any)
@@ -386,9 +378,6 @@ public class PatternsEditionPane extends BorderPane {
 			propertyBox.getSelectionModel().select(propertyList.get(type));
 
 			patternBox.getSelectionModel().select(property.getPattern().getLabel().getText());
-			if (type >= 6) {
-				patternBox2.setValue(((PatternPropertyInteraction) property).getPattern2().getLabel().getText());
-			}
 			// TODO get the other values (pattern1, pattern 2, ...)
 		}
 
@@ -415,18 +404,14 @@ public class PatternsEditionPane extends BorderPane {
 		grid.add(patternBox, 1, 1);
 		grid.add(new Label("# occurrences"), 0, 2);
 		grid.add(occurrenceBox, 1, 2);
-		grid.add(new Label("Pattern 2"), 0, 3);
-		grid.add(patternBox2, 1, 3);
 
 		dialog.getDialogPane().setContent(grid);
 
-		patternBox2.setDisable(propertyBox.getSelectionModel().getSelectedIndex() < 6);
 		minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 		maxOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 
 		// event management
 		propertyBox.setOnAction(event -> {
-			patternBox2.setDisable(propertyBox.getSelectionModel().getSelectedIndex() < 6);
 			minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 			maxOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 		});
@@ -443,23 +428,98 @@ public class PatternsEditionPane extends BorderPane {
 					pattern1 = getPatternListBox().getPatternGroups().get(patternBox.getSelectionModel().getSelectedIndex());
 				}
 
-				PatternGroup pattern2 = null;
-				if (propertyNum >= 6) {
-					pattern2 = getPatternListBox().getPatternGroups().get(patternBox2.getSelectionModel().getSelectedIndex());;
-				}
-
 				switch (propertyNum) {
 					case 0: property = new PatternPropertyExistence(pattern1); break;
 					case 1: property = new PatternPropertyExclusion(pattern1); break;
-					case 2: Integer.valueOf(minOccurrenceField.getText()); break;
-					case 3: Integer.valueOf(minOccurrenceField.getText()); break;
-					case 4: Integer.valueOf(minOccurrenceField.getText()); break;
-					case 5: Integer.valueOf(minOccurrenceField.getText()); break;
-					case 6: property = new PatternPropertyInteraction1(pattern1, pattern2); break;
-					case 7: property = new PatternPropertyInteraction2(pattern1, pattern2); break;
-					case 8: property = new PatternPropertyInteraction3(pattern1, pattern2); break;
+					case 2: property = new PatternPropertyOccurrence(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 3: property = new PatternPropertyOccurrence1(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 4: property = new PatternPropertyOccurrence2(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 5: property = new PatternPropertyOccurrence3(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
 				}
 
+				return property;
+			}
+			return null;
+		});
+
+		return dialog.showAndWait();
+	}
+
+	Optional<PatternProperty> getInteractionDialogBox (int index) {
+		Dialog<PatternProperty> dialog = new Dialog<>();
+		dialog.setTitle("Interaction");
+		dialog.setHeaderText("Select the desired interaction");
+
+		// we create the property list
+		ArrayList<String> propertyList = new ArrayList<>();
+
+		propertyList.add("Interaction with no positive hexagon sharing");
+		propertyList.add("Interaction with no positive edge sharing");
+		propertyList.add("Interaction with no hexagon sharing");
+
+		// we create the combo box for property
+		ComboBox propertyBox = new ComboBox();
+		propertyBox.getItems().addAll(propertyList);
+
+		// we create the combo box for possible patterns
+		ComboBox patternBox = new ComboBox();
+		ComboBox patternBox2 = new ComboBox();
+		ArrayList<String> patternList = new ArrayList<>();
+		for (PatternGroup pattern : patternListBox.getPatternGroups()) {
+			patternList.add(pattern.getLabel().getText());
+		}
+		patternBox.getItems().addAll(patternList);
+		patternBox2.getItems().addAll(patternList);
+
+
+		// we take into account the current property (if any)
+		if (index != -1) {
+			PatternProperty property = PropertyListBox.getPatternProperties().get(index);
+			int type = property.getPropertyType();
+			propertyBox.getSelectionModel().select(propertyList.get(type-6));
+
+			patternBox.getSelectionModel().select(property.getPattern().getLabel().getText());
+			patternBox2.setValue(((PatternPropertyInteraction) property).getPattern2().getLabel().getText());
+			// TODO get the other values (pattern1, pattern 2, ...)
+		}
+
+		// we define the buttons of the dialog box
+		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+		// we create the form as a grid
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
+
+		grid.add(new Label("Property:"), 0, 0);
+		grid.add(propertyBox,1,0);
+		grid.add(new Label("Pattern"), 0, 1);
+		grid.add(patternBox, 1, 1);
+		grid.add(new Label("Pattern 2"), 0, 2);
+		grid.add(patternBox2, 1, 2);
+
+		dialog.getDialogPane().setContent(grid);
+
+		// computes the result
+		dialog.setResultConverter(dialogButton -> {
+			if (dialogButton == ButtonType.OK) {
+				int propertyNum = propertyBox.getSelectionModel().getSelectedIndex();
+				System.out.println("Prop "+propertyNum+ " / " +propertyBox.getValue());
+
+				PatternProperty property = null;
+
+				if (propertyNum != -1) {
+					PatternGroup pattern1 = getPatternListBox().getPatternGroups().get(patternBox.getSelectionModel().getSelectedIndex());
+
+					PatternGroup pattern2 = pattern2 = getPatternListBox().getPatternGroups().get(patternBox2.getSelectionModel().getSelectedIndex());;
+
+					switch (propertyNum) {
+						case 0: property = new PatternPropertyInteraction1(pattern1, pattern2); break;
+						case 1: property = new PatternPropertyInteraction2(pattern1, pattern2); break;
+						case 2: property = new PatternPropertyInteraction3(pattern1, pattern2); break;
+					}
+				}
 				return property;
 			}
 			return null;
