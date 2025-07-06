@@ -345,9 +345,14 @@ public class PatternsEditionPane extends BorderPane {
 	}
 
 	Optional<PatternProperty> getPropertyDialogBox (int index) {
+		// we take into account the current property
+		PatternProperty property = PropertyListBox.getPatternProperties().get(index);
+		int type = property.getPropertyType();
+
+		// we create the dialog box
 		Dialog<PatternProperty> dialog = new Dialog<>();
 		dialog.setTitle("Property");
-		dialog.setHeaderText("Select the desired property");
+		dialog.setHeaderText("Select the desired property for "+property.getPattern().getLabel().getText());
 
 		// we create the property list
 		ArrayList<String> propertyList = new ArrayList<>();
@@ -362,24 +367,7 @@ public class PatternsEditionPane extends BorderPane {
 		ComboBox propertyBox = new ComboBox();
 		propertyBox.getItems().addAll(propertyList);
 
-		// we create the combo box for possible patterns
-		ComboBox patternBox = new ComboBox();
-		ArrayList<String> patternList = new ArrayList<>();
-		for (PatternGroup pattern : patternListBox.getPatternGroups()) {
-			patternList.add(pattern.getLabel().getText());
-		}
-		patternBox.getItems().addAll(patternList);
-
-
-		// we take into account the current property (if any)
-		if (index != -1) {
-			PatternProperty property = PropertyListBox.getPatternProperties().get(index);
-			int type = property.getPropertyType();
-			propertyBox.getSelectionModel().select(propertyList.get(type));
-
-			patternBox.getSelectionModel().select(property.getPattern().getLabel().getText());
-			// TODO get the other values (pattern1, pattern 2, ...)
-		}
+		propertyBox.getSelectionModel().select(propertyList.get(type));
 
 		// we define the buttons of the dialog box
 		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -400,10 +388,8 @@ public class PatternsEditionPane extends BorderPane {
 		maxOccurrenceField.setPrefWidth(100);
 		grid.add(new Label("Property:"), 0, 0);
 		grid.add(propertyBox,1,0);
-		grid.add(new Label("Pattern"), 0, 1);
-		grid.add(patternBox, 1, 1);
-		grid.add(new Label("# occurrences"), 0, 2);
-		grid.add(occurrenceBox, 1, 2);
+		grid.add(new Label("# occurrences"), 0, 1);
+		grid.add(occurrenceBox, 1, 1);
 
 		dialog.getDialogPane().setContent(grid);
 
@@ -420,24 +406,20 @@ public class PatternsEditionPane extends BorderPane {
 		dialog.setResultConverter(dialogButton -> {
 			if (dialogButton == ButtonType.OK) {
 				int propertyNum = propertyBox.getSelectionModel().getSelectedIndex();
-				System.out.println("Prop "+propertyNum+ " / " +propertyBox.getValue());
 
-				PatternProperty property = null;
-				PatternGroup pattern1 = null;
-				if (propertyNum != -1) {
-					pattern1 = getPatternListBox().getPatternGroups().get(patternBox.getSelectionModel().getSelectedIndex());
-				}
+				PatternGroup pattern1 = property.getPattern();
+				PatternProperty newProperty = null;
 
 				switch (propertyNum) {
-					case 0: property = new PatternPropertyExistence(pattern1); break;
-					case 1: property = new PatternPropertyExclusion(pattern1); break;
-					case 2: property = new PatternPropertyOccurrence(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 3: property = new PatternPropertyOccurrence1(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 4: property = new PatternPropertyOccurrence2(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 5: property = new PatternPropertyOccurrence3(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 0: newProperty = new PatternPropertyExistence(pattern1); break;
+					case 1: newProperty = new PatternPropertyExclusion(pattern1); break;
+					case 2: newProperty = new PatternPropertyOccurrence(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 3: newProperty = new PatternPropertyOccurrence1(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 4: newProperty = new PatternPropertyOccurrence2(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 5: newProperty = new PatternPropertyOccurrence3(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
 				}
 
-				return property;
+				return newProperty;
 			}
 			return null;
 		});
