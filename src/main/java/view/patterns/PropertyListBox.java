@@ -45,6 +45,17 @@ class PropertyListBox extends VBox {
                 PropertyCloseButton button = (PropertyCloseButton) selection.getChildren().get(1);
                 select(button.getIndex());
             }
+
+            if (event.getClickCount() == 2) {
+                Optional<PatternProperty> property;
+                if (patternProperties.get(selectedIndex).getPropertyType() < 6) {
+                    property = patternsEditionPane.getPropertyDialogBox(selectedIndex);
+                }
+                else {
+                    property = patternsEditionPane.getInteractionDialogBox(selectedIndex);
+                }
+                property.ifPresent (value -> modifyEntry(value));
+            }
         });
     }
 
