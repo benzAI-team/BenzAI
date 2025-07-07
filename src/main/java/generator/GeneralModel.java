@@ -1323,7 +1323,7 @@ public class GeneralModel {
                             }
                         }
 
-                        fragmentOccurences.addOccurence(occurence);
+                        fragmentOccurences.addOccurrence(occurence);
                         fragmentOccurences.addCoordinate(coords);
                         fragmentOccurences.addOutterHexagons(outter);
                         fragmentOccurences.addPresentHexagons(present);

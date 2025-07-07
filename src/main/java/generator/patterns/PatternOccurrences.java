@@ -47,8 +47,8 @@ public class PatternOccurrences {
 		return allUnknownHexagons;
 	}
 
-	public void addOccurence(Integer[] occurence) {
-		occurences.add(occurence);
+	public void addOccurrence(Integer[] occurrence) {
+		occurences.add(occurrence);
 	}
 
 	public void addCoordinate(Couple<Integer, Integer>[] coordinate) {
