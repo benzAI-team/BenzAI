@@ -382,8 +382,14 @@ public class PatternsEditionPane extends BorderPane {
 
 		TextField minOccurrenceField = new TextField();
 		TextField maxOccurrenceField = new TextField();
-		minOccurrenceField.setPromptText("min");
-		maxOccurrenceField.setPromptText("max");
+		if (property.getPropertyType() > 1) {
+			minOccurrenceField.setText(Integer.toString(((PatternPropertyOccurrence) property).getMinOccurrence()));
+			maxOccurrenceField.setText(Integer.toString(((PatternPropertyOccurrence) property).getMaxOccurrence()));
+		}
+		else {
+			minOccurrenceField.setPromptText("min");
+			maxOccurrenceField.setPromptText("max");
+		}
 		HBox occurrenceBox = new HBox();
 		occurrenceBox.getChildren().addAll (minOccurrenceField, maxOccurrenceField);
 		minOccurrenceField.setPrefWidth(100);
