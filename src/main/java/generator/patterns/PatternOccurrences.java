@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class PatternOccurrences {
 
-	private final ArrayList<Integer[]> occurences;
+	private final ArrayList<Integer[]> occurrences;
 	private final ArrayList<Couple<Integer, Integer>[]> coordinates;
 
 	private final ArrayList<ArrayList<Integer>> allOutterHexagons;
@@ -15,7 +15,7 @@ public class PatternOccurrences {
 	private final ArrayList<ArrayList<Integer>> allUnknownHexagons;
 
 	public PatternOccurrences() {
-		occurences = new ArrayList<>();
+		occurrences = new ArrayList<>();
 		coordinates = new ArrayList<>();
 		allOutterHexagons = new ArrayList<>();
 		allPresentHexagons = new ArrayList<>();
@@ -23,8 +23,8 @@ public class PatternOccurrences {
 		allUnknownHexagons = new ArrayList<>();
 	}
 
-	public ArrayList<Integer[]> getOccurences() {
-		return occurences;
+	public ArrayList<Integer[]> getOccurrences() {
+		return occurrences;
 	}
 
 	public ArrayList<Couple<Integer, Integer>[]> getCoordinates() {
@@ -48,7 +48,7 @@ public class PatternOccurrences {
 	}
 
 	public void addOccurrence(Integer[] occurrence) {
-		occurences.add(occurrence);
+		occurrences.add(occurrence);
 	}
 
 	public void addCoordinate(Couple<Integer, Integer>[] coordinate) {
@@ -71,21 +71,21 @@ public class PatternOccurrences {
 		allUnknownHexagons.add(hexagons);
 	}
 
-	private void addAllOccurences(ArrayList<Integer[]> occurences) {
-		this.occurences.addAll(occurences);
+	private void addAllOccurrences(ArrayList<Integer[]> occurrences) {
+		this.occurrences.addAll(occurrences);
 	}
 
 	private void addAllCoordinates(ArrayList<Couple<Integer, Integer>[]> coordinates) {
 		this.coordinates.addAll(coordinates);
 	}
 
-	public void addAll(PatternOccurrences fragmentOccurences) {
-		this.addAllOccurences(fragmentOccurences.getOccurences());
-		this.addAllCoordinates(fragmentOccurences.getCoordinates());
-		allOutterHexagons.addAll(fragmentOccurences.getAllOutterHexagons());
-		allPresentHexagons.addAll(fragmentOccurences.getAllPresentHexagons());
-		allAbsentHexagons.addAll(fragmentOccurences.getAllAbsentHexagons());
-		allUnknownHexagons.addAll(fragmentOccurences.getAllUnknownHexagons());
+	public void addAll(PatternOccurrences fragmentOccurrences) {
+		this.addAllOccurrences(fragmentOccurrences.getOccurrences());
+		this.addAllCoordinates(fragmentOccurrences.getCoordinates());
+		allOutterHexagons.addAll(fragmentOccurrences.getAllOutterHexagons());
+		allPresentHexagons.addAll(fragmentOccurrences.getAllPresentHexagons());
+		allAbsentHexagons.addAll(fragmentOccurrences.getAllAbsentHexagons());
+		allUnknownHexagons.addAll(fragmentOccurrences.getAllUnknownHexagons());
 
 //		for (int i = 0; i < fragmentOccurences.size(); i++) {
 //			Integer[] occurence = fragmentOccurences.getOccurences().get(i);
@@ -112,12 +112,12 @@ public class PatternOccurrences {
 	}
 
 	public int size() {
-		return occurences.size();
+		return occurrences.size();
 	}
 
 	public boolean occurencesContains(Integer[] occurence) {
 
-		for (Integer[] occurence2 : occurences)
+		for (Integer[] occurence2 : occurrences)
 			if (occurence.equals(occurence2))
 				return true;
 

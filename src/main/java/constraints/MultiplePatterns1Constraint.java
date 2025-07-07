@@ -68,7 +68,7 @@ public class MultiplePatterns1Constraint extends BenzAIConstraint {
 			Pattern pattern = patterns.get(i);
 			PatternOccurrences patternOccurences = patternsOccurences.get(i);
 
-			BoolVar[] presences = new BoolVar[patternOccurences.getOccurences().size()];
+			BoolVar[] presences = new BoolVar[patternOccurences.getOccurrences().size()];
 			for (int j = 0; j < presences.length; j++)
 				presences[j] = getGeneralModel().getProblem().boolVar("presence_" + i + "_" + j);
 
@@ -105,7 +105,7 @@ public class MultiplePatterns1Constraint extends BenzAIConstraint {
 
 			PatternOccurrences patternOccurences = patternsOccurences.get(f);
 			BoolVar[] presences = allPresences.get(f);
-			ArrayList<Integer[]> occurences = patternOccurences.getOccurences();
+			ArrayList<Integer[]> occurences = patternOccurences.getOccurrences();
 
 			for (int i = 0; i < occurences.size(); i++) {
 

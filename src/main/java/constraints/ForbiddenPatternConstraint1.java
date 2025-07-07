@@ -47,7 +47,7 @@ public class ForbiddenPatternConstraint1 extends BenzAIConstraint {
 		computePatternOccurences();
 		
 
-		presences = new BoolVar[patternOccurences.getOccurences().size()];
+		presences = new BoolVar[patternOccurences.getOccurrences().size()];
 		for (int i = 0 ; i < presences.length ; i++)
 			presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
 		
@@ -70,7 +70,7 @@ public class ForbiddenPatternConstraint1 extends BenzAIConstraint {
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		ArrayList<Integer []> occurences = patternOccurences.getOccurences();
+		ArrayList<Integer []> occurences = patternOccurences.getOccurrences();
 		
 		for (int i = 0 ; i < occurences.size() ; i++) {
 			

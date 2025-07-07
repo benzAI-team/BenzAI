@@ -16,7 +16,7 @@ public class ExclusionPatternConstraint  extends PatternConstraint {
     public void postConstraints() {
         GeneralModel generalModel = getGeneralModel();
 
-        ArrayList<Integer[]> occurrences = getPatternOccurences().getOccurences();
+        ArrayList<Integer[]> occurrences = getPatternOccurences().getOccurrences();
 
         for (int i = 0; i < occurrences.size(); i++) {
             Integer[] occurrence = occurrences.get(i);

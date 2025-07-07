@@ -61,7 +61,7 @@ public class ForbiddenPatternConstraint3 extends BenzAIConstraint {
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		ArrayList<Integer []> occurences = patternOccurences.getOccurences();
+		ArrayList<Integer []> occurences = patternOccurences.getOccurrences();
 		
 		for (int i = 0 ; i < occurences.size() ; i++) {
 			

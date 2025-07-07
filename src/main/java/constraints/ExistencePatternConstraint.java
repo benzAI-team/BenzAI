@@ -17,7 +17,7 @@ public class ExistencePatternConstraint extends PatternConstraint {
 
         GeneralModel generalModel = getGeneralModel();
 
-        ArrayList<Integer[]> occurrences = getPatternOccurences().getOccurences();
+        ArrayList<Integer[]> occurrences = getPatternOccurences().getOccurrences();
 
         if (occurrences.isEmpty()) {
             generalModel.getProblem().sum(generalModel.getHexBoolVars(), "=", 0).post();

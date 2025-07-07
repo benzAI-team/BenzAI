@@ -52,11 +52,11 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 		
 		occurenceVar = generalModel.getProblem().intVar("n_e", 0, nbOccurences);
 		
-		presences = new BoolVar[patternOccurences.getOccurences().size()];
+		presences = new BoolVar[patternOccurences.getOccurrences().size()];
 		for (int i = 0 ; i < presences.length ; i++)
 			presences[i] = generalModel.getProblem().boolVar("presence_" + i);
 		
-		presences2 = new BoolVar[patternOccurences.getOccurences().size()];
+		presences2 = new BoolVar[patternOccurences.getOccurrences().size()];
 		for (int i = 0 ; i < presences2.length ; i++)
 			presences2[i] = generalModel.getProblem().boolVar("presence2_" + i);
 		
@@ -81,7 +81,7 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 	public void postConstraints() {
 		GeneralModel generalModel = getGeneralModel();
 
-		ArrayList<Integer []> occurences = patternOccurences.getOccurences();
+		ArrayList<Integer []> occurences = patternOccurences.getOccurrences();
 		
 		for (int i = 0 ; i < occurences.size() ; i++) {
 			
