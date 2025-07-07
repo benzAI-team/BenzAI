@@ -1,5 +1,6 @@
 package view.patterns;
 
+import constraints.OccurrencePatternConstraint;
 import view.generator.boxes.HBoxPatternCriterion;
 
 
@@ -20,6 +21,7 @@ class PatternPropertyOccurrence extends PatternProperty {
 
     @Override
     void setConstraint(HBoxPatternCriterion patternConstraintHBox) {
+        patternConstraintHBox.addConstraint(new OccurrencePatternConstraint(getPattern().exportPattern(),minOccurrence,maxOccurrence));
     }
 
     @Override

@@ -1,10 +1,10 @@
 package generator.patterns;
 
-import java.util.ArrayList;
-
 import utils.Couple;
 
-public class PatternOccurences {
+import java.util.ArrayList;
+
+public class PatternOccurrences {
 
 	private final ArrayList<Integer[]> occurences;
 	private final ArrayList<Couple<Integer, Integer>[]> coordinates;
@@ -14,7 +14,7 @@ public class PatternOccurences {
 	private final ArrayList<ArrayList<Integer>> allAbsentHexagons;
 	private final ArrayList<ArrayList<Integer>> allUnknownHexagons;
 
-	public PatternOccurences() {
+	public PatternOccurrences() {
 		occurences = new ArrayList<>();
 		coordinates = new ArrayList<>();
 		allOutterHexagons = new ArrayList<>();
@@ -79,7 +79,7 @@ public class PatternOccurences {
 		this.coordinates.addAll(coordinates);
 	}
 
-	public void addAll(PatternOccurences fragmentOccurences) {
+	public void addAll(PatternOccurrences fragmentOccurences) {
 		this.addAllOccurences(fragmentOccurences.getOccurences());
 		this.addAllCoordinates(fragmentOccurences.getCoordinates());
 		allOutterHexagons.addAll(fragmentOccurences.getAllOutterHexagons());

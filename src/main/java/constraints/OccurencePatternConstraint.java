@@ -6,7 +6,7 @@ import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
-import generator.patterns.PatternOccurences;
+import generator.patterns.PatternOccurrences;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
 import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
@@ -30,7 +30,7 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 	private IntVar occurenceVar;
 	private BoolVar [] presences2;
 	
-	private PatternOccurences patternOccurences;
+	private PatternOccurrences patternOccurences;
 	
 	private final VariableStrategy variablesStrategy;
 	private final ValueStrategy valueStrategy;
@@ -317,7 +317,7 @@ public class OccurencePatternConstraint extends BenzAIConstraint {
 
 		ArrayList<Pattern> symmetricPatterns = pattern.computeRotations();
 		
-		patternOccurences = new PatternOccurences();
+		patternOccurences = new PatternOccurrences();
 		
 		for (Pattern f : symmetricPatterns)
 			patternOccurences.addAll(getGeneralModel().computeTranslations(f));	

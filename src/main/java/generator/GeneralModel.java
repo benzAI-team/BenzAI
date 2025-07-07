@@ -2,7 +2,7 @@ package generator;
 
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
-import generator.patterns.PatternOccurences;
+import generator.patterns.PatternOccurrences;
 import generator.properties.Property;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
@@ -1156,9 +1156,9 @@ public class GeneralModel {
     }
 
     @SuppressWarnings("unchecked")
-    public PatternOccurences computeTranslations(Pattern pattern) {
+    public PatternOccurrences computeTranslations(Pattern pattern) {
 
-        PatternOccurences fragmentOccurences = new PatternOccurences();
+        PatternOccurrences fragmentOccurences = new PatternOccurrences();
 
         /*
          * Trouver l'hexagone pr�sent du fragment le plus en haut � gauche

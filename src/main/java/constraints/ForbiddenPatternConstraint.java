@@ -3,7 +3,7 @@ package constraints;
 import generator.GeneralModel;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
-import generator.patterns.PatternOccurences;
+import generator.patterns.PatternOccurrences;
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
 import org.chocosolver.solver.search.strategy.selectors.variables.FirstFail;
@@ -23,7 +23,7 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 	private ArrayList<Integer> absentHexagons;
 	private BoolVar [] presences;
 	
-	private PatternOccurences patternOccurences;
+	private PatternOccurrences patternOccurences;
 	
 	public ForbiddenPatternConstraint(Pattern pattern) {
 		super();
@@ -167,7 +167,7 @@ public class ForbiddenPatternConstraint extends BenzAIConstraint {
 	private void computePatternOccurences() {
 
 		ArrayList<Pattern> symmetricPatterns = pattern.computeRotations();
-		patternOccurences = new PatternOccurences();
+		patternOccurences = new PatternOccurrences();
 		
 		for (Pattern f : symmetricPatterns)
 			patternOccurences.addAll(getGeneralModel().computeTranslations(f));

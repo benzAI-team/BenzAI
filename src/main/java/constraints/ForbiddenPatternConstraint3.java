@@ -5,7 +5,7 @@ import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
-import generator.patterns.PatternOccurences;
+import generator.patterns.PatternOccurrences;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
 import org.chocosolver.solver.search.strategy.selectors.values.IntValueSelector;
@@ -25,7 +25,7 @@ public class ForbiddenPatternConstraint3 extends BenzAIConstraint {
 	
 	private ArrayList<Integer> presentHexagons, unknownHexagons, absentHexagons;
 	
-	private PatternOccurences patternOccurences;
+	private PatternOccurrences patternOccurences;
 	
 	private final VariableStrategy variableStrategy;
 	private final ValueStrategy valueStrategy;
@@ -151,7 +151,7 @@ public class ForbiddenPatternConstraint3 extends BenzAIConstraint {
 	private void computePatternOccurences() {
 		
 		symmetricPatterns = pattern.computeRotations();	
-		patternOccurences = new PatternOccurences();
+		patternOccurences = new PatternOccurrences();
 		
 		for (Pattern f : symmetricPatterns)
 			patternOccurences.addAll(getGeneralModel().computeTranslations(f));

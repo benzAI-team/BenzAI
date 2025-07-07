@@ -6,7 +6,7 @@ import generator.ValueStrategy;
 import generator.VariableStrategy;
 import generator.patterns.Pattern;
 import generator.patterns.PatternLabel;
-import generator.patterns.PatternOccurences;
+import generator.patterns.PatternOccurrences;
 import generator.patterns.PatternsInterraction;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMax;
 import org.chocosolver.solver.search.strategy.selectors.values.IntDomainMin;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class MultiplePatterns1Constraint extends BenzAIConstraint {
 
 	private final ArrayList<Pattern> patterns;
-	private ArrayList<PatternOccurences> patternsOccurences;
+	private ArrayList<PatternOccurrences> patternsOccurences;
 
 	private ArrayList<BoolVar[]> allPresences;
 
@@ -66,7 +66,7 @@ public class MultiplePatterns1Constraint extends BenzAIConstraint {
 		for (int i = 0; i < patterns.size(); i++) {
 
 			Pattern pattern = patterns.get(i);
-			PatternOccurences patternOccurences = patternsOccurences.get(i);
+			PatternOccurrences patternOccurences = patternsOccurences.get(i);
 
 			BoolVar[] presences = new BoolVar[patternOccurences.getOccurences().size()];
 			for (int j = 0; j < presences.length; j++)
@@ -103,7 +103,7 @@ public class MultiplePatterns1Constraint extends BenzAIConstraint {
 
 		for (int f = 0; f < patterns.size(); f++) {
 
-			PatternOccurences patternOccurences = patternsOccurences.get(f);
+			PatternOccurrences patternOccurences = patternsOccurences.get(f);
 			BoolVar[] presences = allPresences.get(f);
 			ArrayList<Integer[]> occurences = patternOccurences.getOccurences();
 
@@ -139,8 +139,8 @@ public class MultiplePatterns1Constraint extends BenzAIConstraint {
 
 				if (i != j) {
 
-					PatternOccurences patternOccurences1 = patternsOccurences.get(i);
-					PatternOccurences patternOccurences2 = patternsOccurences.get(j);
+					PatternOccurrences patternOccurences1 = patternsOccurences.get(i);
+					PatternOccurrences patternOccurences2 = patternsOccurences.get(j);
 
 					BoolVar[] presences1 = allPresences.get(i);
 					BoolVar[] presences2 = allPresences.get(j);
@@ -361,10 +361,10 @@ public class MultiplePatterns1Constraint extends BenzAIConstraint {
 
 			ArrayList<Pattern> symmetricPatterns = pattern.computeRotations();
 
-			PatternOccurences patternOccurences = new PatternOccurences();
+			PatternOccurrences patternOccurences = new PatternOccurrences();
 
 			for (Pattern f : symmetricPatterns) {
-				PatternOccurences translations = generalModel.computeTranslations(f);
+				PatternOccurrences translations = generalModel.computeTranslations(f);
 				patternOccurences.addAll(translations);
 			}
 
