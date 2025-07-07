@@ -112,11 +112,8 @@ public class PatternConstraint extends BenzAIConstraint {
 		patternOccurences = new PatternOccurrences();
 
 		for (Pattern f : symmetricPatterns) {
-			PatternOccurrences x;
-			x = getGeneralModel().computeTranslations(f);
-			patternOccurences.addAll(x);
+			patternOccurences.addAll(getGeneralModel().computeTranslations(f));
 		}
-
 	}
 
 	BoolVar[] getPresenceVariables() {
