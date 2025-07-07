@@ -115,10 +115,10 @@ public class PatternOccurrences {
 		return occurrences.size();
 	}
 
-	public boolean occurencesContains(Integer[] occurence) {
+	public boolean occurrencesContains(Integer[] occurrence) {
 
-		for (Integer[] occurence2 : occurrences)
-			if (occurence.equals(occurence2))
+		for (Integer[] occurrence2 : occurrences)
+			if (occurrence.equals(occurrence2))
 				return true;
 
 		return false;

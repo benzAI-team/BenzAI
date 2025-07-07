@@ -27,6 +27,7 @@ public class PatternConstraint extends BenzAIConstraint {
 	public void buildVariables() {
 		System.out.println("Build Variable PatternConstraints");
 		computePatternOccurrences();
+		System.out.println("# Occurrences "+patternOccurences.getOccurrences().size());
 		presences = new BoolVar[patternOccurences.getOccurrences().size()];
 		for (int i = 0; i < presences.length; i++) {
 			presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
