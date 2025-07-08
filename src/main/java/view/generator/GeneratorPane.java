@@ -68,6 +68,10 @@ public class GeneratorPane extends ScrollPaneWithPropertyList {
 	public GeneratorPane(BenzenoidApplication application) {
 		this.application = application;
 		isRunning = false;
+
+		setOnMouseEntered(event -> {
+			refreshGenerationPossibility();
+		});
 		initialize();
 	}
 
