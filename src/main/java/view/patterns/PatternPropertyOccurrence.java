@@ -7,21 +7,23 @@ import view.generator.boxes.HBoxPatternCriterion;
 class PatternPropertyOccurrence extends PatternProperty {
     int minOccurrence;
     int maxOccurrence;
+    Interaction interaction;
 
-    PatternPropertyOccurrence (PatternGroup pattern, int minOccurrence, int maxOccurrence) {
+    PatternPropertyOccurrence (PatternGroup pattern, Interaction interaction, int minOccurrence, int maxOccurrence) {
         super (pattern);
+        this.interaction = interaction;
         this.minOccurrence = minOccurrence;
         this.maxOccurrence = maxOccurrence;
     }
 
     @Override
     String getLabel () {
-        return "Occurr " + getPattern().getLabel().getText() + " " + minOccurrence + "-" + maxOccurrence;
+        return "Occurr " + interaction.getLabel() + getPattern().getLabel().getText() + " " + minOccurrence + "-" + maxOccurrence;
     }
 
     @Override
     void setConstraint(HBoxPatternCriterion patternConstraintHBox) {
-        patternConstraintHBox.addConstraint(new OccurrencePatternConstraint(getPattern().exportPattern(),minOccurrence,maxOccurrence));
+        patternConstraintHBox.addConstraint(new OccurrencePatternConstraint(getPattern().exportPattern(), interaction, minOccurrence, maxOccurrence));
     }
 
     @Override

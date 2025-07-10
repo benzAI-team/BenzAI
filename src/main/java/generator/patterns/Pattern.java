@@ -17,6 +17,7 @@ public class Pattern {
 	private final int[][] neighborGraph;
 	private final Node center;
 	private final PatternFileWriter patternFileWriter = new PatternFileWriter(this);
+	private PatternOccurrences patternOccurrences;
 
 	public Pattern(int[][] matrix, PatternLabel[] labels, Node[] nodesRefs, Node center,
 				   int[][] neighborGraph, int order) {
@@ -27,6 +28,7 @@ public class Pattern {
 		this.center = center;
 		this.neighborGraph = neighborGraph;
 		this.order = order;
+		this.patternOccurrences = null;
 	}
 
 	public void export(File file) throws IOException {
@@ -478,4 +480,11 @@ public class Pattern {
 		return labels;
 	}
 
+	public void setPatternOccurrences(PatternOccurrences patternOccurrences) {
+		this.patternOccurrences = patternOccurrences;
+	}
+
+	public PatternOccurrences getPatternOccurrences() {
+		return patternOccurrences;
+	}
 }

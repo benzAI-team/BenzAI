@@ -54,6 +54,8 @@ public class PatternConstraint extends BenzAIConstraint {
 
 		ArrayList<Integer[]> occurrences = patternOccurences.getOccurrences();
 
+		System.out.println("Size "+occurrences.size());
+
 		for (int i = 0; i < occurrences.size(); i++) {
 
 			Integer[] occurrence = occurrences.get(i);
@@ -114,6 +116,7 @@ public class PatternConstraint extends BenzAIConstraint {
 		for (Pattern f : symmetricPatterns) {
 			patternOccurences.addAll(getGeneralModel().computeTranslations(f));
 		}
+		pattern.setPatternOccurrences(patternOccurences);
 	}
 
 	BoolVar[] getPresenceVariables() {
@@ -130,5 +133,9 @@ public class PatternConstraint extends BenzAIConstraint {
 
 	public ArrayList<Integer> getAbsentHexagons() {
 		return absentHexagons;
+	}
+
+	public Pattern getPattern() {
+		return pattern;
 	}
 }

@@ -421,10 +421,10 @@ public class PatternsEditionPane extends BorderPane {
 				switch (propertyNum) {
 					case 0: newProperty = new PatternPropertyExistence(pattern1); break;
 					case 1: newProperty = new PatternPropertyExclusion(pattern1); break;
-					case 2: newProperty = new PatternPropertyOccurrence(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 3: newProperty = new PatternPropertyOccurrence1(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 4: newProperty = new PatternPropertyOccurrence2(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 5: newProperty = new PatternPropertyOccurrence3(pattern1,Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 2: newProperty = new PatternPropertyOccurrence(pattern1, new NoInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 3: newProperty = new PatternPropertyOccurrence(pattern1, new NoPositiveInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 4: newProperty = new PatternPropertyOccurrence(pattern1, new NoInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 5: newProperty = new PatternPropertyOccurrence(pattern1, new NoHexagonInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
 				}
 
 				return newProperty;
@@ -504,11 +504,11 @@ public class PatternsEditionPane extends BorderPane {
 
 					PatternGroup pattern2 = pattern2 = getPatternListBox().getPatternGroups().get(patternBox2.getSelectionModel().getSelectedIndex());;
 
-					switch (propertyNum) {
-						case 0: property = new PatternPropertyInteraction1(pattern1, pattern2); break;
-						case 1: property = new PatternPropertyInteraction2(pattern1, pattern2); break;
-						case 2: property = new PatternPropertyInteraction3(pattern1, pattern2); break;
-					}
+//					switch (propertyNum) {
+//						case 0: property = new PatternPropertyInteraction1(pattern1, pattern2); break;
+//						case 1: property = new PatternPropertyInteraction2(pattern1, pattern2); break;
+//						case 2: property = new PatternPropertyInteraction3(pattern1, pattern2); break;
+//					}
 				}
 				return property;
 			}
