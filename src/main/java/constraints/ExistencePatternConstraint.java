@@ -1,14 +1,14 @@
 package constraints;
 
 import generator.GeneralModel;
-import generator.patterns.Pattern;
 import org.chocosolver.solver.variables.Variable;
+import view.patterns.PatternGroup;
 
 import java.util.ArrayList;
 
 public class ExistencePatternConstraint extends PatternConstraint {
 
-    public ExistencePatternConstraint (Pattern pattern) {
+    public ExistencePatternConstraint (PatternGroup pattern) {
         super(pattern);
     }
 
@@ -17,7 +17,7 @@ public class ExistencePatternConstraint extends PatternConstraint {
 
         GeneralModel generalModel = getGeneralModel();
 
-        ArrayList<Integer[]> occurrences = getPatternOccurences().getOccurrences();
+        ArrayList<Integer[]> occurrences = getPatternOccurrences().getOccurrences();
 
         if (occurrences.isEmpty()) {
             generalModel.getProblem().sum(generalModel.getHexBoolVars(), "=", 0).post();

@@ -1,12 +1,12 @@
 package constraints;
 
 import generator.GeneralModel;
-import generator.patterns.Pattern;
 import generator.patterns.PatternOccurrences;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
 import view.patterns.Interaction;
+import view.patterns.PatternGroup;
 
 public class OccurrencePatternConstraint extends PatternConstraint {
     private int minOccurrence;
@@ -14,7 +14,7 @@ public class OccurrencePatternConstraint extends PatternConstraint {
     private IntVar occurrenceNumber;
     private Interaction interaction;
 
-    public OccurrencePatternConstraint(Pattern pattern, Interaction interaction, int minOccurrence, int maxOccurrence) {
+    public OccurrencePatternConstraint(PatternGroup pattern, Interaction interaction, int minOccurrence, int maxOccurrence) {
         super(pattern);
         this.interaction = interaction;
         this.minOccurrence = minOccurrence;
@@ -33,9 +33,7 @@ public class OccurrencePatternConstraint extends PatternConstraint {
         super.postConstraints();
 
         GeneralModel generalModel = getGeneralModel();
-        System.out.println("Post ctr occur"+ getPresenceVariables() + " " + getGeneralModel() );
         generalModel.getProblem().sum(getPresenceVariables(), "=", occurrenceNumber).post();
-
 
         // we post interaction constraints (if any)
         BoolVar[] presences = getPresenceVariables();
@@ -54,6 +52,5 @@ public class OccurrencePatternConstraint extends PatternConstraint {
                 }
             }
         }
-
     }
 }

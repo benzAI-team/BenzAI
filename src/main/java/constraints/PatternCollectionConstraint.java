@@ -14,15 +14,21 @@ import java.util.ArrayList;
 
 public class PatternCollectionConstraint extends BenzAIConstraint {
     ArrayList<PatternConstraint> patternConstraints;
-    ArrayList<PatternConstraint> interactionConstraints;
+    ArrayList<InteractionPatternConstraint> interactionConstraints;
 
     public PatternCollectionConstraint() {
+
         patternConstraints = new ArrayList<>();
+        interactionConstraints = new ArrayList<>();
     }
 
     @Override
     public void build(GeneralModel generalModel, ArrayList<PropertyExpression> expressionList) {
         for (BenzAIConstraint c : patternConstraints) {
+            System.out.println("build "+c);
+            c.build(generalModel, expressionList);
+        }
+        for (BenzAIConstraint c : interactionConstraints) {
             System.out.println("build "+c);
             c.build(generalModel, expressionList);
         }
@@ -81,7 +87,12 @@ public class PatternCollectionConstraint extends BenzAIConstraint {
         patternConstraints.add(patternConstraint);
     }
 
+    public void addInteractionConstraint (InteractionPatternConstraint interactionConstraint) {
+        interactionConstraints.add(interactionConstraint);
+    }
+
     public void reset () {
         patternConstraints = new ArrayList<>();
+        interactionConstraints = new ArrayList<>();
     }
 }

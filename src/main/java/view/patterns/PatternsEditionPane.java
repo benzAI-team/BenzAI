@@ -28,6 +28,7 @@ public class PatternsEditionPane extends BorderPane {
 	private PatternLabel lastLabel;   // the label of the last color assign to a hexagon
 	private PatternListBox patternListBox;
 	private PropertyListBox propertyListBox;
+	private InteractionListBox interactionListBox;
 
 	public PatternsEditionPane(HBoxPatternCriterion patternConstraintHBox) {
 		super();
@@ -193,6 +194,7 @@ public class PatternsEditionPane extends BorderPane {
 
 		patternListBox = new PatternListBox(this);
 		propertyListBox = new PropertyListBox(this);
+		interactionListBox = new InteractionListBox(this);
 
 		borderPane = new BorderPane();
 		borderPane.setCenter(selectedPatternGroup);
@@ -202,7 +204,7 @@ public class PatternsEditionPane extends BorderPane {
 		sep1.setStyle("-fx-background-color: #0000ff;");
 		Separator sep2 = new Separator();
 		sep2.setStyle("-fx-background-color: #0000ff;");
-		rightPanel.getChildren().addAll(patternListBox, sep1, propertyListBox, sep2,buildApplyButton());
+		rightPanel.getChildren().addAll(patternListBox, sep1, propertyListBox, interactionListBox, sep2,buildApplyButton());
 		borderPane.setRight(rightPanel);
 		this.setCenter(borderPane);
 
@@ -225,60 +227,13 @@ public class PatternsEditionPane extends BorderPane {
 		applyPatternButton.setOnAction(e -> {
 			patternConstraintHBox.reset();
 			for (PatternProperty type : propertyListBox.getPatternProperties()) {
-				type.setConstraint(patternConstraintHBox);
+				type.addConstraint(patternConstraintHBox);
 			}
 
-//			ArrayList<Pattern> patterns = new ArrayList<>();
-//			for (PatternGroup group : patternListBox.getPatternGroups()) {
-//				patterns.add(buildPattern(group));
-//			}
-//
-//
-//			PatternGenerationType type = null;
-//			PropertyExpression expression = null;
-//
-//			if (PatternListBox.getBoxItems().size() == 1) {
-//				if (patternPropertyMenu.getDisableItem().isSelected()) {
-//					patternConstraintHBox.refreshPatternInformations("FORBIDDEN_PATTERN");
-//					type = PatternGenerationType.FORBIDDEN_PATTERN;
-//					expression = new SubjectExpression("FORBIDDEN_PATTERN");
-//					patternConstraintHBox.getPatternProperty().setConstraint(new ForbiddenPatternConstraint3(patternInformations.getPatterns().get(0),
-//							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX));
-//				} else {
-//					if (Utils.isNumber(patternPropertyMenu.getOccurencesField().getText())) {
-//						type = PatternGenerationType.PATTERN_OCCURENCES;
-//						patternConstraintHBox.refreshPatternInformations("OCCURRENCES_PATTERN: " + patternPropertyMenu.getOccurencesField().getText());
-//						expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=",
-//								Integer.parseInt(patternPropertyMenu.getOccurencesField().getText()));
-//					} else {
-//						type = PatternGenerationType.SINGLE_PATTERN_3;
-//						patternConstraintHBox.refreshPatternInformations("SINGLE_PATTERN");
-//						expression = new SubjectExpression("SINGLE_PATTERN");
-//						patternConstraintHBox.getPatternProperty().setConstraint(new SinglePattern3Constraint(patternInformations.getPatterns().get(0),
-//								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-//					}
-//				}
-//			}
-//			else {
-//				if (patternPropertyMenu.getItemUndisjunct().isSelected() || patternPropertyMenu.getItemDisjunct().isSelected() || patternPropertyMenu.getItemNNDisjunct().isSelected()) {
-//					patternConstraintHBox.refreshPatternInformations("MULTIPLE_PATTERNS");
-//					type = PatternGenerationType.MULTIPLE_PATTERN_3;
-//					expression = new SubjectExpression("MULTIPLE_PATTERNS");
-//					patternConstraintHBox.getPatternProperty().setConstraint(new MultiplePatterns3Constraint(patternInformations.getPatterns(),
-//							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-//				}
-//			}
+			for (InteractionItem type : interactionListBox.getInteractions()) {
+				type.addInteraction(patternConstraintHBox);
+			}
 
-//			if (patternPropertyMenu.getItemUndisjunct().isSelected())
-//				patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
-//
-//			else if (patternPropertyMenu.getItemDisjunct().isSelected())
-//				patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
-//
-//			else if (patternPropertyMenu.getItemNNDisjunct().isSelected())
-//				patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
-//			patternConstraintHBox.setPatternResolutionInformations(patternInformations);
-//			patternConstraintHBox.setExpression(expression);
 			hide();
 		});
 		return applyPatternButton;
@@ -349,7 +304,7 @@ public class PatternsEditionPane extends BorderPane {
 	Optional<PatternProperty> getPropertyDialogBox (int index) {
 		// we take into account the current property
 		PatternProperty property = PropertyListBox.getPatternProperties().get(index);
-		int type = property.getPropertyType();
+		int type = property.getType();
 
 		// we create the dialog box
 		Dialog<PatternProperty> dialog = new Dialog<>();
@@ -369,6 +324,11 @@ public class PatternsEditionPane extends BorderPane {
 		ComboBox propertyBox = new ComboBox();
 		propertyBox.getItems().addAll(propertyList);
 
+
+		if (type == 2) {
+			type += ((PatternPropertyOccurrence) property).getInteraction().getType();
+		}
+
 		propertyBox.getSelectionModel().select(propertyList.get(type));
 
 		// we define the buttons of the dialog box
@@ -382,7 +342,7 @@ public class PatternsEditionPane extends BorderPane {
 
 		TextField minOccurrenceField = new TextField();
 		TextField maxOccurrenceField = new TextField();
-		if (property.getPropertyType() > 1) {
+		if (property.getType() > 1) {
 			minOccurrenceField.setText(Integer.toString(((PatternPropertyOccurrence) property).getMinOccurrence()));
 			maxOccurrenceField.setText(Integer.toString(((PatternPropertyOccurrence) property).getMaxOccurrence()));
 		}
@@ -435,21 +395,21 @@ public class PatternsEditionPane extends BorderPane {
 		return dialog.showAndWait();
 	}
 
-	Optional<PatternProperty> getInteractionDialogBox (int index) {
-		Dialog<PatternProperty> dialog = new Dialog<>();
+	Optional<InteractionItem> getInteractionDialogBox (int index) {
+		Dialog<InteractionItem> dialog = new Dialog<>();
 		dialog.setTitle("Interaction");
 		dialog.setHeaderText("Select the desired interaction");
 
 		// we create the property list
-		ArrayList<String> propertyList = new ArrayList<>();
+		ArrayList<String> interactionList = new ArrayList<>();
 
-		propertyList.add("Interaction with no positive hexagon sharing");
-		propertyList.add("Interaction with no positive edge sharing");
-		propertyList.add("Interaction with no hexagon sharing");
+		interactionList.add("Interaction with no positive hexagon sharing");
+		interactionList.add("Interaction with no positive edge sharing");
+		interactionList.add("Interaction with no hexagon sharing");
 
 		// we create the combo box for property
-		ComboBox propertyBox = new ComboBox();
-		propertyBox.getItems().addAll(propertyList);
+		ComboBox interactionBox = new ComboBox();
+		interactionBox.getItems().addAll(interactionList);
 
 		// we create the combo box for possible patterns
 		ComboBox patternBox = new ComboBox();
@@ -464,13 +424,12 @@ public class PatternsEditionPane extends BorderPane {
 
 		// we take into account the current property (if any)
 		if (index != -1) {
-			PatternProperty property = PropertyListBox.getPatternProperties().get(index);
-			int type = property.getPropertyType();
-			propertyBox.getSelectionModel().select(propertyList.get(type-6));
+			InteractionItem item = InteractionListBox.getInteractions().get(index);
+			int type = item.getInteraction().getType();
+			interactionBox.getSelectionModel().select(interactionList.get(type));
 
-			patternBox.getSelectionModel().select(property.getPattern().getLabel().getText());
-			patternBox2.setValue(((PatternPropertyInteraction) property).getPattern2().getLabel().getText());
-			// TODO get the other values (pattern1, pattern 2, ...)
+			patternBox.getSelectionModel().select(item.getPatternProperty1().getPattern().getLabel().getText());
+			patternBox2.setValue(item.getPatternProperty2().getPattern().getLabel().getText());
 		}
 
 		// we define the buttons of the dialog box
@@ -483,7 +442,7 @@ public class PatternsEditionPane extends BorderPane {
 		grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
 
 		grid.add(new Label("Property:"), 0, 0);
-		grid.add(propertyBox,1,0);
+		grid.add(interactionBox,1,0);
 		grid.add(new Label("Pattern"), 0, 1);
 		grid.add(patternBox, 1, 1);
 		grid.add(new Label("Pattern 2"), 0, 2);
@@ -494,23 +453,21 @@ public class PatternsEditionPane extends BorderPane {
 		// computes the result
 		dialog.setResultConverter(dialogButton -> {
 			if (dialogButton == ButtonType.OK) {
-				int propertyNum = propertyBox.getSelectionModel().getSelectedIndex();
-				System.out.println("Prop "+propertyNum+ " / " +propertyBox.getValue());
+				int num = interactionBox.getSelectionModel().getSelectedIndex();
 
-				PatternProperty property = null;
+				InteractionItem item = null;
 
-				if (propertyNum != -1) {
-					PatternGroup pattern1 = getPatternListBox().getPatternGroups().get(patternBox.getSelectionModel().getSelectedIndex());
+				if (num != -1) {
+					PatternProperty pattern1 = getPropertyListBox().getPatternProperties().get(patternBox.getSelectionModel().getSelectedIndex());
+					PatternProperty pattern2 = getPropertyListBox().getPatternProperties().get(patternBox2.getSelectionModel().getSelectedIndex());;
 
-					PatternGroup pattern2 = pattern2 = getPatternListBox().getPatternGroups().get(patternBox2.getSelectionModel().getSelectedIndex());;
-
-//					switch (propertyNum) {
-//						case 0: property = new PatternPropertyInteraction1(pattern1, pattern2); break;
-//						case 1: property = new PatternPropertyInteraction2(pattern1, pattern2); break;
-//						case 2: property = new PatternPropertyInteraction3(pattern1, pattern2); break;
-//					}
+					switch (num) {
+						case 0: item = new InteractionItem(pattern1, pattern2, new NoPositiveInteraction()); break;
+//						case 1: item = new InteractionItem(pattern1, pattern2, new NoPositiveInteraction()); break;
+						case 2: item = new InteractionItem(pattern1, pattern2, new NoHexagonInteraction()); break;
+					}
 				}
-				return property;
+				return item;
 			}
 			return null;
 		});
@@ -563,5 +520,9 @@ public class PatternsEditionPane extends BorderPane {
 
 	public PropertyListBox getPropertyListBox() {
 		return propertyListBox;
+	}
+
+	public InteractionListBox getInteractionListBox() {
+		return interactionListBox;
 	}
 }

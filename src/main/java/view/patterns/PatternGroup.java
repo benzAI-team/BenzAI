@@ -261,7 +261,7 @@ public class PatternGroup extends Group {
 		this.degree = degree;
 	}
 
-	Pattern exportPattern() {
+	public Pattern exportPattern() {
 		int nbHexagons = computeHexagonNumber();
 
 		ArrayList<Couple<Integer, Integer>> coordsArray = new ArrayList<>();

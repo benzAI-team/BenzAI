@@ -1,22 +1,22 @@
 package constraints;
 
 import generator.GeneralModel;
-import generator.patterns.Pattern;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
+import view.patterns.PatternGroup;
 
 import java.util.ArrayList;
 
 public class ExclusionPatternConstraint  extends PatternConstraint {
 
-    public ExclusionPatternConstraint (Pattern pattern) {
+    public ExclusionPatternConstraint (PatternGroup pattern) {
         super(pattern);
     }
 
     public void postConstraints() {
         GeneralModel generalModel = getGeneralModel();
 
-        ArrayList<Integer[]> occurrences = getPatternOccurences().getOccurrences();
+        ArrayList<Integer[]> occurrences = getPatternOccurrences().getOccurrences();
 
         for (int i = 0; i < occurrences.size(); i++) {
             Integer[] occurrence = occurrences.get(i);

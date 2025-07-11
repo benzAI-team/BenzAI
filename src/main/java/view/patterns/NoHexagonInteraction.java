@@ -34,4 +34,10 @@ public class NoHexagonInteraction extends Interaction {
             return false;
         }
     }
+
+
+    @Override
+    public int getType() {
+        return 3;
+    }
 }

@@ -13,4 +13,9 @@ public class NoInteraction extends Interaction {
     public boolean interact(PatternOccurrences patternOccurrences1, PatternOccurrences patternOccurrences2, int i, int j) {
         return false;
     }
+
+    @Override
+    public int getType() {
+        return 0;
+    }
 }

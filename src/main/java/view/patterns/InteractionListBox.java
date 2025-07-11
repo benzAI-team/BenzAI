@@ -14,19 +14,21 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.Optional;
 
-class PropertyListBox extends VBox {
+
+class InteractionListBox extends VBox {
     private PatternsEditionPane patternsEditionPane;
     private ListView<GridPane> listView;
     private static ArrayList<GridPane> boxItems;
-    private static ArrayList<PatternProperty> properties = new ArrayList<>();
+    private static ArrayList<InteractionItem> interactions = new ArrayList<>();
     private int selectedIndex;
+    private Button addButton;
 
-    public PropertyListBox(PatternsEditionPane patternsEditionPane) {
+    public InteractionListBox(PatternsEditionPane patternsEditionPane) {
         super(5.0);
-        Label titleLabel = new Label("Properties");
+        Label titleLabel = new Label("Interactions");
         titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         HBox buttonBox = new HBox(3.0);
-        buttonBox.getChildren().addAll(buildModifyButton());
+        buttonBox.getChildren().addAll(buildAddButton(), buildModifyButton());
         this.patternsEditionPane = patternsEditionPane;
         buildListView();
 
@@ -41,26 +43,39 @@ class PropertyListBox extends VBox {
         listView.setOnMouseClicked(event -> {
             GridPane selection = listView.getSelectionModel().getSelectedItem();
             if (selection != null) {
-                PropertyCloseButton button = (PropertyCloseButton) selection.getChildren().get(1);
+                InteractionCloseButton button = (InteractionCloseButton) selection.getChildren().get(1);
                 select(button.getIndex());
             }
 
             if (event.getClickCount() == 2) {
-                Optional<PatternProperty> property;
-                property = patternsEditionPane.getPropertyDialogBox(selectedIndex);
-                property.ifPresent (value -> modifyEntry(value));
+                Optional<InteractionItem> item;
+                item = patternsEditionPane.getInteractionDialogBox(selectedIndex);
+                item.ifPresent (value -> modifyEntry(value));
             }
         });
     }
 
+    public Button buildAddButton() {
+        addButton = new Button("Add");
+        addButton.setDisable(true);
+        addButton.setPrefWidth(125);
+        addButton.setOnAction(e ->
+        {
+            Optional<InteractionItem> item = patternsEditionPane.getInteractionDialogBox(-1);
+            item.ifPresent (value -> addEntry(value));
+        });
+        return addButton;
+    }
+
     public Button buildModifyButton() {
         Button modifyButton = new Button("Modify");
-        modifyButton.setPrefWidth(250);
-        modifyButton.setOnAction(e -> {
+        modifyButton.setPrefWidth(125);
+        modifyButton.setOnAction(e ->
+        {
             System.out.println("Modify button "+selectedIndex);
-            Optional<PatternProperty> property;
-            property = patternsEditionPane.getPropertyDialogBox(selectedIndex);
-            property.ifPresent (value -> modifyEntry(value));
+            Optional<InteractionItem> item;
+            item = patternsEditionPane.getInteractionDialogBox(selectedIndex);
+            item.ifPresent (value -> modifyEntry(value));
         });
         return modifyButton;
     }
@@ -70,33 +85,33 @@ class PropertyListBox extends VBox {
         selectedIndex = index;
     }
 
-    void addEntry(PatternProperty patternProperty) {
-        Label label = new Label(patternProperty.getLabel());
-
+    void addEntry(InteractionItem item) {
+        Label label = new Label(item.getInteraction().getLabel());
+        System.out.println("Add Inter "+item.getInteraction().getLabel());
         GridPane pane = new GridPane();
         pane.setPadding(new Insets(1));
 
         pane.add(label, 0, 0);
         label.setAlignment(Pos.BASELINE_CENTER);
 
-        PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, properties.size());
+        InteractionCloseButton button = new InteractionCloseButton(patternsEditionPane, interactions.size());
 
         pane.add(button, 1, 0);
         button.setAlignment(Pos.BASELINE_RIGHT);
 
-        properties.add (patternProperty);
+        interactions.add (item);
 
         boxItems.add(pane);
         ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
         listView.setItems(items);
 
         listView.getSelectionModel().select(items.size()-1);
-        select(properties.size()-1);
+        select(interactions.size()-1);
     }
 
-    void modifyEntry(PatternProperty patternProperty) {
-        Label label = new Label(patternProperty.getLabel());
-        PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, selectedIndex);
+    void modifyEntry(InteractionItem item) {
+        Label label = new Label(item.getInteraction().getLabel());
+        InteractionCloseButton button = new InteractionCloseButton(patternsEditionPane, selectedIndex);
 
         GridPane pane = new GridPane();
         pane.setPadding(new Insets(1));
@@ -107,7 +122,7 @@ class PropertyListBox extends VBox {
         pane.add(button, 1, 0);
         button.setAlignment(Pos.BASELINE_RIGHT);
 
-        properties.set(selectedIndex,patternProperty);
+        interactions.set(selectedIndex,item);
 
         boxItems.set(selectedIndex,pane);
         ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
@@ -119,7 +134,15 @@ class PropertyListBox extends VBox {
         select(selectedIndex);
     }
 
-    public static ArrayList<PatternProperty> getPatternProperties() {
-        return properties;
+    void removeEntry(int index) {
+
+    }
+
+    public static ArrayList<InteractionItem> getInteractions() {
+        return interactions;
+    }
+
+    public Button getAddButton() {
+        return addButton;
     }
 }

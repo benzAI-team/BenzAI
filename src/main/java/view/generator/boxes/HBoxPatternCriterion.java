@@ -1,6 +1,7 @@
 package view.generator.boxes;
 
 import application.BenzenoidApplication;
+import constraints.InteractionPatternConstraint;
 import constraints.PatternConstraint;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
@@ -132,6 +133,10 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		System.out.println("setConstraint !!!!");
 		refreshPatternInformations("CONSTRAINT SET");
 		patternProperty.addConstraint(constraint);
+	}
+
+	public void addInteraction (InteractionPatternConstraint constraint) {
+		patternProperty.addInteraction(constraint);
 	}
 
 	private void setPatternProperty(PatternProperty patternProperty) {

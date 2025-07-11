@@ -25,4 +25,9 @@ public class NoPositiveInteraction extends Interaction {
             return false;
         }
     }
+
+    @Override
+    public int getType() {
+        return 1;
+    }
 }

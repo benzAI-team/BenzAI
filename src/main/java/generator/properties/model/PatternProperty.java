@@ -1,5 +1,6 @@
 package generator.properties.model;
 
+import constraints.InteractionPatternConstraint;
 import constraints.PatternCollectionConstraint;
 import constraints.PatternConstraint;
 import generator.properties.model.filters.PatternFilter;
@@ -38,6 +39,10 @@ public class PatternProperty extends ModelProperty {
 
 	public void addConstraint (PatternConstraint patternConstraint) {
 		((PatternCollectionConstraint) getConstraint()).addPatternConstraint(patternConstraint);
+	}
+
+	public void addInteraction (InteractionPatternConstraint interactionConstraint) {
+		((PatternCollectionConstraint) getConstraint()).addInteractionConstraint(interactionConstraint);
 	}
 
 	public void reset() {

@@ -7,6 +7,7 @@ import generator.patterns.PatternOccurrences;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.objects.setDataStructures.iterable.IntIterableRangeSet;
+import view.patterns.PatternGroup;
 
 import java.util.ArrayList;
 
@@ -17,18 +18,19 @@ public class PatternConstraint extends BenzAIConstraint {
 	private ArrayList<Integer> absentHexagons;
 	private BoolVar[] presences;
 
-	private PatternOccurrences patternOccurences;
+	private PatternOccurrences patternOccurrences;
 
-	public PatternConstraint (Pattern pattern) {
-		this.pattern = pattern;
+	public PatternConstraint (PatternGroup pattern) {
+		// pb for the initial empty pattern
+		this.pattern = pattern.exportPattern();
 	}
 
 	@Override
 	public void buildVariables() {
 		System.out.println("Build Variable PatternConstraints");
 		computePatternOccurrences();
-		System.out.println("# Occurrences "+patternOccurences.getOccurrences().size());
-		presences = new BoolVar[patternOccurences.getOccurrences().size()];
+		System.out.println("# Occurrences "+ patternOccurrences.getOccurrences().size());
+		presences = new BoolVar[patternOccurrences.getOccurrences().size()];
 		for (int i = 0; i < presences.length; i++) {
 			presences[i] = getGeneralModel().getProblem().boolVar("presence_" + i);
 		}
@@ -52,7 +54,7 @@ public class PatternConstraint extends BenzAIConstraint {
 		System.out.println("Build Constraint PatternConstraints");
 		GeneralModel generalModel = getGeneralModel();
 
-		ArrayList<Integer[]> occurrences = patternOccurences.getOccurrences();
+		ArrayList<Integer[]> occurrences = patternOccurrences.getOccurrences();
 
 		System.out.println("Size "+occurrences.size());
 
@@ -111,20 +113,20 @@ public class PatternConstraint extends BenzAIConstraint {
 
 		ArrayList<Pattern> symmetricPatterns = pattern.computeRotations();
 
-		patternOccurences = new PatternOccurrences();
+		patternOccurrences = new PatternOccurrences();
 
 		for (Pattern f : symmetricPatterns) {
-			patternOccurences.addAll(getGeneralModel().computeTranslations(f));
+			patternOccurrences.addAll(getGeneralModel().computeTranslations(f));
 		}
-		pattern.setPatternOccurrences(patternOccurences);
+		pattern.setPatternOccurrences(patternOccurrences);
 	}
 
 	BoolVar[] getPresenceVariables() {
 		return presences;
 	}
 
-	public PatternOccurrences getPatternOccurences() {
-		return patternOccurences;
+	public PatternOccurrences getPatternOccurrences() {
+		return patternOccurrences;
 	}
 
 	public ArrayList<Integer> getPresentHexagons() {
