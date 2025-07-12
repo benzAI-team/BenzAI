@@ -20,9 +20,11 @@ class PropertyListBox extends VBox {
     private static ArrayList<GridPane> boxItems;
     private static ArrayList<PatternProperty> properties = new ArrayList<>();
     private int selectedIndex;
+    private int positivePropertyNumber;
 
     public PropertyListBox(PatternsEditionPane patternsEditionPane) {
         super(5.0);
+        positivePropertyNumber = 0;
         Label titleLabel = new Label("Properties");
         titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         HBox buttonBox = new HBox(3.0);
@@ -92,9 +94,19 @@ class PropertyListBox extends VBox {
 
         listView.getSelectionModel().select(items.size()-1);
         select(properties.size()-1);
+
+        if (patternProperty.getType() != 1) {
+            positivePropertyNumber++;
+        }
+
+        patternsEditionPane.getInteractionListBox().getAddButton().setDisable(positivePropertyNumber < 2);
     }
 
     void modifyEntry(PatternProperty patternProperty) {
+        if (properties.get(selectedIndex).getType() != 1) {
+            positivePropertyNumber--;
+        }
+
         Label label = new Label(patternProperty.getLabel());
         PropertyCloseButton button = new PropertyCloseButton(patternsEditionPane, selectedIndex);
 
@@ -117,7 +129,15 @@ class PropertyListBox extends VBox {
 
         listView.getSelectionModel().select(selectedIndex);
         select(selectedIndex);
+
+        if (patternProperty.getType() != 1) {
+            positivePropertyNumber++;
+        }
+
+        patternsEditionPane.getInteractionListBox().getAddButton().setDisable(positivePropertyNumber < 2);
     }
+
+
 
     public static ArrayList<PatternProperty> getPatternProperties() {
         return properties;
