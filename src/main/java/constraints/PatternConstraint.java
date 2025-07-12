@@ -12,7 +12,8 @@ import view.patterns.PatternGroup;
 import java.util.ArrayList;
 
 public class PatternConstraint extends BenzAIConstraint {
-	private final Pattern pattern;
+	private Pattern pattern;
+	private final PatternGroup patternGroup;
 
 	private ArrayList<Integer> presentHexagons;
 	private ArrayList<Integer> absentHexagons;
@@ -20,13 +21,16 @@ public class PatternConstraint extends BenzAIConstraint {
 
 	private PatternOccurrences patternOccurrences;
 
-	public PatternConstraint (PatternGroup pattern) {
+	public PatternConstraint (PatternGroup patternGroup) {
 		// pb for the initial empty pattern
-		this.pattern = pattern.exportPattern();
+		this.patternGroup = patternGroup;
+		this.pattern = null;
 	}
 
 	@Override
 	public void buildVariables() {
+		pattern = patternGroup.exportPattern();
+
 		System.out.println("Build Variable PatternConstraints");
 		computePatternOccurrences();
 		System.out.println("# Occurrences "+ patternOccurrences.getOccurrences().size());
