@@ -116,8 +116,6 @@ class PatternListBox extends VBox {
 
         listView.getSelectionModel().select(items.size()-1);
         select(patternGroups.size()-1);
-
-        patternsEditionPane.getInteractionListBox().getAddButton().setDisable(patternGroups.size() == 1);
     }
 
 
@@ -139,8 +137,6 @@ class PatternListBox extends VBox {
             boxItems.get(i).getChildren().remove(1);
             boxItems.get(i).add(new PatternCloseButton(patternsEditionPane, i), 1, 0);
         }
-
-        patternsEditionPane.getInteractionListBox().getAddButton().setDisable(patternGroups.size() == 1);
     }
 
     ArrayList<PatternGroup> getPatternGroups () {

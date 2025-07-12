@@ -415,8 +415,10 @@ public class PatternsEditionPane extends BorderPane {
 		ComboBox patternBox = new ComboBox();
 		ComboBox patternBox2 = new ComboBox();
 		ArrayList<String> patternList = new ArrayList<>();
-		for (PatternGroup pattern : patternListBox.getPatternGroups()) {
-			patternList.add(pattern.getLabel().getText());
+		for (int i = 0; i < patternListBox.getPatternGroups().size(); i++) {
+			if (propertyListBox.getPatternProperties().get(i).getType() != 1) {
+				patternList.add(patternListBox.getPatternGroups().get(i).getLabel().getText());
+			}
 		}
 		patternBox.getItems().addAll(patternList);
 		patternBox2.getItems().addAll(patternList);
