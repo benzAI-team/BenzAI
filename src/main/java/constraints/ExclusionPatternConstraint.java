@@ -34,6 +34,11 @@ public class ExclusionPatternConstraint  extends PatternConstraint {
                     absent.add(occurrence[hexagon]);
             }
 
+            for (Integer hexagon : getEdgeHexagons()) {
+                if (occurrence[hexagon] != -1)
+                    absent.add(occurrence[hexagon]);
+            }
+
             BoolVar[] varClause = new BoolVar[present.size() + absent.size()];
             IntIterableRangeSet[] valClause = new IntIterableRangeSet[present.size() + absent.size()];
             int index = 0;

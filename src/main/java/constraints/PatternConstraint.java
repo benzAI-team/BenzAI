@@ -17,6 +17,7 @@ public class PatternConstraint extends BenzAIConstraint {
 
 	private ArrayList<Integer> presentHexagons;
 	private ArrayList<Integer> absentHexagons;
+	private ArrayList<Integer> edgeHexagons;
 	private BoolVar[] presences;
 
 	private PatternOccurrences patternOccurrences;
@@ -41,6 +42,7 @@ public class PatternConstraint extends BenzAIConstraint {
 
 		presentHexagons = new ArrayList<>();
 		absentHexagons = new ArrayList<>();
+		edgeHexagons = new ArrayList<>();
 		ArrayList<Integer> unknownHexagons = new ArrayList<>();
 		for (int i = 0; i < pattern.getNbNodes(); i++) {
 			PatternLabel label = pattern.getLabel(i);
@@ -50,6 +52,8 @@ public class PatternConstraint extends BenzAIConstraint {
 				presentHexagons.add(i);
 			else if (label == PatternLabel.NEGATIVE)
 				absentHexagons.add(i);
+			else if (label == PatternLabel.EDGE)
+				edgeHexagons.add(i);
 		}
 	}
 
@@ -75,6 +79,11 @@ public class PatternConstraint extends BenzAIConstraint {
 			}
 
 			for (Integer hexagon : absentHexagons) {
+				if (occurrence[hexagon] != -1)
+					absent.add(occurrence[hexagon]);
+			}
+
+			for (Integer hexagon : edgeHexagons) {
 				if (occurrence[hexagon] != -1)
 					absent.add(occurrence[hexagon]);
 			}
@@ -139,6 +148,10 @@ public class PatternConstraint extends BenzAIConstraint {
 
 	public ArrayList<Integer> getAbsentHexagons() {
 		return absentHexagons;
+	}
+
+	public ArrayList<Integer> getEdgeHexagons() {
+		return edgeHexagons;
 	}
 
 	public Pattern getPattern() {

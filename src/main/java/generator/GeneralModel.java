@@ -52,11 +52,9 @@ public class GeneralModel {
 
     private int[][] neighborIndices;
 
-    //private final ArrayList<Couple<Integer, Integer>> outterHexagons = new ArrayList<>();
     private final ArrayList<Integer> outterHexagonsIndexes = new ArrayList<>();
 
     private ArrayList<ArrayList<Integer>> neighborGraphOutterHexagons;
-    //private int indexOutterHexagon;
 
     private Couple<Integer, Integer>[] coordsCorrespondance;
 
@@ -662,10 +660,6 @@ public class GeneralModel {
         return adjacencyMatrix;
     }
 
-    /*public int getNbEdges() {
-        return nbEdges;
-    }*/
-
     public ArrayList<Integer> getOutterHexagonsIndexes() {
         return outterHexagonsIndexes;
     }
@@ -673,7 +667,6 @@ public class GeneralModel {
     public void buildNeighborGraphWithOutterHexagons(int order) {
 
         if (order == 0) {
-            // buildNeighborIndices();
             neighborGraphOutterHexagons = new ArrayList<>();
 
             for (int[] ints : neighborIndices) {
@@ -709,8 +702,6 @@ public class GeneralModel {
                     }
                 }
             }
-
-            // buildNeighborIndices();
 
             neighborGraphOutterHexagons = new ArrayList<>();
 
@@ -1283,43 +1274,59 @@ public class GeneralModel {
                         ArrayList<Integer> absent = new ArrayList<>();
                         ArrayList<Integer> unknown = new ArrayList<>();
                         ArrayList<Integer> outter = new ArrayList<>();
+                        ArrayList<Integer> edge = new ArrayList<>();
 
                         for (int i = 0; i < pattern.getNbNodes(); i++) {
-                            if (pattern.getLabel(i) == PatternLabel.NEUTRAL) {
-                                Couple<Integer, Integer> coord = coords[i];
-
-                                if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
-                                        && coord.getY() < diameter) {
-                                    if (hexagonIndicesMatrix[coord.getY()][coord.getX()] == -1) {
-
+                            Couple<Integer, Integer> coord = coords[i];
+                            switch (pattern.getLabel(i)) {
+                                case NEUTRAL :
+                                    if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
+                                            && coord.getY() < diameter) {
+                                        if (hexagonIndicesMatrix[coord.getY()][coord.getX()] == -1) {
+                                            int index = findIndex(outterHexagons, coord);
+                                            outter.add(outterHexagonsIndexes.get(index));
+                                        } else {
+                                            unknown.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
+                                        }
+                                    } else {
                                         int index = findIndex(outterHexagons, coord);
                                         outter.add(outterHexagonsIndexes.get(index));
-                                    } else {
-                                        unknown.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
                                     }
-                                } else {
+                                    break;
+
+                                case POSITIVE:
+                                    present.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
+                                    break;
+
+                                case NEGATIVE:
+                                    if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
+                                            && coord.getY() < diameter) {
+                                        if (hexagonIndicesMatrix[coord.getY()][coord.getX()] == -1) {
+                                            int index = findIndex(outterHexagons, coord);
+                                            outter.add(outterHexagonsIndexes.get(index));
+                                        } else {
+                                            absent.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
+                                        }
+                                    }
+                                    break;
+
+                                case EDGE:
+                                    if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
+                                            && coord.getY() < diameter) {
+                                        if (hexagonIndicesMatrix[coord.getY()][coord.getX()] == -1) {
+                                            int index = findIndex(outterHexagons, coord);
+                                            outter.add(outterHexagonsIndexes.get(index));
+                                        } else {
+                                            edge.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
+                                        }
+                                    }
+                                    break;
+
+                                default:
                                     int index = findIndex(outterHexagons, coord);
                                     outter.add(outterHexagonsIndexes.get(index));
-                                }
-                            } else if (pattern.getLabel(i) == PatternLabel.POSITIVE) {
-                                Couple<Integer, Integer> coord = coords[i];
-                                present.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
-                            } else if (pattern.getLabel(i) == PatternLabel.NEGATIVE) {
-                                Couple<Integer, Integer> coord = coords[i];
+                                    break;
 
-                                if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
-                                        && coord.getY() < diameter) {
-                                    if (hexagonIndicesMatrix[coord.getY()][coord.getX()] == -1) {
-
-                                        int index = findIndex(outterHexagons, coord);
-                                        outter.add(outterHexagonsIndexes.get(index));
-                                    } else {
-                                        absent.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
-                                    }
-                                } else {
-                                    int index = findIndex(outterHexagons, coord);
-                                    outter.add(outterHexagonsIndexes.get(index));
-                                }
                             }
                         }
 
@@ -1329,6 +1336,7 @@ public class GeneralModel {
                         fragmentOccurences.addPresentHexagons(present);
                         fragmentOccurences.addAbsentHexagons(absent);
                         fragmentOccurences.addUnknownHexagons(unknown);
+                        fragmentOccurences.addEdgeHexagons(unknown);
                     }
                 }
             }

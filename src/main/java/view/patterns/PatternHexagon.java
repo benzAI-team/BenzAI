@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class PatternHexagon extends Polygon {
 
-	private final Color[] COLORS = new Color[] { Color.WHITE, Color.GREEN, Color.RED, Color.ORANGE };
+	private final Color[] COLORS = new Color[] { Color.WHITE, Color.GREEN, Color.RED, Color.ORANGE, Color.VIOLET };
 
 	private final PatternGroup group;
 
