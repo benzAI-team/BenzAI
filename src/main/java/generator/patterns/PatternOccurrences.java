@@ -14,6 +14,7 @@ public class PatternOccurrences {
 	private final ArrayList<HashSet<Integer>> allAbsentHexagons;
 	private final ArrayList<HashSet<Integer>> allUnknownHexagons;
 	private final ArrayList<HashSet<Integer>> allEdgeHexagons;
+	private final ArrayList<HashSet<Integer>> allEdgePositiveNeighborHexagons;
 
 	public PatternOccurrences() {
 		occurrences = new ArrayList<>();
@@ -23,6 +24,7 @@ public class PatternOccurrences {
 		allAbsentHexagons = new ArrayList<>();
 		allUnknownHexagons = new ArrayList<>();
 		allEdgeHexagons = new ArrayList<>();
+		allEdgePositiveNeighborHexagons = new ArrayList<>();
 	}
 
 	public ArrayList<Integer[]> getOccurrences() {
@@ -53,6 +55,10 @@ public class PatternOccurrences {
 		return allEdgeHexagons;
 	}
 
+	public ArrayList<HashSet<Integer>> getAllEdgePositiveNeighborHexagons() {
+		return allEdgePositiveNeighborHexagons;
+	}
+
 	public void addOccurrence(Integer[] occurrence) {
 		occurrences.add(occurrence);
 	}
@@ -81,6 +87,9 @@ public class PatternOccurrences {
 		allEdgeHexagons.add(new HashSet<>(hexagons));
 	}
 
+	public void addEdgePositiveNeighborHexagons(ArrayList<Integer> hexagons) {
+		allEdgePositiveNeighborHexagons.add(new HashSet<>(hexagons));
+	}
 
 	public void addAll(PatternOccurrences fragmentOccurrences) {
 		System.out.println("Add all ");
@@ -102,6 +111,7 @@ public class PatternOccurrences {
 				allAbsentHexagons.add(fragmentOccurrences.getAllAbsentHexagons().get(i));
 				allUnknownHexagons.add(fragmentOccurrences.getAllUnknownHexagons().get(i));
 				allEdgeHexagons.add(fragmentOccurrences.getAllEdgeHexagons().get(i));
+				allEdgePositiveNeighborHexagons.add(fragmentOccurrences.getAllEdgePositiveNeighborHexagons().get(i));
 			}
 		}
 	}

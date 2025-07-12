@@ -103,7 +103,8 @@ class PropertyListBox extends VBox {
     }
 
     void modifyEntry(PatternProperty patternProperty) {
-        if (properties.get(selectedIndex).getType() != 1) {
+        PatternProperty property = properties.get(selectedIndex);
+        if (property.getType() != 1) {
             positivePropertyNumber--;
         }
 
@@ -137,6 +138,29 @@ class PropertyListBox extends VBox {
         patternsEditionPane.getInteractionListBox().getAddButton().setDisable(positivePropertyNumber < 2);
     }
 
+    void removeEntry(int index) {
+        PatternProperty property = properties.get(index);
+        if (property.getType() != 1) {
+            positivePropertyNumber--;
+            patternsEditionPane.getInteractionListBox().getAddButton().setDisable(positivePropertyNumber < 2);
+
+            // we remove the interaction involving the pattern (if any)
+            patternsEditionPane.getInteractionListBox().remove(property);
+        }
+
+        boxItems.remove(index);
+        ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
+        listView.setItems(items);
+
+        properties.remove(index);
+
+        select(0);
+
+        for (int i = 0; i < boxItems.size(); i++) {
+            boxItems.get(i).getChildren().remove(1);
+            boxItems.get(i).add(new PropertyCloseButton(patternsEditionPane, i), 1, 0);
+        }
+    }
 
 
     public static ArrayList<PatternProperty> getPatternProperties() {

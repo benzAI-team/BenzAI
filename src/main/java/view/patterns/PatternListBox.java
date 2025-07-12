@@ -130,6 +130,8 @@ class PatternListBox extends VBox {
 
         patternGroups.remove(index);
 
+        patternsEditionPane.getPropertyListBox().removeEntry(index);
+
         if (index == selectedIndex)
             select(0);
 

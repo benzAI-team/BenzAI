@@ -135,7 +135,32 @@ class InteractionListBox extends VBox {
     }
 
     void removeEntry(int index) {
+        boxItems.remove(index);
+        ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
+        listView.setItems(items);
 
+        interactions.remove(index);
+
+        select(0);
+
+        for (int i = 0; i < boxItems.size(); i++) {
+            boxItems.get(i).getChildren().remove(1);
+            boxItems.get(i).add(new InteractionCloseButton(patternsEditionPane, i), 1, 0);
+        }
+    }
+
+
+    void remove (PatternProperty property) {
+        // we remove the interaction involving the given pattern property (if any)
+        int i = 0;
+        while (i < interactions.size()) {
+            InteractionItem item = interactions.get(i);
+            if ((item.getPatternProperty1() == property) || (item.getPatternProperty1() == property)) {
+                patternsEditionPane.getInteractionListBox().removeEntry(i);
+            } else {
+                i++;
+            }
+        }
     }
 
     public static ArrayList<InteractionItem> getInteractions() {
