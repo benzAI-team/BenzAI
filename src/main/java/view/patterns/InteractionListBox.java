@@ -86,7 +86,7 @@ class InteractionListBox extends VBox {
     }
 
     void addEntry(InteractionItem item) {
-        Label label = new Label(item.getInteraction().getLabel());
+        Label label = new Label(item.getLabel());
         System.out.println("Add Inter "+item.getInteraction().getLabel());
         GridPane pane = new GridPane();
         pane.setPadding(new Insets(1));
@@ -110,7 +110,7 @@ class InteractionListBox extends VBox {
     }
 
     void modifyEntry(InteractionItem item) {
-        Label label = new Label(item.getInteraction().getLabel());
+        Label label = new Label(item.getLabel());
         InteractionCloseButton button = new InteractionCloseButton(patternsEditionPane, selectedIndex);
 
         GridPane pane = new GridPane();
