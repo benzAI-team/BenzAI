@@ -45,37 +45,6 @@ public class Pattern {
 				}
 			}
 		}
-
-//		System.out.println("Current pattern P");
-//		int[][] mat = getMatrix();
-//		for (int z = 0; z < mat.length; z++) {
-//			for (int zz = 0; zz < 6; zz++) {
-//				System.out.print(mat[z][zz]+" ");
-//			}
-//			System.out.println();
-//		}
-//
-//		System.out.println("Current neighbor P");
-//		for (int z = 0; z < neighborGraph.length; z++) {
-//			for (int zz = 0; zz < 6; zz++) {
-//				System.out.print(neighborGraph[z][zz]+" ");
-//			}
-//			System.out.println();
-//		}
-//
-//
-		System.out.print ("Labels P :");
-
-		for (int z = 0 ;  z < getLabels().length; z++)
-			System.out.print(" "+getLabels()[z]);
-		System.out.println();
-//
-//		System.out.println("Edge Neighbor");
-//		for  (int z = 0 ;  z < getLabels().length; z++) {
-//			System.out.print(" "+isEdgeNeighbor.get(z));
-//		}
-//		System.out.println();
-
 	}
 
 	public void export(File file) throws IOException {

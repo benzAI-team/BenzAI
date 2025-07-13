@@ -1338,42 +1338,6 @@ public class GeneralModel {
                             }
                         }
 
-//                        System.out.println("Current pattern");
-//                        int[][] mat = pattern.getMatrix();
-//                        for (int z = 0; z < mat.length; z++) {
-//                            for (int zz = 0; zz < 6; zz++) {
-//                                System.out.print(mat[z][zz]+" ");
-//                            }
-//                            System.out.println();
-//                        }
-//                        System.out.print ("Labels :");
-//
-//                        for (int z = 0 ;  z < pattern.getLabels().length; z++)
-//                            System.out.print(" "+pattern.getLabels()[z]);
-//                        System.out.println();
-//
-//                        System.out.print("Positive :");
-//                        for (int v : present)
-//                            System.out.print(" "+ v);
-//                        System.out.println();
-//
-                        System.out.print("Edge :");
-                        for (int v : edge)
-                            System.out.print(" "+ v);
-                        System.out.println();
-
-                        System.out.print("Edge Coord:");
-                        for (Couple<Integer,Integer> c : edgeCoords)
-                            System.out.print(" "+ c.getX()+","+c.getY());
-                        System.out.println();
-//
-//                        System.out.print("Positive neighbor :");
-//                        for (int v : edgePositiveNeighbors)
-//                            System.out.print(" "+ v);
-//                        System.out.println();
-
-
-
                         fragmentOccurences.addOccurrence(occurence);
                         fragmentOccurences.addCoordinate(coords);
                         fragmentOccurences.addOutterHexagons(outter);

@@ -102,7 +102,6 @@ public class PatternOccurrences {
 	}
 
 	public void addAll(PatternOccurrences fragmentOccurrences) {
-		System.out.println("Add all ");
 		for (int i = 0; i < fragmentOccurrences.getOccurrences().size(); i++) {
 			boolean found = false;
 			for (int j = 0; (j < (occurrences.size()) && (!found)); j++) {
