@@ -383,7 +383,7 @@ public class PatternsEditionPane extends BorderPane {
 					case 1: newProperty = new PatternPropertyExclusion(pattern1); break;
 					case 2: newProperty = new PatternPropertyOccurrence(pattern1, new NoInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
 					case 3: newProperty = new PatternPropertyOccurrence(pattern1, new NoPositiveInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 4: newProperty = new PatternPropertyOccurrence(pattern1, new NoInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 4: newProperty = new PatternPropertyOccurrence(pattern1, new NoEdgeInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
 					case 5: newProperty = new PatternPropertyOccurrence(pattern1, new NoHexagonInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
 				}
 
@@ -465,7 +465,7 @@ public class PatternsEditionPane extends BorderPane {
 
 					switch (num) {
 						case 0: item = new InteractionItem(pattern1, pattern2, new NoPositiveInteraction()); break;
-//						case 1: item = new InteractionItem(pattern1, pattern2, new NoPositiveInteraction()); break;
+						case 1: item = new InteractionItem(pattern1, pattern2, new NoEdgeInteraction()); break;
 						case 2: item = new InteractionItem(pattern1, pattern2, new NoHexagonInteraction()); break;
 					}
 				}

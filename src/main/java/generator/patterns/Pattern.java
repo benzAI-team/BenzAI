@@ -18,6 +18,7 @@ public class Pattern {
 	private final Node center;
 	private final PatternFileWriter patternFileWriter = new PatternFileWriter(this);
 	private PatternOccurrences patternOccurrences;
+	private ArrayList<Boolean> isEdgeNeighbor;
 
 	public Pattern(int[][] matrix, PatternLabel[] labels, Node[] nodesRefs, Node center,
 				   int[][] neighborGraph, int order) {
@@ -29,6 +30,52 @@ public class Pattern {
 		this.neighborGraph = neighborGraph;
 		this.order = order;
 		this.patternOccurrences = null;
+		isEdgeNeighbor = new ArrayList<>();
+
+		for (int i = 0; i < nbNodes; i++) {
+			isEdgeNeighbor.add(false);
+		}
+
+		for (int i = 0; i < nbNodes; i++) {
+			if (labels[i] == PatternLabel.EDGE) {
+				for (int j = 0; j < 6; j++) {
+					if ((neighborGraph[i][j] != -1) && (labels[neighborGraph[i][j]] == PatternLabel.POSITIVE)) {
+						isEdgeNeighbor.set(neighborGraph[i][j], true);
+					}
+				}
+			}
+		}
+
+//		System.out.println("Current pattern P");
+//		int[][] mat = getMatrix();
+//		for (int z = 0; z < mat.length; z++) {
+//			for (int zz = 0; zz < 6; zz++) {
+//				System.out.print(mat[z][zz]+" ");
+//			}
+//			System.out.println();
+//		}
+//
+//		System.out.println("Current neighbor P");
+//		for (int z = 0; z < neighborGraph.length; z++) {
+//			for (int zz = 0; zz < 6; zz++) {
+//				System.out.print(neighborGraph[z][zz]+" ");
+//			}
+//			System.out.println();
+//		}
+//
+//
+		System.out.print ("Labels P :");
+
+		for (int z = 0 ;  z < getLabels().length; z++)
+			System.out.print(" "+getLabels()[z]);
+		System.out.println();
+//
+//		System.out.println("Edge Neighbor");
+//		for  (int z = 0 ;  z < getLabels().length; z++) {
+//			System.out.print(" "+isEdgeNeighbor.get(z));
+//		}
+//		System.out.println();
+
 	}
 
 	public void export(File file) throws IOException {
@@ -486,5 +533,9 @@ public class Pattern {
 
 	public PatternOccurrences getPatternOccurrences() {
 		return patternOccurrences;
+	}
+
+	public ArrayList<Boolean> getIsEdgeNeighbor() {
+		return isEdgeNeighbor;
 	}
 }

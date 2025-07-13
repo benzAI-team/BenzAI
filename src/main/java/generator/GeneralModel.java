@@ -1275,6 +1275,8 @@ public class GeneralModel {
                         ArrayList<Integer> unknown = new ArrayList<>();
                         ArrayList<Integer> outter = new ArrayList<>();
                         ArrayList<Integer> edge = new ArrayList<>();
+                        ArrayList<Couple<Integer, Integer>> edgeCoords = new ArrayList<>();
+                        ArrayList<Integer> edgePositiveNeighbors = new ArrayList<>();
 
                         for (int i = 0; i < pattern.getNbNodes(); i++) {
                             Couple<Integer, Integer> coord = coords[i];
@@ -1296,7 +1298,9 @@ public class GeneralModel {
 
                                 case POSITIVE:
                                     present.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
-                                    break;
+                                    if (pattern.getIsEdgeNeighbor().get(i)) {
+                                        edgePositiveNeighbors.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
+                                    }
 
                                 case NEGATIVE:
                                     if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
@@ -1313,13 +1317,17 @@ public class GeneralModel {
                                 case EDGE:
                                     if (coord.getX() >= 0 && coord.getX() < diameter && coord.getY() >= 0
                                             && coord.getY() < diameter) {
+                                        int index;
                                         if (hexagonIndicesMatrix[coord.getY()][coord.getX()] == -1) {
-                                            int index = findIndex(outterHexagons, coord);
+                                            index = findIndex(outterHexagons, coord);
                                             outter.add(outterHexagonsIndexes.get(index));
+                                            edge.add(outterHexagonsIndexes.get(index));
                                         } else {
+                                            index = hexagonIndicesMatrix[coord.getY()][coord.getX()];
                                             edge.add(hexagonIndicesMatrix[coord.getY()][coord.getX()]);
                                         }
                                     }
+                                    edgeCoords.add(coord);
                                     break;
 
                                 default:
@@ -1330,13 +1338,51 @@ public class GeneralModel {
                             }
                         }
 
+//                        System.out.println("Current pattern");
+//                        int[][] mat = pattern.getMatrix();
+//                        for (int z = 0; z < mat.length; z++) {
+//                            for (int zz = 0; zz < 6; zz++) {
+//                                System.out.print(mat[z][zz]+" ");
+//                            }
+//                            System.out.println();
+//                        }
+//                        System.out.print ("Labels :");
+//
+//                        for (int z = 0 ;  z < pattern.getLabels().length; z++)
+//                            System.out.print(" "+pattern.getLabels()[z]);
+//                        System.out.println();
+//
+//                        System.out.print("Positive :");
+//                        for (int v : present)
+//                            System.out.print(" "+ v);
+//                        System.out.println();
+//
+                        System.out.print("Edge :");
+                        for (int v : edge)
+                            System.out.print(" "+ v);
+                        System.out.println();
+
+                        System.out.print("Edge Coord:");
+                        for (Couple<Integer,Integer> c : edgeCoords)
+                            System.out.print(" "+ c.getX()+","+c.getY());
+                        System.out.println();
+//
+//                        System.out.print("Positive neighbor :");
+//                        for (int v : edgePositiveNeighbors)
+//                            System.out.print(" "+ v);
+//                        System.out.println();
+
+
+
                         fragmentOccurences.addOccurrence(occurence);
                         fragmentOccurences.addCoordinate(coords);
                         fragmentOccurences.addOutterHexagons(outter);
                         fragmentOccurences.addPresentHexagons(present);
                         fragmentOccurences.addAbsentHexagons(absent);
                         fragmentOccurences.addUnknownHexagons(unknown);
-                        fragmentOccurences.addEdgeHexagons(unknown);
+                        fragmentOccurences.addEdgeHexagons(edge);
+                        fragmentOccurences.addEdgeCoords(edgeCoords);
+                        fragmentOccurences.addEdgePositiveNeighborHexagons(edgePositiveNeighbors);
                     }
                 }
             }
