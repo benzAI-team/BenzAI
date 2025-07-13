@@ -324,7 +324,6 @@ public class PatternsEditionPane extends BorderPane {
 		ComboBox propertyBox = new ComboBox();
 		propertyBox.getItems().addAll(propertyList);
 
-
 		if (type == 2) {
 			type += ((PatternPropertyOccurrence) property).getInteraction().getType();
 		}
@@ -365,14 +364,40 @@ public class PatternsEditionPane extends BorderPane {
 		maxOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 
 		// event management
+		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+
 		propertyBox.setOnAction(event -> {
 			minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 			maxOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+			okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
+					((! minOccurrenceField.getText().matches("-?\\d+")) ||
+							(! maxOccurrenceField.getText().matches("-?\\d+")) ||
+							(Integer.valueOf(minOccurrenceField.getText()) > Integer.valueOf(maxOccurrenceField.getText())) ||
+							(Integer.valueOf(minOccurrenceField.getText()) < 0)));
 		});
+
+		okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
+				((! minOccurrenceField.getText().matches("-?\\d+")) ||
+				(! maxOccurrenceField.getText().matches("-?\\d+"))));
+
+		minOccurrenceField.textProperty().addListener((observable, oldValue, newValue) -> {
+			okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
+					((! minOccurrenceField.getText().matches("-?\\d+")) ||
+							(! maxOccurrenceField.getText().matches("-?\\d+")) ||
+							(Integer.valueOf(minOccurrenceField.getText()) > Integer.valueOf(maxOccurrenceField.getText())) ||
+							(Integer.valueOf(minOccurrenceField.getText()) < 0)));		});
+
+		maxOccurrenceField.textProperty().addListener((observable, oldValue, newValue) -> {
+			okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
+					((! minOccurrenceField.getText().matches("-?\\d+")) ||
+							(! maxOccurrenceField.getText().matches("-?\\d+")) ||
+							(Integer.valueOf(minOccurrenceField.getText()) > Integer.valueOf(maxOccurrenceField.getText())) ||
+							(Integer.valueOf(minOccurrenceField.getText()) < 0)));		});
 
 		// computes the result
 		dialog.setResultConverter(dialogButton -> {
 			if (dialogButton == ButtonType.OK) {
+
 				int propertyNum = propertyBox.getSelectionModel().getSelectedIndex();
 
 				PatternGroup pattern1 = property.getPattern();
@@ -429,9 +454,15 @@ public class PatternsEditionPane extends BorderPane {
 			InteractionItem item = InteractionListBox.getInteractions().get(index);
 			int type = item.getInteraction().getType();
 			interactionBox.getSelectionModel().select(interactionList.get(type));
+			interactionBox.getSelectionModel().select(interactionList.get(type-1));
 
 			patternBox.getSelectionModel().select(item.getPatternProperty1().getPattern().getLabel().getText());
-			patternBox2.setValue(item.getPatternProperty2().getPattern().getLabel().getText());
+			patternBox2.getSelectionModel().select(item.getPatternProperty2().getPattern().getLabel().getText());
+		}
+		else {
+			interactionBox.getSelectionModel().select(0);
+			patternBox.getSelectionModel().select(0);
+			patternBox2.getSelectionModel().select(1);
 		}
 
 		// we define the buttons of the dialog box
@@ -452,7 +483,25 @@ public class PatternsEditionPane extends BorderPane {
 
 		dialog.getDialogPane().setContent(grid);
 
-		// computes the result
+		// event management
+		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+		okButton.setDisable((patternBox.getSelectionModel().getSelectedIndex() < 0) ||
+				(patternBox2.getSelectionModel().getSelectedIndex() < 0) ||
+				(patternBox.getSelectionModel().getSelectedIndex() == patternBox2.getSelectionModel().getSelectedIndex()));
+
+		patternBox.setOnAction(event -> {
+					okButton.setDisable((patternBox.getSelectionModel().getSelectedIndex() < 0) ||
+							(patternBox2.getSelectionModel().getSelectedIndex() < 0) ||
+							(patternBox.getSelectionModel().getSelectedIndex() == patternBox2.getSelectionModel().getSelectedIndex()));
+				});
+
+		patternBox2.setOnAction(event -> {
+					okButton.setDisable((patternBox.getSelectionModel().getSelectedIndex() < 0) ||
+							(patternBox2.getSelectionModel().getSelectedIndex() < 0) ||
+							(patternBox.getSelectionModel().getSelectedIndex() == patternBox2.getSelectionModel().getSelectedIndex()));
+				});
+
+			// computes the result
 		dialog.setResultConverter(dialogButton -> {
 			if (dialogButton == ButtonType.OK) {
 				int num = interactionBox.getSelectionModel().getSelectedIndex();

@@ -43,6 +43,6 @@ public class NoEdgeInteraction extends Interaction {
 
     @Override
     public int getType() {
-        return 1;
+        return 2;
     }
 }
