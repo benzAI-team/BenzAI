@@ -16,13 +16,15 @@ import java.util.ArrayList;
 class PatternListBox extends VBox {
     private PatternsEditionPane patternsEditionPane;
     private ListView<GridPane> listView;
-    private static int patternId = 0; // the nest pattern id
-    private static ArrayList<GridPane> boxItems;
-    private static ArrayList<PatternGroup> patternGroups = new ArrayList<>();
+    private int patternId; // the nest pattern id
+    private ArrayList<GridPane> boxItems;
+    private ArrayList<PatternGroup> patternGroups;
     private int selectedIndex;
 
     public PatternListBox (PatternsEditionPane patternsEditionPane) {
         super(5.0);
+        patternId = 0;
+        patternGroups = new ArrayList<>();
         Label titleLabel = new Label("Patterns");
         titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         HBox buttonBox = buildAddButtonBox();
@@ -78,7 +80,7 @@ class PatternListBox extends VBox {
         }
     }
 
-    static Label getNextLabel() {
+    public Label getNextLabel() {
         String new_label;
         Boolean find_new_label;
         do {
@@ -146,7 +148,11 @@ class PatternListBox extends VBox {
         return patternGroups;
     }
 
-    static ArrayList<GridPane> getBoxItems() {
+    ArrayList<GridPane> getBoxItems() {
         return boxItems;
+    }
+
+    int getNbItems() {
+        return boxItems.size();
     }
 }

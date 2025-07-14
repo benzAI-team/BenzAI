@@ -8,7 +8,7 @@ public class PatternCloseButton extends CloseButton {
 		super(parent, index);
 
 		this.setOnAction(e -> {
-			if (parent.getNbItems() == 1) {
+			if (parent.getPatternListBox().getNbItems() == 1) {
 				Utils.alert("You cannot delete the last pattern.");
 			} else {
 				parent.getPatternListBox().removeEntry(index);

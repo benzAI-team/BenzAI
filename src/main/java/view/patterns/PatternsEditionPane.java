@@ -76,7 +76,7 @@ public class PatternsEditionPane extends BorderPane {
 		fieldName = new TextField("default name");
 		fieldName.setOnKeyReleased(e -> {
 			int index = selectedPatternGroup.getIndex();
-			GridPane gridPane = PatternListBox.getBoxItems().get(index);
+			GridPane gridPane = patternListBox.getBoxItems().get(index);
 
 			if ("".equals(fieldName.getText())) ((Label) gridPane.getChildren().get(0)).setText("default name");
 			else ((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
@@ -247,10 +247,6 @@ public class PatternsEditionPane extends BorderPane {
 			hide();
 		});
 		return applyPatternButton;
-	}
-
-	int getNbItems() {
-		return PatternListBox.getBoxItems().size();
 	}
 
 	void checkBorder() {
