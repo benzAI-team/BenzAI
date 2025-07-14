@@ -29,6 +29,7 @@ public class PatternsEditionPane extends BorderPane {
 	private PatternListBox patternListBox;
 	private PropertyListBox propertyListBox;
 	private InteractionListBox interactionListBox;
+	private Button applyPatternButton;
 
 	public PatternsEditionPane(HBoxPatternCriterion patternConstraintHBox) {
 		super();
@@ -221,8 +222,17 @@ public class PatternsEditionPane extends BorderPane {
 		return applyBox;
 	}
 
+	public void disableApplyButton() {
+		boolean ok = true;
+		for (int i = 0; (i < patternListBox.getPatternGroups().size()) && (ok); i++) {
+			ok = patternListBox.getPatternGroups().get(i).getPositiveHexagonNumber() > 0;
+		}
+		applyPatternButton.setDisable(! ok);
+	}
+
 	private Button buildApplyButton() {
-		Button applyPatternButton = new Button("Apply");
+		applyPatternButton = new Button("Apply");
+		applyPatternButton.setDisable(true);
 		applyPatternButton.setPrefWidth(250);
 		applyPatternButton.setOnAction(e -> {
 			patternConstraintHBox.reset();
@@ -575,5 +585,9 @@ public class PatternsEditionPane extends BorderPane {
 
 	public InteractionListBox getInteractionListBox() {
 		return interactionListBox;
+	}
+
+	public Button getApplyPatternButton() {
+		return applyPatternButton;
 	}
 }

@@ -36,6 +36,7 @@ public class PatternHexagon extends Polygon {
 			System.out.println(coords.toString());
 			shiftLabel();
 			group.getParentPane().checkBorder();
+			group.getParentPane().disableApplyButton();
 		});
 
 		this.getPoints().addAll(points);
@@ -49,14 +50,14 @@ public class PatternHexagon extends Polygon {
 	}
 
 	private void shiftLabel() {
-    PatternLabel lastLabel = group.getParentPane().getLastLabel();
-    if (lastLabel == label) {
-      label = PatternLabel.next(label);
-      group.getParentPane().setLastLabel(label);
-    }
-    else
-      label = lastLabel;
-	this.setFill(COLORS[label.ordinal()]);
+		PatternLabel lastLabel = group.getParentPane().getLastLabel();
+		if (lastLabel == label) {
+		  label = PatternLabel.next(label);
+		  group.getParentPane().setLastLabel(label);
+		}
+		else
+		  label = lastLabel;
+		this.setFill(COLORS[label.ordinal()]);
 	}
 
 	public void setLabel(PatternLabel label) {

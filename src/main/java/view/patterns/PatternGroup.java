@@ -438,6 +438,19 @@ public class PatternGroup extends Group {
 		return nbHexagons;
 	}
 
+	public int getPositiveHexagonNumber() {
+		int nbHexagons = 0;
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+				if (hexagons[i][j] != null) {
+					if (hexagons[i][j].getLabel() == PatternLabel.POSITIVE)
+						nbHexagons++;
+				}
+			}
+		}
+		return nbHexagons;
+	}
+
 	void importPattern(Pattern pattern) {
 
 		for (int i = 0; i < pattern.getNbNodes(); i++) {
