@@ -163,6 +163,15 @@ class InteractionListBox extends VBox {
         }
     }
 
+    void updateLabel (String label, PatternProperty property) {
+        for (int i = 0; i < interactions.size(); i++) {
+            InteractionItem item = interactions.get(i);
+            if ((item.getPatternProperty1() == property) || (item.getPatternProperty2() == property)) {
+                ((Label) boxItems.get(i).getChildren().get(0)).setText(item.getLabel());
+            }
+        }
+    }
+
     public static ArrayList<InteractionItem> getInteractions() {
         return interactions;
     }

@@ -102,7 +102,8 @@ public class PatternsEditionPane extends BorderPane {
 			}
 
 			((Label) gridPane.getChildren().get(0)).setText(label);
-			((Label) propertyListBox.getBoxItems().get(index).getChildren().get(0)).setText(label);
+			((Label) propertyListBox.getBoxItems().get(index).getChildren().get(0)).setText(propertyListBox.getPatternProperties().get(index).getLabel());
+			interactionListBox.updateLabel(label, propertyListBox.getPatternProperties().get(index));
 		});
 
 		HBox boxName = new HBox(3.0);
