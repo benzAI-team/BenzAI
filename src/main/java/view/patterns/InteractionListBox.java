@@ -155,7 +155,7 @@ class InteractionListBox extends VBox {
         int i = 0;
         while (i < interactions.size()) {
             InteractionItem item = interactions.get(i);
-            if ((item.getPatternProperty1() == property) || (item.getPatternProperty1() == property)) {
+            if ((item.getPatternProperty1() == property) || (item.getPatternProperty2() == property)) {
                 patternsEditionPane.getInteractionListBox().removeEntry(i);
             } else {
                 i++;

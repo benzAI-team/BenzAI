@@ -6,7 +6,7 @@ public class InteractionCloseButton extends CloseButton {
         super(parent, index);
 
         this.setOnAction(e -> {
-                parent.getPatternListBox().removeEntry(index);
+                parent.getInteractionListBox().removeEntry(index);
         });
     }
 }
