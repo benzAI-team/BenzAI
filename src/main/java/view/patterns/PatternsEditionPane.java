@@ -78,8 +78,31 @@ public class PatternsEditionPane extends BorderPane {
 			int index = selectedPatternGroup.getIndex();
 			GridPane gridPane = patternListBox.getBoxItems().get(index);
 
-			if ("".equals(fieldName.getText())) ((Label) gridPane.getChildren().get(0)).setText("default name");
-			else ((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
+			String label;
+
+			if ("".equals(fieldName.getText())) {
+				label = "default name";
+				int i = 0;
+				boolean found;
+				do {
+					int j = 0;
+					while ((j < patternListBox.getBoxItems().size()) && (! label.equals(((Label) patternListBox.getBoxItems().get(j).getChildren().get(0)).getText()))){
+						j++;
+					}
+					found = j < patternListBox.getBoxItems().size();
+					if (found) {
+						i++;
+						label = "default name " + i;
+					}
+				}
+				while (found);
+			}
+			else {
+				label = fieldName.getText();
+			}
+
+			((Label) gridPane.getChildren().get(0)).setText(label);
+			((Label) propertyListBox.getBoxItems().get(index).getChildren().get(0)).setText(label);
 		});
 
 		HBox boxName = new HBox(3.0);

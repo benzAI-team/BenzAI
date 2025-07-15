@@ -166,4 +166,8 @@ class PropertyListBox extends VBox {
     public static ArrayList<PatternProperty> getPatternProperties() {
         return properties;
     }
+
+    public static ArrayList<GridPane> getBoxItems() {
+        return boxItems;
+    }
 }
