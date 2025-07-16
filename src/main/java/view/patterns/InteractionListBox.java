@@ -72,7 +72,6 @@ class InteractionListBox extends VBox {
         modifyButton.setPrefWidth(125);
         modifyButton.setOnAction(e ->
         {
-            System.out.println("Modify button "+selectedIndex);
             Optional<InteractionItem> item;
             item = patternsEditionPane.getInteractionDialogBox(selectedIndex);
             item.ifPresent (value -> modifyEntry(value));
@@ -81,13 +80,11 @@ class InteractionListBox extends VBox {
     }
 
     void select(int index) {
-        System.out.println("Select "+index);
         selectedIndex = index;
     }
 
     void addEntry(InteractionItem item) {
         Label label = new Label(item.getLabel());
-        System.out.println("Add Inter "+item.getInteraction().getLabel());
         GridPane pane = new GridPane();
         pane.setPadding(new Insets(1));
 
@@ -127,8 +124,6 @@ class InteractionListBox extends VBox {
         boxItems.set(selectedIndex,pane);
         ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
         listView.setItems(items);
-
-        System.out.println("Index "+selectedIndex);
 
         listView.getSelectionModel().select(selectedIndex);
         select(selectedIndex);

@@ -59,7 +59,6 @@ class PropertyListBox extends VBox {
         Button modifyButton = new Button("Modify");
         modifyButton.setPrefWidth(250);
         modifyButton.setOnAction(e -> {
-            System.out.println("Modify button "+selectedIndex);
             Optional<PatternProperty> property;
             property = patternsEditionPane.getPropertyDialogBox(selectedIndex);
             property.ifPresent (value -> modifyEntry(value));
@@ -68,7 +67,6 @@ class PropertyListBox extends VBox {
     }
 
     void select(int index) {
-        System.out.println("Select "+index);
         selectedIndex = index;
     }
 
@@ -125,8 +123,6 @@ class PropertyListBox extends VBox {
         boxItems.set(selectedIndex,pane);
         ObservableList<GridPane> items = FXCollections.observableArrayList(boxItems);
         listView.setItems(items);
-
-        System.out.println("Index "+selectedIndex);
 
         listView.getSelectionModel().select(selectedIndex);
         select(selectedIndex);

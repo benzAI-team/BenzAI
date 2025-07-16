@@ -10,6 +10,6 @@ public class PatternPropertyExistence extends PatternProperty {
 
     @Override
     String getLabel () {
-        return "Exist " + getPattern().getLabel().getText();
+        return "∃ " + getPattern().getLabel().getText();
     }
 }

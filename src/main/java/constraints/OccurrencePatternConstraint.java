@@ -10,22 +10,13 @@ import view.patterns.PatternGroup;
 
 public class OccurrencePatternConstraint extends PatternConstraint {
     private int minOccurrence;
-    private int maxOccurrence;
     private IntVar occurrenceNumber;
     private Interaction interaction;
 
-    public OccurrencePatternConstraint(PatternGroup pattern, Interaction interaction, int minOccurrence, int maxOccurrence) {
+    public OccurrencePatternConstraint(PatternGroup pattern, Interaction interaction, int minOccurrence) {
         super(pattern);
         this.interaction = interaction;
         this.minOccurrence = minOccurrence;
-        this.maxOccurrence = maxOccurrence;
-    }
-
-    @Override
-    public void buildVariables() {
-        System.out.println("Build var occur");
-        super.buildVariables();
-        occurrenceNumber = getGeneralModel().getProblem().intVar("occurrence", minOccurrence, maxOccurrence);
     }
 
     @Override
@@ -33,7 +24,7 @@ public class OccurrencePatternConstraint extends PatternConstraint {
         super.postConstraints();
 
         GeneralModel generalModel = getGeneralModel();
-        generalModel.getProblem().sum(getPresenceVariables(), "=", occurrenceNumber).post();
+        generalModel.getProblem().sum(getPresenceVariables(), ">=", minOccurrence).post();
 
         // we post interaction constraints (if any)
         BoolVar[] presences = getPresenceVariables();

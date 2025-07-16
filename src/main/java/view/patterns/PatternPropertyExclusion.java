@@ -10,7 +10,7 @@ public class PatternPropertyExclusion extends PatternProperty {
 
     @Override
     String getLabel () {
-        return "Excl " + getPattern().getLabel().getText();
+        return "∄ " + getPattern().getLabel().getText();
     }
 
 }

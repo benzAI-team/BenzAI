@@ -370,59 +370,40 @@ public class PatternsEditionPane extends BorderPane {
 		grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
 
 		TextField minOccurrenceField = new TextField();
-		TextField maxOccurrenceField = new TextField();
 		if (property.getType() > 1) {
 			minOccurrenceField.setText(Integer.toString(((PatternPropertyOccurrence) property).getMinOccurrence()));
-			maxOccurrenceField.setText(Integer.toString(((PatternPropertyOccurrence) property).getMaxOccurrence()));
 		}
 		else {
 			minOccurrenceField.setPromptText("min");
-			maxOccurrenceField.setPromptText("max");
 		}
-		HBox occurrenceBox = new HBox();
-		occurrenceBox.getChildren().addAll (minOccurrenceField, maxOccurrenceField);
 		minOccurrenceField.setPrefWidth(100);
-		maxOccurrenceField.setPrefWidth(100);
 		grid.add(new Label("Property:"), 0, 0);
 		grid.add(propertyBox,1,0);
-		grid.add(new Label("# occurrences"), 0, 1);
-		grid.add(occurrenceBox, 1, 1);
+		grid.add(new Label("# occurrences ≥"), 0, 1);
+		grid.add(minOccurrenceField, 1, 1);
 
 		dialog.getDialogPane().setContent(grid);
 
 		minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
-		maxOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 
 		// event management
 		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
 
 		propertyBox.setOnAction(event -> {
 			minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
-			maxOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
 			okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
 					((! minOccurrenceField.getText().matches("-?\\d+")) ||
-							(! maxOccurrenceField.getText().matches("-?\\d+")) ||
-							(Integer.valueOf(minOccurrenceField.getText()) > Integer.valueOf(maxOccurrenceField.getText())) ||
 							(Integer.valueOf(minOccurrenceField.getText()) < 0)));
 		});
 
 		okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
-				((! minOccurrenceField.getText().matches("-?\\d+")) ||
-				(! maxOccurrenceField.getText().matches("-?\\d+"))));
+				(! minOccurrenceField.getText().matches("-?\\d+")));
 
 		minOccurrenceField.textProperty().addListener((observable, oldValue, newValue) -> {
 			okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
 					((! minOccurrenceField.getText().matches("-?\\d+")) ||
-							(! maxOccurrenceField.getText().matches("-?\\d+")) ||
-							(Integer.valueOf(minOccurrenceField.getText()) > Integer.valueOf(maxOccurrenceField.getText())) ||
-							(Integer.valueOf(minOccurrenceField.getText()) < 0)));		});
-
-		maxOccurrenceField.textProperty().addListener((observable, oldValue, newValue) -> {
-			okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
-					((! minOccurrenceField.getText().matches("-?\\d+")) ||
-							(! maxOccurrenceField.getText().matches("-?\\d+")) ||
-							(Integer.valueOf(minOccurrenceField.getText()) > Integer.valueOf(maxOccurrenceField.getText())) ||
-							(Integer.valueOf(minOccurrenceField.getText()) < 0)));		});
+							(Integer.valueOf(minOccurrenceField.getText()) < 0)));
+		});
 
 		// computes the result
 		dialog.setResultConverter(dialogButton -> {
@@ -436,10 +417,10 @@ public class PatternsEditionPane extends BorderPane {
 				switch (propertyNum) {
 					case 0: newProperty = new PatternPropertyExistence(pattern1); break;
 					case 1: newProperty = new PatternPropertyExclusion(pattern1); break;
-					case 2: newProperty = new PatternPropertyOccurrence(pattern1, new NoInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 3: newProperty = new PatternPropertyOccurrence(pattern1, new NoPositiveInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 4: newProperty = new PatternPropertyOccurrence(pattern1, new NoEdgeInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
-					case 5: newProperty = new PatternPropertyOccurrence(pattern1, new NoHexagonInteraction(), Integer.valueOf(minOccurrenceField.getText()), Integer.valueOf(maxOccurrenceField.getText())); break;
+					case 2: newProperty = new PatternPropertyOccurrence(pattern1, new NoInteraction(), Integer.valueOf(minOccurrenceField.getText())); break;
+					case 3: newProperty = new PatternPropertyOccurrence(pattern1, new NoPositiveInteraction(), Integer.valueOf(minOccurrenceField.getText())); break;
+					case 4: newProperty = new PatternPropertyOccurrence(pattern1, new NoEdgeInteraction(), Integer.valueOf(minOccurrenceField.getText())); break;
+					case 5: newProperty = new PatternPropertyOccurrence(pattern1, new NoHexagonInteraction(), Integer.valueOf(minOccurrenceField.getText())); break;
 				}
 
 				return newProperty;
