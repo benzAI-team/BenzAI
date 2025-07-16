@@ -57,12 +57,9 @@ public class PatternConstraint extends BenzAIConstraint {
 
 	@Override
 	public void postConstraints() {
-		System.out.println("Build Constraint PatternConstraints");
 		GeneralModel generalModel = getGeneralModel();
 
 		ArrayList<Integer[]> occurrences = patternOccurrences.getOccurrences();
-
-		System.out.println("Size "+occurrences.size());
 
 		for (int i = 0; i < occurrences.size(); i++) {
 
