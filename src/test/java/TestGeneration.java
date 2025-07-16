@@ -62,7 +62,7 @@ public enum TestGeneration {
         }
         ArrayList<Pattern> patterns = new ArrayList<>();
         patterns.add(pattern);
-        // TO DO : update to take into account the new constraint
+        
         PatternGroup patternGroup = new PatternGroup(patterns.get(0),2);
         ((ModelProperty)modelPropertySet.getById("pattern")).setConstraint(new ExistencePatternConstraint(patternGroup));
         modelPropertySet.getById("pattern").addExpression(new PatternExpression("SINGLE_PATTERN"));
