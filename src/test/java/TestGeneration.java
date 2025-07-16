@@ -1,9 +1,12 @@
+import constraints.ExistencePatternConstraint;
 import generator.GeneralModel;
 import generator.SolverResults;
 import generator.patterns.Pattern;
 import generator.patterns.PatternFileImport;
+import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.*;
+import view.patterns.PatternGroup;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,8 +63,8 @@ public enum TestGeneration {
         ArrayList<Pattern> patterns = new ArrayList<>();
         patterns.add(pattern);
         // TO DO : update to take into account the new constraint
-//        ((ModelProperty)modelPropertySet.getById("pattern")).setConstraint(new SinglePattern2Constraint(patterns.get(0), false,
-//                VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
+        PatternGroup patternGroup = new PatternGroup(patterns.get(0),2);
+        ((ModelProperty)modelPropertySet.getById("pattern")).setConstraint(new ExistencePatternConstraint(patternGroup));
         modelPropertySet.getById("pattern").addExpression(new PatternExpression("SINGLE_PATTERN"));
         int found = runGeneration(modelPropertySet);
         return diagnostic("Generate molecules with triangle3 pattern and #hex=5", 10, found);

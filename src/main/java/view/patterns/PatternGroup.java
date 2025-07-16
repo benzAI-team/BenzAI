@@ -59,6 +59,14 @@ public class PatternGroup extends Group {
 		initialize();
 	}
 
+	/* special constructor for testing generation */
+	public PatternGroup(Pattern pattern, int nbCrowns) {
+		this.parent = null;
+		this.nbCrowns = nbCrowns;
+		this.label = null;
+
+		importPattern(pattern);
+	}
 
 	private ArrayList<Double> getHexagonPoints(double xCenter, double yCenter) {
 
