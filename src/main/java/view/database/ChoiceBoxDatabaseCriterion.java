@@ -38,13 +38,14 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 		this.getItems().add("Coronenoid");
 		this.getItems().add("Coronoid");
 		this.getItems().add("Symmetry");
+		this.getItems().add("Clar number");
 
 		this.setOnAction(e -> {
 
 			if (getValue() != null) {
 
 				String value = getValue();
-        HBoxDatabaseCriterion box  = null;
+   			    HBoxDatabaseCriterion box  = null;
 				if ("Id".equals(value)) {
 					box = new HBoxIntDatabaseCriterion(parent, this,BenzenoidCriterion.Subject.ID_MOLECULE,"= < <= != > >= IN");
 				}
@@ -74,11 +75,11 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 				}
 
 				else if ("Frequency".equals(value)) {
-					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.FREQUENCY,"= < <= != > >= IN");
+					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.FREQUENCY,"IN");
 				}
 
 				else if ("Intensity".equals(value)) {
-					box = new HBoxFloatDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.INTENSITY,"< <= > >= IN");
+					box = new HBoxFloatDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.INTENSITY,"IN");
 				}
 
 				else if ("Solo".equals(value)) {
@@ -113,7 +114,7 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 					box = new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.CORONOID,"=");
 				}
         
-        else if ("Symmetry".equals(value)) {
+        		else if ("Symmetry".equals(value)) {
 					box = new HBoxStringDatabaseCriterion (parent, this, BenzenoidCriterion.Subject.SYMMETRY,"= !=");
 				}
 
