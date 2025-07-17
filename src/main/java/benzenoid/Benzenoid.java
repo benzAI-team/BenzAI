@@ -1272,7 +1272,7 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		return this.lumo ;
 	}
 
-	public void setMmoment (double moment) {
+	public void setMoment(double moment) {
 		this.moment = moment;
 	}
 

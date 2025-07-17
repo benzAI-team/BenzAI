@@ -49,7 +49,7 @@ public class BenzenoidDatabaseInformation {
                 benzenoid.setClarNumber(content.getClarNumber());
                 benzenoid.setHomo(content.getHomo());
                 benzenoid.setLumo(content.getLumo());
-                benzenoid.setMmoment(content.getMoment());
+                benzenoid.setMoment(content.getMoment());
                 return true;
             }
             else {
