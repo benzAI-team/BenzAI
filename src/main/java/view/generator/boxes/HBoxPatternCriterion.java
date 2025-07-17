@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
 import view.patterns.PatternsEditionPane;
@@ -83,10 +82,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		editButton.setStyle("-fx-background-color: transparent;");
 
 		Image imageAddButton;
-		if (Utils.onWindows())
-			imageAddButton = new Image("/resources/graphics\\icon-edit.png");
-		else
-			imageAddButton = new Image("/resources/graphics/icon-edit.png");
+		imageAddButton = new Image("/resources/graphics/icon-edit.png");
 
 		ImageView view = new ImageView(imageAddButton);
 		editButton.setPadding(new Insets(0));
