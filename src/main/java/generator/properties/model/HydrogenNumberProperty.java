@@ -11,7 +11,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HydrogenNumberProperty extends ModelProperty {
 	HydrogenNumberProperty() {
-		super("hydrogens", "Number of hydrogens", new HydrogenNumberConstraint(), new HydrogenNumberFilter());
+		super("hydrogens", "# hydrogens", new HydrogenNumberConstraint(), new HydrogenNumberFilter());
 	}
 	/***
 	 * Compute the max number of hexagons from the (max) number of hydrogens.

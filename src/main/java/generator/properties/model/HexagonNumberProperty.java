@@ -12,7 +12,7 @@ import view.generator.boxes.HBoxHexagonNumberCriterion;
 public class HexagonNumberProperty extends ModelProperty {
 
 	HexagonNumberProperty() {
-		super("hexagons", "Number of hexagons", new HexagonNumberConstraint(), new HexagonNumberFilter());
+		super("hexagons", "# hexagons", new HexagonNumberConstraint(), new HexagonNumberFilter());
 	}
 
 	@Override

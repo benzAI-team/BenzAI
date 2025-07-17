@@ -12,7 +12,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 public class CarbonNumberProperty extends ModelProperty {
 
 	CarbonNumberProperty() {
-		super("carbons", "Number of carbons", new CarbonNumberConstraint(), new CarbonNumberFilter());
+		super("carbons", "# carbons", new CarbonNumberConstraint(), new CarbonNumberFilter());
 	}
 
 	/***
