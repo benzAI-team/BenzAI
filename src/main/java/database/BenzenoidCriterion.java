@@ -2,27 +2,23 @@ package database;
 
 public class BenzenoidCriterion {
 
-	public enum Subject {
-		ID_MOLECULE, MOLECULE_LABEL, NB_HEXAGONS, NB_CARBONS, NB_HYDROGENS, IRREGULARITY, FREQUENCY, INTENSITY, INCHI, SOLO, DUO, TRIO, QUARTET, KEKULE, CATACONDENSED, CORONENOID, CORONOID, SYMMETRY
-	}
-
 	public enum Operator {
 		LEQ, LT, EQ, GT, GEQ, DIFF, IN
 	}
 
-	private final Subject subject;
+	private final String name;
 	private final Operator operator;
 	private final String value;
 
-	public BenzenoidCriterion(Subject subject, Operator operator, String value) {
+	public BenzenoidCriterion(String name, Operator operator, String value) {
 		super();
-		this.subject = subject;
+		this.name = name;
 		this.operator = operator;
 		this.value = value;
 	}
 
-	public Subject getSubject() {
-		return subject;
+	public String getName() {
+		return name;
 	}
 
 	public Operator getOperator() {
@@ -49,35 +45,6 @@ public class BenzenoidCriterion {
 
 		case DIFF:
 			return "<>";
-
-		case IN:
-			return "IN";
-
-		default:
-			return null;
-		}
-	}
-
-	public String getOperatorStringURL() {
-		switch (operator) {
-
-		case LEQ:
-			return "leq";
-
-		case LT:
-			return "lt";
-
-		case EQ:
-			return "=";
-
-		case GT:
-			return "gt";
-
-		case GEQ:
-			return "geq";
-
-		case DIFF:
-			return "dif";
 
 		case IN:
 			return "IN";
@@ -120,6 +87,6 @@ public class BenzenoidCriterion {
 
 	@Override
 	public String toString() {
-		return subject.toString() + " " + getOperatorString() + " " + value;
+		return name + " " + getOperatorString() + " " + value;
 	}
 }

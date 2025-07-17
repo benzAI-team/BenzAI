@@ -1,6 +1,5 @@
 package view.database;
 
-import database.BenzenoidCriterion;
 import javafx.scene.control.ChoiceBox;
 import utils.Couple;
 import view.database.boxes.HBoxDatabaseCriterion;
@@ -25,24 +24,25 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 	private void initialize() {
 		ArrayList<Couple<String, HBoxDatabaseCriterion>> criteria = new ArrayList<>();
 
-		criteria.add(new Couple<>("Id", new HBoxIntDatabaseCriterion(parent, this,BenzenoidCriterion.Subject.ID_MOLECULE,"= < <= != > >= IN")));
-		criteria.add(new Couple<>("Label", new HBoxStringDatabaseCriterion (parent, this, BenzenoidCriterion.Subject.MOLECULE_LABEL,"=")));
-		criteria.add(new Couple<>("InChi", new HBoxStringDatabaseCriterion (parent, this, BenzenoidCriterion.Subject.INCHI,"=")));
-		criteria.add(new Couple<>("Number of hexagons", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.NB_HEXAGONS,"= < <= != > >= IN")));
-		criteria.add(new Couple<>("Number of carbons", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.NB_CARBONS,"= < <= != > >= IN")));
-		criteria.add(new Couple<>("Number of hydrogens", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.NB_HYDROGENS,"= < <= != > >= IN")));
-		criteria.add(new Couple<>("Irregularity", new HBoxFloatDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.IRREGULARITY,"= < <= != > >= IN")));
-		criteria.add(new Couple<>("Frequency", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.FREQUENCY,"IN")));
-		criteria.add(new Couple<>("Intensity", new HBoxFloatDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.INTENSITY,"IN")));
-		criteria.add(new Couple<>("Solo", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.SOLO,"< <= = != > >= IN")));
-		criteria.add(new Couple<>("Duo", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.DUO,"< <= = != > >= IN")));
-		criteria.add(new Couple<>("Trio", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.TRIO,"= < <= != > >= IN")));
-		criteria.add(new Couple<>("Quartet", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.QUARTET,"= < <= != > >= IN")));
-		criteria.add(new Couple<>("Number of Kekulé structures", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.KEKULE,"= < <= != > >= IN")));
-		criteria.add(new Couple<>("Catacondensed", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.CATACONDENSED,"=")));
-		criteria.add(new Couple<>("Coronenoid", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.CORONENOID,"=")));
-		criteria.add(new Couple<>("Coronoid", new HBoxIntDatabaseCriterion(parent, this, BenzenoidCriterion.Subject.CORONOID,"=")));
-		criteria.add(new Couple<>("Symmetry", new HBoxStringDatabaseCriterion (parent, this, BenzenoidCriterion.Subject.SYMMETRY,"= !=")));
+		criteria.add(new Couple<>("Id", new HBoxIntDatabaseCriterion(parent, this, "idBenzenoid","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Label", new HBoxStringDatabaseCriterion (parent, this, "label","=")));
+		criteria.add(new Couple<>("InChi", new HBoxStringDatabaseCriterion (parent, this, "inchi","=")));
+		criteria.add(new Couple<>("Number of hexagons", new HBoxIntDatabaseCriterion(parent, this, "nbHexagons","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Number of carbons", new HBoxIntDatabaseCriterion(parent, this, "nbCarbons","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Number of hydrogens", new HBoxIntDatabaseCriterion(parent, this, "nbHydrogens","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Irregularity", new HBoxFloatDatabaseCriterion(parent, this, "irregularity","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Frequency", new HBoxIntDatabaseCriterion(parent, this, "frequency","IN")));
+		criteria.add(new Couple<>("Intensity", new HBoxFloatDatabaseCriterion(parent, this, "intensity","IN")));
+		criteria.add(new Couple<>("Solo", new HBoxIntDatabaseCriterion(parent, this, "solo","< <= = != > >= IN")));
+		criteria.add(new Couple<>("Duo", new HBoxIntDatabaseCriterion(parent, this, "duo","< <= = != > >= IN")));
+		criteria.add(new Couple<>("Trio", new HBoxIntDatabaseCriterion(parent, this, "trio","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Quartet", new HBoxIntDatabaseCriterion(parent, this, "quartet","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Number of Kekulé structures", new HBoxIntDatabaseCriterion(parent, this, "kekule","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Catacondensed", new HBoxIntDatabaseCriterion(parent, this, "catacondensed","=")));
+		criteria.add(new Couple<>("Coronenoid", new HBoxIntDatabaseCriterion(parent, this, "coronenoid","=")));
+		criteria.add(new Couple<>("Coronoid", new HBoxIntDatabaseCriterion(parent, this, "coronoid","=")));
+		criteria.add(new Couple<>("Symmetry", new HBoxStringDatabaseCriterion (parent, this, "symmetry","= !=")));
+
 
 		for (Couple<String, HBoxDatabaseCriterion> criterion : criteria) {
 			this.getItems().add(criterion.getX());

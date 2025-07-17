@@ -1,6 +1,5 @@
 package view.database.boxes;
 
-import database.BenzenoidCriterion.Subject;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import utils.Utils;
@@ -13,8 +12,8 @@ public abstract class HBoxInDatabase extends HBoxDatabaseCriterion {
 	protected TextField fieldValue1;
 	protected TextField fieldValue2;
 
-	public HBoxInDatabase(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, Subject subject, String possible_operators) {
-		super(parent, choiceBoxCriterion, subject, possible_operators);
+	public HBoxInDatabase(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, String name, String possible_operators) {
+		super(parent, choiceBoxCriterion, name, possible_operators);
 		checkValidity();
 	}
 

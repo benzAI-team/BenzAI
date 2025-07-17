@@ -1,10 +1,6 @@
 package view.database.boxes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import database.BenzenoidCriterion;
-import database.BenzenoidCriterion.Subject;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +8,9 @@ import javafx.scene.layout.HBox;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 import view.database.DeleteButton;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class HBoxDatabaseCriterion extends HBox {
 
@@ -22,21 +21,21 @@ public abstract class HBoxDatabaseCriterion extends HBox {
 
 	protected DatabasePane parent;
 	private final ChoiceBoxDatabaseCriterion choiceBoxCriterion;
-  private Subject subject;
-  private ArrayList<String> possible_operators;
+	private String name;
+	private ArrayList<String> possible_operators;
 
-	public HBoxDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, Subject subject, String possible_operators) {
+	public HBoxDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, String name, String possible_operators) {
 		super(5.0);
 
 		this.parent = parent;
 		this.choiceBoxCriterion = choiceBoxCriterion;
-    this.subject = subject;
-    if (possible_operators != null) {
-      this.possible_operators = new ArrayList<>(Arrays.asList(possible_operators.split(" ")));
-    }
-    else {
-      this.possible_operators = null;
-    }
+		this.name = name;
+		if (possible_operators != null) {
+		  this.possible_operators = new ArrayList<>(Arrays.asList(possible_operators.split(" ")));
+		}
+		else {
+		  this.possible_operators = null;
+		}
 
 		warningIcon = new ImageView(new Image("/resources/graphics/icon-warning.png"));
 		deleteButton = new DeleteButton(this);
@@ -61,11 +60,11 @@ public abstract class HBoxDatabaseCriterion extends HBox {
 		return valid;
 	}
   
-  public Subject getSubject() {
-    return this.subject;
+	public String getName() {
+    return this.name;
   }
 
-  public ArrayList<String> get_possible_operators() {
+	public ArrayList<String> get_possible_operators() {
     return this.possible_operators;
   }
 
