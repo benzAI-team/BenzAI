@@ -34,7 +34,7 @@ public class PatternProperty extends ModelProperty {
 //
 //		return (nbHexagons >= nbPositiveNodes) ? patternNbCrowns : 1;
 		// TODO The computation should take into account the property (existence, interaction and exclusion)
-		return 4;
+		return Integer.MAX_VALUE;
 	}
 
 	public void addConstraint (PatternConstraint patternConstraint) {
