@@ -3,8 +3,6 @@ package view.database.boxes;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import utils.Utils;
-import database.BenzenoidCriterion;
-import database.BenzenoidCriterion.Subject;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
@@ -14,8 +12,9 @@ public abstract class HBoxInDatabase extends HBoxDatabaseCriterion {
 	protected TextField fieldValue1;
 	protected TextField fieldValue2;
 
-	public HBoxInDatabase(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, Subject subject, String possible_operators) {
-		super(parent, choiceBoxCriterion, subject, possible_operators);
+	public HBoxInDatabase(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, String name, String possible_operators) {
+		super(parent, choiceBoxCriterion, name, possible_operators);
+		checkValidity();
 	}
 
 	@Override
@@ -64,9 +63,9 @@ public abstract class HBoxInDatabase extends HBoxDatabaseCriterion {
 		valid = false;
 
 		operatorChoiceBox = new ChoiceBox<String>();
-    for (String op : get_possible_operators()) {
-      operatorChoiceBox.getItems().add(op);
-    }
+		for (String op : get_possible_operators()) {
+		  operatorChoiceBox.getItems().add(op);
+		}
 
 		fieldValue1 = new TextField();
 		fieldValue2 = new TextField();

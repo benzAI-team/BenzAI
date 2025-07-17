@@ -1,10 +1,8 @@
 package database.models;
 
 import benzenoid.Benzenoid;
-import http.Post;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class PropertiesEntry extends BenzenoidEntry {
@@ -70,15 +68,15 @@ public class PropertiesEntry extends BenzenoidEntry {
         double moment = (double) result.get("moment");
         int clarNumber = (int) ((double) result.get("clarNumber"));
 
-        // Récupérer le nom
-        String service = "find_properties/";
-        String json = "{\"idBenzenoid\": \"= " + idMolecule + "\"}";
-        List<Map> results = null;
-        try {
-            results = Post.post(service, json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        // Récupérer le nom
+//        String service = "find_propertiesa/";
+//        String json = "{\"idBenzenoid\": \"= " + idMolecule + "\"}";
+//        List<Map> results = null;
+//        try {
+//            results = Post.post(service, json);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return new PropertiesEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi,	graphFile, homo, lumo, moment, clarNumber);
     }
@@ -89,7 +87,7 @@ public class PropertiesEntry extends BenzenoidEntry {
         b.setClarNumber(this.clarNumber);
         b.setHomo(this.homo);
         b.setLumo(this.lumo);
-        b.setMmoment(this.moment);
+        b.setMoment(this.moment);
         return b;
     }
 }

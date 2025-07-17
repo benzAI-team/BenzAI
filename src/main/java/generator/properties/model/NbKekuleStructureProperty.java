@@ -10,7 +10,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 public class NbKekuleStructureProperty extends ModelProperty {
 
 	public NbKekuleStructureProperty() {
-		super("kekule", "Number of Kekule structures", new NbKekuleStructureChecker(), new NbKekuleStructureFilter());
+		super("kekule", "# Kekule structures", new NbKekuleStructureChecker(), new NbKekuleStructureFilter());
 	}
 
 	@Override

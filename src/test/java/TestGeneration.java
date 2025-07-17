@@ -1,12 +1,12 @@
-import constraints.SinglePattern2Constraint;
-import generator.*;
+import constraints.ExistencePatternConstraint;
+import generator.GeneralModel;
+import generator.SolverResults;
 import generator.patterns.Pattern;
 import generator.patterns.PatternFileImport;
-import generator.patterns.PatternGenerationType;
-import generator.patterns.PatternResolutionInformations;
 import generator.properties.model.ModelProperty;
 import generator.properties.model.ModelPropertySet;
 import generator.properties.model.expression.*;
+import view.patterns.PatternGroup;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,10 +62,10 @@ public enum TestGeneration {
         }
         ArrayList<Pattern> patterns = new ArrayList<>();
         patterns.add(pattern);
-        PatternResolutionInformations patternInformations = new PatternResolutionInformations(PatternGenerationType.SINGLE_PATTERN_2, patterns);
-        ((ModelProperty)modelPropertySet.getById("pattern")).setConstraint(new SinglePattern2Constraint(patternInformations.getPatterns().get(0), false,
-                VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-        modelPropertySet.getById("pattern").addExpression(new PatternExpression("SINGLE_PATTERN", patternInformations));
+        
+        PatternGroup patternGroup = new PatternGroup(patterns.get(0),2);
+        ((ModelProperty)modelPropertySet.getById("pattern")).setConstraint(new ExistencePatternConstraint(patternGroup));
+        modelPropertySet.getById("pattern").addExpression(new PatternExpression("SINGLE_PATTERN"));
         int found = runGeneration(modelPropertySet);
         return diagnostic("Generate molecules with triangle3 pattern and #hex=5", 10, found);
     }

@@ -31,13 +31,41 @@ public class PatternGroup extends Group {
 	private ArrayList<PatternHexagon> border;
 	private ArrayList<PatternHexagon> extendedBorder;
 
+	PatternGroup(PatternsEditionPane parent, int nbCrowns, Label label) {
+		this.parent = parent;
+		this.nbCrowns = nbCrowns;
+		this.index = parent.getPatternListBox().getPatternGroups().size();
+		if (label == null) {
+			this.label = parent.getPatternListBox().getNextLabel();
+		}
+		else {
+			this.label = label;
+		}
+
+		initialize();
+	}
+
 	PatternGroup(PatternsEditionPane parent, int nbCrowns, int index, Label label) {
 		this.parent = parent;
 		this.nbCrowns = nbCrowns;
 		this.index = index;
-		this.label = label;
-		this.resize(500, 500);
+		if (label == null) {
+			this.label = parent.getPatternListBox().getNextLabel();
+		}
+		else {
+			this.label = label;
+		}
+
 		initialize();
+	}
+
+	/* special constructor for testing generation */
+	public PatternGroup(Pattern pattern, int nbCrowns) {
+		this.parent = null;
+		this.nbCrowns = nbCrowns;
+		this.label = null;
+
+		importPattern(pattern);
 	}
 
 	private ArrayList<Double> getHexagonPoints(double xCenter, double yCenter) {
@@ -198,6 +226,7 @@ public class PatternGroup extends Group {
 	}
 
 	private void initialize() {
+		this.resize(500, 500);
 		diameter = 2 * nbCrowns - 1;
 		buildDisplayedHexagons();
 		ArrayList<Couple<Double, Double>> centers = getFirstCenters();
@@ -240,7 +269,7 @@ public class PatternGroup extends Group {
 		this.degree = degree;
 	}
 
-	Pattern exportPattern() {
+	public Pattern exportPattern() {
 		int nbHexagons = computeHexagonNumber();
 
 		ArrayList<Couple<Integer, Integer>> coordsArray = new ArrayList<>();
@@ -410,6 +439,19 @@ public class PatternGroup extends Group {
 			for (int j = 0; j < diameter; j++) {
 				if (hexagons[i][j] != null) {
 					if (hexagons[i][j].isColored())
+						nbHexagons++;
+				}
+			}
+		}
+		return nbHexagons;
+	}
+
+	public int getPositiveHexagonNumber() {
+		int nbHexagons = 0;
+		for (int i = 0; i < diameter; i++) {
+			for (int j = 0; j < diameter; j++) {
+				if (hexagons[i][j] != null) {
+					if (hexagons[i][j].getLabel() == PatternLabel.POSITIVE)
 						nbHexagons++;
 				}
 			}

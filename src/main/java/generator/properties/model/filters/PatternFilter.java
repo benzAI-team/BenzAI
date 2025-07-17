@@ -1,11 +1,11 @@
 package generator.properties.model.filters;
 
-import constraints.PatternConstraint;
+import constraints.PatternCollectionConstraint;
 
 public class PatternFilter extends DefaultFilter {
 
 	public PatternFilter() {
-		super(new PatternConstraint());
+		super(new PatternCollectionConstraint());
 		// TODO Auto-generated constructor stub
 	}
 

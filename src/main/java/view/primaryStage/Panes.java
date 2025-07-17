@@ -2,13 +2,13 @@ package view.primaryStage;
 
 import application.BenzenoidApplication;
 import javafx.scene.layout.Region;
-import view.catalog.CatalogPane;
 import view.collections.BenzenoidCollectionsManagerPane;
 import view.collections_operations.CollectionsOperationsPane;
 import view.draw.DrawBenzenoidPane;
 import view.filtering.FilteringPane;
 import view.generator.GeneratorPane;
 import view.generator.preferences.GeneratorPreferencesPane;
+
 import java.io.IOException;
 
 public class Panes {
@@ -24,7 +24,6 @@ public class Panes {
 		collectionsPane = new BenzenoidCollectionsManagerPane(app);
 		generatorPane = new GeneratorPane(app);
 		drawPane = new DrawBenzenoidPane(app, (BenzenoidCollectionsManagerPane) collectionsPane);
-		databasePane = new CatalogPane(app);
 		filteringPane = new FilteringPane(app, (BenzenoidCollectionsManagerPane) collectionsPane);
 		operationPane = new CollectionsOperationsPane(app, (BenzenoidCollectionsManagerPane) collectionsPane);
 		generationPreferencesPane = new GeneratorPreferencesPane(app);

@@ -1,7 +1,12 @@
 package view.generator.boxes;
 
 import application.BenzenoidApplication;
-import generator.patterns.PatternResolutionInformations;
+import constraints.InteractionPatternConstraint;
+import constraints.PatternConstraint;
+import generator.properties.model.ModelProperty;
+import generator.properties.model.ModelPropertySet;
+import generator.properties.model.PatternProperty;
+import generator.properties.model.expression.PatternExpression;
 import generator.properties.model.expression.PropertyExpression;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,10 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import generator.properties.model.PatternProperty;
-import generator.properties.model.ModelProperty;
-import generator.properties.model.ModelPropertySet;
-import generator.properties.model.expression.PatternExpression;
 import utils.Utils;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.GeneratorPane;
@@ -22,7 +23,6 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 
 public class HBoxPatternCriterion extends HBoxModelCriterion {
 
-	private PatternResolutionInformations patternInformations;
 	private PatternProperty patternProperty;
 
 	private PatternsEditionPane patternPane;
@@ -97,7 +97,7 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 	@Override
 	public void addPropertyExpression(ModelPropertySet modelPropertySet) {
 		if (isValid())
-			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText(), this.patternInformations));
+			modelPropertySet.getById("pattern").addExpression(new PatternExpression(patternInformationField.getText()));
 	}
 
 	private void displayPatternEditionWindows() {
@@ -129,15 +129,21 @@ public class HBoxPatternCriterion extends HBoxModelCriterion {
 		return ((GeneratorPane) getPane()).getApplication();
 	}
 
-	public void setPatternResolutionInformations(PatternResolutionInformations patternsInformations) {
-		this.patternInformations = patternsInformations;
+	public void addConstraint (PatternConstraint constraint) {
+		System.out.println("setConstraint !!!!");
+		refreshPatternInformations("CONSTRAINT SET");
+		patternProperty.addConstraint(constraint);
 	}
 
-	public PatternProperty getPatternProperty() {
-		return patternProperty;
+	public void addInteraction (InteractionPatternConstraint constraint) {
+		patternProperty.addInteraction(constraint);
 	}
 
 	private void setPatternProperty(PatternProperty patternProperty) {
 		this.patternProperty = patternProperty;
+	}
+
+	public void reset() {
+		patternProperty.reset();
 	}
 }

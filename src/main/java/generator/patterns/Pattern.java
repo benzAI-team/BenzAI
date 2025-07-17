@@ -17,6 +17,8 @@ public class Pattern {
 	private final int[][] neighborGraph;
 	private final Node center;
 	private final PatternFileWriter patternFileWriter = new PatternFileWriter(this);
+	private PatternOccurrences patternOccurrences;
+	private ArrayList<Boolean> isEdgeNeighbor;
 
 	public Pattern(int[][] matrix, PatternLabel[] labels, Node[] nodesRefs, Node center,
 				   int[][] neighborGraph, int order) {
@@ -27,6 +29,22 @@ public class Pattern {
 		this.center = center;
 		this.neighborGraph = neighborGraph;
 		this.order = order;
+		this.patternOccurrences = null;
+		isEdgeNeighbor = new ArrayList<>();
+
+		for (int i = 0; i < nbNodes; i++) {
+			isEdgeNeighbor.add(false);
+		}
+
+		for (int i = 0; i < nbNodes; i++) {
+			if (labels[i] == PatternLabel.EDGE) {
+				for (int j = 0; j < 6; j++) {
+					if ((neighborGraph[i][j] != -1) && (labels[neighborGraph[i][j]] == PatternLabel.POSITIVE)) {
+						isEdgeNeighbor.set(neighborGraph[i][j], true);
+					}
+				}
+			}
+		}
 	}
 
 	public void export(File file) throws IOException {
@@ -478,4 +496,15 @@ public class Pattern {
 		return labels;
 	}
 
+	public void setPatternOccurrences(PatternOccurrences patternOccurrences) {
+		this.patternOccurrences = patternOccurrences;
+	}
+
+	public PatternOccurrences getPatternOccurrences() {
+		return patternOccurrences;
+	}
+
+	public ArrayList<Boolean> getIsEdgeNeighbor() {
+		return isEdgeNeighbor;
+	}
 }

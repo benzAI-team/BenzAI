@@ -105,7 +105,7 @@ public class ModelPropertySet extends PropertySet {
 
 	public void save(){
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Save criterions");
+		fileChooser.setTitle("Save criteria");
 		File file = fileChooser.showSaveDialog(null);
 		if(file != null)
 			save(file);
@@ -126,7 +126,7 @@ public class ModelPropertySet extends PropertySet {
 
 	public void load() throws IOException{
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Load criterions");
+		fileChooser.setTitle("Load criteria");
 		File file = fileChooser.showOpenDialog(null);
 		if(file != null)
 			load(file);

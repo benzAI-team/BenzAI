@@ -13,6 +13,14 @@ public class HBoxNbCarbonsCriterion extends HBoxBoundingCriterion {
 	public HBoxNbCarbonsCriterion(ScrollPaneWithPropertyList parent, ChoiceBoxCriterion choiceBoxCriterion) {
 		super(parent, choiceBoxCriterion);
 		getOperatorChoiceBox().getItems().addAll("even", "odd");
+
+		getOperatorChoiceBox().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (("even".equals(oldValue)) || ("odd".equals(oldValue))) {
+				if ((!"even".equals(newValue)) && (!"odd".equals(newValue))) {
+					this.getChildren().add(1,getFieldValue());
+				}
+			}
+		});
 	}
 
 	@Override

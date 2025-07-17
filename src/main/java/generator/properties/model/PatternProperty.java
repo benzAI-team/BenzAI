@@ -1,20 +1,18 @@
 package generator.properties.model;
 
+import constraints.InteractionPatternConstraint;
+import constraints.PatternCollectionConstraint;
 import constraints.PatternConstraint;
-import generator.patterns.Pattern;
-import generator.properties.model.expression.PatternExpression;
 import generator.properties.model.filters.PatternFilter;
 import view.generator.ChoiceBoxCriterion;
 import view.generator.boxes.HBoxModelCriterion;
 import view.generator.boxes.HBoxPatternCriterion;
 import view.primaryStage.ScrollPaneWithPropertyList;
 
-import java.util.ArrayList;
-
 public class PatternProperty extends ModelProperty {
 
 	PatternProperty() {
-		super("pattern", "Pattern properties", new PatternConstraint(), new PatternFilter());
+		super("pattern", "Pattern properties", new PatternCollectionConstraint(), new PatternFilter());
 	}
 
 	@Override
@@ -28,12 +26,26 @@ public class PatternProperty extends ModelProperty {
 	 */
 	@Override
 	public int computeNbCrowns() {
-		ArrayList<Pattern> patterns = ((PatternExpression) this.getExpressions().get(0)).getPatternsInformations().getPatterns();
-		int diameterSum = patterns.stream().mapToInt(pattern -> pattern.computeGridDiameter() + 1).sum();
-		int nbPositiveNodes = patterns.stream().mapToInt(Pattern::getNbPositiveNodes).sum();
-		int nbHexagons = ((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound();
-		int patternNbCrowns = (diameterSum + nbHexagons - nbPositiveNodes + 2) / 2;
+//		ArrayList<Pattern> patterns = ((PatternExpression) this.getExpressions().get(0)).getPatternsInformations().getPatterns();
+//		int diameterSum = patterns.stream().mapToInt(pattern -> pattern.computeGridDiameter() + 1).sum();
+//		int nbPositiveNodes = patterns.stream().mapToInt(Pattern::getNbPositiveNodes).sum();
+//		int nbHexagons = ((ModelPropertySet) this.getPropertySet()).getHexagonNumberUpperBound();
+//		int patternNbCrowns = (diameterSum + nbHexagons - nbPositiveNodes + 2) / 2;
+//
+//		return (nbHexagons >= nbPositiveNodes) ? patternNbCrowns : 1;
+		// TODO The computation should take into account the property (existence, interaction and exclusion)
+		return Integer.MAX_VALUE;
+	}
 
-		return (nbHexagons >= nbPositiveNodes) ? patternNbCrowns : 1;
+	public void addConstraint (PatternConstraint patternConstraint) {
+		((PatternCollectionConstraint) getConstraint()).addPatternConstraint(patternConstraint);
+	}
+
+	public void addInteraction (InteractionPatternConstraint interactionConstraint) {
+		((PatternCollectionConstraint) getConstraint()).addInteractionConstraint(interactionConstraint);
+	}
+
+	public void reset() {
+		((PatternCollectionConstraint) getConstraint()).reset();
 	}
 }

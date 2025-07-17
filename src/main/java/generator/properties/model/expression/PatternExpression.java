@@ -1,27 +1,20 @@
 package generator.properties.model.expression;
 
-import generator.patterns.PatternResolutionInformations;
 
 public class PatternExpression extends SubjectExpression {
-	private final PatternResolutionInformations patternsInformations;
 
-	public PatternExpression(String subject, PatternResolutionInformations patternsInformations) {
+	public PatternExpression(String subject) {
 		super(subject);
-		this.patternsInformations = patternsInformations;
-	}
-
-	public PatternResolutionInformations getPatternsInformations() {
-		return patternsInformations;
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + " " + patternsInformations;
+		return super.toString() + "OKAY !!";
 	}
 
 	public static PatternExpression from(String string){
 		String [] elements = string.split(" ");
-		return new PatternExpression(elements[0], PatternResolutionInformations.fromString(elements[1]));
+		return new PatternExpression(elements[0]);
 	}
 
 }

@@ -1,15 +1,15 @@
 package view.database.boxes;
 
-import java.util.ArrayList;
-
 import database.BenzenoidCriterion;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
+import java.util.ArrayList;
+
 public class HBoxDefaultDatabaseCriterion extends HBoxDatabaseCriterion {
 
 	public HBoxDefaultDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion) {
-		super(parent, choiceBoxCriterion, null, null);
+		super(parent, choiceBoxCriterion, "", null);
 	}
 
 	@Override

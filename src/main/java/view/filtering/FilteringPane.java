@@ -55,6 +55,9 @@ public class FilteringPane extends ScrollPaneWithPropertyList {
 	public FilteringPane(BenzenoidApplication application, BenzenoidCollectionsManagerPane collectionsPane) {
 		this.application = application;
 		this.collectionsPane = collectionsPane;
+		setOnMouseEntered(event -> {
+			refreshGenerationPossibility();
+		});
 		initialize();
 
 	}

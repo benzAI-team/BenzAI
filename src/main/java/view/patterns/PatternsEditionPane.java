@@ -1,16 +1,9 @@
 package view.patterns;
 
 import benzenoid.Node;
-import constraints.ForbiddenPatternConstraint3;
-import constraints.MultiplePatterns3Constraint;
-import constraints.SinglePattern3Constraint;
-import generator.OrderStrategy;
-import generator.ValueStrategy;
-import generator.VariableStrategy;
-import generator.patterns.*;
-import generator.properties.model.expression.BinaryNumericalExpression;
-import generator.properties.model.expression.PropertyExpression;
-import generator.properties.model.expression.SubjectExpression;
+import generator.patterns.Pattern;
+import generator.patterns.PatternFileImport;
+import generator.patterns.PatternLabel;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -24,16 +17,19 @@ import view.generator.boxes.HBoxPatternCriterion;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class PatternsEditionPane extends BorderPane {
 
 	private final HBoxPatternCriterion patternConstraintHBox;
-	private final PatternPropertyMenu patternPropertyMenu = new PatternPropertyMenu();
 	private BorderPane borderPane;
 	private PatternGroup selectedPatternGroup;
 	private TextField fieldName;
 	private PatternLabel lastLabel;   // the label of the last color assign to a hexagon
 	private PatternListBox patternListBox;
+	private PropertyListBox propertyListBox;
+	private InteractionListBox interactionListBox;
+	private Button applyPatternButton;
 
 	public PatternsEditionPane(HBoxPatternCriterion patternConstraintHBox) {
 		super();
@@ -53,14 +49,9 @@ public class PatternsEditionPane extends BorderPane {
 		buildDrawingMenu(menuBar);
 		buildNameMenu(menuBar);
 		buildCrownMenu(menuBar);
-		buildPatternMenu(menuBar);
 		this.setTop(menuBar);
 	}
 
-	private void buildPatternMenu(MenuBar menuBar) {
-		Menu patternMenu = patternPropertyMenu.build();
-		menuBar.getMenus().add(patternMenu);
-	}
 
 
 	private void buildCrownMenu(MenuBar menuBar) {
@@ -85,10 +76,34 @@ public class PatternsEditionPane extends BorderPane {
 		fieldName = new TextField("default name");
 		fieldName.setOnKeyReleased(e -> {
 			int index = selectedPatternGroup.getIndex();
-			GridPane gridPane = PatternListBox.getBoxItems().get(index);
+			GridPane gridPane = patternListBox.getBoxItems().get(index);
 
-			if ("".equals(fieldName.getText())) ((Label) gridPane.getChildren().get(0)).setText("default name");
-			else ((Label) gridPane.getChildren().get(0)).setText(fieldName.getText());
+			String label;
+
+			if ("".equals(fieldName.getText())) {
+				label = "default name";
+				int i = 0;
+				boolean found;
+				do {
+					int j = 0;
+					while ((j < patternListBox.getBoxItems().size()) && (! label.equals(((Label) patternListBox.getBoxItems().get(j).getChildren().get(0)).getText()))){
+						j++;
+					}
+					found = j < patternListBox.getBoxItems().size();
+					if (found) {
+						i++;
+						label = "default name " + i;
+					}
+				}
+				while (found);
+			}
+			else {
+				label = fieldName.getText();
+			}
+
+			((Label) gridPane.getChildren().get(0)).setText(label);
+			((Label) propertyListBox.getBoxItems().get(index).getChildren().get(0)).setText(propertyListBox.getPatternProperties().get(index).getLabel());
+			interactionListBox.updateLabel(label, propertyListBox.getPatternProperties().get(index));
 		});
 
 		HBox boxName = new HBox(3.0);
@@ -182,13 +197,13 @@ public class PatternsEditionPane extends BorderPane {
 							maxColumn = column;
 					}
 
-					int index = PatternListBox.getBoxItems().size();
-					patternListBox.addEntry();
+					PatternGroup newPattern = new PatternGroup(this, maxColumn, null);
+					newPattern.importPattern(pattern);
+					patternListBox.addEntry(newPattern);
+					propertyListBox.addEntry(new PatternPropertyExistence(newPattern));
 
-					PatternGroup group = new PatternGroup(this, maxColumn, index);
-					group.importPattern(pattern);
-					patternListBox.getPatternGroups().set(index, group);
-					patternListBox.select(index);
+//					patternListBox.getPatternGroups().set(index, group);
+//					patternListBox.select(index);
 				}
 				else
 					Utils.alert("Error while importing the pattern");
@@ -203,15 +218,24 @@ public class PatternsEditionPane extends BorderPane {
 		this.setPadding(new Insets(15.0));
 
 		patternListBox = new PatternListBox(this);
+		propertyListBox = new PropertyListBox(this);
+		interactionListBox = new InteractionListBox(this);
 
 		borderPane = new BorderPane();
 		borderPane.setCenter(selectedPatternGroup);
 
 		VBox rightPanel = new VBox (5);
-		rightPanel.getChildren().addAll(patternListBox, buildApplyButton());
+		Separator sep1 = new Separator();
+		sep1.setStyle("-fx-background-color: #0000ff;");
+		Separator sep2 = new Separator();
+		sep2.setStyle("-fx-background-color: #0000ff;");
+		rightPanel.getChildren().addAll(patternListBox, sep1, propertyListBox, interactionListBox, sep2,buildApplyButton());
 		borderPane.setRight(rightPanel);
 		this.setCenter(borderPane);
-		patternListBox.select(0);
+
+		PatternGroup newPattern = new PatternGroup(this, 3, null);
+		patternListBox.addEntry(newPattern);
+		propertyListBox.addEntry(new PatternPropertyExistence(newPattern));
 	}
 
 	private VBox buildApplyBox() {
@@ -222,75 +246,31 @@ public class PatternsEditionPane extends BorderPane {
 		return applyBox;
 	}
 
+	public void disableApplyButton() {
+		boolean ok = true;
+		for (int i = 0; (i < patternListBox.getPatternGroups().size()) && (ok); i++) {
+			ok = patternListBox.getPatternGroups().get(i).getPositiveHexagonNumber() > 0;
+		}
+		applyPatternButton.setDisable(! ok);
+	}
+
 	private Button buildApplyButton() {
-		Button applyPatternButton = new Button("Apply");
+		applyPatternButton = new Button("Apply");
+		applyPatternButton.setDisable(true);
 		applyPatternButton.setPrefWidth(250);
 		applyPatternButton.setOnAction(e -> {
-			ArrayList<Pattern> patterns = new ArrayList<>();
-			for (PatternGroup group : patternListBox.getPatternGroups()) {
-				patterns.add(buildPattern(group));
+			patternConstraintHBox.reset();
+			for (PatternProperty type : propertyListBox.getPatternProperties()) {
+				type.addConstraint(patternConstraintHBox);
 			}
 
-
-			PatternGenerationType type = null;
-			PropertyExpression expression = null;
-			PatternResolutionInformations patternInformations;
-
-			if (PatternListBox.getBoxItems().size() == 1) {
-				if (patternPropertyMenu.getDisableItem().isSelected()) {
-					patternConstraintHBox.refreshPatternInformations("FORBIDDEN_PATTERN");
-					type = PatternGenerationType.FORBIDDEN_PATTERN;
-					expression = new SubjectExpression("FORBIDDEN_PATTERN");
-					patternInformations = new PatternResolutionInformations(type, patterns);
-					patternConstraintHBox.getPatternProperty().setConstraint(new ForbiddenPatternConstraint3(patternInformations.getPatterns().get(0),
-							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX));
-				} else {
-					if (Utils.isNumber(patternPropertyMenu.getOccurencesField().getText())) {
-						type = PatternGenerationType.PATTERN_OCCURENCES;
-						patternConstraintHBox.refreshPatternInformations("OCCURRENCES_PATTERN: " + patternPropertyMenu.getOccurencesField().getText());
-						expression = new BinaryNumericalExpression("OCCURENCE_PATTERN", "=",
-								Integer.parseInt(patternPropertyMenu.getOccurencesField().getText()));
-					} else {
-						type = PatternGenerationType.SINGLE_PATTERN_2;
-						type = PatternGenerationType.SINGLE_PATTERN_3;
-						patternConstraintHBox.refreshPatternInformations("SINGLE_PATTERN");
-						expression = new SubjectExpression("SINGLE_PATTERN");
-						patternInformations = new PatternResolutionInformations(type, patterns);
-						patternConstraintHBox.getPatternProperty().setConstraint(new SinglePattern3Constraint(patternInformations.getPatterns().get(0),
-								VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-					}
-				}
-			}
-			else {
-				if (patternPropertyMenu.getItemUndisjunct().isSelected() || patternPropertyMenu.getItemDisjunct().isSelected() || patternPropertyMenu.getItemNNDisjunct().isSelected()) {
-					patternConstraintHBox.refreshPatternInformations("MULTIPLE_PATTERNS");
-					type = PatternGenerationType.MULTIPLE_PATTERN_3;
-					expression = new SubjectExpression("MULTIPLE_PATTERNS");
-					patternInformations = new PatternResolutionInformations(type, patterns);
-					patternConstraintHBox.getPatternProperty().setConstraint(new MultiplePatterns3Constraint(patternInformations.getPatterns(),
-							VariableStrategy.FIRST_FAIL, ValueStrategy.INT_MAX, OrderStrategy.CHANNELING_FIRST));
-				}
+			for (InteractionItem type : interactionListBox.getInteractions()) {
+				type.addInteraction(patternConstraintHBox);
 			}
 
-			patternInformations = new PatternResolutionInformations(type, patterns);
-
-			if (patternPropertyMenu.getItemUndisjunct().isSelected())
-				patternInformations.setInterraction(PatternsInterraction.UNDISJUNCT);
-
-			else if (patternPropertyMenu.getItemDisjunct().isSelected())
-				patternInformations.setInterraction(PatternsInterraction.DISJUNCT);
-
-			else if (patternPropertyMenu.getItemNNDisjunct().isSelected())
-				patternInformations.setInterraction(PatternsInterraction.DISJUNCT_NN);
-			patternConstraintHBox.setPatternResolutionInformations(patternInformations);
-			patternConstraintHBox.setExpression(expression);
 			hide();
 		});
 		return applyPatternButton;
-	}
-
-	int getNbItems() {
-		return PatternListBox.getBoxItems().size();
 	}
 
 	void checkBorder() {
@@ -308,7 +288,7 @@ public class PatternsEditionPane extends BorderPane {
 	void addCrown() {
 		int nbCrowns = selectedPatternGroup.getNbCrowns() + 1;
 
-		PatternGroup newPatternGroup = new PatternGroup(this, nbCrowns, selectedPatternGroup.getIndex());
+		PatternGroup newPatternGroup = new PatternGroup(this, nbCrowns, selectedPatternGroup.getIndex(),selectedPatternGroup.getLabel());
 
 		PatternHexagon[][] hexagonMatrix = selectedPatternGroup.getHexagonsMatrix();
 
@@ -332,7 +312,7 @@ public class PatternsEditionPane extends BorderPane {
 		if (nbCrowns > 3) {
 
 			nbCrowns--;
-			PatternGroup newPatternGroup = new PatternGroup(this, nbCrowns, selectedPatternGroup.getIndex());
+			PatternGroup newPatternGroup = new PatternGroup(this, nbCrowns, selectedPatternGroup.getIndex(),selectedPatternGroup.getLabel());
 
 			PatternHexagon[][] hexagonMatrix = selectedPatternGroup.getHexagonsMatrix();
 			PatternHexagon[][] newHexagonMatrix = newPatternGroup.getHexagonsMatrix();
@@ -349,6 +329,212 @@ public class PatternsEditionPane extends BorderPane {
 			patternListBox.getPatternGroups().set(newPatternGroup.getIndex(), newPatternGroup);
 			patternListBox.select(newPatternGroup.getIndex());
 		}
+	}
+
+	Optional<PatternProperty> getPropertyDialogBox (int index) {
+		// we take into account the current property
+		PatternProperty property = PropertyListBox.getPatternProperties().get(index);
+		int type = property.getType();
+
+		// we create the dialog box
+		Dialog<PatternProperty> dialog = new Dialog<>();
+		dialog.setTitle("Property");
+		dialog.setHeaderText("Select the desired property for "+property.getPattern().getLabel().getText());
+
+		// we create the property list
+		ArrayList<String> propertyList = new ArrayList<>();
+		propertyList.add("Existence");
+		propertyList.add("Exclusion");
+		propertyList.add("Occurrence");
+		propertyList.add("Occurrence with no positive hexagon sharing");
+		propertyList.add("Occurrence with no positive edge sharing");
+		propertyList.add("Occurrence with no hexagon sharing");
+
+		// we create the combo box for property
+		ComboBox propertyBox = new ComboBox();
+		propertyBox.getItems().addAll(propertyList);
+
+		if (type == 2) {
+			type += ((PatternPropertyOccurrence) property).getInteraction().getType();
+		}
+
+		propertyBox.getSelectionModel().select(propertyList.get(type));
+
+		// we define the buttons of the dialog box
+		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+		// we create the form as a grid
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
+
+		TextField minOccurrenceField = new TextField();
+		if (property.getType() > 1) {
+			minOccurrenceField.setText(Integer.toString(((PatternPropertyOccurrence) property).getMinOccurrence()));
+		}
+		else {
+			minOccurrenceField.setPromptText("min");
+		}
+		minOccurrenceField.setPrefWidth(100);
+		grid.add(new Label("Property:"), 0, 0);
+		grid.add(propertyBox,1,0);
+		grid.add(new Label("# occurrences ≥"), 0, 1);
+		grid.add(minOccurrenceField, 1, 1);
+
+		dialog.getDialogPane().setContent(grid);
+
+		minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+
+		// event management
+		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+
+		propertyBox.setOnAction(event -> {
+			minOccurrenceField.setDisable(propertyBox.getSelectionModel().getSelectedIndex() <= 1 || propertyBox.getSelectionModel().getSelectedIndex() >= 6);
+			okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
+					((! minOccurrenceField.getText().matches("-?\\d+")) ||
+							(Integer.valueOf(minOccurrenceField.getText()) < 0)));
+		});
+
+		okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
+				(! minOccurrenceField.getText().matches("-?\\d+")));
+
+		minOccurrenceField.textProperty().addListener((observable, oldValue, newValue) -> {
+			okButton.setDisable((propertyBox.getSelectionModel().getSelectedIndex() >= 2) &&
+					((! minOccurrenceField.getText().matches("-?\\d+")) ||
+							(Integer.valueOf(minOccurrenceField.getText()) < 0)));
+		});
+
+		// computes the result
+		dialog.setResultConverter(dialogButton -> {
+			if (dialogButton == ButtonType.OK) {
+
+				int propertyNum = propertyBox.getSelectionModel().getSelectedIndex();
+
+				PatternGroup pattern1 = property.getPattern();
+				PatternProperty newProperty = null;
+
+				switch (propertyNum) {
+					case 0: newProperty = new PatternPropertyExistence(pattern1); break;
+					case 1: newProperty = new PatternPropertyExclusion(pattern1); break;
+					case 2: newProperty = new PatternPropertyOccurrence(pattern1, new NoInteraction(), Integer.valueOf(minOccurrenceField.getText())); break;
+					case 3: newProperty = new PatternPropertyOccurrence(pattern1, new NoPositiveInteraction(), Integer.valueOf(minOccurrenceField.getText())); break;
+					case 4: newProperty = new PatternPropertyOccurrence(pattern1, new NoEdgeInteraction(), Integer.valueOf(minOccurrenceField.getText())); break;
+					case 5: newProperty = new PatternPropertyOccurrence(pattern1, new NoHexagonInteraction(), Integer.valueOf(minOccurrenceField.getText())); break;
+				}
+
+				return newProperty;
+			}
+			return null;
+		});
+
+		return dialog.showAndWait();
+	}
+
+	Optional<InteractionItem> getInteractionDialogBox (int index) {
+		Dialog<InteractionItem> dialog = new Dialog<>();
+		dialog.setTitle("Interaction");
+		dialog.setHeaderText("Select the desired interaction");
+
+		// we create the property list
+		ArrayList<String> interactionList = new ArrayList<>();
+
+		interactionList.add("Interaction with no positive hexagon sharing");
+		interactionList.add("Interaction with no positive edge sharing");
+		interactionList.add("Interaction with no hexagon sharing");
+
+		// we create the combo box for property
+		ComboBox interactionBox = new ComboBox();
+		interactionBox.getItems().addAll(interactionList);
+
+		// we create the combo box for possible patterns
+		ComboBox patternBox = new ComboBox();
+		ComboBox patternBox2 = new ComboBox();
+		ArrayList<String> patternList = new ArrayList<>();
+		for (int i = 0; i < patternListBox.getPatternGroups().size(); i++) {
+			if (propertyListBox.getPatternProperties().get(i).getType() != 1) {
+				patternList.add(patternListBox.getPatternGroups().get(i).getLabel().getText());
+			}
+		}
+		patternBox.getItems().addAll(patternList);
+		patternBox2.getItems().addAll(patternList);
+
+
+		// we take into account the current property (if any)
+		if (index != -1) {
+			InteractionItem item = InteractionListBox.getInteractions().get(index);
+			int type = item.getInteraction().getType();
+			interactionBox.getSelectionModel().select(interactionList.get(type));
+			interactionBox.getSelectionModel().select(interactionList.get(type-1));
+
+			patternBox.getSelectionModel().select(item.getPatternProperty1().getPattern().getLabel().getText());
+			patternBox2.getSelectionModel().select(item.getPatternProperty2().getPattern().getLabel().getText());
+		}
+		else {
+			interactionBox.getSelectionModel().select(0);
+			patternBox.getSelectionModel().select(0);
+			patternBox2.getSelectionModel().select(1);
+		}
+
+		// we define the buttons of the dialog box
+		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+		// we create the form as a grid
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
+
+		grid.add(new Label("Property:"), 0, 0);
+		grid.add(interactionBox,1,0);
+		grid.add(new Label("Pattern"), 0, 1);
+		grid.add(patternBox, 1, 1);
+		grid.add(new Label("Pattern 2"), 0, 2);
+		grid.add(patternBox2, 1, 2);
+
+		dialog.getDialogPane().setContent(grid);
+
+		// event management
+		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+		okButton.setDisable((patternBox.getSelectionModel().getSelectedIndex() < 0) ||
+				(patternBox2.getSelectionModel().getSelectedIndex() < 0) ||
+				(patternBox.getSelectionModel().getSelectedIndex() == patternBox2.getSelectionModel().getSelectedIndex()));
+
+		patternBox.setOnAction(event -> {
+					okButton.setDisable((patternBox.getSelectionModel().getSelectedIndex() < 0) ||
+							(patternBox2.getSelectionModel().getSelectedIndex() < 0) ||
+							(patternBox.getSelectionModel().getSelectedIndex() == patternBox2.getSelectionModel().getSelectedIndex()));
+				});
+
+		patternBox2.setOnAction(event -> {
+					okButton.setDisable((patternBox.getSelectionModel().getSelectedIndex() < 0) ||
+							(patternBox2.getSelectionModel().getSelectedIndex() < 0) ||
+							(patternBox.getSelectionModel().getSelectedIndex() == patternBox2.getSelectionModel().getSelectedIndex()));
+				});
+
+			// computes the result
+		dialog.setResultConverter(dialogButton -> {
+			if (dialogButton == ButtonType.OK) {
+				int num = interactionBox.getSelectionModel().getSelectedIndex();
+
+				InteractionItem item = null;
+
+				if (num != -1) {
+					PatternProperty pattern1 = getPropertyListBox().getPatternProperties().get(patternBox.getSelectionModel().getSelectedIndex());
+					PatternProperty pattern2 = getPropertyListBox().getPatternProperties().get(patternBox2.getSelectionModel().getSelectedIndex());;
+
+					switch (num) {
+						case 0: item = new InteractionItem(pattern1, pattern2, new NoPositiveInteraction()); break;
+						case 1: item = new InteractionItem(pattern1, pattern2, new NoEdgeInteraction()); break;
+						case 2: item = new InteractionItem(pattern1, pattern2, new NoHexagonInteraction()); break;
+					}
+				}
+				return item;
+			}
+			return null;
+		});
+
+		return dialog.showAndWait();
 	}
 
 	private static Pattern buildPattern(PatternGroup group) {
@@ -394,7 +580,15 @@ public class PatternsEditionPane extends BorderPane {
 		return patternListBox;
 	}
 
-	public PatternPropertyMenu getPatternPropertyMenu() {
-		return patternPropertyMenu;
+	public PropertyListBox getPropertyListBox() {
+		return propertyListBox;
+	}
+
+	public InteractionListBox getInteractionListBox() {
+		return interactionListBox;
+	}
+
+	public Button getApplyPatternButton() {
+		return applyPatternButton;
 	}
 }

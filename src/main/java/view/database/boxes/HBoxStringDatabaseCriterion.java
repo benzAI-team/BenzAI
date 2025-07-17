@@ -1,19 +1,15 @@
 package view.database.boxes;
 
-import java.util.ArrayList;
-
 import database.BenzenoidCriterion;
-import database.BenzenoidCriterion.Subject;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import utils.Utils;
 import view.database.ChoiceBoxDatabaseCriterion;
 import view.database.DatabasePane;
 
+import java.util.ArrayList;
+
 public class HBoxStringDatabaseCriterion extends HBoxInDatabase {
 
-	public HBoxStringDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, Subject subject, String possible_operators) {
-		super(parent, choiceBoxCriterion,subject, possible_operators);
+	public HBoxStringDatabaseCriterion(DatabasePane parent, ChoiceBoxDatabaseCriterion choiceBoxCriterion, String name, String possible_operators) {
+		super(parent, choiceBoxCriterion, name, possible_operators);
 	}
 
 	@Override
@@ -52,7 +48,7 @@ public class HBoxStringDatabaseCriterion extends HBoxInDatabase {
 			if ("IN".equals(operatorChoiceBox.getSelectionModel().getSelectedItem()))
 				value = value + " " + fieldValue2.getText();
 
-			criterions.add(new BenzenoidCriterion(getSubject(),
+			criterions.add(new BenzenoidCriterion(getName(),
 					BenzenoidCriterion.getOperator(operatorChoiceBox.getValue()), value));
 			System.out.println(criterions.get(0));
 		}
