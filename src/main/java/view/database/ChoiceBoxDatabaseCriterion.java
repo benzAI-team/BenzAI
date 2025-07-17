@@ -27,21 +27,26 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 		criteria.add(new Couple<>("Id", new HBoxIntDatabaseCriterion(parent, this, "idBenzenoid","= < <= != > >= IN")));
 		criteria.add(new Couple<>("Label", new HBoxStringDatabaseCriterion (parent, this, "label","=")));
 		criteria.add(new Couple<>("InChi", new HBoxStringDatabaseCriterion (parent, this, "inchi","=")));
-		criteria.add(new Couple<>("Number of hexagons", new HBoxIntDatabaseCriterion(parent, this, "nbHexagons","= < <= != > >= IN")));
-		criteria.add(new Couple<>("Number of carbons", new HBoxIntDatabaseCriterion(parent, this, "nbCarbons","= < <= != > >= IN")));
-		criteria.add(new Couple<>("Number of hydrogens", new HBoxIntDatabaseCriterion(parent, this, "nbHydrogens","= < <= != > >= IN")));
+		criteria.add(new Couple<>("# hexagons", new HBoxIntDatabaseCriterion(parent, this, "nbHexagons","= < <= != > >= IN")));
+		criteria.add(new Couple<>("# carbons", new HBoxIntDatabaseCriterion(parent, this, "nbCarbons","= < <= != > >= IN")));
+		criteria.add(new Couple<>("# hydrogens", new HBoxIntDatabaseCriterion(parent, this, "nbHydrogens","= < <= != > >= IN")));
+		criteria.add(new Couple<>("diameter", new HBoxIntDatabaseCriterion(parent, this, "diameter","= < <= != > >= IN")));
 		criteria.add(new Couple<>("Irregularity", new HBoxFloatDatabaseCriterion(parent, this, "irregularity","= < <= != > >= IN")));
 		criteria.add(new Couple<>("Frequency", new HBoxIntDatabaseCriterion(parent, this, "frequency","IN")));
 		criteria.add(new Couple<>("Intensity", new HBoxFloatDatabaseCriterion(parent, this, "intensity","IN")));
-		criteria.add(new Couple<>("Solo", new HBoxIntDatabaseCriterion(parent, this, "solo","< <= = != > >= IN")));
-		criteria.add(new Couple<>("Duo", new HBoxIntDatabaseCriterion(parent, this, "duo","< <= = != > >= IN")));
-		criteria.add(new Couple<>("Trio", new HBoxIntDatabaseCriterion(parent, this, "trio","= < <= != > >= IN")));
-		criteria.add(new Couple<>("Quartet", new HBoxIntDatabaseCriterion(parent, this, "quartet","= < <= != > >= IN")));
-		criteria.add(new Couple<>("Number of Kekulé structures", new HBoxIntDatabaseCriterion(parent, this, "kekule","= < <= != > >= IN")));
-		criteria.add(new Couple<>("Catacondensed", new HBoxIntDatabaseCriterion(parent, this, "catacondensed","=")));
-		criteria.add(new Couple<>("Coronenoid", new HBoxIntDatabaseCriterion(parent, this, "coronenoid","=")));
-		criteria.add(new Couple<>("Coronoid", new HBoxIntDatabaseCriterion(parent, this, "coronoid","=")));
+		criteria.add(new Couple<>("# solo", new HBoxIntDatabaseCriterion(parent, this, "solo","= < <= != > >= IN")));
+		criteria.add(new Couple<>("# duo", new HBoxIntDatabaseCriterion(parent, this, "duo","= < <= != > >= IN")));
+		criteria.add(new Couple<>("# trio", new HBoxIntDatabaseCriterion(parent, this, "trio","= < <= != > >= IN")));
+		criteria.add(new Couple<>("# quartet", new HBoxIntDatabaseCriterion(parent, this, "quartet","= < <= != > >= IN")));
+		criteria.add(new Couple<>("# Kekulé structures", new HBoxIntDatabaseCriterion(parent, this, "kekule","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Clar number", new HBoxIntDatabaseCriterion(parent, this, "clarNumber","= < <= != > >= IN")));
+		criteria.add(new Couple<>("Is catacondensed", new HBoxIntDatabaseCriterion(parent, this, "catacondensed","=")));
+		criteria.add(new Couple<>("Is Coronenoid", new HBoxIntDatabaseCriterion(parent, this, "coronenoid","=")));
+		criteria.add(new Couple<>("Is Coronoid", new HBoxIntDatabaseCriterion(parent, this, "coronoid","=")));
+		criteria.add(new Couple<>("Is planar", new HBoxIntDatabaseCriterion(parent, this, "planar","=")));
 		criteria.add(new Couple<>("Symmetry", new HBoxStringDatabaseCriterion (parent, this, "symmetry","= !=")));
+		criteria.add(new Couple<>("# coves ", new HBoxIntDatabaseCriterion(parent, this, "cove","= < <= != > >= IN")));
+		criteria.add(new Couple<>("# fjords ", new HBoxIntDatabaseCriterion(parent, this, "fjord","= < <= != > >= IN")));
 
 
 		for (Couple<String, HBoxDatabaseCriterion> criterion : criteria) {
