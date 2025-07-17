@@ -39,7 +39,7 @@ public class AboutPane extends BorderPane {
 		HBox boxTitle = new HBox(3.0);
 		boxTitle.getChildren().addAll(benzaiLabel, softwareLabel);
 
-		Label versionLabel = new Label("Version 1.0 for Linux");
+		Label versionLabel = new Label("Version 1.1");
 
 		Hyperlink releases = new Hyperlink("releases");
 
