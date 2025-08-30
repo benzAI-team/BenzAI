@@ -12,7 +12,7 @@ import view.primaryStage.ScrollPaneWithPropertyList;
 public class SymmetryProperty extends ModelProperty {
 
 	public SymmetryProperty() {
-		super("symmetry", "Symmetries", new SymmetryConstraint(), new SymmetryChecker(),new SymmetryFilter());
+		super("symmetry", "Symmetry 2D", new SymmetryConstraint(), new SymmetryChecker(),new SymmetryFilter());
 	}
 	
 	@Override

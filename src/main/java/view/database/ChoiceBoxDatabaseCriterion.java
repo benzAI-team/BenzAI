@@ -44,7 +44,8 @@ public class ChoiceBoxDatabaseCriterion extends ChoiceBox<String> {
 		criteria.add(new Couple<>("Is Coronenoid", new HBoxIntDatabaseCriterion(parent, this, "coronenoid","=")));
 		criteria.add(new Couple<>("Is Coronoid", new HBoxIntDatabaseCriterion(parent, this, "coronoid","=")));
 		criteria.add(new Couple<>("Is planar", new HBoxIntDatabaseCriterion(parent, this, "planar","=")));
-		criteria.add(new Couple<>("Symmetry", new HBoxStringDatabaseCriterion (parent, this, "symmetry","= !=")));
+		criteria.add(new Couple<>("Symmetry 2D", new HBoxStringDatabaseCriterion (parent, this, "symmetry2D","= !=")));
+        criteria.add(new Couple<>("Symmetry 3D", new HBoxStringDatabaseCriterion (parent, this, "symmetry3D","= !=")));
 		criteria.add(new Couple<>("# coves ", new HBoxIntDatabaseCriterion(parent, this, "cove","= < <= != > >= IN")));
 		criteria.add(new Couple<>("# fjords ", new HBoxIntDatabaseCriterion(parent, this, "fjord","= < <= != > >= IN")));
 
