@@ -7,7 +7,7 @@ public class DatabaseCheckManager {
     private final Benzenoid benzenoid;
     private boolean IRSpectraChecked;
     private HashMap<String,Boolean> imsMapChecked;
-    private boolean NICSChecked;
+    private HashMap<String,Boolean> nicsChecked;
     private boolean propertiesChecked;
 
     public DatabaseCheckManager(Benzenoid benzenoid) {
@@ -16,7 +16,9 @@ public class DatabaseCheckManager {
         imsMapChecked = new HashMap<String, Boolean>();
         imsMapChecked.put("R",false);
         imsMapChecked.put("U",false);
-        NICSChecked = false;
+        nicsChecked = new HashMap<String, Boolean>();
+        nicsChecked.put("R",false);
+        nicsChecked.put("U",false);
         propertiesChecked = false;
     }
 
@@ -28,8 +30,8 @@ public class DatabaseCheckManager {
         return imsMapChecked.get(mapType);
     }
 
-    public boolean isNICSChecked() {
-        return NICSChecked;
+    public boolean isNICSChecked(String nicsType) {
+        return nicsChecked.get(nicsType);
     }
 
     public boolean isPropertiesChecked() {
@@ -44,8 +46,8 @@ public class DatabaseCheckManager {
         imsMapChecked.put(mapType,true);
     }
 
-    public void checkNICS() {
-        NICSChecked = true;
+    public void checkNICS(String nicsType) {
+        nicsChecked.put(nicsType,true);
     }
 
     public void checkProperties() {

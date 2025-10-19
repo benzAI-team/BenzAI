@@ -1,9 +1,9 @@
 package collection_operations;
 
+import javafx.scene.control.MenuItem;
+
 import java.util.ArrayList;
 import java.util.Objects;
-
-import javafx.scene.control.MenuItem;
 
 public enum CollectionOperationSet {
     ;
@@ -38,7 +38,9 @@ public enum CollectionOperationSet {
 
 		collectionComputationSet.add(new LinResonanceEnergyTask());
 		collectionComputationSet.add(new LinFanResonanceEnergyTask());
-		collectionComputationSet.add(new NicsTask());
+		collectionComputationSet.add(new NicsTask("R"));
+		collectionComputationSet.add(new NicsTask("U"));
+		collectionComputationSet.add(new NicsTask("R&U"));
 		collectionComputationSet.add(new ClarCoverTask());
 		collectionComputationSet.add(new FixedBondClarCoverComputation());
 		collectionComputationSet.add(new ForcedSingleClarCoverTask());

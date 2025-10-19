@@ -1,14 +1,14 @@
 package view.groups;
 
+import benzenoid.Benzenoid;
+import database.PictureConverter;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import database.PictureConverter;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import benzenoid.Benzenoid;
 
 public class IMS2D1AGroup extends MoleculeGroup {
 
@@ -17,7 +17,7 @@ public class IMS2D1AGroup extends MoleculeGroup {
 
 	public IMS2D1AGroup(Benzenoid molecule, String mapType) {
 		super(molecule);
-    this.mapType = mapType;
+        this.mapType = mapType;
 		this.pictureData = molecule.getDatabaseInformation().findimsMap(this.mapType).get();
 		try {
 			buildImage();

@@ -32,8 +32,8 @@ public class BenzenoidCollectionPane extends Tab {
     }
 
     public enum DisplayType {
-        BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A_R, IMS2D1A_U, CLAR_COVER_FIXED, KEKULE, CLAR_RE, NICS
-    }
+        BASIC, RE_LIN, RE_LIN_FAN, CLAR_COVER, RBO, RADICALAR, IMS2D1A_R, IMS2D1A_U, CLAR_COVER_FIXED, KEKULE, CLAR_RE, NICS_R, NICS_U
+        }
 
     private final BenzenoidCollectionsManagerPane parent;
 
@@ -335,169 +335,174 @@ protected Void call() {
                 }
                 break;
 
-								case NICS:
-									group = new NicsGroup(molecule);
-                  break;
+                case NICS_U:
+                    group = new NicsGroup(molecule,"U");
+                    description += "U";
+                    break;
 
+                case NICS_R:
+                    group = new NicsGroup(molecule,"R");
+                    description += "R";
+                    break;
 
-								case CLAR_COVER:
-									group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
-									break;
+                case CLAR_COVER:
+                    group = new ClarCoverGroup(molecule, molecule.getClarCoverSolution());
+                    break;
 
-								case KEKULE:
-									int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
-									group = new KekuleStructureGroup(molecule, kekuleStructure);
-									description += "structure " + (index + 1);
-									break;
+                case KEKULE:
+                    int[][] kekuleStructure = molecule.getKekuleStructures().get(index);
+                    group = new KekuleStructureGroup(molecule, kekuleStructure);
+                    description += "structure " + (index + 1);
+                    break;
 
-								case CLAR_COVER_FIXED:
-									group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(),
-											molecule.getFixedBonds(), molecule.getFixedCircles());
-									break;
+                case CLAR_COVER_FIXED:
+                    group = new ClarCoverFixedBondGroup(molecule, molecule.getClarCoverSolution(),
+                            molecule.getFixedBonds(), molecule.getFixedCircles());
+                    break;
 
-								case RBO:
-									group = new RBOGroup(molecule);
-									break;
+                case RBO:
+                    group = new RBOGroup(molecule);
+                    break;
 
-								case RADICALAR:
-									group = new RadicalarClarCoverGroup(molecule);
-									break;
+                case RADICALAR:
+                    group = new RadicalarClarCoverGroup(molecule);
+                    break;
 
-								case IMS2D1A_R:
-									group = new IMS2D1AGroup(molecule,"R");
-									description += "R map";
-									break;
-								case IMS2D1A_U:
-									group = new IMS2D1AGroup(molecule,"U");
-									description += "U map";
-									break;
+                case IMS2D1A_R:
+                    group = new IMS2D1AGroup(molecule,"R");
+                    description += "R map";
+                    break;
+                case IMS2D1A_U:
+                    group = new IMS2D1AGroup(molecule,"U");
+                    description += "U map";
+                    break;
 
                 case CLAR_RE:
                     group = new ClarCoverREGroup(molecule, molecule.resonanceEnergyClar());
                     break;
 
-								default:
-									group = new MoleculeGroup(molecule);
-									break;
-								}
-
-                                BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group,
-                                        description, molecule.getVerticesSolutions(), index, false, molecule.hasCheckedDatabase());
-                                benzenoidPanes.add(benzenoidPane);
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            index++;
-                        }
-
-                        return null;
-                    }
-
-                };
-            }
-        };
-
-        calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
-            switch (newValue) {
-                case FAILED:
-                case CANCELLED:
-                case SUCCEEDED:
-                    flowPane.getChildren().clear();
-                    for (BenzenoidPane pane : benzenoidPanes) {
-                        flowPane.getChildren().add(pane);
-                    }
-                    break;
-
                 default:
+                    group = new MoleculeGroup(molecule);
                     break;
+                }
+
+                BenzenoidPane benzenoidPane = new BenzenoidPane(collectionPane, null, group,
+                        description, molecule.getVerticesSolutions(), index, false, molecule.hasCheckedDatabase());
+                benzenoidPanes.add(benzenoidPane);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        index++;
+    }
+
+    return null;
             }
 
-        });
+        };
+        }
+    };
 
-        calculateService.start();
-
-        gridPane.setPrefWidth(1400);
-
-        gridPane.setPadding(new Insets(20));
-        gridPane.setHgap(25);
-        gridPane.setVgap(15);
-
-        gridPane.setPrefWidth(gridPane.getPrefWidth());
-
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
-
-        scrollPane.setPrefWidth(1400);
-
-        scrollPane.setContent(flowPane);
-        gridPane.add(scrollPane, 0, 0, 1, 4);
-
-		borderPane = new BorderPane();
-		selectedArea = null;
-
-		switch (displayedProperty) {
-
-		case PROPERTIES:
-			borderPane.setLeft(previousButton);
-			borderPane.setCenter(propertiesLabel);
-			borderPane.setRight(nextButton);
-			selectedArea = benzenoidPropertiesArea;
-			break;
-
-		case FREQUENCIES:
-			borderPane.setLeft(previousButton);
-			borderPane.setCenter(IRSpectraLabel);
-			borderPane.setRight(nextButton);
-			selectedArea = IRSpectraArea;
-			break;
+    calculateService.stateProperty().addListener((observable, oldValue, newValue) -> {
+        switch (newValue) {
+            case FAILED:
+            case CANCELLED:
+            case SUCCEEDED:
+                flowPane.getChildren().clear();
+                for (BenzenoidPane pane : benzenoidPanes) {
+                    flowPane.getChildren().add(pane);
+                }
+                break;
 
             default:
-                // DO_NOTHING
                 break;
         }
 
-        Label logsLabel = new Label("Logs");
+    });
 
-        Button clearButton = new Button();
+    calculateService.start();
 
-        clearButton.resize(30, 30);
-        clearButton.setStyle("-fx-background-color: transparent;");
+    gridPane.setPrefWidth(1400);
 
-        Image imageAddButton;
+    gridPane.setPadding(new Insets(20));
+    gridPane.setHgap(25);
+    gridPane.setVgap(15);
 
-        imageAddButton = new Image("/resources/graphics/icon-delete.png");
+    gridPane.setPrefWidth(gridPane.getPrefWidth());
 
-        ImageView view = new ImageView(imageAddButton);
-        clearButton.setPadding(new Insets(0));
-        clearButton.setGraphic(view);
+    scrollPane.setFitToHeight(true);
+    scrollPane.setFitToWidth(true);
 
-        clearButton.setOnAction(e -> parent.clearConsoles());
+    scrollPane.setPrefWidth(1400);
 
-        HBox logBox = new HBox(3.0);
-        logBox.getChildren().addAll(logsLabel, clearButton);
+    scrollPane.setContent(flowPane);
+    gridPane.add(scrollPane, 0, 0, 1, 4);
 
-        logBox.setAlignment(Pos.CENTER);
+    borderPane = new BorderPane();
+    selectedArea = null;
 
-        logsLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
-        logsLabel.setMaxWidth(Double.MAX_VALUE);
-        logsLabel.setAlignment(Pos.CENTER);
+    switch (displayedProperty) {
 
-        benzenoidPropertiesArea.setEditable(false);
+    case PROPERTIES:
+        borderPane.setLeft(previousButton);
+        borderPane.setCenter(propertiesLabel);
+        borderPane.setRight(nextButton);
+        selectedArea = benzenoidPropertiesArea;
+        break;
 
-        refreshCollectionProperties();
+    case FREQUENCIES:
+        borderPane.setLeft(previousButton);
+        borderPane.setCenter(IRSpectraLabel);
+        borderPane.setRight(nextButton);
+        selectedArea = IRSpectraArea;
+        break;
 
-        gridPane.add(borderPane, 1, 0);
-        gridPane.add(selectedArea, 1, 1);
-
-        gridPane.add(logBox, 1, 2);
-        gridPane.add(console, 1, 3);
-
-        GridPane.setFillHeight(benzenoidPropertiesArea, true);
-
-        this.setContent(gridPane);
+        default:
+            // DO_NOTHING
+            break;
     }
+
+    Label logsLabel = new Label("Logs");
+
+    Button clearButton = new Button();
+
+    clearButton.resize(30, 30);
+    clearButton.setStyle("-fx-background-color: transparent;");
+
+    Image imageAddButton;
+
+    imageAddButton = new Image("/resources/graphics/icon-delete.png");
+
+    ImageView view = new ImageView(imageAddButton);
+    clearButton.setPadding(new Insets(0));
+    clearButton.setGraphic(view);
+
+    clearButton.setOnAction(e -> parent.clearConsoles());
+
+    HBox logBox = new HBox(3.0);
+    logBox.getChildren().addAll(logsLabel, clearButton);
+
+    logBox.setAlignment(Pos.CENTER);
+
+    logsLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, 15));
+    logsLabel.setMaxWidth(Double.MAX_VALUE);
+    logsLabel.setAlignment(Pos.CENTER);
+
+    benzenoidPropertiesArea.setEditable(false);
+
+    refreshCollectionProperties();
+
+    gridPane.add(borderPane, 1, 0);
+    gridPane.add(selectedArea, 1, 1);
+
+    gridPane.add(logBox, 1, 2);
+    gridPane.add(console, 1, 3);
+
+    GridPane.setFillHeight(benzenoidPropertiesArea, true);
+
+    this.setContent(gridPane);
+}
 
     public void refreshCollectionProperties() {
 

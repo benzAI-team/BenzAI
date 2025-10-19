@@ -18,13 +18,14 @@ public class BenzenoidDatabaseInformation {
 
     private HashMap<String,Optional<String>> imsMap;
     private Optional<ResultLogFile> IRSpectra;
-    private Optional<String> NICS;
+    private HashMap<String,Optional<String>>  NICS;
     private Optional<String> graphFile;
 
     public BenzenoidDatabaseInformation(Benzenoid benzenoid) {
         this.benzenoid = benzenoid;
         databaseCheckManager = new DatabaseCheckManager(benzenoid);
         imsMap = new HashMap<String,Optional<String>>();
+        NICS = new HashMap<String,Optional<String>>();
     }
 
     public DatabaseCheckManager getDatabaseCheckManager() {
@@ -145,36 +146,36 @@ public class BenzenoidDatabaseInformation {
     }
     
     
-    public Optional<String> findNICS() {
+    public Optional<String> findNICS(String nicsType) {
 
-        databaseCheckManager.checkNICS();
+        databaseCheckManager.checkNICS(nicsType);
 
-        if (NICS == null) {
+        if (NICS.get(nicsType) == null) {
             String label = benzenoid.getNames().get(0);
             String service = "find_nics/";
             String json = "{\"label\": \"= " + label + "\"}";
 
+            Optional<String> op = Optional.empty();
             try {
                 List<Map> results = Post.post(service, json);
 
                 if (!results.isEmpty()) {
                     Map map = results.get(0);
-                    String stringData = (String) map.get("nics");
+                    String stringData = (String) map.get("nics"+nicsType);
                     if (stringData.length() > 0) {
-                      NICS = Optional.of(stringData);
+                        System.out.println(stringData);
+                      op = Optional.of(stringData);
                       graphFile = Optional.of((String) map.get("graphFile"));
                     }
-                    return NICS;
                 }
             } catch (Exception e) {
                 System.out.println("Connection to database failed");
             }
 
-            NICS = Optional.empty();
-            return NICS;
+            NICS.put(nicsType,op);;
         }
 
-        return NICS;
+        return NICS.get(nicsType);
     }
 
     public Optional<String> findGraphFile() {

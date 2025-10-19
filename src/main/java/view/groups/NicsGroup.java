@@ -1,33 +1,31 @@
 package view.groups;
 
+import benzenoid.Benzenoid;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import benzenoid.Benzenoid;
-import solveur.Aromaticity;
-import solveur.Aromaticity.RIType;
-import utils.HexagonAromaticity;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Locale;
 
 public class NicsGroup extends MoleculeGroup {
 
 	private final String NICSValues;
+    private final String nicsType;
 	
 	
-	public NicsGroup(Benzenoid molecule) throws IOException {
+	public NicsGroup(Benzenoid molecule, String nicsType) throws IOException {
 		super(molecule);
-    this.NICSValues = molecule.getDatabaseInformation().findNICS().get();
+        this.nicsType = nicsType;
+        this.NICSValues = molecule.getDatabaseInformation().findNICS(nicsType).get();
 		removeTexts();
 		writeNICS();
 	}
 
 	private void writeNICS() {
 		texts = new ArrayList<>();
-    Locale locale = new Locale( "en", "US" );
+        Locale locale = new Locale( "en", "US" );
     
 		for (int i = 0; i < hexagons.length; i++) {
 			
@@ -36,9 +34,9 @@ public class NicsGroup extends MoleculeGroup {
 			Tooltip tooltip;
 			builder.append("H").append(i);
       
-      String[] values = NICSValues.split(" ");
+       String[] values = NICSValues.split(" ");
 
-			if (writeText) {  
+        if (writeText) {
         
         String valueStr = String.format(locale,"%1.1f",Double.parseDouble(values[i]));
       
