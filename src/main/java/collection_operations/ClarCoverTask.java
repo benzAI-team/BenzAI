@@ -64,6 +64,12 @@ public class ClarCoverTask extends CollectionTask{
                                     ClarCoverSolution clarCoverSolution = clarCoverSolutions
                                             .get(clarCoverSolutions.size() - 1);
                                     molecule.setClarCoverSolution(clarCoverSolution);
+                                    if (clarCoverSolution.getSingleElectronNumber() == 0) {
+                                        molecule.setClarNumber(clarCoverSolution.getClarNumber());
+                                    }
+                                    else {
+                                        molecule.setClarNumber(0);
+                                    }
                                     benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.CLAR_COVER);
                                 }
                                 setIndex(getIndex() + 1);

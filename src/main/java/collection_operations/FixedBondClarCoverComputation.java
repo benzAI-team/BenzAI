@@ -39,8 +39,8 @@ public class FixedBondClarCoverComputation extends CollectionComputation{
 
         int size = panes.size();
 
-        System.out.println("Computing Clar Cover of " + size + "benzenoids");
-        collectionManagerPane.log("Clar Cover (" + size + "benzenoids)", true);
+        System.out.println("Computing Clar Cover of " + size + " benzenoids");
+        collectionManagerPane.log("Clar Cover (" + size + " benzenoids)", true);
 
         for (BenzenoidPane benzenoidPane : panes) {
             Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());
@@ -110,6 +110,12 @@ public class FixedBondClarCoverComputation extends CollectionComputation{
 
                 ClarCoverSolution clarCoverSolution = clarCoverSolutions.get(clarCoverSolutions.size() - 1);
                 molecule.setClarCoverSolution(clarCoverSolution);
+                if (clarCoverSolution.getSingleElectronNumber() == 0) {
+                    molecule.setClarNumber(clarCoverSolution.getClarNumber());
+                }
+                else {
+                    molecule.setClarNumber(0);
+                }
                 benzenoidSetPane.addBenzenoid(molecule, BenzenoidCollectionPane.DisplayType.CLAR_COVER_FIXED);
 
             }

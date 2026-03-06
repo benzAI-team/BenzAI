@@ -136,6 +136,10 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.matrixCoordinates = coords;
 		this.inchi = "";
 		this.benzdbId = -1;
+        this.clarNumber = -1;
+        this.homo = 1000000;
+        this.lumo = 1000000;
+        this.moment = 1000000;
 
 		this.maxIndex = maxIndex;
 
@@ -1246,13 +1250,12 @@ public class Benzenoid implements Comparable<Benzenoid> {
 	}
 
 	public void setClarNumber (int clarNumber) {
-		this.clarNumber = clarNumber;
+        if (this.clarNumber <= 0) {
+            this.clarNumber = clarNumber;
+        }
 	}
 
 	public int getClarNumber () {
-		if (clarNumber == -1) {
-			clarNumber = this.computableInformations.getClarCoverSolution().getClarNumber();
-		}
 		return clarNumber;
 	}
 

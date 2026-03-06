@@ -65,8 +65,8 @@ public class ForcedSingleClarCoverTask extends CollectionTask{
                         setIndex(0);
                         int size = panes.size();
 
-                        System.out.println("Computing Clar Cover of " + size + "benzenoids");
-                        collectionManagerPane.log("Clar Cover (" + size + "benzenoids)", true);
+                        System.out.println("Computing Clar Cover of " + size + " benzenoids");
+                        collectionManagerPane.log("Clar Cover (" + size + " benzenoids)", true);
 
                         for (BenzenoidPane benzenoidPane : panes) {
                             if (operationIsRunning()) {

@@ -42,8 +42,8 @@ public class RingBoundOrderTask extends CollectionTask{
                         ArrayList<BenzenoidPane> panes = new ArrayList<>(selectedBenzenoidPanes);
                         setIndex(0);
                         int size = panes.size();
-                        System.out.println("Computing Clar Cover of " + size + "benzenoids");
-                        collectionManagerPane.log("Clar cover (" + size + " benzenoids)", true);
+                        System.out.println("Computing RBO of " + size + " benzenoids");
+                        collectionManagerPane.log("RBO (" + size + " benzenoids)", true);
                         for (BenzenoidPane benzenoidPane : panes) {
                             if (operationIsRunning()) {
                                 Benzenoid molecule = currentPane.getMolecule(benzenoidPane.getIndex());

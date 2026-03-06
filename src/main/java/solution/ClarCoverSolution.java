@@ -1,6 +1,5 @@
 package solution;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClarCoverSolution {
@@ -109,6 +108,20 @@ public class ClarCoverSolution {
 		int nb = 0;
 		for (int i = 0; i < circles.length; i++) {
 			if (isCircle(i)) {
+				nb += 1;
+			}
+		}
+		return nb;
+	}
+
+	/**
+	 * Computes
+	 * @return the number of single electrons
+	 */
+	public int getSingleElectronNumber() {
+		int nb = 0;
+		for (int i = 0; i < singleElectrons.length; i++) {
+			if (isSingle(i)) {
 				nb += 1;
 			}
 		}

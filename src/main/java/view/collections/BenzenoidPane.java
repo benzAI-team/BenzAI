@@ -362,7 +362,9 @@ public class BenzenoidPane extends BorderPane implements Comparable<BenzenoidPan
 		}
 
 		if ((molecule.isClarCoverComputed()) && (! additionalDescription.contains("Clar number = "))){
-		  additionalDescription += "Clar number = " + molecule.getClarNumber() + "\n";
+		    if (molecule.getClarNumber() >= 0) {
+                additionalDescription += "Clar number = " + molecule.getClarNumber() + "\n";
+            }
 		}
     
 		return description + additionalDescription;
