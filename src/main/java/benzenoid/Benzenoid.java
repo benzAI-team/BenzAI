@@ -47,6 +47,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	private String name;
 	private String inchi;
+	private String smiles;
+	private String selfies;
 
 	private String description;
 
@@ -87,6 +89,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.edgeMatrix = edgeMatrix;
 		this.matrixCoordinates = coordinates;
 		this.inchi = "";
+        this.smiles = "";
+        this.selfies = "";
 		this.benzdbId = -1;
 		this.clarNumber = -1;
 		this.homo = 1000000;
@@ -135,6 +139,8 @@ public class Benzenoid implements Comparable<Benzenoid> {
 		this.nodesCoordinates = nodesRefs;
 		this.matrixCoordinates = coords;
 		this.inchi = "";
+		this.smiles = "";
+		this.selfies = "";
 		this.benzdbId = -1;
         this.clarNumber = -1;
         this.homo = 1000000;
@@ -1247,6 +1253,21 @@ public class Benzenoid implements Comparable<Benzenoid> {
 
 	public String getInchi () {
 		return this.inchi;
+	}
+
+    public void setSmiles (String smiles) {
+		this.smiles = smiles;
+	}
+
+	public String getSmiles () {
+		return this.smiles;
+	}
+    public void setSelfies (String selfies) {
+		this.selfies = selfies;
+	}
+
+	public String getSelfies () {
+		return this.selfies;
 	}
 
 	public void setClarNumber (int clarNumber) {

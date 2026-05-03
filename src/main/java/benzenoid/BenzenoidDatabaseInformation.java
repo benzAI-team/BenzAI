@@ -46,6 +46,8 @@ public class BenzenoidDatabaseInformation {
             if (!results.isEmpty()) {
                 PropertiesEntry content = PropertiesEntry.buildQueryContent(results.get(0));
                 benzenoid.setInchi(content.getInchi());
+                benzenoid.setSmiles(content.getSmiles());
+                benzenoid.setSelfies(content.getSelfies());
                 benzenoid.setBenzdbId(content.getIdMolecule());
                 benzenoid.setClarNumber(content.getClarNumber());
                 benzenoid.setHomo(content.getHomo());

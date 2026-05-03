@@ -15,6 +15,8 @@ public class BenzenoidEntry {
 	private final int idMolecule;
 	private final String moleculeLabel;
 	private final String inchi;
+	private final String smiles;
+	private final String selfies;
 	private final int nbHexagons;
 	private final int nbCarbons;
 	private final int nbHydrogens;
@@ -26,7 +28,7 @@ public class BenzenoidEntry {
 	 * Constructor
 	 */
 
-	public BenzenoidEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity, String inchi, String graphFile) {
+	public BenzenoidEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens, double irregularity, String inchi, String graphFile, String smiles, String selfies) {
 
 		this.idMolecule = idMolecule;
 		this.moleculeLabel = moleculeLabel;
@@ -35,6 +37,8 @@ public class BenzenoidEntry {
 		this.nbHydrogens = nbHydrogens;
 		this.irregularity = irregularity;
 		this.inchi = inchi;
+		this.smiles = smiles;
+		this.selfies = selfies;
 		this.graphFile = graphFile;
 	}
 
@@ -50,8 +54,16 @@ public class BenzenoidEntry {
 		return moleculeLabel;
 	}
 	
-  public String getInchi() {
+    public String getInchi() {
 		return inchi;
+	}
+
+    public String getSmiles() {
+		return smiles;
+	}
+
+    public String getSelfies() {
+		return selfies;
 	}
 
 	public int getNbHexagons() {
@@ -80,6 +92,8 @@ public class BenzenoidEntry {
 
 		int idMolecule = (int) ((double) result.get("idBenzenoid"));
 		String inchi = (String) result.get("inchi");
+		String smiles = (String) result.get("smiles");
+		String selfies = (String) result.get("selfies");
 		String label = (String) result.get("label");
 		int nbHexagons = (int) ((double) result.get("nbHexagons"));
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
@@ -101,7 +115,7 @@ public class BenzenoidEntry {
 			label = (String) map.get("label");
 		}
 
-		return new BenzenoidEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile);
+		return new BenzenoidEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile, smiles, selfies);
 	}
 
 
@@ -116,6 +130,8 @@ public class BenzenoidEntry {
     Benzenoid b = GraphParser.parseUndirectedGraph("tmp.graph_coord", null, false);
     
     b.setInchi (this.inchi);
+    b.setSmiles (this.smiles);
+    b.setSelfies (this.selfies);
     b.setBenzdbId (this.idMolecule);
     return b;
 	}

@@ -1,15 +1,12 @@
 package database.models;
 
+import http.Post;
+import spectrums.ResultLogFile;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
-
-import http.Post;
-import benzenoid.Benzenoid;
-import parsers.GraphParser;
-import spectrums.ResultLogFile;
 
 public class IRSpectraEntry extends BenzenoidEntry {
 
@@ -24,9 +21,9 @@ public class IRSpectraEntry extends BenzenoidEntry {
 	 */
 
 	public IRSpectraEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens,
-			double irregularity, String inchi, String graphFile, ArrayList<Double> finalEnergies, ArrayList<Double> frequencies,
+			double irregularity, String inchi, String graphFile, String smiles, String selfies, ArrayList<Double> finalEnergies, ArrayList<Double> frequencies,
 			ArrayList<Double> intensities, double zeroPointEnergy, String amesFormat) {
-    super(idMolecule, moleculeLabel, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile);
+    super(idMolecule, moleculeLabel, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile, smiles, selfies);
 		this.finalEnergies = finalEnergies;
 		this.frequencies = frequencies;
 		this.intensities = intensities;
@@ -66,13 +63,15 @@ public class IRSpectraEntry extends BenzenoidEntry {
 	public static IRSpectraEntry buildQueryContent(Map result) {
 
 		int idMolecule = (int) ((double) result.get("idBenzenoid"));
-    String inchi = (String) result.get("inchi");
+        String inchi = (String) result.get("inchi");
+        String smiles = (String) result.get("smiles");
+        String selfies = (String) result.get("selfies");
 		String label = (String) result.get("label");
 		int nbHexagons = (int) ((double) result.get("nbHexagons"));
 		int nbCarbons = (int) ((double) result.get("nbCarbons"));
 		int nbHydrogens = (int) ((double) result.get("nbHydrogens"));
 		double irregularity = (double) result.get("irregularity");
-    String graphFile = (String) result.get("graphFile");
+        String graphFile = (String) result.get("graphFile");
 
 		String frequenciesString = (String) result.get("frequencies");
 		String intensitiesString = (String) result.get("intensities");
@@ -113,7 +112,7 @@ public class IRSpectraEntry extends BenzenoidEntry {
 		ArrayList<Double> finalEnergies = new ArrayList<>();
 		finalEnergies.add(finalEnergy);
 
-		return new IRSpectraEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi,	graphFile, finalEnergies, frequencies, intensities, zeroPointEnergy, amesFormat);
+		return new IRSpectraEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile, smiles, selfies, finalEnergies, frequencies, intensities, zeroPointEnergy, amesFormat);
 	}
 
 

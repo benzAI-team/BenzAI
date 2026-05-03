@@ -17,8 +17,8 @@ public class PropertiesEntry extends BenzenoidEntry {
      */
 
     public PropertiesEntry(int idMolecule, String moleculeLabel, int nbHexagons, int nbCarbons, int nbHydrogens,
-                          double irregularity, String inchi, String graphFile, double homo, double lumo, double moment, int clarNumber) {
-        super(idMolecule, moleculeLabel, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile);
+                          double irregularity, String inchi, String graphFile, String smiles, String selfies, double homo, double lumo, double moment, int clarNumber) {
+        super(idMolecule, moleculeLabel, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi, graphFile, smiles, selfies);
         this.homo = homo;
         this.lumo = lumo;
         this.moment = moment;
@@ -56,6 +56,8 @@ public class PropertiesEntry extends BenzenoidEntry {
 
         int idMolecule = (int) ((double) result.get("idBenzenoid"));
         String inchi = (String) result.get("inchi");
+        String smiles = (String) result.get("smiles");
+        String selfies = (String) result.get("selfies");
         String label = (String) result.get("label");
         int nbHexagons = (int) ((double) result.get("nbHexagons"));
         int nbCarbons = (int) ((double) result.get("nbCarbons"));
@@ -78,7 +80,7 @@ public class PropertiesEntry extends BenzenoidEntry {
 //            e.printStackTrace();
 //        }
 
-        return new PropertiesEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi,	graphFile, homo, lumo, moment, clarNumber);
+        return new PropertiesEntry(idMolecule, label, nbHexagons, nbCarbons, nbHydrogens, irregularity, inchi,	graphFile, smiles, selfies, homo, lumo, moment, clarNumber);
     }
 
     public Benzenoid buildMolecule() throws IOException {
